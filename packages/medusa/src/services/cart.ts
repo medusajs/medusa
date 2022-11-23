@@ -416,8 +416,8 @@ class CartService extends TransactionBaseService {
 
         const createdCart = cartRepo.create(rawCart)
         const cart = await cartRepo.save(createdCart)
-        this.eventBus_
-          .withTransaction(this.manager_)
+        await this.eventBus_
+          .withTransaction(transactionManager)
           .emit(CartService.Events.CREATED, {
             id: cart.id,
           })
@@ -804,8 +804,8 @@ class CartService extends TransactionBaseService {
 
         await this.refreshAdjustments_(cart)
 
-        this.eventBus_
-          .withTransaction(this.manager_)
+        await this.eventBus_
+          .withTransaction(transactionManager)
           .emit(CartService.Events.UPDATED, { id: cart.id })
       }
     )

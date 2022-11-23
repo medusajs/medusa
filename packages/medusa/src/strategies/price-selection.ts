@@ -5,23 +5,31 @@ import {
   PriceSelectionContext,
   PriceSelectionResult,
   PriceType,
-} from "../interfaces/price-selection-strategy"
+} from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { TaxServiceRate } from "../types/tax-service"
 import { FlagRouter } from "../utils/flag-router"
 import { isDefined } from "../utils/is-defined"
+import { CacheService } from "../services"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   private moneyAmountRepository_: typeof MoneyAmountRepository
   private featureFlagRouter_: FlagRouter
   private manager_: EntityManager
+  protected cacheService_: CacheService
 
-  constructor({ manager, featureFlagRouter, moneyAmountRepository }) {
+  constructor({
+    manager,
+    featureFlagRouter,
+    moneyAmountRepository,
+    cacheService,
+  }) {
     super()
     this.manager_ = manager
     this.moneyAmountRepository_ = moneyAmountRepository
     this.featureFlagRouter_ = featureFlagRouter
+    this.cacheService_ = cacheService
   }
 
   withTransaction(manager: EntityManager): IPriceSelectionStrategy {
@@ -33,6 +41,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       manager: manager,
       moneyAmountRepository: this.moneyAmountRepository_,
       featureFlagRouter: this.featureFlagRouter_,
+      cacheService: this.cacheService_,
     })
   }
 
@@ -54,6 +63,18 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
+    let cacheKey: string | undefined
+    try {
+      cacheKey = this.getCacheKey(variant_id, context)
+      const cached =
+        await this.cacheService_.getCacheEntry<PriceSelectionResult>(cacheKey)
+      if (cached) {
+        return cached
+      }
+    } catch (err) {
+      // noop
+    }
+
     const moneyRepo = this.manager_.getCustomRepository(
       this.moneyAmountRepository_
     )
@@ -136,6 +157,10 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       }
     }
 
+    if (cacheKey) {
+      await this.cacheService_.setCache(cacheKey, result)
+    }
+
     return result
   }
 
@@ -212,6 +237,21 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     }
 
     return result
+  }
+
+  private getCacheKey(
+    variantId: string,
+    context: PriceSelectionContext
+  ): string {
+    const taxRate =
+      context.tax_rates?.reduce(
+        (accRate: number, nextTaxRate: TaxServiceRate) => {
+          return accRate + (nextTaxRate.rate || 0) / 100
+        },
+        0
+      ) || 0
+
+    return `ps:${variantId}:${context.region_id}:${context.currency_code}:${context.customer_id}:${context.quantity}:${context.include_discount_prices}:${taxRate}`
   }
 }
 
