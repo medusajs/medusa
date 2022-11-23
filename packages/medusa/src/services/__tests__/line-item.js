@@ -367,6 +367,16 @@ describe("LineItemService", () => {
           }
         },
         getRegionPrice: () => 100,
+        list: jest.fn().mockImplementation(async (selector) => {
+          return (selector.id || []).map((id) => ({
+            id,
+            title: "Test variant",
+            product: {
+              title: "Test product",
+              thumbnail: "",
+            },
+          }))
+        }),
       }
 
       const pricingService = {
@@ -435,6 +445,37 @@ describe("LineItemService", () => {
           }),
         })
       })
+
+      it("successfully create a line item with tax inclusive set to true by passing an object", async () => {
+        await lineItemService.generate({
+          variantId: IdMap.getId("test-variant"),
+          regionId: IdMap.getId("test-region"),
+          quantity: 1,
+        })
+
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith({
+          unit_price: 100,
+          title: "Test product",
+          description: "Test variant",
+          thumbnail: "",
+          variant_id: IdMap.getId("test-variant"),
+          quantity: 1,
+          allow_discounts: undefined,
+          is_giftcard: undefined,
+          metadata: {},
+          should_merge: true,
+          includes_tax: true,
+          variant: expect.objectContaining({
+            id: expect.any(String),
+            product: expect.objectContaining({
+              thumbnail: "",
+              title: "Test product",
+            }),
+            title: "Test variant",
+          }),
+        })
+      })
     })
     describe("generate", () => {
       const lineItemRepository = MockRepository({
@@ -474,27 +515,19 @@ describe("LineItemService", () => {
               },
             }
           }
-          return {
-            id: IdMap.getId("test-variant"),
-            title: "Test variant",
-            product: {
-              title: "Test product",
-              thumbnail: "",
-            },
-          }
         },
         getRegionPrice: () => 100,
         list: jest.fn().mockImplementation(async (selector) => {
-          return (selector.id || []).map((id) => ({
-            id,
-            title: "Test variant",
-            product: {
-              title: "Test product",
-              thumbnail: "",
-              discountable: false,
-              is_giftcard: true,
-            },
-          }))
+          return (selector.id || []).map((id) => {
+            return {
+              id,
+              title: "Test variant",
+              product: {
+                title: "Test product",
+                thumbnail: "",
+              },
+            }
+          })
         }),
       }
 
@@ -540,6 +573,37 @@ describe("LineItemService", () => {
           IdMap.getId("test-region"),
           1
         )
+
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith({
+          unit_price: 100,
+          title: "Test product",
+          description: "Test variant",
+          thumbnail: "",
+          variant_id: IdMap.getId("test-variant"),
+          quantity: 1,
+          allow_discounts: undefined,
+          is_giftcard: undefined,
+          metadata: {},
+          should_merge: true,
+          includes_tax: false,
+          variant: expect.objectContaining({
+            id: expect.any(String),
+            product: expect.objectContaining({
+              thumbnail: "",
+              title: "Test product",
+            }),
+            title: "Test variant",
+          }),
+        })
+      })
+
+      it("successfully create a line item with tax inclusive set to false by passing an object", async () => {
+        await lineItemService.generate({
+          variantId: IdMap.getId("test-variant"),
+          regionId: IdMap.getId("test-region"),
+          quantity: 1,
+        })
 
         expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
         expect(lineItemRepository.create).toHaveBeenCalledWith({

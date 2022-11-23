@@ -200,7 +200,7 @@ class LineItemService extends TransactionBaseService {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         let data = variantIdOrData as unknown as GenerateInputData
-        let resolvedContext = regionIdOrContext as GenerateContext
+        let resolvedContext = (regionIdOrContext ?? {}) as GenerateContext
 
         if (isString(variantIdOrData)) {
           if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
