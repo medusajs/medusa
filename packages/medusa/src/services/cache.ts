@@ -1,15 +1,16 @@
 import { Redis } from "ioredis"
+import { ICacheService } from "../interfaces"
 
 const DEFAULT_CACHE_TIME = 60 * 60 // 60 seconds
 
-export default class CacheService {
-  private redis_: Redis
+export default class CacheService implements ICacheService {
+  protected readonly redis_: Redis
 
   constructor({ redisClient }) {
     this.redis_ = redisClient
   }
 
-  async setCache(
+  async set(
     key: string,
     data: Record<string, unknown>,
     ttl: number = DEFAULT_CACHE_TIME
@@ -17,7 +18,7 @@ export default class CacheService {
     await this.redis_.set(key, JSON.stringify(data), "EX", ttl)
   }
 
-  async getCacheEntry<T>(cacheKey: string): Promise<T | null> {
+  async get<T>(cacheKey: string): Promise<T | null> {
     try {
       const cached = await this.redis_.get(cacheKey)
       if (cached) {

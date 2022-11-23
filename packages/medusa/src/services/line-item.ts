@@ -281,26 +281,23 @@ class LineItemService extends TransactionBaseService {
    * @param data - the line item object to create
    * @return the created line item
    */
-  async create<T = Partial<LineItem> | Partial<LineItem>[]>(
-    data: T
-  ): Promise<T extends [] ? LineItem[] : LineItem> {
+  async create<
+    T = LineItem | LineItem[],
+    TResult = T extends LineItem ? LineItem : LineItem[]
+  >(data: T): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const lineItemRepository = transactionManager.getCustomRepository(
           this.lineItemRepository_
         )
 
-        if (!Array.isArray(data)) {
-          const item = lineItemRepository.create(data)
-          return (await lineItemRepository.save(item)) as T extends []
-            ? LineItem[]
-            : LineItem
-        }
+        const isDataAnArray = Array.isArray(data)
+        const data_ = !isDataAnArray ? [data] : data
 
-        const items = lineItemRepository.create(data)
-        return (await lineItemRepository.save(items)) as T extends []
-          ? LineItem[]
-          : LineItem
+        const items = lineItemRepository.create(data_)
+        const lineItems = await lineItemRepository.save(items)
+
+        return (!isDataAnArray ? lineItems[0] : lineItems) as unknown as TResult
       }
     )
   }

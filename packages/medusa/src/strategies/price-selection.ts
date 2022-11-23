@@ -1,6 +1,7 @@
 import { EntityManager } from "typeorm"
 import {
   AbstractPriceSelectionStrategy,
+  ICacheService,
   IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
@@ -11,13 +12,13 @@ import { MoneyAmountRepository } from "../repositories/money-amount"
 import { TaxServiceRate } from "../types/tax-service"
 import { FlagRouter } from "../utils/flag-router"
 import { isDefined } from "../utils"
-import { CacheService } from "../services"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
-  private moneyAmountRepository_: typeof MoneyAmountRepository
-  private featureFlagRouter_: FlagRouter
-  private manager_: EntityManager
-  protected cacheService_: CacheService
+  protected manager_: EntityManager
+
+  protected readonly featureFlagRouter_: FlagRouter
+  protected moneyAmountRepository_: typeof MoneyAmountRepository
+  protected cacheService_: ICacheService
 
   constructor({
     manager,
@@ -66,8 +67,9 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     let cacheKey: string | undefined
     try {
       cacheKey = this.getCacheKey(variant_id, context)
-      const cached =
-        await this.cacheService_.getCacheEntry<PriceSelectionResult>(cacheKey)
+      const cached = await this.cacheService_.get<PriceSelectionResult>(
+        cacheKey
+      )
       if (cached) {
         return cached
       }
@@ -158,7 +160,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     }
 
     if (cacheKey) {
-      await this.cacheService_.setCache(cacheKey, result)
+      await this.cacheService_.set(cacheKey, result)
     }
 
     return result
