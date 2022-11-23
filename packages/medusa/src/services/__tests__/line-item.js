@@ -106,15 +106,17 @@ import { RegionServiceMock } from "../__mocks__/region"
           })
 
           expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
-          expect(lineItemRepository.create).toHaveBeenCalledWith({
-            variant_id: IdMap.getId("test-variant"),
-            cart_id: IdMap.getId("test-cart"),
-            title: "Test product",
-            description: "Test variant",
-            thumbnail: "",
-            unit_price: 100,
-            quantity: 1,
-          })
+          expect(lineItemRepository.create).toHaveBeenCalledWith([
+            {
+              variant_id: IdMap.getId("test-variant"),
+              cart_id: IdMap.getId("test-cart"),
+              title: "Test product",
+              description: "Test variant",
+              thumbnail: "",
+              unit_price: 100,
+              quantity: 1,
+            },
+          ])
         })
 
         it("successfully create a line item with price and quantity", async () => {
@@ -126,12 +128,14 @@ import { RegionServiceMock } from "../__mocks__/region"
           })
 
           expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
-          expect(lineItemRepository.create).toHaveBeenCalledWith({
-            variant_id: IdMap.getId("test-variant"),
-            cart_id: IdMap.getId("test-cart"),
-            unit_price: 50,
-            quantity: 2,
-          })
+          expect(lineItemRepository.create).toHaveBeenCalledWith([
+            {
+              variant_id: IdMap.getId("test-variant"),
+              cart_id: IdMap.getId("test-cart"),
+              unit_price: 50,
+              quantity: 2,
+            },
+          ])
         })
 
         it("successfully create a line item giftcard", async () => {
@@ -147,8 +151,7 @@ import { RegionServiceMock } from "../__mocks__/region"
           })
 
           expect(lineItemRepository.create).toHaveBeenCalledTimes(2)
-          expect(lineItemRepository.create).toHaveBeenNthCalledWith(
-            2,
+          expect(lineItemRepository.create).toHaveBeenNthCalledWith(2, [
             expect.objectContaining({
               allow_discounts: false,
               variant_id: IdMap.getId("test-giftcard"),
@@ -161,8 +164,8 @@ import { RegionServiceMock } from "../__mocks__/region"
               is_giftcard: true,
               should_merge: true,
               metadata: {},
-            })
-          )
+            }),
+          ])
         })
       })
 
