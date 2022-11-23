@@ -1,6 +1,6 @@
 export const cacheServiceMock = {
-  setCache: jest.fn().mockImplementation(async () => void 0),
-  getCacheEntry: jest.fn().mockImplementation(async () => null),
+  set: jest.fn().mockImplementation(async () => void 0),
+  get: jest.fn().mockImplementation(async () => null),
   invalidate: jest.fn().mockImplementation(async () => void 0),
 }
 

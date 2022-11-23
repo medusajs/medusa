@@ -261,6 +261,25 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
     })
 
     describe("with a cart with full tax inclusive variant pricing", () => {
+      const variantId1 = IdMap.getId("test-variant-1-tax-inclusive")
+      const variantId2 = IdMap.getId("test-variant-2-tax-inclusive")
+      const productId1 = IdMap.getId("test-product-1-tax-inclusive")
+      const productId2 = IdMap.getId("test-product-2-tax-inclusive")
+
+      const createCartPayload = {
+        region_id: regionId,
+        items: [
+          {
+            variant_id: variantId1,
+            quantity: 1,
+          },
+          {
+            variant_id: variantId2,
+            quantity: 1,
+          },
+        ],
+      }
+
       beforeEach(async () => {
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
@@ -319,6 +338,25 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
     })
 
     describe("with a cart mixing tax inclusive and exclusive variant pricing", () => {
+      const variantId1 = IdMap.getId("test-variant-1-mixed-tax-inclusive")
+      const variantId2 = IdMap.getId("test-variant-2-mixed-tax-inclusive")
+      const productId1 = IdMap.getId("test-product-1-mixed-tax-inclusive")
+      const productId2 = IdMap.getId("test-product-2-mixed-tax-inclusive")
+
+      const createCartPayload = {
+        region_id: regionId,
+        items: [
+          {
+            variant_id: variantId1,
+            quantity: 1,
+          },
+          {
+            variant_id: variantId2,
+            quantity: 1,
+          },
+        ],
+      }
+
       beforeEach(async () => {
         await simpleRegionFactory(dbConnection, regionData)
         await simpleProductFactory(
