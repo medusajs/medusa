@@ -64,17 +64,12 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    let cacheKey: string | undefined
-    try {
-      cacheKey = this.getCacheKey(variant_id, context)
-      const cached = await this.cacheService_.get<PriceSelectionResult>(
-        cacheKey
-      )
-      if (cached) {
-        return cached
-      }
-    } catch (err) {
-      // noop
+    const cacheKey = this.getCacheKey(variant_id, context)
+    const cached = await this.cacheService_
+      .get<PriceSelectionResult>(cacheKey)
+      .catch(() => void 0)
+    if (cached) {
+      return cached
     }
 
     const moneyRepo = this.manager_.getCustomRepository(
@@ -159,9 +154,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       }
     }
 
-    if (cacheKey) {
-      await this.cacheService_.set(cacheKey, result)
-    }
+    await this.cacheService_.set(cacheKey, result)
 
     return result
   }
