@@ -11,7 +11,7 @@ import { buildOptions } from "../../utils/buildOptions"
 import { useMedusa } from "../../../contexts"
 import { paymentQueryKeys } from "."
 
-export const useAdminCapturePayment = (
+export const useAdminPaymentsCapturePayment = (
   id: string,
   options?: UseMutationOptions<Response<AdminPaymentRes>, Error, void>
 ) => {
@@ -28,7 +28,7 @@ export const useAdminCapturePayment = (
   )
 }
 
-export const useAdminRefundPayment = (
+export const useAdminPaymentsRefundPayment = (
   id: string,
   options?: UseMutationOptions<
     Response<AdminRefundRes>,
