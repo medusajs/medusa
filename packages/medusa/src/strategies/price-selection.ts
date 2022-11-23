@@ -64,6 +64,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
+    // TODO: Refactor using the cache decorators when it will be finished
     const cacheKey = this.getCacheKey(variant_id, context)
     const cached = await this.cacheService_
       .get<PriceSelectionResult>(cacheKey)
