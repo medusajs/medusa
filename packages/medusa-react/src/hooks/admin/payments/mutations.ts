@@ -1,0 +1,51 @@
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import { Response } from "@medusajs/medusa-js"
+
+import {
+  AdminPaymentRes,
+  AdminPostPaymentRefundsReq,
+  AdminRefundRes,
+} from "@medusajs/medusa"
+
+import { buildOptions } from "../../utils/buildOptions"
+import { useMedusa } from "../../../contexts"
+import { paymentQueryKeys } from "."
+
+export const useAdminCapturePayment = (
+  id: string,
+  options?: UseMutationOptions<Response<AdminPaymentRes>, Error, void>
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => client.admin.payments.capturePayment(id),
+    buildOptions(
+      queryClient,
+      [paymentQueryKeys.detail(id), paymentQueryKeys.lists()],
+      options
+    )
+  )
+}
+
+export const useAdminRefundPayment = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminRefundRes>,
+    Error,
+    AdminPostPaymentRefundsReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload: AdminPostPaymentRefundsReq) =>
+      client.admin.payments.refundPayment(id, payload),
+    buildOptions(
+      queryClient,
+      [paymentQueryKeys.detail(id), paymentQueryKeys.lists()],
+      options
+    )
+  )
+}
