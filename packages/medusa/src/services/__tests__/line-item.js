@@ -32,9 +32,7 @@ import { RegionServiceMock } from "../__mocks__/region"
         }
 
         const productVariantService = {
-          withTransaction: function () {
-            return this
-          },
+          ...ProductVariantServiceMock,
           retrieve: (query) => {
             if (query === IdMap.getId("test-giftcard")) {
               return {
@@ -58,6 +56,18 @@ import { RegionServiceMock } from "../__mocks__/region"
             }
           },
           getRegionPrice: () => 100,
+          list: jest.fn().mockImplementation(async (selector) => {
+            return (selector.id || []).map((id) => ({
+              id,
+              title: "Test variant",
+              product: {
+                title: "Test product",
+                thumbnail: "",
+                discountable: false,
+                is_giftcard: true,
+              },
+            }))
+          }),
         }
 
         const pricingService = {
@@ -193,6 +203,7 @@ import { RegionServiceMock } from "../__mocks__/region"
         const lineItemService = new LineItemService({
           manager: MockManager,
           lineItemRepository,
+          productVariantService: ProductVariantServiceMock,
         })
 
         beforeEach(async () => {
@@ -332,9 +343,7 @@ describe("LineItemService", () => {
       }
 
       const productVariantService = {
-        withTransaction: function () {
-          return this
-        },
+        ...ProductVariantServiceMock,
         retrieve: (query) => {
           if (query === IdMap.getId("test-giftcard")) {
             return {
@@ -451,9 +460,7 @@ describe("LineItemService", () => {
       }
 
       const productVariantService = {
-        withTransaction: function () {
-          return this
-        },
+        ...ProductVariantServiceMock,
         retrieve: (query) => {
           if (query === IdMap.getId("test-giftcard")) {
             return {
@@ -477,6 +484,18 @@ describe("LineItemService", () => {
           }
         },
         getRegionPrice: () => 100,
+        list: jest.fn().mockImplementation(async (selector) => {
+          return (selector.id || []).map((id) => ({
+            id,
+            title: "Test variant",
+            product: {
+              title: "Test product",
+              thumbnail: "",
+              discountable: false,
+              is_giftcard: true,
+            },
+          }))
+        }),
       }
 
       const pricingService = {

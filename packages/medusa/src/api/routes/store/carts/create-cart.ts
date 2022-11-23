@@ -188,18 +188,19 @@ export default async (req, res) => {
     cart = await cartServiceTx.create(toCreate)
 
     if (validated.items?.length) {
-      const generatedLineItems: LineItem[] = await Promise.all(
-        validated.items.map(async (item) => {
-          return await lineItemServiceTx.generate(
-            item.variant_id,
-            region.id,
-            item.quantity,
-            {
-              region,
-              customer_id: req.user?.customer_id,
-            }
-          )
-        })
+      const generateInputData = validated.items.map((item) => {
+        return {
+          variantId: item.variant_id,
+          quantity: item.quantity,
+          regionId: region.id,
+        }
+      })
+      const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(
+        generateInputData,
+        {
+          region,
+          customer_id: req.user?.customer_id,
+        }
       )
 
       await cartServiceTx.addLineItems(cart.id, generatedLineItems, {

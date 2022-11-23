@@ -110,26 +110,18 @@ describe("POST /store/carts", () => {
       expect(CartServiceMock.addLineItems).toHaveBeenCalledTimes(1)
 
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("testVariant"),
-        IdMap.getId("testRegion"),
-        3,
-        {
-          customer_id: undefined,
-          region: {
-            countries: ["DK", "US", "DE"],
-            currency_code: "usd",
-            fulfillment_providers: ["test_shipper"],
-            id: expect.any(String),
-            name: "Test Region",
-            payment_providers: ["default_provider", "unregistered"],
-            tax_rate: 0.25,
+        [
+          {
+            variantId: IdMap.getId("testVariant"),
+            regionId: IdMap.getId("testRegion"),
+            quantity: 3,
           },
-        }
-      )
-      expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("testVariant1"),
-        IdMap.getId("testRegion"),
-        1,
+          {
+            variantId: IdMap.getId("testVariant1"),
+            regionId: IdMap.getId("testRegion"),
+            quantity: 1,
+          },
+        ],
         {
           customer_id: undefined,
           region: {

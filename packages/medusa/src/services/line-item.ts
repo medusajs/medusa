@@ -6,11 +6,10 @@ import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import {
-  Cart,
   LineItem,
   LineItemAdjustment,
   LineItemTaxLine,
-  Region,
+  ProductVariant,
 } from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { FlagRouter } from "../utils/flag-router"
@@ -24,8 +23,9 @@ import {
   RegionService,
   TaxProviderService,
 } from "./index"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { TransactionBaseService } from "../interfaces"
+import { GenerateContext, GenerateInputData } from "../types/line-item"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -184,94 +184,147 @@ class LineItemService extends TransactionBaseService {
     )
   }
 
-  async generate(
-    variantId: string,
-    regionId: string,
-    quantity: number,
-    context: {
-      unit_price?: number
-      includes_tax?: boolean
-      metadata?: Record<string, unknown>
-      customer_id?: string
-      order_edit_id?: string
-      region?: Region
-      cart?: Cart
-    } = {}
-  ): Promise<LineItem> {
+  async generate<
+    T = string | GenerateInputData | GenerateInputData[],
+    TResult = T extends string
+      ? LineItem
+      : T extends LineItem
+      ? LineItem
+      : LineItem[]
+  >(
+    variantIdOrData: string | T,
+    regionIdOrContext: T extends string ? string : GenerateContext,
+    quantity?: number,
+    context: GenerateContext = {}
+  ): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const variant = await this.productVariantService_
-          .withTransaction(transactionManager)
-          .retrieve(variantId, {
+        let data = variantIdOrData as unknown as GenerateInputData
+        let resolvedContext = regionIdOrContext as GenerateContext
+
+        if (isString(variantIdOrData)) {
+          if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
+            throw new MedusaError(
+              MedusaError.Types.UNEXPECTED_STATE,
+              "The generate method has been called with a variant id but one of the argument quantity or regionId is missing. Please, provide the variantId, quantity and regionId."
+            )
+          }
+
+          data = {
+            variantId: variantIdOrData,
+            quantity: quantity,
+            regionId: regionIdOrContext as string,
+          }
+
+          resolvedContext = context
+        }
+
+        const isDataAnArray = Array.isArray(data)
+        const data_ = (isDataAnArray ? data : [data]) as GenerateInputData[]
+
+        const variants = await this.productVariantService_.list(
+          {
+            id: data_.map((d) => d.variantId),
+          },
+          {
             relations: ["product"],
-          })
-
-        let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
-
-        let unitPriceIncludesTax = false
-
-        let shouldMerge = false
-
-        if (context.unit_price === undefined || context.unit_price === null) {
-          shouldMerge = true
-          const variantPricing = await this.pricingService_
-            .withTransaction(transactionManager)
-            .getProductVariantPricingById(variant.id, {
-              region: context.region,
-              variant,
-              region_id: regionId,
-              quantity: quantity,
-              customer_id: context?.customer_id,
-              include_discount_prices: true,
-            })
-
-          unitPriceIncludesTax = !!variantPricing?.calculated_price_includes_tax
-
-          unit_price = variantPricing?.calculated_price ?? undefined
-        }
-
-        const rawLineItem: Partial<LineItem> = {
-          unit_price: unit_price,
-          title: variant.product.title,
-          description: variant.title,
-          thumbnail: variant.product.thumbnail,
-          variant_id: variant.id,
-          quantity: quantity || 1,
-          allow_discounts: variant.product.discountable,
-          is_giftcard: variant.product.is_giftcard,
-          metadata: context?.metadata || {},
-          should_merge: shouldMerge,
-        }
-
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            TaxInclusivePricingFeatureFlag.key
-          )
-        ) {
-          rawLineItem.includes_tax = unitPriceIncludesTax
-        }
-
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key)
-        ) {
-          rawLineItem.order_edit_id = context.order_edit_id || null
-        }
-
-        const lineItemRepo = transactionManager.getCustomRepository(
-          this.lineItemRepository_
+          }
         )
 
-        const lineItem = lineItemRepo.create(rawLineItem)
-        lineItem.variant = variant
+        const variantsMap = new Map<string, ProductVariant>()
+        variants.forEach((variant) => {
+          variantsMap.set(variant.id, variant)
+        })
 
-        if (context.cart) {
-          const adjustments = await this.lineItemAdjustmentService_
-            .withTransaction(transactionManager)
-            .generateAdjustments(context.cart, lineItem, { variant })
-          lineItem.adjustments = adjustments as unknown as LineItemAdjustment[]
+        const generatedItems: LineItem[] = []
+
+        for (const generateData of data_) {
+          const variant = variantsMap.get(
+            generateData.variantId
+          ) as ProductVariant
+          const { quantity, regionId } = generateData
+
+          let unit_price =
+            Number(resolvedContext.unit_price) < 0
+              ? 0
+              : resolvedContext.unit_price
+
+          let unitPriceIncludesTax = false
+
+          let shouldMerge = false
+
+          if (
+            resolvedContext.unit_price === undefined ||
+            resolvedContext.unit_price === null
+          ) {
+            shouldMerge = true
+            const variantPricing = await this.pricingService_
+              .withTransaction(transactionManager)
+              .getProductVariantPricingById(variant.id, {
+                region: resolvedContext.region,
+                variant,
+                region_id: regionId,
+                quantity: quantity,
+                customer_id: context?.customer_id,
+                include_discount_prices: true,
+              })
+
+            unitPriceIncludesTax =
+              !!variantPricing?.calculated_price_includes_tax
+
+            unit_price = variantPricing?.calculated_price ?? undefined
+          }
+
+          const rawLineItem: Partial<LineItem> = {
+            unit_price: unit_price,
+            title: variant.product.title,
+            description: variant.title,
+            thumbnail: variant.product.thumbnail,
+            variant_id: variant.id,
+            quantity: quantity || 1,
+            allow_discounts: variant.product.discountable,
+            is_giftcard: variant.product.is_giftcard,
+            metadata: context?.metadata || {},
+            should_merge: shouldMerge,
+          }
+
+          if (
+            this.featureFlagRouter_.isFeatureEnabled(
+              TaxInclusivePricingFeatureFlag.key
+            )
+          ) {
+            rawLineItem.includes_tax = unitPriceIncludesTax
+          }
+
+          if (
+            this.featureFlagRouter_.isFeatureEnabled(
+              OrderEditingFeatureFlag.key
+            )
+          ) {
+            rawLineItem.order_edit_id = resolvedContext.order_edit_id || null
+          }
+
+          const lineItemRepo = transactionManager.getCustomRepository(
+            this.lineItemRepository_
+          )
+
+          const lineItem = lineItemRepo.create(rawLineItem)
+          lineItem.variant = variant
+
+          if (resolvedContext.cart) {
+            const adjustments = await this.lineItemAdjustmentService_
+              .withTransaction(transactionManager)
+              .generateAdjustments(resolvedContext.cart, lineItem, { variant })
+            lineItem.adjustments =
+              adjustments as unknown as LineItemAdjustment[]
+          }
+
+          generatedItems.push(lineItem)
         }
 
-        return lineItem
+        return (isDataAnArray
+          ? generatedItems
+          : generatedItems[0]) as unknown as TResult
       }
     )
   }
