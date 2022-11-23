@@ -10,7 +10,7 @@ import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusi
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { TaxServiceRate } from "../types/tax-service"
 import { FlagRouter } from "../utils/flag-router"
-import { isDefined } from "../utils/is-defined"
+import { isDefined } from "../utils"
 import { CacheService } from "../services"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
