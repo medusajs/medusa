@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/payment-session.ts:57](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L57)
+[models/payment-session.ts:57](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L57)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:36](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L36)
+[models/payment-session.ts:36](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L36)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:32](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L32)
+[models/payment-session.ts:32](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L32)
 
 ___
 
@@ -62,7 +62,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:49](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L49)
+[models/payment-session.ts:49](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L49)
 
 ___
 
@@ -86,7 +86,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:52](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L52)
+[models/payment-session.ts:52](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L52)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:43](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L43)
+[models/payment-session.ts:43](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L43)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:62](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L62)
+[models/payment-session.ts:62](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L62)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:40](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L40)
+[models/payment-session.ts:40](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L40)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:46](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L46)
+[models/payment-session.ts:46](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L46)
 
 ___
 
@@ -150,7 +150,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -164,4 +164,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/payment-session.ts:64](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-session.ts#L64)
+[models/payment-session.ts:64](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-session.ts#L64)

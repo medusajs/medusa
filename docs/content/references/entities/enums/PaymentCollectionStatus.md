@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/payment-collection.ts:22](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L22)
+[models/payment-collection.ts:22](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-collection.ts#L22)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:21](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L21)
+[models/payment-collection.ts:21](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-collection.ts#L21)
 
 ___
 
@@ -32,17 +32,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:28](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L28)
-
-___
-
-### CAPTURED
-
-• **CAPTURED** = ``"captured"``
-
-#### Defined in
-
-[models/payment-collection.ts:24](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L24)
+[models/payment-collection.ts:24](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-collection.ts#L24)
 
 ___
 
@@ -52,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:20](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L20)
+[models/payment-collection.ts:20](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-collection.ts#L20)
 
 ___
 
@@ -62,44 +52,4 @@ ___
 
 #### Defined in
 
-[models/payment-collection.ts:23](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L23)
-
-___
-
-### PARTIALLY\_CAPTURED
-
-• **PARTIALLY\_CAPTURED** = ``"partially_captured"``
-
-#### Defined in
-
-[models/payment-collection.ts:25](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L25)
-
-___
-
-### PARTIALLY\_REFUNDED
-
-• **PARTIALLY\_REFUNDED** = ``"partially_refunded"``
-
-#### Defined in
-
-[models/payment-collection.ts:27](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L27)
-
-___
-
-### REFUNDED
-
-• **REFUNDED** = ``"refunded"``
-
-#### Defined in
-
-[models/payment-collection.ts:26](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L26)
-
-___
-
-### REQUIRES\_ACTION
-
-• **REQUIRES\_ACTION** = ``"requires_action"``
-
-#### Defined in
-
-[models/payment-collection.ts:29](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/payment-collection.ts#L29)
+[models/payment-collection.ts:23](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/payment-collection.ts#L23)

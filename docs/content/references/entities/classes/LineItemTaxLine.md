@@ -32,7 +32,7 @@ TaxLine.code
 
 #### Defined in
 
-[models/tax-line.ts:13](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/tax-line.ts#L13)
+[models/tax-line.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-line.ts#L13)
 
 ___
 
@@ -46,7 +46,7 @@ TaxLine.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -60,7 +60,7 @@ TaxLine.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[models/line-item-tax-line.ts:24](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/line-item-tax-line.ts#L24)
+[models/line-item-tax-line.ts:24](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/line-item-tax-line.ts#L24)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[models/line-item-tax-line.ts:20](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/line-item-tax-line.ts#L20)
+[models/line-item-tax-line.ts:20](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/line-item-tax-line.ts#L20)
 
 ___
 
@@ -94,7 +94,7 @@ TaxLine.metadata
 
 #### Defined in
 
-[models/tax-line.ts:16](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/tax-line.ts#L16)
+[models/tax-line.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-line.ts#L16)
 
 ___
 
@@ -108,7 +108,7 @@ TaxLine.name
 
 #### Defined in
 
-[models/tax-line.ts:10](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/tax-line.ts#L10)
+[models/tax-line.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-line.ts#L10)
 
 ___
 
@@ -122,7 +122,7 @@ TaxLine.rate
 
 #### Defined in
 
-[models/tax-line.ts:7](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/tax-line.ts#L7)
+[models/tax-line.ts:7](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-line.ts#L7)
 
 ___
 
@@ -136,7 +136,7 @@ TaxLine.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -150,4 +150,4 @@ TaxLine.updated\_at
 
 #### Defined in
 
-[models/line-item-tax-line.ts:26](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/line-item-tax-line.ts#L26)
+[models/line-item-tax-line.ts:26](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/line-item-tax-line.ts#L26)
