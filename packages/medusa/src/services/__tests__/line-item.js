@@ -71,12 +71,10 @@ import { RegionServiceMock } from "../__mocks__/region"
         }
 
         const pricingService = {
-          withTransaction: function () {
-            return this
-          },
-          getProductVariantPricingById: () => {
+          ...PricingServiceMock,
+          getProductVariantsPricing: () => {
             return {
-              calculated_price: 100,
+              [IdMap.getId("test-giftcard")]: { calculated_price: 100 },
             }
           },
           getProductVariantPricing: () => {
@@ -380,13 +378,13 @@ describe("LineItemService", () => {
       }
 
       const pricingService = {
-        withTransaction: function () {
-          return this
-        },
-        getProductVariantPricingById: () => {
+        ...PricingServiceMock,
+        getProductVariantsPricing: () => {
           return {
-            calculated_price: 100,
-            calculated_price_includes_tax: true,
+            [IdMap.getId("test-variant")]: {
+              calculated_price: 100,
+              calculated_price_includes_tax: true,
+            },
           }
         },
         getProductVariantPricing: () => {
@@ -447,11 +445,15 @@ describe("LineItemService", () => {
       })
 
       it("successfully create a line item with tax inclusive set to true by passing an object", async () => {
-        await lineItemService.generate({
-          variantId: IdMap.getId("test-variant"),
-          regionId: IdMap.getId("test-region"),
-          quantity: 1,
-        })
+        await lineItemService.generate(
+          {
+            variantId: IdMap.getId("test-variant"),
+            quantity: 1,
+          },
+          {
+            region_id: IdMap.getId("test-region"),
+          }
+        )
 
         expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
         expect(lineItemRepository.create).toHaveBeenCalledWith({
@@ -532,13 +534,13 @@ describe("LineItemService", () => {
       }
 
       const pricingService = {
-        withTransaction: function () {
-          return this
-        },
-        getProductVariantPricingById: () => {
+        ...PricingServiceMock,
+        getProductVariantsPricing: () => {
           return {
-            calculated_price: 100,
-            calculated_price_includes_tax: false,
+            [IdMap.getId("test-variant")]: {
+              calculated_price: 100,
+              calculated_price_includes_tax: false,
+            },
           }
         },
         getProductVariantPricing: () => {
@@ -599,11 +601,15 @@ describe("LineItemService", () => {
       })
 
       it("successfully create a line item with tax inclusive set to false by passing an object", async () => {
-        await lineItemService.generate({
-          variantId: IdMap.getId("test-variant"),
-          regionId: IdMap.getId("test-region"),
-          quantity: 1,
-        })
+        await lineItemService.generate(
+          {
+            variantId: IdMap.getId("test-variant"),
+            quantity: 1,
+          },
+          {
+            region_id: IdMap.getId("test-region"),
+          }
+        )
 
         expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
         expect(lineItemRepository.create).toHaveBeenCalledWith({

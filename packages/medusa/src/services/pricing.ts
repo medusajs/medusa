@@ -249,6 +249,7 @@ class PricingService extends TransactionBaseService {
    * @param variantId - the id of the variant to get prices for
    * @param context - the price selection context to use
    * @return The product variant prices
+   * @deprecated Use {@link getProductVariantsPricing} instead.
    */
   async getProductVariantPricingById(
     variantId: string,
