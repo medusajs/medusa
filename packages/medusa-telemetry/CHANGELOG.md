@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.15
+
+### Patch Changes
+
+- [#2590](https://github.com/medusajs/medusa/pull/2590) [`a76762418`](https://github.com/medusajs/medusa/commit/a76762418877e675977540dc95e095492873af44) Thanks [@fPolic](https://github.com/fPolic)! - Add missing changeset
+
 ## 0.0.14
 
 ### Patch Changes

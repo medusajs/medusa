@@ -1,5 +1,26 @@
 # Change Log
 
+## 1.6.5
+
+### Patch Changes
+
+- [#2594](https://github.com/medusajs/medusa/pull/2594) [`f60267a49`](https://github.com/medusajs/medusa/commit/f60267a494f95d85b6007e617a1f9b0146854bae) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Update staging action for automatic releases
+
+- [#2579](https://github.com/medusajs/medusa/pull/2579) [`022a84691`](https://github.com/medusajs/medusa/commit/022a84691eb84f408bcc36921d23703d498c847f) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix(draft-order): create tax-inclusive with discount
+
+- [#2632](https://github.com/medusajs/medusa/pull/2632) [`5d977a8f5`](https://github.com/medusajs/medusa/commit/5d977a8f57552af02eae0a44016b2213609b6d92) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Performance improvements of listing shipping options
+
+- [#2607](https://github.com/medusajs/medusa/pull/2607) [`e09f6e8a1`](https://github.com/medusajs/medusa/commit/e09f6e8a1e4a759fe70664bea0538c61b7cea70a) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): handle webhook sirialization failure
+
+- [#2603](https://github.com/medusajs/medusa/pull/2603) [`9e91a50df`](https://github.com/medusajs/medusa/commit/9e91a50df17b4f542db8d9678b5f489218511adb) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): missing transaction on create payment
+
+- [#2612](https://github.com/medusajs/medusa/pull/2612) [`a77780671`](https://github.com/medusajs/medusa/commit/a77780671aadc311c0e8a541104cbff1ea769ac7) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Transaction lock issues on create/update cart items
+
+- [#2597](https://github.com/medusajs/medusa/pull/2597) [`d7997ef25`](https://github.com/medusajs/medusa/commit/d7997ef256b7fd98d96be720c9aec694e426f92f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Expose Module Resolution API
+
+- Updated dependencies []:
+  - @medusajs/medusa-cli@1.3.5
+
 ## 1.6.4
 
 ### Patch Changes
