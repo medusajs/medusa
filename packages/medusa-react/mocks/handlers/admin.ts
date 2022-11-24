@@ -2117,6 +2117,20 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/payments/:id", (req, res, ctx) => {
+    const { id } = req.params
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment: {
+          ...fixtures.get("payment"),
+          id,
+        },
+      })
+    )
+  }),
+
   rest.post("/admin/payments/:id/capture", (req, res, ctx) => {
     const { id } = req.params
     return res(
