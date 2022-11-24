@@ -4,13 +4,11 @@ import { EntityManager, In } from "typeorm"
 import { Cart, DiscountRuleType, LineItem, LineItemAdjustment } from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
 import { FindConfig } from "../types/common"
-import {
-  FilterableLineItemAdjustmentProps,
-  GenerateAdjustmentCartData,
-} from "../types/line-item-adjustment"
+import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
 import DiscountService from "./discount"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, setMetadata } from "../utils"
+import { CalculationContextData } from "../types/totals"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
@@ -171,13 +169,13 @@ class LineItemAdjustmentService extends TransactionBaseService {
 
   /**
    * Creates adjustment for a line item
-   * @param cart - the cart object holding discounts
+   * @param calculationContextData - the calculationContextData object holding discounts
    * @param generatedLineItem - the line item for which a line item adjustment might be created
    * @param context - the line item for which a line item adjustment might be created
    * @return a line item adjustment or undefined if no adjustment was created
    */
   async generateAdjustments(
-    cart: GenerateAdjustmentCartData,
+    calculationContextData: CalculationContextData,
     generatedLineItem: LineItem,
     context: AdjustmentContext
   ): Promise<GeneratedAdjustment[]> {
@@ -193,12 +191,12 @@ class LineItemAdjustmentService extends TransactionBaseService {
       if (
         !lineItem.allow_discounts ||
         lineItem.is_return ||
-        !cart?.discounts?.length
+        !calculationContextData?.discounts?.length
       ) {
         return []
       }
 
-      const [discount] = cart.discounts.filter(
+      const [discount] = calculationContextData.discounts.filter(
         (d) => d.rule.type !== DiscountRuleType.FREE_SHIPPING
       )
 
@@ -223,7 +221,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
       const amount = await this.discountService.calculateDiscountForLineItem(
         discount.id,
         lineItem,
-        cart
+        calculationContextData
       )
 
       // if discounted amount is 0, then do nothing
@@ -231,15 +229,13 @@ class LineItemAdjustmentService extends TransactionBaseService {
         return []
       }
 
-      const adjustments = [
+      return [
         {
           amount,
           discount_id: discount.id,
           description: "discount",
         },
       ]
-
-      return adjustments
     })
   }
 

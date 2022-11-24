@@ -5,16 +5,13 @@ import {
   TransactionBaseService,
 } from "../interfaces"
 import {
-  Address,
   Cart,
   ClaimOrder,
-  Customer,
   Discount,
   DiscountRuleType,
   LineItem,
   LineItemTaxLine,
   Order,
-  Region,
   ShippingMethod,
   ShippingMethodTaxLine,
   Swap,
@@ -22,6 +19,7 @@ import {
 import { isCart } from "../types/cart"
 import { isOrder } from "../types/orders"
 import {
+  CalculationContextData,
   LineAllocationsMap,
   LineDiscount,
   LineDiscountAmount,
@@ -1065,24 +1063,15 @@ class TotalsService extends TransactionBaseService {
 
   /**
    * Prepares the calculation context for a tax total calculation.
-   * @param cartOrOrder - the cart or order to get the calculation context for
+   * @param calculationContextData - the calculationContextData to get the calculation context for
    * @param options - options to gather context by
    * @return the tax calculation context
    */
   async getCalculationContext(
-    cartOrOrder: {
-      discounts?: Discount[]
-      items: LineItem[]
-      swaps?: Swap[]
-      claims?: ClaimOrder[]
-      shipping_address: Address | null
-      shipping_methods?: ShippingMethod[]
-      customer: Customer
-      region: Region
-    },
+    calculationContextData: CalculationContextData,
     options: CalculationContextOptions = {}
   ): Promise<TaxCalculationContext> {
-    const allocationMap = await this.getAllocationMap(cartOrOrder, {
+    const allocationMap = await this.getAllocationMap(calculationContextData, {
       exclude_gift_cards: options.exclude_gift_cards,
       exclude_discounts: options.exclude_discounts,
     })
@@ -1090,14 +1079,14 @@ class TotalsService extends TransactionBaseService {
     let shippingMethods: ShippingMethod[] = []
     // Default to include shipping methods
     if (!options.exclude_shipping) {
-      shippingMethods = cartOrOrder.shipping_methods || []
+      shippingMethods = calculationContextData.shipping_methods || []
     }
 
     return {
-      shipping_address: cartOrOrder.shipping_address,
+      shipping_address: calculationContextData.shipping_address,
       shipping_methods: shippingMethods,
-      customer: cartOrOrder.customer,
-      region: cartOrOrder.region,
+      customer: calculationContextData.customer,
+      region: calculationContextData.region,
       is_return: options.is_return ?? false,
       allocation_map: allocationMap,
     }

@@ -1,13 +1,4 @@
-import {
-  Address,
-  ClaimOrder,
-  Customer,
-  Discount,
-  LineItem,
-  Region,
-  ShippingMethod,
-  Swap,
-} from "../models"
+import { CalculationContextData } from "./totals"
 
 export type GenerateInputData = {
   variantId: string
@@ -27,16 +18,5 @@ export type GenerateContext = {
   metadata?: Record<string, unknown>
   customer_id?: string
   order_edit_id?: string
-  cart?: GenerateContextCartData
-}
-
-export type GenerateContextCartData = {
-  discounts: Discount[]
-  items: LineItem[]
-  customer: Customer
-  region: Region
-  shipping_address?: Address | null
-  swaps?: Swap[]
-  claims?: ClaimOrder[]
-  shipping_methods?: ShippingMethod[]
+  cart?: CalculationContextData
 }

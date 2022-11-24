@@ -29,7 +29,6 @@ import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig, Selector } from "../types/common"
 import {
-  CalculateDiscountCartData,
   CreateDiscountInput,
   CreateDiscountRuleInput,
   CreateDynamicDiscountInput,
@@ -42,6 +41,7 @@ import { isFuture, isPast } from "../utils/date-helpers"
 import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
+import { CalculationContextData } from "../types/totals"
 
 /**
  * Provides layer to manipulate discounts.
@@ -574,7 +574,7 @@ class DiscountService extends TransactionBaseService {
   async calculateDiscountForLineItem(
     discountId: string,
     lineItem: LineItem,
-    cart: CalculateDiscountCartData
+    calculationContextData: CalculationContextData
   ): Promise<number> {
     return await this.atomicPhase_(async (transactionManager) => {
       let adjustment = 0
@@ -589,7 +589,7 @@ class DiscountService extends TransactionBaseService {
 
       const calculationContext = await this.totalsService_
         .withTransaction(transactionManager)
-        .getCalculationContext(cart, {
+        .getCalculationContext(calculationContextData, {
           exclude_shipping: true,
         })
 
@@ -618,7 +618,7 @@ class DiscountService extends TransactionBaseService {
         // when a fixed discount should be applied to the total,
         // we create line adjustments for each item with an amount
         // relative to the subtotal
-        const discountedItems = cart.items.filter(
+        const discountedItems = calculationContextData.items.filter(
           (item) => item.allow_discounts
         )
         const totals = await this.newTotalsService_.getLineItemTotals(
