@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- [#2623](https://github.com/medusajs/medusa/pull/2623) [`533208197`](https://github.com/medusajs/medusa/commit/5332081972cdd08b4d718799097d78043279057b) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Bump dependency version for medusa packages
+
+- Updated dependencies [[`f60267a49`](https://github.com/medusajs/medusa/commit/f60267a494f95d85b6007e617a1f9b0146854bae), [`022a84691`](https://github.com/medusajs/medusa/commit/022a84691eb84f408bcc36921d23703d498c847f), [`5d977a8f5`](https://github.com/medusajs/medusa/commit/5d977a8f57552af02eae0a44016b2213609b6d92), [`e09f6e8a1`](https://github.com/medusajs/medusa/commit/e09f6e8a1e4a759fe70664bea0538c61b7cea70a), [`9e91a50df`](https://github.com/medusajs/medusa/commit/9e91a50df17b4f542db8d9678b5f489218511adb), [`a77780671`](https://github.com/medusajs/medusa/commit/a77780671aadc311c0e8a541104cbff1ea769ac7), [`d7997ef25`](https://github.com/medusajs/medusa/commit/d7997ef256b7fd98d96be720c9aec694e426f92f)]:
+  - @medusajs/medusa@1.6.5
+
 ## 1.0.0
 
 ### Patch Changes
