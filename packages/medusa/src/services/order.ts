@@ -1624,9 +1624,9 @@ class OrderService extends TransactionBaseService {
   }
 
   /**
+   * Calculate and attach the different total fields on the object
    * @param order
    * @param totalsFieldsOrConfig
-   * @protected
    */
   async decorateTotals(
     order: Order,
