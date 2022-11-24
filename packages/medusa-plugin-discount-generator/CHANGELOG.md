@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.20
+
+### Patch Changes
+
+- [#2623](https://github.com/medusajs/medusa/pull/2623) [`533208197`](https://github.com/medusajs/medusa/commit/5332081972cdd08b4d718799097d78043279057b) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Bump dependency version for medusa packages
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
