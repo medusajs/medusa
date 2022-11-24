@@ -30,15 +30,6 @@ describe("POST /store/carts", () => {
           user_agent: "node-superagent/3.8.3",
           clientId: "test",
         },
-        region: {
-          countries: ["DK", "US", "DE"],
-          currency_code: "usd",
-          fulfillment_providers: ["test_shipper"],
-          id: expect.any(String),
-          name: "Test Region",
-          payment_providers: ["default_provider", "unregistered"],
-          tax_rate: 0.25,
-        },
         region_id: IdMap.getId("testRegion"),
       })
     })
@@ -113,26 +104,16 @@ describe("POST /store/carts", () => {
         [
           {
             variantId: IdMap.getId("testVariant"),
-            regionId: IdMap.getId("testRegion"),
             quantity: 3,
           },
           {
             variantId: IdMap.getId("testVariant1"),
-            regionId: IdMap.getId("testRegion"),
             quantity: 1,
           },
         ],
         {
+          region_id: IdMap.getId("testRegion"),
           customer_id: undefined,
-          region: {
-            countries: ["DK", "US", "DE"],
-            currency_code: "usd",
-            fulfillment_providers: ["test_shipper"],
-            id: expect.any(String),
-            name: "Test Region",
-            payment_providers: ["default_provider", "unregistered"],
-            tax_rate: 0.25,
-          },
         }
       )
     })
