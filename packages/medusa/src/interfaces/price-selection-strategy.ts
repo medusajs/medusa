@@ -2,7 +2,6 @@ import { EntityManager } from "typeorm"
 import { MoneyAmount } from ".."
 import { PriceListType } from "../types/price-list"
 import { TaxServiceRate } from "../types/tax-service"
-import { ProductVariant, Region } from "../models"
 
 export interface IPriceSelectionStrategy {
   /**
@@ -55,10 +54,14 @@ export type PriceSelectionContext = {
   customer_id?: string
   quantity?: number
   region_id?: string
+  region?: {
+    id: string
+    automatic_taxes: boolean
+    tax_rate: number
+    currency_code: string
+  }
   currency_code?: string
   include_discount_prices?: boolean
-  region?: Region
-  variant?: ProductVariant
   tax_rates?: TaxServiceRate[]
 }
 

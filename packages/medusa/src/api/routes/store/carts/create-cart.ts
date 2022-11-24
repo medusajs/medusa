@@ -192,7 +192,6 @@ export default async (req, res) => {
         return {
           variantId: item.variant_id,
           quantity: item.quantity,
-          regionId: region.id,
         }
       })
       const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(

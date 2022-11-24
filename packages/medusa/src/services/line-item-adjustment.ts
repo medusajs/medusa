@@ -1,16 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 
-import {
-  Cart,
-  DiscountRuleType,
-  LineItem,
-  LineItemAdjustment,
-  ProductVariant,
-} from "../models"
+import { Cart, DiscountRuleType, LineItem, LineItemAdjustment } from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
 import { FindConfig } from "../types/common"
-import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
+import {
+  FilterableLineItemAdjustmentProps,
+  GenerateAdjustmentCartData,
+} from "../types/line-item-adjustment"
 import DiscountService from "./discount"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, setMetadata } from "../utils"
@@ -22,7 +19,7 @@ type LineItemAdjustmentServiceProps = {
 }
 
 type AdjustmentContext = {
-  variant: ProductVariant
+  variant: { product_id: string }
 }
 
 type GeneratedAdjustment = {
@@ -180,7 +177,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
    * @return a line item adjustment or undefined if no adjustment was created
    */
   async generateAdjustments(
-    cart: Cart,
+    cart: GenerateAdjustmentCartData,
     generatedLineItem: LineItem,
     context: AdjustmentContext
   ): Promise<GeneratedAdjustment[]> {

@@ -1,6 +1,27 @@
 import { ValidateNested } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
 import { DateComparisonOperator, StringComparisonOperator } from "./common"
+import {
+  Address,
+  ClaimOrder,
+  Customer,
+  Discount,
+  LineItem,
+  Region,
+  ShippingMethod,
+  Swap,
+} from "../models"
+
+export type GenerateAdjustmentCartData = {
+  discounts: Discount[]
+  items: LineItem[]
+  customer: Customer
+  region: Region
+  shipping_address?: Address | null
+  swaps?: Swap[]
+  claims?: ClaimOrder[]
+  shipping_methods?: ShippingMethod[]
+}
 
 export class FilterableLineItemAdjustmentProps {
   @ValidateNested()

@@ -29,6 +29,7 @@ import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig, Selector } from "../types/common"
 import {
+  CalculateDiscountCartData,
   CreateDiscountInput,
   CreateDiscountRuleInput,
   CreateDynamicDiscountInput,
@@ -573,7 +574,7 @@ class DiscountService extends TransactionBaseService {
   async calculateDiscountForLineItem(
     discountId: string,
     lineItem: LineItem,
-    cart: Cart
+    cart: CalculateDiscountCartData
   ): Promise<number> {
     return await this.atomicPhase_(async (transactionManager) => {
       let adjustment = 0

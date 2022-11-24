@@ -26,6 +26,7 @@ import {
 import { buildQuery, isString, setMetadata } from "../utils"
 import { TransactionBaseService } from "../interfaces"
 import { GenerateContext, GenerateInputData } from "../types/line-item"
+import { ProductVariantPricing } from "../types/pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -184,6 +185,13 @@ class LineItemService extends TransactionBaseService {
     )
   }
 
+  /**
+   * Generate a single or multiple line item without persisting the data into the db
+   * @param variantIdOrData
+   * @param regionIdOrContext
+   * @param quantity
+   * @param context
+   */
   async generate<
     T = string | GenerateInputData | GenerateInputData[],
     TResult = T extends string
@@ -197,34 +205,33 @@ class LineItemService extends TransactionBaseService {
     quantity?: number,
     context: GenerateContext = {}
   ): Promise<TResult> {
+    this.validateGenerateArguments(variantIdOrData, regionIdOrContext, quantity)
+
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        let data = variantIdOrData as unknown as GenerateInputData
-        let resolvedContext = (regionIdOrContext ?? {}) as GenerateContext
-
-        if (isString(variantIdOrData)) {
-          if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
-            throw new MedusaError(
-              MedusaError.Types.UNEXPECTED_STATE,
-              "The generate method has been called with a variant id but one of the argument quantity or regionId is missing. Please, provide the variantId, quantity and regionId."
-            )
-          }
-
-          data = {
-            variantId: variantIdOrData,
-            quantity: quantity,
-            regionId: regionIdOrContext as string,
-          }
-
-          resolvedContext = context
-        }
+        const data = isString(variantIdOrData)
+          ? {
+              variantId: variantIdOrData,
+              quantity: quantity as number,
+            }
+          : variantIdOrData
+        const resolvedContext = isString(variantIdOrData)
+          ? context
+          : (regionIdOrContext as GenerateContext)
+        const regionId = (
+          isString(variantIdOrData)
+            ? regionIdOrContext
+            : resolvedContext.region?.id ?? resolvedContext.region_id
+        ) as string
 
         const isDataAnArray = Array.isArray(data)
-        const data_ = (isDataAnArray ? data : [data]) as GenerateInputData[]
+        const resolvedData = (
+          isDataAnArray ? data : [data]
+        ) as GenerateInputData[]
 
         const variants = await this.productVariantService_.list(
           {
-            id: data_.map((d) => d.variantId),
+            id: resolvedData.map((d) => d.variantId),
           },
           {
             relations: ["product"],
@@ -232,84 +239,43 @@ class LineItemService extends TransactionBaseService {
         )
 
         const variantsMap = new Map<string, ProductVariant>()
-        variants.forEach((variant) => {
+        const variantsToCalculatePricing: ProductVariant[] = []
+
+        for (const variant of variants) {
           variantsMap.set(variant.id, variant)
-        })
-
-        const generatedItems: LineItem[] = []
-
-        for (const generateData of data_) {
-          const variant = variantsMap.get(
-            generateData.variantId
-          ) as ProductVariant
-          const { quantity, regionId } = generateData
-
-          let unit_price =
-            Number(resolvedContext.unit_price) < 0
-              ? 0
-              : resolvedContext.unit_price
-
-          let unitPriceIncludesTax = false
-
-          let shouldMerge = false
-
           if (
             resolvedContext.unit_price === undefined ||
             resolvedContext.unit_price === null
           ) {
-            shouldMerge = true
-            const variantPricing = await this.pricingService_
-              .withTransaction(transactionManager)
-              .getProductVariantPricingById(variant.id, {
-                region: resolvedContext.region,
-                variant,
-                region_id: regionId,
-                quantity: quantity,
-                customer_id: context?.customer_id,
-                include_discount_prices: true,
-              })
-
-            unitPriceIncludesTax =
-              !!variantPricing?.calculated_price_includes_tax
-
-            unit_price = variantPricing?.calculated_price ?? undefined
+            variantsToCalculatePricing.push(variant)
           }
+        }
 
-          const rawLineItem: Partial<LineItem> = {
-            unit_price: unit_price,
-            title: variant.product.title,
-            description: variant.title,
-            thumbnail: variant.product.thumbnail,
-            variant_id: variant.id,
-            quantity: quantity || 1,
-            allow_discounts: variant.product.discountable,
-            is_giftcard: variant.product.is_giftcard,
-            metadata: context?.metadata || {},
-            should_merge: shouldMerge,
-          }
+        const variantsPricing = await this.pricingService_
+          .withTransaction(transactionManager)
+          .getProductVariantsPricing(variantsToCalculatePricing, {
+            region: resolvedContext.region,
+            region_id: regionId,
+            quantity: quantity,
+            customer_id: context?.customer_id,
+            include_discount_prices: true,
+          })
 
-          if (
-            this.featureFlagRouter_.isFeatureEnabled(
-              TaxInclusivePricingFeatureFlag.key
-            )
-          ) {
-            rawLineItem.includes_tax = unitPriceIncludesTax
-          }
+        const generatedItems: LineItem[] = []
 
-          if (
-            this.featureFlagRouter_.isFeatureEnabled(
-              OrderEditingFeatureFlag.key
-            )
-          ) {
-            rawLineItem.order_edit_id = resolvedContext.order_edit_id || null
-          }
+        for (const variantData of resolvedData) {
+          const variant = variantsMap.get(
+            variantData.variantId
+          ) as ProductVariant
 
-          const lineItemRepo = transactionManager.getCustomRepository(
-            this.lineItemRepository_
+          const lineItem = await this.generateLineItem(
+            variant,
+            variantData.quantity,
+            {
+              ...resolvedContext,
+              variantsPricing,
+            }
           )
-
-          const lineItem = lineItemRepo.create(rawLineItem)
-          lineItem.variant = variant
 
           if (resolvedContext.cart) {
             const adjustments = await this.lineItemAdjustmentService_
@@ -327,6 +293,72 @@ class LineItemService extends TransactionBaseService {
           : generatedItems[0]) as unknown as TResult
       }
     )
+  }
+
+  protected async generateLineItem(
+    variant: {
+      id: string
+      title: string
+      product_id: string
+      product: {
+        title: string
+        thumbnail: string | null
+        discountable: boolean
+        is_giftcard: boolean
+      }
+    },
+    quantity: number,
+    context: GenerateContext & {
+      variantsPricing: { [variantId: string]: ProductVariantPricing }
+    }
+  ): Promise<LineItem> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
+    let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
+    let unitPriceIncludesTax = false
+    let shouldMerge = false
+
+    if (context.unit_price === undefined || context.unit_price === null) {
+      shouldMerge = true
+      const variantPricing = context.variantsPricing[variant.id] ?? {}
+
+      unitPriceIncludesTax = !!variantPricing?.calculated_price_includes_tax
+      unit_price = variantPricing?.calculated_price ?? undefined
+    }
+
+    const rawLineItem: Partial<LineItem> = {
+      unit_price: unit_price,
+      title: variant.product.title,
+      description: variant.title,
+      thumbnail: variant.product.thumbnail,
+      variant_id: variant.id,
+      quantity: quantity || 1,
+      allow_discounts: variant.product.discountable,
+      is_giftcard: variant.product.is_giftcard,
+      metadata: context?.metadata || {},
+      should_merge: shouldMerge,
+    }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      )
+    ) {
+      rawLineItem.includes_tax = unitPriceIncludesTax
+    }
+
+    if (this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key)) {
+      rawLineItem.order_edit_id = context.order_edit_id || null
+    }
+
+    const lineItemRepo = transactionManager.getCustomRepository(
+      this.lineItemRepository_
+    )
+
+    const lineItem = lineItemRepo.create(rawLineItem)
+    lineItem.variant = variant as ProductVariant
+
+    return lineItem
   }
 
   /**
@@ -521,6 +553,37 @@ class LineItemService extends TransactionBaseService {
       const clonedLineItemEntities = lineItemRepository.create(lineItems)
       return await lineItemRepository.save(clonedLineItemEntities)
     })
+  }
+
+  protected validateGenerateArguments<
+    T = string | GenerateInputData | GenerateInputData[],
+    TResult = T extends string
+      ? LineItem
+      : T extends LineItem
+      ? LineItem
+      : LineItem[]
+  >(
+    variantIdOrData: string | T,
+    regionIdOrContext: T extends string ? string : GenerateContext,
+    quantity?: number
+  ): void | never {
+    if (isString(variantIdOrData)) {
+      if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "The generate method has been called with a variant id but one of the argument quantity or regionId is missing. Please, provide the variantId, quantity and regionId."
+        )
+      }
+    } else {
+      const resolvedContext = regionIdOrContext as GenerateContext
+
+      if (!resolvedContext.region && !resolvedContext.region_id) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "The generate method has been called with the data but the context is missing either region_id or region. Please provide at least one of region or region_id."
+        )
+      }
+    }
   }
 }
 

@@ -15,6 +15,7 @@ import {
   PricingContext,
   ProductVariantPricing,
   TaxedPricing,
+  VariantData,
 } from "../types/pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { calculatePriceTaxAmount } from "../utils"
@@ -73,7 +74,7 @@ class PricingService extends TransactionBaseService {
     let taxRate: number | null = context.region?.tax_rate ?? null
     let currencyCode = context.region?.currency_code ?? context.currency_code
 
-    let region = context.region as Region
+    let region: Region | PriceSelectionContext["region"] = context.region
     if (context.region_id && !region) {
       region = await this.regionService
         .withTransaction(this.manager_)
@@ -265,11 +266,10 @@ class PricingService extends TransactionBaseService {
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      const { product_id } =
-        context.variant ??
-        (await this.productVariantService
-          .withTransaction(this.manager_)
-          .retrieve(variantId, { select: ["id", "product_id"] }))
+      const { product_id } = await this.productVariantService
+        .withTransaction(this.manager_)
+        .retrieve(variantId, { select: ["id", "product_id"] })
+
       productRates = await this.taxProviderService
         .withTransaction(this.manager_)
         .getRegionRatesForProduct(product_id, {
@@ -283,6 +283,49 @@ class PricingService extends TransactionBaseService {
       productRates,
       pricingContext
     )
+  }
+
+  /**
+   * Gets the prices for a collection of variants.
+   * @param variantsData - the id of the variants or the variant data to get prices for
+   * @param context - the price selection context to use
+   * @return The product variant prices
+   */
+  async getProductVariantsPricing(
+    variantsData: VariantData[],
+    context: PriceSelectionContext | PricingContext
+  ): Promise<{ [variant_id: string]: ProductVariantPricing }> {
+    let pricingContext: PricingContext
+    if ("automatic_taxes" in context) {
+      pricingContext = context
+    } else {
+      pricingContext = await this.collectPricingContext(context)
+    }
+
+    let pricingResult: { [variant_id: string]: ProductVariantPricing } = {}
+    for (const variantData of variantsData) {
+      const { product_id } = variantData
+
+      let productRates: TaxServiceRate[] = []
+
+      if (pricingContext.region_id || pricingContext.region?.id) {
+        productRates = await this.taxProviderService
+          .withTransaction(this.manager_)
+          .getRegionRatesForProduct(product_id, {
+            id: (pricingContext.region_id ??
+              pricingContext.region?.id) as string,
+            tax_rate: pricingContext.tax_rate,
+          })
+      }
+
+      pricingResult[variantData.id] = await this.getProductVariantPricing_(
+        variantData.id,
+        productRates,
+        pricingContext
+      )
+    }
+
+    return pricingResult
   }
 
   private async getProductPricing_(

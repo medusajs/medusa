@@ -9,11 +9,18 @@ import {
   ValidateNested,
 } from "class-validator"
 import {
+  Address,
   AllocationType,
+  ClaimOrder,
+  Customer,
+  Discount,
   DiscountConditionOperator,
   DiscountConditionType,
   DiscountRuleType,
+  LineItem,
   Region,
+  ShippingMethod,
+  Swap,
 } from "../models"
 import { ExactlyOne } from "./validators/exactly-one"
 
@@ -174,4 +181,15 @@ export type CreateDynamicDiscountInput = {
   ends_at?: Date
   usage_limit: number
   metadata?: Record<string, unknown>
+}
+
+export type CalculateDiscountCartData = {
+  discounts: Discount[]
+  items: LineItem[]
+  customer: Customer
+  region: Region
+  shipping_address?: Address | null
+  swaps?: Swap[]
+  claims?: ClaimOrder[]
+  shipping_methods?: ShippingMethod[]
 }

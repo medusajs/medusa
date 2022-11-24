@@ -5,14 +5,19 @@ import {
   TransactionBaseService,
 } from "../interfaces"
 import {
+  Address,
   Cart,
+  ClaimOrder,
+  Customer,
   Discount,
   DiscountRuleType,
   LineItem,
   LineItemTaxLine,
   Order,
+  Region,
   ShippingMethod,
   ShippingMethodTaxLine,
+  Swap,
 } from "../models"
 import { isCart } from "../types/cart"
 import { isOrder } from "../types/orders"
@@ -429,7 +434,12 @@ class TotalsService extends TransactionBaseService {
    * @return the allocation map for the line items in the cart or order.
    */
   async getAllocationMap(
-    orderOrCart: Cart | Order,
+    orderOrCart: {
+      discounts?: Discount[]
+      items: LineItem[]
+      swaps?: Swap[]
+      claims?: ClaimOrder[]
+    },
     options: AllocationMapOptions = {}
   ): Promise<LineAllocationsMap> {
     const allocationMap: LineAllocationsMap = {}
@@ -700,19 +710,23 @@ class TotalsService extends TransactionBaseService {
    *   order
    */
   getLineDiscounts(
-    cartOrOrder: Cart | Order,
+    cartOrOrder: {
+      items: LineItem[]
+      swaps?: Swap[]
+      claims?: ClaimOrder[]
+    },
     discount: Discount
   ): LineDiscountAmount[] {
     let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
 
     // merge items from order with items from order swaps
-    if ("swaps" in cartOrOrder && cartOrOrder.swaps.length) {
+    if ("swaps" in cartOrOrder && cartOrOrder.swaps?.length) {
       for (const s of cartOrOrder.swaps) {
         merged = [...merged, ...s.additional_items]
       }
     }
 
-    if ("claims" in cartOrOrder && cartOrOrder.claims.length) {
+    if ("claims" in cartOrOrder && cartOrOrder.claims?.length) {
       for (const c of cartOrOrder.claims) {
         merged = [...merged, ...c.additional_items]
       }
@@ -1056,7 +1070,16 @@ class TotalsService extends TransactionBaseService {
    * @return the tax calculation context
    */
   async getCalculationContext(
-    cartOrOrder: Cart | Order,
+    cartOrOrder: {
+      discounts?: Discount[]
+      items: LineItem[]
+      swaps?: Swap[]
+      claims?: ClaimOrder[]
+      shipping_address: Address | null
+      shipping_methods?: ShippingMethod[]
+      customer: Customer
+      region: Region
+    },
     options: CalculationContextOptions = {}
   ): Promise<TaxCalculationContext> {
     const allocationMap = await this.getAllocationMap(cartOrOrder, {
