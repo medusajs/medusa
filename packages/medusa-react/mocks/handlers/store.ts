@@ -446,4 +446,63 @@ export const storeHandlers = [
       })
     )
   }),
+
+  rest.get("/store/payment-collections/:id", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment_collection: {
+          ...fixtures.get("payment_collection"),
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.post("/store/payment-collections/:id/sessions", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment_collection: {
+          ...fixtures.get("payment_collection"),
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.post(
+    "/store/payment-collections/:id/sessions/:session_id/refresh",
+    (req, res, ctx) => {
+      const { id, session_id } = req.params
+      const payCol: any = { ...fixtures.get("payment_collection") }
+
+      payCol.payment_sessions[0].id = `new_${session_id}`
+      const session = {
+        payment_session: payCol.payment_sessions[0],
+      }
+
+      return res(
+        ctx.status(200),
+        ctx.json({
+          ...session,
+        })
+      )
+    }
+  ),
+
+  rest.post("/store/payment-collections/:id/authorize", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment_collection: {
+          ...fixtures.get("payment_collection"),
+          id,
+        },
+      })
+    )
+  }),
 ]
