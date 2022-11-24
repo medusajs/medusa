@@ -54,12 +54,6 @@ export type PriceSelectionContext = {
   customer_id?: string
   quantity?: number
   region_id?: string
-  region?: {
-    id: string
-    automatic_taxes: boolean
-    tax_rate: number
-    currency_code: string
-  }
   currency_code?: string
   include_discount_prices?: boolean
   tax_rates?: TaxServiceRate[]

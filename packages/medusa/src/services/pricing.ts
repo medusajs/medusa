@@ -70,12 +70,12 @@ class PricingService extends TransactionBaseService {
   async collectPricingContext(
     context: PriceSelectionContext
   ): Promise<PricingContext> {
-    let automaticTaxes = context.region?.automatic_taxes ?? false
-    let taxRate: number | null = context.region?.tax_rate ?? null
-    let currencyCode = context.region?.currency_code ?? context.currency_code
+    let automaticTaxes = false
+    let taxRate: number | null = null
+    let currencyCode = context.currency_code
 
-    let region: Region | PriceSelectionContext["region"] = context.region
-    if (context.region_id && !region) {
+    let region: Region
+    if (context.region_id) {
       region = await this.regionService
         .withTransaction(this.manager_)
         .retrieve(context.region_id, {
@@ -308,12 +308,11 @@ class PricingService extends TransactionBaseService {
 
       let productRates: TaxServiceRate[] = []
 
-      if (pricingContext.region_id || pricingContext.region?.id) {
+      if (pricingContext.price_selection.region_id) {
         productRates = await this.taxProviderService
           .withTransaction(this.manager_)
           .getRegionRatesForProduct(product_id, {
-            id: (pricingContext.region_id ??
-              pricingContext.region?.id) as string,
+            id: pricingContext.price_selection.region_id,
             tax_rate: pricingContext.tax_rate,
           })
       }

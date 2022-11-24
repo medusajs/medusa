@@ -17,7 +17,7 @@ import {
   RegionService,
 } from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { Cart, LineItem, Region } from "../../../../models"
+import { Cart, LineItem } from "../../../../models"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -122,27 +122,24 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const regions = await regionService.list({}, { relations: ["countries"] })
-  if (!regions?.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `A region is required to create a cart`
-    )
-  }
-
-  let region: Region
+  let regionId!: string
   if (isDefined(validated.region_id)) {
-    region = regions.find((r) => r.id === validated.region_id) as Region
-    if (!region) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, `Region not found`)
-    }
+    regionId = validated.region_id as string
   } else {
-    region = regions[0]
+    const regions = await regionService.list({})
+
+    if (!regions?.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `A region is required to create a cart`
+      )
+    }
+
+    regionId = regions[0].id
   }
 
   const toCreate: Partial<CartCreateProps> = {
-    region_id: region.id,
-    region,
+    region_id: regionId,
     sales_channel_id: validated.sales_channel_id,
     context: {
       ...reqContext,
@@ -197,7 +194,7 @@ export default async (req, res) => {
       const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(
         generateInputData,
         {
-          region,
+          region_id: regionId,
           customer_id: req.user?.customer_id,
         }
       )

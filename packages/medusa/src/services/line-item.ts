@@ -221,7 +221,7 @@ class LineItemService extends TransactionBaseService {
         const regionId = (
           isString(variantIdOrData)
             ? regionIdOrContext
-            : resolvedContext.region?.id ?? resolvedContext.region_id
+            : resolvedContext.region_id
         ) as string
 
         const isDataAnArray = Array.isArray(data)
@@ -254,7 +254,6 @@ class LineItemService extends TransactionBaseService {
         const variantsPricing = await this.pricingService_
           .withTransaction(transactionManager)
           .getProductVariantsPricing(variantsToCalculatePricing, {
-            region: resolvedContext.region,
             region_id: regionId,
             quantity: quantity,
             customer_id: context?.customer_id,
@@ -577,7 +576,7 @@ class LineItemService extends TransactionBaseService {
     } else {
       const resolvedContext = regionIdOrContext as GenerateContext
 
-      if (!resolvedContext.region && !resolvedContext.region_id) {
+      if (!resolvedContext.region_id) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
           "The generate method has been called with the data but the context is missing either region_id or region. Please provide at least one of region or region_id."

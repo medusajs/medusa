@@ -23,13 +23,6 @@ export type PricingContext = {
   price_selection: PriceSelectionContext
   automatic_taxes: boolean
   tax_rate: number | null
-  region_id?: string
-  region?: {
-    id: string
-    automatic_taxes?: boolean
-    tax_rate?: number
-    currency_code: string
-  }
 }
 
 export type ShippingOptionPricing = {

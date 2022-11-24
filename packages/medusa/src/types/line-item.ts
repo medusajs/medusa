@@ -7,12 +7,6 @@ export type GenerateInputData = {
 
 export type GenerateContext = {
   region_id?: string
-  region?: {
-    id: string
-    automatic_taxes: boolean
-    tax_rate: number
-    currency_code: string
-  }
   unit_price?: number
   includes_tax?: boolean
   metadata?: Record<string, unknown>
