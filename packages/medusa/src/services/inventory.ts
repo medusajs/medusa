@@ -58,24 +58,33 @@ class InventoryService extends TransactionBaseService {
    * Checks if the inventory of a variant can cover a given quantity. Will
    * return true if the variant doesn't have managed inventory or if the variant
    * allows backorders or if the inventory quantity is greater than `quantity`.
-   * @param variantOrId - the id of the variant to check
+   * @param variantDataOrId - the id or the data of the variant to check
    * @param quantity - the number of units to check availability for
    * @return true if the inventory covers the quantity
    */
   async confirmInventory(
-    variantOrId: ProductVariant | string | undefined | null,
+    variantDataOrId:
+      | {
+          id: string
+          inventory_quantity: number
+          allow_backorder: boolean
+          manage_inventory: boolean
+        }
+      | string
+      | undefined
+      | null,
     quantity: number
   ): Promise<boolean> {
     // if variantId is undefined then confirm inventory as it
     // is a custom item that is not managed
-    if (!isDefined(variantOrId) || variantOrId === null) {
+    if (!isDefined(variantDataOrId) || variantDataOrId === null) {
       return true
     }
 
-    const variant = isString(variantOrId)
+    const variant = isString(variantDataOrId)
       ? await this.productVariantService_
           .withTransaction(this.manager_)
-          .retrieve(variantOrId, {
+          .retrieve(variantDataOrId, {
             select: [
               "id",
               "inventory_quantity",
@@ -83,7 +92,7 @@ class InventoryService extends TransactionBaseService {
               "manage_inventory",
             ],
           })
-      : variantOrId
+      : variantDataOrId
 
     const { inventory_quantity, allow_backorder, manage_inventory } = variant
     const isCovered =
