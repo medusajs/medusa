@@ -397,6 +397,31 @@ class ShippingOptionService extends TransactionBaseService {
     return option
   }
 
+  private async validateAndSetOptionPrice(
+    option: ShippingOption,
+    priceInput: {
+      amount?: number
+      price_type?: ShippingOptionPriceType
+    }
+  ): Promise<ShippingOption | null> {
+    if (isDefined(priceInput.amount)) {
+      option.amount = priceInput.amount
+    }
+
+    if (isDefined(priceInput.price_type)) {
+      option.price_type = await this.validatePriceType_(
+        priceInput.price_type,
+        option
+      )
+
+      if (priceInput.price_type === ShippingOptionPriceType.CALCULATED) {
+        option.amount = null
+      }
+    }
+
+    return option
+  }
+
   /**
    * Creates a new shipping option. Used both for outbound and inbound shipping
    * options. The difference is registered by the `is_return` field which
@@ -409,7 +434,9 @@ class ShippingOptionService extends TransactionBaseService {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = optionRepo.create(data as DeepPartial<ShippingOption>)
 
-      option.price_type = await this.validatePriceType_(data.price_type, option)
+      await this.validateAndSetOptionPrice(option, {
+        price_type: data.price_type,
+      })
 
       const region = await this.regionService_
         .withTransaction(manager)
@@ -427,11 +454,6 @@ class ShippingOptionService extends TransactionBaseService {
           "The fulfillment provider is not available in the provided region"
         )
       }
-
-      option.amount =
-        data.price_type === ShippingOptionPriceType.CALCULATED
-          ? null
-          : data.amount ?? null
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(
@@ -611,20 +633,10 @@ class ShippingOptionService extends TransactionBaseService {
         option.requirements = acc
       }
 
-      if (isDefined(update.amount)) {
-        option.amount = update.amount
-      }
-
-      if (isDefined(update.price_type)) {
-        option.price_type = await this.validatePriceType_(
-          update.price_type,
-          option
-        )
-
-        if (update.price_type === ShippingOptionPriceType.CALCULATED) {
-          option.amount = null
-        }
-      }
+      await this.validateAndSetOptionPrice(option, {
+        price_type: update.price_type,
+        amount: update.amount,
+      })
 
       if (isDefined(update.name)) {
         option.name = update.name
