@@ -11,14 +11,14 @@ export const paymentCollectionQueryKeys = queryKeysFactory<
   typeof PAYMENT_COLLECTION_QUERY_KEY
 >(PAYMENT_COLLECTION_QUERY_KEY)
 
-type OrderQueryKey = typeof paymentCollectionQueryKeys
+type PaymentCollectionKey = typeof paymentCollectionQueryKeys
 
 export const usePaymentCollection = (
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<StorePaymentCollectionRes>,
     Error,
-    ReturnType<OrderQueryKey["detail"]>
+    ReturnType<PaymentCollectionKey["detail"]>
   >
 ) => {
   const { client } = useMedusa()

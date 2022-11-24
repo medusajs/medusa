@@ -9,7 +9,7 @@ import {
 
 import { buildOptions } from "../../utils/buildOptions"
 import { useMedusa } from "../../../contexts"
-import { paymentQueryKeys } from "."
+import { adminPaymentQueryKeys } from "."
 
 export const useAdminPaymentsCapturePayment = (
   id: string,
@@ -22,7 +22,7 @@ export const useAdminPaymentsCapturePayment = (
     () => client.admin.payments.capturePayment(id),
     buildOptions(
       queryClient,
-      [paymentQueryKeys.detail(id), paymentQueryKeys.lists()],
+      [adminPaymentQueryKeys.detail(id), adminPaymentQueryKeys.lists()],
       options
     )
   )
@@ -44,7 +44,7 @@ export const useAdminPaymentsRefundPayment = (
       client.admin.payments.refundPayment(id, payload),
     buildOptions(
       queryClient,
-      [paymentQueryKeys.detail(id), paymentQueryKeys.lists()],
+      [adminPaymentQueryKeys.detail(id), adminPaymentQueryKeys.lists()],
       options
     )
   )

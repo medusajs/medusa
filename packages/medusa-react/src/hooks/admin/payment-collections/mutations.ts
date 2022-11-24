@@ -9,7 +9,7 @@ import {
 
 import { buildOptions } from "../../utils/buildOptions"
 import { useMedusa } from "../../../contexts"
-import { paymentCollectionQueryKeys } from "."
+import { adminPaymentCollectionQueryKeys } from "."
 
 export const useAdminDeletePaymentCollection = (
   id: string,
@@ -27,8 +27,8 @@ export const useAdminDeletePaymentCollection = (
     buildOptions(
       queryClient,
       [
-        paymentCollectionQueryKeys.detail(id),
-        paymentCollectionQueryKeys.lists(),
+        adminPaymentCollectionQueryKeys.detail(id),
+        adminPaymentCollectionQueryKeys.lists(),
       ],
       options
     )
@@ -52,8 +52,8 @@ export const useAdminUpdatePaymentCollection = (
     buildOptions(
       queryClient,
       [
-        paymentCollectionQueryKeys.detail(id),
-        paymentCollectionQueryKeys.lists(),
+        adminPaymentCollectionQueryKeys.detail(id),
+        adminPaymentCollectionQueryKeys.lists(),
       ],
       options
     )
@@ -72,8 +72,8 @@ export const useAdminMarkPaymentCollectionAsAuthorized = (
     buildOptions(
       queryClient,
       [
-        paymentCollectionQueryKeys.detail(id),
-        paymentCollectionQueryKeys.lists(),
+        adminPaymentCollectionQueryKeys.detail(id),
+        adminPaymentCollectionQueryKeys.lists(),
       ],
       options
     )

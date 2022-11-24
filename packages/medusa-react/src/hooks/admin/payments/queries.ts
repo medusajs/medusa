@@ -7,22 +7,22 @@ import { Response } from "@medusajs/medusa-js"
 
 const PAYMENT_QUERY_KEY = `payment` as const
 
-export const paymentQueryKeys =
+export const adminPaymentQueryKeys =
   queryKeysFactory<typeof PAYMENT_QUERY_KEY>(PAYMENT_QUERY_KEY)
 
-type PaymentKey = typeof paymentQueryKeys
+type AdminPaymentKey = typeof adminPaymentQueryKeys
 
-export const usePayment = (
+export const useAdminPayment = (
   id: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminPaymentRes>,
     Error,
-    ReturnType<PaymentKey["detail"]>
+    ReturnType<AdminPaymentKey["detail"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    paymentQueryKeys.detail(id),
+    adminPaymentQueryKeys.detail(id),
     () => client.admin.payments.retrieve(id),
     options
   )

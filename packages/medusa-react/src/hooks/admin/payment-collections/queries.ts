@@ -1,5 +1,5 @@
 import { queryKeysFactory } from "../../utils"
-import { StorePaymentCollectionRes } from "@medusajs/medusa"
+import { AdminPaymentCollectionRes } from "@medusajs/medusa"
 import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
@@ -7,23 +7,23 @@ import { Response } from "@medusajs/medusa-js"
 
 const PAYMENT_COLLECTION_QUERY_KEY = `paymentCollection` as const
 
-export const paymentCollectionQueryKeys = queryKeysFactory<
+export const adminPaymentCollectionQueryKeys = queryKeysFactory<
   typeof PAYMENT_COLLECTION_QUERY_KEY
 >(PAYMENT_COLLECTION_QUERY_KEY)
 
-type OrderQueryKey = typeof paymentCollectionQueryKeys
+type AdminPaymentCollectionKey = typeof adminPaymentCollectionQueryKeys
 
-export const usePaymentCollection = (
+export const useAdminPaymentCollection = (
   id: string,
   options?: UseQueryOptionsWrapper<
-    Response<StorePaymentCollectionRes>,
+    Response<AdminPaymentCollectionRes>,
     Error,
-    ReturnType<OrderQueryKey["detail"]>
+    ReturnType<AdminPaymentCollectionKey["detail"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    paymentCollectionQueryKeys.detail(id),
+    adminPaymentCollectionQueryKeys.detail(id),
     () => client.admin.paymentCollections.retrieve(id),
     options
   )
