@@ -5,6 +5,7 @@ import {
   StorePaymentCollectionRes,
   StoreManagePaymentCollectionSessionRequest,
   StoreRefreshPaymentCollectionSessionRequest,
+  StorePaymentCollectionSessionRes,
 } from "@medusajs/medusa"
 
 import { buildOptions } from "../../utils/buildOptions"
@@ -56,12 +57,12 @@ export const useAuthorizePayment = (
   )
 }
 
-export const useRefreshPaymentSession = (
+export const usePaymentCollectionRefreshPaymentSession = (
   id: string,
   options?: UseMutationOptions<
-    Response<StorePaymentCollectionRes>,
+    Response<StorePaymentCollectionSessionRes>,
     Error,
-    StoreRefreshPaymentCollectionSessionRequest & { sessionId: string }
+    StoreRefreshPaymentCollectionSessionRequest & { session_id: string }
   >
 ) => {
   const { client } = useMedusa()
@@ -69,10 +70,10 @@ export const useRefreshPaymentSession = (
 
   return useMutation(
     ({
-      sessionId,
+      session_id,
       ...payload
-    }: StoreRefreshPaymentCollectionSessionRequest & { sessionId: string }) =>
-      client.paymentCollections.refreshPaymentSession(id, sessionId, payload),
+    }: StoreRefreshPaymentCollectionSessionRequest & { session_id: string }) =>
+      client.paymentCollections.refreshPaymentSession(id, session_id, payload),
     buildOptions(
       queryClient,
       [
