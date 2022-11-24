@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[medusa-js/src/request.ts:14](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/request.ts#L14)
+[medusa-js/src/request.ts:17](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/request.ts#L17)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/request.ts:12](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/request.ts#L12)
+[medusa-js/src/request.ts:15](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/request.ts#L15)
 
 ___
 
@@ -34,4 +34,14 @@ ___
 
 #### Defined in
 
-[medusa-js/src/request.ts:13](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/request.ts#L13)
+[medusa-js/src/request.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/request.ts#L16)
+
+___
+
+### publishableApiKey
+
+• `Optional` **publishableApiKey**: `string`
+
+#### Defined in
+
+[medusa-js/src/request.ts:18](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/request.ts#L18)

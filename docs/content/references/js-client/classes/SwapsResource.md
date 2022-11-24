@@ -10,7 +10,7 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-47.md#storeswapsres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
 
 **`Description`**
 
@@ -20,22 +20,22 @@ Creates a swap from a cart
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`StorePostSwapsReq`](internal-47.StorePostSwapsReq.md) |
+| `payload` | [`StorePostSwapsReq`](internal-51.StorePostSwapsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-47.md#storeswapsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/swaps.ts:12](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/swaps.ts#L12)
+[medusa-js/src/resources/swaps.ts:12](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/swaps.ts#L12)
 
 ___
 
 ### retrieveByCartId
 
-▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-47.md#storeswapsres)\>
+▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
 
 **`Description`**
 
@@ -50,8 +50,8 @@ Retrieves a swap by cart id
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-47.md#storeswapsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/swaps.ts:23](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/swaps.ts#L23)
+[medusa-js/src/resources/swaps.ts:23](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/swaps.ts#L23)

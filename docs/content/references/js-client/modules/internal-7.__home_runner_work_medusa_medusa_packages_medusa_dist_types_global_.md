@@ -29,6 +29,8 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `featureFlags` | `Record`<`string`, `boolean` \| `string`\> |
+| `moduleResolutions?` | `Record`<`string`, [`ModuleResolution`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md#moduleresolution)\> |
+| `modules?` | `Record`<`string`, `string`\> |
 | `plugins` | ({ `options`: `Record`<`string`, `unknown`\> ; `resolve`: `string`  } \| `string`)[] |
 | `projectConfig` | { `admin_cors?`: `string` ; `cookie_secret?`: `string` ; `database_database?`: `string` ; `database_extra?`: `Record`<`string`, `unknown`\> & { `ssl`: { `rejectUnauthorized`: ``false``  }  } ; `database_logging`: `LoggerOptions` ; `database_type`: `string` ; `database_url?`: `string` ; `jwt_secret?`: `string` ; `redis_url?`: `string` ; `store_cors?`: `string`  } |
 | `projectConfig.admin_cors?` | `string` |
@@ -44,7 +46,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/global.d.ts:38
+medusa/dist/types/global.d.ts:50
 
 ___
 
@@ -81,3 +83,41 @@ ___
 #### Defined in
 
 medusa/dist/types/global.d.ts:30
+
+___
+
+### ModuleDefinition
+
+Ƭ **ModuleDefinition**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `canOverride?` | `boolean` |
+| `defaultPackage` | `string` |
+| `isRequired?` | `boolean` |
+| `key` | `string` |
+| `label` | `string` |
+| `registrationName` | `string` |
+
+#### Defined in
+
+medusa/dist/types/global.d.ts:42
+
+___
+
+### ModuleResolution
+
+Ƭ **ModuleResolution**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `definition` | [`ModuleDefinition`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md#moduledefinition) |
+| `resolutionPath` | `string` |
+
+#### Defined in
+
+medusa/dist/types/global.d.ts:38
