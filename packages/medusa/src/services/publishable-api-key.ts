@@ -1,21 +1,20 @@
-import { EntityManager, ILike } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager, ILike } from "typeorm"
 
+import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { PublishableApiKey } from "../models"
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
 import { FindConfig, Selector } from "../types/common"
-import { PublishableApiKey } from "../models"
-import { TransactionBaseService } from "../interfaces"
-import EventBusService from "./event-bus"
-import { buildQuery, isDefined, isString } from "../utils"
 import {
   CreatePublishableApiKeyInput,
-  UpdatePublishableApiKeyInput,
+  UpdatePublishableApiKeyInput
 } from "../types/publishable-api-key"
+import { buildQuery, isDefined, isString } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
 
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   publishableApiKeyRepository: typeof PublishableApiKeyRepository
 }
 
@@ -31,7 +30,7 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly eventBusService_: EventBusService
+  protected readonly eventBusService_: IEventBusService
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
 
   constructor({
