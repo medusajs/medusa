@@ -4290,7 +4290,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-default@workspace:packages/event-bus-default"
   dependencies:
-    "@medusajs/medusa": ^1.4.1
+    "@medusajs/medusa": ^1.6.5
     cross-env: ^5.2.1
     jest: ^25.5.2
     ts-jest: ^25.5.1
@@ -4306,7 +4306,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-redis@workspace:packages/event-bus-redis"
   dependencies:
-    "@medusajs/medusa": ^1.4.1
+    "@medusajs/medusa": ^1.6.5
     cross-env: ^5.2.1
     ioredis-mock: ^8.2.2
     jest: ^25.5.2
@@ -4380,7 +4380,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.4.1, @medusajs/medusa@^1.6.2, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.6.2, @medusajs/medusa@^1.6.5, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:

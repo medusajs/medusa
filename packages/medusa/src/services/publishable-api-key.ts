@@ -30,7 +30,7 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly eventBusService_: IEventBusService
+protected readonly eventBusService_: IEventBusService
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
 
   constructor({

@@ -1,7 +1,6 @@
 import { ConfigModule, Logger, MedusaContainer } from "@medusajs/medusa"
 import { asValue } from "awilix"
-import RealRedis from "ioredis"
-import FakeRedis from "ioredis-mock"
+import Redis from "ioredis"
 
 type LoaderOptions = {
   container: MedusaContainer
@@ -14,28 +13,20 @@ export default async ({
   configModule,
   logger,
 }: LoaderOptions): Promise<void> => {
-  if (configModule.projectConfig.redis_url) {
-    // Economical way of dealing with redis clients
-    const client = new RealRedis(configModule.projectConfig.redis_url)
-    const subscriber = new RealRedis(configModule.projectConfig.redis_url)
+  const redisUrl = configModule.projectConfig?.redis_url
 
-    container.register({
-      eventBusRedisClient: asValue(client),
-      eventBusRedisSubscriber: asValue(subscriber),
-    })
-  } else {
+  if (!redisUrl) {
     logger.warn(
       "No `redis_url` provided in project config. Redis event bus will not be available."
     )
-
-    logger.info("Using fake Redis for event bus")
-
-    // Economical way of dealing with redis clients
-    const client = new FakeRedis()
-
-    container.register({
-      eventBusRedisClient: asValue(client),
-      eventBusRedisSubscriber: asValue(client),
-    })
   }
+
+  // Economical way of dealing with redis clients
+  const client = new Redis(redisUrl)
+  const subscriber = new Redis(redisUrl)
+
+  container.register({
+    eventBusRedisClient: asValue(client),
+    eventBusRedisSubscriber: asValue(subscriber),
+  })
 }
