@@ -35,7 +35,7 @@ export default class DefaultEventBusService extends TransactionBaseService imple
    */
   subscribe(event: string | symbol, handler: EventHandler): this {
     this.logger_.info(
-      `[${String(event)}] No event bus installed. Subscribe is unavailable.`
+      `[${event.toString()}] No event bus installed. Subscribe is unavailable.`
     )
     return this
   }
@@ -45,7 +45,7 @@ export default class DefaultEventBusService extends TransactionBaseService imple
    */
   unsubscribe(event: string | symbol, subscriber: EventHandler): this {
     this.logger_.info(
-      `[${String(event)}] No event bus installed. Unsubscribe is unavailable.`
+      `[${event.toString()}] No event bus installed. Unsubscribe is unavailable.`
     )
     return this
   }
@@ -58,7 +58,7 @@ export default class DefaultEventBusService extends TransactionBaseService imple
     subscriber: EventHandler
   ): this {
     this.logger_.info(
-      `[${String(event)}] No event bus installed. Cron jobs are unavailable.`
+      `[${event.toString()}] No event bus installed. Cron jobs are unavailable.`
     )
     return this
   }
