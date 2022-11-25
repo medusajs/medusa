@@ -115,7 +115,7 @@ Object.assign(Joi, {
   },
 })
 
-declare module "Joi" {
+declare module "joi" {
   interface Root {
     objectId: Joi.StringSchema
     address: <T>() => Joi.AlternativesSchema
