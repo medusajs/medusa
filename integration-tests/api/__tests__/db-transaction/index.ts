@@ -3,7 +3,11 @@ import { initDb, useDb } from "../../../helpers/use-db"
 import path from "path"
 import setupServer from "../../../helpers/setup-server"
 import { Connection, EntityManager } from "typeorm"
-import { fakeUserData1, fakeUserData2, retrieveUsers } from "./__fixtures__"
+import {
+  fakeUserData1,
+  fakeUserData2,
+  retrieveUsers,
+} from "../__fixtures__/db-transaction"
 import { ChildProcess } from "child_process"
 
 jest.setTimeout(10000)

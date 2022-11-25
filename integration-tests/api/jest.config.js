@@ -12,7 +12,7 @@ module.exports = {
     `/dist/`,
     `/node_modules/`,
     `__tests__/fixtures`,
-    `__tests__/**/__fixtures__`,
+    `__tests__/__fixtures__`,
     `__testfixtures__`,
     `.cache`,
   ],
