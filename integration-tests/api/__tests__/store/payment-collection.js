@@ -15,6 +15,21 @@ const {
 
 jest.setTimeout(30000)
 
+let authCookie = null
+async function getClientAuthentication(api) {
+  if (authCookie !== null) {
+    return authCookie
+  }
+
+  const authResponse = await api.post("/store/auth", {
+    email: "test@medusajs.com",
+    password: "test",
+  })
+  authCookie = authResponse.headers["set-cookie"][0].split(";")
+
+  return authCookie
+}
+
 describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
   let medusaProcess
   let dbConnection
@@ -29,6 +44,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
     })
     dbConnection = connection
     medusaProcess = process
+
+    await simpleCustomerFactory(dbConnection, {
+      id: "customer",
+      email: "test@medusajs.com",
+    })
   })
 
   afterAll(async () => {
@@ -56,7 +76,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
     it("gets payment collection", async () => {
       const api = useApi()
 
-      const response = await api.get(`/store/payment-collections/${payCol.id}`)
+      const response = await api.get(
+        `/store/payment-collections/${payCol.id}`,
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
+        }
+      )
 
       expect(response.data.payment_collection).toEqual(
         expect.objectContaining({
@@ -103,6 +130,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
             customer_id: "customer",
             amount: 10000,
           },
+        },
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
         }
       )
 
@@ -146,6 +178,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
               amount: 3000,
             },
           ],
+        },
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
         }
       )
 
@@ -198,6 +235,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
               amount: 3000,
             },
           ],
+        },
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
         }
       )
 
@@ -222,6 +264,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
               session_id: multipleSessions[1].id,
             },
           ],
+        },
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
         }
       )
 
@@ -273,16 +320,30 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
     it("Authorize a payment session", async () => {
       const api = useApi()
 
-      await api.post(`/store/payment-collections/${payCol.id}/sessions`, {
-        sessions: {
-          provider_id: "test-pay",
-          customer_id: "customer",
-          amount: 10000,
+      await api.post(
+        `/store/payment-collections/${payCol.id}/sessions`,
+        {
+          sessions: {
+            provider_id: "test-pay",
+            customer_id: "customer",
+            amount: 10000,
+          },
         },
-      })
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
+        }
+      )
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/authorize`
+        `/store/payment-collections/${payCol.id}/authorize`,
+        undefined,
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
+        }
       )
 
       expect(response.data.payment_collection).toEqual(

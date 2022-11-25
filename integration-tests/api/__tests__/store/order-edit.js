@@ -16,10 +16,26 @@ const {
   simpleLineItemFactory,
   simpleProductFactory,
   simpleOrderFactory,
+  simpleCustomerFactory,
 } = require("../../factories")
 const { OrderEditItemChangeType } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
+
+let authCookie = null
+async function getClientAuthentication(api) {
+  if (authCookie !== null) {
+    return authCookie
+  }
+
+  const authResponse = await api.post("/store/auth", {
+    email: "test@medusajs.com",
+    password: "test",
+  })
+  authCookie = authResponse.headers["set-cookie"][0].split(";")
+
+  return authCookie
+}
 
 describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
   let medusaProcess
@@ -34,6 +50,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
     })
     dbConnection = connection
     medusaProcess = process
+
+    await simpleCustomerFactory(dbConnection, {
+      id: "customer",
+      email: "test@medusajs.com",
+    })
   })
 
   afterAll(async () => {
@@ -164,7 +185,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
     it("gets order edit", async () => {
       const api = useApi()
 
-      const response = await api.get(`/store/order-edits/${orderEditId}`)
+      const response = await api.get(`/store/order-edits/${orderEditId}`, {
+        headers: {
+          Cookie: getClientAuthentication(api),
+        },
+      })
 
       expect(response.status).toEqual(200)
       expect(response.data.order_edit).toEqual(
@@ -218,7 +243,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
       const api = useApi()
 
       const err = await api
-        .get(`/store/order-edits/${orderEditId}?fields=internal_note,order_id`)
+        .get(
+          `/store/order-edits/${orderEditId}?fields=internal_note,order_id`,
+          {
+            headers: {
+              Cookie: getClientAuthentication(api),
+            },
+          }
+        )
         .catch((e) => e)
 
       expect(err.response.data.message).toBe(
@@ -265,6 +297,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         `/store/order-edits/${declineableOrderEdit.id}/decline`,
         {
           declined_reason: "wrong color",
+        },
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
         }
       )
 
@@ -283,6 +320,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         `/store/order-edits/${declinedOrderEdit.id}/decline`,
         {
           declined_reason: "wrong color",
+        },
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
         }
       )
 
@@ -302,9 +344,17 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
 
       const api = useApi()
       await api
-        .post(`/store/order-edits/${confirmedOrderEdit.id}/decline`, {
-          declined_reason: "wrong color",
-        })
+        .post(
+          `/store/order-edits/${confirmedOrderEdit.id}/decline`,
+          {
+            declined_reason: "wrong color",
+          },
+          {
+            headers: {
+              Cookie: getClientAuthentication(api),
+            },
+          }
+        )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.message).toEqual(
@@ -352,7 +402,13 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
     it("idempotently complete an already confirmed order edit", async () => {
       const api = useApi()
       const result = await api.post(
-        `/store/order-edits/${confirmedOrderEdit.id}/complete`
+        `/store/order-edits/${confirmedOrderEdit.id}/complete`,
+        undefined,
+        {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
+        }
       )
 
       expect(result.status).toEqual(200)
@@ -368,7 +424,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
     it("fails to complete a non requested order edit", async () => {
       const api = useApi()
       const err = await api
-        .post(`/store/order-edits/${createdOrderEdit.id}/complete`)
+        .post(`/store/order-edits/${createdOrderEdit.id}/complete`, undefined, {
+          headers: {
+            Cookie: getClientAuthentication(api),
+          },
+        })
         .catch((e) => e)
 
       expect(err.response.status).toEqual(400)

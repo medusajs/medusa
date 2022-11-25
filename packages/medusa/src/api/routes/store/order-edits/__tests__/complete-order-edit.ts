@@ -14,6 +14,11 @@ describe("GET /store/order-edits/:id/complete", () => {
         `/store/order-edits/${orderEditId}/complete`,
         {
           flags: [OrderEditingFeatureFlag],
+          clientSession: {
+            jwt: {
+              customer_id: IdMap.getId("lebron"),
+            },
+          },
         }
       )
     })
@@ -45,6 +50,11 @@ describe("GET /store/order-edits/:id/complete", () => {
         `/store/order-edits/${orderEditId}/complete`,
         {
           flags: [OrderEditingFeatureFlag],
+          clientSession: {
+            jwt: {
+              customer_id: IdMap.getId("lebron"),
+            },
+          },
         }
       )
     })

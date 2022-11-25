@@ -19,6 +19,11 @@ describe("GET /store/order-edits/:id/decline", () => {
         {
           payload,
           flags: [OrderEditingFeatureFlag],
+          clientSession: {
+            jwt: {
+              customer_id: IdMap.getId("lebron"),
+            },
+          },
         }
       )
     })
