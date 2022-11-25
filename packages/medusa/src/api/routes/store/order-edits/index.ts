@@ -22,6 +22,9 @@ export default (app) => {
     route
   )
 
+  // Authenticated endpoints
+  route.use(middlewares.requireCustomerAuthentication())
+
   route.get(
     "/:id",
     transformQuery(FindParams, {

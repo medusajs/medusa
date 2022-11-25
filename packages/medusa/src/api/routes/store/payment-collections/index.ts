@@ -22,6 +22,9 @@ export default (app, container) => {
     route
   )
 
+  // Authenticated endpoints
+  route.use(middlewares.requireCustomerAuthentication())
+
   route.get(
     "/:id",
     transformQuery(GetPaymentCollectionsParams, {
