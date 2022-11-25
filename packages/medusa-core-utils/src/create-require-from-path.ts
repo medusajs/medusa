@@ -1,7 +1,7 @@
-import Module from "module"
+const Module = require("module")
 import path from "path"
 
-const fallback = filename => {
+const fallback = (filename: string) => {
   const mod = new Module(filename)
 
   mod.filename = filename
