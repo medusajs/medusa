@@ -48,7 +48,7 @@
     "@medusajs/medusa-cli": "^1.3.5",
     "@types/ioredis": "^4.28.10",
     "@types/lodash": "^4.14.168",
-    "awilix": "^4.2.3",
+    "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",
     "chokidar": "^3.4.2",
