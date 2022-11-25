@@ -1,36 +1,43 @@
-import {
-  databaseFactory,
-  defaultContainerMock,
-  fakeUserData1,
-  fakeUserData2,
-  retrieveUsers,
-} from "../__fixtures__/db-transaction"
-import { asValue, AwilixContainer, createContainer } from "awilix"
+import { DbTransactionService, User } from "@medusajs/medusa"
+import { initDb, useDb } from "../../../helpers/use-db"
+import path from "path"
+import setupServer from "../../../helpers/setup-server"
 import { Connection, EntityManager } from "typeorm"
-import { DbTransactionService } from "../index"
-import { User } from "../../models"
+import { fakeUserData1, fakeUserData2, retrieveUsers } from "./__fixtures__"
+import { ChildProcess } from "child_process"
 
-jest.setTimeout(1000000)
+jest.setTimeout(10000)
 
 describe("DbTransactionService", function () {
+  let medusaProcess: ChildProcess
   let dbConnection: Connection
-  let container: AwilixContainer
+  let manager: EntityManager
   let dbTransactionService: DbTransactionService
 
-  beforeEach(async () => {
-    await databaseFactory.dropDb()
-    dbConnection = await databaseFactory.initDb()
+  const doAfterEach = async () => {
+    const db = useDb()
+    return await db.teardown()
+  }
 
-    container = createContainer({}, defaultContainerMock)
-    defaultContainerMock.register("manager", asValue(dbConnection.manager))
-    dbTransactionService = container.resolve(
-      DbTransactionService.RESOLUTION_KEY
-    )
+  beforeAll(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    dbConnection = await initDb({ cwd })
+    manager = dbConnection.manager
+    medusaProcess = await setupServer({ cwd } as any)
+
+    dbTransactionService = new DbTransactionService({
+      manager,
+    })
+  })
+
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+    medusaProcess.kill()
   })
 
   afterEach(async () => {
-    await databaseFactory.dropDb()
-    return await dbConnection.close()
+    return await doAfterEach()
   })
 
   it("should have a db connection established", () => {

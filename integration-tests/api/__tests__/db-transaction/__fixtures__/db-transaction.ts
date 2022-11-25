@@ -1,13 +1,5 @@
-import { asClass, createContainer } from "awilix"
-import { DbTransactionService } from "../../index"
 import { Connection } from "typeorm"
-import { User } from "../../../models"
-
-export const defaultContainerMock = createContainer()
-
-defaultContainerMock.register({
-  [DbTransactionService.RESOLUTION_KEY]: asClass(DbTransactionService),
-})
+import { User } from "@medusajs/medusa"
 
 export const fakeUserData1 = {
   id: "test",
