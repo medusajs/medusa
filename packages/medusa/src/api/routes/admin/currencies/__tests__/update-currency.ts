@@ -1,28 +1,27 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { currency, CurrencyServiceMock } from "../../../../../services/__mocks__/currency";
-import TaxInclusivePricingFeatureFlag from "../../../../../loaders/feature-flags/tax-inclusive-pricing";
+import {
+  currency,
+  CurrencyServiceMock,
+} from "../../../../../services/__mocks__/currency"
+import TaxInclusivePricingFeatureFlag from "../../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 describe("POST /admin/currencies/:code", () => {
   let subject
   const code = IdMap.getId("currency-1")
 
   beforeAll(async () => {
-    subject = await request(
-        "POST",
-        `/admin/currencies/${code}`,
-        {
-          payload: {
-            includes_tax: true,
-          },
-          adminSession: {
-            jwt: {
-              userId: IdMap.getId("admin_user"),
-            },
-          },
-          flags: [TaxInclusivePricingFeatureFlag],
-        }
-      )
+    subject = await request("POST", `/admin/currencies/${code}`, {
+      payload: {
+        includes_tax: true,
+      },
+      adminSession: {
+        jwt: {
+          userId: IdMap.getId("admin_user"),
+        },
+      },
+      flags: [TaxInclusivePricingFeatureFlag],
+    })
   })
 
   it("returns 200", () => {
@@ -42,6 +41,9 @@ describe("POST /admin/currencies/:code", () => {
       code,
       {
         includes_tax: true,
+      },
+      {
+        transactionManager: expect.any(Object),
       }
     )
   })

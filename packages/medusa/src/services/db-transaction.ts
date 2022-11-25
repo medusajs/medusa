@@ -10,7 +10,7 @@ type Handler<TOutput = unknown> = ({
 }) => Promise<TOutput>
 
 export default class DbTransactionService {
-  static RESOLUTION_KEY = formatRegistrationName(resolve(__dirname, this.name))
+  static RESOLUTION_KEY = formatRegistrationName(resolve(__dirname, __filename))
 
   protected connection_: Connection
 
