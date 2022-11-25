@@ -4286,9 +4286,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/event-bus-default@workspace:packages/event-bus-default":
+"@medusajs/event-bus-local@workspace:packages/event-bus-local":
   version: 0.0.0-use.local
-  resolution: "@medusajs/event-bus-default@workspace:packages/event-bus-default"
+  resolution: "@medusajs/event-bus-local@workspace:packages/event-bus-local"
   dependencies:
     "@medusajs/medusa": ^1.6.5
     cross-env: ^5.2.1

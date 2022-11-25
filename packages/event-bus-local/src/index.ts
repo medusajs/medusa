@@ -1,5 +1,5 @@
 import Loader from "./loaders"
-import EventBusService from "./services/event-bus"
+import LocalEventBus from "./services/event-bus-local"
 
-export const service = EventBusService
+export const service = LocalEventBus
 export const loaders = [Loader]

@@ -1,4 +1,10 @@
-import { ConfigModule, EventHandler, IEventBusService, Logger, MedusaContainer, TransactionBaseService } from "@medusajs/medusa"
+import {
+  EventHandler,
+  IEventBusService,
+  Logger,
+  MedusaContainer,
+  TransactionBaseService
+} from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
@@ -9,25 +15,21 @@ type InjectedDependencies = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class DefaultEventBusService extends TransactionBaseService implements IEventBusService {
+export default class LocalEventBus
+  extends TransactionBaseService
+  implements IEventBusService
+{
   protected readonly container_: MedusaContainer & InjectedDependencies
-  protected readonly config_: ConfigModule
   protected readonly logger_: Logger
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
 
-  constructor(
-    container: MedusaContainer & InjectedDependencies,
-    manager,
-    config: ConfigModule
-  ) {
+  constructor(container, manager) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-    
-    this.container_ = container
-    this.config_ = config
-    this.logger_ = container.logger
+
     this.manager_ = manager
+    this.logger_ = container.logger
   }
 
   /**

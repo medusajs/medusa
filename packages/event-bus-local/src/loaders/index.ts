@@ -6,12 +6,8 @@ type LoaderOptions = {
   logger: Logger
 }
 
-export default async ({
-  container,
-  configModule,
-  logger,
-}: LoaderOptions): Promise<void> => {
+export default async ({ logger }: LoaderOptions): Promise<void> => {
   logger.warn(
-    "Default event bus module installed. Event bus will not be available."
+    "Local event bus module installed. Event bus will not be available."
   )
 }
