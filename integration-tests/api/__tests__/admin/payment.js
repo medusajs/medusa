@@ -21,6 +21,22 @@ const adminHeaders = {
   },
 }
 
+let authCookie = null
+async function getClientAuthentication(api) {
+  if (authCookie !== null) {
+    return authCookie
+  }
+
+  const authResponse = await api.post("/store/auth", {
+    email: "test@customer.com",
+    password: "test",
+  })
+
+  authCookie = authResponse.headers["set-cookie"][0].split(";")
+
+  return authCookie
+}
+
 describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
   let medusaProcess
   let dbConnection
@@ -67,14 +83,30 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
       const api = useApi()
 
       // create payment session
-      await api.post(`/store/payment-collections/${payCol.id}/sessions`, {
-        sessions: {
-          provider_id: "test-pay",
-          customer_id: "customer",
-          amount: 10000,
+      await api.post(
+        `/store/payment-collections/${payCol.id}/sessions`,
+        {
+          sessions: {
+            provider_id: "test-pay",
+            customer_id: "customer",
+            amount: 10000,
+          },
         },
-      })
-      await api.post(`/store/payment-collections/${payCol.id}/authorize`)
+        {
+          headers: {
+            Cookie: await getClientAuthentication(api),
+          },
+        }
+      )
+      await api.post(
+        `/store/payment-collections/${payCol.id}/authorize`,
+        undefined,
+        {
+          headers: {
+            Cookie: await getClientAuthentication(api),
+          },
+        }
+      )
 
       const paymentCollections = await api.get(
         `/admin/payment-collections/${payCol.id}`,
@@ -108,14 +140,30 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
       const api = useApi()
 
       // create payment session
-      await api.post(`/store/payment-collections/${payCol.id}/sessions`, {
-        sessions: {
-          provider_id: "test-pay",
-          customer_id: "customer",
-          amount: 10000,
+      await api.post(
+        `/store/payment-collections/${payCol.id}/sessions`,
+        {
+          sessions: {
+            provider_id: "test-pay",
+            customer_id: "customer",
+            amount: 10000,
+          },
         },
-      })
-      await api.post(`/store/payment-collections/${payCol.id}/authorize`)
+        {
+          headers: {
+            Cookie: await getClientAuthentication(api),
+          },
+        }
+      )
+      await api.post(
+        `/store/payment-collections/${payCol.id}/authorize`,
+        undefined,
+        {
+          headers: {
+            Cookie: await getClientAuthentication(api),
+          },
+        }
+      )
 
       const paymentCollections = await api.get(
         `/admin/payment-collections/${payCol.id}`,
