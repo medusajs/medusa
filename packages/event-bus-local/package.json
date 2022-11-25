@@ -1,12 +1,12 @@
 {
-  "name": "@medusajs/event-bus-default",
+  "name": "@medusajs/event-bus-local",
   "version": "0.0.0",
-  "description": "Default Event Bus Module for Medusa",
+  "description": "Local Event Bus Module for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/event-bus-default"
+    "directory": "packages/event-bus-local"
   },
   "publishConfig": {
     "access": "public"
