@@ -16,7 +16,7 @@ const {
 jest.setTimeout(30000)
 
 let authCookie = null
-async function await getClientAuthentication(api) {
+async function getClientAuthentication(api) {
   if (authCookie !== null) {
     return authCookie
   }
