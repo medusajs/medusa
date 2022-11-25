@@ -23725,6 +23725,7 @@ __metadata:
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
   peerDependencies:
+    "@medusajs/medusa": 1.x
     medusa-interfaces: 1.x
   languageName: unknown
   linkType: soft
@@ -24075,6 +24076,7 @@ __metadata:
     medusa-core-utils: ^1.1.31
     medusa-test-utils: ^1.1.37
   peerDependencies:
+    "@medusajs/medusa": 1.x
     medusa-interfaces: 1.x
   languageName: unknown
   linkType: soft
@@ -24123,7 +24125,7 @@ __metadata:
     pg: ^8.5.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/medusa": ^1.6.5
+    "@medusajs/medusa": 1.x.x
     medusa-interfaces: 1.x
   languageName: unknown
   linkType: soft
@@ -24258,6 +24260,7 @@ __metadata:
     medusa-core-utils: ^1.1.31
     medusa-test-utils: ^1.1.37
   peerDependencies:
+    "@medusajs/medusa": 1.x
     medusa-interfaces: 1.x
   languageName: unknown
   linkType: soft
