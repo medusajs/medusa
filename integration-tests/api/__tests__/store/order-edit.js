@@ -187,7 +187,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
 
       const response = await api.get(`/store/order-edits/${orderEditId}`, {
         headers: {
-          Cookie: getClientAuthentication(api),
+          Cookie: await getClientAuthentication(api),
         },
       })
 
@@ -247,7 +247,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
           `/store/order-edits/${orderEditId}?fields=internal_note,order_id`,
           {
             headers: {
-              Cookie: getClientAuthentication(api),
+              Cookie: await getClientAuthentication(api),
             },
           }
         )
@@ -300,7 +300,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         },
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -323,7 +323,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         },
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -351,7 +351,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
           },
           {
             headers: {
-              Cookie: getClientAuthentication(api),
+              Cookie: await getClientAuthentication(api),
             },
           }
         )
@@ -396,9 +396,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
       return await db.teardown()
     })
 
-    // TODO once payment collection is done
-    /*it("complete an order edit", async () => {})*/
-
     it("idempotently complete an already confirmed order edit", async () => {
       const api = useApi()
       const result = await api.post(
@@ -406,7 +403,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         undefined,
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -426,7 +423,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
       const err = await api
         .post(`/store/order-edits/${createdOrderEdit.id}/complete`, undefined, {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         })
         .catch((e) => e)

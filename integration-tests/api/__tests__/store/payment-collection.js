@@ -16,7 +16,7 @@ const {
 jest.setTimeout(30000)
 
 let authCookie = null
-async function getClientAuthentication(api) {
+async function await getClientAuthentication(api) {
   if (authCookie !== null) {
     return authCookie
   }
@@ -80,7 +80,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
         `/store/payment-collections/${payCol.id}`,
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -133,7 +133,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
         },
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -181,7 +181,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
         },
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -238,7 +238,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
         },
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -267,7 +267,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
         },
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -331,7 +331,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
         },
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
@@ -341,7 +341,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
         undefined,
         {
           headers: {
-            Cookie: getClientAuthentication(api),
+            Cookie: await getClientAuthentication(api),
           },
         }
       )
