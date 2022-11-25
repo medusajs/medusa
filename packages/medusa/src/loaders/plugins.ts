@@ -359,6 +359,8 @@ export async function registerServices(
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
 
+      // TODO: We should have the need to check that and allow to pass any class as a service. Since this was mostly link
+      // to the transaction management it seams reasonable to remove it?
       if (
         !(loaded.prototype instanceof LegacyBaseService) &&
         !(loaded.prototype instanceof BaseService)
