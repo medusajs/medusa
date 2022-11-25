@@ -21,7 +21,7 @@ describe("GET /store/order-edits/:id/decline", () => {
           flags: [OrderEditingFeatureFlag],
           clientSession: {
             jwt: {
-              customer_id: IdMap.getId("lebron"),
+              user: IdMap.getId("lebron"),
             },
           },
         }
