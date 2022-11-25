@@ -1,5 +1,5 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { EventBusService } from "../index"
+import { DbTransactionService, EventBusService } from "../index"
 import { Currency } from "../../models"
 import CurrencyService from "../currency"
 import { FlagRouter } from "../../utils/flag-router"
@@ -32,7 +32,8 @@ describe("CurrencyService", () => {
     featureFlagRouter: new FlagRouter({
       [TaxInclusivePricingFeatureFlag.key]: true,
     }),
-    dbTransactionService: dbTransactionServiceMock,
+    dbTransactionService:
+      dbTransactionServiceMock as unknown as DbTransactionService,
   })
 
   afterEach(() => {
