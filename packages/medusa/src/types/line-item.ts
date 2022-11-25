@@ -5,7 +5,7 @@ export type GenerateInputData = {
   quantity: number
 }
 
-export type GenerateContext = {
+export type GenerateLineItemContext = {
   region_id?: string
   unit_price?: number
   includes_tax?: boolean

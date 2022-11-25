@@ -25,7 +25,7 @@ import {
 } from "./index"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { TransactionBaseService } from "../interfaces"
-import { GenerateContext, GenerateInputData } from "../types/line-item"
+import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
 
 type InjectedDependencies = {
@@ -201,9 +201,9 @@ class LineItemService extends TransactionBaseService {
       : LineItem[]
   >(
     variantIdOrData: string | T,
-    regionIdOrContext: T extends string ? string : GenerateContext,
+    regionIdOrContext: T extends string ? string : GenerateLineItemContext,
     quantity?: number,
-    context: GenerateContext = {}
+    context: GenerateLineItemContext = {}
   ): Promise<TResult> {
     this.validateGenerateArguments(variantIdOrData, regionIdOrContext, quantity)
 
@@ -217,7 +217,7 @@ class LineItemService extends TransactionBaseService {
           : variantIdOrData
         const resolvedContext = isString(variantIdOrData)
           ? context
-          : (regionIdOrContext as GenerateContext)
+          : (regionIdOrContext as GenerateLineItemContext)
         const regionId = (
           isString(variantIdOrData)
             ? regionIdOrContext
@@ -243,10 +243,7 @@ class LineItemService extends TransactionBaseService {
 
         for (const variant of variants) {
           variantsMap.set(variant.id, variant)
-          if (
-            resolvedContext.unit_price === undefined ||
-            resolvedContext.unit_price === null
-          ) {
+          if (resolvedContext.unit_price == null) {
             variantsToCalculatePricing.push(variant)
           }
         }
@@ -307,7 +304,7 @@ class LineItemService extends TransactionBaseService {
       }
     },
     quantity: number,
-    context: GenerateContext & {
+    context: GenerateLineItemContext & {
       variantsPricing: { [variantId: string]: ProductVariantPricing }
     }
   ): Promise<LineItem> {
@@ -317,7 +314,7 @@ class LineItemService extends TransactionBaseService {
     let unitPriceIncludesTax = false
     let shouldMerge = false
 
-    if (context.unit_price === undefined || context.unit_price === null) {
+    if (context.unit_price == null) {
       shouldMerge = true
       const variantPricing = context.variantsPricing[variant.id] ?? {}
 
@@ -563,7 +560,7 @@ class LineItemService extends TransactionBaseService {
       : LineItem[]
   >(
     variantIdOrData: string | T,
-    regionIdOrContext: T extends string ? string : GenerateContext,
+    regionIdOrContext: T extends string ? string : GenerateLineItemContext,
     quantity?: number
   ): void | never {
     if (isString(variantIdOrData)) {
@@ -574,7 +571,7 @@ class LineItemService extends TransactionBaseService {
         )
       }
     } else {
-      const resolvedContext = regionIdOrContext as GenerateContext
+      const resolvedContext = regionIdOrContext as GenerateLineItemContext
 
       if (!resolvedContext.region_id) {
         throw new MedusaError(
