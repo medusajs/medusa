@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "medusa-interfaces": "1.x",
-    "@medusajs/medusa-js": "1.x"
+    "@medusajs/medusa": "1.x"
   },
   "dependencies": {
     "axios": "^0.20.0",
