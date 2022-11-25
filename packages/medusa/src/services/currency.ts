@@ -109,7 +109,7 @@ export default class CurrencyService extends TransactionBaseService {
   async update(
     code: string,
     data: UpdateCurrencyInput,
-    context: { transactionManager: EntityManager }
+    context?: { transactionManager: EntityManager }
   ): Promise<Currency | undefined | never> {
     return await this.dbTransactionService_.run(
       async ({ transactionManager }) => {
@@ -137,7 +137,7 @@ export default class CurrencyService extends TransactionBaseService {
         return currency
       },
       {
-        transactionManager: context.transactionManager,
+        transactionManager: context?.transactionManager,
       }
     )
   }
