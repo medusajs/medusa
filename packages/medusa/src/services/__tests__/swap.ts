@@ -1,16 +1,15 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-
 import { Order, Swap } from "../../models"
 import { SwapRepository } from "../../repositories/swap"
 import CartService from "../cart"
 import {
-    CustomShippingOptionService, FulfillmentService, IEventBusService, InventoryService,
-    LineItemService,
-    OrderService,
-    PaymentProviderService,
-    ReturnService,
-    ShippingOptionService,
-    TotalsService
+  CustomShippingOptionService, FulfillmentService, IEventBusService, InventoryService,
+  LineItemService,
+  OrderService,
+  PaymentProviderService,
+  ReturnService,
+  ShippingOptionService,
+  TotalsService
 } from "../index"
 import LineItemAdjustmentService from "../line-item-adjustment"
 import SwapService from "../swap"
@@ -46,6 +45,9 @@ const cartService = {
   withTransaction: function () {
     return this
   },
+  retrieveWithTotals: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ id: "cart" })),
 } as unknown as CartService
 
 const customShippingOptionService = {
@@ -823,6 +825,12 @@ describe("SwapService", () => {
       withTransaction: function () {
         return this
       },
+      retrieveWithTotals: jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: "cart",
+          items: [{ id: "test-item", variant_id: "variant" }],
+        })
+      ),
     } as unknown as CartService
 
     const paymentProviderService = {
@@ -861,7 +869,8 @@ describe("SwapService", () => {
         other: "data",
       }
 
-      cartService.retrieve = (() => cart) as unknown as CartService["retrieve"]
+      cartService.retrieveWithTotals = (() =>
+        cart) as unknown as CartService["retrieveWithTotals"]
 
       const swapRepo = MockRepository({
         findOneWithRelations: () => Promise.resolve(existing),

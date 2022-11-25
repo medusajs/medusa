@@ -9,6 +9,7 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 import { GetPaymentCollectionsParams } from "./get-payment-collection"
 import { AdminUpdatePaymentCollectionRequest } from "./update-payment-collection"
+import { PaymentCollection } from "../../../../models"
 
 const route = Router()
 
@@ -33,6 +34,11 @@ export default (app, container) => {
     "/:id",
     transformBody(AdminUpdatePaymentCollectionRequest),
     middlewares.wrap(require("./update-payment-collection").default)
+  )
+
+  route.post(
+    "/:id/authorize",
+    middlewares.wrap(require("./mark-authorized-payment-collection").default)
   )
 
   route.delete(
@@ -61,6 +67,15 @@ export const defaulPaymentCollectionRelations = [
   "payment_sessions",
   "payments",
 ]
+
+export type AdminPaymentCollectionRes = {
+  payment_collection: PaymentCollection
+}
+export type AdminPaymentCollectionDeleteRes = {
+  id: string
+  object: "payment_collection"
+  deleted: boolean
+}
 
 export * from "./get-payment-collection"
 export * from "./update-payment-collection"

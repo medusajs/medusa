@@ -4,6 +4,7 @@ import { IEventBusService, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
+  Cart,
   ClaimOrder,
   Fulfillment,
   FulfillmentItem,
@@ -26,7 +27,7 @@ import {
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import CartService from "./cart"
 import CustomerService from "./customer"
@@ -42,6 +43,9 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import ShippingProfileService from "./shipping-profile"
 import TotalsService from "./totals"
+import { NewTotalsService, TaxProviderService } from "./index"
+
+export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -55,6 +59,8 @@ type InjectedDependencies = {
   fulfillmentService: FulfillmentService
   lineItemService: LineItemService
   totalsService: TotalsService
+  newTotalsService: NewTotalsService
+  taxProviderService: TaxProviderService
   regionService: RegionService
   cartService: CartService
   addressRepository: typeof AddressRepository
@@ -63,6 +69,10 @@ type InjectedDependencies = {
   inventoryService: InventoryService
   eventBusService: IEventBusService
   featureFlagRouter: FlagRouter
+}
+
+type TotalsConfig = {
+  force_taxes?: boolean
 }
 
 class OrderService extends TransactionBaseService {
@@ -98,6 +108,8 @@ class OrderService extends TransactionBaseService {
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly lineItemService_: LineItemService
   protected readonly totalsService_: TotalsService
+  protected readonly newTotalsService_: NewTotalsService
+  protected readonly taxProviderService_: TaxProviderService
   protected readonly regionService_: RegionService
   protected readonly cartService_: CartService
   protected readonly addressRepository_: typeof AddressRepository
@@ -119,6 +131,8 @@ class OrderService extends TransactionBaseService {
     fulfillmentService,
     lineItemService,
     totalsService,
+    newTotalsService,
+    taxProviderService,
     regionService,
     cartService,
     addressRepository,
@@ -139,6 +153,8 @@ class OrderService extends TransactionBaseService {
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.lineItemService_ = lineItemService
     this.totalsService_ = totalsService
+    this.newTotalsService_ = newTotalsService
+    this.taxProviderService_ = taxProviderService
     this.regionService_ = regionService
     this.fulfillmentService_ = fulfillmentService
     this.discountService_ = discountService
@@ -224,7 +240,7 @@ class OrderService extends TransactionBaseService {
       this.transformQueryForTotals(config)
 
     query.select = select
-    const rels = relations
+    const rels = this.getTotalsRelations({ relations })
 
     delete query.relations
 
@@ -308,7 +324,7 @@ class OrderService extends TransactionBaseService {
 
   /**
    * Gets an order by id.
-   * @param orderId - id of order to retrieve
+   * @param orderId - id or selector of order to retrieve
    * @param config - config of order to retrieve
    * @return the order document
    */
@@ -316,14 +332,49 @@ class OrderService extends TransactionBaseService {
     orderId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
+    const { totalsToSelect } = this.transformQueryForTotals(config)
+
+    if (totalsToSelect?.length) {
+      return await this.retrieveLegacy(orderId, config)
+    }
+
+    const manager = this.manager_
+    const orderRepo = manager.getCustomRepository(this.orderRepository_)
+
+    const query = buildQuery({ id: orderId }, config)
+
+    if (!(config.select || []).length) {
+      query.select = undefined
+    }
+
+    const queryRelations = query.relations
+    query.relations = undefined
+
+    const raw = await orderRepo.findOneWithRelations(queryRelations, query)
+
+    if (!raw) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Order with id ${orderId} was not found`
+      )
+    }
+
+    return raw
+  }
+
+  protected async retrieveLegacy(
+    orderIdOrSelector: string | Selector<Order>,
+    config: FindConfig<Order> = {}
+  ): Promise<Order> {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
-    const query = {
-      where: { id: orderId },
-    } as FindConfig<Order>
+    const selector = isString(orderIdOrSelector)
+      ? { id: orderIdOrSelector }
+      : orderIdOrSelector
+    const query = buildQuery(selector, config)
 
     if (relations && relations.length > 0) {
       query.relations = relations
@@ -333,15 +384,31 @@ class OrderService extends TransactionBaseService {
 
     const rels = query.relations
     delete query.relations
+
     const raw = await orderRepo.findOneWithRelations(rels, query)
+
     if (!raw) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with ${orderId} was not found`
+        `Order with ${selectorConstraints} was not found`
       )
     }
 
     return await this.decorateTotals(raw, totalsToSelect)
+  }
+
+  async retrieveWithTotals(
+    orderId: string,
+    options: FindConfig<Order> = {},
+    totalsConfig: TotalsConfig = {}
+  ): Promise<Order> {
+    const relations = this.getTotalsRelations(options)
+    const order = await this.retrieve(orderId, { ...options, relations })
+
+    return await this.decorateTotals(order, totalsConfig)
   }
 
   /**
@@ -378,6 +445,10 @@ class OrderService extends TransactionBaseService {
       )
     }
 
+    if (!totalsToSelect?.length) {
+      return raw
+    }
+
     return await this.decorateTotals(raw, totalsToSelect)
   }
 
@@ -403,6 +474,7 @@ class OrderService extends TransactionBaseService {
     if (relations && relations.length > 0) {
       query.relations = relations
     }
+    query.relations = this.getTotalsRelations({ relations: query.relations })
 
     query.select = select?.length ? select : undefined
 
@@ -417,16 +489,6 @@ class OrderService extends TransactionBaseService {
     }
 
     return await this.decorateTotals(raw, totalsToSelect)
-  }
-
-  /**
-   * Checks the existence of an order by cart id.
-   * @param cartId - cart id to find order
-   * @return the order document
-   */
-  async existsByCartId(cartId: string): Promise<boolean> {
-    const order = await this.retrieveByCartId(cartId).catch(() => undefined)
-    return !!order
   }
 
   /**
@@ -458,27 +520,33 @@ class OrderService extends TransactionBaseService {
 
   /**
    * Creates an order from a cart
-   * @param cartId - id of the cart to create an order from
    * @return resolves to the creation result.
+   * @param cartOrId
    */
-  async createFromCart(cartId: string): Promise<Order | never> {
+  async createFromCart(cartOrId: string | Cart): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
       const cartServiceTx = this.cartService_.withTransaction(manager)
       const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
-      const cart = await cartServiceTx.retrieveWithTotals(cartId, {
-        relations: [
-          "region",
-          "payment",
-          "items",
-          "discounts",
-          "discounts.rule",
-          "gift_cards",
-          "shipping_methods",
-          "items",
-          "items.adjustments",
-        ],
-      })
+      const exists = !!(await this.retrieveByCartId(
+        isString(cartOrId) ? cartOrId : cartOrId?.id,
+        {
+          select: ["id"],
+        }
+      ).catch(() => void 0))
+
+      if (exists) {
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          ORDER_CART_ALREADY_EXISTS_ERROR
+        )
+      }
+
+      const cart = isString(cartOrId)
+        ? await cartServiceTx.retrieveWithTotals(cartOrId, {
+            relations: ["region", "payment"],
+          })
+        : cartOrId
 
       if (cart.items.length === 0) {
         throw new MedusaError(
@@ -489,30 +557,22 @@ class OrderService extends TransactionBaseService {
 
       const { payment, region, total } = cart
 
-      for (const item of cart.items) {
-        try {
-          await inventoryServiceTx.confirmInventory(
+      await Promise.all(
+        cart.items.map(async (item) => {
+          return await inventoryServiceTx.confirmInventory(
             item.variant_id,
             item.quantity
           )
-        } catch (err) {
-          if (payment) {
-            await this.paymentProviderService_
-              .withTransaction(manager)
-              .cancelPayment(payment)
-          }
-          await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-          throw err
+        })
+      ).catch(async (err) => {
+        if (payment) {
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .cancelPayment(payment)
         }
-      }
-
-      const exists = await this.existsByCartId(cart.id)
-      if (exists) {
-        throw new MedusaError(
-          MedusaError.Types.DUPLICATE_ERROR,
-          "Order from cart already exists"
-        )
-      }
+        await cartServiceTx.update(cart.id, { payment_authorized_at: null })
+        throw err
+      })
 
       // Would be the case if a discount code is applied that covers the item
       // total
@@ -538,11 +598,19 @@ class OrderService extends TransactionBaseService {
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
+      // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
+      // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
+      // We normally should only pass what is needed?
+      const shippingMethods = cart.shipping_methods.map((method) => {
+        ;(method.tax_lines as any) = undefined
+        return method
+      })
+
       const toCreate = {
         payment_status: "awaiting",
         discounts: cart.discounts,
         gift_cards: cart.gift_cards,
-        shipping_methods: cart.shipping_methods,
+        shipping_methods: shippingMethods,
         shipping_address_id: cart.shipping_address_id,
         billing_address_id: cart.billing_address_id,
         region_id: cart.region_id,
@@ -569,18 +637,28 @@ class OrderService extends TransactionBaseService {
         toCreate.no_notification = draft.no_notification_order
       }
 
-      const o = orderRepo.create(toCreate)
-      const result = await orderRepo.save(o)
+      const rawOrder = orderRepo.create(toCreate)
+      const order = await orderRepo.save(rawOrder)
 
       if (total !== 0 && payment) {
         await this.paymentProviderService_
           .withTransaction(manager)
           .updatePayment(payment.id, {
-            order_id: result.id,
+            order_id: order.id,
           })
       }
 
-      let gcBalance = await this.totalsService_.getGiftCardableAmount(cart)
+      if (!isDefined(cart.subtotal) || !isDefined(cart.discount_total)) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Unable to compute gift cardable amount during order creation from cart. The cart is missing the subtotal and/or discount_total"
+        )
+      }
+
+      let gcBalance =
+        (cart.region?.gift_cards_taxable
+          ? cart.subtotal! - cart.discount_total!
+          : cart.total! + cart.gift_card_total!) || 0
       const gcService = this.giftCardService_.withTransaction(manager)
 
       for (const g of cart.gift_cards) {
@@ -593,7 +671,7 @@ class OrderService extends TransactionBaseService {
 
         await gcService.createTransaction({
           gift_card_id: g.id,
-          order_id: result.id,
+          order_id: order.id,
           amount: usage,
           is_taxable: cart.region.gift_cards_taxable,
           tax_rate: cart.region.gift_cards_taxable
@@ -604,34 +682,43 @@ class OrderService extends TransactionBaseService {
         gcBalance = gcBalance - usage
       }
 
-      for (const method of cart.shipping_methods) {
-        await this.shippingOptionService_
-          .withTransaction(manager)
-          .updateShippingMethod(method.id, { order_id: result.id })
-      }
-
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
-      for (const item of cart.items) {
-        await lineItemServiceTx.update(item.id, { order_id: result.id })
-      }
 
-      for (const item of cart.items) {
-        await inventoryServiceTx.adjustInventory(
-          item.variant_id,
-          -item.quantity
-        )
-      }
+      await Promise.all(
+        [
+          cart.items.map((item) => {
+            return [
+              lineItemServiceTx.update(item.id, { order_id: order.id }),
+              inventoryServiceTx.adjustInventory(
+                item.variant_id,
+                -item.quantity
+              ),
+            ]
+          }),
+          cart.shipping_methods.map((method) => {
+            // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
+            // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
+            // We normally should only pass what is needed?
+            ;(method.tax_lines as any) = undefined
+            return shippingOptionServiceTx.updateShippingMethod(method.id, {
+              order_id: order.id,
+            })
+          }),
+        ].flat(Infinity)
+      )
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
-          id: result.id,
-          no_notification: result.no_notification,
+          id: order.id,
+          no_notification: order.no_notification,
         })
 
       await cartServiceTx.update(cart.id, { completed_at: new Date() })
 
-      return result
+      return order
     })
   }
 
@@ -813,8 +900,7 @@ class OrderService extends TransactionBaseService {
     config: CreateShippingMethodDto = {}
   ): Promise<Order> {
     return await this.atomicPhase_(async (manager) => {
-      const order = await this.retrieve(orderId, {
-        select: ["subtotal"],
+      const order = await this.retrieveWithTotals(orderId, {
         relations: [
           "shipping_methods",
           "shipping_methods.shipping_option",
@@ -1407,7 +1493,7 @@ class OrderService extends TransactionBaseService {
     })
   }
 
-  protected async decorateTotals(
+  protected async decorateTotalsLegacy(
     order: Order,
     totalsFields: string[] = []
   ): Promise<Order> {
@@ -1537,6 +1623,149 @@ class OrderService extends TransactionBaseService {
   }
 
   /**
+   * Calculate and attach the different total fields on the object
+   * @param order
+   * @param totalsFieldsOrConfig
+   */
+  async decorateTotals(
+    order: Order,
+    totalsFieldsOrConfig?: string[] | TotalsConfig
+  ): Promise<Order> {
+    if (Array.isArray(totalsFieldsOrConfig)) {
+      return await this.decorateTotalsLegacy(order, totalsFieldsOrConfig)
+    }
+
+    const manager = this.transactionManager_ ?? this.manager_
+    const newTotalsServiceTx = this.newTotalsService_.withTransaction(manager)
+
+    const calculationContext = await this.totalsService_.getCalculationContext(
+      order
+    )
+    const orderItems = [...(order.items ?? [])]
+    const orderShippingMethods = [...(order.shipping_methods ?? [])]
+
+    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(orderItems, {
+      taxRate: order.tax_rate,
+      includeTax: true,
+      calculationContext,
+    })
+    const shippingTotals = await newTotalsServiceTx.getShippingMethodTotals(
+      orderShippingMethods,
+      {
+        taxRate: order.tax_rate,
+        discounts: order.discounts,
+        includeTax: true,
+        calculationContext,
+      }
+    )
+
+    order.subtotal = 0
+    order.discount_total = 0
+    order.shipping_total = 0
+    order.refunded_total =
+      Math.round(order.refunds?.reduce((acc, next) => acc + next.amount, 0)) ||
+      0
+    order.paid_total =
+      order.payments?.reduce((acc, next) => (acc += next.amount), 0) || 0
+    order.refundable_amount = order.paid_total - order.refunded_total || 0
+    let item_tax_total = 0
+    let shipping_tax_total = 0
+
+    order.items = (order.items || []).map((item) => {
+      const refundable = newTotalsServiceTx.getLineItemRefund(
+        {
+          ...item,
+          quantity: item.quantity - (item.returned_quantity || 0),
+        },
+        {
+          calculationContext,
+          taxRate: order.tax_rate,
+        }
+      )
+
+      const itemWithTotals = {
+        ...item,
+        ...(itemsTotals[item.id] ?? {}),
+        refundable,
+      }
+
+      order.subtotal += itemWithTotals.subtotal ?? 0
+      order.discount_total += itemWithTotals.discount_total ?? 0
+      item_tax_total += itemWithTotals.tax_total ?? 0
+
+      return itemWithTotals as LineItem
+    })
+
+    order.shipping_methods = (order.shipping_methods || []).map(
+      (shippingMethod) => {
+        const methodWithTotals = Object.assign(
+          shippingMethod,
+          shippingTotals[shippingMethod.id] ?? {}
+        )
+
+        order.shipping_total += methodWithTotals.subtotal ?? 0
+        shipping_tax_total += methodWithTotals.tax_total ?? 0
+
+        return methodWithTotals
+      }
+    )
+
+    const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
+      order.subtotal - order.discount_total,
+      {
+        region: order.region,
+        giftCards: order.gift_cards,
+        giftCardTransactions: order.gift_card_transactions ?? [],
+      }
+    )
+    order.gift_card_total = giftCardTotal.total || 0
+    order.gift_card_tax_total = giftCardTotal.tax_total || 0
+
+    order.tax_total =
+      item_tax_total + shipping_tax_total - order.gift_card_tax_total
+
+    for (const swap of order.swaps ?? []) {
+      swap.additional_items = swap.additional_items.map((item) => {
+        item.refundable = newTotalsServiceTx.getLineItemRefund(
+          {
+            ...item,
+            quantity: item.quantity - (item.returned_quantity || 0),
+          },
+          {
+            calculationContext,
+            taxRate: order.tax_rate,
+          }
+        )
+        return item
+      })
+    }
+
+    for (const claim of order.claims ?? []) {
+      claim.additional_items = claim.additional_items.map((item) => {
+        item.refundable = newTotalsServiceTx.getLineItemRefund(
+          {
+            ...item,
+            quantity: item.quantity - (item.returned_quantity || 0),
+          },
+          {
+            calculationContext,
+            taxRate: order.tax_rate,
+          }
+        )
+        return item
+      })
+    }
+
+    order.total =
+      order.subtotal +
+      order.shipping_total +
+      order.tax_total -
+      (order.gift_card_total + order.discount_total)
+
+    return order
+  }
+
+  /**
    * Handles receiving a return. This will create a
    * refund to the customer. If the returned items don't match the requested
    * items the return status will be updated to requires_action. This behaviour
@@ -1622,6 +1851,32 @@ class OrderService extends TransactionBaseService {
         })
       return result
     })
+  }
+
+  private getTotalsRelations(config: FindConfig<Order>): string[] {
+    const relationSet = new Set(config.relations)
+
+    relationSet.add("items")
+    relationSet.add("items.tax_lines")
+    relationSet.add("items.adjustments")
+    relationSet.add("swaps")
+    relationSet.add("swaps.additional_items")
+    relationSet.add("swaps.additional_items.tax_lines")
+    relationSet.add("swaps.additional_items.adjustments")
+    relationSet.add("claims")
+    relationSet.add("claims.additional_items")
+    relationSet.add("claims.additional_items.tax_lines")
+    relationSet.add("claims.additional_items.adjustments")
+    relationSet.add("discounts")
+    relationSet.add("discounts.rule")
+    relationSet.add("gift_cards")
+    relationSet.add("gift_card_transactions")
+    relationSet.add("refunds")
+    relationSet.add("shipping_methods")
+    relationSet.add("shipping_methods.tax_lines")
+    relationSet.add("region")
+
+    return Array.from(relationSet.values())
   }
 }
 

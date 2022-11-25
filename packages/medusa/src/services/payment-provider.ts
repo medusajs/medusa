@@ -20,6 +20,7 @@ import { PaymentProviderDataInput } from "../types/payment-collection"
 import { FlagRouter } from "../utils/flag-router"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import PaymentService from "./payment"
+import { Logger } from "../types/global"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -30,6 +31,7 @@ type InjectedDependencies = {
   refundRepository: typeof RefundRepository
   paymentService: PaymentService
   featureFlagRouter: FlagRouter
+  logger: Logger
 } & {
   [key in `${PaymentProviderKey}`]:
     | AbstractPaymentService
@@ -48,6 +50,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly refundRepository_: typeof RefundRepository
+  protected readonly logger_: Logger
 
   protected readonly featureFlagRouter_: FlagRouter
 
@@ -61,6 +64,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     this.paymentRepository_ = container.paymentRepository
     this.refundRepository_ = container.refundRepository
     this.featureFlagRouter_ = container.featureFlagRouter
+    this.logger_ = container.logger
   }
 
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
@@ -374,11 +378,14 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
   }
 
-  async createPayment(
-    cart: Cart & { payment_session: PaymentSession }
-  ): Promise<Payment> {
+  async createPayment(data: {
+    cart_id: string
+    amount: number
+    currency_code: string
+    payment_session: PaymentSession
+  }): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const { payment_session: paymentSession, region, total } = cart
+      const { payment_session: paymentSession, currency_code, amount } = data
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
       const paymentData = await provider
@@ -391,10 +398,10 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const created = paymentRepo.create({
         provider_id: paymentSession.provider_id,
-        amount: total,
-        currency_code: region.currency_code,
+        amount,
+        currency_code,
         data: paymentData,
-        cart_id: cart.id,
+        cart_id: data.cart_id,
       })
 
       return await paymentRepo.save(created)

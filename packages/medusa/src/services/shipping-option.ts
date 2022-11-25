@@ -15,9 +15,9 @@ import { ShippingOptionRequirementRepository } from "../repositories/shipping-op
 import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
+  CreateShippingOptionInput,
   ShippingMethodUpdate,
   UpdateShippingOptionInput,
-  CreateShippingOptionInput,
 } from "../types/shipping-options"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
@@ -370,7 +370,7 @@ class ShippingOptionService extends TransactionBaseService {
       )
     }
 
-    const amount = (option.includes_tax ? cart.total : cart.subtotal) as number
+    const amount = option.includes_tax ? cart.total! : cart.subtotal!
 
     const requirementResults: boolean[] = option.requirements.map(
       (requirement) => {
@@ -385,7 +385,7 @@ class ShippingOptionService extends TransactionBaseService {
       }
     )
 
-    if (!requirementResults.every(Boolean)) {
+    if (requirementResults.some((requirement) => !requirement)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "The Cart does not satisfy the shipping option's requirements"

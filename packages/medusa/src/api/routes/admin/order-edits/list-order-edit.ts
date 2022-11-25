@@ -6,8 +6,8 @@ import { IsOptional, IsString } from "class-validator"
 /**
  * @oas [get] /order-edits
  * operationId: "GetOrderEdits"
- * summary: "List an OrderEdit"
- * description: "List a OrderEdit."
+ * summary: "List OrderEdits"
+ * description: "List OrderEdits."
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching order edit internal note.

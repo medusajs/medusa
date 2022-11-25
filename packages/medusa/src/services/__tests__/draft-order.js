@@ -1,10 +1,10 @@
-import { MockRepository, MockManager } from "medusa-test-utils"
+import { MockManager, MockRepository } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import DraftOrderService from "../draft-order"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -37,7 +37,7 @@ describe("DraftOrderService", () => {
     const regionService = {
       retrieve: () =>
         Promise.resolve({ id: "test-region", countries: [{ iso_2: "dk" }] }),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -50,7 +50,7 @@ describe("DraftOrderService", () => {
           },
         })
       ),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -63,7 +63,7 @@ describe("DraftOrderService", () => {
         })
       ),
       create: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -76,20 +76,7 @@ describe("DraftOrderService", () => {
             profile_id: "test-profile",
           },
         }),
-      withTransaction: function() {
-        return this
-      },
-    }
-
-    const cartService = {
-      create: jest.fn().mockImplementation((data) =>
-        Promise.resolve({
-          id: "test-cart",
-          ...data,
-        })
-      ),
-      addShippingMethod: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -106,6 +93,25 @@ describe("DraftOrderService", () => {
           data: {},
         },
       ],
+    }
+
+    const cartService = {
+      create: jest.fn().mockImplementation((data) =>
+        Promise.resolve({
+          id: "test-cart",
+          ...data,
+        })
+      ),
+      retrieve: jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: "test-cart",
+          ...testOrder,
+        })
+      ),
+      addShippingMethod: jest.fn(),
+      withTransaction: function () {
+        return this
+      },
     }
 
     const addressRepository = MockRepository({
@@ -155,6 +161,11 @@ describe("DraftOrderService", () => {
         billing_address_id: "test-billing",
         customer_id: "test-customer",
         type: "draft_order",
+      })
+
+      expect(cartService.retrieve).toHaveBeenCalledTimes(1)
+      expect(cartService.retrieve).toHaveBeenCalledWith("test-cart", {
+        relations: ["discounts", "discounts.rule", "items", "region"],
       })
 
       expect(cartService.addShippingMethod).toHaveBeenCalledTimes(1)

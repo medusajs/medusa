@@ -432,7 +432,9 @@ class PricingService extends TransactionBaseService {
     if ("automatic_taxes" in context) {
       pricingContext = context
     } else {
-      pricingContext = await this.collectPricingContext(context)
+      pricingContext =
+        (context as PricingContext) ??
+        (await this.collectPricingContext(context))
     }
 
     let shippingOptionRates: TaxServiceRate[] = []
@@ -470,14 +472,12 @@ class PricingService extends TransactionBaseService {
     )
     const totalInclTax = includesTax ? price : price + taxAmount
 
-    const result: PricedShippingOption = {
+    return {
       ...shippingOption,
       price_incl_tax: totalInclTax,
       tax_rates: shippingOptionRates,
       tax_amount: taxAmount,
     }
-
-    return result
   }
 
   /**
@@ -508,29 +508,26 @@ class PricingService extends TransactionBaseService {
       })
     )
 
-    return await Promise.all(
-      shippingOptions.map(async (shippingOption) => {
-        const pricingContext = contexts.find(
-          (c) => c.region_id === shippingOption.region_id
-        )
+    const shippingOptionPricingPromises: Promise<PricedShippingOption>[] = []
 
-        if (!pricingContext) {
-          throw new MedusaError(
-            MedusaError.Types.UNEXPECTED_STATE,
-            "Could not find pricing context for shipping option"
-          )
-        }
+    shippingOptions.map(async (shippingOption) => {
+      const pricingContext = contexts.find(
+        (c) => c.region_id === shippingOption.region_id
+      )
 
-        const shippingOptionPricing = await this.getShippingOptionPricing(
-          shippingOption,
-          pricingContext.context
+      if (!pricingContext) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Could not find pricing context for shipping option"
         )
-        return {
-          ...shippingOption,
-          ...shippingOptionPricing,
-        }
-      })
-    )
+      }
+
+      shippingOptionPricingPromises.push(
+        this.getShippingOptionPricing(shippingOption, pricingContext.context)
+      )
+    })
+
+    return await Promise.all(shippingOptionPricingPromises)
   }
 }
 

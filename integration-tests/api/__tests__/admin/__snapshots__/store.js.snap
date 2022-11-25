@@ -131,6 +131,7 @@ Object {
   "id": Any<String>,
   "invite_link_template": null,
   "metadata": null,
+  "modules": Any<Array>,
   "name": "Medusa Store",
   "payment_link_template": null,
   "payment_providers": Array [

@@ -1,7 +1,7 @@
 import { getConfigFile } from "medusa-core-utils"
-import resolveCwd from "resolve-cwd"
 import { ConfigModule } from "../types/global"
 import logger from "./logger"
+import registerModuleDefinitions from "./module-definitions"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
 
@@ -88,25 +88,7 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
-  const moduleResolutions = {}
-  const projectModules = configModule.modules ?? {}
-  for (const [moduleKey, settings] of Object.entries(MODULE_DEFINITION)) {
-    let resolutionPath = settings.defaultPackage
-    let resolve = true
-    if (settings.canOverride && moduleKey in projectModules) {
-      if (projectModules[moduleKey]) {
-        resolutionPath = resolveCwd(projectModules[moduleKey])
-      } else {
-        resolve = false
-      }
-    }
-
-    moduleResolutions[moduleKey] = {
-      shouldResolve: resolve,
-      resolutionPath,
-      settings,
-    }
-  }
+  const moduleResolutions = registerModuleDefinitions(configModule)
 
   return {
     projectConfig: {

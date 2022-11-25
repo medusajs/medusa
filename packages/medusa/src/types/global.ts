@@ -38,14 +38,17 @@ export type Logger = _Logger & {
 }
 
 export type ModuleResolution = {
-  shouldResolve: boolean
   resolutionPath: string
-  settings: {
-    registration: string
-    label: string
-    required: boolean
-    canOverride: boolean
-  }
+  definition: ModuleDefinition
+}
+
+export type ModuleDefinition = {
+  key: string
+  registrationName: string
+  defaultPackage: string
+  label: string
+  canOverride?: boolean
+  isRequired?: boolean
 }
 
 export type ConfigModule = {
