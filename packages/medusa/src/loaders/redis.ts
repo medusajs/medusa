@@ -1,8 +1,7 @@
 import { asValue } from "awilix"
 import RealRedis from "ioredis"
 import FakeRedis from "ioredis-mock"
-import { ConfigModule, MedusaContainer } from "../types/global"
-import { Logger } from "../types/global"
+import { ConfigModule, Logger, MedusaContainer } from "../types/global"
 
 type Options = {
   container: MedusaContainer

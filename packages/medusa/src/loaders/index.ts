@@ -3,7 +3,7 @@ import {
   asValue,
   AwilixContainer,
   createContainer,
-  Resolver
+  Resolver,
 } from "awilix"
 import { ClassOrFunctionReturning } from "awilix/lib/container"
 import { Express, NextFunction, Request, Response } from "express"

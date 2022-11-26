@@ -8,10 +8,8 @@ import {
   StagedJobService,
   TransactionBaseService
 } from "@medusajs/medusa"
-import { asValue } from "awilix"
 import Bull from "bull"
 import Redis from "ioredis"
-import FakeRedis from "ioredis-mock"
 import { EntityManager } from "typeorm"
 import { sleep } from "../utils/sleep"
 
@@ -67,26 +65,7 @@ export default class RedisEventBusService extends TransactionBaseService impleme
       this.connect({
         client: container.eventBusRedisClient,
         subscriber: container.eventBusRedisSubscriber,
-      })
-    }
-  }
-
-  public createRedis() {
-    if (this.config_.projectConfig.redis_url) {
-      const client = new Redis(this.config_.projectConfig.redis_url)
-      const subscriber = new Redis(this.config_.projectConfig.redis_url)
-
-      this.container_.register({
-        eventBusRedisClient: asValue(client),
-        eventBusRedisSubscriber: asValue(subscriber),
-      })
-    } else {
-      const client = new FakeRedis()
-
-      this.container_.register({
-        eventBusRedisClient: asValue(client),
-        eventBusRedisSubscriber: asValue(client),
-      })
+      }, config)
     }
   }
 
@@ -94,7 +73,8 @@ export default class RedisEventBusService extends TransactionBaseService impleme
   // https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md#reusing-redis-connections
   private reuseConnections(
     client: Redis.Redis,
-    subscriber: Redis.Redis
+    subscriber: Redis.Redis,
+    config: ConfigModule
   ): { createClient: (type: string) => Redis.Redis } {
     return {
       createClient: (type: string): Redis.Redis => {
@@ -104,7 +84,7 @@ export default class RedisEventBusService extends TransactionBaseService impleme
           case "subscriber":
             return subscriber
           default:
-            if (this.config_.projectConfig.redis_url) {
+            if (config?.projectConfig?.redis_url) {
               return new Redis(this.config_.projectConfig.redis_url)
             }
             return client
@@ -113,20 +93,20 @@ export default class RedisEventBusService extends TransactionBaseService impleme
     }
   }
 
-  connect(options: RedisCreateConnectionOptions): void {
+  connect(options: RedisCreateConnectionOptions, config: ConfigModule): void {
     const { client, subscriber } = options
 
     this.observers_ = new Map()
     this.queue_ = new Bull(
       `${this.constructor.name}:queue`,
-      this.reuseConnections(client, subscriber)
+      this.reuseConnections(client, subscriber, config)
     )
     this.cronHandlers_ = new Map()
     this.redisClient_ = client
     this.redisSubscriber_ = subscriber
     this.cronQueue_ = new Bull(
       `cron-jobs:queue`,
-      this.reuseConnections(client, subscriber)
+      this.reuseConnections(client, subscriber, config)
     )
     // Register our worker to handle emit calls
     this.queue_.process(this.worker_)

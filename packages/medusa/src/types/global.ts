@@ -51,6 +51,19 @@ export type ModuleDefinition = {
   isRequired?: boolean
 }
 
+export type LoaderOptions = {
+  container: MedusaContainer
+  configModule: ConfigModule
+  logger?: Logger
+}
+
+export type Constructor<T> = new (...args: any[]) => T
+
+export type ModuleExports = {
+  loaders: ((options: LoaderOptions) => Promise<void>)[]
+  services: Constructor<any>[]
+}
+
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string

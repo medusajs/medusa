@@ -1,5 +1,11 @@
+import { ModuleExports } from "@medusajs/medusa"
 import Loader from "./loaders"
-import EventBusService from "./services/event-bus"
+import RedisEventBusService from "./services/event-bus-redis"
 
-export const service = EventBusService
-export const loaders = [Loader]
+const services = [RedisEventBusService]
+const loaders = [Loader]
+
+export default {
+  services,
+  loaders,
+} as ModuleExports

@@ -1,13 +1,7 @@
 import { asFunction, asValue } from "awilix"
 import { trackInstallation } from "medusa-telemetry"
-import { ConfigModule, Logger, MedusaContainer } from "../types/global"
+import { LoaderOptions, ModuleExports } from "../types/global"
 import { ModulesHelper } from "../utils/module-helper"
-
-type Options = {
-  container: MedusaContainer
-  configModule: ConfigModule
-  logger: Logger
-}
 
 export const moduleHelper = new ModulesHelper()
 
@@ -15,12 +9,13 @@ export default async ({
   container,
   configModule,
   logger,
-}: Options): Promise<void> => {
+}: LoaderOptions): Promise<void> => {
   const moduleResolutions = configModule?.moduleResolutions ?? {}
 
   for (const resolution of Object.values(moduleResolutions)) {
     try {
-      const loadedModule = await import(resolution.resolutionPath!)
+      const { default: loadedModule }: { default: ModuleExports } =
+        await import(resolution.resolutionPath!)
 
       const moduleLoaders = loadedModule?.loaders || []
       for (const loader of moduleLoaders) {
@@ -28,6 +23,8 @@ export default async ({
       }
 
       const moduleServices = loadedModule?.services || []
+
+      console.log("REDIS: ", configModule)
 
       for (const service of moduleServices) {
         container.register({
@@ -45,12 +42,11 @@ export default async ({
       trackInstallation(installation, "module")
     } catch (err) {
       if (resolution.definition.isRequired) {
-        throw new Error(
-          `Could not resolve required module: ${resolution.definition.label}`
-        )
+        logger?.warn(`Could not resolve module: ${resolution.definition.label}`)
+        throw err // throw error from module loader on required modules
       }
 
-      logger.warn(`Couldn not resolve module: ${resolution.definition.label}`)
+      logger?.warn(`Could not resolve module: ${resolution.definition.label}`)
     }
   }
 

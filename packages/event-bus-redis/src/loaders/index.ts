@@ -1,23 +1,16 @@
-import { ConfigModule, Logger, MedusaContainer } from "@medusajs/medusa"
+import { LoaderOptions } from "@medusajs/medusa"
 import { asValue } from "awilix"
 import Redis from "ioredis"
-
-type LoaderOptions = {
-  container: MedusaContainer
-  configModule: ConfigModule
-  logger: Logger
-}
 
 export default async ({
   container,
   configModule,
-  logger,
 }: LoaderOptions): Promise<void> => {
   const redisUrl = configModule.projectConfig?.redis_url
 
   if (!redisUrl) {
-    logger.warn(
-      "No `redis_url` provided in project config. Redis event bus will not be available."
+    throw Error(
+      "No `redis_url` provided in project config. It is required for Redis Event Bus."
     )
   }
 
