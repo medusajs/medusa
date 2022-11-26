@@ -37,7 +37,7 @@ export default class LocalEventBus
    */
   subscribe(event: string | symbol, handler: EventHandler): this {
     this.logger_.info(
-      `[${event.toString()}] No event bus installed. Subscribe is unavailable.`
+      `[${event.toString()}] Local Event Bus installed. Subscribe is unavailable.`
     )
     return this
   }
@@ -47,7 +47,7 @@ export default class LocalEventBus
    */
   unsubscribe(event: string | symbol, subscriber: EventHandler): this {
     this.logger_.info(
-      `[${event.toString()}] No event bus installed. Unsubscribe is unavailable.`
+      `[${event.toString()}] Local Event Bus installed. Unsubscribe is unavailable.`
     )
     return this
   }
@@ -60,7 +60,7 @@ export default class LocalEventBus
     subscriber: EventHandler
   ): this {
     this.logger_.info(
-      `[${event.toString()}] No event bus installed. Cron jobs are unavailable.`
+      `[${event.toString()}] Local Event Bus installed. Cron jobs are unavailable.`
     )
     return this
   }
@@ -74,7 +74,7 @@ export default class LocalEventBus
     options: { delay?: number } = {}
   ): Promise<void> {
     this.logger_.info(
-      `[${eventName}] No event bus installed. Emitting events has no effect.`
+      `[${eventName}] Local Event Bus installed. Emitting events has no effect.`
     )
   }
 
@@ -88,7 +88,7 @@ export default class LocalEventBus
     handler: EventHandler
   ): void {
     this.logger_.info(
-      `[${eventName}] No event bus installed. Cron jobs are unavailable.`
+      `[${eventName}] Local Event Bus installed. Cron jobs are unavailable.`
     )
   }
 }
