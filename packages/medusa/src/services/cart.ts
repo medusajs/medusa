@@ -557,7 +557,7 @@ class CartService extends TransactionBaseService {
    */
   protected async validateLineItem(
     { sales_channel_id }: { sales_channel_id: string | null },
-    lineItem: LineItem
+    lineItem: { variant?: { product_id: string }; variant_id: string }
   ): Promise<boolean> {
     if (!sales_channel_id) {
       return true
@@ -587,7 +587,7 @@ class CartService extends TransactionBaseService {
    *    validateSalesChannels - should check if product belongs to the same sales chanel as cart
    *                            (if cart has associated sales channel)
    * @return the result of the update operation
-   * @deprecated Use {@link addLineItems} instead.
+   * @deprecated Use {@link addOrUpdateLineItems} instead.
    */
   async addLineItem(
     cartId: string,
@@ -680,7 +680,8 @@ class CartService extends TransactionBaseService {
   }
 
   /**
-   * Adds one or multiple line items to the cart.
+   * Adds or update one or multiple line items to the cart. It also update all existing items in the cart
+   * to have has_shipping to false. Finally, the adjustments will be updated.
    * @param cartId - the id of the cart that we will add to
    * @param lineItems - the line items to add.
    * @param config
@@ -688,7 +689,7 @@ class CartService extends TransactionBaseService {
    *                            (if cart has associated sales channel)
    * @return the result of the update operation
    */
-  async addLineItems(
+  async addOrUpdateLineItems(
     cartId: string,
     lineItems: LineItem | LineItem[],
     config = { validateSalesChannels: true }
@@ -752,6 +753,7 @@ class CartService extends TransactionBaseService {
         })
 
         const lineItemsToCreate: LineItem[] = []
+        const lineItemsToUpdate: { [id: string]: LineItem }[] = []
         for (const item of items) {
           let currentItem: LineItem | undefined
 
@@ -768,24 +770,38 @@ class CartService extends TransactionBaseService {
             ? (currentItem.quantity += item.quantity)
             : item.quantity
 
-          // Confirm inventory or throw error
           await inventoryServiceTx.confirmInventory(
-            currentItem?.variant || item.variant_id,
+            item.variant_id,
             item.quantity
           )
 
           if (currentItem) {
-            await lineItemServiceTx.update(currentItem.id, {
+            lineItemsToUpdate[currentItem.id] = {
               quantity: item.quantity,
               has_shipping: false,
-            })
+            }
           } else {
+            // Since the variant is eager loaded, we are removing it before the line item is being created.
+            delete (item as Partial<LineItem>).variant
             item.has_shipping = false
             item.cart_id = cart.id
             lineItemsToCreate.push(item)
           }
         }
 
+        // Update all items that needs to be updated
+        if (Object.keys(lineItemsToUpdate).length) {
+          await Promise.all(
+            Object.keys(lineItemsToUpdate).map(async (variantId) => {
+              return await lineItemServiceTx.update(
+                variantId,
+                lineItemsToUpdate[variantId]
+              )
+            })
+          )
+        }
+
+        // Create all items that needs to be created
         await lineItemServiceTx.create(lineItemsToCreate)
 
         await lineItemServiceTx

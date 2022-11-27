@@ -199,7 +199,7 @@ export default async (req, res) => {
         }
       )
 
-      await cartServiceTx.addLineItems(cart.id, generatedLineItems, {
+      await cartServiceTx.addOrUpdateLineItems(cart.id, generatedLineItems, {
         validateSalesChannels:
           featureFlagRouter.isFeatureEnabled("sales_channels"),
       })

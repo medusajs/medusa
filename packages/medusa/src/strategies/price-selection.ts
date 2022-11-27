@@ -50,20 +50,6 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        TaxInclusivePricingFeatureFlag.key
-      )
-    ) {
-      return this.calculateVariantPrice_new(variant_id, context)
-    }
-    return this.calculateVariantPrice_old(variant_id, context)
-  }
-
-  private async calculateVariantPrice_new(
-    variant_id: string,
-    context: PriceSelectionContext
-  ): Promise<PriceSelectionResult> {
     // TODO: Refactor using the cache decorators when it will be finished
     const cacheKey = this.getCacheKey(variant_id, context)
     const cached = await this.cacheService_
@@ -73,6 +59,27 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       return cached
     }
 
+    let result
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      )
+    ) {
+      result = await this.calculateVariantPrice_new(variant_id, context)
+    } else {
+      result = await this.calculateVariantPrice_old(variant_id, context)
+    }
+
+    await this.cacheService_.set(cacheKey, result)
+
+    return result
+  }
+
+  private async calculateVariantPrice_new(
+    variant_id: string,
+    context: PriceSelectionContext
+  ): Promise<PriceSelectionResult> {
     const moneyRepo = this.manager_.getCustomRepository(
       this.moneyAmountRepository_
     )
@@ -154,8 +161,6 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
         result.calculatedPriceIncludesTax = isTaxInclusive
       }
     }
-
-    await this.cacheService_.set(cacheKey, result)
 
     return result
   }

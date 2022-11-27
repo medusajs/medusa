@@ -98,7 +98,7 @@ describe("POST /store/carts", () => {
     })
 
     it("calls line item generate", () => {
-      expect(CartServiceMock.addLineItems).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledTimes(1)
 
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
         [

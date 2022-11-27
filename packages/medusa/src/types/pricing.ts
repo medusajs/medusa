@@ -31,11 +31,6 @@ export type ShippingOptionPricing = {
   tax_amount: number
 }
 
-export type VariantData = {
-  id: string
-  product_id: string
-}
-
 export type PricedShippingOption = Partial<ShippingOption> &
   ShippingOptionPricing
 

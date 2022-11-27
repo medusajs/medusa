@@ -15,7 +15,6 @@ import {
   PricingContext,
   ProductVariantPricing,
   TaxedPricing,
-  VariantData,
 } from "../types/pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { calculatePriceTaxAmount } from "../utils"
@@ -288,14 +287,19 @@ class PricingService extends TransactionBaseService {
 
   /**
    * Gets the prices for a collection of variants.
-   * @param variantsData - the id of the variants or the variant data to get prices for
+   * @param variantIds - the id of the variants to get the prices for
    * @param context - the price selection context to use
    * @return The product variant prices
    */
-  async getProductVariantsPricing(
-    variantsData: VariantData[],
+  async getProductVariantsPricing<
+    T = string | string[],
+    TOutput = T extends string
+      ? ProductVariantPricing
+      : { [variant_id: string]: ProductVariantPricing }
+  >(
+    variantIds: T,
     context: PriceSelectionContext | PricingContext
-  ): Promise<{ [variant_id: string]: ProductVariantPricing }> {
+  ): Promise<TOutput> {
     let pricingContext: PricingContext
     if ("automatic_taxes" in context) {
       pricingContext = context
@@ -303,9 +307,23 @@ class PricingService extends TransactionBaseService {
       pricingContext = await this.collectPricingContext(context)
     }
 
+    const ids = (
+      Array.isArray(variantIds) ? variantIds : [variantIds]
+    ) as string[]
+
+    const variants = await this.productVariantService
+      .withTransaction(this.manager_)
+      .list({ id: ids }, { select: ["id", "product_id"] })
+
+    const variantsMap = new Map<string, { id: string; product_id: string }>()
+
+    variants.forEach((variant) => {
+      variantsMap.set(variant.id, variant)
+    })
+
     let pricingResult: { [variant_id: string]: ProductVariantPricing } = {}
-    for (const variantData of variantsData) {
-      const { product_id } = variantData
+    for (const variantId of ids) {
+      const { id, product_id } = variantsMap.get(variantId)!
 
       let productRates: TaxServiceRate[] = []
 
@@ -318,14 +336,16 @@ class PricingService extends TransactionBaseService {
           })
       }
 
-      pricingResult[variantData.id] = await this.getProductVariantPricing_(
-        variantData.id,
+      pricingResult[id] = await this.getProductVariantPricing_(
+        id,
         productRates,
         pricingContext
       )
     }
 
-    return pricingResult
+    return (!Array.isArray(variantIds)
+      ? Object.values(pricingResult)[0]
+      : pricingResult) as unknown as TOutput
   }
 
   private async getProductPricing_(

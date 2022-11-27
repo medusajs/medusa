@@ -1,7 +1,7 @@
 import { Redis } from "ioredis"
 import { ICacheService } from "../interfaces"
 
-const DEFAULT_CACHE_TIME = 60 * 60 // 60 seconds
+const DEFAULT_CACHE_TIME = 30 // 30 seconds
 
 export default class CacheService implements ICacheService {
   protected readonly redis_: Redis

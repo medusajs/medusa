@@ -3,7 +3,7 @@ import { TransactionBaseService } from "../interfaces"
 import { EntityManager } from "typeorm"
 import ProductVariantService from "./product-variant"
 import { ProductVariant } from "../models"
-import { isDefined, isString } from "../utils"
+import { isDefined } from "../utils"
 
 type InventoryServiceProps = {
   manager: EntityManager
@@ -58,46 +58,34 @@ class InventoryService extends TransactionBaseService {
    * Checks if the inventory of a variant can cover a given quantity. Will
    * return true if the variant doesn't have managed inventory or if the variant
    * allows backorders or if the inventory quantity is greater than `quantity`.
-   * @param variantDataOrId - the id or the data of the variant to check
+   * @param variantId - the id of the variant to check
    * @param quantity - the number of units to check availability for
    * @return true if the inventory covers the quantity
    */
   async confirmInventory(
-    variantDataOrId:
-      | {
-          id: string
-          inventory_quantity: number
-          allow_backorder: boolean
-          manage_inventory: boolean
-        }
-      | string
-      | undefined
-      | null,
+    variantId: string | null | undefined,
     quantity: number
   ): Promise<boolean> {
     // if variantId is undefined then confirm inventory as it
     // is a custom item that is not managed
-    if (!isDefined(variantDataOrId) || variantDataOrId === null) {
+    if (!isDefined(variantId) || variantId === null) {
       return true
     }
 
-    const variant = isString(variantDataOrId)
-      ? await this.productVariantService_
-          .withTransaction(this.manager_)
-          .retrieve(variantDataOrId, {
-            select: [
-              "id",
-              "inventory_quantity",
-              "allow_backorder",
-              "manage_inventory",
-            ],
-          })
-      : variantDataOrId
+    const variant = await this.productVariantService_
+      .withTransaction(this.manager_)
+      .retrieve(variantId, {
+        select: [
+          "id",
+          "inventory_quantity",
+          "allow_backorder",
+          "manage_inventory",
+        ],
+      })
 
     const { inventory_quantity, allow_backorder, manage_inventory } = variant
     const isCovered =
       !manage_inventory || allow_backorder || inventory_quantity >= quantity
-
     if (!isCovered) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
