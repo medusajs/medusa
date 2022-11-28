@@ -4347,7 +4347,7 @@ __metadata:
     "@types/jsonwebtoken": ^8.5.5
     "@types/lodash": ^4.14.168
     "@types/multer": ^1.4.7
-    awilix: ^4.2.3
+    awilix: ^8.0.0
     babel-preset-medusa-package: ^1.1.19
     body-parser: ^1.19.0
     bull: ^3.12.1
@@ -10143,13 +10143,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"awilix@npm:^4.2.3":
-  version: 4.3.4
-  resolution: "awilix@npm:4.3.4"
+"awilix@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "awilix@npm:8.0.0"
   dependencies:
     camel-case: ^4.1.2
-    glob: ^7.1.6
-  checksum: 636f887be095d1f3dbd245bb2189965b6214b9cc19050a963c22a2f30aaea0039ba7d7df235a2d5ba725550230a98a44daf21971bd32ece3e5a88e91cbbe102f
+    fast-glob: ^3.2.12
+  checksum: 29a6b05d651635c240d5a22ea7d463330e5aab262e25a4043c39ca5a52d5e7ff691fcd6e1f0d6565b5bbd095c1fbc3240f6686e4db657bcb3155fe84d16c7f1a
   languageName: node
   linkType: hard
 
@@ -16191,6 +16191,19 @@ __metadata:
     merge2: ^1.3.0
     micromatch: ^4.0.4
   checksum: f726d4d6545ae9ade242eba78ae418cd8beac6c9291cdc36fc6b3b4e54f04fa0ecde5767256f2a600d6e14dc49a841adb3aa4b5f3f0c06b35dd4f3954965443d
+  languageName: node
+  linkType: hard
+
+"fast-glob@npm:^3.2.12":
+  version: 3.2.12
+  resolution: "fast-glob@npm:3.2.12"
+  dependencies:
+    "@nodelib/fs.stat": ^2.0.2
+    "@nodelib/fs.walk": ^1.2.3
+    glob-parent: ^5.1.2
+    merge2: ^1.3.0
+    micromatch: ^4.0.4
+  checksum: 08604fb8ef6442ce74068bef3c3104382bb1f5ab28cf75e4ee904662778b60ad620e1405e692b7edea598ef445f5d387827a965ba034e1892bf54b1dfde97f26
   languageName: node
   linkType: hard
 
