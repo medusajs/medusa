@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid"
 import os from "os"
 import { join } from "path"
 
-export class InMemoryConfigStore {
+export default class InMemoryConfigStore {
   config = {}
   path = join(os.tmpdir(), `medusa`)
 

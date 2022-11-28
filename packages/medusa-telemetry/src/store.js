@@ -1,7 +1,7 @@
 import Configstore from "configstore"
 import path from "path"
 
-import { InMemoryConfigStore } from "./util/in-memory-config"
+import InMemoryConfigStore from "./util/in-memory-config"
 import isTruthy from "./util/is-truthy"
 import OutboxStore from "./util/outbox-store"
 
