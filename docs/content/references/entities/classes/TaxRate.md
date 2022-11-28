@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L25)
+[models/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L25)
 
 ___
 
@@ -42,7 +42,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -56,7 +56,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:38](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L38)
+[models/tax-rate.ts:38](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L38)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:28](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L28)
+[models/tax-rate.ts:28](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L28)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:83](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L83)
+[models/tax-rate.ts:83](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L83)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:84](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L84)
+[models/tax-rate.ts:84](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L84)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:66](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L66)
+[models/tax-rate.ts:66](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L66)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:52](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L52)
+[models/tax-rate.ts:52](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L52)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:22](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L22)
+[models/tax-rate.ts:22](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L22)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:35](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L35)
+[models/tax-rate.ts:35](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L35)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:31](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L31)
+[models/tax-rate.ts:31](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L31)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:85](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L85)
+[models/tax-rate.ts:85](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L85)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[models/tax-rate.ts:80](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L80)
+[models/tax-rate.ts:80](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L80)
 
 ___
 
@@ -180,7 +180,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -194,4 +194,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/tax-rate.ts:87](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-rate.ts#L87)
+[models/tax-rate.ts:87](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tax-rate.ts#L87)

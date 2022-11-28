@@ -32,7 +32,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/publishable-api-key.ts:12](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/publishable-api-key.ts#L12)
+[models/publishable-api-key.ts:12](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/publishable-api-key.ts#L12)
 
 ___
 
@@ -56,7 +56,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[models/publishable-api-key.ts:18](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/publishable-api-key.ts#L18)
+[models/publishable-api-key.ts:18](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/publishable-api-key.ts#L18)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/publishable-api-key.ts:15](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/publishable-api-key.ts#L15)
+[models/publishable-api-key.ts:15](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/publishable-api-key.ts#L15)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[models/publishable-api-key.ts:21](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/publishable-api-key.ts#L21)
+[models/publishable-api-key.ts:21](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/publishable-api-key.ts#L21)
 
 ___
 
@@ -100,7 +100,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -114,4 +114,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/publishable-api-key.ts:23](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/publishable-api-key.ts#L23)
+[models/publishable-api-key.ts:23](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/publishable-api-key.ts#L23)

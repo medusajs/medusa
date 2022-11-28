@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[models/tracking-link.ts:21](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tracking-link.ts#L21)
+[models/tracking-link.ts:21](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tracking-link.ts#L21)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[models/tracking-link.ts:17](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tracking-link.ts#L17)
+[models/tracking-link.ts:17](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tracking-link.ts#L17)
 
 ___
 
@@ -80,7 +80,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[models/tracking-link.ts:24](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tracking-link.ts#L24)
+[models/tracking-link.ts:24](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tracking-link.ts#L24)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/tracking-link.ts:27](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tracking-link.ts#L27)
+[models/tracking-link.ts:27](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tracking-link.ts#L27)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/tracking-link.ts:14](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tracking-link.ts#L14)
+[models/tracking-link.ts:14](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tracking-link.ts#L14)
 
 ___
 
@@ -124,7 +124,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[models/tracking-link.ts:11](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tracking-link.ts#L11)
+[models/tracking-link.ts:11](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tracking-link.ts#L11)
 
 ## Methods
 
@@ -148,4 +148,4 @@ ___
 
 #### Defined in
 
-[models/tracking-link.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tracking-link.ts#L29)
+[models/tracking-link.ts:29](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/tracking-link.ts#L29)
