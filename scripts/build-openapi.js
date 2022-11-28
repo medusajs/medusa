@@ -1,113 +1,51 @@
 #!/usr/bin/env node
 
 const fs = require("fs")
-const OAS = require("oas-normalize")
-const swaggerInline = require("swagger-inline")
-const { exec } = require("child_process");
+const path = require("path")
+const { exec } = require("child_process")
+const yaml = require("js-yaml")
 
-const isDryRun = process.argv.indexOf('--dry-run') !== -1;
+const run = () => {
+  for (const apiType of ["store", "admin"]) {
+    const inputJsonFile = path.resolve(
+      __dirname,
+      "../",
+      `packages/medusa/dist/oas/${apiType}.oas.json`
+    )
+    const outputJsonFile = path.resolve(
+      __dirname,
+      "../",
+      `docs/api/${apiType}-spec3.json`
+    )
+    const outputYamlFile = path.resolve(
+      __dirname,
+      "../",
+      `docs/api/${apiType}-spec3.yaml`
+    )
 
-// Storefront API
-swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/store"],
-  {
-    base: "./docs/api/store-spec3-base.yaml",
+    fs.copyFileSync(inputJsonFile, outputJsonFile)
+    jsonFileToYamlFile(inputJsonFile, outputYamlFile)
+    generateReference(apiType)
   }
-).then((gen) => {
-  const oas = new OAS(gen)
-  oas
-    .validate(true)
-    .then(() => {
-      if (!isDryRun) {
-        fs.writeFileSync("./docs/api/store-spec3.json", gen)
-      }
-    })
-    .catch((err) => {
-      console.log("Error in store")
-      console.error(err)
-      process.exit(1)
-    })
-})
-.catch((err) => {
-  console.log("Error in store")
-  console.error(err)
-  process.exit(1)
-});
+}
 
-swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/store"],
-  {
-    base: "./docs/api/store-spec3-base.yaml",
-    format: "yaml",
-  }
-).then((gen) => {
-  if (!isDryRun) {
-    fs.writeFileSync("./docs/api/store-spec3.yaml", gen)
-    exec("rm -rf docs/api/store/ && yarn run -- redocly split docs/api/store-spec3.yaml --outDir=docs/api/store/", (error, stdout, stderr) => {
+const jsonFileToYamlFile = (inputJsonFile, outputYamlFile) => {
+  const jsonString = fs.readFileSync(inputJsonFile, "utf8")
+  const jsonObject = JSON.parse(jsonString)
+  const yamlString = yaml.dump(jsonObject)
+  fs.writeFileSync(outputYamlFile, yamlString, "utf8")
+}
+
+const generateReference = (apiType) => {
+  exec(
+    `rm -rf docs/api/${apiType}/ && yarn run -- redocly split docs/api/${apiType}.oas.yaml --outDir=docs/api/${apiType}/`,
+    (error, stdout, stderr) => {
       if (error) {
         throw new Error(`error: ${error.message}`)
       }
-      console.log(`${stderr || stdout}`);
-    });
-  } else {
-    console.log('No errors occurred while generating Store API Reference');
-  }
-})
-.catch((err) => {
-  console.log("Error in store")
-  console.error(err)
-  process.exit(1)
-})
+      console.log(`${stderr || stdout}`)
+    }
+  )
+}
 
-// Admin API
-swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/admin"],
-  {
-    base: "./docs/api/admin-spec3-base.yaml",
-  }
-).then((gen) => {
-  const oas = new OAS(gen)
-  oas
-    .validate(true)
-    .then(() => {
-      if (!isDryRun) {
-        fs.writeFileSync("./docs/api/admin-spec3.json", gen)
-      }
-    })
-    .catch((err) => {
-      console.log("Error in admin")
-      console.error(err)
-      process.exit(1)
-    })
-})
-.catch((err) => {
-  console.log("Error in admin")
-  console.error(err)
-  process.exit(1)
-})
-
-swaggerInline(
-  ["./packages/medusa/src/models", "./packages/medusa/src/api/middlewares" , "./packages/medusa/src/api/routes/admin"],
-  {
-    base: "./docs/api/admin-spec3-base.yaml",
-    format: "yaml",
-  }
-).then((gen) => {
-  if (!isDryRun) {
-    fs.writeFileSync("./docs/api/admin-spec3.yaml", gen)
-    exec("rm -rf docs/api/admin/ && yarn run -- redocly split docs/api/admin-spec3.yaml --outDir=docs/api/admin/", (error, stdout, stderr) => {
-      if (error) {
-          throw new Error(`error: ${error.message}`)
-      }
-      console.log(`${stderr || stdout}`);
-      return;
-    });
-  } else {
-    console.log('No errors occurred while generating Admin API Reference');
-  }
-})
-.catch((err) => {
-  console.log("Error in admin")
-  console.error(err)
-  process.exit(1)
-})
+run()
