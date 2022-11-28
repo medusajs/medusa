@@ -289,6 +289,11 @@ function buildLocalCommands(cli, isLocalProject) {
             alias: `id`,
             type: `string`,
             describe: `User's id.`,
+          })
+          .option(`r`, {
+            alias: `role`,
+            type: `string`,
+            describe: `User's role`,
           }),
       handler: handlerP(
         getCommandHandler(`user`, (args, cmd) => {
