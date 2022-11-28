@@ -2,23 +2,14 @@
 
 ## Classes
 
-- [AdminGetRegionsPaginationParams](../classes/internal-19.AdminGetRegionsPaginationParams.md)
-- [AdminGetRegionsParams](../classes/internal-19.AdminGetRegionsParams.md)
-- [AdminGetRegionsRegionFulfillmentOptionsRes](../classes/internal-19.AdminGetRegionsRegionFulfillmentOptionsRes.md)
-- [AdminPostRegionsRegionCountriesReq](../classes/internal-19.AdminPostRegionsRegionCountriesReq.md)
-- [AdminPostRegionsRegionFulfillmentProvidersReq](../classes/internal-19.AdminPostRegionsRegionFulfillmentProvidersReq.md)
-- [AdminPostRegionsRegionPaymentProvidersReq](../classes/internal-19.AdminPostRegionsRegionPaymentProvidersReq.md)
-- [AdminPostRegionsRegionReq](../classes/internal-19.AdminPostRegionsRegionReq.md)
-- [AdminPostRegionsReq](../classes/internal-19.AdminPostRegionsReq.md)
-- [AdminRegionsRes](../classes/internal-19.AdminRegionsRes.md)
-- [FulfillmentOption](../classes/internal-19.FulfillmentOption.md)
+- [AdminGetProductTypesParams](../classes/internal-19.AdminGetProductTypesParams.md)
 
 ## Type Aliases
 
-### AdminRegionsListRes
+### AdminProductTypesListRes
 
-Ƭ **AdminRegionsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `regions`: [`Region`](../classes/internal.Region.md)[]  }
+Ƭ **AdminProductTypesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `product_types`: [`ProductType`](../classes/internal.ProductType.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/index.d.ts:12
+medusa/dist/api/routes/admin/product-types/index.d.ts:9

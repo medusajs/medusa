@@ -10,19 +10,19 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminVariantsListRes`](../modules/internal-30.md#adminvariantslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminVariantsListRes`](../modules/internal-33.md#adminvariantslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetVariantsParams`](internal-30.AdminGetVariantsParams.md) |
+| `query?` | [`AdminGetVariantsParams`](internal-33.AdminGetVariantsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminVariantsListRes`](../modules/internal-30.md#adminvariantslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminVariantsListRes`](../modules/internal-33.md#adminvariantslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/variants.ts:7](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/variants.ts#L7)
+[medusa-js/src/resources/admin/variants.ts:7](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/variants.ts#L7)

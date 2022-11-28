@@ -2,37 +2,48 @@
 
 ## Classes
 
-- [AdminPostShippingProfilesProfileReq](../classes/internal-24.AdminPostShippingProfilesProfileReq.md)
-- [AdminPostShippingProfilesReq](../classes/internal-24.AdminPostShippingProfilesReq.md)
+- [AdminGetReturnsParams](../classes/internal-24.AdminGetReturnsParams.md)
+- [AdminPostReturnsReturnReceiveReq](../classes/internal-24.AdminPostReturnsReturnReceiveReq.md)
+- [Item](../classes/internal-24.Item.md)
 
 ## Type Aliases
 
-### AdminShippingProfilesListRes
+### AdminReturnsCancelRes
 
-Ƭ **AdminShippingProfilesListRes**: `Object`
+Ƭ **AdminReturnsCancelRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `shipping_profiles` | [`ShippingProfile`](../classes/internal.ShippingProfile.md)[] |
+| `order` | [`Order`](../classes/internal.Order.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-profiles/index.d.ts:12
+medusa/dist/api/routes/admin/returns/index.d.ts:6
 
 ___
 
-### AdminShippingProfilesRes
+### AdminReturnsListRes
 
-Ƭ **AdminShippingProfilesRes**: `Object`
+Ƭ **AdminReturnsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `returns`: [`Return`](../classes/internal.Return.md)[]  }
+
+#### Defined in
+
+medusa/dist/api/routes/admin/returns/index.d.ts:9
+
+___
+
+### AdminReturnsRes
+
+Ƭ **AdminReturnsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `shipping_profile` | [`ShippingProfile`](../classes/internal.ShippingProfile.md) |
+| `return` | [`Return`](../classes/internal.Return.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-profiles/index.d.ts:9
+medusa/dist/api/routes/admin/returns/index.d.ts:12

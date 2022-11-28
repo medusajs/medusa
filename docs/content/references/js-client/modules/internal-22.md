@@ -2,45 +2,23 @@
 
 ## Classes
 
-- [AdminDeleteSalesChannelsChannelProductsBatchReq](../classes/internal-22.AdminDeleteSalesChannelsChannelProductsBatchReq.md)
-- [AdminGetSalesChannelsParams](../classes/internal-22.AdminGetSalesChannelsParams.md)
-- [AdminPostSalesChannelsChannelProductsBatchReq](../classes/internal-22.AdminPostSalesChannelsChannelProductsBatchReq.md)
-- [AdminPostSalesChannelsReq](../classes/internal-22.AdminPostSalesChannelsReq.md)
-- [AdminPostSalesChannelsSalesChannelReq](../classes/internal-22.AdminPostSalesChannelsSalesChannelReq.md)
-- [ProductBatchSalesChannel](../classes/internal-22.ProductBatchSalesChannel.md)
+- [AdminGetRegionsPaginationParams](../classes/internal-22.AdminGetRegionsPaginationParams.md)
+- [AdminGetRegionsParams](../classes/internal-22.AdminGetRegionsParams.md)
+- [AdminGetRegionsRegionFulfillmentOptionsRes](../classes/internal-22.AdminGetRegionsRegionFulfillmentOptionsRes.md)
+- [AdminPostRegionsRegionCountriesReq](../classes/internal-22.AdminPostRegionsRegionCountriesReq.md)
+- [AdminPostRegionsRegionFulfillmentProvidersReq](../classes/internal-22.AdminPostRegionsRegionFulfillmentProvidersReq.md)
+- [AdminPostRegionsRegionPaymentProvidersReq](../classes/internal-22.AdminPostRegionsRegionPaymentProvidersReq.md)
+- [AdminPostRegionsRegionReq](../classes/internal-22.AdminPostRegionsRegionReq.md)
+- [AdminPostRegionsReq](../classes/internal-22.AdminPostRegionsReq.md)
+- [AdminRegionsRes](../classes/internal-22.AdminRegionsRes.md)
+- [FulfillmentOption](../classes/internal-22.FulfillmentOption.md)
 
 ## Type Aliases
 
-### AdminSalesChannelsListRes
+### AdminRegionsListRes
 
-Ƭ **AdminSalesChannelsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `sales_channels`: [`SalesChannel`](../classes/internal.SalesChannel.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/sales-channels/index.d.ts:10
-
-___
-
-### AdminSalesChannelsRes
-
-Ƭ **AdminSalesChannelsRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `sales_channel` | [`SalesChannel`](../classes/internal.SalesChannel.md) |
+Ƭ **AdminRegionsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `regions`: [`Region`](../classes/internal.Region.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/index.d.ts:6
-
-## Variables
-
-### AdminGetSalesChannelsParams\_base
-
-• `Const` **AdminGetSalesChannelsParams\_base**: [`"/home/runner/work/medusa/medusa/packages/medusa/dist/types/global"`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md)
-
-#### Defined in
-
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:141
+medusa/dist/api/routes/admin/regions/index.d.ts:12
