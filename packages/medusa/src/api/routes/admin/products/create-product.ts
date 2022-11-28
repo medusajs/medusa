@@ -1,8 +1,4 @@
 import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
-import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -12,6 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
@@ -19,17 +16,18 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import {
+  CreateProductInput,
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { CreateProductVariantInput } from "../../../../types/product-variant"
 
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { ProductStatus } from "../../../../models"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductStatus } from "../../../../models"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -330,9 +328,10 @@ export default async (req, res) => {
         .retrieveDefault()
     }
 
-    const newProduct = await productService
-      .withTransaction(manager)
-      .create({ ...validated, profile_id: shippingProfile.id })
+    const newProduct = await productService.withTransaction(manager).create({
+      ...validated,
+      profile_id: shippingProfile.id,
+    } as CreateProductInput)
 
     if (variants) {
       for (const [i, variant] of variants.entries()) {
@@ -357,7 +356,10 @@ export default async (req, res) => {
 
           await productVariantService
             .withTransaction(manager)
-            .create(newProduct.id, variant as CreateProductVariantInput)
+            .create(
+              newProduct.id,
+              variant as unknown as CreateProductVariantInput
+            )
         })
       )
     }
@@ -453,10 +455,14 @@ class ProductVariantReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesCreateReq)
-  prices: ProductVariantPricesCreateReq[]
+  // @IsOptional()
+  // @Type(() => ProductVariantPricesCreateReq)
+  // @ValidateNested({ each: true })
+  // @IsArray()
+  // prices?: ProductVariantPricesCreateReq[]
+
+  @IsString()
+  prices: string
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)

@@ -7,13 +7,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { ProductService, ProductVariantService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductService, ProductVariantService } from "../../../../services"
 
-import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /products/{id}/variants
@@ -302,6 +302,7 @@ export class AdminPostProductsProductVariantsReq {
   @IsOptional()
   metadata?: Record<string, unknown>
 
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesCreateReq)

@@ -1070,6 +1070,35 @@ describe("/admin/products", () => {
       })
     })
 
+    // Validates that users can duplicate incomplete draft product
+    it("creates a product with a variant that has no prices or options", async () => {
+      const api = useApi()
+
+      const payload = {
+        title: "Test",
+        description: "test-product-description",
+        type: { value: "test-type" },
+        images: ["test-image.png", "test-image-2.png"],
+        collection_id: "test-collection",
+        tags: [{ value: "123" }, { value: "456" }],
+        options: [{ title: "size" }, { title: "color" }],
+        variants: [
+          {
+            title: "Test variant",
+            inventory_quantity: 10,
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products", payload, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+    })
+
     it("creates a product that is not discountable", async () => {
       const api = useApi()
 
