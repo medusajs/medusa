@@ -31,7 +31,6 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.x",
     "medusa-interfaces": "1.x"
   },
   "dependencies": {

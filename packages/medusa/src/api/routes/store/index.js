@@ -17,7 +17,7 @@ import shippingOptionRoutes from "./shipping-options"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
 import paymentCollectionRoutes from "./payment-collections"
-import { parseCorsOrigins } from "../../../utils"
+import { parseCorsOrigins } from "medusa-core-utils"
 
 const route = Router()
 

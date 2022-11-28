@@ -30,7 +30,6 @@
     "watch": "babel -w src --out-dir . --ignore **/__tests__"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.x",
     "medusa-interfaces": "1.x"
   },
   "dependencies": {

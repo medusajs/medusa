@@ -1,8 +1,7 @@
 import express, { Router } from "express"
 import jwt from "jsonwebtoken"
 import cors from "cors"
-import { getConfigFile, MedusaError } from "medusa-core-utils"
-import { parseCorsOrigins } from "@medusajs/medusa"
+import { getConfigFile, MedusaError, parseCorsOrigins } from "medusa-core-utils"
 
 const app = Router()
 export default (rootDirectory) => {

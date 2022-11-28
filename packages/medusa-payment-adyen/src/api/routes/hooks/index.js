@@ -2,8 +2,7 @@ import { Router } from "express"
 import cors from "cors"
 import bodyParser from "body-parser"
 import middlewares from "../../middlewares"
-import { getConfigFile } from "medusa-core-utils"
-import { parseCorsOrigins } from "@medusajs/medusa"
+import { getConfigFile, parseCorsOrigins } from "medusa-core-utils"
 
 const route = Router()
 

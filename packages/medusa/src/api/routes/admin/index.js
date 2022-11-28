@@ -36,7 +36,7 @@ import userRoutes, { unauthenticatedUserRoutes } from "./users"
 import variantRoutes from "./variants"
 import paymentCollectionRoutes from "./payment-collections"
 import paymentRoutes from "./payments"
-import { parseCorsOrigins } from "../../../utils"
+import { parseCorsOrigins } from "medusa-core-utils"
 
 const route = Router()
 
