@@ -17,8 +17,8 @@ type InjectedDependencies = {
   manager: EntityManager
   logger: Logger
   stagedJobService: StagedJobService
-  eventBusRedisClient: Redis.Redis
-  eventBusRedisSubscriber: Redis.Redis
+  redisClient: Redis.Redis
+  redisSubscriber: Redis.Redis
 }
 
 type RedisCreateConnectionOptions = {
@@ -63,8 +63,8 @@ export default class RedisEventBusService extends TransactionBaseService impleme
 
     if (singleton) {
       this.connect({
-        client: container.eventBusRedisClient,
-        subscriber: container.eventBusRedisSubscriber,
+        client: container.redisClient,
+        subscriber: container.redisSubscriber,
       }, config)
     }
   }

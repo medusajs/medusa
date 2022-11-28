@@ -24,8 +24,6 @@ export default async ({
 
       const moduleServices = loadedModule?.services || []
 
-      console.log("REDIS: ", configModule)
-
       for (const service of moduleServices) {
         container.register({
           [resolution.definition.registrationName]: asFunction(
