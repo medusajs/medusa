@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/tax-provider.ts:6](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/tax-provider.ts#L6)
+[models/tax-provider.ts:6](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-provider.ts#L6)
 
 ___
 
@@ -28,4 +28,4 @@ ___
 
 #### Defined in
 
-[models/tax-provider.ts:9](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/tax-provider.ts#L9)
+[models/tax-provider.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/tax-provider.ts#L9)
