@@ -28,6 +28,7 @@
     "jest": "^25.5.2",
     "medusa-interfaces": "^1.3.3",
     "nodemon": "^2.0.1",
+    "openapi-typescript-codegen": "https://github.com/patrick-medusajs/openapi-typescript-codegen#8c7bf94be290a9b40d31b55fd2ef4421d56f31d7",
     "sqlite3": "^5.0.2",
     "supertest": "^4.0.2",
     "swagger-inline": "^6.1.0",
@@ -38,8 +39,9 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "build": "tsc --build && yarn run build:oas",
+    "build": "tsc --build && yarn run build:oas && yarn build:client",
     "build:oas": "tsx src/scripts/oas/build-oas.ts",
+    "build:client": "tsx src/scripts/oas/build-client.ts",
     "serve": "node dist/app.js",
     "test": "jest",
     "test:unit": "jest"

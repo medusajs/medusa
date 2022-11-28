@@ -157,6 +157,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@apidevtools/json-schema-ref-parser@npm:9.0.9":
+  version: 9.0.9
+  resolution: "@apidevtools/json-schema-ref-parser@npm:9.0.9"
+  dependencies:
+    "@jsdevtools/ono": ^7.1.3
+    "@types/json-schema": ^7.0.6
+    call-me-maybe: ^1.0.1
+    js-yaml: ^4.1.0
+  checksum: d1457e57ca12abcd3da25b9a2cb2982267102c65aefeaf284a3321b818090b9032d6b7a3ad9625abc00d07f5b1432d643f79aa6f515c1a787523d40563ef85e4
+  languageName: node
+  linkType: hard
+
 "@apidevtools/openapi-schemas@npm:^2.1.0":
   version: 2.1.0
   resolution: "@apidevtools/openapi-schemas@npm:2.1.0"
@@ -4354,6 +4366,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/medusa-client@workspace:packages/medusa-client":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/medusa-client@workspace:packages/medusa-client"
+  dependencies:
+    "@medusajs/medusa": "*"
+    "@types/jest": ^26.0.19
+    axios: ^1.2.0
+    cross-env: ^7.0.3
+    form-data: ^4.0.0
+    jest: ^26.6.3
+    node-fetch: 2.6.7
+    react: ^17.0.2
+    react-query: ^3.31.1
+    rxjs: 7.5.7
+    typescript: ^4.1.3
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/medusa-js@^1.3.3, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
@@ -4370,7 +4400,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.6.2, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.3.3, @medusajs/medusa@^1.6.2, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -4414,6 +4444,7 @@ __metadata:
     multer: ^1.4.2
     node-schedule: ^2.1.0
     nodemon: ^2.0.1
+    openapi-typescript-codegen: "https://github.com/patrick-medusajs/openapi-typescript-codegen#8c7bf94be290a9b40d31b55fd2ef4421d56f31d7"
     papaparse: ^5.3.2
     passport: ^0.4.0
     passport-http-bearer: ^1.0.1
@@ -10333,6 +10364,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "axios@npm:1.2.0"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 2a9a73ca55010cab987b612b358a0bf128ebc572c5d63cdb66fb9c336a5718752749f2ba8b38b9745a6e33edb83ffec2dd65c5a7118ce94e5cae1a9ea6fc74c2
+  languageName: node
+  linkType: hard
+
 "axobject-query@npm:^2.2.0":
   version: 2.2.0
   resolution: "axobject-query@npm:2.2.0"
@@ -11779,7 +11821,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:^6.0.0, camelcase@npm:^6.2.0, camelcase@npm:^6.3.0":
+"camelcase@npm:^6.0.0, camelcase@npm:^6.2.0, camelcase@npm:^6.2.1, camelcase@npm:^6.3.0":
   version: 6.3.0
   resolution: "camelcase@npm:6.3.0"
   checksum: 0d701658219bd3116d12da3eab31acddb3f9440790c0792e0d398f0a520a6a4058018e546862b6fba89d7ae990efaeb97da71e1913e9ebf5a8b5621a3d55c710
@@ -12589,6 +12631,13 @@ __metadata:
   version: 8.3.0
   resolution: "commander@npm:8.3.0"
   checksum: 8b043bb8322ea1c39664a1598a95e0495bfe4ca2fad0d84a92d7d1d8d213e2a155b441d2470c8e08de7c4a28cf2bc6e169211c49e1b21d9f7edc6ae4d9356060
+  languageName: node
+  linkType: hard
+
+"commander@npm:^9.4.1":
+  version: 9.4.1
+  resolution: "commander@npm:9.4.1"
+  checksum: 04ea8ccc6fe3d3d1ca7ca26b06187498af8e6341a2c98b534528d504f8cad95b0c5ac2f3b78a7f0d332da16da9332db2ab9e43cb06241d367e9c7ee75cb76202
   languageName: node
   linkType: hard
 
@@ -17014,6 +17063,16 @@ __metadata:
     debug:
       optional: true
   checksum: ea21337fe38eac8d75f5af12c425cc40e0bb44dcc3091fd0bde1c828596251a7a9638b5720fee5a0a5c62524450cbe16c52aae1dce88c6aee68577e441842e7f
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.15.0":
+  version: 1.15.2
+  resolution: "follow-redirects@npm:1.15.2"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: da5932b70e63944d38eecaa16954bac4347036f08303c913d166eda74809d8797d38386e3a0eb1d2fe37d2aaff2764cce8e9dbd99459d860cf2cdfa237923b5f
   languageName: node
   linkType: hard
 
@@ -22294,6 +22353,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-schema-ref-parser@npm:^9.0.9":
+  version: 9.0.9
+  resolution: "json-schema-ref-parser@npm:9.0.9"
+  dependencies:
+    "@apidevtools/json-schema-ref-parser": 9.0.9
+  checksum: c6602a4e4f003629819a83540520850f3a06cb49a738d273854e4e2d8ebabb51b80cfc17d66cfc00ccadcb3a4c33eedf85b26b0af3b2c142f68f9f9dd5531a9c
+  languageName: node
+  linkType: hard
+
 "json-schema-traverse@npm:^0.4.1":
   version: 0.4.1
   resolution: "json-schema-traverse@npm:0.4.1"
@@ -26447,6 +26515,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openapi-typescript-codegen@https://github.com/patrick-medusajs/openapi-typescript-codegen#8c7bf94be290a9b40d31b55fd2ef4421d56f31d7":
+  version: 0.23.0
+  resolution: "openapi-typescript-codegen@https://github.com/patrick-medusajs/openapi-typescript-codegen.git#commit=8c7bf94be290a9b40d31b55fd2ef4421d56f31d7"
+  dependencies:
+    camelcase: ^6.3.0
+    commander: ^9.4.1
+    fs-extra: ^10.1.0
+    handlebars: ^4.7.7
+    json-schema-ref-parser: ^9.0.9
+    pascalcase: ^2.0.0
+  bin:
+    openapi: bin/index.js
+  checksum: 8bab0b900337b1ac2bd28d6ac029079f59bd89ab881b417122a1c86b791ce895a3599ec8f913cb1e064666e986c27bfe07b58907754d1939320ff0e1d218aadb
+  languageName: node
+  linkType: hard
+
 "opencollective-postinstall@npm:^2.0.0":
   version: 2.0.3
   resolution: "opencollective-postinstall@npm:2.0.3"
@@ -27017,6 +27101,15 @@ __metadata:
   version: 0.1.1
   resolution: "pascalcase@npm:0.1.1"
   checksum: 48dfe90618e33810bf58211d8f39ad2c0262f19ad6354da1ba563935b5f429f36409a1fb9187c220328f7a4dc5969917f8e3e01ee089b5f1627b02aefe39567b
+  languageName: node
+  linkType: hard
+
+"pascalcase@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "pascalcase@npm:2.0.0"
+  dependencies:
+    camelcase: ^6.2.1
+  checksum: c43658cd7bea0dc2b4362b0b15c803ee976fb6f981addab8452e1ad67cd768739979b7e687df38452f3743af34fe00f0292234f5aceb73457babb3fbdd585863
   languageName: node
   linkType: hard
 
@@ -28456,6 +28549,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: fe7dd8b1bdbbbea18d1459107729c3e4a2243ca870d26d34c2c1bcd3e4425b7bcc5112362df2d93cc7fb9746f6142b5e272fd1cc5c86ddf8580175186f6ad42b
+  languageName: node
+  linkType: hard
+
 "prr@npm:~1.0.1":
   version: 1.0.1
   resolution: "prr@npm:1.0.1"
@@ -29087,6 +29187,24 @@ __metadata:
     react-native:
       optional: true
   checksum: 5a67610e7d1eb15b6137e939fa3670f5deb8e519338380d19fd7bd47ac7dbea33f15df93c717648160b3c4dc6c3885450ff22eda180cd636afdfc5ba42682384
+  languageName: node
+  linkType: hard
+
+"react-query@npm:^3.31.1":
+  version: 3.39.2
+  resolution: "react-query@npm:3.39.2"
+  dependencies:
+    "@babel/runtime": ^7.5.5
+    broadcast-channel: ^3.4.1
+    match-sorter: ^6.0.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: e37b1a5289537e4438a92c7cf85668740e821292cd61cca4542e79259c7fb20f5727aed3c9fee67a1dacb756dbb21aed42148d1ecdbc2074fa7e1eba19a6b386
   languageName: node
   linkType: hard
 
@@ -30349,6 +30467,15 @@ __metadata:
   dependencies:
     aproba: ^1.1.1
   checksum: 4e8964279d8f160f9ffaabe82eaad11a1d4c0db596a0f2b5257ae9d2b900c7e1ffcece3e5719199436f50718e1e7f45bb4bf7a82e331a4e734d67c2588a90cbb
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:7.5.7":
+  version: 7.5.7
+  resolution: "rxjs@npm:7.5.7"
+  dependencies:
+    tslib: ^2.1.0
+  checksum: 283620b3c90b85467c3549f7cda0dd768bc18719cccbbdd9aacadb0f0946827ab20d036f1a00d78066d769764e73070bfee8706091d77b8d971975598f6cbbd4
   languageName: node
   linkType: hard
 
