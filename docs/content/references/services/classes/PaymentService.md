@@ -1,16 +1,16 @@
-# Class: ReturnReasonService
+# Class: PaymentService
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`ReturnReasonService`**
+  ↳ **`PaymentService`**
 
 ## Constructors
 
 ### constructor
 
-• **new ReturnReasonService**(`__namedParameters`)
+• **new PaymentService**(`__namedParameters`)
 
 #### Parameters
 
@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:21](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L21)
+[packages/medusa/src/services/payment.ts:40](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L40)
 
 ## Properties
 
@@ -56,9 +56,19 @@ TransactionBaseService.\_\_container\_\_
 
 ___
 
+### eventBusService\_
+
+• `Protected` `Readonly` **eventBusService\_**: [`EventBusService`](EventBusService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/payment.ts:28](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L28)
+
+___
+
 ### manager\_
 
-• `Protected` **manager\_**: `EntityManager`
+• `Protected` `Readonly` **manager\_**: `EntityManager`
 
 #### Overrides
 
@@ -66,17 +76,27 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:18](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L18)
+[packages/medusa/src/services/payment.ts:26](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L26)
 
 ___
 
-### retReasonRepo\_
+### paymentProviderService\_
 
-• `Protected` `Readonly` **retReasonRepo\_**: typeof `ReturnReasonRepository`
+• `Protected` `Readonly` **paymentProviderService\_**: [`PaymentProviderService`](PaymentProviderService.md)
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L16)
+[packages/medusa/src/services/payment.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L29)
+
+___
+
+### paymentRepository\_
+
+• `Protected` `Readonly` **paymentRepository\_**: typeof `PaymentRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/payment.ts:30](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L30)
 
 ___
 
@@ -90,7 +110,28 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L19)
+[packages/medusa/src/services/payment.ts:27](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L27)
+
+___
+
+### Events
+
+▪ `Static` `Readonly` **Events**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `CREATED` | `string` |
+| `PAYMENT_CAPTURED` | `string` |
+| `PAYMENT_CAPTURE_FAILED` | `string` |
+| `REFUND_CREATED` | `string` |
+| `REFUND_FAILED` | `string` |
+| `UPDATED` | `string` |
+
+#### Defined in
+
+[packages/medusa/src/services/payment.ts:31](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L31)
 
 ## Methods
 
@@ -133,91 +174,87 @@ TransactionBaseService.atomicPhase\_
 
 ___
 
+### capture
+
+▸ **capture**(`paymentOrId`): `Promise`<`Payment`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `paymentOrId` | `string` \| `Payment` |
+
+#### Returns
+
+`Promise`<`Payment`\>
+
+#### Defined in
+
+[packages/medusa/src/services/payment.ts:132](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L132)
+
+___
+
 ### create
 
-▸ **create**(`data`): `Promise`<`ReturnReason`\>
+▸ **create**(`paymentInput`): `Promise`<`Payment`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `data` | `CreateReturnReason` |
+| `paymentInput` | `PaymentDataInput` |
 
 #### Returns
 
-`Promise`<`ReturnReason`\>
+`Promise`<`Payment`\>
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L29)
+[packages/medusa/src/services/payment.ts:78](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L78)
 
 ___
 
-### delete
+### refund
 
-▸ **delete**(`returnReasonId`): `Promise`<`void`\>
+▸ **refund**(`paymentOrId`, `amount`, `reason`, `note?`): `Promise`<`Refund`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `returnReasonId` | `string` |
+| `paymentOrId` | `string` \| `Payment` |
+| `amount` | `number` |
+| `reason` | `string` |
+| `note?` | `string` |
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`<`Refund`\>
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:110](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L110)
-
-___
-
-### list
-
-▸ **list**(`selector`, `config?`): `Promise`<`ReturnReason`[]\>
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `selector` | `Selector`<`ReturnReason`\> | the query object for find |
-| `config` | `FindConfig`<`ReturnReason`\> | config object |
-
-#### Returns
-
-`Promise`<`ReturnReason`[]\>
-
-the result of the find operation
-
-#### Defined in
-
-[packages/medusa/src/services/return-reason.ts:72](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L72)
+[packages/medusa/src/services/payment.ts:173](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L173)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<`ReturnReason`\>
-
-Gets an order by id.
+▸ **retrieve**(`paymentId`, `config?`): `Promise`<`Payment`\>
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `id` | `string` | id of order to retrieve |
-| `config` | `FindConfig`<`ReturnReason`\> | config object |
+| Name | Type |
+| :------ | :------ |
+| `paymentId` | `string` |
+| `config` | `FindConfig`<`Payment`\> |
 
 #### Returns
 
-`Promise`<`ReturnReason`\>
-
-the order document
+`Promise`<`Payment`\>
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:91](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L91)
+[packages/medusa/src/services/payment.ts:55](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L55)
 
 ___
 
@@ -247,28 +284,30 @@ ___
 
 ### update
 
-▸ **update**(`id`, `data`): `Promise`<`ReturnReason`\>
+▸ **update**(`paymentId`, `data`): `Promise`<`Payment`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `string` |
-| `data` | `UpdateReturnReason` |
+| `paymentId` | `string` |
+| `data` | `Object` |
+| `data.order_id?` | `string` |
+| `data.swap_id?` | `string` |
 
 #### Returns
 
-`Promise`<`ReturnReason`\>
+`Promise`<`Payment`\>
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:50](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L50)
+[packages/medusa/src/services/payment.ts:103](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L103)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ReturnReasonService`](ReturnReasonService.md)
+▸ **withTransaction**(`transactionManager?`): [`PaymentService`](PaymentService.md)
 
 #### Parameters
 
@@ -278,7 +317,7 @@ ___
 
 #### Returns
 
-[`ReturnReasonService`](ReturnReasonService.md)
+[`PaymentService`](PaymentService.md)
 
 #### Inherited from
 
