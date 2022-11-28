@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[models/product-collection.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/product-collection.ts#L16)
+[models/product-collection.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-collection.ts#L16)
 
 ___
 
@@ -70,7 +70,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[models/product-collection.ts:22](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/product-collection.ts#L22)
+[models/product-collection.ts:22](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-collection.ts#L22)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[models/product-collection.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/product-collection.ts#L19)
+[models/product-collection.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-collection.ts#L19)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/product-collection.ts:12](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/product-collection.ts#L12)
+[models/product-collection.ts:12](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-collection.ts#L12)
 
 ___
 
@@ -114,7 +114,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -128,4 +128,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/product-collection.ts:24](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/models/product-collection.ts#L24)
+[models/product-collection.ts:24](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-collection.ts#L24)
