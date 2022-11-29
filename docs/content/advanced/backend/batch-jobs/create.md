@@ -274,6 +274,7 @@ medusa.admin.batchJobs.create({
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -328,7 +329,9 @@ medusa.admin.batchJobs.retrieve(batchJobId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`)
+fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ batch_job }) => {
   console.log(batch_job.status, batch_job.result);
@@ -382,7 +385,8 @@ medusa.admin.batchJobs.confirm(batchJobId)
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
-  method: 'POST'
+  method: 'POST',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {
