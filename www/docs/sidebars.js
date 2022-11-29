@@ -95,7 +95,7 @@ module.exports = {
                   id: "deployments/server/deploying-on-heroku",
                   label: "Deploy on Heroku",
                   customProps: {
-                    image: 'https://i.imgur.com/xNvxSkf.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739927/Medusa%20Docs/Other/xNvxSkf_l230wq.png'
                   }
                 },
                 {
@@ -103,7 +103,7 @@ module.exports = {
                   id: "deployments/server/deploying-on-digital-ocean",
                   label: "Deploy on DigitalOcean",
                   customProps: {
-                    image: 'https://i.imgur.com/aahqJp4.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739945/Medusa%20Docs/Other/aahqJp4_lbtfdz.png'
                   }
                 },
                 {
@@ -111,7 +111,18 @@ module.exports = {
                   id: "deployments/server/deploying-on-qovery",
                   label: "Deploy on Qovery",
                   customProps: {
-                    image: 'https://i.imgur.com/qOvY2dN.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png'
+                  }
+                },
+                {
+                  type: "doc",
+                  id: "deployments/server/deploying-on-railway",
+                  label: "Deploy on Railway",
+                  customProps: {
+                    themedImage: {
+                      light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-light_fzuyeo.png',
+                      dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-dark_kkzuwh.png'
+                    }
                   }
                 }
               ]
