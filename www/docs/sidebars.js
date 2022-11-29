@@ -211,6 +211,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/backend/taxes/manual-calculation",
+              label: "Calculate Taxes Manually"
+            },
+            {
+              type: "doc",
               id: "advanced/storefront/use-sales-channels",
               label: "Use SalesChannels APIs"
             },
@@ -229,11 +234,6 @@ module.exports = {
               type: "doc",
               id: "advanced/admin/import-prices",
               label: "Import Prices"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/taxes/manual-calculation",
-              label: "Calculate Taxes Manually"
             },
             {
               type: "doc",
