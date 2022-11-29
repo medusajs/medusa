@@ -3,13 +3,14 @@ import faker from "faker"
 import { Connection } from "typeorm"
 import {
   CustomerGroupFactoryData,
-  simpleCustomerGroupFactory,
+  simpleCustomerGroupFactory
 } from "./simple-customer-group-factory"
 
 export type CustomerFactoryData = {
   id?: string
   email?: string
   groups?: CustomerGroupFactoryData[]
+  password_hash?: string
 }
 
 export const simpleCustomerFactory = async (
@@ -28,6 +29,11 @@ export const simpleCustomerFactory = async (
     id: customerId,
     email: data.email,
   })
+
+  if (data.password_hash) {
+    c.password_hash = data.password_hash
+    c.has_account = true
+  }
 
   const customer = await manager.save(c)
 
