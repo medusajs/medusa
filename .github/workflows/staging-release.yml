@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - develop
+    paths-ignore:
+      - "docs/**"
+      - "www/**"
+      - ".github/**"
+      
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
