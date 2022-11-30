@@ -4,7 +4,7 @@ export type DraftOrderListSelector = { q?: string }
 
 export type DraftOrderCreateProps = {
   status?: string
-  email: string
+  email?: string
   billing_address_id?: string
   billing_address?: Partial<AddressPayload>
   shipping_address_id?: string

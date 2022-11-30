@@ -167,7 +167,6 @@ enum Status {
  * @schema AdminPostDraftOrdersReq
  * type: object
  * required:
- *   - email
  *   - region_id
  *   - shipping_methods
  * properties:
@@ -265,7 +264,8 @@ export class AdminPostDraftOrdersReq {
   status?: string
 
   @IsEmail()
-  email: string
+  @IsOptional()
+  email?: string
 
   @IsOptional()
   @IsType([AddressPayload, String])
