@@ -4,25 +4,40 @@ import * as fs from "fs"
 import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@readme/openapi-parser"
 
+import { IS_EMPTY } from "class-validator"
+import { defaultMetadataStorage } from "class-transformer/cjs/storage"
+
+import { IOptions } from "class-validator-jsonschema/src/options"
+import { validationMetadatasToSchemas } from "class-validator-jsonschema"
+
 type ApiType = "store" | "admin"
 
+const cliParams = process.argv.slice(2)
+const skipJSONSchema = cliParams.includes("--skipJSONSchema")
+const isVerbose = cliParams.includes("--verbose") || cliParams.includes("-V")
+const debug = (...args) => {
+  if (isVerbose) {
+    console.debug(...args)
+  }
+}
+
 const run = async () => {
-  console.debug("Generate OAS from codebase.")
+  debug("Generate OAS from codebase.")
 
   const targetDir = path.resolve(__dirname, "../../../", "dist/oas")
   fs.mkdirSync(targetDir, { recursive: true })
 
   for (const apiType of ["store", "admin"]) {
-    console.debug(`Building OAS for ${apiType} api.`)
+    debug(`Building OAS for ${apiType} api.`)
     const oas = await getOASFromCodebase(apiType as ApiType)
     exportOASToJSON(oas, apiType as ApiType, targetDir)
   }
 
-  console.log("OAS successfully generated.")
+  debug("OAS successfully generated.")
 }
 
 const getOASFromCodebase = async (apiType: ApiType) => {
-  console.debug("Parse JSDoc from path and schema definitions.")
+  debug("Parse JSDoc from path and schema definitions.")
   const gen = await swaggerInline(
     [
       path.resolve(__dirname, "../../", "models"),
@@ -35,20 +50,38 @@ const getOASFromCodebase = async (apiType: ApiType) => {
     }
   )
 
-  console.debug("Get OAS JSON object from OAS JSON string.")
+  debug("Get OAS JSON object from OAS JSON string.")
   const oas = await OpenAPIParser.parse(JSON.parse(gen))
 
-  console.debug("Parse Class with class-validator for schema definitions.")
-  // TODO: implement
+  if (!skipJSONSchema) {
+    debug("Parse Class with class-validator for schema definitions.")
+    const api_ = require("../../api")
+    const models_ = require("../../models")
+    const schemas = validationMetadatasToSchemas(getJSONSchemaOptions())
 
-  console.debug("Augment OAS with schemas from classes.")
-  // TODO: implement
+    const jsdocKeys = Object.keys(oas.components.schemas)
+    const classKeys = Object.keys(schemas)
 
-  console.debug("Validate generated OAS.")
+    debug("Augment OAS with schemas from classes.")
+    oas.components.schemas = Object.assign(oas.components.schemas, schemas)
+
+    if (isVerbose) {
+      // List all schemas and their declaration origin.
+      for (const key of Object.keys(oas.components.schemas)) {
+        debug(
+          `${jsdocKeys.includes(key) ? 1 : 0}, ${
+            classKeys.includes(key) ? 1 : 0
+          }, ${key}`
+        )
+      }
+    }
+  }
+
+  debug("Validate generated OAS.")
   try {
     await OpenAPIParser.validate(JSON.parse(JSON.stringify(oas)))
   } catch (err) {
-    console.warn("OAS validation failed.")
+    debug("OAS validation failed.")
     console.warn(err)
   }
 
@@ -56,7 +89,7 @@ const getOASFromCodebase = async (apiType: ApiType) => {
 }
 
 const exportOASToJSON = (oas, apiType: ApiType, targetDir: string) => {
-  console.log("Exporting OAS to JSON.")
+  debug("Exporting OAS to JSON.")
 
   const json = JSON.stringify(oas, null, 2)
   fs.writeFile(path.resolve(targetDir, `${apiType}.oas.json`), json, (err) => {
@@ -65,6 +98,16 @@ const exportOASToJSON = (oas, apiType: ApiType, targetDir: string) => {
     }
   })
 }
+
+const getJSONSchemaOptions = (): Partial<IOptions> => ({
+  classTransformerMetadataStorage: defaultMetadataStorage,
+  refPointerPrefix: "#/components/schemas/",
+  additionalConverters: {
+    [IS_EMPTY]: {
+      nullable: true,
+    },
+  },
+})
 
 void (async () => {
   await run()

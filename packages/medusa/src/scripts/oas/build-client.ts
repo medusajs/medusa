@@ -5,8 +5,16 @@ import fs from "fs"
 
 type ApiType = "store" | "admin"
 
+const cliParams = process.argv.slice(2)
+const isVerbose = cliParams.includes("--verbose") || cliParams.includes("-V")
+const debug = (...args) => {
+  if (isVerbose) {
+    console.debug(...args)
+  }
+}
+
 const run = async () => {
-  console.debug("Generate Client from OAS.")
+  debug("Generate Client from OAS.")
 
   const targetPackageSrcDir = path.resolve(
     __dirname,
@@ -16,12 +24,12 @@ const run = async () => {
   fs.mkdirSync(targetPackageSrcDir, { recursive: true })
 
   for (const apiType of ["store", "admin"]) {
-    console.debug(`Building Client for ${apiType} api.`)
+    debug(`Building Client for ${apiType} api.`)
     const oas = await getOASFromFile(apiType as ApiType)
     await generateClientSDK(oas, apiType as ApiType, targetPackageSrcDir)
   }
 
-  console.log("Client successfully generated.")
+  debug("Client successfully generated.")
 }
 
 const getOASFromFile = (apiType: ApiType) => {

@@ -33,15 +33,17 @@
     "supertest": "^4.0.2",
     "swagger-inline": "^6.1.0",
     "ts-jest": "^25.5.1",
-    "tsx": "^3.12.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.4.4"
   },
   "scripts": {
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build && yarn run build:oas && yarn build:client",
-    "build:oas": "tsx src/scripts/oas/build-oas.ts",
-    "build:client": "tsx src/scripts/oas/build-client.ts",
+    "build:oas": "ts-node src/scripts/oas/build-oas.ts --skipJSONSchema",
+    "build:oas:verbose": "yarn run build:oas --verbose",
+    "build:client": "ts-node src/scripts/oas/build-client.ts",
+    "build:client:verbose": "ts-node src/scripts/oas/build-client.ts --verbose",
     "serve": "node dist/app.js",
     "test": "jest",
     "test:unit": "jest"
@@ -60,6 +62,7 @@
     "chokidar": "^3.4.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.1",
+    "class-validator-jsonschema": "^3.1.1",
     "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.4",
     "core-js": "^3.6.5",
