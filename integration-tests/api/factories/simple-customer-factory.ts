@@ -3,7 +3,7 @@ import faker from "faker"
 import { Connection } from "typeorm"
 import {
   CustomerGroupFactoryData,
-  simpleCustomerGroupFactory,
+  simpleCustomerGroupFactory
 } from "./simple-customer-group-factory"
 
 export type CustomerFactoryData = {
@@ -34,6 +34,11 @@ export const simpleCustomerFactory = async (
       "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
     has_account: data.has_account ?? true,
   })
+
+  if (data.password_hash) {
+    c.password_hash = data.password_hash
+    c.has_account = true
+  }
 
   const customer = await manager.save(c)
 
