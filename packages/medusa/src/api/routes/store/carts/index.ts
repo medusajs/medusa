@@ -41,22 +41,20 @@ export default (app, container) => {
     middlewares.wrap(require("./get-cart").default)
   )
 
+  const createMiddlewares = [
+    middlewareService.usePreCartCreation(),
+    transformBody(StorePostCartReq),
+  ]
+
   if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    route.post(
-      "/",
-      middlewareService.usePreCartCreation(),
-      transformBody(StorePostCartReq),
-      extendResourceFilters as unknown as RequestHandler,
-      middlewares.wrap(require("./create-cart").default)
-    )
-  } else {
-    route.post(
-      "/",
-      middlewareService.usePreCartCreation(),
-      transformBody(StorePostCartReq),
-      middlewares.wrap(require("./create-cart").default)
-    )
+    createMiddlewares.push(extendResourceFilters as unknown as RequestHandler)
   }
+
+  route.post(
+    "/",
+    ...createMiddlewares,
+    middlewares.wrap(require("./create-cart").default)
+  )
 
   route.post(
     "/:id",
