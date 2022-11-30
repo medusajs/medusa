@@ -75,9 +75,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
       this.paymentCollectionRepository_
     )
 
-    const query = buildQuery({ id: paymentCollectionId }, config)
-
-    const paymentCollection = await paymentCollectionRepository.find(query)
+    let paymentCollection: PaymentCollection[] = []
+    if (paymentCollectionId) {
+      const query = buildQuery({ id: paymentCollectionId }, config)
+      paymentCollection = await paymentCollectionRepository.find(query)
+    }
 
     if (!paymentCollection.length) {
       throw new MedusaError(

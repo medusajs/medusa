@@ -52,15 +52,13 @@ import { PaymentCollectionService } from "../../../../services"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const { payment_id } = req.params
+  const { id } = req.params
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
   )
 
-  const payment_collection = await paymentCollectionService.authorize(
-    payment_id
-  )
+  const payment_collection = await paymentCollectionService.authorize(id)
 
   res.status(200).json({ payment_collection })
 }
