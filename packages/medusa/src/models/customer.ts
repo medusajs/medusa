@@ -19,7 +19,7 @@ import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Customer extends SoftDeletableEntity {
-  @Index({ unique: true, where: "has_account = true" })
+  @Index({ unique: true })
   @Column()
   email: string
 

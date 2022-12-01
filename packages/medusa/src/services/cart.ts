@@ -326,6 +326,7 @@ class CartService extends TransactionBaseService {
 
         if (data.customer_id) {
           const customer = await this.customerService_
+            .withTransaction(transactionManager)
             .retrieve(data.customer_id)
             .catch(() => undefined)
           rawCart.customer = customer
