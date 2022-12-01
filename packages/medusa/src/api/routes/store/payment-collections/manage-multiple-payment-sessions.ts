@@ -18,7 +18,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       schema:
  *         properties:
  *           sessions:
- *             description: "An array or a single entry of payment sessions related to the Payment Collection. If the session_id is not provided the existing sessions not present will be deleted and the provided ones will be created."
+ *             description: "An array of payment sessions related to the Payment Collection. If the session_id is not provided, existing sessions not present will be deleted and the provided ones will be created."
  *             type: array
  *             items:
  *               required:
@@ -60,11 +60,13 @@ import { PaymentCollectionService } from "../../../../services"
  *       });
  *
  *       // Updating one session and removing the other
- *       medusa.paymentCollections.manageMultiplePaymentSessions(payment_id, {
+ *       medusa.paymentCollections.manageMultiplePaymentSessions(payment_id, [
+ *         {
  *           provider_id: "stripe",
  *           amount: 10000,
  *           session_id: "ps_123456"
- *       })
+ *         },
+ *       ])
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       });
@@ -137,11 +139,6 @@ export class PaymentCollectionMultipleSessionInputRequest {
 }
 
 export class StoreManageMultiplePaymentCollectionSessionRequest {
-  @IsType([
-    PaymentCollectionMultipleSessionInputRequest,
-    [PaymentCollectionMultipleSessionInputRequest],
-  ])
-  sessions:
-    | PaymentCollectionMultipleSessionInputRequest
-    | PaymentCollectionMultipleSessionInputRequest[]
+  @IsType([PaymentCollectionMultipleSessionInputRequest])
+  sessions: PaymentCollectionMultipleSessionInputRequest[]
 }

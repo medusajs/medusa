@@ -479,10 +479,12 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should throw error if payment collection doesn't have the correct status", async () => {
-      const inp: PaymentCollectionMultipleSessionInput = {
-        amount: 100,
-        provider_id: IdMap.getId("region1_provider1"),
-      }
+      const inp: PaymentCollectionMultipleSessionInput[] = [
+        {
+          amount: 100,
+          provider_id: IdMap.getId("region1_provider1"),
+        },
+      ]
       const ret = paymentCollectionService.setMultiplePaymentSessions(
         IdMap.getId("payment-collection-id2"),
         inp,
@@ -499,10 +501,13 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should throw error if amount is different than requested", async () => {
-      const inp: PaymentCollectionMultipleSessionInput = {
-        amount: 101,
-        provider_id: IdMap.getId("region1_provider1"),
-      }
+      const inp: PaymentCollectionMultipleSessionInput[] = [
+        {
+          amount: 101,
+          provider_id: IdMap.getId("region1_provider1"),
+        },
+      ]
+
       const ret = paymentCollectionService.setMultiplePaymentSessions(
         IdMap.getId("payment-collection-id1"),
         inp,

@@ -227,10 +227,12 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const response = await api.post(
         `/store/payment-collections/${payCol.id}/multiple-sessions`,
         {
-          sessions: {
-            provider_id: "test-pay",
-            amount: 10000,
-          },
+          sessions: [
+            {
+              provider_id: "test-pay",
+              amount: 10000,
+            },
+          ],
         },
         {
           headers: {
@@ -416,10 +418,12 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       await api.post(
         `/store/payment-collections/${payCol.id}/multiple-sessions`,
         {
-          sessions: {
-            provider_id: "test-pay",
-            amount: 10000,
-          },
+          sessions: [
+            {
+              provider_id: "test-pay",
+              amount: 10000,
+            },
+          ],
         },
         {
           headers: {

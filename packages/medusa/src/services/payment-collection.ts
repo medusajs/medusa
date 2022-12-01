@@ -198,13 +198,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   async setMultiplePaymentSessions(
     paymentCollectionId: string,
-    sessions:
-      | PaymentCollectionMultipleSessionInput[]
-      | PaymentCollectionMultipleSessionInput,
+    sessionsInput: PaymentCollectionMultipleSessionInput[],
     customer_id: string
   ): Promise<PaymentCollection> {
-    let sessionsInput = Array.isArray(sessions) ? sessions : [sessions]
-
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const paymentCollectionRepository = manager.getCustomRepository(
         this.paymentCollectionRepository_
