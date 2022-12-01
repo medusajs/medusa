@@ -15,11 +15,14 @@ export type CreatePaymentCollectionInput = {
   description?: string
 }
 
-export type PaymentCollectionSessionInput = {
+export type PaymentCollectionMultipleSessionInput = {
   provider_id: string
   amount: number
   session_id?: string
-  customer_id: string
+}
+
+export type PaymentCollectionSessionInput = {
+  provider_id: string
 }
 
 export type PaymentProviderDataInput = {

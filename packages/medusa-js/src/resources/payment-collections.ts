@@ -1,7 +1,7 @@
 import {
   GetPaymentCollectionsParams,
+  StoreManageMultiplePaymentCollectionSessionRequest,
   StoreManagePaymentCollectionSessionRequest,
-  StoreRefreshPaymentCollectionSessionRequest,
   StorePaymentCollectionSessionRes,
   StorePaymentCollectionRes,
 } from "@medusajs/medusa"
@@ -33,23 +33,31 @@ class PaymentCollectionsResource extends BaseResource {
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
-  manageSessions(
+  manageMultiplePaymentSessions(
+    id: string,
+    payload: StoreManageMultiplePaymentCollectionSessionRequest,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StorePaymentCollectionRes> {
+    const path = `/store/payment-collections/${id}/multiple-sessions`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  managePaymentSession(
     id: string,
     payload: StoreManagePaymentCollectionSessionRequest,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePaymentCollectionRes> {
-    const path = `/store/payment-collections/${id}/sessions`
+    const path = `/store/payment-collections/${id}/session`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   refreshPaymentSession(
     id: string,
     session_id: string,
-    payload: StoreRefreshPaymentCollectionSessionRequest,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePaymentCollectionSessionRes> {
     const path = `/store/payment-collections/${id}/sessions/${session_id}/refresh`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 }
 

@@ -1,12 +1,11 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator"
-import { IsType } from "../../../../utils/validators/is-type"
+import { IsString } from "class-validator"
 
 import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions
- * operationId: "PostPaymentCollectionsSessions"
+ * @oas [post] /payment-collections/{id}/session
+ * operationId: "PostPaymentCollectionsSession"
  * summary: "Manage Payment Sessions from Payment Collections"
  * description: "Manages Payment Sessions from Payment Collections."
  * x-authenticated: true
@@ -48,37 +47,16 @@ import { PaymentCollectionService } from "../../../../services"
  *
  *       // Total amount = 10000
  *
- *       // Adding two new sessions
- *       medusa.paymentCollections.manageSessions(payment_id, [
- *         {
- *           provider_id: "stripe",
- *           customer_id: "cus_123",
- *           amount: 5000,
- *         },
- *         {
- *           provider_id: "manual",
- *           customer_id: "cus_123",
- *           amount: 5000,
- *         },
- *       ])
+ *       // Adding a payment session
+ *       medusa.paymentCollections.managePaymentSession(payment_id, { provider_id: "stripe" })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       });
  *
- *       // Updating one session and removing the other
- *       medusa.paymentCollections.manageSessions(payment_id, {
- *           provider_id: "stripe",
- *           customer_id: "cus_123",
- *           amount: 10000,
- *           session_id: "ps_123456"
- *       })
- *       .then(({ payment_collection }) => {
- *         console.log(payment_collection.id);
- *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions' \
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/session' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
@@ -111,44 +89,26 @@ export default async (req, res) => {
   const data = req.validatedBody as StoreManagePaymentCollectionSessionRequest
   const { id } = req.params
 
+  const customer_id = req.user?.customer_id
+
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
+
   const paymentCollection = await manager.transaction(
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
-        .setPaymentSessions(id, data.sessions)
+        .setPaymentSession(id, data, customer_id)
     }
   )
 
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
-export class PaymentCollectionSessionInputRequest {
+export class StoreManagePaymentCollectionSessionRequest {
   @IsString()
   provider_id: string
-
-  @IsString()
-  customer_id: string
-
-  @IsInt()
-  @IsNotEmpty()
-  amount: number
-
-  @IsString()
-  @IsOptional()
-  session_id?: string
-}
-
-export class StoreManagePaymentCollectionSessionRequest {
-  @IsType([
-    PaymentCollectionSessionInputRequest,
-    [PaymentCollectionSessionInputRequest],
-  ])
-  sessions:
-    | PaymentCollectionSessionInputRequest
-    | PaymentCollectionSessionInputRequest[]
 }

@@ -62,29 +62,22 @@ import { PaymentCollectionService } from "../../../../services"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const data = req.validatedBody as StoreRefreshPaymentCollectionSessionRequest
   const { id, session_id } = req.params
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
   )
 
+  const customer_id = req.user?.customer_id
+
   const manager: EntityManager = req.scope.resolve("manager")
   const paymentSession = await manager.transaction(
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
-        .refreshPaymentSession(id, session_id, data)
+        .refreshPaymentSession(id, session_id, customer_id)
     }
   )
 
   res.status(200).json({ payment_session: paymentSession })
-}
-
-export class StoreRefreshPaymentCollectionSessionRequest {
-  @IsString()
-  provider_id: string
-
-  @IsString()
-  customer_id: string
 }

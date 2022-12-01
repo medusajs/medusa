@@ -8,10 +8,10 @@ import middlewares, {
 import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
-import { StoreManagePaymentCollectionSessionRequest } from "./manage-payment-sessions"
-import { StoreRefreshPaymentCollectionSessionRequest } from "./refresh-payment-session"
+import { StoreManageMultiplePaymentCollectionSessionRequest } from "./manage-multiple-payment-sessions"
 import { GetPaymentCollectionsParams } from "./get-payment-collection"
 import { PaymentCollection, PaymentSession } from "../../../../models"
+import { StoreManagePaymentCollectionSessionRequest } from "./manage-payment-session"
 
 const route = Router()
 
@@ -41,14 +41,19 @@ export default (app, container) => {
   )
 
   route.post(
-    "/:id/sessions",
+    "/:id/session",
     transformBody(StoreManagePaymentCollectionSessionRequest),
-    middlewares.wrap(require("./manage-payment-sessions").default)
+    middlewares.wrap(require("./manage-payment-session").default)
+  )
+
+  route.post(
+    "/:id/multiple-sessions",
+    transformBody(StoreManageMultiplePaymentCollectionSessionRequest),
+    middlewares.wrap(require("./manage-multiple-payment-sessions").default)
   )
 
   route.post(
     "/:id/sessions/:session_id/refresh",
-    transformBody(StoreRefreshPaymentCollectionSessionRequest),
     middlewares.wrap(require("./refresh-payment-session").default)
   )
 
@@ -78,5 +83,6 @@ export type StorePaymentCollectionSessionRes = {
 }
 
 export * from "./get-payment-collection"
-export * from "./manage-payment-sessions"
+export * from "./manage-payment-session"
+export * from "./manage-multiple-payment-sessions"
 export * from "./refresh-payment-session"

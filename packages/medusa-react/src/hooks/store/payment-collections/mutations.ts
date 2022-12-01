@@ -3,8 +3,8 @@ import { Response } from "@medusajs/medusa-js"
 
 import {
   StorePaymentCollectionRes,
+  StoreManageMultiplePaymentCollectionSessionRequest,
   StoreManagePaymentCollectionSessionRequest,
-  StoreRefreshPaymentCollectionSessionRequest,
   StorePaymentCollectionSessionRes,
 } from "@medusajs/medusa"
 
@@ -12,7 +12,32 @@ import { buildOptions } from "../../utils/buildOptions"
 import { useMedusa } from "../../../contexts"
 import { paymentCollectionQueryKeys } from "."
 
-export const useManagePaymentSessions = (
+export const useManageMultiplePaymentSessions = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<StorePaymentCollectionRes>,
+    Error,
+    StoreManageMultiplePaymentCollectionSessionRequest
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload: StoreManageMultiplePaymentCollectionSessionRequest) =>
+      client.paymentCollections.manageMultiplePaymentSessions(id, payload),
+    buildOptions(
+      queryClient,
+      [
+        paymentCollectionQueryKeys.lists(),
+        paymentCollectionQueryKeys.detail(id),
+      ],
+      options
+    )
+  )
+}
+
+export const useManagePaymentSession = (
   id: string,
   options?: UseMutationOptions<
     Response<StorePaymentCollectionRes>,
@@ -25,7 +50,7 @@ export const useManagePaymentSessions = (
 
   return useMutation(
     (payload: StoreManagePaymentCollectionSessionRequest) =>
-      client.paymentCollections.manageSessions(id, payload),
+      client.paymentCollections.managePaymentSession(id, payload),
     buildOptions(
       queryClient,
       [
@@ -62,18 +87,15 @@ export const usePaymentCollectionRefreshPaymentSession = (
   options?: UseMutationOptions<
     Response<StorePaymentCollectionSessionRes>,
     Error,
-    StoreRefreshPaymentCollectionSessionRequest & { session_id: string }
+    { session_id: string }
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    ({
-      session_id,
-      ...payload
-    }: StoreRefreshPaymentCollectionSessionRequest & { session_id: string }) =>
-      client.paymentCollections.refreshPaymentSession(id, session_id, payload),
+    ({ session_id }: { session_id: string }) =>
+      client.paymentCollections.refreshPaymentSession(id, session_id),
     buildOptions(
       queryClient,
       [
