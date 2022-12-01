@@ -256,11 +256,14 @@ class CustomerService extends TransactionBaseService {
       )
 
       customer.email = customer.email.toLowerCase()
+
       const { email, password } = customer
 
-      const existing = await this.retrieveByEmail(email).catch(() => undefined)
+      const existing = await this.retrieveByEmail(email, {
+        relations: ["orders"],
+      }).catch(() => undefined)
 
-      if (existing && existing.has_account) {
+      if (existing?.has_account) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
           "A customer with the given email already has an account. Log in instead"
@@ -270,11 +273,30 @@ class CustomerService extends TransactionBaseService {
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
         customer.password_hash = hashedPassword
+        customer.has_account = false
         delete customer.password
+
+        if (!existing || existing.orders.length === 0) {
+          customer.has_account = true
+        }
       }
 
-      const created = customerRepository.create(customer)
-      const result = await customerRepository.save(created)
+      let result
+      if (existing) {
+        const toUpdate = { ...existing, ...customer }
+        result = await customerRepository.save(toUpdate)
+
+        await this.eventBusService_
+          .withTransaction(manager)
+          .emit(CustomerService.Events.UPDATED, result)
+      } else {
+        const created = customerRepository.create(customer)
+        result = await customerRepository.save(created)
+
+        await this.eventBusService_
+          .withTransaction(manager)
+          .emit(CustomerService.Events.CREATED, result)
+      }
 
       if (password) {
         const token = this.generateToken({ id: result.id })
@@ -283,10 +305,6 @@ class CustomerService extends TransactionBaseService {
           .emit(CustomerService.Events.CREATED_UNVERIFIED, token)
         logger.info(`token: "${token}"`)
       }
-
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(CustomerService.Events.CREATED, result)
 
       return result
     })
