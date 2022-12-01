@@ -12,8 +12,8 @@ Discounts can be limited by a set of configurations and conditions. For example,
 
 There are three types of discounts:
 
-1. Percentage discount: remove a percentage of the customer’s total checkout amount.
-2. Fixed discount: remove a fixed amount either of the customer’s total checkout amount or of every product in the cart that the discount can be applied to.
+1. Percentage discount: remove a percentage of the price every product in the cart that the discount can be applied to.
+2. Fixed discount: remove a fixed amount either of the customer’s total checkout amount or of the price every product in the cart that the discount can be applied to.
 3. Free shipping discount: remove any shipping amount from the customer’s order during checkout.
 
 ### Example Use Cases
@@ -58,8 +58,8 @@ Some of the `DiscountRule` entity’s important attributes are:
 
 - `type` is an enum string indicating the type of the discount. It must be either `fixed`, `percentage`, or `free_shipping`.
 - `value` is the value to be discounted. The value of this depends on the value of `type`:
-    - If `type` is `fixed`, `value` will be the amount to be removed either from the total or from each product.
-    - If `type` is `percentage`, `value` will be the percentage to be removed from the total.
+    - If `type` is `fixed`, `value` will be the amount to be removed either from the total or from each product this discount is applied to.
+    - If `type` is `percentage`, `value` will be the percentage to be removed from each product this discount is applied to.
     - If `type` is `free_shipping`, `value` will be 0.
 - `conditions` is an array of all discount conditions, if there are any.
 
