@@ -26,9 +26,18 @@ async function extendResourceFilters(
   )
 
   if (pubKey) {
-    req.publishableApiKeyScopes = await publishableKeyService.getResourceScopes(
-      pubKey
-    )
+    const scopes = await publishableKeyService.getResourceScopes(pubKey)
+    req.publishableApiKeyScopes = scopes
+
+    if (
+      req.params.sales_channel_id &&
+      !scopes.sales_channel_id.includes(req.params.sales_channel_id)
+    ) {
+      req.errors = req.errors ?? []
+      req.errors.push(
+        `Provided sales channel id param: ${req.params.sales_channel_id} is not associated the Publishable API Key passed in the header of the request.`
+      )
+    }
   }
 
   next()

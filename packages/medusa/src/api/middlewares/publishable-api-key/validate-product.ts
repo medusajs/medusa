@@ -27,6 +27,16 @@ async function validateProduct(
       await publishableKeyService.getResourceScopes(pubKey)
 
     if (
+      req.params.sales_channel_id &&
+      !salesChannelIds.includes(req.params.sales_channel_id)
+    ) {
+      req.errors = req.errors ?? []
+      req.errors.push(
+        `Provided sales channel id param: ${req.params.sales_channel_id} is not associated the Publishable API Key passed in the header of the request.`
+      )
+    }
+
+    if (
       salesChannelIds.length &&
       !(await productService.isProductInSalesChannels(
         req.params.id,
