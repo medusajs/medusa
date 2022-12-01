@@ -13,7 +13,7 @@ describe("Database options", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({
       cwd,
-      database_extra: { idle_in_transaction_session_timeout: 2000 },
+      database_extra: { idle_in_transaction_session_timeout: 1000 },
     })
     medusaProcess = await setupServer({ cwd })
   })
@@ -38,19 +38,15 @@ describe("Database options", () => {
 
         await queryRunner.query(`select * from product`)
 
+        // Idle time is 1000 ms so this should timeout
         await new Promise((resolve) =>
-          setTimeout(() => resolve(console.log("")), 4000)
+          setTimeout(() => resolve(console.log("")), 2000)
         )
 
+        // This query should fail with a QueryRunnerAlreadyReleasedError
         await queryRunner.commitTransaction()
-
-        if (!queryRunner.isReleased) {
-          await queryRunner.release()
-        }
       } catch (error) {
-        // Query runner will be released in case the idle session option kicks in
-        // Therefore, out current error handler already covers the case when the session is idle
-        // It throws a 409, invalid state
+        // Query runner will be released in case idle_in_transaction_session_timeout kicks in
         expect(error?.type || error.name).toEqual(
           "QueryRunnerAlreadyReleasedError"
         )
