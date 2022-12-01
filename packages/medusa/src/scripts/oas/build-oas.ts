@@ -3,12 +3,12 @@ import * as fs from "fs"
 
 import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@readme/openapi-parser"
-
-import { IS_EMPTY } from "class-validator"
 import { defaultMetadataStorage } from "class-transformer/cjs/storage"
 
 import { IOptions } from "class-validator-jsonschema/src/options"
 import { validationMetadatasToSchemas } from "class-validator-jsonschema"
+import { IsTypeJSONSchemaConverter } from "../../utils/validators/is-type"
+import { IsNullableJSONSchemaConverter } from "../../utils/validators/is-nullable"
 
 type ApiType = "store" | "admin"
 
@@ -103,8 +103,18 @@ const getJSONSchemaOptions = (): Partial<IOptions> => ({
   classTransformerMetadataStorage: defaultMetadataStorage,
   refPointerPrefix: "#/components/schemas/",
   additionalConverters: {
-    [IS_EMPTY]: {
-      nullable: true,
+    IsNullable: IsNullableJSONSchemaConverter,
+    IsType: IsTypeJSONSchemaConverter,
+    IsGreaterThan: () => {},
+    IsISO8601Duration: () => {},
+    ExactlyOne: (meta, options) => {
+      return {
+        type: "array",
+        items: {
+          type: typeof meta.constraints[0].toString(),
+        },
+        enum: meta.constraints,
+      }
     },
   },
 })
