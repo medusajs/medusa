@@ -720,6 +720,11 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
             name: "Sales channel",
             description: "Sales channel",
           },
+          {
+            id: "sales-channel2",
+            name: "Sales channel2",
+            description: "Sales channel2",
+          },
         ],
       })
     })
@@ -782,6 +787,40 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
           sales_channel_id: "sales-channel",
         })
       )
+    })
+
+    it("should throw because SC id in params is not in the scope of PK from the header", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: "sales-channel" }],
+        },
+        adminHeaders
+      )
+
+      const createCartRes = await api.post(
+        "/store/carts",
+        {
+          sales_channel_id: "sales-channel2", // SC not in the PK scope
+          region_id: "test-region",
+          items: [
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        }
+      )
+
+      expect(createCartRes.status).toEqual(400)
     })
   })
 
