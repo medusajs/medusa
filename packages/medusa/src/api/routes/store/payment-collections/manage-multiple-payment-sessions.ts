@@ -139,6 +139,6 @@ export class PaymentCollectionMultipleSessionInputRequest {
 }
 
 export class StoreManageMultiplePaymentCollectionSessionRequest {
-  @IsType([PaymentCollectionMultipleSessionInputRequest])
+  @IsType([[PaymentCollectionMultipleSessionInputRequest]])
   sessions: PaymentCollectionMultipleSessionInputRequest[]
 }
