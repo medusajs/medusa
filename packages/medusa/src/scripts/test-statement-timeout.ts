@@ -12,10 +12,8 @@ const typeormConfig = {
   migrations: [process.env.TYPEORM_MIGRATIONS as string],
   entities: [process.env.TYPEORM_ENTITIES],
   logging: true,
-  maxQueryExecutionTime: 5000,
   extra: {
-    statement_timeout: 5000,
-    idle_in_transaction_session_timeout: 5000,
+    idle_in_transaction_session_timeout: 2000,
   },
 }
 
@@ -31,7 +29,7 @@ const run = async function ({ typeormConfig }) {
     const result = await queryRunner.query(`select * from product`)
 
     await new Promise((resolve) =>
-      setTimeout(() => resolve(console.log("test")), 10000)
+      setTimeout(() => resolve(console.log("test")), 3000)
     )
 
     await queryRunner.commitTransaction()
