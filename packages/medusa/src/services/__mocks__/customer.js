@@ -50,6 +50,7 @@ export const CustomerServiceMock = {
       return Scrypt.kdf("123456789", { logN: 1, r: 1, p: 1 }).then((hash) => ({
         email,
         password_hash: hash.toString("base64"),
+        has_account: true,
       }))
     }
     return Promise.resolve(undefined)

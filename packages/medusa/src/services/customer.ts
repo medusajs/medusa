@@ -283,7 +283,8 @@ class CustomerService extends TransactionBaseService {
 
       let result
       if (existing) {
-        const toUpdate = { ...existing, ...customer }
+        const { orders, ...exisingFields } = existing
+        const toUpdate = { ...exisingFields, ...customer }
         result = await customerRepository.save(toUpdate)
 
         await this.eventBusService_
