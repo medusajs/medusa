@@ -123,17 +123,17 @@ describe("CustomerService", () => {
 
     it("successfully creates a customer with password", async () => {
       await customerService.create({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
         password: "test",
       })
 
       expect(customerRepository.create).toBeCalledTimes(1)
       expect(customerRepository.create).toBeCalledWith({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
         has_account: true,
         password_hash: expect.anything(),
       })
@@ -141,15 +141,15 @@ describe("CustomerService", () => {
 
     it("calls findOne with has_account", async () => {
       await customerService.create({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
         password: "test",
       })
 
       expect(customerRepository.findOne).toHaveBeenCalledWith({
         where: {
-          email: "oliver@medusa.com",
+          email: "john@doe.com",
         },
         relations: ["orders"],
       })
@@ -157,16 +157,16 @@ describe("CustomerService", () => {
 
     it("successfully creates a one time customer", async () => {
       await customerService.create({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
       })
 
       expect(customerRepository.create).toBeCalledTimes(1)
       expect(customerRepository.create).toBeCalledWith({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
       })
     })
 
