@@ -59,7 +59,7 @@ describe("CustomerService", () => {
 
       expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customerRepository.findOne).toHaveBeenCalledWith({
-        where: { email: "tony@stark.com", has_account: true },
+        where: { email: "tony@stark.com" },
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
@@ -97,6 +97,7 @@ describe("CustomerService", () => {
         if (query.where.email === "tony@stark.com") {
           return Promise.resolve({
             id: IdMap.getId("exists"),
+            has_account: true,
             password_hash: "test",
           })
         }
@@ -104,10 +105,16 @@ describe("CustomerService", () => {
       },
     })
 
+    const configModule = {
+      projectConfig: {
+        jwt_secret: "test",
+      },
+    }
     const customerService = new CustomerService({
       manager: MockManager,
       customerRepository,
       eventBusService,
+      configModule,
     })
 
     beforeEach(async () => {
@@ -143,8 +150,8 @@ describe("CustomerService", () => {
       expect(customerRepository.findOne).toHaveBeenCalledWith({
         where: {
           email: "oliver@medusa.com",
-          has_account: true,
         },
+        relations: ["orders"],
       })
     })
 
