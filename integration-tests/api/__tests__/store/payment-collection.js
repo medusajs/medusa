@@ -99,7 +99,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
     })
   })
 
-  describe("Manage Payment Sessions", () => {
+  describe("Manage a Single Payment Session", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
@@ -123,11 +123,112 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/sessions`,
+        `/store/payment-collections/${payCol.id}/session`,
+        {
+          provider_id: "test-pay",
+        },
+        {
+          headers: {
+            Cookie: await getClientAuthentication(api),
+          },
+        }
+      )
+
+      expect(response.data.payment_collection).toEqual(
+        expect.objectContaining({
+          id: payCol.id,
+          type: "order_edit",
+          amount: 10000,
+          payment_sessions: expect.arrayContaining([
+            expect.objectContaining({
+              amount: 10000,
+              status: "pending",
+            }),
+          ]),
+        })
+      )
+
+      expect(response.status).toEqual(200)
+    })
+
+    it("update a payment session", async () => {
+      const api = useApi()
+
+      let response = await api.post(
+        `/store/payment-collections/${payCol.id}/session`,
+        {
+          provider_id: "test-pay",
+        },
+        {
+          headers: {
+            Cookie: await getClientAuthentication(api),
+          },
+        }
+      )
+
+      expect(response.data.payment_collection.payment_sessions).toHaveLength(1)
+
+      const paySessions = response.data.payment_collection.payment_sessions
+      response = await api.post(
+        `/store/payment-collections/${payCol.id}/session`,
+        {
+          provider_id: "test-pay",
+        },
+        {
+          headers: {
+            Cookie: await getClientAuthentication(api),
+          },
+        }
+      )
+
+      expect(response.data.payment_collection.payment_sessions).toHaveLength(1)
+      expect(response.data.payment_collection).toEqual(
+        expect.objectContaining({
+          id: payCol.id,
+          type: "order_edit",
+          amount: 10000,
+          payment_sessions: expect.arrayContaining([
+            expect.objectContaining({
+              id: paySessions[0].id,
+              amount: 10000,
+              status: "pending",
+            }),
+          ]),
+        })
+      )
+
+      expect(response.status).toEqual(200)
+    })
+  })
+
+  describe("Manage Multiple Payment Sessions", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      payCol = await simplePaymentCollectionFactory(dbConnection, {
+        description: "paycol description",
+        amount: 10000,
+      })
+
+      await simpleCustomerFactory(dbConnection, {
+        id: "customer",
+        email: "test@customer.com",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("Set a payment session", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/store/payment-collections/${payCol.id}/multiple-sessions`,
         {
           sessions: {
             provider_id: "test-pay",
-            customer_id: "customer",
             amount: 10000,
           },
         },
@@ -159,22 +260,19 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/sessions`,
+        `/store/payment-collections/${payCol.id}/multiple-sessions`,
         {
           sessions: [
             {
               provider_id: "test-pay",
-              customer_id: "customer",
               amount: 2000,
             },
             {
               provider_id: "test-pay",
-              customer_id: "customer",
               amount: 5000,
             },
             {
               provider_id: "test-pay",
-              customer_id: "customer",
               amount: 3000,
             },
           ],
@@ -216,22 +314,19 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       let response = await api.post(
-        `/store/payment-collections/${payCol.id}/sessions`,
+        `/store/payment-collections/${payCol.id}/multiple-sessions`,
         {
           sessions: [
             {
               provider_id: "test-pay",
-              customer_id: "customer",
               amount: 2000,
             },
             {
               provider_id: "test-pay",
-              customer_id: "customer",
               amount: 5000,
             },
             {
               provider_id: "test-pay",
-              customer_id: "customer",
               amount: 3000,
             },
           ],
@@ -248,18 +343,16 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const multipleSessions = response.data.payment_collection.payment_sessions
 
       response = await api.post(
-        `/store/payment-collections/${payCol.id}/sessions`,
+        `/store/payment-collections/${payCol.id}/multiple-sessions`,
         {
           sessions: [
             {
               provider_id: "test-pay",
-              customer_id: "customer",
               amount: 5000,
               session_id: multipleSessions[0].id,
             },
             {
               provider_id: "test-pay",
-              customer_id: "customer",
               amount: 5000,
               session_id: multipleSessions[1].id,
             },
@@ -321,11 +414,10 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       await api.post(
-        `/store/payment-collections/${payCol.id}/sessions`,
+        `/store/payment-collections/${payCol.id}/multiple-sessions`,
         {
           sessions: {
             provider_id: "test-pay",
-            customer_id: "customer",
             amount: 10000,
           },
         },
