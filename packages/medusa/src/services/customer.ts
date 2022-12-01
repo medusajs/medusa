@@ -2,21 +2,24 @@ import jwt from "jsonwebtoken"
 import { MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import { DeepPartial, EntityManager } from "typeorm"
+import { EventBusService } from "."
 import { StorePostCustomersCustomerAddressesAddressReq } from "../api"
 import { TransactionBaseService } from "../interfaces"
+import logger from "../loaders/logger"
 import { Address, Customer, CustomerGroup } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
 import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
+import { ConfigModule } from "../types/global"
 import { buildQuery, isDefined, setMetadata } from "../utils"
-import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: EventBusService
   customerRepository: typeof CustomerRepository
   addressRepository: typeof AddressRepository
+  configModule: ConfigModule
 }
 
 /**
@@ -26,6 +29,7 @@ class CustomerService extends TransactionBaseService {
   protected readonly customerRepository_: typeof CustomerRepository
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly eventBusService_: EventBusService
+  protected readonly configModule_: ConfigModule
 
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
@@ -33,6 +37,7 @@ class CustomerService extends TransactionBaseService {
   static Events = {
     PASSWORD_RESET: "customer.password_reset",
     CREATED: "customer.created",
+    CREATED_UNVERIFIED: "customer.created_unverified",
     UPDATED: "customer.updated",
   }
 
@@ -41,6 +46,7 @@ class CustomerService extends TransactionBaseService {
     customerRepository,
     eventBusService,
     addressRepository,
+    configModule,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -50,6 +56,7 @@ class CustomerService extends TransactionBaseService {
     this.customerRepository_ = customerRepository
     this.eventBusService_ = eventBusService
     this.addressRepository_ = addressRepository
+    this.configModule_ = configModule
   }
 
   /**
@@ -253,7 +260,7 @@ class CustomerService extends TransactionBaseService {
 
       const existing = await this.retrieveByEmail(email).catch(() => undefined)
 
-      if (existing) {
+      if (existing && existing.has_account) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
           "A customer with the given email already has an account. Log in instead"
@@ -263,12 +270,19 @@ class CustomerService extends TransactionBaseService {
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
         customer.password_hash = hashedPassword
-        customer.has_account = true
         delete customer.password
       }
 
       const created = customerRepository.create(customer)
       const result = await customerRepository.save(created)
+
+      if (password) {
+        const token = this.generateToken({ id: result.id })
+        await this.eventBusService_
+          .withTransaction(manager)
+          .emit(CustomerService.Events.CREATED_UNVERIFIED, token)
+        logger.info(`token: "${token}"`)
+      }
 
       await this.eventBusService_
         .withTransaction(manager)
@@ -276,6 +290,17 @@ class CustomerService extends TransactionBaseService {
 
       return result
     })
+  }
+
+  generateToken(data): string {
+    const { jwt_secret } = this.configModule_.projectConfig
+    if (jwt_secret) {
+      return jwt.sign(data, jwt_secret)
+    }
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Please configure jwt_secret"
+    )
   }
 
   /**
@@ -503,6 +528,40 @@ class CustomerService extends TransactionBaseService {
 
       return await customerRepo.softRemove(customer)
     })
+  }
+
+  async verify(token: string): Promise<void> {
+    let decoded
+    try {
+      decoded = jwt.verify(
+        token,
+        this.configModule_.projectConfig.jwt_secret || ""
+      )
+    } catch (err) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Token is not valid"
+      )
+    }
+
+    const { id } = decoded as { id: string }
+
+    const customer = await this.retrieve(id).catch(() => {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Token is not valid"
+      )
+    })
+
+    if (!customer.has_account) {
+      const manager = this.transactionManager_ ?? this.manager_
+      const customerRepository = manager.getCustomRepository(
+        this.customerRepository_
+      )
+
+      customer.has_account = true
+      await customerRepository.save(customer)
+    }
   }
 }
 

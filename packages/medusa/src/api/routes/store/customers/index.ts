@@ -1,12 +1,16 @@
 import { Router } from "express"
-import { Customer, Order } from "../../../.."
+import { Customer, Order, StorePostCustomersReq } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import {
   defaultStoreOrdersFields,
   defaultStoreOrdersRelations,
 } from "../orders"
 import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
+import { StorePostCustomersCustomerVerifyReq } from "./verify-customer"
 
 const route = Router()
 
@@ -22,6 +26,12 @@ export default (app, container) => {
   }
 
   route.post("/", middlewares.wrap(require("./create-customer").default))
+
+  route.post(
+    "/verify",
+    transformBody(StorePostCustomersCustomerVerifyReq),
+    middlewares.wrap(require("./verify-customer").default)
+  )
 
   route.post(
     "/password-reset",
