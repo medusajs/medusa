@@ -126,6 +126,7 @@ export class OrderEdit extends BaseEntity {
  * title: "Order Edit"
  * description: "Order edit keeps track of order items changes."
  * x-resourceId: order_edit
+ * type: object
  * required:
  *   - order_id
  *   - order

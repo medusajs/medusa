@@ -54,6 +54,7 @@ export class IdempotencyKey {
  * title: "Idempotency Key"
  * description: "Idempotency Key is used to continue a process in case of any failure that might occur."
  * x-resourceId: idempotency_key
+ * type: object
  * required:
  *   - idempotency_key
  * properties:

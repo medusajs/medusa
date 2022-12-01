@@ -32,6 +32,7 @@ import { PaymentProviderService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             payment_providers:
  *               type: array

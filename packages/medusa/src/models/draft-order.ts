@@ -84,6 +84,7 @@ export class DraftOrder extends BaseEntity {
  * title: "DraftOrder"
  * description: "Represents a draft order"
  * x-resourceId: draft-order
+ * type: object
  * properties:
  *   id:
  *     type: string

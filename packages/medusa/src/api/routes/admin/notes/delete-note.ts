@@ -36,6 +36,7 @@ import NoteService from "../../../../services/note"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             id:
  *               type: string
