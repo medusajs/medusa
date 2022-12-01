@@ -125,6 +125,19 @@ export default async (req, res) => {
     select: defaultStoreCustomersFields,
   })
 
+  if (customer.has_account) {
+    const {
+      projectConfig: { jwt_secret },
+    } = req.scope.resolve("configModule")
+    req.session.jwt_store = jwt.sign(
+      { customer_id: customer.id },
+      jwt_secret!,
+      {
+        expiresIn: "30d",
+      }
+    )
+  }
+
   res.status(200).json({ customer })
 }
 

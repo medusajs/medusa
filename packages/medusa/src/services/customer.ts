@@ -314,7 +314,9 @@ class CustomerService extends TransactionBaseService {
   generateToken(data): string {
     const { jwt_secret } = this.configModule_.projectConfig
     if (jwt_secret) {
-      return jwt.sign(data, jwt_secret)
+      return jwt.sign(data, jwt_secret, {
+        expiresIn: "1h",
+      })
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
