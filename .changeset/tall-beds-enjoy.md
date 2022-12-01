@@ -1,5 +1,5 @@
 ---
-"@medusajs/medusa": patch
+"@medusajs/medusa": minor
 ---
 
 Fix: customer email bug
