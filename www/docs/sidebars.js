@@ -370,6 +370,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/discounts/index"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/plugins/overview",
           label: "Plugins"
         },
