@@ -21,7 +21,6 @@ const typeormConfig = {
 
 const run = async function ({ typeormConfig }) {
   const connection = await createConnection(typeormConfig)
-  console.log(connection.options)
 
   const queryRunner = connection.createQueryRunner()
   await queryRunner.connect()
@@ -38,7 +37,9 @@ const run = async function ({ typeormConfig }) {
     await queryRunner.commitTransaction()
     return result
   } catch (error) {
-    console.log(error)
+    // Query runner will be released in case the idle session option kicks in
+    // Therefore, out current error handler already covers the case when the session is idle
+    // It throws a 409, invalid state
     throw error
   } finally {
     await queryRunner.release()
