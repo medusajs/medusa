@@ -195,10 +195,7 @@ class CustomerService extends TransactionBaseService {
     email: string,
     config: FindConfig<Customer> = {}
   ): Promise<Customer | never> {
-    return await this.retrieve_(
-      { email: email.toLowerCase(), has_account: true },
-      config
-    )
+    return await this.retrieve_({ email: email.toLowerCase() }, config)
   }
 
   /**
