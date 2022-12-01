@@ -397,7 +397,7 @@ class ShippingOptionService extends TransactionBaseService {
     return option
   }
 
-  private async validateAndSetOptionPrice(
+  private async validateAndMutatePrice(
     option: ShippingOption,
     priceInput: {
       amount?: number
@@ -434,7 +434,7 @@ class ShippingOptionService extends TransactionBaseService {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = optionRepo.create(data as DeepPartial<ShippingOption>)
 
-      await this.validateAndSetOptionPrice(option, {
+      await this.validateAndMutatePrice(option, {
         price_type: data.price_type,
       })
 
@@ -633,7 +633,7 @@ class ShippingOptionService extends TransactionBaseService {
         option.requirements = acc
       }
 
-      await this.validateAndSetOptionPrice(option, {
+      await this.validateAndMutatePrice(option, {
         price_type: update.price_type,
         amount: update.amount,
       })
