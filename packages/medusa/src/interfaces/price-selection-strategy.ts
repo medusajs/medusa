@@ -58,7 +58,7 @@ export function isPriceSelectionStrategy(
 
 export type PriceSelectionContext = {
   cart_id?: string
-  customer_id?: string
+  customer_id?: string | null
   region_id?: string
   quantity?: number
   currency_code?: string

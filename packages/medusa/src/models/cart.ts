@@ -274,8 +274,8 @@ export enum CartType {
 export class Cart extends SoftDeletableEntity {
   readonly object = "cart"
 
-  @Column({ nullable: true })
-  email: string
+  @Column({ type:'varchar', nullable: true })
+  email: string | null
 
   @Index()
   @Column({ nullable: true })
@@ -340,11 +340,11 @@ export class Cart extends SoftDeletableEntity {
 
   @Index()
   @Column({ nullable: true })
-  customer_id: string
+  customer_id: string | null
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
-  customer: Customer
+  customer: Customer | null
 
   payment_session: PaymentSession | null
 

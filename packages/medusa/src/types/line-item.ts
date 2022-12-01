@@ -12,7 +12,7 @@ export type GenerateLineItemContext = {
   unit_price?: number
   includes_tax?: boolean
   metadata?: Record<string, unknown>
-  customer_id?: string
+  customer_id?: string | null
   order_edit_id?: string
   cart?: CalculationContextData
 }

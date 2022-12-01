@@ -12,7 +12,7 @@ import {
 export type CalculationContextData = {
   discounts: Discount[]
   items: LineItem[]
-  customer: Customer
+  customer: Customer | null
   region: Region
   shipping_address: Address | null
   swaps?: Swap[]

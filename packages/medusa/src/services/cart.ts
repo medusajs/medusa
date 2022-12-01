@@ -1131,6 +1131,10 @@ class CartService extends TransactionBaseService {
           cart.customer = customer
           cart.customer_id = customer.id
           cart.email = customer.email
+        } else if (data.customer_id === null) {
+          cart.customer = null
+          cart.customer_id = null
+          cart.email = null
         }
 
         if (isDefined(data.customer_id) || isDefined(data.region_id)) {

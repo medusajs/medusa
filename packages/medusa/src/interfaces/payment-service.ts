@@ -18,7 +18,7 @@ export type PaymentContext = {
   cart: {
     context: Record<string, unknown>
     id: string
-    email: string
+    email: string | null
     shipping_address: Address | null
     shipping_methods: ShippingMethod[]
     billing_address?: Address | null

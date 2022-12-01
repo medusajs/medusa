@@ -1048,5 +1048,30 @@ describe("/admin/draft-orders", () => {
 
       expect(orderWithNoDiscount.data.draft_order.cart.total).toEqual(8000)
     })
+
+    it("remove customer", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/draft-orders/test-draft-order",
+        {
+          customer_id: null,
+        },
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      const updatedDraftOrder = await api.get(
+        `/admin/draft-orders/test-draft-order`,
+        adminReqConfig
+      )
+
+      const dorder = updatedDraftOrder.data.draft_order
+
+      expect(dorder.cart.email).toBeNull()
+      expect(dorder.cart.customer_id).toBeNull()
+      expect(dorder.cart.customer).toBeNull()
+    })
   })
 })

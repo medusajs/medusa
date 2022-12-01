@@ -32,7 +32,7 @@ export type ItemTaxCalculationLine = {
  */
 export type TaxCalculationContext = {
   shipping_address: Address | null
-  customer: Customer
+  customer: Customer | null
   region: Region
   is_return: boolean
   shipping_methods: ShippingMethod[]
@@ -62,8 +62,7 @@ export interface ITaxService {
 
 export abstract class AbstractTaxService
   extends BaseService
-  implements ITaxService
-{
+  implements ITaxService {
   protected static identifier: string
 
   public getIdentifier(): string {
