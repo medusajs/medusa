@@ -13,17 +13,16 @@ import { EntityManager } from "typeorm"
 import { CustomerService, OrderService } from "../../../../services"
 
 /**
- * @oas [post] /customers/verify
- * operationId: "PostCustomersCustomerOrderClaimAccept"
- * summary: "Verify a signup"
- * description: "Verifies the signup token provided to the customer and activates customer account"
+ * @oas [post] /customers/confirm-claim
+ * operationId: "PostCustomersCustomerOrderClaimsOrderClaimAccept"
+ * summary: "Verify a claim to orders"
+ * description: "Verifies the claim order token provided to the customer upon request of order ownership"
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         required:
  *           - token
- *           - user
  *         properties:
  *           token:
  *             description: "The invite token provided by the admin."
@@ -47,7 +46,7 @@ import { CustomerService, OrderService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/verify' \
+ *       curl --location --request POST 'https://medusa-url.com/store/customers/confirm-claim' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
  *           "token": "{token}",

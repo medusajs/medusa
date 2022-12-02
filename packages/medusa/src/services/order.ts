@@ -1248,15 +1248,11 @@ class OrderService extends TransactionBaseService {
 
       const emailOrderMapping: { [email: string]: Order[] } = orders.reduce(
         (acc, order) => {
-          console.log(order)
           acc[order.email] = [...(acc[order.email] || []), order]
           return acc
         },
         {}
       )
-
-      logger.info(JSON.stringify(orders))
-      logger.info(JSON.stringify(emailOrderMapping))
 
       await Promise.all(
         Object.keys(emailOrderMapping).map(async (email) => {
@@ -1264,7 +1260,7 @@ class OrderService extends TransactionBaseService {
             claimingCustomerId: customerId,
             orders: emailOrderMapping[email].map((o) => o.id),
           })
-          logger.info(`token: "${token}"`)
+
           await this.eventBus_.emit(OrderService.Events.ORDERS_CLAIMED, {
             email,
             claimingCustomerEmail: customer.email,

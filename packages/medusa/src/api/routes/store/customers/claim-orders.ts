@@ -1,33 +1,24 @@
-import {
-  IsEmail,
-  IsJWT,
-  IsNotEmpty,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-
-import InviteService from "../../../../services/invite"
-import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { IsNotEmpty, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
-import { CustomerService, OrderService } from "../../../../services"
+import { OrderService } from "../../../../services"
 
 /**
  * @oas [post] /customers/claim-orders
  * operationId: "PostCustomersCustomerOrderClaim"
- * summary: "Verify a signup"
- * description: "Verifies the signup token provided to the customer and activates customer account"
+ * summary: "Claim orders for signed in account"
+ * description: "Sends an email to emails registered to orders provided with link to transfer order ownership"
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         required:
- *           - token
- *           - user
+ *           - order_ids
  *         properties:
- *           token:
- *             description: "The invite token provided by the admin."
- *             type: string
+ *           order_ids:
+ *             description: "The ids of the orders to claim"
+ *             type: array
+ *             items:
+ *              type: string
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -35,8 +26,8 @@ import { CustomerService, OrderService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.customers.verify({
- *         token,
+ *       medusa.customers.claimOrders({
+ *         order_ids,
  *       })
  *       .then(() => {
  *         // successful
@@ -47,10 +38,10 @@ import { CustomerService, OrderService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/verify' \
+ *       curl --location --request POST 'https://medusa-url.com/store/customers/claim-orders' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "token": "{token}",
+ *           "order_ids": ["id"],
  *       }'
  * security:
  *   - api_token: []
