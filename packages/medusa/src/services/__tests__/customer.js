@@ -59,18 +59,20 @@ describe("CustomerService", () => {
 
       expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customerRepository.findOne).toHaveBeenCalledWith({
-        where: { email: "tony@stark.com", hasAccount: false },
+        where: { email: "tony@stark.com", has_account: false },
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
     })
 
     it("successfully retrieves a registered customer by email", async () => {
-      const result = await customerService.retrieveByEmail("tony@stark.com")
+      const result = await customerService.retrieveRegisteredByEmail(
+        "tony@stark.com"
+      )
 
       expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customerRepository.findOne).toHaveBeenCalledWith({
-        where: { email: "tony@stark.com", hasAccount: true },
+        where: { email: "tony@stark.com", has_account: true },
       })
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
@@ -103,18 +105,35 @@ describe("CustomerService", () => {
   })
 
   describe("create", () => {
-    const customerRepository = MockRepository({
-      findOne: (query) => {
+    const customerRepository = {
+      ...MockRepository({
+        findOne: (query) => {
+          if (query.where.email === "tony@stark.com") {
+            return Promise.resolve({
+              id: IdMap.getId("exists"),
+              has_account: true,
+              password_hash: "test",
+            })
+          }
+          return undefined
+        },
+      }),
+      listAndCount: jest.fn().mockImplementation((query, q) => {
         if (query.where.email === "tony@stark.com") {
-          return Promise.resolve({
-            id: IdMap.getId("exists"),
-            has_account: true,
-            password_hash: "test",
-          })
+          return Promise.resolve([
+            [
+              {
+                id: IdMap.getId("exists"),
+                has_account: true,
+                password_hash: "test",
+              },
+            ],
+            0,
+          ])
         }
-        return undefined
-      },
-    })
+        return Promise.resolve([[], 0])
+      }),
+    }
 
     const configModule = {
       projectConfig: {
@@ -150,7 +169,7 @@ describe("CustomerService", () => {
       })
     })
 
-    it("calls findOne with has_account", async () => {
+    it("calls listAndCount with email", async () => {
       await customerService.create({
         email: "john@doe.com",
         first_name: "John",
@@ -158,12 +177,17 @@ describe("CustomerService", () => {
         password: "test",
       })
 
-      expect(customerRepository.findOne).toHaveBeenCalledWith({
-        where: {
-          email: "john@doe.com",
+      expect(customerRepository.listAndCount).toHaveBeenCalledWith(
+        {
+          relations: [],
+          skip: 0,
+          take: 2,
+          where: {
+            email: "john@doe.com",
+          },
         },
-        relations: ["orders"],
-      })
+        undefined
+      )
     })
 
     it("successfully creates a one time customer", async () => {
