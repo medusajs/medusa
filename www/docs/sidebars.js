@@ -217,6 +217,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/storefront/use-discounts-in-checkout",
+              label: "Use Discounts in Checkout"
+            },
+            {
+              type: "doc",
               id: "advanced/storefront/how-to-implement-checkout-flow",
               label: "Implement Checkout"
             },
