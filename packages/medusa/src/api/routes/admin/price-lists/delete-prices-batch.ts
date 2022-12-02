@@ -16,6 +16,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           price_ids:
  *             description: The price id's of the Money Amounts to delete.
@@ -59,6 +60,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             ids:
  *               type: array

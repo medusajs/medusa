@@ -27,6 +27,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - title
  *           - prices
@@ -182,6 +183,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             product:
  *               $ref: "#/components/schemas/product"

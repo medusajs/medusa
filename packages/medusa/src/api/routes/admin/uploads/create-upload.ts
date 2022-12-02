@@ -45,6 +45,7 @@ import fs from "fs"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             uploads:
  *               type: array

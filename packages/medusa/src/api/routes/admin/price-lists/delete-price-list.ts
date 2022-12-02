@@ -36,6 +36,7 @@ import PriceListService from "../../../../services/price-list"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             id:
  *               type: string

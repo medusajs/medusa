@@ -52,6 +52,7 @@ export class ReturnReason extends SoftDeletableEntity {
  * title: "Return Reason"
  * description: "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned."
  * x-resourceId: return_reason
+ * type: object
  * required:
  *   - value
  *   - label
