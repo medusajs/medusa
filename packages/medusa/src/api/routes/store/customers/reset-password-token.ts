@@ -71,7 +71,9 @@ export default async (req, res) => {
     "customerService"
   ) as CustomerService
 
-  const customer = await customerService.retrieveByEmail(validated.email)
+  const customer = await customerService.retrieveRegisteredByEmail(
+    validated.email
+  )
 
   // Will generate a token and send it to the customer via an email provider
   const manager: EntityManager = req.scope.resolve("manager")

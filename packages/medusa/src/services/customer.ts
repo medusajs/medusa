@@ -5,7 +5,6 @@ import { DeepPartial, EntityManager } from "typeorm"
 import { EventBusService } from "."
 import { StorePostCustomersCustomerAddressesAddressReq } from "../api"
 import { TransactionBaseService } from "../interfaces"
-import logger from "../loaders/logger"
 import { Address, Customer, CustomerGroup } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
@@ -202,9 +201,28 @@ class CustomerService extends TransactionBaseService {
     email: string,
     config: FindConfig<Customer> = {}
   ): Promise<Customer | never> {
-    return await this.retrieve_({ email: email.toLowerCase() }, config)
+    return await this.retrieve_(
+      { email: email.toLowerCase(), has_account: false },
+      config
+    )
   }
 
+  async retrieveRegisteredByEmail(
+    email: string,
+    config: FindConfig<Customer> = {}
+  ): Promise<Customer | never> {
+    return await this.retrieve_(
+      { email: email.toLowerCase(), has_account: true },
+      config
+    )
+  }
+
+  async listByEmail(
+    email: string,
+    config: FindConfig<Customer> = { relations: [], skip: 0, take: 2 }
+  ): Promise<Customer[]> {
+    return await this.list({ email: email.toLowerCase() }, config)
+  }
   /**
    * Gets a customer by phone.
    * @param {string} phone - the phone of the customer to get.
@@ -259,69 +277,41 @@ class CustomerService extends TransactionBaseService {
 
       const { email, password } = customer
 
-      const existing = await this.retrieveByEmail(email, {
-        relations: ["orders"],
-      }).catch(() => undefined)
+      // should be a list of customers at this point
+      const existing = await this.listByEmail(email).catch(() => undefined)
 
-      if (existing?.has_account) {
+      // should validate that "existing.some(acc => acc.has_account) && password"
+      if (existing?.some((customer) => customer.has_account) && password) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
           "A customer with the given email already has an account. Log in instead"
+        )
+      } else if (
+        existing?.some((customer) => !customer.has_account) &&
+        !password
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          "Guest customer with email already exists"
         )
       }
 
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
         customer.password_hash = hashedPassword
-        customer.has_account = false
+        customer.has_account = true
         delete customer.password
-
-        if (!existing || existing.orders.length === 0) {
-          customer.has_account = true
-        }
       }
 
-      let result
-      if (existing) {
-        const { orders, ...exisingFields } = existing
-        const toUpdate = { ...exisingFields, ...customer }
-        result = await customerRepository.save(toUpdate)
+      const created = customerRepository.create(customer)
+      const result = await customerRepository.save(created)
 
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(CustomerService.Events.UPDATED, result)
-      } else {
-        const created = customerRepository.create(customer)
-        result = await customerRepository.save(created)
-
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(CustomerService.Events.CREATED, result)
-      }
-
-      if (password) {
-        const token = this.generateToken({ id: result.id })
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(CustomerService.Events.CREATED_UNVERIFIED, token)
-        logger.info(`token: "${token}"`)
-      }
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(CustomerService.Events.CREATED, result)
 
       return result
     })
-  }
-
-  generateToken(data): string {
-    const { jwt_secret } = this.configModule_.projectConfig
-    if (jwt_secret) {
-      return jwt.sign(data, jwt_secret, {
-        expiresIn: "1h",
-      })
-    }
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      "Please configure jwt_secret"
-    )
   }
 
   /**
@@ -549,40 +539,6 @@ class CustomerService extends TransactionBaseService {
 
       return await customerRepo.softRemove(customer)
     })
-  }
-
-  async verify(token: string): Promise<void> {
-    let decoded
-    try {
-      decoded = jwt.verify(
-        token,
-        this.configModule_.projectConfig.jwt_secret || ""
-      )
-    } catch (err) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Token is not valid"
-      )
-    }
-
-    const { id } = decoded as { id: string }
-
-    const customer = await this.retrieve(id).catch(() => {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Token is not valid"
-      )
-    })
-
-    if (!customer.has_account) {
-      const manager = this.transactionManager_ ?? this.manager_
-      const customerRepository = manager.getCustomRepository(
-        this.customerRepository_
-      )
-
-      customer.has_account = true
-      await customerRepository.save(customer)
-    }
   }
 }
 

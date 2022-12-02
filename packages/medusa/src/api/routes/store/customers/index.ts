@@ -10,7 +10,8 @@ import {
   defaultStoreOrdersRelations,
 } from "../orders"
 import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
-import { StorePostCustomersCustomerVerifyReq } from "./verify-customer"
+import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-claim-to-orders"
+import { StorePostCustomersCustomerOrderClaimReq } from "./claim-orders"
 
 const route = Router()
 
@@ -28,12 +29,6 @@ export default (app, container) => {
   route.post("/", middlewares.wrap(require("./create-customer").default))
 
   route.post(
-    "/verify",
-    transformBody(StorePostCustomersCustomerVerifyReq),
-    middlewares.wrap(require("./verify-customer").default)
-  )
-
-  route.post(
     "/password-reset",
     middlewares.wrap(require("./reset-password").default)
   )
@@ -45,6 +40,18 @@ export default (app, container) => {
 
   // Authenticated endpoints
   route.use(middlewares.requireCustomerAuthentication())
+
+  route.post(
+    "/claim-orders",
+    transformBody(StorePostCustomersCustomerOrderClaimReq),
+    middlewares.wrap(require("./claim-orders").default)
+  )
+
+  route.post(
+    "/confirm-claim",
+    transformBody(StorePostCustomersCustomerAcceptClaimReq),
+    middlewares.wrap(require("./confirm-claim-to-orders").default)
+  )
 
   route.get("/me", middlewares.wrap(require("./get-customer").default))
   route.post("/me", middlewares.wrap(require("./update-customer").default))

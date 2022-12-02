@@ -151,10 +151,10 @@ class AuthService extends TransactionBaseService {
       try {
         const customer: Customer = await this.customerService_
           .withTransaction(transactionManager)
-          .retrieveByEmail(email, {
-            select: ["password_hash", "has_account"],
+          .retrieveRegisteredByEmail(email, {
+            select: ["password_hash"],
           })
-        if (customer.password_hash && customer.has_account) {
+        if (customer.password_hash) {
           const passwordsMatch = await this.comparePassword_(
             password,
             customer.password_hash
@@ -163,7 +163,7 @@ class AuthService extends TransactionBaseService {
           if (passwordsMatch) {
             const customer = await this.customerService_
               .withTransaction(transactionManager)
-              .retrieveByEmail(email)
+              .retrieveRegisteredByEmail(email)
 
             return {
               success: true,
