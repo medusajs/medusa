@@ -34,6 +34,7 @@ export class ShippingMethodTaxLine extends TaxLine {
  * title: "Shipping Method Tax Line"
  * description: "Shipping Method Tax Line"
  * x-resourceId: shipping_method_tax_line
+ * type: object
  * required:
  *   - shipping_method_id
  *   - rate

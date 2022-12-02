@@ -16,6 +16,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - provider_id
  *           - customer_id
@@ -48,6 +49,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             payment_session:
  *               $ref: "#/components/schemas/payment_session"

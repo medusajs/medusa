@@ -135,6 +135,7 @@ export class ClaimOrder extends SoftDeletableEntity {
  * title: "Claim Order"
  * description: "Claim Orders represent a group of faulty or missing items. Each claim order consists of a subset of items associated with an original order, and can contain additional information about fulfillments and returns."
  * x-resourceId: claim_order
+ * type: object
  * required:
  *   - type
  *   - order_id

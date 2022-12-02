@@ -38,6 +38,7 @@ import PriceListService from "../../../../services/price-list"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             price_list:
  *               $ref: "#/components/schemas/price_list"

@@ -77,6 +77,7 @@ export class Store extends BaseEntity {
  * title: "Store"
  * description: "Holds settings for the Store, such as name, currencies, etc."
  * x-resourceId: store
+ * type: object
  * properties:
  *   id:
  *     type: string

@@ -42,6 +42,7 @@ export class ShippingTaxRate {
  * title: "Shipping Tax Rate"
  * description: "Associates a tax rate with a shipping option to indicate that the shipping option is taxed in a certain way"
  * x-resourceId: shipping_tax_rate
+ * type: object
  * required:
  *   - shipping_option_id
  *   - rate_id

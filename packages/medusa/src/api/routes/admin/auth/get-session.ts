@@ -34,6 +34,7 @@ import _ from "lodash"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            user:
  *              $ref: "#/components/schemas/user"
