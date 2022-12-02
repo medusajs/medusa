@@ -1,14 +1,20 @@
-import { IsJWT, IsNotEmpty, IsString, ValidateNested } from "class-validator"
+import {
+  IsEmail,
+  IsJWT,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 
 import InviteService from "../../../../services/invite"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
-import { CustomerService } from "../../../../services"
+import { CustomerService, OrderService } from "../../../../services"
 
 /**
  * @oas [post] /customers/verify
- * operationId: "PostCustomersCustomerAccept"
+ * operationId: "PostCustomersCustomerOrderClaimAccept"
  * summary: "Verify a signup"
  * description: "Verifies the signup token provided to the customer and activates customer account"
  * requestBody:
@@ -70,17 +76,20 @@ import { CustomerService } from "../../../../services"
 export default async (req, res) => {
   const { token } = req.validatedBody
 
-  const customerSerivce: CustomerService = req.scope.resolve("customerService")
+  const customerId: string = req.user?.customer_id
+  const orderService: OrderService = req.scope.resolve("orderService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    await customerSerivce.withTransaction(transactionManager).verify(token)
+    await orderService
+      .withTransaction(transactionManager)
+      .confirmCustomerClaimToOrders(token, customerId)
   })
 
   res.sendStatus(200)
 }
 
-export class StorePostCustomersCustomerVerifyReq {
+export class StorePostCustomersCustomerAcceptClaimReq {
   @IsNotEmpty()
   @IsJWT()
   token: string

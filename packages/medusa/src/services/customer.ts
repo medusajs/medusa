@@ -5,7 +5,6 @@ import { DeepPartial, EntityManager } from "typeorm"
 import { EventBusService } from "."
 import { StorePostCustomersCustomerAddressesAddressReq } from "../api"
 import { TransactionBaseService } from "../interfaces"
-import logger from "../loaders/logger"
 import { Address, Customer, CustomerGroup } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
@@ -315,19 +314,6 @@ class CustomerService extends TransactionBaseService {
     })
   }
 
-  generateToken(data): string {
-    const { jwt_secret } = this.configModule_.projectConfig
-    if (jwt_secret) {
-      return jwt.sign(data, jwt_secret, {
-        expiresIn: "1h",
-      })
-    }
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      "Please configure jwt_secret"
-    )
-  }
-
   /**
    * Updates a customer.
    * @param {string} customerId - the id of the variant. Must be a string that
@@ -553,40 +539,6 @@ class CustomerService extends TransactionBaseService {
 
       return await customerRepo.softRemove(customer)
     })
-  }
-
-  async verify(token: string): Promise<void> {
-    let decoded
-    try {
-      decoded = jwt.verify(
-        token,
-        this.configModule_.projectConfig.jwt_secret || ""
-      )
-    } catch (err) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Token is not valid"
-      )
-    }
-
-    const { id } = decoded as { id: string }
-
-    const customer = await this.retrieve(id).catch(() => {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Token is not valid"
-      )
-    })
-
-    if (!customer.has_account) {
-      const manager = this.transactionManager_ ?? this.manager_
-      const customerRepository = manager.getCustomRepository(
-        this.customerRepository_
-      )
-
-      customer.has_account = true
-      await customerRepository.save(customer)
-    }
   }
 }
 
