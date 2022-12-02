@@ -21,22 +21,6 @@ const adminHeaders = {
   },
 }
 
-let authCookie = null
-async function getClientAuthentication(api) {
-  if (authCookie !== null) {
-    return authCookie
-  }
-
-  const authResponse = await api.post("/store/auth", {
-    email: "test@customer.com",
-    password: "test",
-  })
-
-  authCookie = authResponse.headers["set-cookie"][0].split(";")
-
-  return authCookie
-}
-
 describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
   let medusaProcess
   let dbConnection
@@ -83,24 +67,18 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
       const api = useApi()
 
       // create payment session
-      await api.post(
+      const payColRes = await api.post(
         `/store/payment-collections/${payCol.id}/sessions`,
         {
           provider_id: "test-pay",
-        },
-        {
-          headers: {
-            Cookie: await getClientAuthentication(api),
-          },
         }
       )
       await api.post(
         `/store/payment-collections/${payCol.id}/batch/sessions/authorize`,
-        undefined,
         {
-          headers: {
-            Cookie: await getClientAuthentication(api),
-          },
+          session_ids: payColRes.data.payment_collection.payment_sessions.map(
+            ({ id }) => id
+          ),
         }
       )
 
@@ -137,24 +115,18 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
       const api = useApi()
 
       // create payment session
-      await api.post(
+      const payColRes = await api.post(
         `/store/payment-collections/${payCol.id}/sessions`,
         {
           provider_id: "test-pay",
-        },
-        {
-          headers: {
-            Cookie: await getClientAuthentication(api),
-          },
         }
       )
       await api.post(
         `/store/payment-collections/${payCol.id}/batch/sessions/authorize`,
-        undefined,
         {
-          headers: {
-            Cookie: await getClientAuthentication(api),
-          },
+          session_ids: payColRes.data.payment_collection.payment_sessions.map(
+            ({ id }) => id
+          ),
         }
       )
 
