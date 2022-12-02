@@ -32,6 +32,7 @@ import { CartService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             cart:
  *               $ref: "#/components/schemas/cart"

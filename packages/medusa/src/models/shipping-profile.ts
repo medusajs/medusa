@@ -40,6 +40,7 @@ export class ShippingProfile extends SoftDeletableEntity {
  * title: "Shipping Profile"
  * description: "Shipping Profiles have a set of defined Shipping Options that can be used to fulfill a given set of Products."
  * x-resourceId: shipping_profile
+ * type: object
  * required:
  *   - name
  *   - type

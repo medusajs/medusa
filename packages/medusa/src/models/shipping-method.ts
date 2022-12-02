@@ -109,6 +109,7 @@ export class ShippingMethod {
  * title: "Shipping Method"
  * description: "Shipping Methods represent a way in which an Order or Return can be shipped. Shipping Methods are built from a Shipping Option, but may contain additional details, that can be necessary for the Fulfillment Provider to handle the shipment."
  * x-resourceId: shipping_method
+ * type: object
  * required:
  *   - shipping_option_id
  *   - price

@@ -20,6 +20,7 @@ export default (fn: handler): RequestHandler => {
  * @schema multiple_errors
  * title: "Multiple Errors"
  * x-resourceId: multiple_errors
+ * type: object
  * properties:
  *  errors:
  *    type: array

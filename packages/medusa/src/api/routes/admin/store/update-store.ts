@@ -14,6 +14,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           name:
  *             description: "The name of the Store"
@@ -74,6 +75,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             store:
  *               $ref: "#/components/schemas/store"
