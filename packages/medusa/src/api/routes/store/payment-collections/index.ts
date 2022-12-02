@@ -52,7 +52,7 @@ export default (app, container) => {
 
   route.post(
     "/:id/sessions/:session_id/authorize",
-    middlewares.wrap(require("./authorize-payment-sessions").default)
+    middlewares.wrap(require("./authorize-payment-session").default)
   )
 
   route.post(
