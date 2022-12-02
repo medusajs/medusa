@@ -42,6 +42,7 @@ export class DiscountConditionProductTag {
  * title: "Product Tag Discount Condition"
  * description: "Associates a discount condition with a product tag"
  * x-resourceId: discount_condition_product_tag
+ * type: object
  * required:
  *   - product_tag_id
  *   - condition_id

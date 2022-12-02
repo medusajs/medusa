@@ -43,6 +43,7 @@ import { IsOptional, IsString } from "class-validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edits:
  *               type: array

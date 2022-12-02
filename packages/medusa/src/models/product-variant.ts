@@ -105,6 +105,7 @@ export class ProductVariant extends SoftDeletableEntity {
  * title: "Product Variant"
  * description: "Product Variants represent a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations."
  * x-resourceId: product_variant
+ * type: object
  * required:
  *   - title
  *   - product_id
@@ -222,6 +223,7 @@ export class ProductVariant extends SoftDeletableEntity {
  * title: "Product Variant Prices Fields"
  * description: "Product Variants Prices Fields that are only available in some requests."
  * x-resourceId: product_variant_prices_fields
+ * type: object
  * properties:
  *   original_price:
  *     type: number

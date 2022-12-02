@@ -16,6 +16,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           sessions:
  *             description: "An array or a single entry of payment sessions related to the Payment Collection. If the session_id is not provided the existing sessions not present will be deleted and the provided ones will be created."
@@ -91,6 +92,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             payment_collection:
  *               $ref: "#/components/schemas/payment_collection"

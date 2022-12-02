@@ -41,6 +41,7 @@ import { Return } from "../../../../models"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             returns:
  *               type: array

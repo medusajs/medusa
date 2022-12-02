@@ -18,6 +18,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *          - label
  *          - value
@@ -72,6 +73,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             return_reason:
  *               $ref: "#/components/schemas/return_reason"

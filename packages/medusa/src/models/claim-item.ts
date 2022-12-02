@@ -94,6 +94,7 @@ export class ClaimItem extends SoftDeletableEntity {
  * title: "Claim Item"
  * description: "Represents a claimed item along with information about the reasons for the claim."
  * x-resourceId: claim_item
+ * type: object
  * required:
  *   - claim_order_id
  *   - item_id

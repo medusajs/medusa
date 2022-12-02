@@ -37,6 +37,7 @@ import CustomerService from "../../../../services/customer"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             customer:
  *               $ref: "#/components/schemas/customer"
