@@ -5,6 +5,7 @@ import express from "express"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
+import { isDefined } from "../utils"
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
 
@@ -17,7 +18,10 @@ export default async function ({ port, directory }) {
 
     const app = express()
 
-    const { dbConnection } = await loaders({ directory, expressApp: app })
+    const { dbConnection, configModule } = await loaders({
+      directory,
+      expressApp: app,
+    })
     const serverActivity = Logger.activity(`Creating server`)
     const server = app.listen(port, (err) => {
       if (err) {
@@ -26,6 +30,10 @@ export default async function ({ port, directory }) {
       Logger.success(serverActivity, `Server is ready on port: ${port}`)
       track("CLI_START_COMPLETED")
     })
+
+    if (isDefined(configModule.projectConfig.request_timeout)) {
+      server.setTimeout(configModule.projectConfig.request_timeout)
+    }
 
     scheduleJob(CRON_SCHEDULE, () => {
       track("PING")

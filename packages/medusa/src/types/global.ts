@@ -53,8 +53,8 @@ export type ModuleDefinition = {
 
 export type ConfigModule = {
   projectConfig: {
+    request_timeout?: number
     redis_url?: string
-
     jwt_secret?: string
     cookie_secret?: string
 

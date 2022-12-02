@@ -12,7 +12,7 @@ import { EOL } from "os"
 import "reflect-metadata"
 import requestIp from "request-ip"
 import { Connection, getManager } from "typeorm"
-import { MedusaContainer } from "../types/global"
+import { MedusaContainer, ConfigModule } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader from "./database"
@@ -42,6 +42,7 @@ export default async ({
   expressApp,
   isTest,
 }: Options): Promise<{
+  configModule: ConfigModule
   container: MedusaContainer
   dbConnection: Connection
   app: Express
@@ -197,7 +198,7 @@ export default async ({
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
-  return { container, dbConnection, app: expressApp }
+  return { container, dbConnection, app: expressApp, configModule }
 }
 
 function asArray(
