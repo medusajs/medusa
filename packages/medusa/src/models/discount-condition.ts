@@ -140,6 +140,7 @@ export class DiscountCondition extends SoftDeletableEntity {
  * title: "Discount Condition"
  * description: "Holds rule conditions for when a discount is applicable"
  * x-resourceId: discount_condition
+ * type: object
  * required:
  *   - type
  *   - operator

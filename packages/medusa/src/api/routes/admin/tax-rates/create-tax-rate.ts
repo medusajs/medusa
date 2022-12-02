@@ -39,6 +39,7 @@ import { isDefined } from "../../../../utils"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - code
  *           - name
@@ -108,6 +109,7 @@ import { isDefined } from "../../../../utils"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             tax_rate:
  *               $ref: "#/components/schemas/tax_rate"

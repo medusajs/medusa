@@ -20,6 +20,7 @@ import { EntityManager } from "typeorm"
  *  content:
  *    application/json:
  *      schema:
+ *        type: object
  *        properties:
  *          prices:
  *            description: The prices to update or add.
@@ -101,6 +102,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             price_list:
  *               $ref: "#/components/schemas/price_list"

@@ -27,6 +27,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - order_id
  *           - return_items
@@ -124,6 +125,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             swap:
  *               $ref: "#/components/schemas/swap"

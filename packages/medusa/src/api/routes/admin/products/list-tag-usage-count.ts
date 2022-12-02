@@ -33,6 +33,7 @@ import { ProductService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             tags:
  *               type: array
