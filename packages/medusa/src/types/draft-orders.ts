@@ -9,7 +9,7 @@ export type DraftOrderCreateProps = {
   billing_address?: Partial<AddressPayload>
   shipping_address_id?: string
   shipping_address?: Partial<AddressPayload>
-  items: Item[]
+  items?: Item[]
   region_id: string
   discounts?: Discount[]
   customer_id?: string

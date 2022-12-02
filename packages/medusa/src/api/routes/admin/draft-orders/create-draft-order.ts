@@ -35,7 +35,6 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       schema:
  *         required:
  *           - email
- *           - items
  *           - region_id
  *           - shipping_methods
  *         properties:
@@ -256,7 +255,8 @@ export class AdminPostDraftOrdersReq {
   @Type(() => Item)
   @IsNotEmpty()
   @ValidateNested({ each: true })
-  items: Item[]
+  @IsOptional()
+  items?: Item[]
 
   @IsString()
   region_id: string

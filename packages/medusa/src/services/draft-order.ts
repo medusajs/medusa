@@ -252,13 +252,6 @@ class DraftOrderService extends TransactionBaseService {
           )
         }
 
-        if (!data.items || !data.items.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Items are required to create a draft order`
-          )
-        }
-
         const { shipping_methods, no_notification_order, items, ...rawCart } =
           data
 
@@ -297,7 +290,7 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of items) {
+        for (const item of (items || [])) {
           if (item.variant_id) {
             const line = await lineItemServiceTx.generate(
               item.variant_id,
