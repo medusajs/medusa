@@ -117,23 +117,18 @@ export default async (req, res) => {
     }
   )
 
+  // Add JWT to cookie
+  const {
+    projectConfig: { jwt_secret },
+  } = req.scope.resolve("configModule")
+  req.session.jwt_store = jwt.sign({ customer_id: customer.id }, jwt_secret!, {
+    expiresIn: "30d",
+  })
+
   customer = await customerService.retrieve(customer.id, {
     relations: defaultStoreCustomersRelations,
     select: defaultStoreCustomersFields,
   })
-
-  if (customer.has_account) {
-    const {
-      projectConfig: { jwt_secret },
-    } = req.scope.resolve("configModule")
-    req.session.jwt_store = jwt.sign(
-      { customer_id: customer.id },
-      jwt_secret!,
-      {
-        expiresIn: "30d",
-      }
-    )
-  }
 
   res.status(200).json({ customer })
 }
