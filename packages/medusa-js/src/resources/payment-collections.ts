@@ -1,7 +1,7 @@
 import {
   GetPaymentCollectionsParams,
-  StorePostPaymentCollectionsSessionsBatchReq,
-  StorePostPaymentCollectionsSessionsAuthorizeBatchReq,
+  StorePostPaymentCollectionsBatchSessionsReq,
+  StorePostPaymentCollectionsBatchSessionsAuthorizeReq,
   StorePaymentCollectionSessionsReq,
   StorePaymentCollectionsSessionRes,
   StorePaymentCollectionsRes,
@@ -37,19 +37,19 @@ class PaymentCollectionsResource extends BaseResource {
 
   authorizePaymentSessionsBatch(
     id: string,
-    payload: StorePostPaymentCollectionsSessionsAuthorizeBatchReq,
+    payload: StorePostPaymentCollectionsBatchSessionsAuthorizeReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePaymentCollectionsRes> {
-    const path = `/store/payment-collections/${id}/sessions/authorize/batch`
+    const path = `/store/payment-collections/${id}/batch/sessions/authorize`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   managePaymentSessionsBatch(
     id: string,
-    payload: StorePostPaymentCollectionsSessionsBatchReq,
+    payload: StorePostPaymentCollectionsBatchSessionsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePaymentCollectionsRes> {
-    const path = `/store/payment-collections/${id}/sessions/batch`
+    const path = `/store/payment-collections/${id}/batch/sessions`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 

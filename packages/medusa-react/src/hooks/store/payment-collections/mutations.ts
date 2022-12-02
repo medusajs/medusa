@@ -3,8 +3,8 @@ import { Response } from "@medusajs/medusa-js"
 
 import {
   StorePaymentCollectionsRes,
-  StorePostPaymentCollectionsSessionsBatchReq,
-  StorePostPaymentCollectionsSessionsAuthorizeBatchReq,
+  StorePostPaymentCollectionsBatchSessionsReq,
+  StorePostPaymentCollectionsBatchSessionsAuthorizeReq,
   StorePaymentCollectionSessionsReq,
   StorePaymentCollectionsSessionRes,
 } from "@medusajs/medusa"
@@ -18,14 +18,14 @@ export const useManageMultiplePaymentSessions = (
   options?: UseMutationOptions<
     Response<StorePaymentCollectionsRes>,
     Error,
-    StorePostPaymentCollectionsSessionsBatchReq
+    StorePostPaymentCollectionsBatchSessionsReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: StorePostPaymentCollectionsSessionsBatchReq) =>
+    (payload: StorePostPaymentCollectionsBatchSessionsReq) =>
       client.paymentCollections.managePaymentSessionsBatch(id, payload),
     buildOptions(
       queryClient,
@@ -93,7 +93,7 @@ export const useAuthorizePaymentSessionsBatch = (
   options?: UseMutationOptions<
     Response<StorePaymentCollectionsRes>,
     Error,
-    StorePostPaymentCollectionsSessionsAuthorizeBatchReq
+    StorePostPaymentCollectionsBatchSessionsAuthorizeReq
   >
 ) => {
   const { client } = useMedusa()

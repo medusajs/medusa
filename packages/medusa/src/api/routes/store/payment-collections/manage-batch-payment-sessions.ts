@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions/batch
+ * @oas [post] /payment-collections/{id}/batch/sessions
  * operationId: "PostPaymentCollectionsPaymentCollectionSessionsBatch"
  * summary: "Manage Multiple Payment Sessions from Payment Collections"
  * description: "Manages Multiple Payment Sessions from Payment Collections."
@@ -73,7 +73,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/batch/sessions'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -102,7 +102,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const data = req.validatedBody as StorePostPaymentCollectionsSessionsBatchReq
+  const data = req.validatedBody as StorePostPaymentCollectionsBatchSessionsReq
   const { id } = req.params
 
   const customer_id = req.user?.customer_id
@@ -136,7 +136,7 @@ export class StorePostPaymentCollectionsSessionsReq {
   session_id?: string
 }
 
-export class StorePostPaymentCollectionsSessionsBatchReq {
+export class StorePostPaymentCollectionsBatchSessionsReq {
   @IsType([[StorePostPaymentCollectionsSessionsReq]])
   sessions: StorePostPaymentCollectionsSessionsReq[]
 }

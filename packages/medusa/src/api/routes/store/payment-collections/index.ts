@@ -8,11 +8,11 @@ import middlewares, {
 import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
-import { StorePostPaymentCollectionsSessionsBatchReq } from "./manage-batch-payment-sessions"
+import { StorePostPaymentCollectionsBatchSessionsReq } from "./manage-batch-payment-sessions"
 import { GetPaymentCollectionsParams } from "./get-payment-collection"
 import { PaymentCollection, PaymentSession } from "../../../../models"
 import { StorePaymentCollectionSessionsReq } from "./manage-payment-session"
-import { StorePostPaymentCollectionsSessionsAuthorizeBatchReq } from "./authorize-batch-payment-sessions"
+import { StorePostPaymentCollectionsBatchSessionsAuthorizeReq } from "./authorize-batch-payment-sessions"
 
 const route = Router()
 
@@ -40,12 +40,6 @@ export default (app, container) => {
   )
 
   route.post(
-    "/:id/sessions/batch",
-    transformBody(StorePostPaymentCollectionsSessionsBatchReq),
-    middlewares.wrap(require("./manage-batch-payment-sessions").default)
-  )
-
-  route.post(
     "/:id/sessions/:session_id",
     middlewares.wrap(require("./refresh-payment-session").default)
   )
@@ -56,8 +50,14 @@ export default (app, container) => {
   )
 
   route.post(
-    "/:id/sessions/authorize/batch",
-    transformBody(StorePostPaymentCollectionsSessionsAuthorizeBatchReq),
+    "/:id/batch/sessions",
+    transformBody(StorePostPaymentCollectionsBatchSessionsReq),
+    middlewares.wrap(require("./manage-batch-payment-sessions").default)
+  )
+
+  route.post(
+    "/:id/batch/sessions/authorize",
+    transformBody(StorePostPaymentCollectionsBatchSessionsAuthorizeReq),
     middlewares.wrap(require("./authorize-batch-payment-sessions").default)
   )
 

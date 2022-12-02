@@ -2,8 +2,8 @@ import { IsArray, IsString } from "class-validator"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions/authorize/batch
- * operationId: "PostPaymentCollectionsAuthorize"
+ * @oas [post] /payment-collections/{id}/batch/sessions/authorize
+ * operationId: "PostPaymentCollectionsBatchSessionsAuthorize"
  * summary: "Authorize Payment Sessions of a Payment Collection"
  * description: "Authorizes Payment Sessions of a Payment Collection."
  * x-authenticated: false
@@ -33,7 +33,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/authorize/batch'
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/batch/sessions/authorize'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -64,7 +64,7 @@ import { PaymentCollectionService } from "../../../../services"
 export default async (req, res) => {
   const { id } = req.params
   const data =
-    req.validatedBody as StorePostPaymentCollectionsSessionsAuthorizeBatchReq
+    req.validatedBody as StorePostPaymentCollectionsBatchSessionsAuthorizeReq
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
@@ -80,7 +80,7 @@ export default async (req, res) => {
   res.status(207).json({ payment_collection })
 }
 
-export class StorePostPaymentCollectionsSessionsAuthorizeBatchReq {
+export class StorePostPaymentCollectionsBatchSessionsAuthorizeReq {
   @IsArray()
   @IsString({ each: true })
   session_ids: string[]

@@ -145,7 +145,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment-collections", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/admin/payment-collections/${payCol.id}/sessions/batch/authorize`,
+        `/admin/payment-collections/${payCol.id}/batch/sessions/authorize`,
         undefined,
         adminHeaders
       )
@@ -201,7 +201,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment-collections", () => {
       const api = useApi()
 
       await api.post(
-        `/admin/payment-collections/${payCol.id}/sessions/batch/authorize`,
+        `/admin/payment-collections/${payCol.id}/batch/sessions/authorize`,
         undefined,
         adminHeaders
       )

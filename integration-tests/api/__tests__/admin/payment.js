@@ -95,7 +95,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
         }
       )
       await api.post(
-        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
+        `/store/payment-collections/${payCol.id}/batch/sessions/authorize`,
         undefined,
         {
           headers: {
@@ -149,7 +149,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
         }
       )
       await api.post(
-        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
+        `/store/payment-collections/${payCol.id}/batch/sessions/authorize`,
         undefined,
         {
           headers: {
