@@ -114,6 +114,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
       )
 
       const payment = paymentCollections.data.payment_collection.payments[0]
+
       expect(payment.captured_at).toBe(null)
 
       const response = await api.post(
