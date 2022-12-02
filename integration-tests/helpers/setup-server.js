@@ -21,6 +21,7 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
         COOKIE_SECRET: "test",
         REDIS_URL: redisUrl ? redisUrlWithDatabase : undefined, // If provided, will use a real instance, otherwise a fake instance
         UPLOAD_DIR: uploadDir, // If provided, will be used for the fake local file service
+        CACHE_TTL: 0,
         ...env,
       },
       stdio: verbose
