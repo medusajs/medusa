@@ -1,5 +1,5 @@
 import { queryKeysFactory } from "../../utils"
-import { StorePaymentCollectionRes } from "@medusajs/medusa"
+import { StorePaymentCollectionsRes } from "@medusajs/medusa"
 import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
@@ -16,7 +16,7 @@ type PaymentCollectionKey = typeof paymentCollectionQueryKeys
 export const usePaymentCollection = (
   id: string,
   options?: UseQueryOptionsWrapper<
-    Response<StorePaymentCollectionRes>,
+    Response<StorePaymentCollectionsRes>,
     Error,
     ReturnType<PaymentCollectionKey["detail"]>
   >

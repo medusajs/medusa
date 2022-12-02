@@ -84,7 +84,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
 
       // create payment session
       await api.post(
-        `/store/payment-collections/${payCol.id}/session`,
+        `/store/payment-collections/${payCol.id}/sessions`,
         {
           provider_id: "test-pay",
         },
@@ -95,7 +95,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
         }
       )
       await api.post(
-        `/store/payment-collections/${payCol.id}/authorize`,
+        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
         undefined,
         {
           headers: {
@@ -137,7 +137,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
 
       // create payment session
       await api.post(
-        `/store/payment-collections/${payCol.id}/session`,
+        `/store/payment-collections/${payCol.id}/sessions`,
         {
           provider_id: "test-pay",
         },
@@ -148,7 +148,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
         }
       )
       await api.post(
-        `/store/payment-collections/${payCol.id}/authorize`,
+        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
         undefined,
         {
           headers: {

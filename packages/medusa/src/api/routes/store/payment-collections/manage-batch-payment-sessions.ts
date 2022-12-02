@@ -5,11 +5,11 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/multiple-sessions
- * operationId: "PostPaymentCollectionsMultipleSessions"
+ * @oas [post] /payment-collections/{id}/sessions/batch
+ * operationId: "PostPaymentCollectionsPaymentCollectionSessionsBatch"
  * summary: "Manage Multiple Payment Sessions from Payment Collections"
  * description: "Manages Multiple Payment Sessions from Payment Collections."
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collections.
  * requestBody:
@@ -45,7 +45,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       // Total amount = 10000
  *
  *       // Adding two new sessions
- *       medusa.paymentCollections.manageMultiplePaymentSessions(payment_id, [
+ *       medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
  *         {
  *           provider_id: "stripe",
  *           amount: 5000,
@@ -60,7 +60,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       });
  *
  *       // Updating one session and removing the other
- *       medusa.paymentCollections.manageMultiplePaymentSessions(payment_id, [
+ *       medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
  *         {
  *           provider_id: "stripe",
  *           amount: 10000,
@@ -73,8 +73,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/multiple-sessions' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -103,8 +102,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const data =
-    req.validatedBody as StoreManageMultiplePaymentCollectionSessionRequest
+  const data = req.validatedBody as StorePostPaymentCollectionsSessionsBatchReq
   const { id } = req.params
 
   const customer_id = req.user?.customer_id
@@ -118,14 +116,14 @@ export default async (req, res) => {
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
-        .setMultiplePaymentSessions(id, data.sessions, customer_id)
+        .setPaymentSessionsBatch(id, data.sessions, customer_id)
     }
   )
 
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
-export class PaymentCollectionMultipleSessionInputRequest {
+export class StorePostPaymentCollectionsSessionsReq {
   @IsString()
   provider_id: string
 
@@ -138,7 +136,7 @@ export class PaymentCollectionMultipleSessionInputRequest {
   session_id?: string
 }
 
-export class StoreManageMultiplePaymentCollectionSessionRequest {
-  @IsType([[PaymentCollectionMultipleSessionInputRequest]])
-  sessions: PaymentCollectionMultipleSessionInputRequest[]
+export class StorePostPaymentCollectionsSessionsBatchReq {
+  @IsType([[StorePostPaymentCollectionsSessionsReq]])
+  sessions: StorePostPaymentCollectionsSessionsReq[]
 }

@@ -1,7 +1,7 @@
 import {
   useManageMultiplePaymentSessions,
   useManagePaymentSession,
-  useAuthorizePayment,
+  useAuthorizePaymentSession,
   usePaymentCollectionRefreshPaymentSession,
 } from "../../../../src"
 import { renderHook } from "@testing-library/react-hooks"
@@ -63,7 +63,7 @@ describe("useManagePaymentSession hook", () => {
 describe("useAuthorizePayment hook", () => {
   test("Authorize all payment sessions of a Payment Collection", async () => {
     const { result, waitFor } = renderHook(
-      () => useAuthorizePayment("payment_collection_id"),
+      () => useAuthorizePaymentSession("payment_collection_id"),
       {
         wrapper: createWrapper(),
       }

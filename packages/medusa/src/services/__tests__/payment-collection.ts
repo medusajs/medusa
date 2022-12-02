@@ -17,7 +17,7 @@ import {
   PaymentProviderServiceMock,
 } from "../__mocks__/payment-provider"
 import { CustomerServiceMock } from "../__mocks__/customer"
-import { PaymentCollectionMultipleSessionInput } from "../../types/payment-collection"
+import { PaymentCollectionsSessionsBatchInput } from "../../types/payment-collection"
 
 describe("PaymentCollectionService", () => {
   afterEach(() => {
@@ -447,13 +447,13 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should add a new session and delete existing one", async () => {
-      const inp: PaymentCollectionMultipleSessionInput[] = [
+      const inp: PaymentCollectionsSessionsBatchInput[] = [
         {
           amount: 100,
           provider_id: IdMap.getId("region1_provider1"),
         },
       ]
-      await paymentCollectionService.setMultiplePaymentSessions(
+      await paymentCollectionService.setPaymentSessionsBatch(
         IdMap.getId("payment-collection-session"),
         inp,
         IdMap.getId("lebron")
@@ -479,13 +479,13 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should throw error if payment collection doesn't have the correct status", async () => {
-      const inp: PaymentCollectionMultipleSessionInput[] = [
+      const inp: PaymentCollectionsSessionsBatchInput[] = [
         {
           amount: 100,
           provider_id: IdMap.getId("region1_provider1"),
         },
       ]
-      const ret = paymentCollectionService.setMultiplePaymentSessions(
+      const ret = paymentCollectionService.setPaymentSessionsBatch(
         IdMap.getId("payment-collection-id2"),
         inp,
         "customer1"
@@ -501,14 +501,14 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should throw error if amount is different than requested", async () => {
-      const inp: PaymentCollectionMultipleSessionInput[] = [
+      const inp: PaymentCollectionsSessionsBatchInput[] = [
         {
           amount: 101,
           provider_id: IdMap.getId("region1_provider1"),
         },
       ]
 
-      const ret = paymentCollectionService.setMultiplePaymentSessions(
+      const ret = paymentCollectionService.setPaymentSessionsBatch(
         IdMap.getId("payment-collection-id1"),
         inp,
         "customer1"
@@ -521,7 +521,7 @@ describe("PaymentCollectionService", () => {
         `The sum of sessions is not equal to 100 on Payment Collection`
       )
 
-      const multInp: PaymentCollectionMultipleSessionInput[] = [
+      const multInp: PaymentCollectionsSessionsBatchInput[] = [
         {
           amount: 51,
           provider_id: IdMap.getId("region1_provider1"),
@@ -531,7 +531,7 @@ describe("PaymentCollectionService", () => {
           provider_id: IdMap.getId("region1_provider2"),
         },
       ]
-      const multiRet = paymentCollectionService.setMultiplePaymentSessions(
+      const multiRet = paymentCollectionService.setPaymentSessionsBatch(
         IdMap.getId("payment-collection-id1"),
         multInp,
         "customer1"
@@ -546,7 +546,7 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should ignore sessions where provider doesn't belong to the region", async () => {
-      const multInp: PaymentCollectionMultipleSessionInput[] = [
+      const multInp: PaymentCollectionsSessionsBatchInput[] = [
         {
           amount: 50,
           provider_id: IdMap.getId("region1_provider1"),
@@ -556,7 +556,7 @@ describe("PaymentCollectionService", () => {
           provider_id: IdMap.getId("region1_invalid_provider"),
         },
       ]
-      const multiRet = paymentCollectionService.setMultiplePaymentSessions(
+      const multiRet = paymentCollectionService.setPaymentSessionsBatch(
         IdMap.getId("payment-collection-id1"),
         multInp,
         "customer1"
@@ -569,7 +569,7 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should add a new session and update existing one", async () => {
-      const inp: PaymentCollectionMultipleSessionInput[] = [
+      const inp: PaymentCollectionsSessionsBatchInput[] = [
         {
           session_id: IdMap.getId("payCol_session1"),
           amount: 50,
@@ -580,7 +580,7 @@ describe("PaymentCollectionService", () => {
           provider_id: IdMap.getId("region1_provider1"),
         },
       ]
-      await paymentCollectionService.setMultiplePaymentSessions(
+      await paymentCollectionService.setPaymentSessionsBatch(
         IdMap.getId("payment-collection-session"),
         inp,
         "lebron"
@@ -597,13 +597,13 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should add a new session and delete existing one", async () => {
-      const inp: PaymentCollectionMultipleSessionInput[] = [
+      const inp: PaymentCollectionsSessionsBatchInput[] = [
         {
           amount: 100,
           provider_id: IdMap.getId("region1_provider1"),
         },
       ]
-      await paymentCollectionService.setMultiplePaymentSessions(
+      await paymentCollectionService.setPaymentSessionsBatch(
         IdMap.getId("payment-collection-session"),
         inp,
         IdMap.getId("lebron")
@@ -661,19 +661,22 @@ describe("PaymentCollectionService", () => {
       jest.clearAllMocks()
     })
 
-    it("should mark as paid if amount is 0", async () => {
-      await paymentCollectionService.authorize(
-        IdMap.getId("payment-collection-zero")
+    it("should mark as authorized if amount is 0", async () => {
+      const auth = await paymentCollectionService.authorizePaymentSessions(
+        IdMap.getId("payment-collection-zero"),
+        []
       )
 
       expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
         0
       )
+      expect(auth.status).toBe(PaymentCollectionStatus.AUTHORIZED)
     })
 
     it("should reject payment collection without payment sessions", async () => {
-      const ret = paymentCollectionService.authorize(
-        IdMap.getId("payment-collection-no-session")
+      const ret = paymentCollectionService.authorizePaymentSessions(
+        IdMap.getId("payment-collection-no-session"),
+        []
       )
 
       expect(ret).rejects.toThrowError(
@@ -684,8 +687,9 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should call authorizePayments for all sessions", async () => {
-      await paymentCollectionService.authorize(
-        IdMap.getId("payment-collection-not-authorized")
+      await paymentCollectionService.authorizePaymentSessions(
+        IdMap.getId("payment-collection-not-authorized"),
+        [IdMap.getId("payCol_session1"), IdMap.getId("payCol_session2")]
       )
 
       expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
@@ -698,8 +702,9 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should skip authorized sessions - partially authorized", async () => {
-      await paymentCollectionService.authorize(
-        IdMap.getId("payment-collection-partial")
+      await paymentCollectionService.authorizePaymentSessions(
+        IdMap.getId("payment-collection-partial"),
+        [IdMap.getId("payCol_session1"), IdMap.getId("payCol_session2")]
       )
 
       expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
@@ -712,8 +717,9 @@ describe("PaymentCollectionService", () => {
     })
 
     it("should skip authorized sessions - fully authorized", async () => {
-      await paymentCollectionService.authorize(
-        IdMap.getId("payment-collection-fully")
+      await paymentCollectionService.authorizePaymentSessions(
+        IdMap.getId("payment-collection-fully"),
+        [IdMap.getId("payCol_session1"), IdMap.getId("payCol_session2")]
       )
 
       expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(

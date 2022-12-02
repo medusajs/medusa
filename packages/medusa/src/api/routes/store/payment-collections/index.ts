@@ -8,10 +8,11 @@ import middlewares, {
 import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
-import { StoreManageMultiplePaymentCollectionSessionRequest } from "./manage-multiple-payment-sessions"
+import { StorePostPaymentCollectionsSessionsBatchReq } from "./manage-batch-payment-sessions"
 import { GetPaymentCollectionsParams } from "./get-payment-collection"
 import { PaymentCollection, PaymentSession } from "../../../../models"
-import { StoreManagePaymentCollectionSessionRequest } from "./manage-payment-session"
+import { StorePaymentCollectionSessionsReq } from "./manage-payment-session"
+import { StorePostPaymentCollectionsSessionsAuthorizeBatchReq } from "./authorize-batch-payment-sessions"
 
 const route = Router()
 
@@ -21,9 +22,6 @@ export default (app, container) => {
     isFeatureFlagEnabled(OrderEditingFeatureFlag.key),
     route
   )
-
-  // Authenticated endpoints
-  route.use(middlewares.requireCustomerAuthentication())
 
   route.get(
     "/:id",
@@ -36,25 +34,31 @@ export default (app, container) => {
   )
 
   route.post(
-    "/:id/authorize",
-    middlewares.wrap(require("./authorize-payment-collection").default)
-  )
-
-  route.post(
-    "/:id/session",
-    transformBody(StoreManagePaymentCollectionSessionRequest),
+    "/:id/sessions",
+    transformBody(StorePaymentCollectionSessionsReq),
     middlewares.wrap(require("./manage-payment-session").default)
   )
 
   route.post(
-    "/:id/multiple-sessions",
-    transformBody(StoreManageMultiplePaymentCollectionSessionRequest),
-    middlewares.wrap(require("./manage-multiple-payment-sessions").default)
+    "/:id/sessions/batch",
+    transformBody(StorePostPaymentCollectionsSessionsBatchReq),
+    middlewares.wrap(require("./manage-batch-payment-sessions").default)
   )
 
   route.post(
-    "/:id/sessions/:session_id/refresh",
+    "/:id/sessions/:session_id",
     middlewares.wrap(require("./refresh-payment-session").default)
+  )
+
+  route.post(
+    "/:id/sessions/:session_id/authorize",
+    middlewares.wrap(require("./authorize-payment-sessions").default)
+  )
+
+  route.post(
+    "/:id/sessions/batch/authorize",
+    transformBody(StorePostPaymentCollectionsSessionsAuthorizeBatchReq),
+    middlewares.wrap(require("./authorize-batch-payment-sessions").default)
   )
 
   return app
@@ -74,15 +78,16 @@ export const defaultPaymentCollectionFields = [
 
 export const defaulPaymentCollectionRelations = ["region", "payment_sessions"]
 
-export type StorePaymentCollectionRes = {
+export type StorePaymentCollectionsRes = {
   payment_collection: PaymentCollection
 }
 
-export type StorePaymentCollectionSessionRes = {
+export type StorePaymentCollectionsSessionRes = {
   payment_session: PaymentSession
 }
 
 export * from "./get-payment-collection"
 export * from "./manage-payment-session"
-export * from "./manage-multiple-payment-sessions"
+export * from "./manage-batch-payment-sessions"
 export * from "./refresh-payment-session"
+export * from "./authorize-batch-payment-sessions"

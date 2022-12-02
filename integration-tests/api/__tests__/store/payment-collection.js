@@ -123,7 +123,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/session`,
+        `/store/payment-collections/${payCol.id}/sessions`,
         {
           provider_id: "test-pay",
         },
@@ -155,7 +155,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       let response = await api.post(
-        `/store/payment-collections/${payCol.id}/session`,
+        `/store/payment-collections/${payCol.id}/sessions`,
         {
           provider_id: "test-pay",
         },
@@ -170,7 +170,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
 
       const paySessions = response.data.payment_collection.payment_sessions
       response = await api.post(
-        `/store/payment-collections/${payCol.id}/session`,
+        `/store/payment-collections/${payCol.id}/sessions`,
         {
           provider_id: "test-pay",
         },
@@ -225,7 +225,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/multiple-sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -262,7 +262,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/multiple-sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -316,7 +316,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       let response = await api.post(
-        `/store/payment-collections/${payCol.id}/multiple-sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -345,7 +345,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const multipleSessions = response.data.payment_collection.payment_sessions
 
       response = await api.post(
-        `/store/payment-collections/${payCol.id}/multiple-sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -392,7 +392,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
     })
   })
 
-  describe("Authorize a Payment Sessions", () => {
+  describe("Authorize Payment Sessions", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
@@ -412,11 +412,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       return await db.teardown()
     })
 
-    it("Authorize a payment session", async () => {
+    it("Authorizes a payment session", async () => {
       const api = useApi()
 
-      await api.post(
-        `/store/payment-collections/${payCol.id}/multiple-sessions`,
+      const payCol = await api.post(
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -432,8 +432,9 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
         }
       )
 
+      const sessionId = payCol.payment_sessions[0].id
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/authorize`,
+        `/store/payment-collections/${payCol.id}/sessions/${sessionId}/authorize`,
         undefined,
         {
           headers: {
@@ -444,19 +445,67 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
 
       expect(response.data.payment_collection).toEqual(
         expect.objectContaining({
-          id: payCol.id,
-          type: "order_edit",
           amount: 10000,
-          payment_sessions: expect.arrayContaining([
-            expect.objectContaining({
-              amount: 10000,
-              status: "authorized",
-            }),
-          ]),
+          status: "authorized",
         })
       )
 
       expect(response.status).toEqual(200)
     })
+  })
+
+  it("Authorize multiple payment sessions", async () => {
+    const api = useApi()
+
+    await api.post(
+      `/store/payment-collections/${payCol.id}/sessions/batch`,
+      {
+        sessions: [
+          {
+            provider_id: "test-pay",
+            amount: 5000,
+          },
+          {
+            provider_id: "test-pay",
+            amount: 5000,
+          },
+        ],
+      },
+      {
+        headers: {
+          Cookie: await getClientAuthentication(api),
+        },
+      }
+    )
+
+    const response = await api.post(
+      `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
+      undefined,
+      {
+        headers: {
+          Cookie: await getClientAuthentication(api),
+        },
+      }
+    )
+
+    expect(response.data.payment_collection).toEqual(
+      expect.objectContaining({
+        id: payCol.id,
+        type: "order_edit",
+        amount: 10000,
+        payment_sessions: expect.arrayContaining([
+          expect.objectContaining({
+            amount: 5000,
+            status: "authorized",
+          }),
+          expect.objectContaining({
+            amount: 5000,
+            status: "authorized",
+          }),
+        ]),
+      })
+    )
+
+    expect(response.status).toEqual(200)
   })
 })

@@ -461,7 +461,7 @@ export const storeHandlers = [
   }),
 
   rest.post(
-    "/store/payment-collections/:id/multiple-sessions",
+    "/store/payment-collections/:id/sessions/batch",
     (req, res, ctx) => {
       const { id } = req.params
       return res(
@@ -476,7 +476,7 @@ export const storeHandlers = [
     }
   ),
 
-  rest.post("/store/payment-collections/:id/session", (req, res, ctx) => {
+  rest.post("/store/payment-collections/:id/sessions", (req, res, ctx) => {
     const { id } = req.params
     return res(
       ctx.status(200),
@@ -509,16 +509,37 @@ export const storeHandlers = [
     }
   ),
 
-  rest.post("/store/payment-collections/:id/authorize", (req, res, ctx) => {
-    const { id } = req.params
-    return res(
-      ctx.status(200),
-      ctx.json({
-        payment_collection: {
-          ...fixtures.get("payment_collection"),
-          id,
-        },
-      })
-    )
-  }),
+  rest.post(
+    "/store/payment-collections/:id/sessions/:session_id",
+    (req, res, ctx) => {
+      const { session_id } = req.params
+
+      const session = fixtures.get("payment_collection").payment_sessions[0]
+      return res(
+        ctx.status(200),
+        ctx.json({
+          payment_session: {
+            ...session,
+            id: session_id,
+          },
+        })
+      )
+    }
+  ),
+
+  rest.post(
+    "/store/payment-collections/:id/sessions/batch/authorize",
+    (req, res, ctx) => {
+      const { id } = req.params
+      return res(
+        ctx.status(200),
+        ctx.json({
+          payment_collection: {
+            ...fixtures.get("payment_collection"),
+            id,
+          },
+        })
+      )
+    }
+  ),
 ]

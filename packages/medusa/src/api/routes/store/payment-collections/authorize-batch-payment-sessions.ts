@@ -1,13 +1,24 @@
+import { IsArray, IsString } from "class-validator"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/authorize
+ * @oas [post] /payment-collections/{id}/sessions/batch/authorize
  * operationId: "PostPaymentCollectionsAuthorize"
- * summary: "Authorize a Payment Collections"
- * description: "Authorizes a Payment Collections."
- * x-authenticated: true
+ * summary: "Authorize Payment Sessions of a Payment Collection"
+ * description: "Authorizes Payment Sessions of a Payment Collection."
+ * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collections.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           session_ids:
+ *             description: "List of Payment Session IDs to authorize."
+ *             type: array
+ *             items:
+ *               type: string
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -22,8 +33,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/authorize' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch/authorize'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -53,12 +63,25 @@ import { PaymentCollectionService } from "../../../../services"
  */
 export default async (req, res) => {
   const { id } = req.params
+  const data =
+    req.validatedBody as StorePostPaymentCollectionsSessionsAuthorizeBatchReq
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
   )
 
-  const payment_collection = await paymentCollectionService.authorize(id)
+  const payment_collection =
+    await paymentCollectionService.authorizePaymentSessions(
+      id,
+      data.session_ids,
+      req.request_context
+    )
 
-  res.status(200).json({ payment_collection })
+  res.status(207).json({ payment_collection })
+}
+
+export class StorePostPaymentCollectionsSessionsAuthorizeBatchReq {
+  @IsArray()
+  @IsString({ each: true })
+  session_ids: string[]
 }

@@ -21,8 +21,8 @@ import {
 
 import {
   CreatePaymentCollectionInput,
-  PaymentCollectionMultipleSessionInput,
-  PaymentCollectionSessionInput,
+  PaymentCollectionsSessionsBatchInput,
+  PaymentCollectionsSessionsInput,
   PaymentProviderDataInput,
 } from "../types/payment-collection"
 
@@ -190,15 +190,15 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   private isValidTotalAmount(
     total: number,
-    sessionsInput: PaymentCollectionMultipleSessionInput[]
+    sessionsInput: PaymentCollectionsSessionsBatchInput[]
   ): boolean {
     const sum = sessionsInput.reduce((cur, sess) => cur + sess.amount, 0)
     return total === sum
   }
 
-  async setMultiplePaymentSessions(
+  async setPaymentSessionsBatch(
     paymentCollectionId: string,
-    sessionsInput: PaymentCollectionMultipleSessionInput[],
+    sessionsInput: PaymentCollectionsSessionsBatchInput[],
     customer_id: string
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
@@ -300,7 +300,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   async setPaymentSession(
     paymentCollectionId: string,
-    sessionInput: PaymentCollectionSessionInput,
+    sessionInput: PaymentCollectionsSessionsInput,
     customer_id: string
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
@@ -487,8 +487,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
-  async authorize(
+  async authorizePaymentSessions(
     paymentCollectionId: string,
+    sessionIds: string[],
     context: Record<string, unknown> = {}
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
@@ -504,9 +505,9 @@ export default class PaymentCollectionService extends TransactionBaseService {
         return payCol
       }
 
-      // If cart total is 0, we don't perform anything payment related
       if (payCol.amount <= 0) {
         payCol.authorized_amount = 0
+        payCol.status = PaymentCollectionStatus.AUTHORIZED
         return await paymentCollectionRepository.save(payCol)
       }
 
@@ -523,6 +524,10 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
         if (session.payment_authorized_at) {
           authorizedAmount += session.amount
+          continue
+        }
+
+        if (!sessionIds.includes(session.id)) {
           continue
         }
 

@@ -1,9 +1,10 @@
 import {
   GetPaymentCollectionsParams,
-  StoreManageMultiplePaymentCollectionSessionRequest,
-  StoreManagePaymentCollectionSessionRequest,
-  StorePaymentCollectionSessionRes,
-  StorePaymentCollectionRes,
+  StorePostPaymentCollectionsSessionsBatchReq,
+  StorePostPaymentCollectionsSessionsAuthorizeBatchReq,
+  StorePaymentCollectionSessionsReq,
+  StorePaymentCollectionsSessionRes,
+  StorePaymentCollectionsRes,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
@@ -14,7 +15,7 @@ class PaymentCollectionsResource extends BaseResource {
     id: string,
     query?: GetPaymentCollectionsParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StorePaymentCollectionRes> {
+  ): ResponsePromise<StorePaymentCollectionsRes> {
     let path = `/store/payment-collections/${id}`
 
     if (query) {
@@ -25,29 +26,39 @@ class PaymentCollectionsResource extends BaseResource {
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
-  authorize(
+  authorizePaymentSession(
     id: string,
+    session_id: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StorePaymentCollectionRes> {
-    const path = `/store/payment-collections/${id}/authorize`
+  ): ResponsePromise<StorePaymentCollectionsRes> {
+    const path = `/store/payment-collections/${id}/sessions/${session_id}/authorize`
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
-  manageMultiplePaymentSessions(
+  authorizePaymentSessionsBatch(
     id: string,
-    payload: StoreManageMultiplePaymentCollectionSessionRequest,
+    payload: StorePostPaymentCollectionsSessionsAuthorizeBatchReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StorePaymentCollectionRes> {
-    const path = `/store/payment-collections/${id}/multiple-sessions`
+  ): ResponsePromise<StorePaymentCollectionsRes> {
+    const path = `/store/payment-collections/${id}/sessions/batch/authorize`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  managePaymentSessionsBatch(
+    id: string,
+    payload: StorePostPaymentCollectionsSessionsBatchReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StorePaymentCollectionsRes> {
+    const path = `/store/payment-collections/${id}/sessions/batch`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   managePaymentSession(
     id: string,
-    payload: StoreManagePaymentCollectionSessionRequest,
+    payload: StorePaymentCollectionSessionsReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StorePaymentCollectionRes> {
-    const path = `/store/payment-collections/${id}/session`
+  ): ResponsePromise<StorePaymentCollectionsRes> {
+    const path = `/store/payment-collections/${id}/sessions`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
@@ -55,8 +66,8 @@ class PaymentCollectionsResource extends BaseResource {
     id: string,
     session_id: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StorePaymentCollectionSessionRes> {
-    const path = `/store/payment-collections/${id}/sessions/${session_id}/refresh`
+  ): ResponsePromise<StorePaymentCollectionsSessionRes> {
+    const path = `/store/payment-collections/${id}/sessions/${session_id}`
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 }

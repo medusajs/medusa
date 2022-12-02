@@ -2,10 +2,11 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { Response } from "@medusajs/medusa-js"
 
 import {
-  StorePaymentCollectionRes,
-  StoreManageMultiplePaymentCollectionSessionRequest,
-  StoreManagePaymentCollectionSessionRequest,
-  StorePaymentCollectionSessionRes,
+  StorePaymentCollectionsRes,
+  StorePostPaymentCollectionsSessionsBatchReq,
+  StorePostPaymentCollectionsSessionsAuthorizeBatchReq,
+  StorePaymentCollectionSessionsReq,
+  StorePaymentCollectionsSessionRes,
 } from "@medusajs/medusa"
 
 import { buildOptions } from "../../utils/buildOptions"
@@ -15,17 +16,17 @@ import { paymentCollectionQueryKeys } from "."
 export const useManageMultiplePaymentSessions = (
   id: string,
   options?: UseMutationOptions<
-    Response<StorePaymentCollectionRes>,
+    Response<StorePaymentCollectionsRes>,
     Error,
-    StoreManageMultiplePaymentCollectionSessionRequest
+    StorePostPaymentCollectionsSessionsBatchReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: StoreManageMultiplePaymentCollectionSessionRequest) =>
-      client.paymentCollections.manageMultiplePaymentSessions(id, payload),
+    (payload: StorePostPaymentCollectionsSessionsBatchReq) =>
+      client.paymentCollections.managePaymentSessionsBatch(id, payload),
     buildOptions(
       queryClient,
       [
@@ -40,16 +41,16 @@ export const useManageMultiplePaymentSessions = (
 export const useManagePaymentSession = (
   id: string,
   options?: UseMutationOptions<
-    Response<StorePaymentCollectionRes>,
+    Response<StorePaymentCollectionsRes>,
     Error,
-    StoreManagePaymentCollectionSessionRequest
+    StorePaymentCollectionSessionsReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: StoreManagePaymentCollectionSessionRequest) =>
+    (payload: StorePaymentCollectionSessionsReq) =>
       client.paymentCollections.managePaymentSession(id, payload),
     buildOptions(
       queryClient,
@@ -62,15 +63,45 @@ export const useManagePaymentSession = (
   )
 }
 
-export const useAuthorizePayment = (
+export const useAuthorizePaymentSession = (
   id: string,
-  options?: UseMutationOptions<Response<StorePaymentCollectionRes>, Error>
+  options?: UseMutationOptions<
+    Response<StorePaymentCollectionsRes>,
+    Error,
+    { session_id: string }
+  >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    () => client.paymentCollections.authorize(id),
+    ({ session_id }) =>
+      client.paymentCollections.authorizePaymentSession(id, session_id),
+    buildOptions(
+      queryClient,
+      [
+        paymentCollectionQueryKeys.lists(),
+        paymentCollectionQueryKeys.detail(id),
+      ],
+      options
+    )
+  )
+}
+
+export const useAuthorizePaymentSessionsBatch = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<StorePaymentCollectionsRes>,
+    Error,
+    StorePostPaymentCollectionsSessionsAuthorizeBatchReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload) =>
+      client.paymentCollections.authorizePaymentSessionsBatch(id, payload),
     buildOptions(
       queryClient,
       [
@@ -85,7 +116,7 @@ export const useAuthorizePayment = (
 export const usePaymentCollectionRefreshPaymentSession = (
   id: string,
   options?: UseMutationOptions<
-    Response<StorePaymentCollectionSessionRes>,
+    Response<StorePaymentCollectionsSessionRes>,
     Error,
     { session_id: string }
   >

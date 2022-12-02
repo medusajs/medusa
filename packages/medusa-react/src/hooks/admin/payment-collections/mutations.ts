@@ -3,8 +3,8 @@ import { Response } from "@medusajs/medusa-js"
 
 import {
   AdminPaymentCollectionDeleteRes,
-  AdminPaymentCollectionRes,
-  AdminUpdatePaymentCollectionRequest,
+  AdminPaymentCollectionsRes,
+  AdminUpdatePaymentCollectionsReq,
 } from "@medusajs/medusa"
 
 import { buildOptions } from "../../utils/buildOptions"
@@ -38,16 +38,16 @@ export const useAdminDeletePaymentCollection = (
 export const useAdminUpdatePaymentCollection = (
   id: string,
   options?: UseMutationOptions<
-    Response<AdminPaymentCollectionRes>,
+    Response<AdminPaymentCollectionsRes>,
     Error,
-    AdminUpdatePaymentCollectionRequest
+    AdminUpdatePaymentCollectionsReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminUpdatePaymentCollectionRequest) =>
+    (payload: AdminUpdatePaymentCollectionsReq) =>
       client.admin.paymentCollections.update(id, payload),
     buildOptions(
       queryClient,
@@ -62,7 +62,11 @@ export const useAdminUpdatePaymentCollection = (
 
 export const useAdminMarkPaymentCollectionAsAuthorized = (
   id: string,
-  options?: UseMutationOptions<Response<AdminPaymentCollectionRes>, Error, void>
+  options?: UseMutationOptions<
+    Response<AdminPaymentCollectionsRes>,
+    Error,
+    void
+  >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()

@@ -4,39 +4,23 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/session
- * operationId: "PostPaymentCollectionsSession"
+ * @oas [post] /payment-collections/{id}/sessions
+ * operationId: "PostPaymentCollectionsSessions"
  * summary: "Manage Payment Sessions from Payment Collections"
  * description: "Manages Payment Sessions from Payment Collections."
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
- *   - (path) id=* {string} The ID of the Payment Collections.
+ *   - (path) id=* {string} The ID of the Payment Collection.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - provider_id
  *         properties:
- *           sessions:
- *             description: "An array or a single entry of payment sessions related to the Payment Collection. If the session_id is not provided the existing sessions not present will be deleted and the provided ones will be created."
- *             type: array
- *             items:
- *               required:
- *                 - provider_id
- *                 - customer_id
- *                 - amount
- *               properties:
- *                 provider_id:
- *                   type: string
- *                   description: The ID of the Payment Provider.
- *                 customer_id:
- *                   type: string
- *                   description: "The ID of the Customer."
- *                 amount:
- *                   type: integer
- *                   description: "The amount ."
- *                 session_id:
- *                   type: string
- *                   description: "The ID of the Payment Session to be updated."
+ *           provider_id:
+ *             type: string
+ *             description: The ID of the Payment Provider.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -56,8 +40,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/session' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -86,7 +69,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const data = req.validatedBody as StoreManagePaymentCollectionSessionRequest
+  const data = req.validatedBody as StorePaymentCollectionSessionsReq
   const { id } = req.params
 
   const customer_id = req.user?.customer_id
@@ -108,7 +91,7 @@ export default async (req, res) => {
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
-export class StoreManagePaymentCollectionSessionRequest {
+export class StorePaymentCollectionSessionsReq {
   @IsString()
   provider_id: string
 }
