@@ -479,7 +479,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
     )
 
     const response = await api.post(
-      `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
+      `/store/payment-collections/${payCol.id}/sessions/authorize/batch`,
       undefined,
       {
         headers: {

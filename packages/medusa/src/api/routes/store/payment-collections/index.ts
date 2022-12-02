@@ -56,7 +56,7 @@ export default (app, container) => {
   )
 
   route.post(
-    "/:id/sessions/batch/authorize",
+    "/:id/sessions/authorize/batch",
     transformBody(StorePostPaymentCollectionsSessionsAuthorizeBatchReq),
     middlewares.wrap(require("./authorize-batch-payment-sessions").default)
   )

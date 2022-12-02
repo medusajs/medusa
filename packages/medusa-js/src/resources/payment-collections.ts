@@ -40,7 +40,7 @@ class PaymentCollectionsResource extends BaseResource {
     payload: StorePostPaymentCollectionsSessionsAuthorizeBatchReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePaymentCollectionsRes> {
-    const path = `/store/payment-collections/${id}/sessions/batch/authorize`
+    const path = `/store/payment-collections/${id}/sessions/authorize/batch`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 

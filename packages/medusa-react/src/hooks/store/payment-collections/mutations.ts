@@ -68,14 +68,14 @@ export const useAuthorizePaymentSession = (
   options?: UseMutationOptions<
     Response<StorePaymentCollectionsRes>,
     Error,
-    { session_id: string }
+    string
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    ({ session_id }) =>
+    (session_id: string) =>
       client.paymentCollections.authorizePaymentSession(id, session_id),
     buildOptions(
       queryClient,
@@ -118,14 +118,14 @@ export const usePaymentCollectionRefreshPaymentSession = (
   options?: UseMutationOptions<
     Response<StorePaymentCollectionsSessionRes>,
     Error,
-    { session_id: string }
+    string
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    ({ session_id }: { session_id: string }) =>
+    (session_id: string) =>
       client.paymentCollections.refreshPaymentSession(id, session_id),
     buildOptions(
       queryClient,

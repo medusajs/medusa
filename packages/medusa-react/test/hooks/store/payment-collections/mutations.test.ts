@@ -2,6 +2,7 @@ import {
   useManageMultiplePaymentSessions,
   useManagePaymentSession,
   useAuthorizePaymentSession,
+  useAuthorizePaymentSessionsBatch,
   usePaymentCollectionRefreshPaymentSession,
 } from "../../../../src"
 import { renderHook } from "@testing-library/react-hooks"
@@ -60,8 +61,8 @@ describe("useManagePaymentSession hook", () => {
   })
 })
 
-describe("useAuthorizePayment hook", () => {
-  test("Authorize all payment sessions of a Payment Collection", async () => {
+describe("useAuthorizePaymentSession hook", () => {
+  test("Authorize a payment session of a Payment Collection", async () => {
     const { result, waitFor } = renderHook(
       () => useAuthorizePaymentSession("payment_collection_id"),
       {
@@ -69,11 +70,37 @@ describe("useAuthorizePayment hook", () => {
       }
     )
 
-    result.current.mutate()
+    result.current.mutate("123")
 
     await waitFor(() => result.current.isSuccess)
 
     expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.payment_session).toEqual(
+      expect.objectContaining({
+        id: "123",
+        amount: 900,
+      })
+    )
+  })
+})
+
+describe("authorizePaymentSessionsBatch hook", () => {
+  test("Authorize all payment sessions of a Payment Collection", async () => {
+    const { result, waitFor } = renderHook(
+      () => useAuthorizePaymentSessionsBatch("payment_collection_id"),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate({
+      session_ids: ["abc"],
+    })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(207)
+
     expect(result.current.data.payment_collection).toEqual(
       expect.objectContaining({
         id: "payment_collection_id",
@@ -96,9 +123,7 @@ describe("usePaymentCollectionRefreshPaymentSession hook", () => {
       }
     )
 
-    result.current.mutate({
-      session_id: "session_id",
-    })
+    result.current.mutate("session_id")
 
     await waitFor(() => result.current.isSuccess)
 

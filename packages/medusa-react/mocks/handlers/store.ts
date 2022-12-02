@@ -490,7 +490,7 @@ export const storeHandlers = [
   }),
 
   rest.post(
-    "/store/payment-collections/:id/sessions/:session_id/refresh",
+    "/store/payment-collections/:id/sessions/:session_id",
     (req, res, ctx) => {
       const { id, session_id } = req.params
       const payCol: any = { ...fixtures.get("payment_collection") }
@@ -510,7 +510,7 @@ export const storeHandlers = [
   ),
 
   rest.post(
-    "/store/payment-collections/:id/sessions/:session_id",
+    "/store/payment-collections/:id/sessions/:session_id/authorize",
     (req, res, ctx) => {
       const { session_id } = req.params
 
@@ -528,11 +528,11 @@ export const storeHandlers = [
   ),
 
   rest.post(
-    "/store/payment-collections/:id/sessions/batch/authorize",
+    "/store/payment-collections/:id/sessions/authorize/batch",
     (req, res, ctx) => {
       const { id } = req.params
       return res(
-        ctx.status(200),
+        ctx.status(207),
         ctx.json({
           payment_collection: {
             ...fixtures.get("payment_collection"),
