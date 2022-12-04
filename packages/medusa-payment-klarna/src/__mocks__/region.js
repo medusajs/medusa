@@ -1,5 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-
+//contains details of the regions where the firm has its-
+//operations and also has details of the tax rate and currency in use in those places 
 export const RegionServiceMock = {
   retrieve: jest.fn().mockImplementation((regionId) => {
     return Promise.resolve({

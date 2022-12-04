@@ -500,7 +500,7 @@ class KlarnaProviderService extends PaymentService {
 
     return paymentData
   }
-
+//updates the new payments
   async updatePaymentNew(paymentData, paymentInput) {
     if (paymentInput.amount !== paymentData.order_amount) {
       const order = await this.paymentInputToKlarnaOrder(paymentInput)

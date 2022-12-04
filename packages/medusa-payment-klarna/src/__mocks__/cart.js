@@ -2,6 +2,7 @@ import { IdMap } from "medusa-test-utils"
 
 export const carts = {
   frCart: {
+    //cosnistsof all the basic information needed for delievery, such as the address of shipping and billing,email,shipping and payment method.  
     id: IdMap.getId("fr-cart"),
     email: "lebron@james.com",
     title: "test",
@@ -113,7 +114,7 @@ export const carts = {
     customer_id: IdMap.getId("lebron"),
   },
 }
-
+// returning a mock order payment
 export const CartServiceMock = {
   retrieve: jest.fn().mockImplementation((cartId) => {
     if (cartId === IdMap.getId("fr-cart")) {

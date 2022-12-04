@@ -37,7 +37,7 @@ export default async (req, res) => {
         await cartService.addShippingMethod(cart.id, option.id, option.data)
       }
     }
-
+//create a new cart
     const newCart = await cartService.retrieveWithTotals(
       cart.id,
       {

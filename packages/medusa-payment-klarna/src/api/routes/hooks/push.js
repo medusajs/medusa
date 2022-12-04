@@ -19,7 +19,7 @@ export default async (req, res) => {
       await klarnaProviderService.acknowledgeOrder(klarnaOrder.order_id)
     } else {
       const order = await orderService.retrieveByCartId(resourceId)
-
+          
       await klarnaProviderService.acknowledgeOrder(
         klarnaOrder.order_id,
         order.id

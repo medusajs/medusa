@@ -1,5 +1,5 @@
 import { IdMap } from "medusa-test-utils"
-
+//runs a mock run of the klarna plugin
 export const KlarnaProviderServiceMock = {
   retrievePayment: jest.fn().mockImplementation((cart) => {
     if (cart._id === IdMap.getId("fr-cart")) {

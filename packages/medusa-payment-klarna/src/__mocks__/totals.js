@@ -1,3 +1,4 @@
+//contains the total taxation for the payment
 export const TotalsServiceMock = {
   getTotal: jest.fn(),
   getTaxTotal: jest.fn(),

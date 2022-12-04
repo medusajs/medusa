@@ -1,3 +1,4 @@
+//Actual implementation of the klarna plugin
 jest.unmock("axios")
 import MockAdapter from "axios-mock-adapter"
 import { carts } from "../../__mocks__/cart"
@@ -6,6 +7,7 @@ import { TotalsServiceMock } from "../../__mocks__/totals"
 import KlarnaProviderService from "../klarna-provider"
 
 describe("KlarnaProviderService", () => {
+  //this creates a new payment for an order
   describe("createPayment", () => {
     const klarnaProviderService = new KlarnaProviderService(
       {
@@ -42,7 +44,7 @@ describe("KlarnaProviderService", () => {
       })
     })
   })
-
+//retrieves an old payment from the payment history
   describe("retrievePayment", () => {
     let result
     beforeEach(async () => {
@@ -76,6 +78,7 @@ describe("KlarnaProviderService", () => {
     })
   })
 
+  // retrieves a successful order from order history 
   describe("retrieveCompletedOrder", () => {
     let result
     beforeEach(async () => {
@@ -106,7 +109,7 @@ describe("KlarnaProviderService", () => {
       })
     })
   })
-
+// updates the payment details and information and allows any edits for payment details
   describe("updatePayment", () => {
     let result
     beforeEach(async () => {
@@ -153,7 +156,7 @@ describe("KlarnaProviderService", () => {
       })
     })
   })
-
+// implements the payment cancellation requests
   describe("cancelPayment", () => {
     let result
     beforeEach(async () => {
@@ -190,6 +193,7 @@ describe("KlarnaProviderService", () => {
     })
   })
 
+  //stores new orders
   describe("acknowledgeOrder", () => {
     let result
     beforeEach(async () => {
@@ -227,6 +231,7 @@ describe("KlarnaProviderService", () => {
     })
   })
 
+//adds the new order to klarna plugin
   describe("addOrderToKlarnaOrder", () => {
     let result
     beforeEach(async () => {
@@ -307,6 +312,7 @@ describe("KlarnaProviderService", () => {
     })
   })
 
+//implements all refund requests
   describe("refundPayment", () => {
     let result
     beforeEach(async () => {

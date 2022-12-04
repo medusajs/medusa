@@ -6,6 +6,7 @@ export default async (req, res) => {
   const klarnaProviderService = req.scope.resolve("pp_klarna")
   const shippingProfileService = req.scope.resolve("shippingProfileService")
 
+// fetching the address where the shipment needs to be delievered
   if (shipping_address) {
     const shippingAddress = {
       first_name: shipping_address.given_name,
@@ -17,7 +18,7 @@ export default async (req, res) => {
       postal_code: shipping_address.postal_code,
       phone: shipping_address.phone,
     }
-
+//address where the shipment is billed
     let billingAddress = {
       first_name: shipping_address.given_name,
       last_name: shipping_address.family_name,
