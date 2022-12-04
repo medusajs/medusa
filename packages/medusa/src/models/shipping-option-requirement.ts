@@ -51,6 +51,7 @@ export class ShippingOptionRequirement {
  * title: "Shipping Option Requirement"
  * description: "A requirement that a Cart must satisfy for the Shipping Option to be available to the Cart."
  * x-resourceId: shipping_option_requirement
+ * type: object
  * required:
  *   - shipping_option_id
  *   - type

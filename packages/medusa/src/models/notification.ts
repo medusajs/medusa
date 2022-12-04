@@ -69,6 +69,7 @@ export class Notification extends BaseEntity {
  * title: "Notification"
  * description: "Notifications a communications sent via Notification Providers as a reaction to internal events such as `order.placed`. Notifications can be used to show a chronological timeline for communications sent to a Customer regarding an Order, and enables resends."
  * x-resourceId: notification
+ * type: object
  * required:
  *   - resource_type
  *   - resource_id
@@ -132,6 +133,7 @@ export class Notification extends BaseEntity {
  * title: "Notification Resend"
  * description: "A resend of a Notification."
  * x-resourceId: notification_resend
+ * type: object
  * properties:
  *   id:
  *     description: The notification resend's ID

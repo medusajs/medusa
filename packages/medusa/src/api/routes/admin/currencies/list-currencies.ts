@@ -42,6 +42,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             currencies:
  *               type: array

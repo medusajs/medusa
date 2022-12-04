@@ -36,6 +36,7 @@ import { isDefined } from "../../../../utils"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           region_id:
  *             type: string
@@ -91,6 +92,7 @@ import { isDefined } from "../../../../utils"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             cart:
  *               $ref: "#/components/schemas/cart"

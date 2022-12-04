@@ -33,6 +33,7 @@ import { TaxProviderService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             tax_providers:
  *               type: array

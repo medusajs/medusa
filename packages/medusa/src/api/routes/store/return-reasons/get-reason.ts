@@ -33,6 +33,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             return_reason:
  *               $ref: "#/components/schemas/return_reason"

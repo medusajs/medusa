@@ -18,6 +18,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           declined_reason:
  *             type: string
@@ -44,6 +45,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
  *               $ref: "#/components/schemas/order_edit"
