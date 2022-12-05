@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express"
 
-import { PublishableApiKeyScopes } from "./extend-request-filter-params"
+import { PublishableApiKeyScopes } from "./extend-request-params"
 
 /**
- * The middleware wil return 400 if sales channel id is passed as a url or body param
- * but that id is not in the scope defined by the PK from the header.
+ * The middleware will return 400 if sales channel id is passed as an url or body param
+ * but that id is not in the scope of the PK from the header.
  *
  * @param req - request object
  * @param res - response object
@@ -18,17 +18,23 @@ async function validateSalesChannelParam(
   const pubKey = req.get("x-publishable-api-key")
 
   if (pubKey) {
-    const channelId = req.body.sales_channel_id || req.params.sales_channel_id
+    let channelIds = req.body.sales_channel_id || req.params.sales_channel_id
+
+    if (!channelIds) {
+      return
+    }
+
+    channelIds = !Array.isArray(channelIds) ? [channelIds] : channelIds
+
     const scopes = req.publishableApiKeyScopes
 
     if (
-      channelId &&
       scopes.sales_channel_id.length &&
-      !scopes.sales_channel_id.includes(channelId)
+      channelIds.every((sc) => scopes.sales_channel_id.includes(sc))
     ) {
       req.errors = req.errors ?? []
       req.errors.push(
-        `Provided sales channel id param: ${channelId} is not associated with the Publishable API Key passed in the header of the request.`
+        `Provided sales channel id param: ${channelIds} is not associated with the Publishable API Key passed in the header of the request.`
       )
     }
   }

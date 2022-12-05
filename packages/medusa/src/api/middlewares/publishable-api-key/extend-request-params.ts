@@ -17,7 +17,7 @@ export type PublishableApiKeyScopes = {
  * @throws if sales channel id is passed as a url or body param
  *         but that id is not in the scope defined by the PK from the header
  */
-async function extendRequestFilterParams(
+async function extendRequestParams(
   req: Request & { publishableApiKeyScopes: PublishableApiKeyScopes },
   res: Response,
   next: NextFunction
@@ -29,23 +29,12 @@ async function extendRequestFilterParams(
   )
 
   if (pubKey) {
-    const channelId = req.body.sales_channel_id || req.params.sales_channel_id
-    const scopes = await publishableKeyService.getResourceScopes(pubKey)
-    req.publishableApiKeyScopes = scopes
-
-    if (
-      channelId &&
-      scopes.sales_channel_id.length &&
-      !scopes.sales_channel_id.includes(channelId)
-    ) {
-      req.errors = req.errors ?? []
-      req.errors.push(
-        `Provided sales channel id param: ${channelId} is not associated with the Publishable API Key passed in the header of the request.`
-      )
-    }
+    req.publishableApiKeyScopes = await publishableKeyService.getResourceScopes(
+      pubKey
+    )
   }
 
   next()
 }
 
-export { extendRequestFilterParams }
+export { extendRequestParams }

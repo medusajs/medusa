@@ -11,7 +11,7 @@ import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import { extendRequestFilterParams } from "../../../middlewares/publishable-api-key/extend-request-filter-params"
+import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 
 const route = Router()
@@ -49,7 +49,7 @@ export default (app, container) => {
 
   if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
     createMiddlewares.push(
-      extendRequestFilterParams as unknown as RequestHandler,
+      extendRequestParams as unknown as RequestHandler,
       validateSalesChannelParam as unknown as RequestHandler
     )
   }

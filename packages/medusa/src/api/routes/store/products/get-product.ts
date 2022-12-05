@@ -7,7 +7,6 @@ import {
 } from "../../../../services"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [get] /products/{id}
