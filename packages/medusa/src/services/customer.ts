@@ -280,7 +280,6 @@ class CustomerService extends TransactionBaseService {
       // should be a list of customers at this point
       const existing = await this.listByEmail(email).catch(() => undefined)
 
-      console.log(existing)
       // should validate that "existing.some(acc => acc.has_account) && password"
       if (existing) {
         if (existing.some((customer) => customer.has_account) && password) {
