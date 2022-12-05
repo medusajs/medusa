@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { ClaimReason, ClaimType } from "../../../../models"
+import { ClaimItem, ClaimReason, ClaimType } from "../../../../models"
 
 import { Type } from "class-transformer"
 import { MedusaError } from "medusa-core-utils"
@@ -401,9 +401,9 @@ export class AdminPostOrdersOrderClaimsReq {
 
   @IsArray()
   @IsNotEmpty()
-  @Type(() => Item)
+  @Type(() => ClaimItem)
   @ValidateNested({ each: true })
-  claim_items: Item[]
+  claim_items: ClaimItem[]
 
   @IsOptional()
   @ValidateNested({ each: true })
