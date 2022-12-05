@@ -53,7 +53,6 @@ describe("DbTransactionService", function () {
       async ({ transactionManager }: { transactionManager: EntityManager }) => {
         await transactionManager
           .createQueryBuilder()
-          .createQueryBuilder()
           .insert()
           .into(User)
           .values(fakeUserData1)
@@ -76,7 +75,6 @@ describe("DbTransactionService", function () {
       }) => {
         await tm1
           .createQueryBuilder()
-          .createQueryBuilder()
           .insert()
           .into(User)
           .values(fakeUserData1)
@@ -89,7 +87,6 @@ describe("DbTransactionService", function () {
             transactionManager: EntityManager
           }) => {
             await tm2
-              .createQueryBuilder()
               .createQueryBuilder()
               .insert()
               .into(User)
@@ -116,7 +113,6 @@ describe("DbTransactionService", function () {
       }) => {
         await tm1
           .createQueryBuilder()
-          .createQueryBuilder()
           .insert()
           .into(User)
           .values(fakeUserData1)
@@ -129,7 +125,6 @@ describe("DbTransactionService", function () {
             transactionManager: EntityManager
           }) => {
             await tm2
-              .createQueryBuilder()
               .createQueryBuilder()
               .insert()
               .into(User)
@@ -163,7 +158,6 @@ describe("DbTransactionService", function () {
         }) => {
           await transactionManager
             .createQueryBuilder()
-            .createQueryBuilder()
             .insert()
             .into(User)
             .values(fakeUserData1)
@@ -194,7 +188,6 @@ describe("DbTransactionService", function () {
         }) => {
           await tm1
             .createQueryBuilder()
-            .createQueryBuilder()
             .insert()
             .into(User)
             .values(fakeUserData1)
@@ -207,7 +200,6 @@ describe("DbTransactionService", function () {
               transactionManager: EntityManager
             }) => {
               await tm2
-                .createQueryBuilder()
                 .createQueryBuilder()
                 .insert()
                 .into(User)
@@ -228,7 +220,7 @@ describe("DbTransactionService", function () {
     expect(err.message).toBe(errorMessage)
   })
 
-  it("should rollback a transaction and", async () => {
+  it("should rollback a transaction and bubble back the error", async () => {
     const errorMessage = "failed"
     let err
 
@@ -240,7 +232,6 @@ describe("DbTransactionService", function () {
           transactionManager: EntityManager
         }) => {
           await transactionManager
-            .createQueryBuilder()
             .createQueryBuilder()
             .insert()
             .into(User)
@@ -273,7 +264,6 @@ describe("DbTransactionService", function () {
         }) => {
           await tm1
             .createQueryBuilder()
-            .createQueryBuilder()
             .insert()
             .into(User)
             .values(fakeUserData1)
@@ -286,7 +276,6 @@ describe("DbTransactionService", function () {
               transactionManager: EntityManager
             }) => {
               await tm2
-                .createQueryBuilder()
                 .createQueryBuilder()
                 .insert()
                 .into(User)

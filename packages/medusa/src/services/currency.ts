@@ -9,6 +9,8 @@ import { buildQuery } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 import { DbTransactionService } from "./index"
+import { TransactionContext } from "../types/transaction"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -18,12 +20,13 @@ type InjectedDependencies = {
   dbTransactionService: DbTransactionService
 }
 
-export default class CurrencyService {
+export default class CurrencyService extends TransactionBaseService {
+  protected readonly manager_: EntityManager
+  protected readonly transactionManager_: EntityManager | undefined
+
   static readonly Events = {
     UPDATED: "currency.updated",
   }
-
-  protected manager_: EntityManager
 
   protected readonly currencyRepository_: typeof CurrencyRepository
   protected readonly eventBusService_: EventBusService
@@ -37,6 +40,8 @@ export default class CurrencyService {
     featureFlagRouter,
     dbTransactionService,
   }: InjectedDependencies) {
+    super(arguments[0])
+
     this.manager_ = manager
     this.currencyRepository_ = currencyRepository
     this.eventBusService_ = eventBusService
@@ -52,9 +57,10 @@ export default class CurrencyService {
    */
   async retrieveByCode(
     code: string,
-    { transactionManager }: { transactionManager?: EntityManager } = {}
+    { transactionManager }: TransactionContext = {}
   ): Promise<Currency | never> {
-    const manager = transactionManager ?? this.manager_
+    const manager =
+      transactionManager ?? this.transactionManager_ ?? this.manager_
     const currencyRepo = manager.getCustomRepository(this.currencyRepository_)
 
     code = code.toLowerCase()
@@ -90,9 +96,10 @@ export default class CurrencyService {
       skip: 0,
       take: 20,
     },
-    { transactionManager }: { transactionManager?: EntityManager } = {}
+    { transactionManager }: TransactionContext = {}
   ): Promise<[Currency[], number]> {
-    const manager = transactionManager ?? this.manager_
+    const manager =
+      transactionManager ?? this.transactionManager_ ?? this.manager_
     const productRepo = manager.getCustomRepository(this.currencyRepository_)
 
     const query = buildQuery(selector, config)
@@ -110,8 +117,9 @@ export default class CurrencyService {
   async update(
     code: string,
     data: UpdateCurrencyInput,
-    { transactionManager }: { transactionManager?: EntityManager } = {}
+    { transactionManager }: TransactionContext = {}
   ): Promise<Currency | undefined | never> {
+    transactionManager = transactionManager ?? this.transactionManager_
     return await this.dbTransactionService_.run(
       async ({ transactionManager }) => {
         const currency = await this.retrieveByCode(code)
