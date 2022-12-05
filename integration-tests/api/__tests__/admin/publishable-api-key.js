@@ -800,27 +800,32 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         adminHeaders
       )
 
-      const createCartRes = await api.post(
-        "/store/carts",
-        {
-          sales_channel_id: "sales-channel2", // SC not in the PK scope
-          region_id: "test-region",
-          items: [
-            {
-              variant_id: product.variants[0].id,
-              quantity: 1,
-            },
-          ],
-        },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-            "x-publishable-api-key": pubKeyId,
+      try {
+        await api.post(
+          "/store/carts",
+          {
+            sales_channel_id: "sales-channel2", // SC not in the PK scope
+            region_id: "test-region",
+            items: [
+              {
+                variant_id: product.variants[0].id,
+                quantity: 1,
+              },
+            ],
           },
-        }
-      )
-
-      expect(createCartRes.status).toEqual(400)
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+              "x-publishable-api-key": pubKeyId,
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.errors[0]).toEqual(
+          `Provided sales channel id param: sales-channel2 is not associated with the Publishable API Key passed in the header of the request.`
+        )
+      }
     })
   })
 

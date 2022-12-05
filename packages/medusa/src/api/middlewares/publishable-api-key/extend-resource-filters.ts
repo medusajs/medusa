@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 
 import PublishableApiKeyService from "../../../services/publishable-api-key"
+import { MedusaError } from "medusa-core-utils"
 
 export type PublishableApiKeyScopes = {
   sales_channel_id: string[]
@@ -30,12 +31,13 @@ async function extendResourceFilters(
     req.publishableApiKeyScopes = scopes
 
     if (
-      req.params.sales_channel_id &&
-      !scopes.sales_channel_id.includes(req.params.sales_channel_id)
+      req.body.sales_channel_id &&
+      scopes.sales_channel_id.length &&
+      !scopes.sales_channel_id.includes(req.body.sales_channel_id)
     ) {
       req.errors = req.errors ?? []
       req.errors.push(
-        `Provided sales channel id param: ${req.params.sales_channel_id} is not associated the Publishable API Key passed in the header of the request.`
+        `Provided sales channel id param: ${req.body.sales_channel_id} is not associated with the Publishable API Key passed in the header of the request.`
       )
     }
   }
