@@ -1,4 +1,11 @@
-export const countries = [
+type Country = {
+  alpha2: string
+  name: string
+  alpha3: string
+  numeric: string
+}
+
+export const countries: Country[] = [
   { alpha2: "AF", name: "Afghanistan", alpha3: "AFG", numeric: "004" },
   { alpha2: "AL", name: "Albania", alpha3: "ALB", numeric: "008" },
   { alpha2: "DZ", name: "Algeria", alpha3: "DZA", numeric: "012" },
@@ -402,26 +409,16 @@ export const countries = [
   { alpha2: "AX", name: "Åland Islands", alpha3: "ALA", numeric: "248" },
 ]
 
-export function isoCountryLookup(country) {
+export function isoCountryLookup(country: string): string {
   const normalizedCountry = country.toUpperCase()
 
-  let isoRecord = countries.find(record => {
-    return record.name === normalizedCountry
+  let isoRecord = countries.find((record) => {
+    return (
+      record.name.toUpperCase() === normalizedCountry ||
+      record.alpha2.toUpperCase() === normalizedCountry ||
+      record.alpha3.toUpperCase() === normalizedCountry
+    )
   })
-
-  // Try alpha2 instead
-  if (!isoRecord) {
-    isoRecord = countries.find(record => {
-      return record.alpha2 === normalizedCountry
-    })
-  }
-
-  // Try alpha3
-  if (!isoRecord) {
-    isoRecord = countries.find(record => {
-      return record.alpha3 === normalizedCountry
-    })
-  }
 
   if (!isoRecord) {
     throw new Error("Invalid country name")

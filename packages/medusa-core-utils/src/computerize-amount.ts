@@ -1,6 +1,6 @@
 import zeroDecimalCurrencies from "./zero-decimal-currencies"
 
-const computerizeAmount = (amount, currency) => {
+const computerizeAmount = (amount: number, currency: string): number => {
   let divisor = 100
 
   if (zeroDecimalCurrencies.includes(currency.toLowerCase())) {

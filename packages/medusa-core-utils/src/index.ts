@@ -1,4 +1,3 @@
-export { default as compareObjectsByProp } from "./compare-objects"
 export { countries, isoCountryLookup } from "./countries"
 export { default as createRequireFromPath } from "./create-require-from-path"
 export { default as MedusaError } from "./errors"
