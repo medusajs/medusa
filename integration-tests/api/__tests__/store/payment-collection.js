@@ -188,7 +188,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -220,7 +220,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -269,7 +269,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       let response = await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -293,7 +293,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const multipleSessions = response.data.payment_collection.payment_sessions
 
       response = await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -359,7 +359,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const payColRes = await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -389,7 +389,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       const api = useApi()
 
       const payColRes = await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions`,
+        `/store/payment-collections/${payCol.id}/sessions/batch`,
         {
           sessions: [
             {
@@ -405,7 +405,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
       )
 
       const response = await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions/authorize`,
+        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
         {
           session_ids: payColRes.data.payment_collection.payment_sessions.map(
             ({ id }) => id

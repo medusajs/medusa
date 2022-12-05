@@ -2,8 +2,8 @@ import { IsArray, IsString } from "class-validator"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/batch/sessions/authorize
- * operationId: "PostPaymentCollectionsBatchSessionsAuthorize"
+ * @oas [post] /payment-collections/{id}/sessions/batch/authorize
+ * operationId: "PostPaymentCollectionsSessionsBatchAuthorize"
  * summary: "Authorize Payment Sessions of a Payment Collection"
  * description: "Authorizes Payment Sessions of a Payment Collection."
  * x-authenticated: false
@@ -33,7 +33,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/batch/sessions/authorize'
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch/authorize'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

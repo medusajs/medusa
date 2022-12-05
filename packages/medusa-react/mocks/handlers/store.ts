@@ -461,7 +461,7 @@ export const storeHandlers = [
   }),
 
   rest.post(
-    "/store/payment-collections/:id/batch/sessions",
+    "/store/payment-collections/:id/sessions/batch",
     (req, res, ctx) => {
       const { id } = req.params
       return res(
@@ -528,7 +528,7 @@ export const storeHandlers = [
   ),
 
   rest.post(
-    "/store/payment-collections/:id/batch/sessions/authorize",
+    "/store/payment-collections/:id/sessions/batch/authorize",
     (req, res, ctx) => {
       const { id } = req.params
       return res(

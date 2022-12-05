@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/batch/sessions
+ * @oas [post] /payment-collections/{id}/sessions/batch
  * operationId: "PostPaymentCollectionsPaymentCollectionSessionsBatch"
  * summary: "Manage Multiple Payment Sessions from Payment Collections"
  * description: "Manages Multiple Payment Sessions from Payment Collections."
@@ -73,7 +73,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/batch/sessions'
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

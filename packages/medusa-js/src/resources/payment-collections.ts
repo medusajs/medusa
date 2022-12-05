@@ -40,7 +40,7 @@ class PaymentCollectionsResource extends BaseResource {
     payload: StorePostPaymentCollectionsBatchSessionsAuthorizeReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePaymentCollectionsRes> {
-    const path = `/store/payment-collections/${id}/batch/sessions/authorize`
+    const path = `/store/payment-collections/${id}/sessions/batch/authorize`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
@@ -49,7 +49,7 @@ class PaymentCollectionsResource extends BaseResource {
     payload: StorePostPaymentCollectionsBatchSessionsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePaymentCollectionsRes> {
-    const path = `/store/payment-collections/${id}/batch/sessions`
+    const path = `/store/payment-collections/${id}/sessions/batch`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 

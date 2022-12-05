@@ -74,7 +74,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
         }
       )
       await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions/authorize`,
+        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
         {
           session_ids: payColRes.data.payment_collection.payment_sessions.map(
             ({ id }) => id
@@ -122,7 +122,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
         }
       )
       await api.post(
-        `/store/payment-collections/${payCol.id}/batch/sessions/authorize`,
+        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
         {
           session_ids: payColRes.data.payment_collection.payment_sessions.map(
             ({ id }) => id

@@ -34,6 +34,18 @@ export default (app, container) => {
   )
 
   route.post(
+    "/:id/sessions/batch",
+    transformBody(StorePostPaymentCollectionsBatchSessionsReq),
+    middlewares.wrap(require("./manage-batch-payment-sessions").default)
+  )
+
+  route.post(
+    "/:id/sessions/batch/authorize",
+    transformBody(StorePostPaymentCollectionsBatchSessionsAuthorizeReq),
+    middlewares.wrap(require("./authorize-batch-payment-sessions").default)
+  )
+
+  route.post(
     "/:id/sessions",
     transformBody(StorePaymentCollectionSessionsReq),
     middlewares.wrap(require("./manage-payment-session").default)
@@ -47,18 +59,6 @@ export default (app, container) => {
   route.post(
     "/:id/sessions/:session_id/authorize",
     middlewares.wrap(require("./authorize-payment-session").default)
-  )
-
-  route.post(
-    "/:id/batch/sessions",
-    transformBody(StorePostPaymentCollectionsBatchSessionsReq),
-    middlewares.wrap(require("./manage-batch-payment-sessions").default)
-  )
-
-  route.post(
-    "/:id/batch/sessions/authorize",
-    transformBody(StorePostPaymentCollectionsBatchSessionsAuthorizeReq),
-    middlewares.wrap(require("./authorize-batch-payment-sessions").default)
   )
 
   return app
