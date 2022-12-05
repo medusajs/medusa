@@ -419,6 +419,16 @@ class ShippingOptionService extends TransactionBaseService {
       }
     }
 
+    if (
+      option.price_type === ShippingOptionPriceType.FLAT_RATE &&
+      (!option?.amount || option.amount < 0)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Flat rate shipping options must have a positive amount"
+      )
+    }
+
     return option
   }
 
@@ -541,13 +551,6 @@ class ShippingOptionService extends TransactionBaseService {
           "The fulfillment provider cannot calculate prices for this option"
         )
       }
-    }
-
-    if (priceType === ShippingOptionPriceType.FLAT_RATE && !option.amount) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Flat rate shipping options must have an amount"
-      )
     }
 
     return priceType
