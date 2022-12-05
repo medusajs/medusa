@@ -50,6 +50,7 @@ export class ProductOptionValue extends SoftDeletableEntity {
  * title: "Product Option Value"
  * description: "A value given to a Product Variant's option set. Product Variant have a Product Option Value for each of the Product Options defined on the Product."
  * x-resourceId: product_option_value
+ * type: object
  * required:
  *   - value
  *   - option_id

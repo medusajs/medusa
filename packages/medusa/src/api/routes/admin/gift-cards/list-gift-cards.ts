@@ -43,6 +43,7 @@ import { isDefined } from "../../../../utils"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             gift_cards:
  *               type: array

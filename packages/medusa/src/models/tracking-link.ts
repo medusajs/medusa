@@ -37,6 +37,7 @@ export class TrackingLink extends SoftDeletableEntity {
  * title: "Tracking Link"
  * description: "Tracking Link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment."
  * x-resourceId: tracking_link
+ * type: object
  * required:
  *   - tracking_number
  *   - fulfillment_id

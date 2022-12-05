@@ -33,6 +33,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - email
  *           - items
@@ -175,6 +176,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             draft_order:
  *               $ref: "#/components/schemas/draft-order"

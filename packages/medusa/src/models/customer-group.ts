@@ -35,6 +35,7 @@ export class CustomerGroup extends SoftDeletableEntity {
  * title: "Customer Group"
  * description: "Represents a customer group"
  * x-resourceId: customer_group
+ * type: object
  * required:
  *   - name
  * properties:

@@ -39,6 +39,7 @@ export class ClaimImage extends SoftDeletableEntity {
  * title: "Claim Image"
  * description: "Represents photo documentation of a claim."
  * x-resourceId: claim_image
+ * type: object
  * required:
  *  - claim_item_id
  *  - url

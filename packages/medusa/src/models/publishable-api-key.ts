@@ -31,6 +31,7 @@ export class PublishableApiKey extends BaseEntity {
  * title: "Publishable API key"
  * description: "Publishable API key defines scopes (i.e. resources) that are available within a request."
  * x-resourceId: publishable_api_key
+ * type: object
  * properties:
  *   id:
  *     type: string
