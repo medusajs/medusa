@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 
 import PublishableApiKeyService from "../../../services/publishable-api-key"
-import { MedusaError } from "medusa-core-utils"
 
 export type PublishableApiKeyScopes = {
   sales_channel_id: string[]
@@ -14,6 +13,9 @@ export type PublishableApiKeyScopes = {
  * @param req - request object
  * @param res - response object
  * @param next - next middleware call
+ *
+ * @throws if sales channel id is passed as a url or body param
+ *         but that id is not in the scope defined by the PK from the header
  */
 async function extendResourceFilters(
   req: Request & { publishableApiKeyScopes: PublishableApiKeyScopes },
@@ -27,17 +29,18 @@ async function extendResourceFilters(
   )
 
   if (pubKey) {
+    const channelId = req.body.sales_channel_id || req.params.sales_channel_id
     const scopes = await publishableKeyService.getResourceScopes(pubKey)
     req.publishableApiKeyScopes = scopes
 
     if (
-      req.body.sales_channel_id &&
+      channelId &&
       scopes.sales_channel_id.length &&
-      !scopes.sales_channel_id.includes(req.body.sales_channel_id)
+      !scopes.sales_channel_id.includes(channelId)
     ) {
       req.errors = req.errors ?? []
       req.errors.push(
-        `Provided sales channel id param: ${req.body.sales_channel_id} is not associated with the Publishable API Key passed in the header of the request.`
+        `Provided sales channel id param: ${channelId} is not associated with the Publishable API Key passed in the header of the request.`
       )
     }
   }
