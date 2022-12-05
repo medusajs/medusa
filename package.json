@@ -63,7 +63,7 @@
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
     "prettier": "prettier",
     "jest": "jest",
-    "test": "turbo run test",
+    "test": "turbo run test --filter=!integration-tests --filter=!integration-tests-api --filter=!integration-tests-plugins",
     "test:integration": "NODE_ENV=test jest --runInBand --bail --config=integration-tests/jest.config.js",
     "test:integration:api": "NODE_ENV=test jest --detectOpenHandles --forceExit --runInBand --bail --config=integration-tests/jest.config.js --projects=integration-tests/api",
     "test:integration:plugins": "NODE_ENV=test jest --runInBand --bail --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
