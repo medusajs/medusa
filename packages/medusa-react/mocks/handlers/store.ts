@@ -476,6 +476,22 @@ export const storeHandlers = [
     }
   ),
 
+  rest.post(
+    "/store/payment-collections/:id/sessions/batch/authorize",
+    (req, res, ctx) => {
+      const { id } = req.params
+      return res(
+        ctx.status(207),
+        ctx.json({
+          payment_collection: {
+            ...fixtures.get("payment_collection"),
+            id,
+          },
+        })
+      )
+    }
+  ),
+
   rest.post("/store/payment-collections/:id/sessions", (req, res, ctx) => {
     const { id } = req.params
     return res(
@@ -521,22 +537,6 @@ export const storeHandlers = [
           payment_session: {
             ...session,
             id: session_id,
-          },
-        })
-      )
-    }
-  ),
-
-  rest.post(
-    "/store/payment-collections/:id/sessions/batch/authorize",
-    (req, res, ctx) => {
-      const { id } = req.params
-      return res(
-        ctx.status(207),
-        ctx.json({
-          payment_collection: {
-            ...fixtures.get("payment_collection"),
-            id,
           },
         })
       )
