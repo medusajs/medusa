@@ -1,4 +1,4 @@
-import path from "path"
+import { join } from "path"
 
 /**
  * Attempts to resolve the config file in a given root directory.
@@ -6,8 +6,11 @@ import path from "path"
  * @param {string} configName - the name of the config file.
  * @return {object} an object containing the config module and its path as well as an error property if the config couldn't be loaded.
  */
-function getConfigFile(rootDir, configName) {
-  const configPath = path.join(rootDir, configName)
+function getConfigFile<TConfig = unknown>(
+  rootDir: string,
+  configName: string
+): { configModule: TConfig; configFilePath: string } | { error: any } {
+  const configPath = join(rootDir, configName)
   let configFilePath = ``
   let configModule
 
