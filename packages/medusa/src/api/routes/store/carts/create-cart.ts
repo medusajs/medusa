@@ -37,6 +37,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           region_id:
  *             type: string
@@ -92,6 +93,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             cart:
  *               $ref: "#/components/schemas/cart"

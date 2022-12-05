@@ -17,6 +17,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           includes_tax:
  *             type: boolean
@@ -51,6 +52,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             currency:
  *                 $ref: "#/components/schemas/currency"

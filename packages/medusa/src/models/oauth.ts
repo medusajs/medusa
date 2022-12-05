@@ -35,6 +35,7 @@ export class Oauth {
  * title: "OAuth"
  * description: "Represent an OAuth app"
  * x-resourceId: OAuth
+ * type: object
  * required:
  *   - id
  *   - display_name

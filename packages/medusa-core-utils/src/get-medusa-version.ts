@@ -1,6 +1,6 @@
 import path from "path"
 
-export const getMedusaVersion = () => {
+export const getMedusaVersion = (): string => {
   try {
     return require(path.join(
       process.cwd(),

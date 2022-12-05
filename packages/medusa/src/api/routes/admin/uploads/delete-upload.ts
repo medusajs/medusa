@@ -10,6 +10,7 @@ import { IsString } from "class-validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - file_key
  *         properties:
@@ -49,6 +50,7 @@ import { IsString } from "class-validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             id:
  *               type: string

@@ -65,6 +65,7 @@ import { DiscountService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             discounts:
  *               type: array

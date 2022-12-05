@@ -20,6 +20,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           internal_note:
  *             description: An optional note to create or update for the order edit.
@@ -57,6 +58,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
  *               $ref: "#/components/schemas/order_edit"

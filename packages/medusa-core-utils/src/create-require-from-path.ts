@@ -1,12 +1,12 @@
 import Module from "module"
 import path from "path"
 
-const fallback = filename => {
+const fallback = (filename: string) => {
   const mod = new Module(filename)
 
   mod.filename = filename
-  mod.paths = Module._nodeModulePaths(path.dirname(filename))
-  mod._compile(`module.exports = require;`, filename)
+  mod.paths = (Module as any)._nodeModulePaths(path.dirname(filename))
+  ;(mod as any)._compile(`module.exports = require;`, filename)
 
   return mod.exports
 }

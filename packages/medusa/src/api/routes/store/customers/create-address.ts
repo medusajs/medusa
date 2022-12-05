@@ -16,6 +16,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - address
  *         properties:
@@ -82,6 +83,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            customer:
  *              $ref: "#/components/schemas/customer"

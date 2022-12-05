@@ -27,6 +27,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - requirements
  *         properties:
@@ -110,6 +111,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             shipping_option:
  *               $ref: "#/components/schemas/shipping_option"

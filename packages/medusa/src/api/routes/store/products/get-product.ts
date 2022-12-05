@@ -50,6 +50,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             product:
  *               allOf:

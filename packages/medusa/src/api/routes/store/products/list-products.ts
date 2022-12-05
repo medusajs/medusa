@@ -156,6 +156,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             products:
  *               type: array

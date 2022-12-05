@@ -42,6 +42,7 @@ import { DraftOrder } from "../../../.."
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             draft_order:
  *               $ref: "#/components/schemas/draft-order"

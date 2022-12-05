@@ -95,6 +95,7 @@ export class TaxRate extends BaseEntity {
  * title: "Tax Rate"
  * description: "A Tax Rate can be used to associate a certain rate to charge on products within a given Region"
  * x-resourceId: line_item
+ * type: object
  * required:
  *   - name
  *   - region_id

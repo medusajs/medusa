@@ -52,6 +52,7 @@ export class ReturnItem {
  * title: "Return Item"
  * description: "Correlates a Line Item with a Return, keeping track of the quantity of the Line Item that will be returned."
  * x-resourceId: return_item
+ * type: object
  * required:
  *   - return_id
  *   - item_id
