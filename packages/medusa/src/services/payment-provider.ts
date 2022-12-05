@@ -17,6 +17,10 @@ import {
   Refund,
 } from "../models"
 import { PaymentProviderDataInput } from "../types/payment-collection"
+import { FlagRouter } from "../utils/flag-router"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
+import PaymentService from "./payment"
+import { Logger } from "../types/global"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -25,6 +29,9 @@ type InjectedDependencies = {
   paymentProviderRepository: typeof PaymentProviderRepository
   paymentRepository: typeof PaymentRepository
   refundRepository: typeof RefundRepository
+  paymentService: PaymentService
+  featureFlagRouter: FlagRouter
+  logger: Logger
 } & {
   [key in `${PaymentProviderKey}`]:
     | AbstractPaymentService
@@ -43,6 +50,9 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly refundRepository_: typeof RefundRepository
+  protected readonly logger_: Logger
+
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -53,6 +63,8 @@ export default class PaymentProviderService extends TransactionBaseService {
     this.paymentProviderRepository_ = container.paymentProviderRepository
     this.paymentRepository_ = container.paymentRepository
     this.refundRepository_ = container.refundRepository
+    this.featureFlagRouter_ = container.featureFlagRouter
+    this.logger_ = container.logger
   }
 
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
@@ -184,9 +196,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     sessionInput: PaymentProviderDataInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const provider: AbstractPaymentService = this.retrieveProvider(
-        sessionInput.provider_id
-      )
+      const provider = this.retrieveProvider(sessionInput.provider_id)
       const sessionData = await provider
         .withTransaction(transactionManager)
         .createPaymentNew(sessionInput)
@@ -368,11 +378,14 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
   }
 
-  async createPayment(
-    cart: Cart & { payment_session: PaymentSession }
-  ): Promise<Payment> {
+  async createPayment(data: {
+    cart_id: string
+    amount: number
+    currency_code: string
+    payment_session: PaymentSession
+  }): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const { payment_session: paymentSession, region, total } = cart
+      const { payment_session: paymentSession, currency_code, amount } = data
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
       const paymentData = await provider
@@ -385,10 +398,10 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const created = paymentRepo.create({
         provider_id: paymentSession.provider_id,
-        amount: total,
-        currency_code: region.currency_code,
+        amount,
+        currency_code,
         data: paymentData,
-        cart_id: cart.id,
+        cart_id: data.cart_id,
       })
 
       return await paymentRepo.save(created)
@@ -396,7 +409,9 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   async createPaymentNew(
-    paymentInput: Omit<PaymentProviderDataInput, "customer">
+    paymentInput: Omit<PaymentProviderDataInput, "customer"> & {
+      payment_session: PaymentSession
+    }
   ): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
       const { payment_session, currency_code, amount, provider_id } =
@@ -407,18 +422,13 @@ export default class PaymentProviderService extends TransactionBaseService {
         .withTransaction(transactionManager)
         .getPaymentData(payment_session)
 
-      const paymentRepo = transactionManager.getCustomRepository(
-        this.paymentRepository_
-      )
-
-      const created = paymentRepo.create({
+      const paymentService = this.container_.paymentService
+      return await paymentService.withTransaction(transactionManager).create({
         provider_id,
         amount,
         currency_code,
         data: paymentData,
       })
-
-      return await paymentRepo.save(created)
     })
   }
 
@@ -427,20 +437,10 @@ export default class PaymentProviderService extends TransactionBaseService {
     data: { order_id?: string; swap_id?: string }
   ): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const payment = await this.retrievePayment(paymentId)
-
-      if (data?.order_id) {
-        payment.order_id = data.order_id
-      }
-
-      if (data?.swap_id) {
-        payment.swap_id = data.swap_id
-      }
-
-      const payRepo = transactionManager.getCustomRepository(
-        this.paymentRepository_
-      )
-      return await payRepo.save(payment)
+      const paymentService = this.container_.paymentService
+      return await paymentService
+        .withTransaction(transactionManager)
+        .update(paymentId, data)
     })
   }
 
@@ -464,6 +464,13 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       session.data = data
       session.status = status
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key) &&
+        status === PaymentSessionStatus.AUTHORIZED
+      ) {
+        session.payment_authorized_at = new Date()
+      }
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
@@ -562,7 +569,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       if (refundable < amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Refund amount is higher that the refundable amount"
+          "Refund amount is greater that the refundable amount"
         )
       }
 
@@ -634,7 +641,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       if (refundable < amount) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Refund amount is higher that the refundable amount"
+          "Refund amount is greater that the refundable amount"
         )
       }
 

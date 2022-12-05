@@ -30,6 +30,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             shipping_options:
  *               type: array
@@ -56,13 +57,7 @@ export default async (req, res) => {
   )
 
   const cart = await cartService.retrieveWithTotals(cart_id, {
-    relations: [
-      "region",
-      "items",
-      "items.adjustments",
-      "items.variant",
-      "items.variant.product",
-    ],
+    relations: ["items.variant", "items.variant.product"],
   })
 
   const options = await shippingProfileService.fetchCartOptions(cart)

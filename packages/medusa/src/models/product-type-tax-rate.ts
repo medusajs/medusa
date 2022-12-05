@@ -42,6 +42,7 @@ export class ProductTypeTaxRate {
  * title: "Product Type Tax Rate"
  * description: "Associates a tax rate with a product type to indicate that the product type is taxed in a certain way"
  * x-resourceId: product_type_tax_rate
+ * type: object
  * required:
  *   - product_type_id
  *   - rate_id

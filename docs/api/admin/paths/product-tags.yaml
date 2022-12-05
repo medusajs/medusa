@@ -22,6 +22,11 @@ get:
       schema:
         type: string
     - in: query
+      name: discount_condition_id
+      description: The discount condition id on which to filter the tags.
+      schema:
+        type: string
+    - in: query
       name: value
       style: form
       explode: false

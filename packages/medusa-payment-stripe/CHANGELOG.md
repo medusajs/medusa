@@ -1,5 +1,25 @@
 # Change Log
 
+## 1.1.48
+
+### Patch Changes
+
+- [#2607](https://github.com/medusajs/medusa/pull/2607) [`e09f6e8a1`](https://github.com/medusajs/medusa/commit/e09f6e8a1e4a759fe70664bea0538c61b7cea70a) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): handle webhook sirialization failure
+
+- [#2603](https://github.com/medusajs/medusa/pull/2603) [`9e91a50df`](https://github.com/medusajs/medusa/commit/9e91a50df17b4f542db8d9678b5f489218511adb) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): missing transaction on create payment
+
+## 1.1.47
+
+### Patch Changes
+
+- [#2581](https://github.com/medusajs/medusa/pull/2581) [`04e894ec3`](https://github.com/medusajs/medusa/commit/04e894ec39e1008be893a6cf313c3822a085579c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Support provider specific intent options
+
+## 1.1.46
+
+### Patch Changes
+
+- [`715bdf6b1`](https://github.com/medusajs/medusa/commit/715bdf6b159d6eb291d3c489ab32a80f9eadcfb9) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Patch bump Stripe plugin
+
 ## 1.1.45
 
 ### Patch Changes

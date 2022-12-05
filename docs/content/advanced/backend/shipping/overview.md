@@ -17,7 +17,7 @@ It’s also constructed to support multiple regions, provide different shipment 
 - **Shipping Options:** created by the admin and belong to a shipping profile. They are specific to certain regions and can have cart conditions. They use an underlying fulfillment provider. Once a customer checks out, they can choose the shipping option that’s available and most relevant to them.
 - **Shipping Method:** created when the customer chooses a shipping option on checkout. The shipping method is basically a copy of the shipping option, but with values specific to the customer and the cart it’s associated with. When the order is placed, the shipping method will then be associated with the order and fulfilled based on the integration with the fulfillment provider.
 
-![Shipping Architecture](https://i.imgur.com/QII2Hvn.png)
+![Shipping Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001762/Medusa%20Docs/Diagrams/QII2Hvn_vjkrdy.png)
 
 ## Fulfillment Provider
 

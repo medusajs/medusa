@@ -6,7 +6,7 @@ However, this comes at the expense of important features that are needed in a pr
 
 Therefore, you might experience the following error when going through a checkout flow in one of Medusa's starters while using SQLite:
 
-```bash
+```bash noHeader
 Error: Transaction already started for the given connection, commit current transaction before starting a new one.
 ```
 
@@ -46,7 +46,7 @@ medusa migrations run
 
 If you want to add demo data into your server, you should also seed the database using the following command:
 
-```bash npm2yarn
+```bash npm2yarn noHeader
 npm run seed
 ```
 

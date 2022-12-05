@@ -23,7 +23,7 @@ module.exports = {
         {
           type: "doc",
           id: "introduction",
-          label: "Architecture Overview",
+          label: "Introduction",
         },
         {
           type: "doc",
@@ -177,6 +177,11 @@ module.exports = {
               type: "doc",
               id: "advanced/backend/upgrade-guides/1-3-8",
               label: "v1.3.8"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-6-1",
+              label: "v1.6.1"
             },
           ]
         },

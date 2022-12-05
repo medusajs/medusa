@@ -19,7 +19,7 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdit.retrieve(orderEditId)
+ *       medusa.admin.orderEdits.retrieve(orderEditId)
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
@@ -39,6 +39,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
  *               $ref: "#/components/schemas/order_edit"

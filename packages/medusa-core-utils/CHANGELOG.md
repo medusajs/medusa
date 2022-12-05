@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.35
+
+### Patch Changes
+
+- [#2646](https://github.com/medusajs/medusa/pull/2646) [`e7c4cc375`](https://github.com/medusajs/medusa/commit/e7c4cc375174775bb0cfe52e5dc0270237150b3c) Thanks [@pKorsholm](https://github.com/pKorsholm)! - jwt fix
+
 ## 1.1.34
 
 ### Patch Changes

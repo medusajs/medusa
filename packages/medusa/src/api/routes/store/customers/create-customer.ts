@@ -1,11 +1,11 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
+import jwt from "jsonwebtoken"
+import { EntityManager } from "typeorm"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
-import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /customers
@@ -16,6 +16,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - first_name
  *           - last_name
@@ -73,6 +74,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             customer:
  *               $ref: "#/components/schemas/customer"
@@ -81,6 +83,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             code:
  *               type: string
@@ -121,7 +124,7 @@ export default async (req, res) => {
   const {
     projectConfig: { jwt_secret },
   } = req.scope.resolve("configModule")
-  req.session.jwt = jwt.sign({ customer_id: customer.id }, jwt_secret!, {
+  req.session.jwt_store = jwt.sign({ customer_id: customer.id }, jwt_secret!, {
     expiresIn: "30d",
   })
 

@@ -1,33 +1,53 @@
 # Namespace: internal
 
+## Classes
+
+- [StoreGetProductsPaginationParams](../classes/internal-42.StoreGetProductsPaginationParams.md)
+- [StoreGetProductsParams](../classes/internal-42.StoreGetProductsParams.md)
+- [StorePostSearchReq](../classes/internal-42.StorePostSearchReq.md)
+
 ## Type Aliases
 
-### StoreRegionsListRes
+### StorePostSearchRes
 
-Ƭ **StoreRegionsListRes**: `Object`
+Ƭ **StorePostSearchRes**: `Object`
+
+#### Index signature
+
+▪ [k: `string`]: `unknown`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `regions` | [`Region`](../classes/internal.Region.md)[] |
+| `hits` | `unknown`[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/regions/index.d.ts:4
+medusa/dist/api/routes/store/products/index.d.ts:12
 
 ___
 
-### StoreRegionsRes
+### StoreProductsListRes
 
-Ƭ **StoreRegionsRes**: `Object`
+Ƭ **StoreProductsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `products`: [`Product`](../classes/internal.Product.md)[]  }
+
+#### Defined in
+
+medusa/dist/api/routes/store/products/index.d.ts:16
+
+___
+
+### StoreProductsRes
+
+Ƭ **StoreProductsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `region` | [`Region`](../classes/internal.Region.md) |
+| `product` | [`Product`](../classes/internal.Product.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/store/regions/index.d.ts:7
+medusa/dist/api/routes/store/products/index.d.ts:9

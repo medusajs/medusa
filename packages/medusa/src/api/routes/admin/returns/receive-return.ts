@@ -23,6 +23,7 @@ import { isDefined } from "../../../../utils"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - items
  *         properties:
@@ -58,8 +59,8 @@ import { isDefined } from "../../../../utils"
  *           }
  *         ]
  *       })
- *       .then(({ return }) => {
- *         console.log(return.id);
+ *       .then((data) => {
+ *         console.log(data.return.id);
  *       });
  *   - lang: Shell
  *     label: cURL
@@ -86,6 +87,7 @@ import { isDefined } from "../../../../utils"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             return:
  *               $ref: "#/components/schemas/return"

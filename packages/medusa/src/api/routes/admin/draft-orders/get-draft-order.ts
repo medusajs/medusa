@@ -42,6 +42,7 @@ import { DraftOrder } from "../../../.."
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             draft_order:
  *               $ref: "#/components/schemas/draft-order"
@@ -71,9 +72,15 @@ export default async (req, res) => {
     relations: defaultAdminDraftOrdersRelations,
   })
 
-  draftOrder.cart = await cartService.retrieveWithTotals(draftOrder.cart_id, {
-    relations: defaultAdminDraftOrdersCartRelations,
-  })
+  draftOrder.cart = await cartService.retrieveWithTotals(
+    draftOrder.cart_id,
+    {
+      relations: defaultAdminDraftOrdersCartRelations,
+    },
+    {
+      force_taxes: true,
+    }
+  )
 
   res.json({ draft_order: draftOrder })
 }

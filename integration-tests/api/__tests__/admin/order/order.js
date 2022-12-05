@@ -22,6 +22,7 @@ const {
   callGet,
   partial,
 } = require("../../../helpers/call-helpers")
+const { simpleShippingOptionFactory } = require("../../../factories")
 
 jest.setTimeout(30000)
 
@@ -1760,6 +1761,12 @@ describe("/admin/orders", () => {
     it("creates a swap", async () => {
       const api = useApi()
 
+      await simpleShippingOptionFactory(dbConnection, {
+        id: "testytest",
+        is_return: true,
+        region_id: "test-region",
+      })
+
       const response = await api.post(
         "/admin/orders/test-order/swaps",
         {
@@ -1770,6 +1777,10 @@ describe("/admin/orders", () => {
             },
           ],
           additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
+          return_shipping: {
+            option_id: "testytest",
+            price: 400,
+          },
         },
         {
           headers: {
@@ -2304,6 +2315,33 @@ describe("/admin/orders", () => {
         expect(item.total).toBeDefined()
         expect(item.subtotal).toBeDefined()
       })
+    })
+
+    it("retrieves an order should include a deleted region", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `UPDATE region
+         set deleted_at = NOW()
+         WHERE id = 'test-region';`
+      )
+
+      const order = await api.get("/admin/orders/test-order", {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      })
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          region: expect.objectContaining({
+            id: "test-region",
+            deleted_at: expect.any(String),
+          }),
+        })
+      )
     })
 
     it("throws on invalid relation", async () => {

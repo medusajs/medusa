@@ -45,6 +45,15 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           items:
  *             type: string
  *   - in: query
+ *     name: sales_channel_id
+ *     style: form
+ *     explode: false
+ *     description: an array of sales channel IDs to filter the retrieved products by.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
  *     name: collection_id
  *     style: form
  *     explode: false
@@ -145,6 +154,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             products:
  *               type: array

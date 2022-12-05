@@ -21,9 +21,15 @@ class IdealProviderService extends StripeBase {
         regionService,
         manager,
       },
-      options,
-      ["ideal"]
+      options
     )
+  }
+
+  get paymentIntentOptions() {
+    return {
+      payment_method_types: ["ideal"],
+      capture_method: "automatic",
+    }
   }
 }
 

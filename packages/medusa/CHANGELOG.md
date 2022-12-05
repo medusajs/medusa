@@ -1,5 +1,56 @@
 # Change Log
 
+## 1.6.5
+
+### Patch Changes
+
+- [#2594](https://github.com/medusajs/medusa/pull/2594) [`f60267a49`](https://github.com/medusajs/medusa/commit/f60267a494f95d85b6007e617a1f9b0146854bae) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Update staging action for automatic releases
+
+- [#2579](https://github.com/medusajs/medusa/pull/2579) [`022a84691`](https://github.com/medusajs/medusa/commit/022a84691eb84f408bcc36921d23703d498c847f) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix(draft-order): create tax-inclusive with discount
+
+- [#2632](https://github.com/medusajs/medusa/pull/2632) [`5d977a8f5`](https://github.com/medusajs/medusa/commit/5d977a8f57552af02eae0a44016b2213609b6d92) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Performance improvements of listing shipping options
+
+- [#2607](https://github.com/medusajs/medusa/pull/2607) [`e09f6e8a1`](https://github.com/medusajs/medusa/commit/e09f6e8a1e4a759fe70664bea0538c61b7cea70a) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): handle webhook sirialization failure
+
+- [#2603](https://github.com/medusajs/medusa/pull/2603) [`9e91a50df`](https://github.com/medusajs/medusa/commit/9e91a50df17b4f542db8d9678b5f489218511adb) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): missing transaction on create payment
+
+- [#2612](https://github.com/medusajs/medusa/pull/2612) [`a77780671`](https://github.com/medusajs/medusa/commit/a77780671aadc311c0e8a541104cbff1ea769ac7) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Transaction lock issues on create/update cart items
+
+- [#2597](https://github.com/medusajs/medusa/pull/2597) [`d7997ef25`](https://github.com/medusajs/medusa/commit/d7997ef256b7fd98d96be720c9aec694e426f92f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Expose Module Resolution API
+
+- Updated dependencies []:
+  - @medusajs/medusa-cli@1.3.5
+
+## 1.6.4
+
+### Patch Changes
+
+- [#2646](https://github.com/medusajs/medusa/pull/2646) [`e7c4cc375`](https://github.com/medusajs/medusa/commit/e7c4cc375174775bb0cfe52e5dc0270237150b3c) Thanks [@pKorsholm](https://github.com/pKorsholm)! - jwt fix
+
+- Updated dependencies [[`e7c4cc375`](https://github.com/medusajs/medusa/commit/e7c4cc375174775bb0cfe52e5dc0270237150b3c)]:
+  - medusa-core-utils@1.1.35
+
+## 1.6.3
+
+### Patch Changes
+
+- [#2583](https://github.com/medusajs/medusa/pull/2583) [`699bb1d57`](https://github.com/medusajs/medusa/commit/699bb1d57bfe532a6bcff1aea7a75bc793c135cd) Thanks [@adrien2p](https://github.com/adrien2p)! - Retrieve deleted regions on orders
+
+## 1.6.2
+
+### Patch Changes
+
+- [#2568](https://github.com/medusajs/medusa/pull/2568) [`2d095a0ce`](https://github.com/medusajs/medusa/commit/2d095a0ce14ab7f24b4e6856cb4850cea18af21c) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): fix missing throw in the store cart create-payment-sessions
+
+* [#2566](https://github.com/medusajs/medusa/pull/2566) [`8069ed5e9`](https://github.com/medusajs/medusa/commit/8069ed5e99dc53a912df9bb860114d2258044108) Thanks [@srindom](https://github.com/srindom)! - fix(medusa): add support for retrying failed event bus jobs
+
+- [#2552](https://github.com/medusajs/medusa/pull/2552) [`7b0ceeffb`](https://github.com/medusajs/medusa/commit/7b0ceeffb4616c3f4e0cf51aba2ab381c61ea5d7) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - feat(medusa, medusa-js, medusa-react): /store api product types
+
+* [#2460](https://github.com/medusajs/medusa/pull/2460) [`5ea4b728e`](https://github.com/medusajs/medusa/commit/5ea4b728e728a7e6d4d6fe7255ea80395ab75bd3) Thanks [@github-actions](https://github.com/apps/github-actions)! - Order/cart decorate totals should assign items totals, shipping option requirements should be tax-inclusive if shipping option is, ensure swaps can be created on orders with discounts
+
+* Updated dependencies []:
+  - @medusajs/medusa-cli@1.3.4
+
 ## 1.6.1
 
 ### Patch Changes

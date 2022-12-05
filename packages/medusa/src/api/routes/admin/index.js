@@ -21,6 +21,7 @@ import orderRoutes from "./orders"
 import priceListRoutes from "./price-lists"
 import productTagRoutes from "./product-tags"
 import productTypesRoutes from "./product-types"
+import publishableApiKeyRoutes from "./publishable-api-keys"
 import productRoutes from "./products"
 import regionRoutes from "./regions"
 import returnReasonRoutes from "./return-reasons"
@@ -35,6 +36,8 @@ import taxRateRoutes from "./tax-rates"
 import uploadRoutes from "./uploads"
 import userRoutes, { unauthenticatedUserRoutes } from "./users"
 import variantRoutes from "./variants"
+import paymentCollectionRoutes from "./payment-collections"
+import paymentRoutes from "./payments"
 
 const route = Router()
 
@@ -90,6 +93,7 @@ export default (app, container, config) => {
   productRoutes(route, featureFlagRouter)
   productTagRoutes(route)
   productTypesRoutes(route)
+  publishableApiKeyRoutes(route)
   regionRoutes(route, featureFlagRouter)
   returnReasonRoutes(route)
   returnRoutes(route)
@@ -103,6 +107,8 @@ export default (app, container, config) => {
   uploadRoutes(route)
   userRoutes(route)
   variantRoutes(route)
+  paymentCollectionRoutes(route)
+  paymentRoutes(route)
 
   return app
 }

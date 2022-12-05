@@ -6,8 +6,8 @@ import { IsOptional, IsString } from "class-validator"
 /**
  * @oas [get] /order-edits
  * operationId: "GetOrderEdits"
- * summary: "List an OrderEdit"
- * description: "List a OrderEdit."
+ * summary: "List OrderEdits"
+ * description: "List OrderEdits."
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching order edit internal note.
@@ -23,9 +23,9 @@ import { IsOptional, IsString } from "class-validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdit.list()
- *         .then(({ order_edits }) => {
- *           console.log(order_edits)
+ *       medusa.admin.orderEdits.list()
+ *         .then(({ order_edits, count, limit, offset }) => {
+ *           console.log(order_edits.length)
  *         })
  *   - lang: Shell
  *     label: cURL
@@ -43,10 +43,20 @@ import { IsOptional, IsString } from "class-validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edits:
  *               type: array
  *               $ref: "#/components/schemas/order_edit"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

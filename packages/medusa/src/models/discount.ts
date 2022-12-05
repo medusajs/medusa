@@ -93,6 +93,7 @@ export class Discount extends SoftDeletableEntity {
  * title: "Discount"
  * description: "Represents a discount that can be applied to a cart for promotional purposes."
  * x-resourceId: discount
+ * type: object
  * required:
  *   - code
  *   - is_dynamic

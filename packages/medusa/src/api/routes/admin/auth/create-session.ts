@@ -1,10 +1,10 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 
-import AuthService from "../../../../services/auth"
-import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
-import _ from "lodash"
 import jwt from "jsonwebtoken"
+import _ from "lodash"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import AuthService from "../../../../services/auth"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -20,6 +20,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - email
  *           - password
@@ -61,6 +62,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            user:
  *              $ref: "#/components/schemas/user"

@@ -25,6 +25,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - order_id
  *           - items
@@ -76,8 +77,8 @@ import { validator } from "../../../../utils/validator"
  *           }
  *         ]
  *       })
- *       .then(({ return }) => {
- *         console.log(return.id);
+ *       .then((data) => {
+ *         console.log(data.return.id);
  *       });
  *   - lang: Shell
  *     label: cURL
@@ -101,6 +102,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             return:
  *               $ref: "#/components/schemas/return"

@@ -31,7 +31,7 @@ created user
 
 #### Defined in
 
-[medusa-js/src/resources/admin/users.ts:64](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/users.ts#L64)
+[medusa-js/src/resources/admin/users.ts:64](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/users.ts#L64)
 
 ___
 
@@ -58,7 +58,7 @@ delete response
 
 #### Defined in
 
-[medusa-js/src/resources/admin/users.ts:94](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/users.ts#L94)
+[medusa-js/src/resources/admin/users.ts:94](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/users.ts#L94)
 
 ___
 
@@ -84,7 +84,7 @@ a list of all users
 
 #### Defined in
 
-[medusa-js/src/resources/admin/users.ts:106](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/users.ts#L106)
+[medusa-js/src/resources/admin/users.ts:106](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/users.ts#L106)
 
 ___
 
@@ -109,7 +109,7 @@ resets the users password given the correct token.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/users.ts:36](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/users.ts#L36)
+[medusa-js/src/resources/admin/users.ts:36](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/users.ts#L36)
 
 ___
 
@@ -134,7 +134,7 @@ the user
 
 #### Defined in
 
-[medusa-js/src/resources/admin/users.ts:50](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/users.ts#L50)
+[medusa-js/src/resources/admin/users.ts:50](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/users.ts#L50)
 
 ___
 
@@ -159,7 +159,7 @@ resets password by re-sending password token.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/users.ts:22](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/users.ts#L22)
+[medusa-js/src/resources/admin/users.ts:22](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/users.ts#L22)
 
 ___
 
@@ -187,4 +187,4 @@ the updated user
 
 #### Defined in
 
-[medusa-js/src/resources/admin/users.ts:79](https://github.com/medusajs/medusa/blob/0b0d50b47/packages/medusa-js/src/resources/admin/users.ts#L79)
+[medusa-js/src/resources/admin/users.ts:79](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/users.ts#L79)

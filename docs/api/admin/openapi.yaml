@@ -240,6 +240,8 @@ paths:
     $ref: paths/customers_{id}.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
+  /discounts/{discount_id}/conditions/{condition_id}/batch:
+    $ref: paths/discounts_{discount_id}_conditions_{condition_id}_batch.yaml
   /discounts/{discount_id}/conditions:
     $ref: paths/discounts_{discount_id}_conditions.yaml
   /discounts:
@@ -450,6 +452,8 @@ paths:
     $ref: paths/tax-rates.yaml
   /tax-rates/{id}:
     $ref: paths/tax-rates_{id}.yaml
+  /uploads/protected:
+    $ref: paths/uploads_protected.yaml
   /uploads:
     $ref: paths/uploads.yaml
   /users:

@@ -16,6 +16,15 @@ type InjectedDependencies = {
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
 
+type EmitOptions = {
+  delay?: number
+  attempts?: number
+  backoff?: {
+    type: "fixed" | "exponential"
+    delay: number
+  }
+}
+
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
@@ -179,7 +188,7 @@ export default class EventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: { delay?: number } = {}
+    options: EmitOptions = {}
   ): Promise<StagedJob | void> {
     if (this.transactionManager_) {
       const stagedJobRepository = this.transactionManager_.getCustomRepository(
@@ -192,8 +201,14 @@ export default class EventBusService {
       })
       return await stagedJobRepository.save(stagedJobInstance)
     } else {
-      const opts: { removeOnComplete: boolean; delay?: number } = {
+      const opts: { removeOnComplete: boolean } & EmitOptions = {
         removeOnComplete: true,
+      }
+      if (typeof options.attempts === "number") {
+        opts.attempts = options.attempts
+        if (typeof options.backoff !== "undefined") {
+          opts.backoff = options.backoff
+        }
       }
       if (typeof options.delay === "number") {
         opts.delay = options.delay

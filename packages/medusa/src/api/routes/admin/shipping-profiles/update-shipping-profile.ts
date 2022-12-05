@@ -15,6 +15,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           name:
  *             description: "The name of the Shipping Profile"
@@ -52,6 +53,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             shipping_profile:
  *               $ref: "#/components/schemas/shipping_profile"

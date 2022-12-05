@@ -4,20 +4,30 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "jest --silent=false --runInBand --bail",
+    "test": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
+<<<<<<< HEAD
     "@medusajs/medusa": "1.5.0-dev-1666255947825",
     "faker": "^5.5.3",
     "medusa-interfaces": "1.3.3-dev-1666255947825",
+=======
+    "@medusajs/medusa": "1.6.5-dev-1669708431707",
+    "faker": "^5.5.3",
+    "medusa-interfaces": "1.3.3-dev-1669708431707",
+>>>>>>> origin/develop
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
+<<<<<<< HEAD
     "babel-preset-medusa-package": "1.1.19-dev-1666255947825",
+=======
+    "babel-preset-medusa-package": "1.1.19-dev-1669708431707",
+>>>>>>> origin/develop
     "jest": "^26.6.3"
   }
 }

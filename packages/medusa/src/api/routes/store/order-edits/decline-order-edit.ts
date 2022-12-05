@@ -18,6 +18,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           declined_reason:
  *             type: string
@@ -28,7 +29,7 @@ import {
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdit.decline(orderEditId)
+ *       medusa.orderEdits.decline(order_edit_id)
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id);
  *         })
@@ -44,6 +45,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
  *               $ref: "#/components/schemas/order_edit"

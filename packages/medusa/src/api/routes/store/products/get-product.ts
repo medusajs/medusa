@@ -49,6 +49,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             product:
  *               allOf:

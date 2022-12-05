@@ -2,11 +2,11 @@ import { Router } from "express"
 import { Customer, Order } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
-import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
 import {
-  defaultStoreOrdersRelations,
   defaultStoreOrdersFields,
+  defaultStoreOrdersRelations,
 } from "../orders"
+import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
 
 const route = Router()
 
@@ -34,7 +34,7 @@ export default (app, container) => {
   )
 
   // Authenticated endpoints
-  route.use(middlewares.authenticate())
+  route.use(middlewares.requireCustomerAuthentication())
 
   route.get("/me", middlewares.wrap(require("./get-customer").default))
   route.post("/me", middlewares.wrap(require("./update-customer").default))

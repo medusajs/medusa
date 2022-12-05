@@ -52,23 +52,23 @@ You need to [create a Segment account](https://app.segment.com/signup/) to follo
 
 On your Segment dashboard, choose Catalog from the sidebar under Connections.
 
-![Under Connections in the sidebar choose Catalog](https://i.imgur.com/rAeJkP3.png)
+![Under Connections in the sidebar choose Catalog](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000661/Medusa%20Docs/Segment/rAeJkP3_ybyutz.png)
 
 Then, in the catalog list find the Server category and choose Node.js from the list.
 
-![Choose Node.js under the Server category](https://i.imgur.com/6RxQbW6.png)
+![Choose Node.js under the Server category](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000672/Medusa%20Docs/Segment/6RxQbW6_wjphte.png)
 
 This opens a new side menu. In the side menu, click on Add Source.
 
-![Click on Add Source in the side menu showing information about the Node.js source](https://i.imgur.com/0VZJnpd.png)
+![Click on Add Source in the side menu showing information about the Node.js source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000683/Medusa%20Docs/Segment/0VZJnpd_ehagat.png)
 
 This opens a new page to create a Node.js source. Enter the name of the source then click Add Source.
 
-![Enter a name under the Name field then click on the Add Source button](https://i.imgur.com/u2hzkB5.png)
+![Enter a name under the Name field then click on the Add Source button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000693/Medusa%20Docs/Segment/u2hzkB5_t59yhj.png)
 
 On the new source dashboard, you should find a Write Key. You’ll use this key in the next section after you install the Segment plugin on your Medusa server.
 
-![The Write Key is available on the new source's page](https://i.imgur.com/OTJVsz7.png)
+![The Write Key is available on the new source's page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000708/Medusa%20Docs/Segment/OTJVsz7_v95qla.png)
 
 ### Optional: Add Destination
 
@@ -76,11 +76,11 @@ After you create the Segment source, you can add destinations. This is where the
 
 To add a destination, on the same Segment source page, click on Add Destination in the Destinations section.
 
-![Click on the Add Destination button on the source page](https://i.imgur.com/FrKlUxh.png)
+![Click on the Add Destination button on the source page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000718/Medusa%20Docs/Segment/FrKlUxh_zlnkww.png)
 
 You can then choose from a list of destinations such as Google Universal Analytics or Facebook Pixel.
 
-![List of some of the available destinations in Segment's catalog](https://i.imgur.com/y2YnPUh.png)
+![List of some of the available destinations in Segment's catalog](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000730/Medusa%20Docs/Segment/y2YnPUh_mgfqdo.png)
 
 The process of integrating each destination is different, so you must follow the steps detailed in Segment for each destination you choose.
 
@@ -126,7 +126,7 @@ Then, try triggering one of the [mentioned events earlier in this document](#eve
 
 After you place an order, on the Segment source that you created, click on the Debugger tab. You should see at least one event triggered for each order you place. If you click on the event, you can see the order details are passed to the event.
 
-![The order completed event is recorded on the Segment source](https://i.imgur.com/LQVJTGg.png)
+![The order completed event is recorded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000743/Medusa%20Docs/Segment/LQVJTGg_i5jyge.png)
 
 If you added a destination, you can also check your destination to make sure the data is reflected there.
 
@@ -183,7 +183,7 @@ The `SegmentServer` also provides the method `identify` to tie a user to their a
 
 After adding the above subscriber, run your server again if it isn’t running and create a customer using the REST APIs or one of the Medusa storefronts. If you check the Debugger in your Segment source, you should see a new event “Customer Created” tracked. If you click on it, you’ll see the data you passed to the `track` method.
 
-![The customer created event is recoreded on the Segment source](https://i.imgur.com/4LD41xE.png)
+![The customer created event is recoreded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000759/Medusa%20Docs/Segment/4LD41xE_qungdw.png)
 
 ## What’s Next
 
