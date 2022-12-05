@@ -2,6 +2,7 @@ import { Redis } from "ioredis"
 import { ICacheService } from "../interfaces"
 
 const DEFAULT_CACHE_TIME = 30 // 30 seconds
+const EXPIRY_MODE = "EX" // "EX" stands for an expiry time in second
 
 export default class CacheService implements ICacheService {
   protected readonly redis_: Redis
@@ -24,7 +25,12 @@ export default class CacheService implements ICacheService {
     ttl: number = DEFAULT_CACHE_TIME
   ): Promise<void> {
     ttl = Number(process.env.CACHE_TTL ?? ttl)
-    await this.redis_.set(key, JSON.stringify(data), "EX", ttl)
+    if (ttl === 0) {
+      // No need to call redis set without expiry time
+      return
+    }
+
+    await this.redis_.set(key, JSON.stringify(data), EXPIRY_MODE, ttl)
   }
 
   /**
