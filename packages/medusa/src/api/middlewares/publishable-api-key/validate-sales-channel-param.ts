@@ -6,6 +6,8 @@ import { PublishableApiKeyScopes } from "./extend-request-params"
  * The middleware will return 400 if sales channel id is passed as an url or body param
  * but that id is not in the scope of the PK from the header.
  *
+ * NOTE: must be applied after the `extendRequestParams` middleware
+ *
  * @param req - request object
  * @param res - response object
  * @param next - next middleware call
@@ -18,15 +20,14 @@ async function validateSalesChannelParam(
   const pubKey = req.get("x-publishable-api-key")
 
   if (pubKey) {
-    let channelIds = req.body.sales_channel_id || req.params.sales_channel_id
+    const scopes = req.publishableApiKeyScopes
+    let channelIds = req.body.sales_channel_id || req.query.sales_channel_id
 
     if (!channelIds) {
       return next()
     }
 
     channelIds = !Array.isArray(channelIds) ? [channelIds] : channelIds
-
-    const scopes = req.publishableApiKeyScopes
 
     if (
       scopes.sales_channel_id.length &&

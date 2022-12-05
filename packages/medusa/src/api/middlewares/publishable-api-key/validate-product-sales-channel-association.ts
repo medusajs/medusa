@@ -17,12 +17,12 @@ async function validateProductSalesChannelAssociation(
 ) {
   const pubKey = req.get("x-publishable-api-key")
 
-  const productService: ProductService = req.scope.resolve("productService")
-  const publishableKeyService: PublishableApiKeyService = req.scope.resolve(
-    "publishableApiKeyService"
-  )
-
   if (pubKey) {
+    const productService: ProductService = req.scope.resolve("productService")
+    const publishableKeyService: PublishableApiKeyService = req.scope.resolve(
+      "publishableApiKeyService"
+    )
+
     const { sales_channel_id: salesChannelIds } =
       await publishableKeyService.getResourceScopes(pubKey)
 

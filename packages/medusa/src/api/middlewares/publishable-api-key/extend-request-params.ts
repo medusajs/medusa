@@ -24,11 +24,11 @@ async function extendRequestParams(
 ) {
   const pubKey = req.get("x-publishable-api-key")
 
-  const publishableKeyService: PublishableApiKeyService = req.scope.resolve(
-    "publishableApiKeyService"
-  )
-
   if (pubKey) {
+    const publishableKeyService: PublishableApiKeyService = req.scope.resolve(
+      "publishableApiKeyService"
+    )
+
     req.publishableApiKeyScopes = await publishableKeyService.getResourceScopes(
       pubKey
     )

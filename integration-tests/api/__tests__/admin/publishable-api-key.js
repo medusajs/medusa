@@ -43,7 +43,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         MEDUSA_FF_PUBLISHABLE_API_KEYS: true,
         MEDUSA_FF_SALES_CHANNELS: true,
       },
-      verbose: true,
+      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
@@ -633,6 +633,40 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       )
     })
 
+    it("SC param overrides PK channels (but SK still needs to be in the PK's scope", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [
+            { id: salesChannel1.id },
+            { id: salesChannel2.id },
+          ],
+        },
+        adminHeaders
+      )
+
+      const response = await api.get(
+        `/store/products?sales_channel_id[0]=${salesChannel2.id}`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        }
+      )
+
+      expect(response.data.products.length).toBe(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: product2.id,
+          }),
+        ])
+      )
+    })
+
     it("returns all products if PK is not passed", async () => {
       const api = useApi()
 
@@ -695,124 +729,21 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         ])
       )
     })
-  })
 
-  describe("POST /store/carts/:id", () => {
-    let product
-    const pubKeyId = IdMap.getId("pubkey-get-id")
-
-    beforeEach(async () => {
-      await adminSeeder(dbConnection)
-
-      await simpleRegionFactory(dbConnection, {
-        id: "test-region",
-      })
-
-      await simplePublishableApiKeyFactory(dbConnection, {
-        id: pubKeyId,
-        created_by: adminUserId,
-      })
-
-      product = await simpleProductFactory(dbConnection, {
-        sales_channels: [
-          {
-            id: "sales-channel",
-            name: "Sales channel",
-            description: "Sales channel",
-          },
-          {
-            id: "sales-channel2",
-            name: "Sales channel2",
-            description: "Sales channel2",
-          },
-        ],
-      })
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      return await db.teardown()
-    })
-
-    it("should assign sales channel to order on cart completion if PK is present in the header", async () => {
+    it("throws because sales channel param is not in the scope of passed PK", async () => {
       const api = useApi()
 
       await api.post(
         `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
         {
-          sales_channel_ids: [{ id: "sales-channel" }],
-        },
-        adminHeaders
-      )
-
-      const customerRes = await api.post("/store/customers", customerData, {
-        withCredentials: true,
-      })
-
-      const createCartRes = await api.post(
-        "/store/carts",
-        {
-          region_id: "test-region",
-          items: [
-            {
-              variant_id: product.variants[0].id,
-              quantity: 1,
-            },
-          ],
-        },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-            "x-publishable-api-key": pubKeyId,
-          },
-        }
-      )
-
-      const cart = createCartRes.data.cart
-
-      await api.post(`/store/carts/${cart.id}`, {
-        customer_id: customerRes.data.customer.id,
-      })
-
-      await api.post(`/store/carts/${cart.id}/payment-sessions`)
-
-      const createdOrder = await api.post(
-        `/store/carts/${cart.id}/complete-cart`
-      )
-
-      expect(createdOrder.data.type).toEqual("order")
-      expect(createdOrder.status).toEqual(200)
-      expect(createdOrder.data.data).toEqual(
-        expect.objectContaining({
-          sales_channel_id: "sales-channel",
-        })
-      )
-    })
-
-    it("should throw because SC id in params is not in the scope of PK from the header", async () => {
-      const api = useApi()
-
-      await api.post(
-        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
-        {
-          sales_channel_ids: [{ id: "sales-channel" }],
+          sales_channel_ids: [{ id: salesChannel1.id }],
         },
         adminHeaders
       )
 
       try {
-        await api.post(
-          "/store/carts",
-          {
-            sales_channel_id: "sales-channel2", // SC not in the PK scope
-            region_id: "test-region",
-            items: [
-              {
-                variant_id: product.variants[0].id,
-                quantity: 1,
-              },
-            ],
-          },
+        await api.get(
+          `/store/products?sales_channel_id[]=${salesChannel2.id}`,
           {
             headers: {
               Authorization: "Bearer test_token",
@@ -823,7 +754,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       } catch (error) {
         expect(error.response.status).toEqual(400)
         expect(error.response.data.errors[0]).toEqual(
-          `Provided sales channel id param: sales-channel2 is not associated with the Publishable API Key passed in the header of the request.`
+          `Provided sales channel id param: ${salesChannel2.id} is not associated with the Publishable API Key passed in the header of the request.`
         )
       }
     })
@@ -944,6 +875,197 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         })
 
       expect(response.status).toEqual(200)
+    })
+  })
+
+  describe("POST /store/carts/:id", () => {
+    let product
+    const pubKeyId = IdMap.getId("pubkey-get-id")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simpleRegionFactory(dbConnection, {
+        id: "test-region",
+      })
+
+      await simplePublishableApiKeyFactory(dbConnection, {
+        id: pubKeyId,
+        created_by: adminUserId,
+      })
+
+      product = await simpleProductFactory(dbConnection, {
+        sales_channels: [
+          {
+            id: "sales-channel",
+            name: "Sales channel",
+            description: "Sales channel",
+          },
+          {
+            id: "sales-channel2",
+            name: "Sales channel2",
+            description: "Sales channel2",
+          },
+        ],
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("should assign sales channel to order on cart completion if PK is present in the header", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: "sales-channel" }],
+        },
+        adminHeaders
+      )
+
+      const customerRes = await api.post("/store/customers", customerData, {
+        withCredentials: true,
+      })
+
+      const createCartRes = await api.post(
+        "/store/carts",
+        {
+          region_id: "test-region",
+          items: [
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        }
+      )
+
+      const cart = createCartRes.data.cart
+
+      await api.post(`/store/carts/${cart.id}`, {
+        customer_id: customerRes.data.customer.id,
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const createdOrder = await api.post(
+        `/store/carts/${cart.id}/complete-cart`
+      )
+
+      expect(createdOrder.data.type).toEqual("order")
+      expect(createdOrder.status).toEqual(200)
+      expect(createdOrder.data.data).toEqual(
+        expect.objectContaining({
+          sales_channel_id: "sales-channel",
+        })
+      )
+    })
+
+    it("SC from params defines where product is assigned (passed SC still has to be in the scope of PK from the header)", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [
+            { id: "sales-channel" },
+            { id: "sales-channel2" },
+          ],
+        },
+        adminHeaders
+      )
+
+      const customerRes = await api.post("/store/customers", customerData, {
+        withCredentials: true,
+      })
+
+      const createCartRes = await api.post(
+        "/store/carts",
+        {
+          sales_channel_id: "sales-channel2",
+          region_id: "test-region",
+          items: [
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+            "x-publishable-api-key": pubKeyId,
+          },
+        }
+      )
+
+      const cart = createCartRes.data.cart
+
+      await api.post(`/store/carts/${cart.id}`, {
+        customer_id: customerRes.data.customer.id,
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const createdOrder = await api.post(
+        `/store/carts/${cart.id}/complete-cart`
+      )
+
+      expect(createdOrder.data.type).toEqual("order")
+      expect(createdOrder.status).toEqual(200)
+      expect(createdOrder.data.data).toEqual(
+        expect.objectContaining({
+          sales_channel_id: "sales-channel2",
+        })
+      )
+    })
+
+    it("should throw because SC id in the body is not in the scope of PK from the header", async () => {
+      const api = useApi()
+
+      await api.post(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels/batch`,
+        {
+          sales_channel_ids: [{ id: "sales-channel" }],
+        },
+        adminHeaders
+      )
+
+      try {
+        await api.post(
+          "/store/carts",
+          {
+            sales_channel_id: "sales-channel2", // SC not in the PK scope
+            region_id: "test-region",
+            items: [
+              {
+                variant_id: product.variants[0].id,
+                quantity: 1,
+              },
+            ],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+              "x-publishable-api-key": pubKeyId,
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.errors[0]).toEqual(
+          `Provided sales channel id param: sales-channel2 is not associated with the Publishable API Key passed in the header of the request.`
+        )
+      }
     })
   })
 })
