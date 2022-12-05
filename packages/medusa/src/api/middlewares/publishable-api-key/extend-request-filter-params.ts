@@ -17,7 +17,7 @@ export type PublishableApiKeyScopes = {
  * @throws if sales channel id is passed as a url or body param
  *         but that id is not in the scope defined by the PK from the header
  */
-async function extendResourceFilters(
+async function extendRequestFilterParams(
   req: Request & { publishableApiKeyScopes: PublishableApiKeyScopes },
   res: Response,
   next: NextFunction
@@ -48,4 +48,4 @@ async function extendResourceFilters(
   next()
 }
 
-export { extendResourceFilters }
+export { extendRequestFilterParams }

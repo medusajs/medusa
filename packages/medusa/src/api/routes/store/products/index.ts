@@ -5,9 +5,9 @@ import { Product } from "../../../.."
 import middlewares from "../../../middlewares"
 import { FlagRouter } from "../../../../utils/flag-router"
 import { PaginatedResponse } from "../../../../types/common"
-import { extendResourceFilters } from "../../../middlewares/publishable-api-key/extend-resource-filters"
+import { extendRequestFilterParams } from "../../../middlewares/publishable-api-key/extend-request-filter-params"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import { validateProduct } from "../../../middlewares/publishable-api-key/validate-product"
+import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 
 const route = Router()
 
@@ -15,8 +15,16 @@ export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/products", route)
 
   if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    route.use("/", extendResourceFilters as unknown as RequestHandler)
-    route.use("/:id", validateProduct)
+    route.use(
+      "/",
+      extendRequestFilterParams as unknown as RequestHandler,
+      validateProductSalesChannelAssociation as unknown as RequestHandler
+    )
+    route.use(
+      "/:id",
+      validateProductSalesChannelAssociation,
+      validateProductSalesChannelAssociation
+    )
   }
 
   route.get("/", middlewares.wrap(require("./list-products").default))
