@@ -33,7 +33,6 @@ export type PaymentProviderDataInput = {
   amount: number
   cart_id?: string
   cart?: Cart
-  metadata?: any
 }
 export const defaultPaymentCollectionRelations = [
   "region",

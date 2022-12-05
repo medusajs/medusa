@@ -250,9 +250,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
           amount: session.amount,
           provider_id: session.provider_id,
           customer,
-          metadata: {
-            resource_id: payCol.id,
-          },
         }
 
         if (existingSession) {
@@ -343,9 +340,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
         amount: payCol.amount,
         provider_id: sessionInput.provider_id,
         customer,
-        metadata: {
-          resource_id: payCol.id,
-        },
       }
 
       const existingSession = payCol.payment_sessions?.find(
