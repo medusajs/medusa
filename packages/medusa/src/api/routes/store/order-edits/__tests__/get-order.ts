@@ -15,11 +15,6 @@ describe("GET /store/order-edits/:id", () => {
     beforeAll(async () => {
       subject = await request("GET", `/store/order-edits/${orderEditId}`, {
         flags: [OrderEditingFeatureFlag],
-        clientSession: {
-          jwt: {
-            user: IdMap.getId("lebron"),
-          },
-        },
       })
     })
 

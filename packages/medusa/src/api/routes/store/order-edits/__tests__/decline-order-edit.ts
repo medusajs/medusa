@@ -19,11 +19,6 @@ describe("GET /store/order-edits/:id/decline", () => {
         {
           payload,
           flags: [OrderEditingFeatureFlag],
-          clientSession: {
-            jwt: {
-              user: IdMap.getId("lebron"),
-            },
-          },
         }
       )
     })

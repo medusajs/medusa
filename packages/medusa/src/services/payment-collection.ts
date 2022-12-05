@@ -199,7 +199,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
   async setPaymentSessionsBatch(
     paymentCollectionId: string,
     sessionsInput: PaymentCollectionsSessionsBatchInput[],
-    customer_id: string
+    customerId: string
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const paymentCollectionRepository = manager.getCustomRepository(
@@ -232,7 +232,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
       const customer = await this.customerService_
         .withTransaction(manager)
-        .retrieve(customer_id, {
+        .retrieve(customerId, {
           select: ["id", "email", "metadata"],
         })
 
@@ -301,7 +301,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
   async setPaymentSession(
     paymentCollectionId: string,
     sessionInput: PaymentCollectionsSessionsInput,
-    customer_id: string
+    customerId: string
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const paymentCollectionRepository = manager.getCustomRepository(
@@ -332,7 +332,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
       const customer = await this.customerService_
         .withTransaction(manager)
-        .retrieve(customer_id, {
+        .retrieve(customerId, {
           select: ["id", "email", "metadata"],
         })
 
@@ -393,7 +393,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
   async refreshPaymentSession(
     paymentCollectionId: string,
     sessionId: string,
-    customer_id: string
+    customerId: string
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const paymentCollectionRepository = manager.getCustomRepository(
@@ -432,7 +432,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
       const customer = await this.customerService_
         .withTransaction(manager)
-        .retrieve(customer_id, {
+        .retrieve(customerId, {
           select: ["id", "email", "metadata"],
         })
 

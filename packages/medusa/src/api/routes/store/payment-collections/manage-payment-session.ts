@@ -72,7 +72,7 @@ export default async (req, res) => {
   const data = req.validatedBody as StorePaymentCollectionSessionsReq
   const { id } = req.params
 
-  const customer_id = req.user?.customer_id
+  const customerId = req.user?.customer_id
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
@@ -84,7 +84,7 @@ export default async (req, res) => {
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
-        .setPaymentSession(id, data, customer_id)
+        .setPaymentSession(id, data, customerId)
     }
   )
 

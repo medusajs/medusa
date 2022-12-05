@@ -1,3 +1,4 @@
+import { MedusaError } from "medusa-core-utils"
 import { PaymentSessionStatus } from "../../../../models"
 import { PaymentCollectionService } from "../../../../services"
 
@@ -71,8 +72,10 @@ export default async (req, res) => {
   )
 
   if (session?.status !== PaymentSessionStatus.AUTHORIZED) {
-    res.status(422).send(`Failed to authorize Payment Session id "${id}"`)
-    return
+    throw new MedusaError(
+      MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR,
+      `Failed to authorize Payment Session id "${id}"`
+    )
   }
 
   res.status(200).json({ payment_session: session })

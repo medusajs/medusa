@@ -71,14 +71,14 @@ export default async (req, res) => {
     "paymentCollectionService"
   )
 
-  const customer_id = req.user?.customer_id
+  const customerId = req.user?.customer_id
 
   const manager: EntityManager = req.scope.resolve("manager")
   const paymentSession = await manager.transaction(
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
-        .refreshPaymentSession(id, session_id, customer_id)
+        .refreshPaymentSession(id, session_id, customerId)
     }
   )
 
