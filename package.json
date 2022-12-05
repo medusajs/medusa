@@ -3,7 +3,9 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "integration-tests/*",
+      "integration-tests/**/*"
     ]
   },
   "devDependencies": {

@@ -28,7 +28,8 @@ class DatabaseFactory {
     const connection = await this.getMasterConnection()
     const migrationDir = path.resolve(
       path.join(
-        cwd,
+        __dirname,
+        `../../`,
         `node_modules`,
         `@medusajs`,
         `medusa`,
@@ -38,15 +39,18 @@ class DatabaseFactory {
       )
     )
 
-    const { getEnabledMigrations } = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `commands`,
-      `utils`,
-      `get-migrations`
+    const { getEnabledMigrations } = require(path.resolve(
+      path.join(
+        __dirname,
+        `../../`,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `commands`,
+        `utils`,
+        `get-migrations`
+      )
     ))
 
     // filter migrations to only include those that dont have feature flags

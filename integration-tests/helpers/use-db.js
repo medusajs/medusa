@@ -59,7 +59,8 @@ const DbTestUtil = {
         continue
       }
 
-      await manager.query(`DELETE FROM "${entity.tableName}";`)
+      await manager.query(`DELETE
+                           FROM "${entity.tableName}";`)
     }
     if (connectionType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = ON`)
@@ -81,26 +82,32 @@ module.exports = {
     const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
     const { projectConfig, featureFlags } = require(configPath)
 
-    const featureFlagsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `feature-flags`
+    const featureFlagsLoader = require(path.resolve(
+      path.join(
+        __dirname,
+        `../../`,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `loaders`,
+        `feature-flags`
+      )
     )).default
 
     const featureFlagsRouter = featureFlagsLoader({ featureFlags })
 
-    const modelsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `models`
+    const modelsLoader = require(path.resolve(
+      path.join(
+        __dirname,
+        `../../`,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `loaders`,
+        `models`
+      )
     )).default
 
     const entities = modelsLoader({}, { register: false })
@@ -122,7 +129,8 @@ module.exports = {
       // get migraitons with enabled featureflags
       const migrationDir = path.resolve(
         path.join(
-          cwd,
+          __dirname,
+          `../../`,
           `node_modules`,
           `@medusajs`,
           `medusa`,
@@ -132,15 +140,18 @@ module.exports = {
         )
       )
 
-      const { getEnabledMigrations } = require(path.join(
-        cwd,
-        `node_modules`,
-        `@medusajs`,
-        `medusa`,
-        `dist`,
-        `commands`,
-        `utils`,
-        `get-migrations`
+      const { getEnabledMigrations } = require(path.resolve(
+        path.join(
+          __dirname,
+          `../../`,
+          `node_modules`,
+          `@medusajs`,
+          `medusa`,
+          `dist`,
+          `commands`,
+          `utils`,
+          `get-migrations`
+        )
       ))
 
       const enabledMigrations = await getEnabledMigrations(
