@@ -18,7 +18,7 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
       cwd,
       env: {
         ...process.env,
-        NODE_ENV: "test",
+        NODE_ENV: "development",
         JWT_SECRET: "test",
         COOKIE_SECRET: "test",
         REDIS_URL: redisUrl ? redisUrlWithDatabase : undefined, // If provided, will use a real instance, otherwise a fake instance
