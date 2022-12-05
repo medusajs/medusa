@@ -21,7 +21,7 @@ async function validateSalesChannelParam(
     let channelIds = req.body.sales_channel_id || req.params.sales_channel_id
 
     if (!channelIds) {
-      return
+      return next()
     }
 
     channelIds = !Array.isArray(channelIds) ? [channelIds] : channelIds
@@ -30,7 +30,7 @@ async function validateSalesChannelParam(
 
     if (
       scopes.sales_channel_id.length &&
-      channelIds.every((sc) => scopes.sales_channel_id.includes(sc))
+      !channelIds.every((sc) => scopes.sales_channel_id.includes(sc))
     ) {
       req.errors = req.errors ?? []
       req.errors.push(
