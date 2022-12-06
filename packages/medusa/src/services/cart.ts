@@ -660,10 +660,21 @@ class CartService extends TransactionBaseService {
           })
         }
 
-        await lineItemServiceTx.update(
-          { cart_id: cartId, has_shipping: true },
-          { has_shipping: false }
-        )
+        await lineItemServiceTx
+          .update(
+            { cart_id: cartId, has_shipping: true },
+            { has_shipping: false }
+          )
+          .catch((err: unknown) => {
+            // We only want to catch the errors related to not found items since we don't care if there is not item to update
+            if (
+              err instanceof MedusaError &&
+              err.type === MedusaError.Types.NOT_FOUND
+            ) {
+              return
+            }
+            throw err
+          })
 
         cart = await this.retrieve(cart.id, {
           relations: ["items", "discounts", "discounts.rule", "region"],
@@ -802,13 +813,24 @@ class CartService extends TransactionBaseService {
         // Create all items that needs to be created
         await lineItemServiceTx.create(lineItemsToCreate)
 
-        await lineItemServiceTx.update(
-          {
-            cart_id: cartId,
-            has_shipping: true,
-          },
-          { has_shipping: false }
-        )
+        await lineItemServiceTx
+          .update(
+            {
+              cart_id: cartId,
+              has_shipping: true,
+            },
+            { has_shipping: false }
+          )
+          .catch((err: unknown) => {
+            // We only want to catch the errors related to not found items since we don't care if there is not item to update
+            if (
+              err instanceof MedusaError &&
+              err.type === MedusaError.Types.NOT_FOUND
+            ) {
+              return
+            }
+            throw err
+          })
 
         cart = await this.retrieve(cart.id, {
           relations: ["items", "discounts", "discounts.rule", "region"],
