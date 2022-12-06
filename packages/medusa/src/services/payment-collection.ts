@@ -1,11 +1,10 @@
-import { DeepPartial, EntityManager, Equal } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { FindConfig } from "../types/common"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import { PaymentCollectionRepository } from "../repositories/payment-collection"
 import {
-  Customer,
   PaymentCollection,
   PaymentCollectionStatus,
   PaymentSession,
@@ -16,7 +15,6 @@ import {
   CustomerService,
   EventBusService,
   PaymentProviderService,
-  PaymentService,
 } from "./index"
 
 import {
@@ -67,6 +65,12 @@ export default class PaymentCollectionService extends TransactionBaseService {
     this.customerService_ = customerService
   }
 
+  /**
+   * Retrieves a payment collection by id.
+   * @param paymentCollectionId - the id of the payment collection
+   * @param config - the config to retrieve the payment collection
+   * @return the payment collection.
+   */
   async retrieve(
     paymentCollectionId: string,
     config: FindConfig<PaymentCollection> = {}
@@ -92,6 +96,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
     return paymentCollection[0]
   }
 
+  /**
+   * Creates a new payment collection.
+   * @param data - info to create the payment collection
+   * @return the payment collection created.
+   */
   async create(data: CreatePaymentCollectionInput): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager) => {
       const paymentCollectionRepository = manager.getCustomRepository(
@@ -121,6 +130,12 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Updates a payment collection.
+   * @param paymentCollectionId - the id of the payment collection to update
+   * @param data - info to be updated
+   * @return the payment collection updated.
+   */
   async update(
     paymentCollectionId: string,
     data: DeepPartial<PaymentCollection>
@@ -150,6 +165,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Deletes a payment collection.
+   * @param paymentCollectionId - the id of the payment collection to be removed
+   * @return the payment collection removed.
+   */
   async delete(
     paymentCollectionId: string
   ): Promise<PaymentCollection | undefined> {
@@ -196,6 +216,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
     return total === sum
   }
 
+  /**
+   * Manages multiple payment sessions of a payment collection.
+   * @param paymentCollectionId - the id of the payment collection
+   * @param sessionsInput - array containing payment session info
+   * @param customerId - the id of the customer
+   * @return the payment collection and its payment sessions.
+   */
   async setPaymentSessionsBatch(
     paymentCollectionId: string,
     sessionsInput: PaymentCollectionsSessionsBatchInput[],
@@ -235,6 +262,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         .retrieve(customerId, {
           select: ["id", "email", "metadata"],
         })
+        .catch(() => null)
 
       const selectedSessionIds: string[] = []
       const paymentSessions: PaymentSession[] = []
@@ -295,6 +323,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Manages a single payment sessions of a payment collection.
+   * @param paymentCollectionId - the id of the payment collection
+   * @param sessionsInput - object containing payment session info
+   * @param customerId - the id of the customer
+   * @return the payment collection and its payment session.
+   */
   async setPaymentSession(
     paymentCollectionId: string,
     sessionInput: PaymentCollectionsSessionsInput,
@@ -332,6 +367,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         .retrieve(customerId, {
           select: ["id", "email", "metadata"],
         })
+        .catch(() => null)
 
       const paymentSessions: PaymentSession[] = []
       const inputData: PaymentProviderDataInput = {
@@ -384,6 +420,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Removes and recreate a payment session of a payment collection.
+   * @param paymentCollectionId - the id of the payment collection
+   * @param sessionId - the id of the payment session to be replaced
+   * @param customerId - the id of the customer
+   * @return the new payment session created.
+   */
   async refreshPaymentSession(
     paymentCollectionId: string,
     sessionId: string,
@@ -429,6 +472,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
         .retrieve(customerId, {
           select: ["id", "email", "metadata"],
         })
+        .catch(() => null)
 
       const inputData: PaymentProviderDataInput = {
         resource_id: payCol.id,
@@ -459,6 +503,11 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Marks a payment collection as authorized bypassing the payment flow.
+   * @param paymentCollectionId - the id of the payment collection
+   * @return the payment session authorized.
+   */
   async markAsAuthorized(
     paymentCollectionId: string
   ): Promise<PaymentCollection> {
@@ -481,6 +530,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Authorizes the payment sessions of a payment collection.
+   * @param paymentCollectionId - the id of the payment collection
+   * @param sessionIds - array of payment session ids to be authorized
+   * @param context - additional data required by payment providers
+   * @return the payment collection and its payment session.
+   */
   async authorizePaymentSessions(
     paymentCollectionId: string,
     sessionIds: string[],
