@@ -408,6 +408,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -471,6 +472,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -538,6 +540,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -576,6 +579,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: ["test-region"],
         },
         adminReqConfig
       )
@@ -630,6 +634,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -654,6 +659,7 @@ describe("/admin/discounts", () => {
                   },
                 ],
               },
+              regions: ["test-region"],
             },
             {
               headers: {
@@ -690,6 +696,7 @@ describe("/admin/discounts", () => {
                 },
               ],
             },
+            regions: ["test-region"],
             usage_limit: 10,
           },
           adminReqConfig
@@ -729,6 +736,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -755,6 +763,7 @@ describe("/admin/discounts", () => {
                   },
                 ],
               },
+              regions: ["test-region"],
             },
             {
               headers: {
@@ -779,6 +788,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -822,6 +832,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -844,6 +855,7 @@ describe("/admin/discounts", () => {
               id: response.data.discount.rule.id,
               type: "free_shipping",
             },
+            regions: ["test-region"],
           },
           adminReqConfig
         )
@@ -869,6 +881,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -913,6 +926,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -958,6 +972,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -1033,6 +1048,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -1103,6 +1119,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
           starts_at: new Date("09/15/2021 11:50"),
           ends_at: new Date("09/15/2021 17:50"),
@@ -1172,6 +1189,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
           starts_at: new Date("09/15/2021 11:50"),
           ends_at: new Date("09/15/2021 17:50"),
@@ -1229,6 +1247,7 @@ describe("/admin/discounts", () => {
               value: 10,
               allocation: "total",
             },
+            regions: ["test-region"],
             usage_limit: 10,
             starts_at: new Date("09/15/2021 11:50"),
             ends_at: new Date("09/14/2021 17:50"),
@@ -1241,6 +1260,55 @@ describe("/admin/discounts", () => {
             expect.objectContaining({
               message: `"ends_at" must be greater than "starts_at"`,
             })
+          )
+        })
+    })
+
+    it("fails to create a discount if regions array contains an invalid regionID ", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+          },
+          regions: ["test-region", "not-a-valid-region"],
+        },
+        adminReqConfig
+      ).catch((err) => {
+          expect(err.response.status).toEqual(404)
+          expect(err.response.data.message).toEqual(
+            `Region with not-a-valid-region was not found`
+          )
+        })
+    })
+
+    it("fails to create a discount if regions array is not present ", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+          },
+        },
+        adminReqConfig
+      ).catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            `each value in regions must be a string, regions must be an array`
           )
         })
     })
@@ -1306,7 +1374,10 @@ describe("/admin/discounts", () => {
     let manager
     beforeEach(async () => {
       manager = dbConnection.manager
+
       await adminSeeder(dbConnection)
+      await discountSeeder(dbConnection)
+
       await manager.insert(DiscountRule, {
         id: "test-discount-rule",
         description: "Test discount rule",
@@ -1345,6 +1416,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
@@ -1374,6 +1446,7 @@ describe("/admin/discounts", () => {
               value: 10,
               allocation: "total",
             },
+            regions: ["test-region"],
             usage_limit: 10,
           },
           adminReqConfig
@@ -2033,7 +2106,9 @@ describe("/admin/discounts", () => {
   describe("GET /admin/discounts/code/:code", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
+
       await adminSeeder(dbConnection)
+      await discountSeeder(dbConnection)
 
       await manager.insert(DiscountRule, {
         id: "test-discount-rule-fixed",
@@ -2139,6 +2214,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: ["test-region"],
           usage_limit: 10,
         },
         adminReqConfig
