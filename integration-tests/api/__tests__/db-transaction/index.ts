@@ -7,16 +7,18 @@ import {
   fakeUserData1,
   fakeUserData2,
   retrieveUsers,
+  Service1,
 } from "../__fixtures__/db-transaction"
 import { ChildProcess } from "child_process"
 
-jest.setTimeout(10000)
+jest.setTimeout(100000)
 
 describe("DbTransactionService", function () {
   let medusaProcess: ChildProcess
   let dbConnection: Connection
   let manager: EntityManager
   let dbTransactionService: DbTransactionService
+  let service1: Service1
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -24,14 +26,19 @@ describe("DbTransactionService", function () {
   }
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
-    manager = dbConnection.manager
-    medusaProcess = await setupServer({ cwd } as any)
+    try {
+      const cwd = path.resolve(path.join(__dirname, "..", ".."))
+      dbConnection = await initDb({ cwd })
+      manager = dbConnection.manager
+      medusaProcess = await setupServer({ cwd } as any)
 
-    dbTransactionService = new DbTransactionService({
-      manager,
-    })
+      dbTransactionService = new DbTransactionService({
+        manager,
+      })
+      service1 = new Service1({ dbTransactionService })
+    } catch (e) {
+      console.log(e)
+    }
   })
 
   afterAll(async () => {
@@ -220,23 +227,38 @@ describe("DbTransactionService", function () {
     expect(err.message).toBe(errorMessage)
   })
 
-  it("should rollback a transaction and bubble back the error", async () => {
+  it("should rollback all nested transactions if one of them fail and bubble back the error", async () => {
     const errorMessage = "failed"
     let err
 
     await dbTransactionService
       .run(
         async ({
-          transactionManager,
+          transactionManager: tm1,
         }: {
           transactionManager: EntityManager
         }) => {
-          await transactionManager
+          await tm1
             .createQueryBuilder()
             .insert()
             .into(User)
             .values(fakeUserData1)
             .execute()
+
+          await dbTransactionService.run(
+            async ({
+              transactionManager: tm2,
+            }: {
+              transactionManager: EntityManager
+            }) => {
+              await tm2
+                .createQueryBuilder()
+                .insert()
+                .into(User)
+                .values(fakeUserData2)
+                .execute()
+            }
+          )
 
           throw new Error(errorMessage)
         }
@@ -300,4 +322,15 @@ describe("DbTransactionService", function () {
     expect(err).toBeDefined()
     expect(err.message).toBe(customErrorMessage)
   })
+
+  /*  describe("validate backward compatibility with the atomic phase", () => {
+      it("should commit the transactions", async () => {
+        await service1.createUserInRunBlockCallingAnAtomicPhaseMethod()
+  
+        const users = await retrieveUsers(dbConnection)
+  
+        expect(users).toHaveLength(1)
+        expect(users[0]).toEqual(expect.objectContaining(fakeUserData1))
+      })
+    })*/
 })
