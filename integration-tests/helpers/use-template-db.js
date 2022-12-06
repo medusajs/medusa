@@ -39,21 +39,11 @@ class DatabaseFactory {
       )
     )
 
-    const { getEnabledMigrations } = require(path.resolve(
-      path.join(
-        __dirname,
-        `../../`,
-        `node_modules`,
-        `@medusajs`,
-        `medusa`,
-        `dist`,
-        `commands`,
-        `utils`,
-        `get-migrations`
-      )
-    ))
+    const {
+      getEnabledMigrations,
+    } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
-    // filter migrations to only include those that dont have feature flags
+    // filter migrations to only include those that don't have feature flags
     const enabledMigrations = await getEnabledMigrations(
       [migrationDir],
       (flag) => false
