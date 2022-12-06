@@ -101,14 +101,18 @@ export const useAdminRevokePublishableApiKey = (
 
 export const useAdminAddPublishableKeySalesChannelsBatch = (
   id: string,
-  payload: AdminPostPublishableApiKeySalesChannelsBatchReq,
-  options?: UseMutationOptions<Response<AdminPublishableApiKeysRes>, Error>
+  options?: UseMutationOptions<
+    Response<AdminPublishableApiKeysRes>,
+    Error,
+    AdminPostPublishableApiKeySalesChannelsBatchReq
+  >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    () => client.admin.publishableApiKeys.addSalesChannelsBatch(id, payload),
+    (payload: AdminPostPublishableApiKeySalesChannelsBatchReq) =>
+      client.admin.publishableApiKeys.addSalesChannelsBatch(id, payload),
     buildOptions(
       queryClient,
       [
@@ -122,14 +126,18 @@ export const useAdminAddPublishableKeySalesChannelsBatch = (
 
 export const useAdminRemovePublishableKeySalesChannelsBatch = (
   id: string,
-  payload: AdminPostPublishableApiKeySalesChannelsBatchReq,
-  options?: UseMutationOptions<Response<AdminPublishableApiKeysRes>, Error>
+  options?: UseMutationOptions<
+    Response<AdminPublishableApiKeysRes>,
+    Error,
+    AdminPostPublishableApiKeySalesChannelsBatchReq
+  >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    () => client.admin.publishableApiKeys.deleteSalesChannelsBatch(id, payload),
+    (payload: AdminPostPublishableApiKeySalesChannelsBatchReq) =>
+      client.admin.publishableApiKeys.deleteSalesChannelsBatch(id, payload),
     buildOptions(
       queryClient,
       [
