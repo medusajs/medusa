@@ -7,6 +7,8 @@ import {
   AdminPublishableApiKeysListRes,
   AdminPostPublishableApiKeysReq,
   AdminPostPublishableApiKeysPublishableApiKeyReq,
+  AdminPostPublishableApiKeySalesChannelsBatchReq,
+  AdminDeletePublishableApiKeySalesChannelsBatchReq,
 } from "@medusajs/medusa"
 
 import { ResponsePromise } from "../../typings"
@@ -74,6 +76,26 @@ class AdminPublishableApiKeyResource extends BaseResource {
     const path = `/admin/publishable-api-keys/${id}/revoke`
     return this.client.request("POST", path, {}, {}, customHeaders)
   }
+
+  addSalesChannelsBatch(
+    id: string,
+    payload: AdminPostPublishableApiKeySalesChannelsBatchReq,
+    customHeaders: Record<string, any> = {}
+  ) {
+    const path = `/admin/publishable-api-keys/${id}/sales-channels/batch`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  deleteSalesChannelsBatch(
+    id: string,
+    payload: AdminDeletePublishableApiKeySalesChannelsBatchReq,
+    customHeaders: Record<string, any> = {}
+  ) {
+    const path = `/admin/publishable-api-keys/${id}/sales-channels/batch`
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
+  }
+
+  // listSalesChannels(id: string, customHeaders: Record<string, any> = {}) {}
 }
 
 export default AdminPublishableApiKeyResource
