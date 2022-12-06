@@ -165,7 +165,7 @@ describe("ShippingOptionService", () => {
         })
       } catch (error) {
         expect(error.message).toEqual(
-          "Flat rate shipping options must have an amount"
+          "Flat rate shipping options must have a positive amount"
         )
       }
     })
