@@ -100,5 +100,5 @@ Based on the value of `type`, one of the following relations can be used to retr
 
 ## What’s Next
 
-- [Learn how to create a discount using the admin APIs](/api/admin/#tag/Discount)
-- [Learn how to use discounts on the storefront](/api/store/#tag/Cart/operation/PostCartsCart)
+- Learn [how to create a discount using the admin APIs](../../admin/manage-discounts.mdx)
+- Learn [how to use discounts on the storefront](../../storefront/use-discounts-in-checkout.mdx)
