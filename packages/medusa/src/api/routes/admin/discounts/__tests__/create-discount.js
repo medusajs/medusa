@@ -2,7 +2,15 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 
+const validRegionId = IdMap.getId("region-france")
+
 describe("POST /admin/discounts", () => {
+  const generateAdminJwtSession = () => ({
+    jwt: {
+      userId: IdMap.getId("admin_user")
+    }
+  })
+
   describe("successful creation", () => {
     let subject
 
@@ -16,15 +24,11 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: [IdMap.getId("region-france")],
+          regions: [validRegionId],
           starts_at: "02/02/2021 13:45",
           ends_at: "03/14/2021 04:30",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession: generateAdminJwtSession(),
       })
     })
 
@@ -42,7 +46,7 @@ describe("POST /admin/discounts", () => {
           value: 10,
           allocation: "total",
         },
-        regions: [IdMap.getId("region-france")],
+        regions: [validRegionId],
         starts_at: new Date("02/02/2021 13:45"),
         ends_at: new Date("03/14/2021 04:30"),
         is_disabled: false,
@@ -56,6 +60,7 @@ describe("POST /admin/discounts", () => {
 
     beforeAll(async () => {
       jest.clearAllMocks()
+
       subject = await request("POST", "/admin/discounts", {
         payload: {
           code: "TEST",
@@ -65,16 +70,12 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: [IdMap.getId("region-france")],
+          regions: [validRegionId],
           starts_at: "02/02/2021 13:45",
           is_dynamic: true,
           valid_duration: "PaMT2D",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession: generateAdminJwtSession(),
       })
     })
 
@@ -103,16 +104,12 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: [IdMap.getId("region-france")],
+          regions: [validRegionId],
           starts_at: "02/02/2021 13:45",
           is_dynamic: true,
           valid_duration: "P1Y2M03DT04H05M",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession: generateAdminJwtSession(),
       })
     })
 
@@ -130,7 +127,7 @@ describe("POST /admin/discounts", () => {
           value: 10,
           allocation: "total",
         },
-        regions: [IdMap.getId("region-france")],
+        regions: [validRegionId],
         starts_at: new Date("02/02/2021 13:45"),
         is_disabled: false,
         is_dynamic: true,
@@ -151,13 +148,9 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: [IdMap.getId("region-france")],
+          regions: [validRegionId],
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession: generateAdminJwtSession(),
       })
     })
 
@@ -192,16 +185,12 @@ describe("POST /admin/discounts", () => {
               },
             ],
           },
-          regions: [IdMap.getId("region-france")],
+          regions: [validRegionId],
           starts_at: "02/02/2021 13:45",
           is_dynamic: true,
           valid_duration: "P1Y2M03DT04H05M",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession: generateAdminJwtSession(),
       })
     })
 
@@ -229,15 +218,11 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: [IdMap.getId("region-france")],
+          regions: [validRegionId],
           ends_at: "02/02/2021",
           starts_at: "03/14/2021",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession: generateAdminJwtSession(),
       })
     })
 
@@ -267,14 +252,10 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: [IdMap.getId("region-france")],
+          regions: [validRegionId],
           starts_at: "03/14/2021 14:30",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession: generateAdminJwtSession(),
       })
     })
 
@@ -293,7 +274,7 @@ describe("POST /admin/discounts", () => {
           value: 10,
           allocation: "total",
         },
-        regions: [IdMap.getId("region-france")],
+        regions: [validRegionId],
         starts_at: new Date("03/14/2021 14:30"),
       })
     })
@@ -315,11 +296,7 @@ describe("POST /admin/discounts", () => {
             allocation: "total",
           },
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession: generateAdminJwtSession(),
       })
     })
 

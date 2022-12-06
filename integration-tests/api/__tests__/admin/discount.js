@@ -24,6 +24,9 @@ const adminReqConfig = {
   },
 }
 
+const validRegionId = "test-region"
+const invalidRegionId = "not-a-valid-region"
+
 describe("/admin/discounts", () => {
   let medusaProcess
   let dbConnection
@@ -408,7 +411,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -472,7 +475,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -540,7 +543,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -579,7 +582,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
         },
         adminReqConfig
       )
@@ -634,7 +637,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -659,7 +662,7 @@ describe("/admin/discounts", () => {
                   },
                 ],
               },
-              regions: ["test-region"],
+              regions: [validRegionId],
             },
             {
               headers: {
@@ -696,7 +699,7 @@ describe("/admin/discounts", () => {
                 },
               ],
             },
-            regions: ["test-region"],
+            regions: [validRegionId],
             usage_limit: 10,
           },
           adminReqConfig
@@ -736,7 +739,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -763,7 +766,7 @@ describe("/admin/discounts", () => {
                   },
                 ],
               },
-              regions: ["test-region"],
+              regions: [validRegionId],
             },
             {
               headers: {
@@ -788,7 +791,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -832,7 +835,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -855,7 +858,7 @@ describe("/admin/discounts", () => {
               id: response.data.discount.rule.id,
               type: "free_shipping",
             },
-            regions: ["test-region"],
+            regions: [validRegionId],
           },
           adminReqConfig
         )
@@ -881,7 +884,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -926,7 +929,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -972,7 +975,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -1022,7 +1025,7 @@ describe("/admin/discounts", () => {
               allocation: "total",
             },
             usage_limit: 10,
-            regions: ["test-region", "test-region-2"],
+            regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
         )
@@ -1048,7 +1051,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -1058,7 +1061,7 @@ describe("/admin/discounts", () => {
         .post(
           `/admin/discounts/${response.data.discount.id}`,
           {
-            regions: ["test-region", "test-region-2"],
+            regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
         )
@@ -1086,7 +1089,7 @@ describe("/admin/discounts", () => {
             allocation: "total",
           },
           usage_limit: 10,
-          regions: ["test-region"],
+          regions: [validRegionId],
         },
         adminReqConfig
       )
@@ -1119,7 +1122,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
           starts_at: new Date("09/15/2021 11:50"),
           ends_at: new Date("09/15/2021 17:50"),
@@ -1189,7 +1192,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
           starts_at: new Date("09/15/2021 11:50"),
           ends_at: new Date("09/15/2021 17:50"),
@@ -1247,7 +1250,7 @@ describe("/admin/discounts", () => {
               value: 10,
               allocation: "total",
             },
-            regions: ["test-region"],
+            regions: [validRegionId],
             usage_limit: 10,
             starts_at: new Date("09/15/2021 11:50"),
             ends_at: new Date("09/14/2021 17:50"),
@@ -1264,11 +1267,11 @@ describe("/admin/discounts", () => {
         })
     })
 
-    it("fails to create a discount if regions array contains an invalid regionID ", async () => {
+    it("fails to create a discount if the regions contains an invalid regionId ", async () => {
       expect.assertions(2)
       const api = useApi()
 
-      const response = await api.post(
+      const err = await api.post(
         "/admin/discounts",
         {
           code: "HELLOWORLD",
@@ -1278,22 +1281,22 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region", "not-a-valid-region"],
+          regions: [validRegionId, invalidRegionId],
         },
         adminReqConfig
-      ).catch((err) => {
-          expect(err.response.status).toEqual(404)
-          expect(err.response.data.message).toEqual(
-            `Region with not-a-valid-region was not found`
-          )
-        })
+      ).catch(e => e)
+
+      expect(err.response.status).toEqual(404)
+      expect(err.response.data.message).toEqual(
+        `Region with not-a-valid-region was not found`
+      )
     })
 
-    it("fails to create a discount if regions array is not present ", async () => {
+    it("fails to create a discount if regions are not present ", async () => {
       expect.assertions(2)
       const api = useApi()
 
-      const response = await api.post(
+      const err = await api.post(
         "/admin/discounts",
         {
           code: "HELLOWORLD",
@@ -1305,12 +1308,12 @@ describe("/admin/discounts", () => {
           },
         },
         adminReqConfig
-      ).catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            `each value in regions must be a string, regions must be an array`
-          )
-        })
+      ).catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `each value in regions must be a string, regions must be an array`
+      )
     })
   })
 
@@ -1416,7 +1419,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -1446,7 +1449,7 @@ describe("/admin/discounts", () => {
               value: 10,
               allocation: "total",
             },
-            regions: ["test-region"],
+            regions: [validRegionId],
             usage_limit: 10,
           },
           adminReqConfig
@@ -2214,7 +2217,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
-          regions: ["test-region"],
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
