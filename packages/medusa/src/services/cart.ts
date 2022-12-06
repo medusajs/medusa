@@ -26,6 +26,7 @@ import {
   FilterableCartProps,
   isCart,
   LineItemUpdate,
+  LineItemValidateData,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -557,7 +558,7 @@ class CartService extends TransactionBaseService {
    */
   protected async validateLineItem(
     { sales_channel_id }: { sales_channel_id: string | null },
-    lineItem: { variant?: { product_id: string }; variant_id: string }
+    lineItem: LineItemValidateData
   ): Promise<boolean> {
     if (!sales_channel_id) {
       return true
@@ -659,12 +660,10 @@ class CartService extends TransactionBaseService {
           })
         }
 
-        await lineItemServiceTx
-          .update(
-            { cart_id: cartId, has_shipping: true },
-            { has_shipping: false }
-          )
-          .catch(() => void 0)
+        await lineItemServiceTx.update(
+          { cart_id: cartId, has_shipping: true },
+          { has_shipping: false }
+        )
 
         cart = await this.retrieve(cart.id, {
           relations: ["items", "discounts", "discounts.rule", "region"],
@@ -789,14 +788,13 @@ class CartService extends TransactionBaseService {
           }
         }
 
+        const itemKeysToUpdate = Object.keys(lineItemsToUpdate)
+
         // Update all items that needs to be updated
-        if (Object.keys(lineItemsToUpdate).length) {
+        if (itemKeysToUpdate.length) {
           await Promise.all(
-            Object.keys(lineItemsToUpdate).map(async (variantId) => {
-              return await lineItemServiceTx.update(
-                variantId,
-                lineItemsToUpdate[variantId]
-              )
+            itemKeysToUpdate.map(async (id) => {
+              return await lineItemServiceTx.update(id, lineItemsToUpdate[id])
             })
           )
         }
@@ -804,15 +802,13 @@ class CartService extends TransactionBaseService {
         // Create all items that needs to be created
         await lineItemServiceTx.create(lineItemsToCreate)
 
-        await lineItemServiceTx
-          .update(
-            {
-              cart_id: cartId,
-              has_shipping: true,
-            },
-            { has_shipping: false }
-          )
-          .catch(() => void 0)
+        await lineItemServiceTx.update(
+          {
+            cart_id: cartId,
+            has_shipping: true,
+          },
+          { has_shipping: false }
+        )
 
         cart = await this.retrieve(cart.id, {
           relations: ["items", "discounts", "discounts.rule", "region"],

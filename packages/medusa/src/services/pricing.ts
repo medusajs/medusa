@@ -315,13 +315,13 @@ class PricingService extends TransactionBaseService {
       .withTransaction(this.manager_)
       .list({ id: ids }, { select: ["id", "product_id"] })
 
-    const variantsMap = new Map<string, { id: string; product_id: string }>()
+    const variantsMap = new Map(
+      variants.map((variant) => {
+        return [variant.id, variant]
+      })
+    )
 
-    variants.forEach((variant) => {
-      variantsMap.set(variant.id, variant)
-    })
-
-    let pricingResult: { [variant_id: string]: ProductVariantPricing } = {}
+    const pricingResult: { [variant_id: string]: ProductVariantPricing } = {}
     for (const variantId of ids) {
       const { id, product_id } = variantsMap.get(variantId)!
 

@@ -38,9 +38,6 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      env: {
-        CACHE_TTL: 0,
-      },
     })
   })
 

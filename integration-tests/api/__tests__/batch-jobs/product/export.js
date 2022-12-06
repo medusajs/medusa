@@ -31,9 +31,6 @@ describe("Batch job of product-export type", () => {
       cwd,
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      env: {
-        CACHE_TTL: 60, // 60 seconds
-      },
     })
   })
 

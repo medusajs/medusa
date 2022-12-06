@@ -35,7 +35,7 @@ const {
 
 jest.setTimeout(30000)
 
-describe.skip("/store/carts", () => {
+describe("/store/carts", () => {
   let medusaProcess
   let dbConnection
 

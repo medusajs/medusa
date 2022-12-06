@@ -228,9 +228,8 @@ class LineItemService extends TransactionBaseService {
             : resolvedContext.region_id
         ) as string
 
-        const isDataAnArray = Array.isArray(data)
         const resolvedData = (
-          isDataAnArray ? data : [data]
+          Array.isArray(data) ? data : [data]
         ) as GenerateInputData[]
 
         const variants = await this.productVariantService_.list(
@@ -289,7 +288,7 @@ class LineItemService extends TransactionBaseService {
           generatedItems.push(lineItem)
         }
 
-        return (isDataAnArray
+        return (Array.isArray(data)
           ? generatedItems
           : generatedItems[0]) as unknown as TResult
       }
@@ -377,13 +376,14 @@ class LineItemService extends TransactionBaseService {
           this.lineItemRepository_
         )
 
-        const isDataAnArray = Array.isArray(data)
-        const data_ = !isDataAnArray ? [data] : data
+        const data_ = Array.isArray(data) ? data : [data]
 
         const items = lineItemRepository.create(data_)
         const lineItems = await lineItemRepository.save(items)
 
-        return (!isDataAnArray ? lineItems[0] : lineItems) as unknown as TResult
+        return (Array.isArray(data)
+          ? lineItems
+          : lineItems[0]) as unknown as TResult
       }
     )
   }

@@ -1,11 +1,7 @@
 import { ValidateNested } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
 import { Cart, CartType } from "../models/cart"
-import {
-  AddressPayload,
-  DateComparisonOperator,
-  StringComparisonOperator,
-} from "./common"
+import { AddressPayload, DateComparisonOperator, StringComparisonOperator } from "./common"
 import { Region } from "../models"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,6 +29,11 @@ export type LineItemUpdate = {
   metadata?: Record<string, unknown>
   region_id?: string
   variant_id?: string
+}
+
+export type LineItemValidateData = {
+  variant?: { product_id: string };
+  variant_id: string
 }
 
 class GiftCard {
