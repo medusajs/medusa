@@ -9,6 +9,8 @@ import {
   AdminPostPublishableApiKeysPublishableApiKeyReq,
   AdminPostPublishableApiKeySalesChannelsBatchReq,
   AdminDeletePublishableApiKeySalesChannelsBatchReq,
+  GetPublishableApiKeySalesChannelsParams,
+  AdminSalesChannelsListRes,
 } from "@medusajs/medusa"
 
 import { ResponsePromise } from "../../typings"
@@ -81,7 +83,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
     id: string,
     payload: AdminPostPublishableApiKeySalesChannelsBatchReq,
     customHeaders: Record<string, any> = {}
-  ) {
+  ): ResponsePromise<AdminPublishableApiKeysRes> {
     const path = `/admin/publishable-api-keys/${id}/sales-channels/batch`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -90,12 +92,25 @@ class AdminPublishableApiKeyResource extends BaseResource {
     id: string,
     payload: AdminDeletePublishableApiKeySalesChannelsBatchReq,
     customHeaders: Record<string, any> = {}
-  ) {
+  ): ResponsePromise<AdminPublishableApiKeysRes> {
     const path = `/admin/publishable-api-keys/${id}/sales-channels/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 
-  // listSalesChannels(id: string, customHeaders: Record<string, any> = {}) {}
+  listSalesChannels(
+    id: string,
+    query?: GetPublishableApiKeySalesChannelsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminSalesChannelsListRes> {
+    let path = `/admin/publishable-api-keys/${id}/sales-channels`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
+    return this.client.request("GET", path, undefined, {}, customHeaders)
+  }
 }
 
 export default AdminPublishableApiKeyResource
