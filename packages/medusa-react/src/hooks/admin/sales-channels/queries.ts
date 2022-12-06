@@ -15,7 +15,7 @@ export const adminSalesChannelsKeys = queryKeysFactory(
   ADMIN_SALES_CHANNELS_QUERY_KEY
 )
 
-type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
+export type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
 
 /** retrieve a sales channel
  * @experimental This feature is under development and may change in the future.
