@@ -1292,6 +1292,31 @@ describe("/admin/discounts", () => {
       )
     })
 
+    it("fails to create a discount if the regions contains only invalid regionIds ", async () => {
+      expect.assertions(2)
+      const api = useApi()
+
+      const err = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+          },
+          regions: [invalidRegionId],
+        },
+        adminReqConfig
+      ).catch(e => e)
+
+      expect(err.response.status).toEqual(404)
+      expect(err.response.data.message).toEqual(
+        `Region with not-a-valid-region was not found`
+      )
+    })
+
     it("fails to create a discount if regions are not present ", async () => {
       expect.assertions(2)
       const api = useApi()
