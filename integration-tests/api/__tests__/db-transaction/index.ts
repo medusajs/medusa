@@ -227,7 +227,7 @@ describe("DbTransactionService", function () {
     expect(err.message).toBe(errorMessage)
   })
 
-  it("should rollback all nested transactions if one of them fail and bubble back the error", async () => {
+  it("should rollback only the transaction that failed since they are not related to each other without passing the parent transaction manager and bubble back a custom error", async () => {
     const errorMessage = "failed"
     let err
 
@@ -267,7 +267,8 @@ describe("DbTransactionService", function () {
 
     const users = await retrieveUsers(dbConnection)
 
-    expect(users).toHaveLength(0)
+    expect(users).toHaveLength(1)
+    expect(users[0]).toEqual(expect.objectContaining(fakeUserData2))
     expect(err).toBeDefined()
     expect(err.message).toBe(errorMessage)
   })
@@ -323,7 +324,7 @@ describe("DbTransactionService", function () {
     expect(err.message).toBe(customErrorMessage)
   })
 
-  /*  describe("validate backward compatibility with the atomic phase", () => {
+    describe("validate backward compatibility with the atomic phase", () => {
       it("should commit the transactions", async () => {
         await service1.createUserInRunBlockCallingAnAtomicPhaseMethod()
   
@@ -332,5 +333,5 @@ describe("DbTransactionService", function () {
         expect(users).toHaveLength(1)
         expect(users[0]).toEqual(expect.objectContaining(fakeUserData1))
       })
-    })*/
+    })
 })
