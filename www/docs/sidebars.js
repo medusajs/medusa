@@ -266,6 +266,11 @@ module.exports = {
               id: "advanced/admin/use-customergroups-api",
               label: "Use CustomerGroup APIs"
             },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-discounts",
+              label: "Use Discount APIs"
+            },
           ]
         },
         {
