@@ -137,7 +137,7 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
   const manager: EntityManager = req.scope.resolve("manager")
 
-  if (req.user && req.user.customer_id) {
+  if (req.user?.customer_id) {
     validated.customer_id = req.user.customer_id
   }
 
