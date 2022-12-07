@@ -11,10 +11,6 @@ import { Response } from "@medusajs/medusa-js"
 import { queryKeysFactory } from "../../utils"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
-import {
-  adminSalesChannelsKeys,
-  SalesChannelsQueryKeys,
-} from "../sales-channels"
 
 const ADMIN_PUBLISHABLE_API_KEYS_QUERY_KEY =
   `admin_publishable_api_keys` as const
@@ -65,12 +61,12 @@ export const useAdminPublishableApiKeySalesChannels = (
   options?: UseQueryOptionsWrapper<
     Response<AdminSalesChannelsListRes>,
     Error,
-    ReturnType<SalesChannelsQueryKeys["list"]>
+    ReturnType<PublishableApiKeyQueryKeys["detail"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminSalesChannelsKeys.list(query),
+    adminPublishableApiKeysKeys.detail(id),
     () => client.admin.publishableApiKeys.listSalesChannels(id, query),
     options
   )
