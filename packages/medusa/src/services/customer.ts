@@ -36,7 +36,6 @@ class CustomerService extends TransactionBaseService {
   static Events = {
     PASSWORD_RESET: "customer.password_reset",
     CREATED: "customer.created",
-    CREATED_UNVERIFIED: "customer.created_unverified",
     UPDATED: "customer.updated",
   }
 
