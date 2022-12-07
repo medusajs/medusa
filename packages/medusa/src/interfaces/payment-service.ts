@@ -1,16 +1,15 @@
 import { TransactionBaseService } from "./transaction-base-service"
 import {
-  Address,
   Cart,
   Customer,
   Payment,
   PaymentSession,
   PaymentSessionStatus,
-  ShippingMethod,
 } from "../models"
 import { PaymentService } from "medusa-interfaces"
 import { PaymentProviderDataInput } from "../types/payment-collection"
 import { MedusaContainer } from "../types/global"
+import { CreateSessionContext } from "../types/payment"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
@@ -226,21 +225,9 @@ export abstract class AbstractPaymentService
 
 /** ***************     New Plugin API     *************** **/
 
-export type PaymentContext = {
-  cart: {
-    context: Record<string, unknown>
-    id: string
-    customer_id?: string
-    email: string
-    shipping_address: Address | null
-    shipping_options: ShippingMethod["shipping_option"][]
-  }
-  customer?: { id: string; metadata: Record<string, unknown> }
-  currency_code: string
-  amount: number
-  resource_id?: string
+export type PaymentContext = CreateSessionContext & {
   // Data previously collected and stored on the customer
-  colledcted_data: Record<string, unknown>
+  collected_data: Record<string, unknown>
 }
 
 export type PaymentSessionResponse<TPaymentSessionData = unknown> =
