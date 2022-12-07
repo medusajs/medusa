@@ -80,15 +80,12 @@ import { MedusaError } from "medusa-core-utils"
  */
 export default async (req, res) => {
   const { token } = req.validatedBody
-  const logger = req.scope.resolve("logger")
 
   const orderSerivce: OrderService = req.scope.resolve("orderService")
   const customerService: CustomerService = req.scope.resolve("customerService")
   const tokenService: TokenService = req.scope.resolve(
     TokenService.RESOLUTION_KEY
   )
-
-  logger.info(token)
 
   const customerId: string = req.user?.customer_id
   const orderService: OrderService = req.scope.resolve("orderService")
