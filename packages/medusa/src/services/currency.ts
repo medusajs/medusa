@@ -1,6 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Currency } from "../models"
 import { CurrencyRepository } from "../repositories/currency"
@@ -9,48 +8,60 @@ import { UpdateCurrencyInput } from "../types/currency"
 import { buildQuery } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
+import { DbTransactionService } from "./index"
+import { TransactionContext } from "../types/transaction"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
   currencyRepository: typeof CurrencyRepository
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
+  dbTransactionService: DbTransactionService
 }
 
 export default class CurrencyService extends TransactionBaseService {
+  protected readonly manager_: EntityManager
+  protected readonly transactionManager_: EntityManager | undefined
+
   static readonly Events = {
     UPDATED: "currency.updated",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly currencyRepository_: typeof CurrencyRepository
   protected readonly eventBusService_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  protected readonly dbTransactionService_: DbTransactionService
 
   constructor({
     manager,
     currencyRepository,
     eventBusService,
     featureFlagRouter,
+    dbTransactionService,
   }: InjectedDependencies) {
     super(arguments[0])
+
     this.manager_ = manager
     this.currencyRepository_ = currencyRepository
     this.eventBusService_ = eventBusService
     this.featureFlagRouter_ = featureFlagRouter
+    this.dbTransactionService_ = dbTransactionService
   }
 
   /**
    * Return the currency
-   * @param code - The code of the currency that must be retrieve
+   * @param code - The code of the currency that must be retrieved
+   * @param context
    * @return The currency
    */
-  async retrieveByCode(code: string): Promise<Currency | never> {
-    const currencyRepo = this.manager_.getCustomRepository(
-      this.currencyRepository_
-    )
+  async retrieveByCode(
+    code: string,
+    { transactionManager }: TransactionContext = {}
+  ): Promise<Currency | never> {
+    const manager =
+      transactionManager ?? this.transactionManager_ ?? this.manager_
+    const currencyRepo = manager.getCustomRepository(this.currencyRepository_)
 
     code = code.toLowerCase()
     const currency = await currencyRepo.findOne({
@@ -74,6 +85,7 @@ export default class CurrencyService extends TransactionBaseService {
    *   by
    * @param config - object that defines the scope for what should be
    *   returned
+   * @param context
    * @return an array containing the currencies as
    *   the first element and the total count of products that matches the query
    *   as the second element.
@@ -83,11 +95,12 @@ export default class CurrencyService extends TransactionBaseService {
     config: FindConfig<Currency> = {
       skip: 0,
       take: 20,
-    }
+    },
+    { transactionManager }: TransactionContext = {}
   ): Promise<[Currency[], number]> {
-    const productRepo = this.manager_.getCustomRepository(
-      this.currencyRepository_
-    )
+    const manager =
+      transactionManager ?? this.transactionManager_ ?? this.manager_
+    const productRepo = manager.getCustomRepository(this.currencyRepository_)
 
     const query = buildQuery(selector, config)
 
@@ -98,35 +111,43 @@ export default class CurrencyService extends TransactionBaseService {
    * Update a currency
    * @param code - The code of the currency to update
    * @param data - The data that must be updated on the currency
+   * @param context
    * @return The updated currency
    */
   async update(
     code: string,
-    data: UpdateCurrencyInput
+    data: UpdateCurrencyInput,
+    { transactionManager }: TransactionContext = {}
   ): Promise<Currency | undefined | never> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const currency = await this.retrieveByCode(code)
+    transactionManager = transactionManager ?? this.transactionManager_
+    return await this.dbTransactionService_.run(
+      async ({ transactionManager }) => {
+        const currency = await this.retrieveByCode(code)
 
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(
-          TaxInclusivePricingFeatureFlag.key
-        )
-      ) {
-        if (typeof data.includes_tax !== "undefined") {
-          currency.includes_tax = data.includes_tax
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          )
+        ) {
+          if (typeof data.includes_tax !== "undefined") {
+            currency.includes_tax = data.includes_tax
+          }
         }
+
+        const currencyRepo = transactionManager.getCustomRepository(
+          this.currencyRepository_
+        )
+        await currencyRepo.save(currency)
+
+        await this.eventBusService_.emit(CurrencyService.Events.UPDATED, {
+          code,
+        })
+
+        return currency
+      },
+      {
+        transactionManager,
       }
-
-      const currencyRepo = transactionManager.getCustomRepository(
-        this.currencyRepository_
-      )
-      await currencyRepo.save(currency)
-
-      await this.eventBusService_.emit(CurrencyService.Events.UPDATED, {
-        code,
-      })
-
-      return currency
-    })
+    )
   }
 }
