@@ -8,7 +8,7 @@ import {
   ShippingMethod,
   ShippingOption,
   ShippingOptionPriceType,
-  ShippingOptionRequirement,
+  ShippingOptionRequirement
 } from "../models"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
@@ -18,7 +18,7 @@ import {
   CreateShippingMethodDto,
   CreateShippingOptionInput,
   ShippingMethodUpdate,
-  UpdateShippingOptionInput,
+  UpdateShippingOptionInput
 } from "../types/shipping-options"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
@@ -403,8 +403,8 @@ class ShippingOptionService extends TransactionBaseService {
       amount?: number
       price_type?: ShippingOptionPriceType
     }
-  ): Promise<Partial<ShippingOption> | null> {
-    const option_: Partial<ShippingOption> = { ...option }
+  ): Promise<Omit<ShippingOption, "beforeInsert">> {
+    const option_: Omit<ShippingOption, "beforeInsert"> = { ...option }
 
     if (isDefined(priceInput.amount)) {
       option_.amount = priceInput.amount
@@ -446,19 +446,22 @@ class ShippingOptionService extends TransactionBaseService {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = optionRepo.create(data as DeepPartial<ShippingOption>)
 
-      await this.validateAndMutatePrice(option, {
-        price_type: data.price_type,
-      })
+      const optionWithValidatedPrice = await this.validateAndMutatePrice(
+        option,
+        {
+          price_type: data.price_type,
+        }
+      )
 
       const region = await this.regionService_
         .withTransaction(manager)
-        .retrieve(option.region_id, {
+        .retrieve(optionWithValidatedPrice.region_id, {
           relations: ["fulfillment_providers"],
         })
 
       if (
         !region.fulfillment_providers.find(
-          ({ id }) => id === option.provider_id
+          ({ id }) => id === optionWithValidatedPrice.provider_id
         )
       ) {
         throw new MedusaError(
@@ -473,11 +476,13 @@ class ShippingOptionService extends TransactionBaseService {
         )
       ) {
         if (typeof data.includes_tax !== "undefined") {
-          option.includes_tax = data.includes_tax
+          optionWithValidatedPrice.includes_tax = data.includes_tax
         }
       }
 
-      const isValid = await this.providerService_.validateOption(option)
+      const isValid = await this.providerService_.validateOption(
+        optionWithValidatedPrice as ShippingOption,
+      )
 
       if (!isValid) {
         throw new MedusaError(
@@ -516,7 +521,7 @@ class ShippingOptionService extends TransactionBaseService {
         }
       }
 
-      const result = await optionRepo.save(option)
+      const result = await optionRepo.save(optionWithValidatedPrice)
       return result
     })
   }
@@ -638,17 +643,20 @@ class ShippingOptionService extends TransactionBaseService {
         option.requirements = acc
       }
 
-      await this.validateAndMutatePrice(option, {
-        price_type: update.price_type,
-        amount: update.amount,
-      })
+      const optionWithValidatedPrice = await this.validateAndMutatePrice(
+        option,
+        {
+          price_type: update.price_type,
+          amount: update.amount,
+        }
+      )
 
       if (isDefined(update.name)) {
-        option.name = update.name
+        optionWithValidatedPrice.name = update.name
       }
 
       if (isDefined(update.admin_only)) {
-        option.admin_only = update.admin_only
+        optionWithValidatedPrice.admin_only = update.admin_only
       }
 
       if (
@@ -657,12 +665,12 @@ class ShippingOptionService extends TransactionBaseService {
         )
       ) {
         if (typeof update.includes_tax !== "undefined") {
-          option.includes_tax = update.includes_tax
+          optionWithValidatedPrice.includes_tax = update.includes_tax
         }
       }
 
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      return await optionRepo.save(option)
+      return await optionRepo.save(optionWithValidatedPrice)
     })
   }
 
