@@ -117,7 +117,7 @@ describe("useAdminDeletePublishableApiKey hook", () => {
 })
 
 describe("useAdminAddPublishableKeySalesChannelsBatch hook", () => {
-  test("Deletes a SC from the publishable api key scope", async () => {
+  test("Adds a SC to the publishable api key scope", async () => {
     const id = "pubkey_1234"
 
     const { result, waitFor } = renderHook(
@@ -142,8 +142,8 @@ describe("useAdminAddPublishableKeySalesChannelsBatch hook", () => {
   })
 })
 
-describe("useAdminAddPublishableKeySalesChannelsBatch hook", () => {
-  test("Adds a SC to the publishable api key scope", async () => {
+describe("useAdminRemovePublishableKeySalesChannelsBatch hook", () => {
+  test("Deletes a SC from the publishable api key scope", async () => {
     const id = "pubkey_1234"
     const { result, waitFor } = renderHook(
       () => useAdminRemovePublishableKeySalesChannelsBatch(id),

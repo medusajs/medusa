@@ -15,9 +15,17 @@ import { UseQueryOptionsWrapper } from "../../../types"
 const ADMIN_PUBLISHABLE_API_KEYS_QUERY_KEY =
   `admin_publishable_api_keys` as const
 
-export const adminPublishableApiKeysKeys = queryKeysFactory(
-  ADMIN_PUBLISHABLE_API_KEYS_QUERY_KEY
-)
+export const adminPublishableApiKeysKeys = {
+  ...queryKeysFactory(ADMIN_PUBLISHABLE_API_KEYS_QUERY_KEY),
+  detailSalesChannels(id: string, query?: any) {
+    return [
+      ...this.detail(id),
+      "sales_channels" as const,
+      { ...(query || {}) },
+    ] as const
+  },
+}
+
 type PublishableApiKeyQueryKeys = typeof adminPublishableApiKeysKeys
 
 export const useAdminPublishableApiKey = (
@@ -61,12 +69,12 @@ export const useAdminPublishableApiKeySalesChannels = (
   options?: UseQueryOptionsWrapper<
     Response<AdminSalesChannelsListRes>,
     Error,
-    ReturnType<PublishableApiKeyQueryKeys["detail"]>
+    ReturnType<PublishableApiKeyQueryKeys["detailSalesChannels"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminPublishableApiKeysKeys.detail(id),
+    adminPublishableApiKeysKeys.detailSalesChannels(id, query),
     () => client.admin.publishableApiKeys.listSalesChannels(id, query),
     options
   )

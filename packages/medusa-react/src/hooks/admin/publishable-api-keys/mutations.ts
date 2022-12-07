@@ -115,10 +115,7 @@ export const useAdminAddPublishableKeySalesChannelsBatch = (
       client.admin.publishableApiKeys.addSalesChannelsBatch(id, payload),
     buildOptions(
       queryClient,
-      [
-        adminPublishableApiKeysKeys.lists(),
-        adminPublishableApiKeysKeys.detail(id),
-      ],
+      [adminPublishableApiKeysKeys.detailSalesChannels(id)],
       options
     )
   )
@@ -140,10 +137,7 @@ export const useAdminRemovePublishableKeySalesChannelsBatch = (
       client.admin.publishableApiKeys.deleteSalesChannelsBatch(id, payload),
     buildOptions(
       queryClient,
-      [
-        adminPublishableApiKeysKeys.lists(),
-        adminPublishableApiKeysKeys.detail(id),
-      ],
+      [adminPublishableApiKeysKeys.detailSalesChannels(id)],
       options
     )
   )
