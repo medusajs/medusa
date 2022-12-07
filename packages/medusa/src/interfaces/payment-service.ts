@@ -296,7 +296,9 @@ export interface PaymentServicePlugin {
    * Retrieve an existing session
    * @param sessionId
    */
-  retrieve(sessionId: string): Promise<PaymentPluginError | void>
+  retrieve(
+    sessionId: string
+  ): Promise<PaymentPluginError | PaymentSessionResponse["session_data"]>
 
   /**
    * Cancel an existing session
@@ -393,7 +395,9 @@ export abstract class AbstractPaymentServicePlugin
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
 
-  abstract retrieve(sessionId: string): Promise<PaymentPluginError | void>
+  abstract retrieve(
+    sessionId: string
+  ): Promise<PaymentPluginError | PaymentSessionResponse["session_data"]>
 
   abstract update(
     sessionId: string,
