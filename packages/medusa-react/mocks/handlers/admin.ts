@@ -992,6 +992,48 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post(
+    "/admin/publishable-api-keys/:id/sales-channels/batch",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          publishable_api_key: {
+            ...fixtures.get("publishable_api_key"),
+            ...(req.body as any),
+          },
+        })
+      )
+    }
+  ),
+
+  rest.delete(
+    "/admin/publishable-api-keys/:id/sales-channels/batch",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          publishable_api_key: {
+            ...fixtures.get("publishable_api_key"),
+            ...(req.body as any),
+          },
+        })
+      )
+    }
+  ),
+
+  rest.get(
+    "/admin/publishable-api-keys/:id/sales-channels",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          sales_channels: fixtures.get("sales_channels"),
+        })
+      )
+    }
+  ),
+
   rest.post("/admin/publishable-api-keys/", (req, res, ctx) => {
     return res(
       ctx.status(200),

@@ -5,6 +5,8 @@ import {
   useAdminRevokePublishableApiKey,
   useAdminUpdatePublishableApiKey,
   useAdminCreatePublishableApiKey,
+  useAdminAddPublishableKeySalesChannelsBatch,
+  useAdminRemovePublishableKeySalesChannelsBatch,
 } from "../../../../src"
 import { createWrapper } from "../../../utils"
 import { fixtures } from "../../../../mocks/data"
@@ -109,6 +111,56 @@ describe("useAdminDeletePublishableApiKey hook", () => {
         id,
         object: "publishable_api_key",
         deleted: true,
+      })
+    )
+  })
+})
+
+describe("useAdminAddPublishableKeySalesChannelsBatch hook", () => {
+  test("Adds a SC to the publishable api key scope", async () => {
+    const id = "pubkey_1234"
+
+    const { result, waitFor } = renderHook(
+      () => useAdminAddPublishableKeySalesChannelsBatch(id),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate({
+      sales_channel_ids: [{ id: "rand_id" }],
+    })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.publishable_api_key).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("publishable_api_key"),
+      })
+    )
+  })
+})
+
+describe("useAdminRemovePublishableKeySalesChannelsBatch hook", () => {
+  test("Deletes a SC from the publishable api key scope", async () => {
+    const id = "pubkey_1234"
+    const { result, waitFor } = renderHook(
+      () => useAdminRemovePublishableKeySalesChannelsBatch(id),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate({
+      sales_channel_ids: [{ id: "rand_id" }],
+    })
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.publishable_api_key).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("publishable_api_key"),
       })
     )
   })
