@@ -1169,7 +1169,6 @@ class SendGridService extends NotificationService {
         'id',
         'amount',
         'reason',
-        'note'
       ],
       relations: [
         'order'
