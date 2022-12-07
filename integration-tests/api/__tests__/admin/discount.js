@@ -899,7 +899,7 @@ describe("/admin/discounts", () => {
         })
       )
 
-      await api
+      const err = await api
         .post(
           `/admin/discounts/${response.data.discount.id}`,
           {
@@ -907,13 +907,12 @@ describe("/admin/discounts", () => {
             is_dynamic: false,
           },
           adminReqConfig
-        )
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            "property is_dynamic should not exist"
-          )
-        })
+        ).catch(e => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "property is_dynamic should not exist"
+      )
     })
 
     it("automatically sets the code to an uppercase string on update", async () => {
@@ -1011,7 +1010,7 @@ describe("/admin/discounts", () => {
     it("fails to create a fixed discount with multiple regions", async () => {
       const api = useApi()
 
-      await api
+      const err = await api
         .post(
           "/admin/discounts",
           {
@@ -1027,13 +1026,12 @@ describe("/admin/discounts", () => {
             regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
-        )
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            `Fixed discounts can have one region`
-          )
-        })
+        ).catch(e => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `Fixed discounts can have one region`
+      )
     })
 
     it("fails to update a fixed discount with multiple regions", async () => {
@@ -1055,21 +1053,19 @@ describe("/admin/discounts", () => {
         adminReqConfig
       )
 
-      await api
+      const err = await api
         .post(
           `/admin/discounts/${response.data.discount.id}`,
           {
             regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
-        )
+        ).catch(e => e)
 
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            `Fixed discounts can have one region`
-          )
-        })
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `Fixed discounts can have one region`
+      )
     })
 
     it("fails to add a region to a fixed discount with an existing region", async () => {
@@ -1091,19 +1087,17 @@ describe("/admin/discounts", () => {
         adminReqConfig
       )
 
-      await api
+      const err = await api
         .post(
           `/admin/discounts/${response.data.discount.id}/regions/test-region-2`,
           {},
           adminReqConfig
-        )
+        ).catch(e => e)
 
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            `Fixed discounts can have one region`
-          )
-        })
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `Fixed discounts can have one region`
+      )
     })
 
     it("creates a discount with start and end dates", async () => {
@@ -1235,7 +1229,7 @@ describe("/admin/discounts", () => {
     it("fails to create discount with end date before start date", async () => {
       const api = useApi()
 
-      await api
+      const err = await api
         .post(
           "/admin/discounts",
           {
@@ -1252,15 +1246,14 @@ describe("/admin/discounts", () => {
             ends_at: new Date("09/14/2021 17:50"),
           },
           adminReqConfig
-        )
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data).toEqual(
-            expect.objectContaining({
-              message: `"ends_at" must be greater than "starts_at"`,
-            })
-          )
+        ).catch(e => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data).toEqual(
+        expect.objectContaining({
+          message: `"ends_at" must be greater than "starts_at"`,
         })
+      )
     })
 
     it("fails to create a discount if the regions contains an invalid regionId ", async () => {
@@ -2211,15 +2204,12 @@ describe("/admin/discounts", () => {
 
     it("should respond with 404 on non-existing code", async () => {
       const api = useApi()
+      const err = await api.get("/admin/discounts/code/non-existing", adminReqConfig).catch(e => e)
 
-      try {
-        await api.get("/admin/discounts/code/non-existing", adminReqConfig)
-      } catch (error) {
-        expect(error.response.status).toEqual(404)
-        expect(error.response.data.message).toBe(
-          "Discount with code non-existing was not found"
-        )
-      }
+      expect(err.response.status).toEqual(404)
+      expect(err.response.data.message).toBe(
+        "Discount with code non-existing was not found"
+      )
     })
 
     it("should trim and uppercase code on insert", async () => {
