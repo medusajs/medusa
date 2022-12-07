@@ -1,23 +1,22 @@
 import { TransactionBaseService } from "./transaction-base-service"
 import {
+  Address,
   Cart,
   Customer,
   Payment,
   PaymentSession,
   PaymentSessionStatus,
+  ShippingMethod,
 } from "../models"
 import { PaymentService } from "medusa-interfaces"
 import { PaymentProviderDataInput } from "../types/payment-collection"
-import {
-  PaymentContext,
-  PaymentPluginError,
-  PaymentSessionResponse,
-} from "../types/payment"
 import { MedusaContainer } from "../types/global"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
 export type PaymentSessionData = Data
+
+/** ***************     Old Plugin API     *************** **/
 
 /**
  * @deprecated use the new PaymentServicePlugin interface instead
@@ -223,6 +222,40 @@ export abstract class AbstractPaymentService
    * @deprecated
    */
   public abstract getStatus(data: Data): Promise<PaymentSessionStatus>
+}
+
+/** ***************     New Plugin API     *************** **/
+
+export type PaymentContext = {
+  cart: {
+    context: Record<string, unknown>
+    id: string
+    customer_id?: string
+    email: string
+    shipping_address: Address | null
+    shipping_options: ShippingMethod["shipping_option"][]
+  }
+  customer?: { id: string; metadata: Record<string, unknown> }
+  currency_code: string
+  amount: number
+  resource_id?: string
+  // Data previously collected and stored on the customer
+  colledcted_data: Record<string, unknown>
+}
+
+export type PaymentSessionResponse<TPaymentSessionData = unknown> =
+  CollectedData & {
+    session_data: TPaymentSessionData
+  }
+
+export type CollectedData<TCollectedData = any> = {
+  collected_data?: TCollectedData
+}
+
+export interface PaymentPluginError {
+  error: string
+  code: number
+  details: any
 }
 
 /**
