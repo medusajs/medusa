@@ -54,21 +54,18 @@ describe("DiscountService", () => {
     })
 
     it("fails to create a discount without regions", async () => {
-      expect.assertions(3)
-      try {
-        await discountService.create({
-          code: "test",
-          rule: {
-            type: "fixed",
-            allocation: "total",
-            value: 20,
-          },
-        })
-      } catch (err) {
-        expect(err.type).toEqual("invalid_data")
-        expect(err.message).toEqual("Discount must have atleast 1 region")
-        expect(discountRepository.create).toHaveBeenCalledTimes(0)
-      }
+      const err = await discountService.create({
+        code: "test",
+        rule: {
+          type: "fixed",
+          allocation: "total",
+          value: 20,
+        },
+      }).catch(e => e)
+
+      expect(err.type).toEqual("invalid_data")
+      expect(err.message).toEqual("Discount must have atleast 1 region")
+      expect(discountRepository.create).toHaveBeenCalledTimes(0)
     })
 
     it("successfully creates discount", async () => {

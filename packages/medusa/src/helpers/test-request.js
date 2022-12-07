@@ -11,7 +11,6 @@ import { moduleHelper } from "../loaders/module"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import { clone } from "lodash"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -88,7 +87,7 @@ export async function request(method, url, opts = {}) {
   )
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
-    const adminSession = clone(opts.adminSession)
+    const adminSession = { ...opts.adminSession }
 
     if (adminSession.jwt) {
       adminSession.jwt = jwt.sign(

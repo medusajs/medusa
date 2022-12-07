@@ -212,7 +212,7 @@ class DiscountService extends TransactionBaseService {
         )) as Region[]
       }
 
-      if (isEmpty(discount.regions)) {
+      if (!discount.regions?.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Discount must have atleast 1 region"

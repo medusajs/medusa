@@ -1009,7 +1009,6 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to create a fixed discount with multiple regions", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       await api
@@ -1038,7 +1037,6 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to update a fixed discount with multiple regions", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const response = await api.post(
@@ -1075,7 +1073,6 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to add a region to a fixed discount with an existing region", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const response = await api.post(
@@ -1236,7 +1233,6 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to create discount with end date before start date", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       await api
@@ -1268,7 +1264,6 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to create a discount if the regions contains an invalid regionId ", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const err = await api.post(
@@ -1293,7 +1288,6 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to create a discount if the regions contains only invalid regionIds ", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const err = await api.post(
@@ -1318,7 +1312,6 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to create a discount if regions are not present ", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const err = await api.post(
