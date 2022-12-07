@@ -19,8 +19,8 @@ import {
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * @oas [post] /customers/confirm-claim
- * operationId: "PostCustomersCustomerOrderClaimsOrderClaimAccept"
+ * @oas [post] /orders/customer/confirm
+ * operationId: "PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept"
  * summary: "Verify a claim to orders"
  * description: "Verifies the claim order token provided to the customer upon request of order ownership"
  * requestBody:
@@ -40,7 +40,7 @@ import { MedusaError } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.customers.verify({
+ *       medusa.order.confirmRequess({
  *         token,
  *       })
  *       .then(() => {
@@ -52,7 +52,7 @@ import { MedusaError } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/confirm-claim' \
+ *       curl --location --request POST 'https://medusa-url.com/store/orders/customer/confirm' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
  *           "token": "{token}",
@@ -87,7 +87,6 @@ export default async (req, res) => {
     TokenService.RESOLUTION_KEY
   )
 
-  const customerId: string = req.user?.customer_id
   const orderService: OrderService = req.scope.resolve("orderService")
 
   const manager: EntityManager = req.scope.resolve("manager")
@@ -95,23 +94,16 @@ export default async (req, res) => {
     const { claimingCustomerId, orders: orderIds } = tokenService.verifyToken(
       token,
       {
-        maxAge: "1h",
+        maxAge: "15m",
       }
     ) as {
       claimingCustomerId: string
       orders: string[]
     }
 
-    if (customerId !== claimingCustomerId) {
-      throw new MedusaError(
-        MedusaError.Types.UNAUTHORIZED,
-        `Token is not valid`
-      )
-    }
-
     const customer = await customerService
       .withTransaction(transactionManager)
-      .retrieve(customerId)
+      .retrieve(claimingCustomerId)
 
     const orders = await orderService.list({ id: orderIds })
 

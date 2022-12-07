@@ -10,8 +10,6 @@ import {
   defaultStoreOrdersRelations,
 } from "../orders"
 import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
-import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-claim-to-orders"
-import { StorePostCustomersCustomerOrderClaimReq } from "./claim-orders"
 
 const route = Router()
 
@@ -40,18 +38,6 @@ export default (app, container) => {
 
   // Authenticated endpoints
   route.use(middlewares.requireCustomerAuthentication())
-
-  route.post(
-    "/claim-orders",
-    transformBody(StorePostCustomersCustomerOrderClaimReq),
-    middlewares.wrap(require("./claim-orders").default)
-  )
-
-  route.post(
-    "/confirm-claim",
-    transformBody(StorePostCustomersCustomerAcceptClaimReq),
-    middlewares.wrap(require("./confirm-claim-to-orders").default)
-  )
 
   route.get("/me", middlewares.wrap(require("./get-customer").default))
   route.post("/me", middlewares.wrap(require("./update-customer").default))

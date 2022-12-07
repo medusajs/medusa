@@ -11,8 +11,8 @@ import {
 import TokenService from "../../../../services/token"
 
 /**
- * @oas [post] /customers/claim-orders
- * operationId: "PostCustomersCustomerOrderClaim"
+ * @oas [post] /orders/batch/customer/token
+ * operationId: "PostOrdersCustomerOrderClaim"
  * summary: "Claim orders for signed in account"
  * description: "Sends an email to emails registered to orders provided with link to transfer order ownership"
  * requestBody:
@@ -34,8 +34,8 @@ import TokenService from "../../../../services/token"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.customers.claimOrders({
- *         order_ids,
+ *       medusa.orders.claimOrders({
+ *         display_ids,
  *       })
  *       .then(() => {
  *         // successful
@@ -46,10 +46,10 @@ import TokenService from "../../../../services/token"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/claim-orders' \
+ *       curl --location --request POST 'https://medusa-url.com/store/batch/customer/token' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "order_ids": ["id"],
+ *           "display_ids": ["id"],
  *       }'
  * security:
  *   - api_token: []
