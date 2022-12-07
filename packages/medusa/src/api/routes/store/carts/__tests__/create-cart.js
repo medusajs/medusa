@@ -98,19 +98,24 @@ describe("POST /store/carts", () => {
     })
 
     it("calls line item generate", () => {
+      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledTimes(1)
+
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("testVariant"),
-        IdMap.getId("testRegion"),
-        3,
-        { customer_id: undefined }
+        [
+          {
+            variantId: IdMap.getId("testVariant"),
+            quantity: 3,
+          },
+          {
+            variantId: IdMap.getId("testVariant1"),
+            quantity: 1,
+          },
+        ],
+        {
+          region_id: IdMap.getId("testRegion"),
+          customer_id: undefined,
+        }
       )
-      expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("testVariant1"),
-        IdMap.getId("testRegion"),
-        1,
-        { customer_id: undefined }
-      )
-      expect(CartServiceMock.addLineItem).toHaveBeenCalledTimes(2)
     })
 
     it("returns cart", () => {

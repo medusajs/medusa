@@ -16,7 +16,7 @@ const adminReqConfig = {
   },
 }
 
-jest.setTimeout(100000000)
+jest.setTimeout(180000)
 
 describe("Batch job of product-export type", () => {
   let medusaProcess
@@ -31,7 +31,6 @@ describe("Batch job of product-export type", () => {
       cwd,
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
     })
   })
 
