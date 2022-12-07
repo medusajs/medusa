@@ -5,6 +5,9 @@ const startServerWithEnvironment =
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
+const {
+  getClientAuthenticationCookie,
+} = require("../../helpers/client-authentication")
 
 const {
   simplePaymentCollectionFactory,
@@ -195,6 +198,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
               amount: 10000,
             },
           ],
+        },
+        {
+          headers: {
+            Cookie: await getClientAuthenticationCookie(
+              api,
+              "test@customer.com"
+            ),
+          },
         }
       )
 

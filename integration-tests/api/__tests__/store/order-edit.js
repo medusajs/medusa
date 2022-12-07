@@ -6,6 +6,9 @@ const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const {
+  getClientAuthenticationCookie,
+} = require("../../helpers/client-authentication")
+const {
   simpleOrderEditFactory,
 } = require("../../factories/simple-order-edit-factory")
 const { IdMap } = require("medusa-test-utils")
@@ -21,21 +24,6 @@ const {
 const { OrderEditItemChangeType } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
-
-let authCookie = null
-async function getClientAuthentication(api) {
-  if (authCookie !== null) {
-    return authCookie
-  }
-
-  const authResponse = await api.post("/store/auth", {
-    email: "test@medusajs.com",
-    password: "test",
-  })
-  authCookie = authResponse.headers["set-cookie"][0].split(";")
-
-  return authCookie
-}
 
 describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
   let medusaProcess
@@ -186,7 +174,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
 
       const response = await api.get(`/store/order-edits/${orderEditId}`, {
         headers: {
-          Cookie: await getClientAuthentication(api),
+          Cookie: await getClientAuthenticationCookie(api),
         },
       })
 
@@ -246,7 +234,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
           `/store/order-edits/${orderEditId}?fields=internal_note,order_id`,
           {
             headers: {
-              Cookie: await getClientAuthentication(api),
+              Cookie: await getClientAuthenticationCookie(api),
             },
           }
         )
@@ -299,7 +287,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         },
         {
           headers: {
-            Cookie: await getClientAuthentication(api),
+            Cookie: await getClientAuthenticationCookie(api),
           },
         }
       )
@@ -322,7 +310,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         },
         {
           headers: {
-            Cookie: await getClientAuthentication(api),
+            Cookie: await getClientAuthenticationCookie(api),
           },
         }
       )
@@ -350,7 +338,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
           },
           {
             headers: {
-              Cookie: await getClientAuthentication(api),
+              Cookie: await getClientAuthenticationCookie(api),
             },
           }
         )
@@ -402,7 +390,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         undefined,
         {
           headers: {
-            Cookie: await getClientAuthentication(api),
+            Cookie: await getClientAuthenticationCookie(api),
           },
         }
       )
@@ -422,7 +410,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
       const err = await api
         .post(`/store/order-edits/${createdOrderEdit.id}/complete`, undefined, {
           headers: {
-            Cookie: await getClientAuthentication(api),
+            Cookie: await getClientAuthenticationCookie(api),
           },
         })
         .catch((e) => e)
