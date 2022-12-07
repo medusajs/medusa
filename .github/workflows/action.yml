@@ -168,19 +168,12 @@ jobs:
           cache: "yarn"
 
       - name: Install dependencies
-        run: yarn install
-      #        uses: ./.github/actions/cache-deps
-      #        with:
-      #          extension: pipeline
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
 
       - name: Build Packages
         run: yarn build
-
-      - name: DEV console
-        run: |
-          ls -al node_modules/medusa-fulfillment-webshipper
-          ls -alL node_modules/medusa-fulfillment-webshipper
-          ls -alL node_modules/medusa-fulfillment-webshipper/utils
 
       - name: Run plugin integration tests
         run: yarn test:integration:plugins
