@@ -91,11 +91,9 @@ describe("/store/customers", () => {
 
       expect(ordersRes1.data.orders.length).toEqual(0)
 
-      const response = await api.post(
-        "/store/customers/confirm-claim",
-        { token },
-        authHeader
-      )
+      const response = await api.post("/store/orders/customer/confirm", {
+        token,
+      })
       expect(response.status).toBe(200)
 
       const ordersRes2 = await api.get(`/store/customers/me/orders`, authHeader)

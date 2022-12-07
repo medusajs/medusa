@@ -1808,7 +1808,10 @@ describe("/store/carts", () => {
       const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
 
       const cart = await simpleCartFactory(dbConnection, {
-        email: customerEmail,
+        customer: {
+          email: customerEmail,
+          has_account: false,
+        },
         region: region.id,
         line_items: [
           {
