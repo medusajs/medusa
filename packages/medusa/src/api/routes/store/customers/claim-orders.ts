@@ -73,7 +73,7 @@ import TokenService from "../../../../services/token"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const { order_ids } = req.validatedBody
+  const { display_ids } = req.validatedBody
 
   const eventBusService: EventBusService = req.scope.resolve("eventBusService")
   const orderService: OrderService = req.scope.resolve("orderService")
@@ -93,7 +93,7 @@ export default async (req, res) => {
   }
 
   const orders = await orderService.list(
-    { id: order_ids },
+    { display_id: display_ids },
     { select: ["id", "email"] }
   )
 
@@ -130,5 +130,5 @@ export default async (req, res) => {
 export class StorePostCustomersCustomerOrderClaimReq {
   @IsNotEmpty({ each: true })
   @IsString({ each: true })
-  order_ids: string[]
+  display_ids: string[]
 }
