@@ -1,15 +1,17 @@
 const path = require("path")
-const {
-  ShippingProfile,
-} = require("@medusajs/medusa")
+const { ShippingProfile } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
-const startServerWithEnvironment = require("../../../helpers/start-server-with-environment").default
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const shippingOptionSeeder = require("../../helpers/shipping-option-seeder")
-const { simpleShippingOptionFactory, simpleRegionFactory } = require("../../factories")
+const {
+  simpleShippingOptionFactory,
+  simpleRegionFactory,
+} = require("../../factories")
 
 const adminReqConfig = {
   headers: {
@@ -475,7 +477,6 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/shipping-options", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
@@ -517,9 +518,12 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/shipping-options", () => {
     it("should creates a shipping option that includes tax", async () => {
       const api = useApi()
 
-      const defaultProfile = await dbConnection.manager.findOne(ShippingProfile, {
-        type: "default",
-      })
+      const defaultProfile = await dbConnection.manager.findOne(
+        ShippingProfile,
+        {
+          type: "default",
+        }
+      )
 
       const payload = {
         name: "Test option",
@@ -551,7 +555,10 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/shipping-options", () => {
       const api = useApi()
 
       let response = await api
-        .get(`/admin/shipping-options/${shippingOptionIncludesTaxId}`, adminReqConfig)
+        .get(
+          `/admin/shipping-options/${shippingOptionIncludesTaxId}`,
+          adminReqConfig
+        )
         .catch((err) => {
           console.log(err)
         })
@@ -573,7 +580,11 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/shipping-options", () => {
       }
 
       response = await api
-        .post(`/admin/shipping-options/${shippingOptionIncludesTaxId}`, payload, adminReqConfig)
+        .post(
+          `/admin/shipping-options/${shippingOptionIncludesTaxId}`,
+          payload,
+          adminReqConfig
+        )
         .catch((err) => {
           console.log(err)
         })

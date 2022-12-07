@@ -43,7 +43,6 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         MEDUSA_FF_PUBLISHABLE_API_KEYS: true,
         MEDUSA_FF_SALES_CHANNELS: true,
       },
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
