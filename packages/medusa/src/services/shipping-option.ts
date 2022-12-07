@@ -8,7 +8,7 @@ import {
   ShippingMethod,
   ShippingOption,
   ShippingOptionPriceType,
-  ShippingOptionRequirement
+  ShippingOptionRequirement,
 } from "../models"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
@@ -18,7 +18,7 @@ import {
   CreateShippingMethodDto,
   CreateShippingOptionInput,
   ShippingMethodUpdate,
-  UpdateShippingOptionInput
+  UpdateShippingOptionInput,
 } from "../types/shipping-options"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
@@ -403,8 +403,8 @@ class ShippingOptionService extends TransactionBaseService {
       amount?: number
       price_type?: ShippingOptionPriceType
     }
-  ): Promise<Omit<ShippingOption, "beforeInsert">> {
-    const option_: Omit<ShippingOption, "beforeInsert"> = { ...option }
+  ): Promise<ShippingOption> {
+    const option_: ShippingOption = { ...option }
 
     if (isDefined(priceInput.amount)) {
       option_.amount = priceInput.amount
@@ -413,7 +413,7 @@ class ShippingOptionService extends TransactionBaseService {
     if (isDefined(priceInput.price_type)) {
       option_.price_type = await this.validatePriceType_(
         priceInput.price_type,
-        option
+        option_ as ShippingOption
       )
 
       if (priceInput.price_type === ShippingOptionPriceType.CALCULATED) {
@@ -481,7 +481,7 @@ class ShippingOptionService extends TransactionBaseService {
       }
 
       const isValid = await this.providerService_.validateOption(
-        optionWithValidatedPrice as ShippingOption,
+        optionWithValidatedPrice as ShippingOption
       )
 
       if (!isValid) {
