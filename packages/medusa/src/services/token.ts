@@ -11,7 +11,7 @@ type InjectedDependencies = {
 class TokenService {
   static RESOLUTION_KEY = formatRegistrationName(resolve(__dirname, __filename))
 
-  protected configModule_: ConfigModule
+  protected readonly configModule_: ConfigModule
 
   constructor({ configModule }: InjectedDependencies) {
     this.configModule_ = configModule

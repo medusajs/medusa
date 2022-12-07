@@ -1202,7 +1202,7 @@ class CartService extends TransactionBaseService {
 
     let customer = await this.customerService_
       .withTransaction(this.transactionManager_)
-      .retrieveByEmail(validatedEmail)
+      .retrieveUnregisteredByEmail(validatedEmail)
       .catch(() => undefined)
 
     if (!customer) {

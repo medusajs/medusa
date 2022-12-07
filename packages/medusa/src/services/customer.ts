@@ -195,8 +195,16 @@ class CustomerService extends TransactionBaseService {
    * @param {string} email - the email of the customer to get.
    * @param {Object} config - the config object containing query settings
    * @return {Promise<Customer>} the customer document.
+   * @deprecated
    */
   async retrieveByEmail(
+    email: string,
+    config: FindConfig<Customer> = {}
+  ): Promise<Customer | never> {
+    return await this.retrieve_({ email: email.toLowerCase() }, config)
+  }
+
+  async retrieveUnregisteredByEmail(
     email: string,
     config: FindConfig<Customer> = {}
   ): Promise<Customer | never> {
@@ -205,7 +213,6 @@ class CustomerService extends TransactionBaseService {
       config
     )
   }
-
   async retrieveRegisteredByEmail(
     email: string,
     config: FindConfig<Customer> = {}
