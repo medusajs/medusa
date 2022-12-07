@@ -54,8 +54,21 @@ describe("CustomerService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully retrieves a guest customer by email", async () => {
+    it("successfully retrieves a customer by email", async () => {
       const result = await customerService.retrieveByEmail("tony@stark.com")
+
+      expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(customerRepository.findOne).toHaveBeenCalledWith({
+        where: { email: "tony@stark.com" },
+      })
+
+      expect(result.id).toEqual(IdMap.getId("ironman"))
+    })
+
+    it("successfully retrieves a guest customer by email", async () => {
+      const result = await customerService.retrieveUnregisteredByEmail(
+        "tony@stark.com"
+      )
 
       expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customerRepository.findOne).toHaveBeenCalledWith({
