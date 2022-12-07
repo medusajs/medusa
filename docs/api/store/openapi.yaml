@@ -207,6 +207,8 @@ paths:
     $ref: paths/orders_{id}.yaml
   /orders:
     $ref: paths/orders.yaml
+  /product-types:
+    $ref: paths/product-types.yaml
   /products/{id}:
     $ref: paths/products_{id}.yaml
   /products:

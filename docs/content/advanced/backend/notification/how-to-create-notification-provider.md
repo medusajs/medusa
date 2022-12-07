@@ -16,7 +16,7 @@ You also need to [setup Redis](../../../tutorial/0-set-up-your-development-envir
 
 ## Create a Notification Provider
 
-Creating a Notification Provider is as simple as creating a TypeScript or JavaScript file in `src/services`. The name of the file is the name of the provider (for example, `sendgrid.ts`). A Notification Provider is essentially a Service that extends the `NotificationService` from `medusa-interfaces`.
+Creating a Notification Provider is as simple as creating a TypeScript or JavaScript file in `src/services`. The name of the file is the name of the provider (for example, `sendgrid.ts`). A Notification Provider is essentially a Service that extends the `AbstractNotificationService` from `@medusajs/medusa`.
 
 For example, create the file `src/services/email-sender.ts` with the following content:
 

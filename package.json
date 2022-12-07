@@ -66,7 +66,6 @@
     "test:integration": "turbo run test --filter=integration-tests-api --filter=integration-tests-plugins",
     "test:integration:api": "turbo run test --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test --filter=integration-tests-plugins",
-    "test:fixtures": "NODE_ENV=test jest --config=docs-util/jest.config.js --runInBand --bail",
     "openapi:generate": "node ./scripts/build-openapi.js",
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",

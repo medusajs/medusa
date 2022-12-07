@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:26](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/order-edits.ts#L26)
+[medusa-js/src/resources/order-edits.ts:26](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/order-edits.ts#L26)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`StorePostOrderEditsOrderEditDecline`](internal-37.StorePostOrderEditsOrderEditDecline.md) |
+| `payload` | [`StorePostOrderEditsOrderEditDecline`](internal-40.StorePostOrderEditsOrderEditDecline.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
@@ -47,13 +47,13 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:17](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/order-edits.ts#L17)
+[medusa-js/src/resources/order-edits.ts:17](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/order-edits.ts#L17)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrderEditsRes`](../modules/internal-37.md#storeordereditsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrderEditsRes`](../modules/internal-40.md#storeordereditsres)\>
 
 #### Parameters
 
@@ -64,8 +64,8 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrderEditsRes`](../modules/internal-37.md#storeordereditsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrderEditsRes`](../modules/internal-40.md#storeordereditsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:9](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/order-edits.ts#L9)
+[medusa-js/src/resources/order-edits.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/order-edits.ts#L9)
