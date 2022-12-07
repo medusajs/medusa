@@ -838,6 +838,13 @@ export default class ClaimService extends TransactionBaseService {
     id: string,
     config: FindConfig<ClaimOrder> = {}
   ): Promise<ClaimOrder> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Claim id should be defined`
+      )
+    }
+
     const manager = this.manager_
     const claimRepo = manager.getCustomRepository(this.claimRepository_)
 

@@ -5,7 +5,7 @@ import { NoteRepository } from "../repositories/note"
 import EventBusService from "./event-bus"
 import { FindConfig, Selector } from "../types/common"
 import { Note } from "../models"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import { CreateNoteInput } from "../types/note"
 
 type InjectedDependencies = {
@@ -48,6 +48,13 @@ class NoteService extends TransactionBaseService {
     id: string,
     config: FindConfig<Note> = {}
   ): Promise<Note | never> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Note id should be defined`
+      )
+    }
+
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
     const query = buildQuery({ id }, config)

@@ -218,6 +218,13 @@ class GiftCardService extends TransactionBaseService {
     giftCardId: string,
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
+    if (!isDefined(giftCardId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `GiftCard id should be defined`
+      )
+    }
+
     return await this.retrieve_({ id: giftCardId }, config)
   }
 
@@ -225,6 +232,13 @@ class GiftCardService extends TransactionBaseService {
     code: string,
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
+    if (!isDefined(code)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `GiftCard code should be defined`
+      )
+    }
+
     return await this.retrieve_({ code }, config)
   }
 

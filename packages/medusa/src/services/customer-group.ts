@@ -43,6 +43,13 @@ class CustomerGroupService extends TransactionBaseService {
   }
 
   async retrieve(id: string, config = {}): Promise<CustomerGroup> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `CustomerGroup id should be defined`
+      )
+    }
+
     const cgRepo = this.manager_.getCustomRepository(
       this.customerGroupRepository_
     )

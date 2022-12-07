@@ -12,7 +12,7 @@ import {
   FilterableUserProps,
   UpdateUserInput,
 } from "../types/user"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import AnalyticsConfigService from "./analytics-config"
@@ -80,6 +80,13 @@ class UserService extends TransactionBaseService {
    * @return {Promise<User>} the user document.
    */
   async retrieve(userId: string, config: FindConfig<User> = {}): Promise<User> {
+    if (!isDefined(userId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `User id should be defined`
+      )
+    }
+
     const manager = this.manager_
     const userRepo = manager.getCustomRepository(this.userRepository_)
     const query = buildQuery({ id: userId }, config)

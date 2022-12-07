@@ -7,7 +7,7 @@ import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
 import { ExtendedFindConfig, FindConfig } from "../types/common"
 import { DraftOrderCreateProps } from "../types/draft-orders"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import CartService from "./cart"
 import CustomShippingOptionService from "./custom-shipping-option"
 import EventBusService from "./event-bus"
@@ -88,6 +88,13 @@ class DraftOrderService extends TransactionBaseService {
     id: string,
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `DraftOrder id should be defined`
+      )
+    }
+
     const manager = this.manager_
     const draftOrderRepo = manager.getCustomRepository(
       this.draftOrderRepository_

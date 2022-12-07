@@ -167,6 +167,13 @@ class FulfillmentService extends TransactionBaseService {
     id: string,
     config: FindConfig<Fulfillment> = {}
   ): Promise<Fulfillment> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Fulfillment id should be defined`
+      )
+    }
+
     const manager = this.manager_
     const fulfillmentRepository = manager.getCustomRepository(
       this.fulfillmentRepository_

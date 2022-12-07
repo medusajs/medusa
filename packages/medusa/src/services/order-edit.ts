@@ -91,6 +91,13 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     config: FindConfig<OrderEdit> = {}
   ): Promise<OrderEdit> {
+    if (!isDefined(orderEditId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `OrderEdit id should be defined`
+      )
+    }
+
     const manager = this.transactionManager_ ?? this.manager_
     const orderEditRepository = manager.getCustomRepository(
       this.orderEditRepository_

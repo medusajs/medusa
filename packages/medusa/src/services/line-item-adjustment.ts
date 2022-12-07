@@ -7,7 +7,7 @@ import { FindConfig } from "../types/common"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
 import DiscountService from "./discount"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { CalculationContextData } from "../types/totals"
 
 type LineItemAdjustmentServiceProps = {
@@ -59,6 +59,13 @@ class LineItemAdjustmentService extends TransactionBaseService {
     id: string,
     config: FindConfig<LineItemAdjustment> = {}
   ): Promise<LineItemAdjustment> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `LineItemAdjustment id should be defined`
+      )
+    }
+
     const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
       this.manager_.getCustomRepository(this.lineItemAdjustmentRepo_)
 

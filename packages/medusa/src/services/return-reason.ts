@@ -5,7 +5,7 @@ import { Return, ReturnReason } from "../models"
 import { ReturnReasonRepository } from "../repositories/return-reason"
 import { FindConfig, Selector } from "../types/common"
 import { CreateReturnReason, UpdateReturnReason } from "../types/return-reason"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -92,6 +92,13 @@ class ReturnReasonService extends TransactionBaseService {
     id: string,
     config: FindConfig<ReturnReason> = {}
   ): Promise<ReturnReason | never> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `ReturnReason id should be defined`
+      )
+    }
+
     const rrRepo = this.manager_.getCustomRepository(this.retReasonRepo_)
 
     const query = buildQuery({ id }, config)

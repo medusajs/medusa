@@ -70,6 +70,13 @@ class TaxRateService extends TransactionBaseService {
     id: string,
     config: FindConfig<TaxRate> = {}
   ): Promise<TaxRate> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `TaxRate id should be defined`
+      )
+    }
+
     const manager = this.manager_
     const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
     const query = buildQuery({ id }, config)

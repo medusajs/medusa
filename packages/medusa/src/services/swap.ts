@@ -209,6 +209,13 @@ class SwapService extends TransactionBaseService {
     id: string,
     config: Omit<FindConfig<Swap>, "select"> & { select?: string[] } = {}
   ): Promise<Swap | never> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Swap id should be defined`
+      )
+    }
+
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
     const { cartSelects, cartRelations, ...newConfig } =

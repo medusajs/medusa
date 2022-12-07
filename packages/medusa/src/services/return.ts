@@ -259,6 +259,13 @@ class ReturnService extends TransactionBaseService {
     id: string,
     config: FindConfig<Return> = {}
   ): Promise<Return | never> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Return id should be defined`
+      )
+    }
+
     const returnRepository = this.manager_.getCustomRepository(
       this.returnRepository_
     )

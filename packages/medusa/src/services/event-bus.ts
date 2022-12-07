@@ -218,8 +218,8 @@ export default class EventBusService {
   }
 
   startEnqueuer(): void {
-    this.shouldEnqueuerRun = true
-    this.enqueue_ = this.enqueuer_()
+    // this.shouldEnqueuerRun = true
+    // this.enqueue_ = this.enqueuer_()
   }
 
   async stopEnqueuer(): Promise<void> {

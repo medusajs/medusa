@@ -7,7 +7,7 @@ import { ClaimItemRepository } from "../repositories/claim-item"
 import { ClaimTagRepository } from "../repositories/claim-tag"
 import { CreateClaimItemInput } from "../types/claim"
 import { FindConfig, Selector } from "../types/common"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 
@@ -234,6 +234,13 @@ class ClaimItemService extends TransactionBaseService {
     id: string,
     config: FindConfig<ClaimItem> = {}
   ): Promise<ClaimItem> {
+    if (!isDefined(id)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `ClaimItem id should be defined`
+      )
+    }
+
     const claimItemRepo = this.manager_.getCustomRepository(
       this.claimItemRepository_
     )
