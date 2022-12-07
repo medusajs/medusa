@@ -72,7 +72,6 @@ type InjectedDependencies = {
   draftOrderService: DraftOrderService
   inventoryService: InventoryService
   eventBusService: EventBusService
-  configModule: ConfigModule
   featureFlagRouter: FlagRouter
 }
 
@@ -123,7 +122,6 @@ class OrderService extends TransactionBaseService {
   protected readonly draftOrderService_: DraftOrderService
   protected readonly inventoryService_: InventoryService
   protected readonly eventBus_: EventBusService
-  protected readonly configModule_: ConfigModule
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
@@ -147,7 +145,6 @@ class OrderService extends TransactionBaseService {
     draftOrderService,
     inventoryService,
     eventBusService,
-    configModule,
     featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
@@ -174,7 +171,6 @@ class OrderService extends TransactionBaseService {
     this.draftOrderService_ = draftOrderService
     this.inventoryService_ = inventoryService
     this.featureFlagRouter_ = featureFlagRouter
-    this.configModule_ = configModule
   }
 
   /**
@@ -1191,108 +1187,6 @@ class OrderService extends TransactionBaseService {
 
       return result
     })
-  }
-
-  async confirmCustomerClaimToOrders(token: string, customerId: string) {
-    return await this.atomicPhase_(async (manager) => {
-      logger.info(token)
-      const { claimingCustomerId, orders: orderIds } = this.verifyToken(
-        token
-      ) as {
-        claimingCustomerId: string
-        orders: string[]
-      }
-
-      if (customerId !== claimingCustomerId) {
-        throw new MedusaError(
-          MedusaError.Types.UNAUTHORIZED,
-          `The token is not valid`
-        )
-      }
-
-      const customer = await this.customerService_
-        .withTransaction(manager)
-        .retrieve(customerId)
-
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
-
-      const orders = await orderRepo.findByIds(orderIds)
-
-      for (const order of orders) {
-        order.customer_id = claimingCustomerId
-        order.email = customer.email
-      }
-
-      await orderRepo.save(orders)
-    })
-  }
-
-  async claimOrdersForCustomerWithId(
-    customerId: string,
-    orderIds: string[]
-  ): Promise<void> {
-    return await this.atomicPhase_(async (manager) => {
-      const customer = await this.customerService_
-        .withTransaction(manager)
-        .retrieve(customerId)
-
-      if (!customer.has_account) {
-        throw new MedusaError(
-          MedusaError.Types.UNAUTHORIZED,
-          "Customer does not have an account"
-        )
-      }
-
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
-      const orders = await orderRepo.findByIds(orderIds)
-
-      const emailOrderMapping: { [email: string]: Order[] } = orders.reduce(
-        (acc, order) => {
-          acc[order.email] = [...(acc[order.email] || []), order]
-          return acc
-        },
-        {}
-      )
-
-      await Promise.all(
-        Object.keys(emailOrderMapping).map(async (email) => {
-          const token = this.signToken({
-            claimingCustomerId: customerId,
-            orders: emailOrderMapping[email].map((o) => o.id),
-          })
-
-          await this.eventBus_.emit(OrderService.Events.ORDERS_CLAIMED, {
-            email,
-            claimingCustomerEmail: customer.email,
-            orders: emailOrderMapping[email],
-            token,
-          })
-        })
-      )
-    })
-  }
-
-  verifyToken(token: string): JwtPayload | string {
-    const { jwt_secret } = this.configModule_.projectConfig
-    if (jwt_secret) {
-      return jwt.verify(token, jwt_secret)
-    }
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      "Please configure jwt_secret"
-    )
-  }
-
-  protected signToken(data) {
-    const { jwt_secret } = this.configModule_.projectConfig
-    if (jwt_secret) {
-      return jwt.sign(data, jwt_secret)
-    } else {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Please configure a jwt token"
-      )
-    }
   }
 
   /**

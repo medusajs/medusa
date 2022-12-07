@@ -10,7 +10,13 @@ import InviteService from "../../../../services/invite"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
-import { CustomerService, OrderService } from "../../../../services"
+import {
+  CustomerService,
+  EventBusService,
+  OrderService,
+  TokenService,
+} from "../../../../services"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /customers/confirm-claim
@@ -74,15 +80,54 @@ import { CustomerService, OrderService } from "../../../../services"
  */
 export default async (req, res) => {
   const { token } = req.validatedBody
+  const logger = req.scope.resolve("logger")
+
+  const orderSerivce: OrderService = req.scope.resolve("orderService")
+  const customerService: CustomerService = req.scope.resolve("customerService")
+  const tokenService: TokenService = req.scope.resolve(
+    TokenService.RESOLUTION_KEY
+  )
+
+  logger.info(token)
 
   const customerId: string = req.user?.customer_id
   const orderService: OrderService = req.scope.resolve("orderService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    await orderService
+    const { claimingCustomerId, orders: orderIds } = tokenService.verifyToken(
+      token,
+      {
+        maxAge: "1h",
+      }
+    ) as {
+      claimingCustomerId: string
+      orders: string[]
+    }
+
+    if (customerId !== claimingCustomerId) {
+      throw new MedusaError(
+        MedusaError.Types.UNAUTHORIZED,
+        `Token is not valid`
+      )
+    }
+
+    const customer = await customerService
       .withTransaction(transactionManager)
-      .confirmCustomerClaimToOrders(token, customerId)
+      .retrieve(customerId)
+
+    const orders = await orderService.list({ id: orderIds })
+
+    await Promise.all(
+      orders.map(async (order) => {
+        await orderSerivce
+          .withTransaction(transactionManager)
+          .update(order.id, {
+            customer_id: claimingCustomerId,
+            email: customer.email,
+          })
+      })
+    )
   })
 
   res.sendStatus(200)

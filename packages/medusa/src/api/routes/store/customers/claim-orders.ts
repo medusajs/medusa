@@ -1,6 +1,14 @@
+import { SamlTokenUserAccountAuthMutationVariables } from "@linear/sdk/dist/_generated_documents"
 import { IsNotEmpty, IsString } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { OrderService } from "../../../../services"
+import { Order } from "../../../../models"
+import {
+  CustomerService,
+  EventBusService,
+  OrderService,
+} from "../../../../services"
+import TokenService from "../../../../services/token"
 
 /**
  * @oas [post] /customers/claim-orders
@@ -67,16 +75,54 @@ import { OrderService } from "../../../../services"
 export default async (req, res) => {
   const { order_ids } = req.validatedBody
 
-  const customerId: string = req.user?.customer_id
-
+  const eventBusService: EventBusService = req.scope.resolve("eventBusService")
   const orderService: OrderService = req.scope.resolve("orderService")
+  const customerService: CustomerService = req.scope.resolve("customerService")
+  const tokenService: TokenService = req.scope.resolve(
+    TokenService.RESOLUTION_KEY
+  )
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    await orderService
-      .withTransaction(transactionManager)
-      .claimOrdersForCustomerWithId(customerId, order_ids)
-  })
+  const customerId: string = req.user?.customer_id
+  const customer = await customerService.retrieve(customerId)
+
+  if (!customer.has_account) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "Customer does not have an account"
+    )
+  }
+
+  const orders = await orderService.list(
+    { id: order_ids },
+    { select: ["id", "email"] }
+  )
+
+  const emailOrderMapping: { [email: string]: string[] } = orders.reduce(
+    (acc, order) => {
+      acc[order.email] = [...(acc[order.email] || []), order.id]
+      return acc
+    },
+    {}
+  )
+
+  await Promise.all(
+    Object.entries(emailOrderMapping).map(async ([email, order_ids]) => {
+      const token = tokenService.signToken(
+        {
+          claimingCustomerId: customerId,
+          orders: order_ids,
+        },
+        { expiresIn: "1h" }
+      )
+
+      await eventBusService.emit(OrderService.Events.ORDERS_CLAIMED, {
+        old_email: email,
+        new_customer_id: customer.id,
+        orders: order_ids,
+        token,
+      })
+    })
+  )
 
   res.sendStatus(200)
 }
