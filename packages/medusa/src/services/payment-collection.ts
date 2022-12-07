@@ -257,12 +257,14 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
-      const customer = await this.customerService_
-        .withTransaction(manager)
-        .retrieve(customerId, {
-          select: ["id", "email", "metadata"],
-        })
-        .catch(() => null)
+      const customer = !isDefined(customerId)
+        ? null
+        : await this.customerService_
+            .withTransaction(manager)
+            .retrieve(customerId, {
+              select: ["id", "email", "metadata"],
+            })
+            .catch(() => null)
 
       const selectedSessionIds: string[] = []
       const paymentSessions: PaymentSession[] = []
@@ -362,12 +364,14 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
-      const customer = await this.customerService_
-        .withTransaction(manager)
-        .retrieve(customerId, {
-          select: ["id", "email", "metadata"],
-        })
-        .catch(() => null)
+      const customer = !isDefined(customerId)
+        ? null
+        : await this.customerService_
+            .withTransaction(manager)
+            .retrieve(customerId, {
+              select: ["id", "email", "metadata"],
+            })
+            .catch(() => null)
 
       const paymentSessions: PaymentSession[] = []
       const inputData: PaymentProviderDataInput = {
@@ -467,12 +471,14 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
-      const customer = await this.customerService_
-        .withTransaction(manager)
-        .retrieve(customerId, {
-          select: ["id", "email", "metadata"],
-        })
-        .catch(() => null)
+      const customer = !isDefined(customerId)
+        ? null
+        : await this.customerService_
+            .withTransaction(manager)
+            .retrieve(customerId, {
+              select: ["id", "email", "metadata"],
+            })
+            .catch(() => null)
 
       const inputData: PaymentProviderDataInput = {
         resource_id: payCol.id,
