@@ -528,7 +528,8 @@ class OrderService extends TransactionBaseService {
   async createFromCart(cartOrId: string | Cart): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
       const cartServiceTx = this.cartService_.withTransaction(manager)
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
+      const inventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
 
       const exists = !!(await this.retrieveByCartId(
         isString(cartOrId) ? cartOrId : cartOrId?.id,
@@ -558,23 +559,6 @@ class OrderService extends TransactionBaseService {
       }
 
       const { payment, region, total } = cart
-
-      await Promise.all(
-        cart.items.map(async (item) => {
-          return await inventoryServiceTx.confirmInventory(
-            item.variant_id,
-            item.quantity
-          )
-        })
-      ).catch(async (err) => {
-        if (payment) {
-          await this.paymentProviderService_
-            .withTransaction(manager)
-            .cancelPayment(payment)
-        }
-        await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-        throw err
-      })
 
       // Would be the case if a discount code is applied that covers the item
       // total
@@ -691,9 +675,10 @@ class OrderService extends TransactionBaseService {
       await Promise.all(
         [
           cart.items.map((item): Promise<unknown>[] => {
-            const toReturn = [
+            const toReturn: Promise<unknown>[] = [
               lineItemServiceTx.update(item.id, { order_id: order.id }),
             ]
+
             if (item.variant_id) {
               toReturn.push(
                 this.productVariantInventoryService_.reserveQuantity(
@@ -708,7 +693,7 @@ class OrderService extends TransactionBaseService {
             }
             return toReturn
           }),
-          cart.shipping_methods.map((method) => {
+          cart.shipping_methods.map(async (method) => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?

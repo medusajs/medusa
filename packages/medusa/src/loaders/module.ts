@@ -21,21 +21,24 @@ export default async ({
   for (const resolution of Object.values(moduleResolutions)) {
     try {
       const loadedModule = await import(resolution.resolutionPath!)
-
       const moduleLoaders = loadedModule?.loaders || []
       for (const loader of moduleLoaders) {
         await loader({ container, configModule, logger })
       }
 
-      const moduleServices = loadedModule?.services || []
+      const moduleService = loadedModule?.service || null
 
-      for (const service of moduleServices) {
-        container.register({
-          [resolution.definition.registrationName]: asFunction(
-            (cradle) => new service(cradle, configModule)
-          ).singleton(),
-        })
+      if (!moduleService) {
+        throw new Error(
+          "No service found in module. Make sure that your module exports a service."
+        )
       }
+
+      container.register({
+        [resolution.definition.registrationName]: asFunction(
+          (cradle) => new moduleService(cradle, configModule)
+        ).singleton(),
+      })
 
       const installation = {
         module: resolution.definition.key,
@@ -44,13 +47,15 @@ export default async ({
 
       trackInstallation(installation, "module")
     } catch (err) {
+      console.error(err)
+
       if (resolution.definition.isRequired) {
         throw new Error(
           `Could not resolve required module: ${resolution.definition.label}`
         )
       }
 
-      logger.warn(`Couldn not resolve module: ${resolution.definition.label}`)
+      logger.warn(`Couldn not resolve module: ${resolution.definition.label}.`)
     }
   }
 

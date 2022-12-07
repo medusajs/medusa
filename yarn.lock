@@ -4272,7 +4272,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
 "@medusajs/inventory@workspace:packages/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
@@ -4289,10 +4288,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@^1.3.3, @medusajs/medusa-cli@workspace:packages/medusa-cli":
-=======
 "@medusajs/medusa-cli@^1.3.5, @medusajs/medusa-cli@workspace:packages/medusa-cli":
->>>>>>> origin/develop
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
   dependencies:
@@ -4353,11 +4349,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-<<<<<<< HEAD
-"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.4.1, @medusajs/medusa@^1.6.0, @medusajs/medusa@workspace:packages/medusa":
-=======
-"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.6.2, @medusajs/medusa@workspace:packages/medusa":
->>>>>>> origin/develop
+"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.4.1, @medusajs/medusa@^1.6.2, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:

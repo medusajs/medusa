@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _stripe = _interopRequireDefault(require("stripe"));
-
 var _medusa = require("@medusajs/medusa");
+
+var _stripe = _interopRequireDefault(require("stripe"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -48,7 +48,7 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
 
   var _super = _createSuper(StripeBase);
 
-  function StripeBase(_ref, options, paymentMethodTypes) {
+  function StripeBase(_ref, options) {
     var _this;
 
     var stripeProviderService = _ref.stripeProviderService,
@@ -66,9 +66,6 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
       regionService: regionService,
       manager: manager
     }, options);
-    /** @private @const {string[]} */
-
-    _this.paymentMethodTypes = paymentMethodTypes;
     /**
      * Required Stripe options:
      *  {
@@ -100,15 +97,36 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
     _this.manager_ = manager;
     return _this;
   }
-  /**
-   * Fetches Stripe payment intent. Check its status and returns the
-   * corresponding Medusa status.
-   * @param {PaymentSessionData} paymentSessionData - payment method data from cart
-   * @return {Promise<PaymentSessionStatus>} the status of the payment intent
-   */
-
 
   _createClass(StripeBase, [{
+    key: "getPaymentIntentOptions",
+    value: function getPaymentIntentOptions() {
+      var _this$paymentIntentOp, _this$paymentIntentOp2, _this$paymentIntentOp3;
+
+      var options = {};
+
+      if (this !== null && this !== void 0 && (_this$paymentIntentOp = this.paymentIntentOptions) !== null && _this$paymentIntentOp !== void 0 && _this$paymentIntentOp.capture_method) {
+        options.capture_method = this.paymentIntentOptions.capture_method;
+      }
+
+      if (this !== null && this !== void 0 && (_this$paymentIntentOp2 = this.paymentIntentOptions) !== null && _this$paymentIntentOp2 !== void 0 && _this$paymentIntentOp2.setup_future_usage) {
+        options.setup_future_usage = this.paymentIntentOptions.setup_future_usage;
+      }
+
+      if (this !== null && this !== void 0 && (_this$paymentIntentOp3 = this.paymentIntentOptions) !== null && _this$paymentIntentOp3 !== void 0 && _this$paymentIntentOp3.payment_method_types) {
+        options.payment_method_types = this.paymentIntentOptions.payment_method_types;
+      }
+
+      return options;
+    }
+    /**
+     * Fetches Stripe payment intent. Check its status and returns the
+     * corresponding Medusa status.
+     * @param {PaymentSessionData} paymentSessionData - payment method data from cart
+     * @return {Promise<PaymentSessionStatus>} the status of the payment intent
+     */
+
+  }, {
     key: "getStatus",
     value: function () {
       var _getStatus = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(paymentSessionData) {
@@ -150,7 +168,7 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", Promise.resolve([]));
+                return _context2.abrupt("return", []);
 
               case 1:
               case "end":
@@ -245,17 +263,14 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
     key: "createPayment",
     value: function () {
       var _createPayment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(cart) {
-        var intentRequest;
+        var intentRequestData;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                intentRequest = {
-                  payment_method_types: this.paymentMethodTypes,
-                  capture_method: "automatic"
-                };
+                intentRequestData = this.getPaymentIntentOptions();
                 _context5.next = 3;
-                return this.stripeProviderService_.createPayment(cart, intentRequest);
+                return this.stripeProviderService_.withTransaction(this.manager_).createPayment(cart, intentRequestData);
 
               case 3:
                 return _context5.abrupt("return", _context5.sent);
@@ -278,17 +293,14 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
     key: "createPaymentNew",
     value: function () {
       var _createPaymentNew = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(paymentInput) {
-        var intentRequest;
+        var intentRequestData;
         return _regeneratorRuntime().wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                intentRequest = {
-                  payment_method_types: this.paymentMethodTypes,
-                  capture_method: "automatic"
-                };
+                intentRequestData = this.getPaymentIntentOptions();
                 _context6.next = 3;
-                return this.stripeProviderService_.createPaymentNew(paymentInput, intentRequest);
+                return this.stripeProviderService_.withTransaction(this.manager_).createPaymentNew(paymentInput, intentRequestData);
 
               case 3:
                 return _context6.abrupt("return", _context6.sent);
@@ -453,17 +465,19 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
     key: "updatePayment",
     value: function () {
       var _updatePayment = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(paymentSessionData, cart) {
+        var intentRequestData;
         return _regeneratorRuntime().wrap(function _callee11$(_context11) {
           while (1) {
             switch (_context11.prev = _context11.next) {
               case 0:
-                _context11.next = 2;
-                return this.stripeProviderService_.updatePayment(paymentSessionData, cart);
-
-              case 2:
-                return _context11.abrupt("return", _context11.sent);
+                intentRequestData = this.getPaymentIntentOptions();
+                _context11.next = 3;
+                return this.stripeProviderService_.withTransaction(this.manager_).updatePayment(paymentSessionData, cart, intentRequestData);
 
               case 3:
+                return _context11.abrupt("return", _context11.sent);
+
+              case 4:
               case "end":
                 return _context11.stop();
             }
@@ -481,17 +495,19 @@ var StripeBase = /*#__PURE__*/function (_AbstractPaymentServi) {
     key: "updatePaymentNew",
     value: function () {
       var _updatePaymentNew = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(paymentSessionData, paymentInput) {
+        var intentRequestData;
         return _regeneratorRuntime().wrap(function _callee12$(_context12) {
           while (1) {
             switch (_context12.prev = _context12.next) {
               case 0:
-                _context12.next = 2;
-                return this.stripeProviderService_.updatePaymentNew(paymentSessionData, paymentInput);
-
-              case 2:
-                return _context12.abrupt("return", _context12.sent);
+                intentRequestData = this.getPaymentIntentOptions();
+                _context12.next = 3;
+                return this.stripeProviderService_.withTransaction(this.manager_).updatePaymentNew(paymentSessionData, paymentInput, intentRequestData);
 
               case 3:
+                return _context12.abrupt("return", _context12.sent);
+
+              case 4:
               case "end":
                 return _context12.stop();
             }
