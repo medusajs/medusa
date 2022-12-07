@@ -11766,7 +11766,7 @@ paths:
           description: The number of types to return.
           schema:
             type: integer
-            default: 10
+            default: 20
         - in: query
           name: offset
           description: The number of items to skip before the results.
@@ -13792,6 +13792,7 @@ paths:
           $ref: '#/components/responses/500_error'
   /products/types:
     get:
+      deprecated: true
       operationId: GetProductsTypes
       summary: List Product Types
       description: Retrieves a list of Product Types.
