@@ -27,7 +27,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment-collections", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_ORDER_EDITING: true },
+      env: { MEDUSA_FF_ORDER_EDITING: true }
     })
     dbConnection = connection
     medusaProcess = process

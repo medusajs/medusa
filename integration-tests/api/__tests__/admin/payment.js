@@ -66,14 +66,20 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
       const api = useApi()
 
       // create payment session
-      await api.post(`/store/payment-collections/${payCol.id}/sessions`, {
-        sessions: {
+      const payColRes = await api.post(
+        `/store/payment-collections/${payCol.id}/sessions`,
+        {
           provider_id: "test-pay",
-          customer_id: "customer",
-          amount: 10000,
-        },
-      })
-      await api.post(`/store/payment-collections/${payCol.id}/authorize`)
+        }
+      )
+      await api.post(
+        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
+        {
+          session_ids: payColRes.data.payment_collection.payment_sessions.map(
+            ({ id }) => id
+          ),
+        }
+      )
 
       const paymentCollections = await api.get(
         `/admin/payment-collections/${payCol.id}`,
@@ -85,6 +91,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
       )
 
       const payment = paymentCollections.data.payment_collection.payments[0]
+
       expect(payment.captured_at).toBe(null)
 
       const response = await api.post(
@@ -107,14 +114,20 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/payment", () => {
       const api = useApi()
 
       // create payment session
-      await api.post(`/store/payment-collections/${payCol.id}/sessions`, {
-        sessions: {
+      const payColRes = await api.post(
+        `/store/payment-collections/${payCol.id}/sessions`,
+        {
           provider_id: "test-pay",
-          customer_id: "customer",
-          amount: 10000,
-        },
-      })
-      await api.post(`/store/payment-collections/${payCol.id}/authorize`)
+        }
+      )
+      await api.post(
+        `/store/payment-collections/${payCol.id}/sessions/batch/authorize`,
+        {
+          session_ids: payColRes.data.payment_collection.payment_sessions.map(
+            ({ id }) => id
+          ),
+        }
+      )
 
       const paymentCollections = await api.get(
         `/admin/payment-collections/${payCol.id}`,

@@ -77,7 +77,7 @@ export default async (req: Request, res: Response) => {
       paymentProviderService.withTransaction(manager)
 
     const orderEdit = await orderEditServiceTx.retrieve(id, {
-      relations: ["payment_collection"],
+      relations: ["payment_collection", "payment_collection.payments"],
     })
 
     if (orderEdit.status === OrderEditStatus.CONFIRMED) {
