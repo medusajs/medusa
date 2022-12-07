@@ -2,4 +2,4 @@
 "@medusajs/medusa": minor
 ---
 
-Fix: customer email bug
+Fix: allow customers to claim orders
