@@ -31,6 +31,7 @@ class SendGridService extends NotificationService {
       fulfillmentProviderService,
       totalsService,
       productVariantService,
+      paymentProviderService
     },
     options
   ) {
@@ -49,6 +50,7 @@ class SendGridService extends NotificationService {
     this.fulfillmentService_ = fulfillmentService
     this.totalsService_ = totalsService
     this.productVariantService_ = productVariantService
+    this.paymentProviderService = paymentProviderService
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -129,6 +131,8 @@ class SendGridService extends NotificationService {
           eventData,
           attachmentGenerator
         )
+      case "order.refund_created":
+        return this.orderRefundCreatedData(eventData, attachmentGenerator)
       default:
         return {}
     }
@@ -166,6 +170,8 @@ class SendGridService extends NotificationService {
           return map.customer_password_reset_template
         case "restock-notification.restocked":
           return map.medusa_restock_template
+        case "order.refund_created":
+          return map.order_refund_created_template
         default:
           return null
       }
@@ -203,6 +209,8 @@ class SendGridService extends NotificationService {
         return this.options_.customer_password_reset_template
       case "restock-notification.restocked":
         return this.options_.medusa_restock_template
+      case "order.refund_created":
+        return this.options_.order_refund_created_template
       default:
         return null
     }
@@ -1209,6 +1217,25 @@ class SendGridService extends NotificationService {
       }
     }
     return null
+  }
+
+  async orderRefundCreatedData({ refund_id }) {
+    const refund = await this.paymentProviderService.retrieveRefund(refund_id, {
+      select: [
+        'id',
+        'amount',
+        'reason',
+        'note'
+      ],
+      relations: [
+        'order'
+      ]
+    })
+
+    return {
+      refund,
+      email: refund.order.email
+    }
   }
 }
 
