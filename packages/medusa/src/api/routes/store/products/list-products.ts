@@ -25,6 +25,8 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { IsType } from "../../../../utils/validators/is-type"
+import { FlagRouter } from "../../../../utils/flag-router"
+import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**
  * @oas [get] /products
@@ -195,7 +197,17 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+
   const validated = await validator(StoreGetProductsParams, req.query)
+
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    if (req.publishableApiKeyScopes?.sales_channel_id.length) {
+      validated.sales_channel_id =
+        validated.sales_channel_id ||
+        req.publishableApiKeyScopes.sales_channel_id
+    }
+  }
 
   const filterableFields: StoreGetProductsParams = omit(validated, [
     "fields",

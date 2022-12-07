@@ -41,6 +41,7 @@ import { isFuture, isPast } from "../utils/date-helpers"
 import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
+import { CalculationContextData } from "../types/totals"
 
 /**
  * Provides layer to manipulate discounts.
@@ -573,7 +574,7 @@ class DiscountService extends TransactionBaseService {
   async calculateDiscountForLineItem(
     discountId: string,
     lineItem: LineItem,
-    cart: Cart
+    calculationContextData: CalculationContextData
   ): Promise<number> {
     return await this.atomicPhase_(async (transactionManager) => {
       let adjustment = 0
@@ -586,6 +587,12 @@ class DiscountService extends TransactionBaseService {
 
       const { type, value, allocation } = discount.rule
 
+      const calculationContext = await this.totalsService_
+        .withTransaction(transactionManager)
+        .getCalculationContext(calculationContextData, {
+          exclude_shipping: true,
+        })
+
       let fullItemPrice = lineItem.unit_price * lineItem.quantity
       if (
         this.featureFlagRouter_.isFeatureEnabled(
@@ -593,11 +600,6 @@ class DiscountService extends TransactionBaseService {
         ) &&
         lineItem.includes_tax
       ) {
-        const calculationContext = await this.totalsService_
-          .withTransaction(transactionManager)
-          .getCalculationContext(cart, {
-            exclude_shipping: true,
-          })
         const lineItemTotals = await this.newTotalsService_
           .withTransaction(transactionManager)
           .getLineItemTotals([lineItem], {
@@ -616,15 +618,26 @@ class DiscountService extends TransactionBaseService {
         // when a fixed discount should be applied to the total,
         // we create line adjustments for each item with an amount
         // relative to the subtotal
-        const subtotal = await this.totalsService_.getSubtotal(cart, {
-          excludeNonDiscounts: true,
-        })
+        const discountedItems = calculationContextData.items.filter(
+          (item) => item.allow_discounts
+        )
+        const totals = await this.newTotalsService_.getLineItemTotals(
+          discountedItems,
+          {
+            calculationContext,
+          }
+        )
+        const subtotal = Object.values(totals).reduce((subtotal, total) => {
+          subtotal += total.subtotal
+          return subtotal
+        }, 0)
         const nominator = Math.min(value, subtotal)
         const totalItemPercentage = fullItemPrice / subtotal
         adjustment = Math.round(nominator * totalItemPercentage)
       } else {
         adjustment = value * lineItem.quantity
       }
+
       // if the amount of the discount exceeds the total price of the item,
       // we return the total item price, else the fixed amount
       return adjustment >= fullItemPrice ? fullItemPrice : adjustment

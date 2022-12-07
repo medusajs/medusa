@@ -27,8 +27,12 @@ describe("PublishableApiKeyService", () => {
     },
   })
 
+  const publishableApiKeySalesChannelRepository = MockRepository({})
+
   const publishableApiKeyService = new PublishableApiKeyService({
     manager: MockManager,
+    publishableApiKeySalesChannelRepository:
+      publishableApiKeySalesChannelRepository,
     publishableApiKeyRepository: publishableApiKeyRepository,
     eventBusService: EventBusServiceMock as unknown as EventBusService,
   })

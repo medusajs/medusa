@@ -325,6 +325,29 @@ class ProductService extends TransactionBaseService {
   }
 
   /**
+   * Check if the product is assigned to at least one of the provided sales channels.
+   *
+   * @param id - product id
+   * @param salesChannelIds - an array of sales channel ids
+   */
+  async isProductInSalesChannels(
+    id: string,
+    salesChannelIds: string[]
+  ): Promise<boolean> {
+    const product = await this.retrieve_(
+      { id },
+      { relations: ["sales_channels"] }
+    )
+
+    // TODO: reimplement this to use db level check
+    const productsSalesChannels = product.sales_channels.map(
+      (channel) => channel.id
+    )
+
+    return productsSalesChannels.some((id) => salesChannelIds.includes(id))
+  }
+
+  /**
    * Creates a product.
    * @param productObject - the product to create
    * @return resolves to the creation result.

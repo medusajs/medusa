@@ -11,6 +11,7 @@ export type CustomerFactoryData = {
   email?: string
   groups?: CustomerGroupFactoryData[]
   password_hash?: string
+  has_account?: boolean
 }
 
 export const simpleCustomerFactory = async (
@@ -28,6 +29,10 @@ export const simpleCustomerFactory = async (
   const c = manager.create(Customer, {
     id: customerId,
     email: data.email,
+    password_hash:
+      data.password_hash ??
+      "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+    has_account: data.has_account ?? true,
   })
 
   if (data.password_hash) {

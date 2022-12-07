@@ -5,34 +5,29 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/sessions
- * operationId: "PostPaymentCollectionsSessions"
- * summary: "Manage Payment Sessions from Payment Collections"
- * description: "Manages Payment Sessions from Payment Collections."
- * x-authenticated: true
+ * @oas [post] /payment-collections/{id}/sessions/batch
+ * operationId: "PostPaymentCollectionsPaymentCollectionSessionsBatch"
+ * summary: "Manage Multiple Payment Sessions from Payment Collections"
+ * description: "Manages Multiple Payment Sessions from Payment Collections."
+ * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collections.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         type: object
  *         properties:
  *           sessions:
- *             description: "An array or a single entry of payment sessions related to the Payment Collection. If the session_id is not provided the existing sessions not present will be deleted and the provided ones will be created."
+ *             description: "An array of payment sessions related to the Payment Collection. If the session_id is not provided, existing sessions not present will be deleted and the provided ones will be created."
  *             type: array
  *             items:
  *               required:
  *                 - provider_id
- *                 - customer_id
  *                 - amount
  *               properties:
  *                 provider_id:
  *                   type: string
  *                   description: The ID of the Payment Provider.
- *                 customer_id:
- *                   type: string
- *                   description: "The ID of the Customer."
  *                 amount:
  *                   type: integer
  *                   description: "The amount ."
@@ -50,15 +45,13 @@ import { PaymentCollectionService } from "../../../../services"
  *       // Total amount = 10000
  *
  *       // Adding two new sessions
- *       medusa.paymentCollections.manageSessions(payment_id, [
+ *       medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
  *         {
  *           provider_id: "stripe",
- *           customer_id: "cus_123",
  *           amount: 5000,
  *         },
  *         {
  *           provider_id: "manual",
- *           customer_id: "cus_123",
  *           amount: 5000,
  *         },
  *       ])
@@ -67,20 +60,20 @@ import { PaymentCollectionService } from "../../../../services"
  *       });
  *
  *       // Updating one session and removing the other
- *       medusa.paymentCollections.manageSessions(payment_id, {
+ *       medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
+ *         {
  *           provider_id: "stripe",
- *           customer_id: "cus_123",
  *           amount: 10000,
  *           session_id: "ps_123456"
- *       })
+ *         },
+ *       ])
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -92,7 +85,6 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
  *           properties:
  *             payment_collection:
  *               $ref: "#/components/schemas/payment_collection"
@@ -110,8 +102,10 @@ import { PaymentCollectionService } from "../../../../services"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const data = req.validatedBody as StoreManagePaymentCollectionSessionRequest
+  const data = req.validatedBody as StorePostPaymentCollectionsBatchSessionsReq
   const { id } = req.params
+
+  const customerId = req.user?.customer_id
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
@@ -122,19 +116,16 @@ export default async (req, res) => {
     async (transactionManager) => {
       return await paymentCollectionService
         .withTransaction(transactionManager)
-        .setPaymentSessions(id, data.sessions)
+        .setPaymentSessionsBatch(id, data.sessions, customerId)
     }
   )
 
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
-export class PaymentCollectionSessionInputRequest {
+export class StorePostPaymentCollectionsSessionsReq {
   @IsString()
   provider_id: string
-
-  @IsString()
-  customer_id: string
 
   @IsInt()
   @IsNotEmpty()
@@ -145,12 +136,7 @@ export class PaymentCollectionSessionInputRequest {
   session_id?: string
 }
 
-export class StoreManagePaymentCollectionSessionRequest {
-  @IsType([
-    PaymentCollectionSessionInputRequest,
-    [PaymentCollectionSessionInputRequest],
-  ])
-  sessions:
-    | PaymentCollectionSessionInputRequest
-    | PaymentCollectionSessionInputRequest[]
+export class StorePostPaymentCollectionsBatchSessionsReq {
+  @IsType([[StorePostPaymentCollectionsSessionsReq]])
+  sessions: StorePostPaymentCollectionsSessionsReq[]
 }

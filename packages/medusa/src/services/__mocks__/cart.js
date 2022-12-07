@@ -319,6 +319,9 @@ export const CartServiceMock = {
   addLineItem: jest.fn().mockImplementation((cartId, lineItem) => {
     return Promise.resolve()
   }),
+  addOrUpdateLineItems: jest.fn().mockImplementation((cartId, lineItem) => {
+    return Promise.resolve()
+  }),
   setPaymentMethod: jest.fn().mockImplementation((cartId, method) => {
     if (method.provider_id === "default_provider") {
       return Promise.resolve(carts.cartWithPaySessions)
