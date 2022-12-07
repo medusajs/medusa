@@ -20,20 +20,20 @@ export type PaymentData = Data
 export type PaymentSessionData = Data
 
 /**
- * @deprecated use the new PaymentService interface instead
+ * @deprecated use the new PaymentServicePlugin interface instead
  * The old payment service plugin interface
  */
 export interface PaymentService extends TransactionBaseService {
   getIdentifier(): string
 
   /**
-   * @deprecated use retrieve instead
+   * @deprecated use PaymentServicePlugin.retrieve instead
    * @param paymentSession
    */
   getPaymentData(paymentSession: PaymentSession): Promise<PaymentData>
 
   /**
-   * @deprecated use update instead
+   * @deprecated use PaymentServicePlugin.update instead
    * @param paymentSessionData
    * @param data
    */
@@ -43,19 +43,19 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use create instead
+   * @deprecated use PaymentServicePlugin.create instead
    * @param cart
    */
   createPayment(cart: Cart): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use retrieve instead
+   * @deprecated use PaymentServicePlugin.retrieve instead
    * @param paymentData
    */
   retrievePayment(paymentData: PaymentData): Promise<Data>
 
   /**
-   * @deprecated use update instead
+   * @deprecated use PaymentServicePlugin.update instead
    * @param paymentSessionData
    * @param cart
    */
@@ -65,7 +65,7 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use authorize instead
+   * @deprecated use PaymentServicePlugin.authorize instead
    * @param paymentSession
    * @param context
    */
@@ -75,43 +75,46 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }>
 
   /**
-   * @deprecated use capture instead
+   * @deprecated use PaymentServicePlugin.capture instead
    * @param payment
    */
   capturePayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated use refund instead
+   * @deprecated use PaymentServicePlugin.refund instead
    * @param payment
    * @param refundAmount
    */
   refundPayment(payment: Payment, refundAmount: number): Promise<PaymentData>
 
   /**
-   * @deprecated use cancel instead
+   * @deprecated use PaymentServicePlugin.cancel instead
    * @param payment
    */
   cancelPayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated use cancel instead
+   * @deprecated use PaymentServicePlugin.cancel instead
    * @param paymentSession
    */
   deletePayment(paymentSession: PaymentSession): Promise<void>
 
   /**
-   * @deprecated use getSavedMethods instead
+   * @deprecated use PaymentServicePlugin.getSavedMethods instead
    * @param customer
    */
   retrieveSavedMethods(customer: Customer): Promise<Data[]>
 
   /**
-   * @deprecated use getSessionStatus instead
+   * @deprecated use PaymentServicePlugin.getSessionStatus instead
    * @param data
    */
   getStatus(data: Data): Promise<PaymentSessionStatus>
 }
 
+/**
+ * @deprecated use the AbstractPaymentServicePlugin instead
+ */
 export abstract class AbstractPaymentService
   extends TransactionBaseService
   implements PaymentService
@@ -225,7 +228,7 @@ export abstract class AbstractPaymentService
 /**
  * The new payment service plugin interface
  */
-export interface PaymentPluginService {
+export interface PaymentServicePlugin {
   /**
    * Return a unique identifier to retrieve the payment plugin provider
    */
@@ -338,8 +341,8 @@ export interface PaymentPluginService {
 /**
  * New payment plugin service plugin API
  */
-export abstract class AbstractPaymentPluginService
-  implements PaymentPluginService
+export abstract class AbstractPaymentServicePlugin
+  implements PaymentServicePlugin
 {
   protected constructor(
     container: MedusaContainer,
@@ -350,7 +353,7 @@ export abstract class AbstractPaymentPluginService
   protected static identifier: string
 
   public getIdentifier(): string {
-    const ctr = this.constructor as typeof AbstractPaymentPluginService
+    const ctr = this.constructor as typeof AbstractPaymentServicePlugin
 
     if (!ctr.identifier) {
       throw new Error(`Missing static property "identifier".`)
@@ -406,6 +409,6 @@ export function isPaymentService(obj: unknown): boolean {
   return (
     obj instanceof AbstractPaymentService ||
     obj instanceof PaymentService ||
-    obj instanceof AbstractPaymentPluginService
+    obj instanceof AbstractPaymentServicePlugin
   )
 }
