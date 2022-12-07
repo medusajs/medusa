@@ -6,15 +6,9 @@ const { useApi } = require("../../../../helpers/use-api")
 const { useDb } = require("../../../../helpers/use-db")
 
 const {
-  simpleCartFactory,
   simpleRegionFactory,
-  simpleShippingOptionFactory,
-  simpleCustomShippingOptionFactory,
   simpleProductFactory,
-  simplePriceListFactory,
-  simpleDiscountFactory,
 } = require("../../../factories")
-const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(30000)
 
