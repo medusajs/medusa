@@ -23,6 +23,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { CartCreateProps } from "../../../../types/cart"
 import { isDefined } from "../../../../utils"
+import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**
  * @oas [post] /carts
@@ -156,6 +157,23 @@ export default async (req, res) => {
   if (validated.country_code) {
     toCreate["shipping_address"] = {
       country_code: validated.country_code.toLowerCase(),
+    }
+  }
+
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    if (
+      !toCreate.sales_channel_id &&
+      req.publishableApiKeyScopes?.sales_channel_id.length
+    ) {
+      if (req.publishableApiKeyScopes.sales_channel_id.length > 1) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "The PublishableApiKey provided in the request header has multiple associated sales channels."
+        )
+      }
+
+      toCreate.sales_channel_id =
+        req.publishableApiKeyScopes.sales_channel_id[0]
     }
   }
 
