@@ -2104,4 +2104,103 @@ export const adminHandlers = [
       })
     )
   }),
+
+  rest.get("/admin/payment-collections/:id", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment_collection: {
+          ...fixtures.get("payment_collection"),
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.delete("/admin/payment-collections/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "payment_collection",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.post("/admin/payment-collections/:id", (req, res, ctx) => {
+    const { id } = req.params
+    const { description, metadata } = req.body as any
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment_collection: {
+          ...fixtures.get("payment_collection"),
+          description,
+          metadata,
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/payment-collections/:id/authorize", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment_collection: {
+          ...fixtures.get("payment_collection"),
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.get("/admin/payments/:id", (req, res, ctx) => {
+    const { id } = req.params
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment: {
+          ...fixtures.get("payment"),
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/payments/:id/capture", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment: {
+          ...fixtures.get("payment"),
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/payments/:id/refund", (req, res, ctx) => {
+    const { id } = req.params
+    const { amount, reason, note } = req.body as any
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        refund: {
+          ...fixtures.get("refund"),
+          payment_id: id,
+          amount,
+          reason,
+          note,
+        },
+      })
+    )
+  }),
 ]

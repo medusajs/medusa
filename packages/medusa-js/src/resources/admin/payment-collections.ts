@@ -1,7 +1,7 @@
 import {
-  AdminUpdatePaymentCollectionRequest,
+  AdminUpdatePaymentCollectionsReq,
   AdminPaymentCollectionDeleteRes,
-  AdminPaymentCollectionRes,
+  AdminPaymentCollectionsRes,
   GetPaymentCollectionsParams,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
@@ -13,7 +13,7 @@ class AdminPaymentCollectionsResource extends BaseResource {
     id: string,
     query?: GetPaymentCollectionsParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminPaymentCollectionRes> {
+  ): ResponsePromise<AdminPaymentCollectionsRes> {
     let path = `/admin/payment-collections/${id}`
 
     if (query) {
@@ -26,9 +26,9 @@ class AdminPaymentCollectionsResource extends BaseResource {
 
   update(
     id: string,
-    payload: AdminUpdatePaymentCollectionRequest,
+    payload: AdminUpdatePaymentCollectionsReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminPaymentCollectionRes> {
+  ): ResponsePromise<AdminPaymentCollectionsRes> {
     const path = `/admin/payment-collections/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -44,7 +44,7 @@ class AdminPaymentCollectionsResource extends BaseResource {
   markAsAuthorized(
     id: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminPaymentCollectionRes> {
+  ): ResponsePromise<AdminPaymentCollectionsRes> {
     const path = `/admin/payment-collections/${id}/authorize`
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }

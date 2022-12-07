@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/product-variant.ts:60](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L60)
+[models/product-variant.ts:60](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L60)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:43](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L43)
+[models/product-variant.ts:43](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L43)
 
 ___
 
@@ -52,7 +52,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -66,7 +66,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:47](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L47)
+[models/product-variant.ts:47](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L47)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:84](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L84)
+[models/product-variant.ts:84](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L84)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:66](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L66)
+[models/product-variant.ts:66](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L66)
 
 ___
 
@@ -110,7 +110,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:57](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L57)
+[models/product-variant.ts:57](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L57)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:81](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L81)
+[models/product-variant.ts:81](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L81)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:63](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L63)
+[models/product-variant.ts:63](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L63)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:75](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L75)
+[models/product-variant.ts:75](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L75)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:95](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L95)
+[models/product-variant.ts:95](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L95)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:72](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L72)
+[models/product-variant.ts:72](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L72)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:92](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L92)
+[models/product-variant.ts:92](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L92)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:69](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L69)
+[models/product-variant.ts:69](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L69)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:35](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L35)
+[models/product-variant.ts:35](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L35)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:29](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L29)
+[models/product-variant.ts:29](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L29)
 
 ___
 
@@ -220,7 +220,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:25](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L25)
+[models/product-variant.ts:25](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L25)
 
 ___
 
@@ -230,7 +230,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:39](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L39)
+[models/product-variant.ts:39](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L39)
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:21](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L21)
+[models/product-variant.ts:21](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L21)
 
 ___
 
@@ -250,7 +250,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:51](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L51)
+[models/product-variant.ts:51](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L51)
 
 ___
 
@@ -264,7 +264,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -274,7 +274,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:54](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L54)
+[models/product-variant.ts:54](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L54)
 
 ___
 
@@ -284,7 +284,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:78](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L78)
+[models/product-variant.ts:78](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L78)
 
 ___
 
@@ -294,7 +294,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:87](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L87)
+[models/product-variant.ts:87](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L87)
 
 ## Methods
 
@@ -308,4 +308,4 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:97](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/product-variant.ts#L97)
+[models/product-variant.ts:97](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L97)
