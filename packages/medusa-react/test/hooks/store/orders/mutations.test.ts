@@ -22,7 +22,7 @@ describe("useRequestOrderAccess hook", () => {
       wrapper: createWrapper(),
     })
 
-    result.current.mutate({ display_ids: [""] })
+    result.current.mutate({ order_ids: [""] })
 
     await waitFor(() => result.current.isSuccess)
 
