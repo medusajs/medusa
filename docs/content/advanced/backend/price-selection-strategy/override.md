@@ -39,14 +39,22 @@ export default class MyPriceListStrategy extends AbstractPriceSelectionStrategy 
 You can use services or repositories in the strategy by adding them to the constructor and updating the parameters passed to the `MyPriceListStrategy` constructor in `withTransaction`. For example:
 
 ```typescript
+import { 
+  AbstractPriceSelectionStrategy, 
+  CustomerService, 
+  IPriceSelectionStrategy, 
+  PriceSelectionContext, 
+  PriceSelectionResult 
+} from "@medusajs/medusa";
+
 export default class MyPriceListStrategy extends AbstractPriceSelectionStrategy {
-  private productsService: ProductService
+  private customerService: CustomerService
 
   constructor({
-    productsService
+    customerService
   }) {
     super()
-    this.productsService = productsService
+    this.customerService = customerService
   }
 
   withTransaction(manager: EntityManager): IPriceSelectionStrategy {
@@ -55,7 +63,7 @@ export default class MyPriceListStrategy extends AbstractPriceSelectionStrategy 
     }
 
     return new MyPriceListStrategy({
-      productsService: this.productsService
+      customerService: this.customerService
     })
   }
   //...

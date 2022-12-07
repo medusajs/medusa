@@ -18,7 +18,7 @@ The [Calculate Cart Taxes](https://docs.medusajs.com/api/store/#tag/Cart/operati
 
 This calculates and retrieves the taxes on the cart and each of the line items in that cart.
 
-### Use CartService
+### Use CartService's retrieve Method
 
 The `CartService` class has a method `retrieve` that gets a cart by ID. In that method, taxes are calculated only if automatic taxes calculation is enabled for the region the cart belongs to.
 
@@ -36,13 +36,11 @@ You can learn how to [retrieve and use services](../services/create-service.md#u
 
 :::
 
-### Use decorateLineItemsWithTotals function in Endpoints
+### Use CartService's decorateTotals Method
 
-If you want to calculate the taxes of line items on the storefront in an endpoint and return the necessary fields in the result, you can use the `decorateLineItemsWithTotals` method in your endpoint:
+Another way you can use the `CartService` to calculate taxes is using the method `decorateTotals`:
 
 ```jsx
-//at the beginning of the file
-import { decorateLineItemsWithTotals } from "@medusajs/medusa/dist/api/routes/store/carts/decorate-line-items-with-totals"
 
 export default () => {
   //...
@@ -54,16 +52,16 @@ export default () => {
     
     //...
     //retrieve taxes of line items
-    const data = await decorateLineItemsWithTotals(cart, req, {
+    const data = await decorateTotals(cart, {
       force_taxes: true
-    });
+    })
     
     return res.status(200).json({ cart: data });
   })
 }
 ```
 
-The `decorateLineItemsWithTotals` method accepts an options object as a third parameter. If you set `force_taxes` to `true` in that object, the totals of the line items can be retrieved regardless of whether the automatic calculation is enabled in the line item’s region.
+The `decorateTotals` method accepts the cart as a first parameter and an options object as a second parameter. If you set `force_taxes` to `true` in that object, the totals of the line items can be retrieved regardless of whether the automatic calculation is enabled in the line item’s region.
 
 ### Use TotalsService
 

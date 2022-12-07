@@ -10,18 +10,18 @@
 
 ### list
 
-▸ **list**(`query?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTagsListRes`](../modules/internal-16.md#adminproducttagslistres)\>
+▸ **list**(`query?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTagsListRes`](../modules/internal-18.md#adminproducttagslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetProductTagsParams`](internal-16.AdminGetProductTagsParams.md) |
+| `query?` | [`AdminGetProductTagsParams`](internal-18.AdminGetProductTagsParams.md) |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTagsListRes`](../modules/internal-16.md#adminproducttagslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTagsListRes`](../modules/internal-18.md#adminproducttagslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/product-tags.ts:10](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/product-tags.ts#L10)
+[medusa-js/src/resources/admin/product-tags.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/product-tags.ts#L10)

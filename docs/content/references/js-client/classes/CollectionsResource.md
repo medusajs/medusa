@@ -10,7 +10,7 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCollectionsListRes`](../modules/internal-33.md#storecollectionslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCollectionsListRes`](../modules/internal-36.md#storecollectionslistres)\>
 
 **`Description`**
 
@@ -20,22 +20,22 @@ Retrieves a list of collections
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | [`StoreGetCollectionsParams`](internal-33.StoreGetCollectionsParams.md) | is optional. Can contain a limit and offset for the returned list |
+| `query?` | [`StoreGetCollectionsParams`](internal-36.StoreGetCollectionsParams.md) | is optional. Can contain a limit and offset for the returned list |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCollectionsListRes`](../modules/internal-33.md#storecollectionslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCollectionsListRes`](../modules/internal-36.md#storecollectionslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/collections.ts:28](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/collections.ts#L28)
+[medusa-js/src/resources/collections.ts:28](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/collections.ts#L28)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCollectionsRes`](../modules/internal-33.md#storecollectionsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCollectionsRes`](../modules/internal-36.md#storecollectionsres)\>
 
 **`Description`**
 
@@ -50,8 +50,8 @@ Retrieves a single collection
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCollectionsRes`](../modules/internal-33.md#storecollectionsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCollectionsRes`](../modules/internal-36.md#storecollectionsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/collections.ts:17](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/collections.ts#L17)
+[medusa-js/src/resources/collections.ts:17](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/collections.ts#L17)
