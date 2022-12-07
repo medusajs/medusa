@@ -665,12 +665,9 @@ class CartService extends TransactionBaseService {
             { cart_id: cartId, has_shipping: true },
             { has_shipping: false }
           )
-          .catch((err: unknown) => {
+          .catch((err: Error | MedusaError) => {
             // We only want to catch the errors related to not found items since we don't care if there is not item to update
-            if (
-              err instanceof MedusaError &&
-              err.type === MedusaError.Types.NOT_FOUND
-            ) {
+            if ("type" in err && err.type === MedusaError.Types.NOT_FOUND) {
               return
             }
             throw err
@@ -821,12 +818,9 @@ class CartService extends TransactionBaseService {
             },
             { has_shipping: false }
           )
-          .catch((err: unknown) => {
+          .catch((err: Error | MedusaError) => {
             // We only want to catch the errors related to not found items since we don't care if there is not item to update
-            if (
-              err instanceof MedusaError &&
-              err.type === MedusaError.Types.NOT_FOUND
-            ) {
+            if ("type" in err && err.type === MedusaError.Types.NOT_FOUND) {
               return
             }
             throw err
