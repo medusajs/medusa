@@ -25,7 +25,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/payment-collections", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_ORDER_EDITING: true },
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
