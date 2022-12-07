@@ -5,11 +5,11 @@ import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 const validRegionId = IdMap.getId("region-france")
 
 describe("POST /admin/discounts", () => {
-  const generateAdminJwtSession = () => ({
+  const adminSession = {
     jwt: {
       userId: IdMap.getId("admin_user")
     }
-  })
+  }
 
   describe("successful creation", () => {
     let subject
@@ -28,7 +28,7 @@ describe("POST /admin/discounts", () => {
           starts_at: "02/02/2021 13:45",
           ends_at: "03/14/2021 04:30",
         },
-        adminSession: generateAdminJwtSession(),
+        adminSession,
       })
     })
 
@@ -75,7 +75,7 @@ describe("POST /admin/discounts", () => {
           is_dynamic: true,
           valid_duration: "PaMT2D",
         },
-        adminSession: generateAdminJwtSession(),
+        adminSession,
       })
     })
 
@@ -109,7 +109,7 @@ describe("POST /admin/discounts", () => {
           is_dynamic: true,
           valid_duration: "P1Y2M03DT04H05M",
         },
-        adminSession: generateAdminJwtSession(),
+        adminSession,
       })
     })
 
@@ -150,7 +150,7 @@ describe("POST /admin/discounts", () => {
           },
           regions: [validRegionId],
         },
-        adminSession: generateAdminJwtSession(),
+        adminSession,
       })
     })
 
@@ -190,7 +190,7 @@ describe("POST /admin/discounts", () => {
           is_dynamic: true,
           valid_duration: "P1Y2M03DT04H05M",
         },
-        adminSession: generateAdminJwtSession(),
+        adminSession,
       })
     })
 
@@ -222,7 +222,7 @@ describe("POST /admin/discounts", () => {
           ends_at: "02/02/2021",
           starts_at: "03/14/2021",
         },
-        adminSession: generateAdminJwtSession(),
+        adminSession,
       })
     })
 
@@ -255,7 +255,7 @@ describe("POST /admin/discounts", () => {
           regions: [validRegionId],
           starts_at: "03/14/2021 14:30",
         },
-        adminSession: generateAdminJwtSession(),
+        adminSession,
       })
     })
 
@@ -296,7 +296,7 @@ describe("POST /admin/discounts", () => {
             allocation: "total",
           },
         },
-        adminSession: generateAdminJwtSession(),
+        adminSession,
       })
     })
 
