@@ -11,9 +11,17 @@ export class updateCustomerEmailConstraint_1669032280562
     await queryRunner.query(
       `ALTER TABLE "customer" ADD CONSTRAINT "UQ_unique_email_for_guests_and_customer_accounts" UNIQUE ("email", "has_account")`
     )
+
+    await queryRunner.query(
+      `ALTER TABLE "order" ADD CONSTRAINT "UQ_unique_display_id" UNIQUE ("display_id")`
+    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "order" DROP CONSTRAINT "UQ_unique_display_id"`
+    )
+
     await queryRunner.query(
       `ALTER TABLE "customer" DROP CONSTRAINT "UQ_unique_email_for_guests_and_customer_accounts"`
     )
