@@ -1163,6 +1163,25 @@ class SendGridService extends NotificationService {
     return data
   }
 
+  async orderRefundCreatedData({ refund_id }) {
+    const refund = await this.paymentProviderService.retrieveRefund(refund_id, {
+      select: [
+        'id',
+        'amount',
+        'reason',
+        'note'
+      ],
+      relations: [
+        'order'
+      ]
+    })
+
+    return {
+      refund,
+      email: refund.order.email
+    }
+  }
+
   processItems_(items, taxRate, currencyCode) {
     return items.map((i) => {
       return {
@@ -1217,25 +1236,6 @@ class SendGridService extends NotificationService {
       }
     }
     return null
-  }
-
-  async orderRefundCreatedData({ refund_id }) {
-    const refund = await this.paymentProviderService.retrieveRefund(refund_id, {
-      select: [
-        'id',
-        'amount',
-        'reason',
-        'note'
-      ],
-      relations: [
-        'order'
-      ]
-    })
-
-    return {
-      refund,
-      email: refund.order.email
-    }
   }
 }
 
