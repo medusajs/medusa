@@ -403,25 +403,27 @@ class ShippingOptionService extends TransactionBaseService {
       amount?: number
       price_type?: ShippingOptionPriceType
     }
-  ): Promise<ShippingOption | null> {
+  ): Promise<Partial<ShippingOption> | null> {
+    const option_: Partial<ShippingOption> = { ...option }
+
     if (isDefined(priceInput.amount)) {
-      option.amount = priceInput.amount
+      option_.amount = priceInput.amount
     }
 
     if (isDefined(priceInput.price_type)) {
-      option.price_type = await this.validatePriceType_(
+      option_.price_type = await this.validatePriceType_(
         priceInput.price_type,
         option
       )
 
       if (priceInput.price_type === ShippingOptionPriceType.CALCULATED) {
-        option.amount = null
+        option_.amount = null
       }
     }
 
     if (
-      option.price_type === ShippingOptionPriceType.FLAT_RATE &&
-      (!option?.amount || option.amount < 0)
+      option_.price_type === ShippingOptionPriceType.FLAT_RATE &&
+      (!option_?.amount || option_.amount < 0)
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -429,7 +431,7 @@ class ShippingOptionService extends TransactionBaseService {
       )
     }
 
-    return option
+    return option_
   }
 
   /**
