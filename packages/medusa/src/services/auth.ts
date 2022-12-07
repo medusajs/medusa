@@ -152,7 +152,7 @@ class AuthService extends TransactionBaseService {
         const customer: Customer = await this.customerService_
           .withTransaction(transactionManager)
           .retrieveRegisteredByEmail(email, {
-            select: ["password_hash"],
+            select: ["id", "password_hash"],
           })
         if (customer.password_hash) {
           const passwordsMatch = await this.comparePassword_(
