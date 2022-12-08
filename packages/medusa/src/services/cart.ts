@@ -1703,13 +1703,23 @@ class CartService extends TransactionBaseService {
           )
         }
 
+        const paymentSessionInput = {
+          cart: cart,
+          customer: cart.customer,
+          amount: cart.total,
+          currency_code: cart.region.currency_code,
+          provider_id: "",
+        }
+
         if (total > 0) {
           // If only one payment session exists, we preselect it
           if (region.payment_providers.length === 1 && !cart.payment_session) {
             const paymentProvider = region.payment_providers[0]
+            paymentSessionInput.provider_id = paymentProvider.id
+
             const paymentSession = await this.paymentProviderService_
               .withTransaction(transactionManager)
-              .createSession(paymentProvider.id, cart)
+              .createSession(paymentProvider.id, paymentSessionInput)
 
             paymentSession.is_selected = true
 
@@ -1718,9 +1728,10 @@ class CartService extends TransactionBaseService {
             await Promise.all(
               region.payment_providers.map(async (paymentProvider) => {
                 if (!seen.includes(paymentProvider.id)) {
+                  paymentSessionInput.provider_id = paymentProvider.id
                   return this.paymentProviderService_
                     .withTransaction(transactionManager)
-                    .createSession(paymentProvider.id, cart)
+                    .createSession(paymentProvider.id, paymentSessionInput)
                 }
                 return
               })
