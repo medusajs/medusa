@@ -18,7 +18,6 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   customerRepository: typeof CustomerRepository
   addressRepository: typeof AddressRepository
-  configModule: ConfigModule
 }
 
 /**
@@ -28,7 +27,6 @@ class CustomerService extends TransactionBaseService {
   protected readonly customerRepository_: typeof CustomerRepository
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly eventBusService_: EventBusService
-  protected readonly configModule_: ConfigModule
 
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
@@ -44,7 +42,6 @@ class CustomerService extends TransactionBaseService {
     customerRepository,
     eventBusService,
     addressRepository,
-    configModule,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -54,7 +51,6 @@ class CustomerService extends TransactionBaseService {
     this.customerRepository_ = customerRepository
     this.eventBusService_ = eventBusService
     this.addressRepository_ = addressRepository
-    this.configModule_ = configModule
   }
 
   /**

@@ -9,6 +9,7 @@ import {
   OrderService,
 } from "../../../../services"
 import TokenService from "../../../../services/token"
+import { TokenEvents } from "../../../../types/token"
 
 /**
  * @oas [post] /orders/batch/customer/token
@@ -112,10 +113,10 @@ export default async (req, res) => {
           claimingCustomerId: customerId,
           orders: order_ids,
         },
-        { expiresIn: "1h" }
+        { expiresIn: "15m" }
       )
 
-      await eventBusService.emit(OrderService.Events.ORDERS_CLAIMED, {
+      await eventBusService.emit(TokenEvents.ORDER_UPDATE_TOKEN_CREATED, {
         old_email: email,
         new_customer_id: customer.id,
         orders: order_ids,

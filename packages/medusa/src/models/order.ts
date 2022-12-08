@@ -92,7 +92,7 @@ export class Order extends BaseEntity {
   @DbAwareColumn({ type: "enum", enum: PaymentStatus, default: "not_paid" })
   payment_status: PaymentStatus
 
-  @Index({ unique: true })
+  @Index()
   @Column()
   @Generated(resolveDbGenerationStrategy("increment"))
   display_id: number
