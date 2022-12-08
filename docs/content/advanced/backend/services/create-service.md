@@ -54,7 +54,7 @@ In this section, you'll learn how to use services throughout your Medusa server.
 
 Before using your service, make sure you run the `build` command:
 
-```bash npm2yarn noReport noHeader
+```bash npm2yarn noReport
 npm run build
 ```
 

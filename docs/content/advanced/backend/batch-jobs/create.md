@@ -43,7 +43,7 @@ Batch job strategies must extend the abstract class `AbstractBatchJobStrategy` a
 
 Add the following content to the file you created:
 
-```tsx
+```tsx title=src/strategies/publish.ts
 import { AbstractBatchJobStrategy, BatchJobService } from '@medusajs/medusa'
 import { EntityManager } from 'typeorm'
 
@@ -352,7 +352,7 @@ curl -L -X GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
 
 Based on the batch job strategy implemented in this documentation, the `result` property could be something like this:
 
-```json noReport noHeader
+```json noReport
 "result": {
     "count": 1,
     "stat_descriptors": [
