@@ -30,7 +30,7 @@ describe("PaymentProviderService", () => {
   })
 
   describe("createSession", () => {
-    const createPayment = jest.fn().mockReturnValue(Promise.resolve())
+    const createPayment = jest.fn().mockReturnValue(Promise.resolve({}))
     const container = {
       manager: MockManager,
       paymentSessionRepository: MockRepository(),
@@ -46,12 +46,30 @@ describe("PaymentProviderService", () => {
 
     it("successfully creates session", async () => {
       await providerService.createSession("default_provider", {
+        object: "cart",
+        region: {
+          currency_code: "usd"
+        },
         total: 100,
       })
 
       expect(createPayment).toBeCalledTimes(1)
       expect(createPayment).toBeCalledWith({
-        total: 100,
+         amount: 100,
+         cart: {
+           object: "cart",
+           total: 100,
+           region: {
+            currency_code: "usd"
+          },
+         },
+         collected_data: {},
+         currency_code: "usd",
+         object: "cart",
+         region: {
+           currency_code: "usd"
+         },
+         total: 100,
       })
     })
   })
@@ -163,11 +181,29 @@ describe(`PaymentProviderService`, () => {
 
   it("successfully creates session", async () => {
     await providerService.createSession("default_provider", {
+      object: "cart",
+      region: {
+        currency_code: "usd"
+      },
       total: 100,
     })
 
     expect(testPayServiceMock.createPayment).toBeCalledTimes(1)
     expect(testPayServiceMock.createPayment).toBeCalledWith({
+      amount: 100,
+      cart: {
+        object: "cart",
+        total: 100,
+        region: {
+          currency_code: "usd"
+        },
+      },
+      collected_data: {},
+      currency_code: "usd",
+      object: "cart",
+      region: {
+        currency_code: "usd"
+      },
       total: 100,
     })
   })
