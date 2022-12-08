@@ -1,4 +1,3 @@
-import { IdMap } from "medusa-test-utils"
 import StripeProviderService from "../stripe-provider"
 import { CustomerServiceMock } from "../../__mocks__/customer"
 import { carts } from "../../__mocks__/cart"
@@ -12,39 +11,6 @@ const RegionServiceMock = {
 }
 
 describe("StripeProviderService", () => {
-  describe("createCustomer", () => {
-    let result
-    beforeAll(async () => {
-      jest.clearAllMocks()
-      const stripeProviderService = new StripeProviderService(
-        {
-          customerService: CustomerServiceMock,
-          regionService: RegionServiceMock,
-          totalsService: TotalsServiceMock,
-        },
-        {
-          api_key: "test",
-        }
-      )
-
-      result = await stripeProviderService.createCustomer({
-        _id: IdMap.getId("vvd"),
-        first_name: "Virgil",
-        last_name: "Van Dijk",
-        email: "virg@vvd.com",
-        password_hash: "1234",
-        metadata: {},
-      })
-    })
-
-    it("returns created stripe customer", () => {
-      expect(result).toEqual({
-        id: "cus_vvd",
-        email: "virg@vvd.com",
-      })
-    })
-  })
-
   describe("createPayment", () => {
     let result
     const stripeProviderService = new StripeProviderService(
