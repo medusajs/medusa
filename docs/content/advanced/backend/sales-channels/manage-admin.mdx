@@ -71,6 +71,7 @@ medusa.admin.salesChannels.create({
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -125,7 +126,9 @@ medusa.admin.salesChannels.list()
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels`)
+fetch(`<SERVER_URL>/admin/sales-channels`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ sales_channels, limit, offset, count }) => {
   console.log(sales_channels.length)
@@ -165,7 +168,9 @@ medusa.admin.salesChannels.retrieve(salesChannelId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`)
+fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ sales_channels, limit, offset, count }) => {
   console.log(sales_channels.length)
@@ -209,6 +214,7 @@ medusa.admin.salesChannels.update(salesChannelId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -264,7 +270,8 @@ medusa.admin.salesChannels.delete(salesChannelId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
-  method: 'DELETE'
+  method: 'DELETE',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
@@ -315,6 +322,7 @@ medusa.admin.salesChannels.addProducts(salesChannelId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -377,7 +385,9 @@ medusa.admin.products.list({
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`)
+fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
@@ -429,6 +439,7 @@ medusa.admin.salesChannels.removeProducts(salesChannelId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
   method: 'DELETE',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -495,7 +506,9 @@ medusa.admin.orders.list({
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`)
+fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
   console.log(orders.length)

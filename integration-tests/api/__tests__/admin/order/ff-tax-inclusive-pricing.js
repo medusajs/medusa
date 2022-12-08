@@ -10,8 +10,8 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simpleRegionFactory,
   simpleShippingOptionFactory,
-  simpleOrderFactory
-} = require("../../../factories");
+  simpleOrderFactory,
+} = require("../../../factories")
 
 jest.setTimeout(30000)
 
@@ -24,7 +24,6 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
@@ -50,7 +49,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
           country_code: "us",
         }
         const region = await simpleRegionFactory(dbConnection, {
-          id: "test-region"
+          id: "test-region",
         })
         order = await simpleOrderFactory(dbConnection, {
           id: "test-order",
@@ -58,16 +57,19 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
           shipping_address: shippingAddress,
           currency_code: "usd",
         })
-        includesTaxShippingOption = await simpleShippingOptionFactory(dbConnection, {
-          includes_tax: true,
-          region_id: region.id
-        })
+        includesTaxShippingOption = await simpleShippingOptionFactory(
+          dbConnection,
+          {
+            includes_tax: true,
+            region_id: region.id,
+          }
+        )
       } catch (err) {
         console.log(err)
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       const db = useDb()
       return await db.teardown()
     })
@@ -76,26 +78,27 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
       const api = useApi()
 
       const orderWithShippingMethodRes = await api.post(
-          `/admin/orders/${order.id}/shipping-methods`,
-          {
-            option_id: includesTaxShippingOption.id,
-            price: 10,
+        `/admin/orders/${order.id}/shipping-methods`,
+        {
+          option_id: includesTaxShippingOption.id,
+          price: 10,
+        },
+        {
+          headers: {
+            Authorization: "Bearer test_token",
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+        }
       )
 
       expect(orderWithShippingMethodRes.status).toEqual(200)
-      expect(orderWithShippingMethodRes.data.order.shipping_methods)
-        .toEqual(expect.arrayContaining([
+      expect(orderWithShippingMethodRes.data.order.shipping_methods).toEqual(
+        expect.arrayContaining([
           expect.objectContaining({
             shipping_option_id: includesTaxShippingOption.id,
             includes_tax: true,
-          })
-        ]))
+          }),
+        ])
+      )
     })
   })
 })

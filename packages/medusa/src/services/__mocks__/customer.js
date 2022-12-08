@@ -29,6 +29,7 @@ export const CustomerServiceMock = {
         password_hash: "1234",
       })
     }
+    return Promise.resolve()
   }),
   retrieveByEmail: jest.fn().mockImplementation((email) => {
     if (email === "lebron@james.com") {

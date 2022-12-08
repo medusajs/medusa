@@ -187,18 +187,22 @@ If you’re using a [Next.js](../starters/nextjs-medusa-starter.md) storefront, 
 
 If this configuration is not added, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
 
-In `next.config.js` add the following option in the exported object:
+In `next.config.js` add the following option in the exported object:
 
 ```jsx
-module.exports = {
-    //other options
-    images: {
+const { withStoreConfig } = require("./store-config")
+
+//...
+
+module.exports = withStoreConfig({
+  //...
+  images: {
     domains: [
-        "127.0.0.1",
-        //any other domains...
+      //...
+      "127.0.0.1",
     ],
   },
-}
+})
 ```
 
 Where `127.0.0.1` is the domain of your local MinIO server.

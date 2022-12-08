@@ -10,7 +10,7 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreProductTypesListRes`](../modules/internal-40.md#storeproducttypeslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreProductTypesListRes`](../modules/internal-44.md#storeproducttypeslistres)\>
 
 **`Description`**
 
@@ -20,13 +20,13 @@ Retrieves a list of product types
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | [`StoreGetProductTypesParams`](internal-40.StoreGetProductTypesParams.md) | is optional. Can contain a limit and offset for the returned list |
+| `query?` | [`StoreGetProductTypesParams`](internal-44.StoreGetProductTypesParams.md) | is optional. Can contain a limit and offset for the returned list |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreProductTypesListRes`](../modules/internal-40.md#storeproducttypeslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreProductTypesListRes`](../modules/internal-44.md#storeproducttypeslistres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/product-types.ts:16](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/product-types.ts#L16)
+[medusa-js/src/resources/product-types.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/product-types.ts#L16)
