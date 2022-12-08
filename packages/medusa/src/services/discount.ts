@@ -212,6 +212,13 @@ class DiscountService extends TransactionBaseService {
         )) as Region[]
       }
 
+      if (!discount.regions?.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Discount must have atleast 1 region"
+        )
+      }
+
       const discountRule = ruleRepo.create(validatedRule)
       const createdDiscountRule = await ruleRepo.save(discountRule)
 
