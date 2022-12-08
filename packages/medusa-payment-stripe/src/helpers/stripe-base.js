@@ -116,15 +116,15 @@ class StripeBase extends AbstractPaymentService {
   /**
    * Creates a Stripe payment intent.
    * If customer is not registered in Stripe, we do so.
-   * @param {Cart} cart - cart to create a payment for
-   * @return {Promise<PaymentSessionData>} Stripe payment intent
+   * @param {Cart & PaymentContext} context - context to use to create a payment for
+   * @return {Promise<PaymentSessionData | PaymentSessionResponse>} Stripe payment intent
    */
-  async createPayment(cart) {
+  async createPayment(context) {
     const intentRequestData = this.getPaymentIntentOptions()
 
     return await this.stripeProviderService_
       .withTransaction(this.manager_)
-      .createPayment(cart, intentRequestData)
+      .createPayment(context, intentRequestData)
   }
 
   async createPaymentNew(paymentInput) {

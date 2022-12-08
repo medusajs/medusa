@@ -1,9 +1,6 @@
-import {
-  AbstractPaymentService,
-  PaymentSessionData,
-  PaymentSessionStatus,
-} from "@medusajs/medusa"
+import { AbstractPaymentService, PaymentSessionData, PaymentSessionStatus, } from "@medusajs/medusa"
 import Stripe from "stripe"
+import { Cart, PaymentContext } from "@medusajs/medusa/src";
 
 class StripeProviderService extends AbstractPaymentService {
   static identifier = "stripe"
@@ -126,17 +123,12 @@ class StripeProviderService extends AbstractPaymentService {
   /**
    * Creates a Stripe payment intent.
    * If customer is not registered in Stripe, we do so.
-   * @param {Cart} cart - cart to create a payment for
+   * @param {Cart & PaymentContext} context - context to use to create a payment for
    * @param intentRequestData
-   * @return {Promise<PaymentSessionData>} Stripe payment intent
+   * @return {Promise<PaymentSessionResponse>} Stripe payment intent
    */
-  async createPayment(cart, intentRequestData = {}) {
-    const { customer_id, region_id, email } = cart
-    const { currency_code } = await this.regionService_
-      .withTransaction(this.manager_)
-      .retrieve(region_id)
-
-    const amount = cart.total
+  async createPayment(context, intentRequestData = {}) {
+    const { cart, collected_data, currency_code, amount, resource_id } = context
 
     const intentRequest = {
       description:
@@ -144,7 +136,7 @@ class StripeProviderService extends AbstractPaymentService {
         this.options_?.payment_description,
       amount: Math.round(amount),
       currency: currency_code,
-      metadata: { cart_id: `${cart.id}` },
+      metadata: { cart_id: cart.id, resource_id },
       capture_method: this.options_.capture ? "automatic" : "manual",
       ...intentRequestData,
     }
@@ -153,30 +145,28 @@ class StripeProviderService extends AbstractPaymentService {
       intentRequest.automatic_payment_methods = { enabled: true }
     }
 
-    if (customer_id) {
-      const customer = await this.customerService_
-        .withTransaction(this.manager_)
-        .retrieve(customer_id)
-
-      if (customer.metadata?.stripe_id) {
-        intentRequest.customer = customer.metadata.stripe_id
-      } else {
-        const stripeCustomer = await this.createCustomer({
-          email,
-          id: customer_id,
-        })
-
-        intentRequest.customer = stripeCustomer.id
-      }
+    if (collected_data.stripe_id) {
+      intentRequest.customer = collected_data.stripe_id
     } else {
-      const stripeCustomer = await this.createCustomer({
-        email,
+      const stripeCustomer = await this.stripe_.customers.create({
+        email: cart.email,
       })
 
       intentRequest.customer = stripeCustomer.id
     }
 
-    return await this.stripe_.paymentIntents.create(intentRequest)
+    const session_data = await this.stripe_.paymentIntents.create(
+      intentRequest
+    )
+
+    return {
+      session_data,
+			collected_data: {
+				customer: {
+					stripe_id: intentRequest.customer
+				}
+			}
+    }
   }
 
   async createPaymentNew(paymentInput, intentRequestData = {}) {
