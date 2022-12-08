@@ -56,7 +56,8 @@ medusa.carts.create()
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts`, {
-  method: 'POST'
+  method: 'POST',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ cart }) => {
@@ -95,6 +96,7 @@ medusa.carts.create({
 ```jsx
 fetch(`<SERVER_URL>/store/carts`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -146,7 +148,9 @@ if (id) {
 const id = localStorage.getItem('cart_id');
 
 if (id) {
-  fetch(`<SERVER_URL>/store/carts/${id}`)
+  fetch(`<SERVER_URL>/store/carts/${id}`, {
+    credentials: 'include',
+  })
   .then((response) => response.json())
   .then(({ cart }) => setCart(cart));
 }
@@ -187,6 +191,7 @@ medusa.carts.update(cartId, {
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -229,6 +234,7 @@ medusa.carts.update(cartId, {
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -267,6 +273,7 @@ medusa.carts.update(cartId, {
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -302,6 +309,7 @@ medusa.carts.lineItems.create(cartId, {
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/line-items`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -349,6 +357,7 @@ medusa.carts.lineItems.update(cartId, lineItemId, {
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -384,7 +393,8 @@ medusa.carts.lineItems.delete(cartId, lineItemId)
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
-  method: 'DELETE'
+  method: 'DELETE',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ cart }) => setCart(cart));

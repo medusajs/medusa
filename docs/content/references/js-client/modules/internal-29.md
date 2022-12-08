@@ -2,115 +2,30 @@
 
 ## Classes
 
-- [AdminCreateUserRequest](../classes/internal-29.AdminCreateUserRequest.md)
-- [AdminResetPasswordRequest](../classes/internal-29.AdminResetPasswordRequest.md)
-- [AdminResetPasswordTokenRequest](../classes/internal-29.AdminResetPasswordTokenRequest.md)
-- [AdminUpdateUserRequest](../classes/internal-29.AdminUpdateUserRequest.md)
+- [AdminGetSwapsParams](../classes/internal-29.AdminGetSwapsParams.md)
 
 ## Type Aliases
 
-### AdminCreateUserPayload
+### AdminSwapsListRes
 
-Ƭ **AdminCreateUserPayload**: `Omit`<[`AdminCreateUserRequest`](../classes/internal-29.AdminCreateUserRequest.md), ``"role"``\> \| { `role?`: [`CreateUserRoles`](internal-29.md#createuserroles)  }
-
-#### Defined in
-
-[medusa-js/src/typings.ts:31](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L31)
-
-___
-
-### AdminUpdateUserPayload
-
-Ƭ **AdminUpdateUserPayload**: `Omit`<[`AdminUpdateUserRequest`](../classes/internal-29.AdminUpdateUserRequest.md), ``"role"``\> & { `role?`: [`UpdateUserRoles`](internal-29.md#updateuserroles)  }
+Ƭ **AdminSwapsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `swaps`: [`Swap`](../classes/internal.Swap.md)[]  }
 
 #### Defined in
 
-[medusa-js/src/typings.ts:41](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L41)
+medusa/dist/api/routes/admin/swaps/index.d.ts:7
 
 ___
 
-### AdminUserRes
+### AdminSwapsRes
 
-Ƭ **AdminUserRes**: `Object`
+Ƭ **AdminSwapsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `user` | `Omit`<[`User`](../classes/internal-1.User.md), ``"password_hash"``\> |
+| `swap` | [`Swap`](../classes/internal.Swap.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/users/index.d.ts:6
-
-___
-
-### AdminUsersListRes
-
-Ƭ **AdminUsersListRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `users` | `Omit`<[`User`](../classes/internal-1.User.md), ``"password_hash"``\>[] |
-
-#### Defined in
-
-medusa/dist/api/routes/admin/users/index.d.ts:9
-
-___
-
-### CreateUserRoles
-
-Ƭ **CreateUserRoles**: \`${CreateUserRolesEnum}\`
-
-#### Defined in
-
-[medusa-js/src/typings.ts:28](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L28)
-
-___
-
-### CreateUserRolesEnum
-
-Ƭ **CreateUserRolesEnum**: [`NoUndefined`](internal-29.md#noundefined)<[`AdminCreateUserRequest`](../classes/internal-29.AdminCreateUserRequest.md)[``"role"``]\>
-
-#### Defined in
-
-[medusa-js/src/typings.ts:25](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L25)
-
-___
-
-### NoUndefined
-
-Ƭ **NoUndefined**<`T`\>: `T` extends `undefined` ? `never` : `T`
-
-#### Type parameters
-
-| Name |
-| :------ |
-| `T` |
-
-#### Defined in
-
-[medusa-js/src/typings.ts:23](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L23)
-
-___
-
-### UpdateUserRoles
-
-Ƭ **UpdateUserRoles**: \`${UpdateUserRolesEnum}\`
-
-#### Defined in
-
-[medusa-js/src/typings.ts:39](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L39)
-
-___
-
-### UpdateUserRolesEnum
-
-Ƭ **UpdateUserRolesEnum**: [`NoUndefined`](internal-29.md#noundefined)<[`AdminUpdateUserRequest`](../classes/internal-29.AdminUpdateUserRequest.md)[``"role"``]\>
-
-#### Defined in
-
-[medusa-js/src/typings.ts:37](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/typings.ts#L37)
+medusa/dist/api/routes/admin/swaps/index.d.ts:10

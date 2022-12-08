@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/swap.ts:62](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L62)
+[models/swap.ts:62](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L62)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:107](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L107)
+[models/swap.ts:107](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L107)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:101](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L101)
+[models/swap.ts:101](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L101)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:95](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L95)
+[models/swap.ts:95](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L95)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:91](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L91)
+[models/swap.ts:91](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L91)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:98](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L98)
+[models/swap.ts:98](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L98)
 
 ___
 
@@ -92,7 +92,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -106,7 +106,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:76](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L76)
+[models/swap.ts:76](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L76)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:48](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L48)
+[models/swap.ts:48](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L48)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:70](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L70)
+[models/swap.ts:70](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L70)
 
 ___
 
@@ -150,7 +150,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:110](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L110)
+[models/swap.ts:110](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L110)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:113](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L113)
+[models/swap.ts:113](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L113)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:104](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L104)
+[models/swap.ts:104](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L104)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:59](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L59)
+[models/swap.ts:59](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L59)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:55](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L55)
+[models/swap.ts:55](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L55)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:73](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L73)
+[models/swap.ts:73](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L73)
 
 ___
 
@@ -220,7 +220,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:51](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L51)
+[models/swap.ts:51](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L51)
 
 ___
 
@@ -230,7 +230,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:65](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L65)
+[models/swap.ts:65](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L65)
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:83](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L83)
+[models/swap.ts:83](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L83)
 
 ___
 
@@ -250,7 +250,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:79](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L79)
+[models/swap.ts:79](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L79)
 
 ___
 
@@ -260,7 +260,7 @@ ___
 
 #### Defined in
 
-[models/swap.ts:88](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L88)
+[models/swap.ts:88](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L88)
 
 ___
 
@@ -274,7 +274,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -288,4 +288,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/swap.ts:115](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/swap.ts#L115)
+[models/swap.ts:115](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/swap.ts#L115)

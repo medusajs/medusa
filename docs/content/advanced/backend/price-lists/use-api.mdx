@@ -100,6 +100,7 @@ medusa.admin.priceLists.create({
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -186,7 +187,9 @@ medusa.admin.priceLists.retrieve(priceListId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`)
+fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ price_list }) => {
   console.log(price_list.id)
@@ -230,6 +233,7 @@ medusa.admin.priceLists.update(priceListId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -298,6 +302,7 @@ medusa.admin.priceLists.addPrices(priceListId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/prices/batch`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -361,7 +366,8 @@ medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`, {
-  method: 'DELETE'
+  method: 'DELETE',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ ids, object, deleted }) => {
@@ -401,7 +407,8 @@ medusa.admin.priceLists.deleteVariantPrices(priceListId, variantId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`, {
-  method: 'DELETE'
+  method: 'DELETE',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ ids, object, deleted }) => {
@@ -443,7 +450,8 @@ medusa.admin.priceLists.delete(priceListId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
-  method: 'DELETE'
+  method: 'DELETE',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
