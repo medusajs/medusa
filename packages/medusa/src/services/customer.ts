@@ -10,7 +10,6 @@ import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
 import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
-import { ConfigModule } from "../types/global"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 
 type InjectedDependencies = {
