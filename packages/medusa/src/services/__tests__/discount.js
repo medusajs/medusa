@@ -9,7 +9,6 @@ const featureFlagRouter = new FlagRouter({})
 describe("DiscountService", () => {
   describe("create", () => {
     const discountRepository = MockRepository({})
-
     const discountRuleRepository = MockRepository({})
 
     const regionService = {
@@ -52,6 +51,21 @@ describe("DiscountService", () => {
         expect(err.message).toEqual("Fixed discounts can have one region")
         expect(discountRepository.create).toHaveBeenCalledTimes(0)
       }
+    })
+
+    it("fails to create a discount without regions", async () => {
+      const err = await discountService.create({
+        code: "test",
+        rule: {
+          type: "fixed",
+          allocation: "total",
+          value: 20,
+        },
+      }).catch(e => e)
+
+      expect(err.type).toEqual("invalid_data")
+      expect(err.message).toEqual("Discount must have atleast 1 region")
+      expect(discountRepository.create).toHaveBeenCalledTimes(0)
     })
 
     it("successfully creates discount", async () => {
