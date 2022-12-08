@@ -122,6 +122,17 @@ export abstract class AbstractPaymentService
    */
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
 
+  /**
+   * @param context
+   */
+  public abstract createPaymentNew(
+    context: PaymentContext
+  ): Promise<PaymentSessionResponse>
+
+  /**
+   * @deprecated
+   * @param paymentInput
+   */
   public abstract createPaymentNew(
     paymentInput: PaymentProviderDataInput
   ): Promise<PaymentSessionData>

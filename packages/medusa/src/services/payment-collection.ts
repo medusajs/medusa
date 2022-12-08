@@ -23,6 +23,7 @@ import {
   PaymentCollectionsSessionsInput,
   PaymentProviderDataInput,
 } from "../types/payment-collection"
+import { PaymentSessionInput } from "../types/payment"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -281,7 +282,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
           (sess) => session.session_id === sess?.id
         )
 
-        const inputData: PaymentProviderDataInput = {
+        const inputData: PaymentSessionInput = {
           resource_id: payCol.id,
           currency_code: payCol.currency_code,
           amount: session.amount,
@@ -381,7 +382,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
             .catch(() => null)
 
       const paymentSessions: PaymentSession[] = []
-      const inputData: PaymentProviderDataInput = {
+      const inputData: PaymentSessionInput = {
         resource_id: payCol.id,
         currency_code: payCol.currency_code,
         amount: payCol.amount,
@@ -487,7 +488,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
             })
             .catch(() => null)
 
-      const inputData: PaymentProviderDataInput = {
+      const inputData: PaymentSessionInput = {
         resource_id: payCol.id,
         currency_code: payCol.currency_code,
         amount: session.amount,

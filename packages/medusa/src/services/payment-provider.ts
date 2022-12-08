@@ -27,7 +27,7 @@ import { FlagRouter } from "../utils/flag-router"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import PaymentService from "./payment"
 import { Logger } from "../types/global"
-import { CreateSessionContext } from "../types/payment"
+import { PaymentSessionInput } from "../types/payment"
 import { CustomerService } from "./index"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
@@ -182,7 +182,8 @@ export default class PaymentProviderService extends TransactionBaseService {
    */
   async createSession(
     providerId: string,
-    cartOrData: Cart | CreateSessionContext
+    // Make the cart required, this is temporary until later refactoring
+    cartOrData: Cart | (PaymentSessionInput & { cart: Cart })
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
       const provider = this.retrieveProvider(
@@ -192,11 +193,11 @@ export default class PaymentProviderService extends TransactionBaseService {
       const cart =
         "object" in cartOrData && cartOrData.object === "cart"
           ? cartOrData
-          : (cartOrData as CreateSessionContext).cart
+          : ((cartOrData as PaymentSessionInput).cart as Cart)
 
       const context = {} as Cart & PaymentContext
 
-      // Build the createPayment context with the appropriate data
+      // Build the createPayment context with the appropriate data, it will be simplified once the deprecated api will disappear i.e the Cart
       if ("object" in cartOrData && cartOrData.object === "cart") {
         context.cart = cart
         context.amount = cart.total!
@@ -204,7 +205,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         context.collected_data = cart.customer?.metadata ?? {}
         Object.assign(context, cart)
       } else {
-        const data = cartOrData as CreateSessionContext
+        const data = cartOrData as PaymentSessionInput
         context.cart = cart
         context.amount = data.amount
         context.currency_code = data.currency_code
@@ -245,13 +246,33 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   async createSessionNew(
-    sessionInput: PaymentProviderDataInput
+    sessionInput: PaymentSessionInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const provider = this.retrieveProvider(sessionInput.provider_id)
-      const sessionData = await provider
+      const provider = this.retrieveProvider(
+        sessionInput.provider_id
+      ) as AbstractPaymentService
+
+      const context = {
+        ...sessionInput,
+        collected_data: sessionInput.customer?.metadata ?? {},
+      } as PaymentContext
+
+      const paymentResponse = await provider
         .withTransaction(transactionManager)
-        .createPaymentNew(sessionInput)
+        .createPaymentNew(context)
+
+      let sessionData = paymentResponse as PaymentSessionData
+
+      if (paymentResponse.collected_data) {
+        sessionData = paymentResponse.session_data
+        await this.processCollectedData(
+          {
+            customer: { id: sessionInput.customer?.id },
+          },
+          paymentResponse.collected_data
+        )
+      }
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
@@ -311,7 +332,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   async refreshSessionNew(
     paymentSession: PaymentSession,
-    sessionInput: PaymentProviderDataInput
+    sessionInput: PaymentSessionInput
   ): Promise<PaymentSession> {
     return this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)
@@ -356,7 +377,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   async updateSessionNew(
     paymentSession: PaymentSession,
-    sessionInput: PaymentProviderDataInput
+    sessionInput: PaymentSessionInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)
@@ -756,7 +777,7 @@ export default class PaymentProviderService extends TransactionBaseService {
    * @protected
    */
   protected async processCollectedData(
-    data: { customer?: { id: string } } = {},
+    data: { customer?: { id?: string } } = {},
     collectedData?: PaymentSessionResponse["collected_data"]
   ): Promise<void> {
     const manager = this.transactionManager_ ?? this.manager_

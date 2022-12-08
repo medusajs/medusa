@@ -6,11 +6,8 @@ import { isDefined } from "@medusajs/medusa/dist/utils";
 class StripeProviderService extends AbstractPaymentService {
   static identifier = "stripe"
 
-  constructor(
-    { customerService, totalsService, regionService, manager },
-    options
-  ) {
-    super({ customerService, totalsService, regionService, manager }, options)
+  constructor({ manager }, options) {
+    super({ manager }, options)
 
     /**
      * Required Stripe options:
@@ -25,15 +22,6 @@ class StripeProviderService extends AbstractPaymentService {
 
     /** @private @const {Stripe} */
     this.stripe_ = Stripe(options.api_key)
-
-    /** @private @const {CustomerService} */
-    this.customerService_ = customerService
-
-    /** @private @const {RegionService} */
-    this.regionService_ = regionService
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
 
     /** @private @const {EntityManager} */
     this.manager_ = manager
@@ -97,31 +85,6 @@ class StripeProviderService extends AbstractPaymentService {
   }
 
   /**
-   * Creates a Stripe customer using a Medusa customer.
-   * @param {object} customer - Customer data from Medusa
-   * @return {Promise<object>} Stripe customer
-   */
-  async createCustomer(customer) {
-    try {
-      const stripeCustomer = await this.stripe_.customers.create({
-        email: customer.email,
-      })
-
-      if (customer.id) {
-        await this.customerService_
-          .withTransaction(this.manager_)
-          .update(customer.id, {
-            metadata: { stripe_id: stripeCustomer.id },
-          })
-      }
-
-      return stripeCustomer
-    } catch (error) {
-      throw error
-    }
-  }
-
-  /**
    * Creates a Stripe payment intent.
    * If customer is not registered in Stripe, we do so.
    * @param {Cart & PaymentContext} context - context to use to create a payment for
@@ -180,7 +143,7 @@ class StripeProviderService extends AbstractPaymentService {
 
   async createPaymentNew(paymentInput, intentRequestData = {}) {
     const { customer, currency_code, amount, resource_id, cart } = paymentInput
-    const { id: customer_id, email } = customer ?? {}
+    const { email } = customer ?? {}
 
     const intentRequest = {
       description:
@@ -193,26 +156,26 @@ class StripeProviderService extends AbstractPaymentService {
       ...intentRequestData,
     }
 
-    if (customer_id) {
-      if (customer.metadata?.stripe_id) {
-        intentRequest.customer = customer.metadata.stripe_id
-      } else {
-        const stripeCustomer = await this.createCustomer({
-          email,
-          id: customer_id,
-        })
-
-        intentRequest.customer = stripeCustomer.id
-      }
-    } else if (email) {
-      const stripeCustomer = await this.createCustomer({
+    if (collected_data?.stripe_id) {
+      intentRequest.customer = collected_data.stripe_id
+    } else {
+      const stripeCustomer = await this.stripe_.customers.create({
         email,
       })
 
       intentRequest.customer = stripeCustomer.id
     }
 
-    return await this.stripe_.paymentIntents.create(intentRequest)
+    const session_data = await this.stripe_.paymentIntents.create(intentRequest)
+
+    return {
+      session_data,
+			collected_data: {
+				customer: {
+					stripe_id: intentRequest.customer
+				}
+			}
+    }
   }
 
   /**

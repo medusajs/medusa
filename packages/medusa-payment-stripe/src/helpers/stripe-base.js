@@ -1,27 +1,12 @@
-import { AbstractPaymentService, PaymentSessionData } from "@medusajs/medusa"
+import { AbstractPaymentService } from "@medusajs/medusa"
 import Stripe from "stripe"
 
 class StripeBase extends AbstractPaymentService {
   static identifier = null
 
-  constructor(
-    {
-      stripeProviderService,
-      customerService,
-      totalsService,
-      regionService,
-      manager,
-    },
-    options
-  ) {
+  constructor({ stripeProviderService, manager }, options) {
     super(
-      {
-        stripeProviderService,
-        customerService,
-        totalsService,
-        regionService,
-        manager,
-      },
+      { stripeProviderService, manager },
       options
     )
 
@@ -41,15 +26,6 @@ class StripeBase extends AbstractPaymentService {
 
     /** @private @const {CustomerService} */
     this.stripeProviderService_ = stripeProviderService
-
-    /** @private @const {CustomerService} */
-    this.customerService_ = customerService
-
-    /** @private @const {RegionService} */
-    this.regionService_ = regionService
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
 
     /** @private @const {EntityManager} */
     this.manager_ = manager
