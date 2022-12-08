@@ -2,6 +2,7 @@ import { AbstractPaymentService } from "@medusajs/medusa"
 import Stripe from "stripe"
 import { isDefined } from "@medusajs/medusa/dist/utils";
 import { MedusaError } from "medusa-core-utils";
+import { PaymentSessionStatus } from "@medusajs/medusa/dist";
 
 class StripeBase extends AbstractPaymentService {
   static identifier = null
@@ -110,7 +111,6 @@ class StripeBase extends AbstractPaymentService {
     const intentRequestData = this.getPaymentIntentOptions()
     const { id: cart_id, email, context: cart_context, collected_data, currency_code, amount, resource_id } = context
 
-    console.log(!isDefined(currency_code) || !isDefined(amount), !isDefined(currency_code), !isDefined(amount), currency_code, amount)
     if (!isDefined(currency_code) || !isDefined(amount)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,

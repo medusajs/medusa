@@ -197,7 +197,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const context = {} as Cart & PaymentContext
 
-      // Build the createPayment context with the appropriate data, it will be simplified once the deprecated api will disappear i.e the Cart
+      // TODO: only to support legacy API
       if ("object" in cartOrData && cartOrData.object === "cart") {
         context.cart = cart
         context.amount = cart.total!
@@ -217,8 +217,10 @@ export default class PaymentProviderService extends TransactionBaseService {
         .withTransaction(transactionManager)
         .createPayment(context)
 
+      // TODO: only to support legacy API
       let sessionData = paymentResponse as PaymentSessionData
 
+      // TODO: only to support legacy API, the if will not be necessary in the future
       if (paymentResponse.collected_data) {
         sessionData = paymentResponse.session_data
         await this.processCollectedData(
