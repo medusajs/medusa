@@ -130,7 +130,7 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionResponse>
 
   /**
-   * @deprecated
+   * @deprecated use createPaymentNew(context: PaymentContext): Promise<PaymentSessionResponse> instead
    * @param paymentInput
    */
   public abstract createPaymentNew(
