@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "integration-tests/**/*"
     ]
   },
   "devDependencies": {
@@ -61,10 +62,10 @@
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
     "prettier": "prettier",
     "jest": "jest",
-    "test": "turbo run test",
-    "test:integration": "NODE_ENV=test jest --runInBand --bail --config=integration-tests/jest.config.js",
-    "test:integration:api": "NODE_ENV=test jest --detectOpenHandles --forceExit --runInBand --bail --config=integration-tests/jest.config.js --projects=integration-tests/api -- integration-tests/api/__tests__/store/cart/cart.js",
-    "test:integration:plugins": "NODE_ENV=test jest --runInBand --bail --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
+    "test": "turbo run test --filter=!integration-tests-api --filter=!integration-tests-plugins",
+    "test:integration": "turbo run test --filter=integration-tests-api --filter=integration-tests-plugins",
+    "test:integration:api": "turbo run test --filter=integration-tests-api",
+    "test:integration:plugins": "turbo run test --filter=integration-tests-plugins",
     "openapi:generate": "node ./scripts/build-openapi.js",
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",
