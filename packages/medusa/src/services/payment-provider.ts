@@ -199,7 +199,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       // Build the createPayment context with the appropriate data
       if ("object" in cartOrData && cartOrData.object === "cart") {
         context.cart = cart
-        context.amount = Math.round(cart.total!)
+        context.amount = cart.total!
         context.currency_code = cart.region.currency_code
         context.collected_data = cart.customer.metadata
         Object.assign(context, cart)

@@ -1,6 +1,5 @@
 import { AbstractPaymentService, PaymentSessionData, PaymentSessionStatus, } from "@medusajs/medusa"
 import Stripe from "stripe"
-import { Cart, PaymentContext } from "@medusajs/medusa/src";
 
 class StripeProviderService extends AbstractPaymentService {
   static identifier = "stripe"
@@ -128,15 +127,15 @@ class StripeProviderService extends AbstractPaymentService {
    * @return {Promise<PaymentSessionResponse>} Stripe payment intent
    */
   async createPayment(context, intentRequestData = {}) {
-    const { cart, collected_data, currency_code, amount, resource_id } = context
+    const { id: cart_id, email, context: cart_context, collected_data, currency_code, amount, resource_id } = context
 
     const intentRequest = {
       description:
-        cart?.context?.payment_description ??
+        cart_context.payment_description ??
         this.options_?.payment_description,
       amount: Math.round(amount),
       currency: currency_code,
-      metadata: { cart_id: cart.id, resource_id },
+      metadata: { cart_id, resource_id },
       capture_method: this.options_.capture ? "automatic" : "manual",
       ...intentRequestData,
     }
@@ -145,11 +144,11 @@ class StripeProviderService extends AbstractPaymentService {
       intentRequest.automatic_payment_methods = { enabled: true }
     }
 
-    if (collected_data.stripe_id) {
+    if (collected_data?.stripe_id) {
       intentRequest.customer = collected_data.stripe_id
     } else {
       const stripeCustomer = await this.stripe_.customers.create({
-        email: cart.email,
+        email,
       })
 
       intentRequest.customer = stripeCustomer.id

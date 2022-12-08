@@ -65,9 +65,17 @@ describe("StripeProviderService", () => {
     it("returns created stripe payment intent for cart with existing customer", async () => {
       result = await stripeProviderService.createPayment(carts.frCart)
       expect(result).toEqual({
-        id: "pi_lebron",
-        customer: "cus_123456789_new",
-        amount: 100,
+        session_data: {
+          id: "pi_lebron",
+          customer: "cus_lebron",
+          description: undefined,
+          amount: 100,
+        },
+        collected_data: {
+          customer: {
+            stripe_id: "cus_lebron"
+          }
+        }
       })
     })
 
@@ -76,10 +84,17 @@ describe("StripeProviderService", () => {
       carts.frCart.context.payment_description = 'some description'
       result = await stripeProviderService.createPayment(carts.frCart)
       expect(result).toEqual({
-        id: "pi_lebron",
-        customer: "cus_lebron",
-        amount: 100,
-        description: 'some description',
+        session_data: {
+          id: "pi_lebron",
+          customer: "cus_lebron",
+          description: 'some description',
+          amount: 100,
+        },
+        collected_data: {
+          customer: {
+            stripe_id: "cus_lebron"
+          }
+        }
       })
     })
 
@@ -98,10 +113,17 @@ describe("StripeProviderService", () => {
       carts.frCart.context.payment_description = null
       result = await localStripeProviderService.createPayment(carts.frCart)
       expect(result).toEqual({
-        id: "pi_lebron",
-        customer: "cus_lebron",
-        amount: 100,
-        description: "test options description",
+        session_data: {
+          id: "pi_lebron",
+          customer: "cus_lebron",
+          description: "test options description",
+          amount: 100,
+        },
+        collected_data: {
+          customer: {
+            stripe_id: "cus_lebron"
+          }
+        }
       })
     })
   })
