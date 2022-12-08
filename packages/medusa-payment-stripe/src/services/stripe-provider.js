@@ -1,5 +1,7 @@
 import { AbstractPaymentService, PaymentSessionData, PaymentSessionStatus, } from "@medusajs/medusa"
 import Stripe from "stripe"
+import { MedusaError } from "medusa-core-utils";
+import { isDefined } from "@medusajs/medusa/dist/utils";
 
 class StripeProviderService extends AbstractPaymentService {
   static identifier = "stripe"
@@ -128,6 +130,14 @@ class StripeProviderService extends AbstractPaymentService {
    */
   async createPayment(context, intentRequestData = {}) {
     const { id: cart_id, email, context: cart_context, collected_data, currency_code, amount, resource_id } = context
+
+    console.log(!isDefined(currency_code) || !isDefined(amount), !isDefined(currency_code), !isDefined(amount), currency_code, amount)
+    if (!isDefined(currency_code) || !isDefined(amount)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        'Unable to create a new payment, one of the "currency_code" or "amount" values is not provided. Both values are required.'
+      )
+    }
 
     const intentRequest = {
       description:

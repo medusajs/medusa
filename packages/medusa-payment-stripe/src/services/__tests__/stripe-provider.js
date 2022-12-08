@@ -63,7 +63,16 @@ describe("StripeProviderService", () => {
     })
 
     it("returns created stripe payment intent for cart with existing customer", async () => {
-      result = await stripeProviderService.createPayment(carts.frCart)
+      const cart = carts.frCart
+      const context = {
+        cart,
+        amount: cart.total,
+        currency_code: cart.region?.currency_code,
+        collected_data: cart.customer?.metadata,
+      }
+      Object.assign(context, cart)
+
+      result = await stripeProviderService.createPayment(context)
       expect(result).toEqual({
         session_data: {
           id: "pi_lebron",
@@ -80,9 +89,18 @@ describe("StripeProviderService", () => {
     })
 
     it("returns created stripe payment intent for cart with no customer", async () => {
-      carts.frCart.customer_id = ""
-      carts.frCart.context.payment_description = 'some description'
-      result = await stripeProviderService.createPayment(carts.frCart)
+      const cart = carts.frCart
+      const context = {
+        cart,
+        amount: cart.total,
+        currency_code: cart.region?.currency_code,
+        collected_data: cart.customer?.metadata,
+      }
+      Object.assign(context, cart)
+
+      context.cart.context.payment_description = 'some description'
+
+      result = await stripeProviderService.createPayment(context)
       expect(result).toEqual({
         session_data: {
           id: "pi_lebron",
@@ -109,9 +127,18 @@ describe("StripeProviderService", () => {
         payment_description: "test options description"
       })
 
-      carts.frCart.customer_id = ""
-      carts.frCart.context.payment_description = null
-      result = await localStripeProviderService.createPayment(carts.frCart)
+      const cart = carts.frCart
+      const context = {
+        cart,
+        amount: cart.total,
+        currency_code: cart.region?.currency_code,
+        collected_data: cart.customer?.metadata,
+      }
+      Object.assign(context, cart)
+
+      context.cart.context.payment_description = null
+
+      result = await localStripeProviderService.createPayment(context)
       expect(result).toEqual({
         session_data: {
           id: "pi_lebron",

@@ -200,8 +200,8 @@ export default class PaymentProviderService extends TransactionBaseService {
       if ("object" in cartOrData && cartOrData.object === "cart") {
         context.cart = cart
         context.amount = cart.total!
-        context.currency_code = cart.region.currency_code
-        context.collected_data = cart.customer.metadata
+        context.currency_code = cart.region?.currency_code
+        context.collected_data = cart.customer?.metadata ?? {}
         Object.assign(context, cart)
       } else {
         const data = cartOrData as CreateSessionContext
