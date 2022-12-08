@@ -3,8 +3,8 @@ import StripeBase from "../helpers/stripe-base"
 class BancontactProviderService extends StripeBase {
   static identifier = "stripe-bancontact"
 
-  constructor({ stripeProviderService, manager }, options) {
-    super({ stripeProviderService, manager }, options)
+  constructor(_, options) {
+    super(_, options)
   }
 
   get paymentIntentOptions() {

@@ -1,24 +1,13 @@
-import StripeProviderService from "../stripe-provider"
-import { CustomerServiceMock } from "../../__mocks__/customer"
 import { carts } from "../../__mocks__/cart"
-import { TotalsServiceMock } from "../../__mocks__/totals"
+import StripeBase from "../stripe-base";
 
-const RegionServiceMock = {
-  withTransaction: function () {
-    return this
-  },
-  retrieve: jest.fn().mockReturnValue(Promise.resolve({})),
-}
+const fakeContainer = {}
 
-describe("StripeProviderService", () => {
+describe("StripeBase", () => {
   describe("createPayment", () => {
     let result
-    const stripeProviderService = new StripeProviderService(
-      {
-        customerService: CustomerServiceMock,
-        regionService: RegionServiceMock,
-        totalsService: TotalsServiceMock,
-      },
+    const stripeBase = new StripeBase(
+      fakeContainer,
       {
         api_key: "test"
       }
@@ -38,7 +27,7 @@ describe("StripeProviderService", () => {
       }
       Object.assign(context, cart)
 
-      result = await stripeProviderService.createPayment(context)
+      result = await stripeBase.createPayment(context)
       expect(result).toEqual({
         session_data: {
           id: "pi_lebron",
@@ -66,7 +55,7 @@ describe("StripeProviderService", () => {
 
       context.cart.context.payment_description = 'some description'
 
-      result = await stripeProviderService.createPayment(context)
+      result = await stripeBase.createPayment(context)
       expect(result).toEqual({
         session_data: {
           id: "pi_lebron",
@@ -83,11 +72,8 @@ describe("StripeProviderService", () => {
     })
 
     it("returns created stripe payment intent for cart with no customer and the options default description", async () => {
-      const localStripeProviderService = new StripeProviderService({
-        customerService: CustomerServiceMock,
-        regionService: RegionServiceMock,
-        totalsService: TotalsServiceMock,
-      },
+      const localStripeProviderService = new StripeBase(
+        fakeContainer,
       {
         api_key: "test",
         payment_description: "test options description"
@@ -125,18 +111,14 @@ describe("StripeProviderService", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
-      const stripeProviderService = new StripeProviderService(
-        {
-          customerService: CustomerServiceMock,
-          regionService: RegionServiceMock,
-          totalsService: TotalsServiceMock,
-        },
+      const stripeBase = new StripeBase(
+        fakeContainer,
         {
           api_key: "test",
         }
       )
 
-      result = await stripeProviderService.retrievePayment({
+      result = await stripeBase.retrievePayment({
         payment_method: {
           data: {
             id: "pi_lebron",
@@ -157,18 +139,14 @@ describe("StripeProviderService", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
-      const stripeProviderService = new StripeProviderService(
-        {
-          customerService: CustomerServiceMock,
-          regionService: RegionServiceMock,
-          totalsService: TotalsServiceMock,
-        },
+      const stripeBase = new StripeBase(
+        fakeContainer,
         {
           api_key: "test",
         }
       )
 
-      result = await stripeProviderService.updatePayment(
+      result = await stripeBase.updatePayment(
         {
           id: "pi_lebron",
           amount: 800,
@@ -192,18 +170,14 @@ describe("StripeProviderService", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
-      const stripeProviderService = new StripeProviderService(
-        {
-          customerService: CustomerServiceMock,
-          regionService: RegionServiceMock,
-          totalsService: TotalsServiceMock,
-        },
+      const stripeBase = new StripeBase(
+        fakeContainer,
         {
           api_key: "test",
         }
       )
 
-      result = await stripeProviderService.updatePaymentIntentCustomer(
+      result = await stripeBase.updatePaymentIntentCustomer(
         "pi_lebron",
         "cus_lebron_2"
       )
@@ -222,14 +196,14 @@ describe("StripeProviderService", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
-      const stripeProviderService = new StripeProviderService(
-        {},
+      const stripeBase = new StripeBase(
+        fakeContainer,
         {
           api_key: "test",
         }
       )
 
-      result = await stripeProviderService.capturePayment({
+      result = await stripeBase.capturePayment({
         data: {
           id: "pi_lebron",
           customer: "cus_lebron",
@@ -252,14 +226,14 @@ describe("StripeProviderService", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
-      const stripeProviderService = new StripeProviderService(
-        {},
+      const stripeBase = new StripeBase(
+        fakeContainer,
         {
           api_key: "test",
         }
       )
 
-      result = await stripeProviderService.refundPayment(
+      result = await stripeBase.refundPayment(
         {
           data: {
             id: "re_123",
@@ -286,14 +260,14 @@ describe("StripeProviderService", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
-      const stripeProviderService = new StripeProviderService(
-        {},
+      const stripeBase = new StripeBase(
+        fakeContainer,
         {
           api_key: "test",
         }
       )
 
-      result = await stripeProviderService.cancelPayment({
+      result = await stripeBase.cancelPayment({
         data: {
           id: "pi_lebron",
           customer: "cus_lebron",
