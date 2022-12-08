@@ -25,13 +25,13 @@ export interface PaymentService extends TransactionBaseService {
   getIdentifier(): string
 
   /**
-   * @deprecated use PaymentServicePlugin.retrieve instead
+   * @deprecated use PaymentServicePlugin.retrievePayment instead
    * @param paymentSession
    */
   getPaymentData(paymentSession: PaymentSession): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentServicePlugin.update instead
+   * @deprecated use PaymentServicePlugin.updatePayment instead
    * @param paymentSessionData
    * @param data
    */
@@ -41,19 +41,19 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentServicePlugin.create instead
+   * @deprecated use PaymentServicePlugin.createPayment instead
    * @param cart
    */
   createPayment(cart: Cart): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentServicePlugin.retrieve instead
+   * @deprecated use PaymentServicePlugin.retrievePayment instead
    * @param paymentData
    */
   retrievePayment(paymentData: PaymentData): Promise<Data>
 
   /**
-   * @deprecated use PaymentServicePlugin.update instead
+   * @deprecated use PaymentServicePlugin.updatePayment instead
    * @param paymentSessionData
    * @param cart
    */
@@ -63,7 +63,7 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentServicePlugin.authorize instead
+   * @deprecated use PaymentServicePlugin.authorizePayment instead
    * @param paymentSession
    * @param context
    */
@@ -73,26 +73,26 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }>
 
   /**
-   * @deprecated use PaymentServicePlugin.capture instead
+   * @deprecated use PaymentServicePlugin.capturePayment instead
    * @param payment
    */
   capturePayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentServicePlugin.refund instead
+   * @deprecated use PaymentServicePlugin.refundPayment instead
    * @param payment
    * @param refundAmount
    */
   refundPayment(payment: Payment, refundAmount: number): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentServicePlugin.cancel instead
+   * @deprecated use PaymentServicePlugin.cancelPayment instead
    * @param payment
    */
   cancelPayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentServicePlugin.cancel instead
+   * @deprecated use PaymentServicePlugin.cancelPayment instead
    * @param paymentSession
    */
   deletePayment(paymentSession: PaymentSession): Promise<void>
@@ -104,7 +104,7 @@ export interface PaymentService extends TransactionBaseService {
   retrieveSavedMethods(customer: Customer): Promise<Data[]>
 
   /**
-   * @deprecated use PaymentServicePlugin.getSessionStatus instead
+   * @deprecated use PaymentServicePlugin.getPaymentStatus instead
    * @param data
    */
   getStatus(data: Data): Promise<PaymentSessionStatus>
@@ -262,7 +262,7 @@ export interface PaymentServicePlugin {
   /**
    * Initiate a payment session with the external provider
    */
-  create(
+  createPayment(
     context: PaymentContext
   ): Promise<PaymentPluginError | PaymentSessionResponse>
 
@@ -271,7 +271,7 @@ export interface PaymentServicePlugin {
    * @param sessionId
    * @param context
    */
-  update(
+  updatePayment(
     sessionId: string,
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
@@ -281,7 +281,7 @@ export interface PaymentServicePlugin {
    * @param sessionId
    * @param context
    */
-  refund(
+  refundPayment(
     sessionId: string,
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
@@ -291,7 +291,7 @@ export interface PaymentServicePlugin {
    * @param sessionId
    * @param context
    */
-  authorize(
+  authorizePayment(
     sessionId: string,
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
@@ -301,7 +301,7 @@ export interface PaymentServicePlugin {
    * @param sessionId
    * @param context
    */
-  capture(
+  capturePayment(
     sessionId: string,
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
@@ -310,13 +310,13 @@ export interface PaymentServicePlugin {
    * Delete an existing session
    * @param sessionId
    */
-  delete(sessionId: string): Promise<PaymentPluginError | void>
+  deletePayment(sessionId: string): Promise<PaymentPluginError | void>
 
   /**
    * Retrieve an existing session
    * @param sessionId
    */
-  retrieve(
+  retrievePayment(
     sessionId: string
   ): Promise<PaymentPluginError | PaymentSessionResponse["session_data"]>
 
@@ -324,13 +324,13 @@ export interface PaymentServicePlugin {
    * Cancel an existing session
    * @param sessionId
    */
-  cancel(sessionId: string): Promise<PaymentPluginError | void>
+  cancelPayment(sessionId: string): Promise<PaymentPluginError | void>
 
   /**
    * Return the status of the session
    * @param sessionId
    */
-  getSessionStatus(sessionId: string): Promise<PaymentSessionStatus>
+  getPaymentStatus(sessionId: string): Promise<PaymentSessionStatus>
 
   /**
    * An optional method to implement in order to retrieve the methods saved for a customer in case the provider
@@ -386,40 +386,40 @@ export abstract class AbstractPaymentServicePlugin
 
   abstract init(): Promise<void>
 
-  abstract capture(
+  abstract capturePayment(
     sessionId: string,
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
 
-  abstract authorize(
+  abstract authorizePayment(
     sessionId: string,
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
 
-  abstract cancel(sessionId: string): Promise<PaymentPluginError | void>
+  abstract cancelPayment(sessionId: string): Promise<PaymentPluginError | void>
 
-  abstract create(
+  abstract createPayment(
     context: PaymentContext
   ): Promise<PaymentPluginError | PaymentSessionResponse>
 
-  abstract delete(sessionId: string): Promise<PaymentPluginError | void>
+  abstract deletePayment(sessionId: string): Promise<PaymentPluginError | void>
 
   abstract getSavedMethods(
     collectedDate: Record<string, unknown>
   ): Promise<Record<string, unknown>[]>
 
-  abstract getSessionStatus(sessionId: string): Promise<PaymentSessionStatus>
+  abstract getPaymentStatus(sessionId: string): Promise<PaymentSessionStatus>
 
-  abstract refund(
+  abstract refundPayment(
     sessionId: string,
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
 
-  abstract retrieve(
+  abstract retrievePayment(
     sessionId: string
   ): Promise<PaymentPluginError | PaymentSessionResponse["session_data"]>
 
-  abstract update(
+  abstract updatePayment(
     sessionId: string,
     context: PaymentContext
   ): Promise<PaymentPluginError | void>
