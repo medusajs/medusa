@@ -80,7 +80,7 @@ This method accepts the variant ID as a first parameter and the [context](./inde
 
 This method must return an object having the following fields:
 
-```typescript noHeader
+```typescript noReport noHeader
 {
   originalPrice, //number | null
   calculatedPrice, //number | null

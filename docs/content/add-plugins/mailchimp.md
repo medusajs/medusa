@@ -72,7 +72,7 @@ This plugin adds a new `POST` endpoint at `/mailchimp/subscribe`. This endpoint 
 
 Try sending a `POST` request to `/mailchimp/subscribe` with the following JSON body:
 
-```json noHeader
+```json noReport noHeader
 {
   "email": "example@gmail.com"
 }
@@ -90,7 +90,7 @@ If you check your Mailchimp dashboard, you should find the email added to your A
 
 Here’s an example of sending additional data with the subscription:
 
-```json noHeader
+```json noReport noHeader
 {
     "email": "example@gmail.com",
     "data": {

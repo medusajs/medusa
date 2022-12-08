@@ -110,15 +110,15 @@ By default, all code blocks have headers and no additional actions are required 
 
 ### Code Blocks without Headers
 
-To add a code block without a header, simply add `noHeader` after the beginning backticks of the code block. For example:
+To add a code block without a header, simply add `noReport noHeader` after the beginning backticks of the code block. For example:
 
 ~~~md
-```bash noHeader
+```bash noReport noHeader
 this code block does not have a header
 ```
 ~~~
 
-`noHeader` should be added after the language of the code block (which is `bash` in the above example). If you used `npm2yarn` as well, `noHeader` should be after it.
+`noReport noHeader` should be added after the language of the code block (which is `bash` in the above example). If you used `npm2yarn` as well, `noReport noHeader` should be after it.
 
 ## NPM and Yarn Code Blocks
 

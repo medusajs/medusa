@@ -1,12 +1,14 @@
-import React, {useState, cloneElement, isValidElement, useEffect} from 'react';
-import clsx from 'clsx';
-import useIsBrowser from '@docusaurus/useIsBrowser';
-import {duplicates} from '@docusaurus/theme-common';
+import React, {cloneElement, isValidElement, useEffect, useState} from 'react';
 import {
   useScrollPositionBlocker,
   useTabGroupChoice,
 } from '@docusaurus/theme-common/internal';
+
+import clsx from 'clsx';
+import {duplicates} from '@docusaurus/theme-common';
 import styles from './styles.module.css';
+import useIsBrowser from '@docusaurus/useIsBrowser';
+
 // A very rough duck type, but good enough to guard against mistakes while
 // allowing customization
 function isTabItem(comp) {
@@ -20,6 +22,8 @@ function TabsComponent(props) {
     values: valuesProp,
     groupId,
     className,
+    isCodeTabs = false,
+    codeTitle
   } = props;
   const children = React.Children.map(props.children, (child) => {
     if (isValidElement(child) && isTabItem(child)) {
@@ -113,39 +117,42 @@ function TabsComponent(props) {
   };
   return (
     <div className={clsx('tabs-container', styles.tabList)}>
-      <ul
-        role="tablist"
-        aria-orientation="horizontal"
-        className={clsx(
-          'tabs',
-          {
-            'tabs--block': block,
-          },
-          className,
-        )}>
-        {values.map(({value, label, attributes}) => (
-          <li
-            role="tab"
-            tabIndex={selectedValue === value ? 0 : -1}
-            aria-selected={selectedValue === value}
-            key={value}
-            ref={(tabControl) => tabRefs.push(tabControl)}
-            onKeyDown={handleKeydown}
-            onFocus={handleTabChange}
-            onClick={handleTabChange}
-            {...attributes}
-            className={clsx(
-              'tabs__item',
-              styles.tabItem,
-              attributes?.className,
-              {
-                'tabs__item--active': selectedValue === value,
-              },
-            )}>
-            {label ?? value}
-          </li>
-        ))}
-      </ul>
+      <div className={`tablist-wrapper ${isCodeTabs ? 'code-header' : ''}`}>
+        {isCodeTabs && <span className='code-title'>{codeTitle}</span>}
+        <ul
+          role="tablist"
+          aria-orientation="horizontal"
+          className={clsx(
+            'tabs',
+            {
+              'tabs--block': block,
+            },
+            className,
+          )}>
+          {values.map(({value, label, attributes}) => (
+            <li
+              role="tab"
+              tabIndex={selectedValue === value ? 0 : -1}
+              aria-selected={selectedValue === value}
+              key={value}
+              ref={(tabControl) => tabRefs.push(tabControl)}
+              onKeyDown={handleKeydown}
+              onFocus={handleTabChange}
+              onClick={handleTabChange}
+              {...attributes}
+              className={clsx(
+                'tabs__item',
+                styles.tabItem,
+                attributes?.className,
+                {
+                  'tabs__item--active': selectedValue === value,
+                },
+              )}>
+              {label ?? value}
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {lazy ? (
         cloneElement(
@@ -183,6 +190,7 @@ export default function Tabs(props) {
         // Remount tabs after hydration
         // Temporary fix for https://github.com/facebook/docusaurus/issues/5653
         key={String(isBrowser)}
+        isCodeTabs={props.wrapperClassName?.search('code-tabs') !== -1 || props.groupId === 'npm2yarn'}
         {...props}
       />
     </div>
