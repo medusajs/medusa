@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "declaration": true,
+    "jsx": "react",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "target": "es2017",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "incremental": false,
+    "outDir": ".",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
