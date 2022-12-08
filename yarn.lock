@@ -4801,7 +4801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-sdk@*, @medusajs/admin-sdk@workspace:packages/medusa-admin-sdk":
+"@medusajs/admin-sdk@0.0.1, @medusajs/admin-sdk@workspace:packages/medusa-admin-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-sdk@workspace:packages/medusa-admin-sdk"
   dependencies:
@@ -4817,11 +4817,11 @@ __metadata:
   peerDependencies:
     medusa-core-utils: "*"
   bin:
-    medusa-admin: dist/cli/index.js
+    medusa-admin-cli: dist/cli/index.js
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-ui@*, @medusajs/admin-ui@workspace:packages/medusa-admin-ui":
+"@medusajs/admin-ui@0.0.1, @medusajs/admin-ui@workspace:packages/medusa-admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/medusa-admin-ui"
   dependencies:
@@ -11490,6 +11490,18 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0
   checksum: fc2f7fd03d8cddb36e0a07a94f1bb1826f7d7dae1f3519ed170c7a5e56c863aecbdb3fd2b034674a53210088478f000318b06415bad511bcf203c5729e5dd079
+  languageName: node
+  linkType: hard
+
+"babel-preset-jest@npm:^29.2.0":
+  version: 29.2.0
+  resolution: "babel-preset-jest@npm:29.2.0"
+  dependencies:
+    babel-plugin-jest-hoist: ^29.2.0
+    babel-preset-current-node-syntax: ^1.0.0
+  peerDependencies:
+    "@babel/core": ^7.0.0
+  checksum: bc72a6a64dd77b1075cbeaa53ee925b33e78d32e44fe3676c57941baa3ae8f59f6e2f399cef5b2d3ce2eecefb41e401ed4e276f4310f36519f4821c57227fb16
   languageName: node
   linkType: hard
 
@@ -25431,13 +25443,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-admin@workspace:packages/medusa-plugin-admin"
   dependencies:
-    "@medusajs/admin-sdk": "*"
-    "@medusajs/admin-ui": "*"
+    "@medusajs/admin-sdk": 0.0.1
+    "@medusajs/admin-ui": 0.0.1
     "@types/express": ^4.17.14
     "@types/fs-extra": ^9.0.13
     express: ^4.18.2
     fs-extra: ^11.1.0
     typescript: ^4.9.4
+  bin:
+    medusa-admin-cli: ./bin/medusa-admin-cli.js
   languageName: unknown
   linkType: soft
 
