@@ -1,8 +1,5 @@
-import { SamlTokenUserAccountAuthMutationVariables } from "@linear/sdk/dist/_generated_documents"
 import { IsNotEmpty, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { Order } from "../../../../models"
 import {
   CustomerService,
   EventBusService,

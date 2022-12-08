@@ -1,22 +1,10 @@
-import {
-  IsEmail,
-  IsJWT,
-  IsNotEmpty,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-
-import InviteService from "../../../../services/invite"
-import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { IsJWT, IsNotEmpty } from "class-validator"
 import { EntityManager } from "typeorm"
 import {
   CustomerService,
-  EventBusService,
   OrderService,
   TokenService,
 } from "../../../../services"
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /orders/customer/confirm
