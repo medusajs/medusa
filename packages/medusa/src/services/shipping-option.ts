@@ -19,6 +19,7 @@ import {
   CreateShippingOptionInput,
   ShippingMethodUpdate,
   UpdateShippingOptionInput,
+  ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
@@ -399,10 +400,7 @@ class ShippingOptionService extends TransactionBaseService {
 
   private async validateAndMutatePrice(
     option: ShippingOption | CreateShippingOptionInput,
-    priceInput: {
-      amount?: number
-      price_type?: ShippingOptionPriceType
-    }
+    priceInput: ValidatePriceTypeAndAmountInput
   ): Promise<ShippingOption | CreateShippingOptionInput> {
     const option_: ShippingOption | CreateShippingOptionInput = Object.assign(
       {},
