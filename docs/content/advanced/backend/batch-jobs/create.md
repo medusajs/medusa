@@ -43,7 +43,7 @@ Batch job strategies must extend the abstract class `AbstractBatchJobStrategy` a
 
 Add the following content to the file you created:
 
-```tsx
+```tsx title=src/strategies/publish.ts
 import { AbstractBatchJobStrategy, BatchJobService } from '@medusajs/medusa'
 import { EntityManager } from 'typeorm'
 
@@ -294,9 +294,9 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "type": "publish-products",
     "context": { },
@@ -342,8 +342,8 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 
@@ -352,7 +352,7 @@ curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
 
 Based on the batch job strategy implemented in this documentation, the `result` property could be something like this:
 
-```json noHeader
+```json noReport
 "result": {
     "count": 1,
     "stat_descriptors": [
@@ -398,8 +398,8 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
+-H 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 
