@@ -111,7 +111,7 @@ class BatchJobService extends TransactionBaseService {
     if (!isDefined(batchJobId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `BatchJob id should be defined`
+        `"batchJobId" must be defined`
       )
     }
 

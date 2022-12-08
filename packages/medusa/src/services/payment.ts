@@ -65,7 +65,7 @@ export default class PaymentService extends TransactionBaseService {
     if (!isDefined(paymentId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Payment id should be defined`
+        `"paymentId" must be defined`
       )
     }
 

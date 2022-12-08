@@ -87,7 +87,7 @@ class IdempotencyKeyService extends TransactionBaseService {
     if (!isDefined(idempotencyKey)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `IdempotencyKey should be defined`
+        `"idempotencyKey" must be defined`
       )
     }
 

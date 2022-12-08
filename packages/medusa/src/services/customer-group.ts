@@ -42,11 +42,11 @@ class CustomerGroupService extends TransactionBaseService {
     this.customerService_ = customerService
   }
 
-  async retrieve(id: string, config = {}): Promise<CustomerGroup> {
-    if (!isDefined(id)) {
+  async retrieve(customerGroupId: string, config = {}): Promise<CustomerGroup> {
+    if (!isDefined(customerGroupId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `CustomerGroup id should be defined`
+        `"customerGroupId" must be defined`
       )
     }
 
@@ -54,13 +54,13 @@ class CustomerGroupService extends TransactionBaseService {
       this.customerGroupRepository_
     )
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: customerGroupId }, config)
 
     const customerGroup = await cgRepo.findOne(query)
     if (!customerGroup) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `CustomerGroup with id ${id} was not found`
+        `CustomerGroup with id ${customerGroupId} was not found`
       )
     }
 

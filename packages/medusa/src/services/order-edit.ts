@@ -94,7 +94,7 @@ export default class OrderEditService extends TransactionBaseService {
     if (!isDefined(orderEditId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `OrderEdit id should be defined`
+        `"orderEditId" must be defined`
       )
     }
 

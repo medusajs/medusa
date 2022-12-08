@@ -84,30 +84,30 @@ class ReturnReasonService extends TransactionBaseService {
 
   /**
    * Gets an order by id.
-   * @param {string} id - id of order to retrieve
+   * @param {string} returnReasonId - id of order to retrieve
    * @param {Object} config - config object
    * @return {Promise<Order>} the order document
    */
   async retrieve(
-    id: string,
+    returnReasonId: string,
     config: FindConfig<ReturnReason> = {}
   ): Promise<ReturnReason | never> {
-    if (!isDefined(id)) {
+    if (!isDefined(returnReasonId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `ReturnReason id should be defined`
+        `"returnReasonId" must be defined`
       )
     }
 
     const rrRepo = this.manager_.getCustomRepository(this.retReasonRepo_)
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: returnReasonId }, config)
     const item = await rrRepo.findOne(query)
 
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Return Reason with id: ${id} was not found.`
+        `Return Reason with id: ${returnReasonId} was not found.`
       )
     }
 

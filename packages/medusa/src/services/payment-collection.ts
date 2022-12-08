@@ -78,7 +78,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     if (!isDefined(paymentCollectionId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `PaymentCollection id should be defined`
+        `"paymentCollectionId" must be defined`
       )
     }
 

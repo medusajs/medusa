@@ -103,7 +103,7 @@ class SalesChannelService extends TransactionBaseService {
     if (!isDefined(salesChannelId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `SalesChannel id should be defined`
+        `"salesChannelId" must be defined`
       )
     }
 
@@ -124,7 +124,7 @@ class SalesChannelService extends TransactionBaseService {
     if (!isDefined(name)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `SalesChannel name should be defined`
+        `"name" must be defined`
       )
     }
 

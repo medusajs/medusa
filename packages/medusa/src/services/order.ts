@@ -336,7 +336,7 @@ class OrderService extends TransactionBaseService {
     if (!isDefined(orderId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order id should be defined`
+        `"orderId" must be defined`
       )
     }
 

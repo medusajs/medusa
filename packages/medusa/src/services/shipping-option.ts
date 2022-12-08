@@ -185,7 +185,7 @@ class ShippingOptionService extends TransactionBaseService {
     if (!isDefined(optionId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `ShippingOption id should be defined`
+        `"optionId" must be defined`
       )
     }
 

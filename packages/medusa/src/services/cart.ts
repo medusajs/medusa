@@ -217,7 +217,7 @@ class CartService extends TransactionBaseService {
     if (!isDefined(cartId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Cart id should be defined`
+        `"cartId" must be defined`
       )
     }
 

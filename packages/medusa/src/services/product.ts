@@ -185,7 +185,7 @@ class ProductService extends TransactionBaseService {
     if (!isDefined(productId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Product id should be defined`
+        `"productId" must be defined`
       )
     }
 
@@ -206,7 +206,7 @@ class ProductService extends TransactionBaseService {
     if (!isDefined(productHandle)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Product handle should be defined`
+        `"productHandle" must be defined`
       )
     }
 
@@ -227,7 +227,7 @@ class ProductService extends TransactionBaseService {
     if (!isDefined(externalId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Product externalId should be defined`
+        `"externalId" must be defined`
       )
     }
 

@@ -92,7 +92,7 @@ class PriceListService extends TransactionBaseService {
     if (!isDefined(priceListId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `PriceList id should be defined`
+        `"priceListId" must be defined`
       )
     }
 

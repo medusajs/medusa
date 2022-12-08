@@ -226,31 +226,31 @@ class ClaimItemService extends TransactionBaseService {
 
   /**
    * Gets a claim item by id.
-   * @param {string} id - id of ClaimItem to retrieve
+   * @param {string} claimItemId - id of ClaimItem to retrieve
    * @param {Object} config - configuration for the find operation
    * @return {Promise<Order>} the ClaimItem
    */
   async retrieve(
-    id: string,
+    claimItemId: string,
     config: FindConfig<ClaimItem> = {}
   ): Promise<ClaimItem> {
-    if (!isDefined(id)) {
+    if (!isDefined(claimItemId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `ClaimItem id should be defined`
+        `"claimItemId" must be defined`
       )
     }
 
     const claimItemRepo = this.manager_.getCustomRepository(
       this.claimItemRepository_
     )
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: claimItemId }, config)
     const item = await claimItemRepo.findOne(query)
 
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Claim item with id: ${id} was not found.`
+        `Claim item with id: ${claimItemId} was not found.`
       )
     }
 

@@ -97,7 +97,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     if (!isDefined(publishableApiKeyId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `PublishableApiKey id should be defined`
+        `"publishableApiKeyId" must be defined`
       )
     }
 

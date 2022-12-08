@@ -58,7 +58,7 @@ class ProductCollectionService extends TransactionBaseService {
     if (!isDefined(collectionId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Collection id should be defined`
+        `"collectionId" must be defined`
       )
     }
 

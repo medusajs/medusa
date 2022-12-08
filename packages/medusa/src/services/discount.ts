@@ -249,7 +249,7 @@ class DiscountService extends TransactionBaseService {
     if (!isDefined(discountId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Discount id should be defined`
+        `"discountId" must be defined`
       )
     }
 

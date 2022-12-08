@@ -58,7 +58,7 @@ class Oauth extends TransactionBaseService {
     if (!isDefined(oauthId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Oauth id should be defined`
+        `"oauthId" must be defined`
       )
     }
 

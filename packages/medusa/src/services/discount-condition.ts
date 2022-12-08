@@ -53,7 +53,7 @@ class DiscountConditionService extends TransactionBaseService {
     if (!isDefined(conditionId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `DiscountCondition id should be defined`
+        `"conditionId" must be defined`
       )
     }
 

@@ -498,7 +498,7 @@ class RegionService extends TransactionBaseService {
     if (!isDefined(regionId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Region id should be defined`
+        `"regionId" must be defined`
       )
     }
 

@@ -221,7 +221,7 @@ class GiftCardService extends TransactionBaseService {
     if (!isDefined(giftCardId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `GiftCard id should be defined`
+        `"giftCardId" must be defined`
       )
     }
 
@@ -235,7 +235,7 @@ class GiftCardService extends TransactionBaseService {
     if (!isDefined(code)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `GiftCard code should be defined`
+        `"code" must be defined`
       )
     }
 

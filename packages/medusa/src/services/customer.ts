@@ -198,7 +198,7 @@ class CustomerService extends TransactionBaseService {
     if (!isDefined(email)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Customer email should be defined`
+        `"email" must be defined`
       )
     }
 
@@ -231,7 +231,7 @@ class CustomerService extends TransactionBaseService {
     if (!isDefined(customerId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Customer id should be defined`
+        `"customerId" must be defined`
       )
     }
 

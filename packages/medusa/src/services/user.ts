@@ -83,7 +83,7 @@ class UserService extends TransactionBaseService {
     if (!isDefined(userId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `User id should be defined`
+        `"userId" must be defined`
       )
     }
 
