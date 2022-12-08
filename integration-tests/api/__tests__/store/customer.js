@@ -1,9 +1,11 @@
+const jwt = require("jsonwebtoken")
 const path = require("path")
 const { Address, Customer, Order, Region } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
+const { simpleOrderFactory } = require("../../factories")
 
 jest.setTimeout(30000)
 
@@ -26,6 +28,78 @@ describe("/store/customers", () => {
     const db = useDb()
     await db.shutdown()
     medusaProcess.kill()
+  })
+
+  describe("POST /store/customers/confirm-claim", () => {
+    let orderId
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await manager.insert(Customer, {
+        id: "test_customer",
+        first_name: "John",
+        last_name: "Deere",
+        email: "john@deere.com",
+        password_hash:
+          "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+        has_account: true,
+      })
+
+      await manager.insert(Customer, {
+        id: "test_customer-1",
+        first_name: "John",
+        last_name: "Deere",
+        email: "john@deere.com",
+      })
+
+      const order = await simpleOrderFactory(dbConnection, {
+        customer: {
+          id: "test_customer-1",
+        },
+      })
+      orderId = order.id
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("Successfully confirms a claim ", async () => {
+      const api = useApi()
+
+      const token = jwt.sign(
+        {
+          claimingCustomerId: "test_customer",
+          orders: [orderId],
+        },
+        "test"
+      )
+
+      const authResponse = await api.post("/store/auth", {
+        email: "john@deere.com",
+        password: "test",
+      })
+
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
+
+      const authHeader = {
+        headers: {
+          Cookie: authCookie,
+        },
+      }
+
+      const ordersRes1 = await api.get(`/store/customers/me/orders`, authHeader)
+
+      expect(ordersRes1.data.orders.length).toEqual(0)
+
+      const response = await api.post("/store/orders/customer/confirm", {
+        token,
+      })
+      expect(response.status).toBe(200)
+
+      const ordersRes2 = await api.get(`/store/customers/me/orders`, authHeader)
+
+      expect(ordersRes2.data.orders.length).toEqual(1)
+    })
   })
 
   describe("POST /store/customers", () => {

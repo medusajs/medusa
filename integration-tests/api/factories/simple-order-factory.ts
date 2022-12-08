@@ -27,6 +27,10 @@ import {
   SalesChannelFactoryData,
   simpleSalesChannelFactory,
 } from "./simple-sales-channel-factory"
+import {
+  CustomerFactoryData,
+  simpleCustomerFactory,
+} from "./simple-customer-factory"
 
 export type OrderFactoryData = {
   id?: string
@@ -34,6 +38,7 @@ export type OrderFactoryData = {
   fulfillment_status?: FulfillmentStatus
   region?: RegionFactoryData | string
   email?: string | null
+  customer?: CustomerFactoryData | null
   currency_code?: string
   tax_rate?: number | null
   line_items?: LineItemFactoryData[]
@@ -70,11 +75,10 @@ export const simpleOrderFactory = async (
   }
   const address = await simpleAddressFactory(connection, data.shipping_address)
 
-  const customerToSave = manager.create(Customer, {
-    email:
-      typeof data.email !== "undefined" ? data.email : faker.internet.email(),
+  const customer = await simpleCustomerFactory(connection, {
+    ...data.customer,
+    email: data.email ?? undefined,
   })
-  const customer = await manager.save(customerToSave)
 
   let discounts = []
   if (typeof data.discounts !== "undefined") {

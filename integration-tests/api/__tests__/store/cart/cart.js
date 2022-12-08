@@ -1799,6 +1799,56 @@ describe("/store/carts", () => {
       expect(res.data.cart.payment_authorized_at).not.toBe(null)
       expect(res.data.cart.completed_at).not.toBe(null)
     })
+
+    it("completes cart with a non-customer and for a customer with the same email created later the order doesn't show up", async () => {
+      const api = useApi()
+      const customerEmail = "test-email-for-non-existent-customer@test.com"
+      const product = await simpleProductFactory(dbConnection)
+
+      const region = await simpleRegionFactory(dbConnection, { tax_rate: 10 })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        customer: {
+          email: customerEmail,
+          has_account: false,
+        },
+        region: region.id,
+        line_items: [
+          {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+      expect(completeRes.status).toEqual(200)
+
+      const customerResponse = await api.post("/store/customers", {
+        first_name: "John",
+        last_name: "Doe",
+        email: customerEmail,
+        password: "test",
+      })
+
+      const [authCookie] = customerResponse.headers["set-cookie"][0].split(";")
+
+      const customerOrdersResponse = await api
+        .get("/store/customers/me/orders?status[]=completed", {
+          headers: {
+            Cookie: authCookie,
+          },
+        })
+        .catch((err) => {
+          return err.response
+        })
+      expect(customerOrdersResponse.status).toEqual(200)
+      expect(customerOrdersResponse.data.orders.length).toEqual(0)
+    })
   })
 
   describe("POST /store/carts/:id/shipping-methods", () => {
