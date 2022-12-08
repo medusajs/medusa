@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
+import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
@@ -398,13 +398,16 @@ class ShippingOptionService extends TransactionBaseService {
   }
 
   private async validateAndMutatePrice(
-    option: ShippingOption,
+    option: ShippingOption | CreateShippingOptionInput,
     priceInput: {
       amount?: number
       price_type?: ShippingOptionPriceType
     }
-  ): Promise<ShippingOption> {
-    const option_: ShippingOption = { ...option }
+  ): Promise<ShippingOption | CreateShippingOptionInput> {
+    const option_: ShippingOption | CreateShippingOptionInput = Object.assign(
+      {},
+      option
+    )
 
     if (isDefined(priceInput.amount)) {
       option_.amount = priceInput.amount
@@ -443,25 +446,22 @@ class ShippingOptionService extends TransactionBaseService {
    */
   async create(data: CreateShippingOptionInput): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      const option = optionRepo.create(data as DeepPartial<ShippingOption>)
+      const optionWithValidatedPrice = await this.validateAndMutatePrice(data, {
+        price_type: data.price_type,
+      })
 
-      const optionWithValidatedPrice = await this.validateAndMutatePrice(
-        option,
-        {
-          price_type: data.price_type,
-        }
-      )
+      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const option = optionRepo.create(optionWithValidatedPrice)
 
       const region = await this.regionService_
         .withTransaction(manager)
-        .retrieve(optionWithValidatedPrice.region_id, {
+        .retrieve(option.region_id, {
           relations: ["fulfillment_providers"],
         })
 
       if (
         !region.fulfillment_providers.find(
-          ({ id }) => id === optionWithValidatedPrice.provider_id
+          ({ id }) => id === option.provider_id
         )
       ) {
         throw new MedusaError(
@@ -476,12 +476,12 @@ class ShippingOptionService extends TransactionBaseService {
         )
       ) {
         if (typeof data.includes_tax !== "undefined") {
-          optionWithValidatedPrice.includes_tax = data.includes_tax
+          option.includes_tax = data.includes_tax
         }
       }
 
       const isValid = await this.providerService_.validateOption(
-        optionWithValidatedPrice as ShippingOption
+        option as ShippingOption
       )
 
       if (!isValid) {
@@ -521,7 +521,7 @@ class ShippingOptionService extends TransactionBaseService {
         }
       }
 
-      const result = await optionRepo.save(optionWithValidatedPrice)
+      const result = await optionRepo.save(option)
       return result
     })
   }
