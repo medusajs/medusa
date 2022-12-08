@@ -1,6 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
-import { AbstractPaymentService, TransactionBaseService } from "../interfaces"
+import {
+  AbstractPaymentService,
+  PaymentContext,
+  PaymentSessionData,
+  PaymentSessionResponse,
+  TransactionBaseService,
+} from "../interfaces"
 import { EntityManager } from "typeorm"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { PaymentRepository } from "../repositories/payment"
@@ -21,6 +27,8 @@ import { FlagRouter } from "../utils/flag-router"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import PaymentService from "./payment"
 import { Logger } from "../types/global"
+import { CreateSessionContext } from "../types/payment"
+import { CustomerService } from "./index"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -30,6 +38,7 @@ type InjectedDependencies = {
   paymentRepository: typeof PaymentRepository
   refundRepository: typeof RefundRepository
   paymentService: PaymentService
+  customerService: CustomerService
   featureFlagRouter: FlagRouter
   logger: Logger
 } & {
@@ -50,6 +59,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly refundRepository_: typeof RefundRepository
+  protected readonly customerService_: CustomerService
   protected readonly logger_: Logger
 
   protected readonly featureFlagRouter_: FlagRouter
@@ -63,6 +73,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     this.paymentProviderRepository_ = container.paymentProviderRepository
     this.paymentRepository_ = container.paymentRepository
     this.refundRepository_ = container.refundRepository
+    this.customerService_ = container.customerService
     this.featureFlagRouter_ = container.featureFlagRouter
     this.logger_ = container.logger
   }
@@ -166,15 +177,56 @@ export default class PaymentProviderService extends TransactionBaseService {
   /**
    * Creates a payment session with the given provider.
    * @param providerId - the id of the provider to create payment with
-   * @param cart - a cart object used to calculate the amount, etc. from
+   * @param cartOrData - a cart object used to calculate the amount, etc. from
    * @return the payment session
    */
-  async createSession(providerId: string, cart: Cart): Promise<PaymentSession> {
+  async createSession(
+    providerId: string,
+    cartOrData: Cart | CreateSessionContext
+  ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const provider = this.retrieveProvider(providerId)
-      const sessionData = await provider
+      const provider = this.retrieveProvider(
+        providerId
+      ) as AbstractPaymentService
+
+      const cart =
+        "object" in cartOrData && cartOrData.object === "cart"
+          ? cartOrData
+          : (cartOrData as CreateSessionContext).cart
+
+      const context = {} as Cart & PaymentContext
+
+      // Build the createPayment context with the appropriate data
+      if ("object" in cartOrData && cartOrData.object === "cart") {
+        context.cart = cart
+        context.amount = Math.round(cart.total!)
+        context.currency_code = cart.region.currency_code
+        context.collected_data = cart.customer.metadata
+        Object.assign(context, cart)
+      } else {
+        const data = cartOrData as CreateSessionContext
+        context.cart = cart
+        context.amount = data.amount
+        context.currency_code = data.currency_code
+        context.collected_data = data.customer?.metadata ?? {}
+        Object.assign(context, cart)
+      }
+
+      const paymentResponse = await provider
         .withTransaction(transactionManager)
-        .createPayment(cart)
+        .createPayment(context)
+
+      let sessionData = paymentResponse as PaymentSessionData
+
+      if (paymentResponse.collected_data) {
+        sessionData = paymentResponse.session_data
+        await this.processCollectedData(
+          {
+            customer: { id: cart.customer?.id },
+          },
+          paymentResponse.collected_data
+        )
+      }
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
@@ -695,5 +747,24 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
 
     return refund
+  }
+
+  /**
+   * Process the collected data. Can be used every time we need to process some collected data returned by the provide
+   * @param data
+   * @param collectedData
+   * @protected
+   */
+  protected async processCollectedData(
+    data: { customer?: { id: string } } = {},
+    collectedData?: PaymentSessionResponse["collected_data"]
+  ): Promise<void> {
+    const manager = this.transactionManager_ ?? this.manager_
+
+    if (collectedData?.customer && data.customer?.id) {
+      await this.customerService_
+        .withTransaction(manager)
+        .update(data.customer.id, { metadata: collectedData.customer })
+    }
   }
 }

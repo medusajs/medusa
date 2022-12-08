@@ -13,6 +13,28 @@ export type Data = Record<string, unknown>
 export type PaymentData = Data
 export type PaymentSessionData = Data
 
+export type PaymentContext = {
+  // TODO: type Cart is meant for backward compatibility and will be replaced by the type in comment bellow instead in the future
+  cart: Cart
+  /* | {
+        context: Record<string, unknown>
+        id: string
+        customer_id?: string
+        email: string
+        shipping_address: Address | null
+        shipping_options: ShippingMethod["shipping_option"][]
+      }*/
+  currency_code: string
+  amount: number
+  resource_id?: string
+  collected_data: Record<string, unknown>
+}
+
+export type PaymentSessionResponse = {
+  collected_data: { customer: Record<string, unknown> }
+  session_data: Record<string, unknown>
+}
+
 export interface PaymentService extends TransactionBaseService {
   getIdentifier(): string
 
@@ -23,6 +45,16 @@ export interface PaymentService extends TransactionBaseService {
     data: Data
   ): Promise<PaymentSessionData>
 
+  /**
+   * @param context The type of this argument is meant to be temporary and once the previous method signature
+   * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
+   */
+  createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>
+
+  /**
+   * @deprecated use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * @param cart
+   */
   createPayment(cart: Cart): Promise<PaymentSessionData>
 
   retrievePayment(paymentData: PaymentData): Promise<Data>
@@ -76,7 +108,20 @@ export abstract class AbstractPaymentService
     data: Data
   ): Promise<PaymentSessionData>
 
+  /**
+   * @param context The type of this argument is meant to be temporary and once the previous method signature
+   * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
+   */
+  public abstract createPayment(
+    context: Cart & PaymentContext
+  ): Promise<PaymentSessionResponse>
+
+  /**
+   * @deprecated use createPayment(context: CreateSessionContext): Promise<PaymentSessionResponse> instead
+   * @param cart
+   */
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
+
   public abstract createPaymentNew(
     paymentInput: PaymentProviderDataInput
   ): Promise<PaymentSessionData>
