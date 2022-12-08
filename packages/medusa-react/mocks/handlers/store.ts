@@ -121,6 +121,14 @@ export const storeHandlers = [
     )
   }),
 
+  rest.post("/store/orders/customer/confirm", (req, res, ctx) => {
+    return res(ctx.status(200))
+  }),
+
+  rest.post("/store/orders/batch/customer/token", (req, res, ctx) => {
+    return res(ctx.status(200))
+  }),
+
   rest.get("/store/return-reasons/", (req, res, ctx) => {
     return res(
       ctx.status(200),
