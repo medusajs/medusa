@@ -1,17 +1,14 @@
-import { Cart } from "../models"
+import { Address, ShippingMethod } from "../models"
 
 export type PaymentSessionInput = {
   provider_id: string
-  // TODO: type Cart is meant for backward compatibility and will be replaced by the type in comment bellow instead in the future
-  cart?: Cart
-  /* | {
-        context: Record<string, unknown>
-        id: string
-        customer_id?: string
-        email: string
-        shipping_address: Address | null
-        shipping_options: ShippingMethod["shipping_option"][]
-      }*/
+  cart: {
+    context: Record<string, unknown>
+    id: string
+    email: string
+    shipping_address: Address | null
+    shipping_methods: ShippingMethod[]
+  }
   customer?: {
     id: string
 

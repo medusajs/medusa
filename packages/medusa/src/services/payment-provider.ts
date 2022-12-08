@@ -183,7 +183,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   async createSession(
     providerId: string,
     // Make the cart required, this is temporary until later refactoring
-    cartOrData: Cart | (PaymentSessionInput & { cart: Cart })
+    cartOrData: Cart | PaymentSessionInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
       const provider = this.retrieveProvider(
@@ -199,14 +199,20 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       // TODO: only to support legacy API
       if ("object" in cartOrData && cartOrData.object === "cart") {
-        context.cart = cart
+        context.cart = {
+          context: cart.context,
+          shipping_address: cart.shipping_address,
+          id: cart.id,
+          email: cart.email,
+          shipping_methods: cart.shipping_methods,
+        }
         context.amount = cart.total!
         context.currency_code = cart.region?.currency_code
         context.collected_data = cart.customer?.metadata ?? {}
         Object.assign(context, cart)
       } else {
         const data = cartOrData as PaymentSessionInput
-        context.cart = cart
+        context.cart = data.cart
         context.amount = data.amount
         context.currency_code = data.currency_code
         context.collected_data = data.customer?.metadata ?? {}
@@ -248,7 +254,9 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   async createSessionNew(
-    sessionInput: PaymentSessionInput
+    sessionInput: Omit<PaymentSessionInput, "cart"> & {
+      cart?: PaymentSessionInput["cart"]
+    }
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
       const provider = this.retrieveProvider(
@@ -334,7 +342,9 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   async refreshSessionNew(
     paymentSession: PaymentSession,
-    sessionInput: PaymentSessionInput
+    sessionInput: Omit<PaymentSessionInput, "cart"> & {
+      cart?: PaymentSessionInput["cart"]
+    }
   ): Promise<PaymentSession> {
     return this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)
@@ -379,7 +389,9 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   async updateSessionNew(
     paymentSession: PaymentSession,
-    sessionInput: PaymentSessionInput
+    sessionInput: Omit<PaymentSessionInput, "cart"> & {
+      cart?: PaymentSessionInput["cart"]
+    }
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)

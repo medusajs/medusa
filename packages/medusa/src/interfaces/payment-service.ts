@@ -1,10 +1,12 @@
 import { TransactionBaseService } from "./transaction-base-service"
 import {
+  Address,
   Cart,
   Customer,
   Payment,
   PaymentSession,
   PaymentSessionStatus,
+  ShippingMethod,
 } from "../models"
 import { PaymentService } from "medusa-interfaces"
 import { PaymentProviderDataInput } from "../types/payment-collection"
@@ -14,16 +16,13 @@ export type PaymentData = Data
 export type PaymentSessionData = Data
 
 export type PaymentContext = {
-  // TODO: type Cart is meant for backward compatibility and will be replaced by the type in comment bellow instead in the future
-  cart: Cart
-  /* | {
-        context: Record<string, unknown>
-        id: string
-        customer_id?: string
-        email: string
-        shipping_address: Address | null
-        shipping_options: ShippingMethod["shipping_option"][]
-      }*/
+  cart: {
+    context: Record<string, unknown>
+    id: string
+    email: string
+    shipping_address: Address | null
+    shipping_methods: ShippingMethod[]
+  }
   currency_code: string
   amount: number
   resource_id?: string

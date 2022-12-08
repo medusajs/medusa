@@ -54,6 +54,7 @@ import ShippingOptionService from "./shipping-option"
 import StoreService from "./store"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { PaymentSessionInput } from "../types/payment"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -1703,8 +1704,14 @@ class CartService extends TransactionBaseService {
           )
         }
 
-        const paymentSessionInput = {
-          cart: cart,
+        const paymentSessionInput: PaymentSessionInput = {
+          cart: {
+            context: cart.context,
+            id: cart.id,
+            email: cart.email,
+            shipping_address: cart.shipping_address,
+            shipping_methods: cart.shipping_methods,
+          },
           customer: cart.customer,
           amount: cart.total,
           currency_code: cart.region.currency_code,
