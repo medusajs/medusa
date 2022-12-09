@@ -229,7 +229,13 @@ Run the following command to add the environment variable:
 netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
 ```
 
-Where `<YOUR_SERVER_URL>` is the URL of your Medusa server.
+Where `<YOUR_SERVER_URL>` is the URL of your Medusa server. Note that the usage of `GATSBY` in the environment variable name doesn't mean you can only use Gatsby frontend starters. For backwards compatibility, the following environment variable names are all valid and will all result with your Medusa Admin app communicating with the provided value as your Medusa server. Use any one of:
+
+1. `GATSBY_MEDUSA_BACKEND_URL`
+2. `GATSBY_STORE_URL`
+3. `MEDUSA_BACKEND_URL`
+
+If you define multiple environment variables with the above names, precedence will be given to `MEDUSA_BACKEND_URL`, and the others will be ignored (even if `MEDUSA_BACKEND_URL` is an invalid URL). 
 
 #### Check deployment status
 
