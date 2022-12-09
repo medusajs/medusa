@@ -15,6 +15,13 @@ import {
   CartCompletionResponse,
 } from "../interfaces"
 
+export const CartCompletionSteps = {
+  STARTED: "started",
+  TAX_LINES_CREATE: "tax_lines_created",
+  PAYMENT_AUTHORIZED: "payment_authorized",
+  FINISHED: "finished",
+}
+
 type InjectedDependencies = {
   idempotencyKeyService: IdempotencyKeyService
   cartService: CartService
@@ -59,7 +66,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
-        case "started": {
+        case CartCompletionSteps.STARTED: {
           await this.manager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
@@ -75,7 +82,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             })
           break
         }
-        case "tax_lines_created": {
+        case CartCompletionSteps.TAX_LINES_CREATE: {
           await this.manager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
@@ -96,7 +103,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           break
         }
 
-        case "payment_authorized": {
+        case CartCompletionSteps.PAYMENT_AUTHORIZED: {
           await this.manager_
             .transaction("SERIALIZABLE", async (transactionManager) => {
               idempotencyKey = await this.idempotencyKeyService_
@@ -114,7 +121,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           break
         }
 
-        case "finished": {
+        case CartCompletionSteps.FINISHED: {
           inProgress = false
           break
         }
@@ -124,7 +131,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             idempotencyKey = await this.idempotencyKeyService_
               .withTransaction(transactionManager)
               .update(idempotencyKey.idempotency_key, {
-                recovery_point: "finished",
+                recovery_point: CartCompletionSteps.FINISHED,
                 response_code: 500,
                 response_body: { message: "Unknown recovery point" },
               })
@@ -134,7 +141,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     }
 
     if (err) {
-      if (idempotencyKey.recovery_point !== "started") {
+      if (idempotencyKey.recovery_point !== CartCompletionSteps.STARTED) {
         await this.manager_.transaction(async (transactionManager) => {
           try {
             await this.orderService_
@@ -189,7 +196,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     await this.cartService_.withTransaction(manager).createTaxLines(cart)
 
     return {
-      recovery_point: "tax_lines_created",
+      recovery_point: CartCompletionSteps.TAX_LINES_CREATE,
     }
   }
 
@@ -220,13 +227,13 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             payment_status: cart.payment_session.status,
             type: "cart",
           },
-          recovery_point: "started",
+          recovery_point: CartCompletionSteps.STARTED,
         }
       }
     }
 
     return {
-      recovery_point: "payment_authorized",
+      recovery_point: CartCompletionSteps.PAYMENT_AUTHORIZED,
     }
   }
 
