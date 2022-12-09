@@ -1411,6 +1411,8 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
           relations: [
+            "items",
+            "region",
             "discounts",
             "discounts.rule",
             "payment_sessions",
@@ -1435,7 +1437,9 @@ class CartService extends TransactionBaseService {
         )
         const updatedCart = await cartRepo.save(cart)
 
-        if (updatedCart.payment_sessions?.length) {
+        await this.refreshAdjustments_(updatedCart)
+
+        if (cart.payment_sessions?.length) {
           await this.setPaymentSessions(cartId)
         }
 
