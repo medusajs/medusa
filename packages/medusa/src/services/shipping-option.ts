@@ -401,11 +401,10 @@ class ShippingOptionService extends TransactionBaseService {
   private async validateAndMutatePrice(
     option: ShippingOption | CreateShippingOptionInput,
     priceInput: ValidatePriceTypeAndAmountInput
-  ): Promise<ShippingOption | CreateShippingOptionInput> {
-    const option_: ShippingOption | CreateShippingOptionInput = Object.assign(
-      {},
-      option
-    )
+  ): Promise<Omit<ShippingOption, "beforeInsert"> | CreateShippingOptionInput> {
+    const option_:
+      | Omit<ShippingOption, "beforeInsert">
+      | CreateShippingOptionInput = { ...option }
 
     if (isDefined(priceInput.amount)) {
       option_.amount = priceInput.amount
