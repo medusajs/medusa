@@ -108,7 +108,7 @@ Build command: yarn build
 Publish directory: public
 ```
 
-When you've finished setting the "Basic build settings" fields, click the “Show advanced” button, which is above the “Deploy site” button.
+Next, click the “Show advanced” button, which is above the “Deploy site” button.
 
 ![Show advanced Button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001884/Medusa%20Docs/Netlify/nUdwRbq_d2kmo6.png)
 
