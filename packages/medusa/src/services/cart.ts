@@ -1053,7 +1053,7 @@ class CartService extends TransactionBaseService {
           }
         }
 
-        if (isDefined(data.discounts)) {
+        if (isDefined(data.discounts) && data.discounts.length) {
           const previousDiscounts = [...cart.discounts]
           cart.discounts.length = 0
 
@@ -1081,6 +1081,9 @@ class CartService extends TransactionBaseService {
           if (hasFreeShipping) {
             await this.adjustFreeShipping_(cart, true)
           }
+        } else if (isDefined(data.discounts) && !data.discounts.length) {
+          cart.discounts.length = 0
+          await this.refreshAdjustments_(cart)
         }
 
         if ("gift_cards" in data) {
