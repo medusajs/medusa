@@ -167,7 +167,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     id: string,
     { manager }: { manager: EntityManager }
   ) {
-    const cart = await this.cartService_.withTransaction(manager).retrieve(id, {
+    const cartServiceTx = this.cartService_.withTransaction(manager)
+    const cart = await cartServiceTx.retrieve(id, {
       relations: [
         "customer",
         "discounts",
@@ -193,7 +194,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       }
     }
 
-    await this.cartService_.withTransaction(manager).createTaxLines(cart)
+    await cartServiceTx.createTaxLines(cart)
 
     return {
       recovery_point: CartCompletionSteps.TAX_LINES_CREATE,
@@ -226,7 +227,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           payment_status: cart.payment_session.status,
           type: "cart",
         },
-        recovery_point: CartCompletionSteps.STARTED,
       }
     }
 
