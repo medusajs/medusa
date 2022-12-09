@@ -38,9 +38,11 @@ import { FindParams } from "../../../../types/common"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - code
  *           - rule
+ *           - regions
  *         properties:
  *           code:
  *             type: string
@@ -150,6 +152,7 @@ import { FindParams } from "../../../../types/common"
  *           value: 10,
  *           allocation: AllocationType.ITEM
  *         },
+ *         regions: ['reg_XXXXXXXX'],
  *         is_dynamic: false,
  *         is_disabled: false
  *       })
@@ -168,7 +171,8 @@ import { FindParams } from "../../../../types/common"
  *              "type": "fixed",
  *              "value": 10,
  *              "allocation": "item"
- *           }
+ *           },
+ *           "regions": ['reg_XXXXXXXX']
  *       }'
  * security:
  *   - api_token: []
@@ -181,6 +185,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             discount:
  *               $ref: "#/components/schemas/discount"
@@ -255,9 +260,8 @@ export class AdminPostDiscountsReq {
   usage_limit?: number
 
   @IsArray()
-  @IsOptional()
   @IsString({ each: true })
-  regions?: string[]
+  regions: string[]
 
   @IsObject()
   @IsOptional()

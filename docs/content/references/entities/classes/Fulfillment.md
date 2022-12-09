@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/fulfillment.ts:79](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L79)
+[models/fulfillment.ts:79](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L79)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:29](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L29)
+[models/fulfillment.ts:29](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L29)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:25](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L25)
+[models/fulfillment.ts:25](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L25)
 
 ___
 
@@ -62,7 +62,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:73](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L73)
+[models/fulfillment.ts:73](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L73)
 
 ___
 
@@ -86,7 +86,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:85](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L85)
+[models/fulfillment.ts:85](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L85)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:62](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L62)
+[models/fulfillment.ts:62](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L62)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:82](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L82)
+[models/fulfillment.ts:82](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L82)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:48](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L48)
+[models/fulfillment.ts:48](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L48)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:45](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L45)
+[models/fulfillment.ts:45](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L45)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:41](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L41)
+[models/fulfillment.ts:41](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L41)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:56](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L56)
+[models/fulfillment.ts:56](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L56)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:52](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L52)
+[models/fulfillment.ts:52](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L52)
 
 ___
 
@@ -176,7 +176,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:76](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L76)
+[models/fulfillment.ts:76](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L76)
 
 ___
 
@@ -186,7 +186,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:37](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L37)
+[models/fulfillment.ts:37](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L37)
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:33](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L33)
+[models/fulfillment.ts:33](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L33)
 
 ___
 
@@ -206,7 +206,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:67](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L67)
+[models/fulfillment.ts:67](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L67)
 
 ___
 
@@ -216,7 +216,7 @@ ___
 
 #### Defined in
 
-[models/fulfillment.ts:70](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L70)
+[models/fulfillment.ts:70](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L70)
 
 ___
 
@@ -230,7 +230,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -244,4 +244,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/fulfillment.ts:87](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/fulfillment.ts#L87)
+[models/fulfillment.ts:87](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/fulfillment.ts#L87)

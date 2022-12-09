@@ -30,6 +30,5 @@ In the list, you can see discount details such as the code, description, amount,
 
 ## Learn More About Discounts
 
-- [Discount Conditions Overview](./conditions.md)
-- [Create a Discount](./create.md)
-- [Edit a Discount](./edit.md)
+- [Create a Discount](./create.mdx)
+- [Manage Discounts](./manage.mdx)

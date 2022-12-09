@@ -13,7 +13,7 @@ Using Medusa’s [Batch Job Admin APIs](https://docs.medusajs.com/api/admin/#tag
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.md) to get started.
 
 ### Redis
 
@@ -46,7 +46,7 @@ If you follow the JS Client code blocks, it’s assumed you already have [Medusa
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
+You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
 
 ## 1. Upload CSV File
 
@@ -73,6 +73,7 @@ formData.append('files', file); //file is an instance of File
 
 fetch(`<YOUR_SERVER>/admin/uploads`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'multipart/form-data',
   },
@@ -127,6 +128,7 @@ medusa.admin.batchJobs.create({
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -198,7 +200,9 @@ medusa.admin.batchJobs.retrieve(batchJobId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`)
+fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ batch_job }) => {
   console.log(batch_job.status, batch_job.result);
@@ -258,7 +262,8 @@ medusa.admin.batchJobs.confirm(batchJobId)
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
-  method: 'POST'
+  method: 'POST',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {

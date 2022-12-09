@@ -66,7 +66,6 @@ describe("Price list import batch job", () => {
       cwd,
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
     })
   })
 

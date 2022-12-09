@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:34](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L34)
+[medusa-js/src/resources/admin/index.ts:37](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L37)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:35](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L35)
+[medusa-js/src/resources/admin/index.ts:38](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L38)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:40](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L40)
+[medusa-js/src/resources/admin/index.ts:43](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L43)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:39](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L39)
+[medusa-js/src/resources/admin/index.ts:42](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L42)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:37](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L37)
+[medusa-js/src/resources/admin/index.ts:40](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L40)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:36](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L36)
+[medusa-js/src/resources/admin/index.ts:39](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L39)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:38](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L38)
+[medusa-js/src/resources/admin/index.ts:41](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L41)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:41](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L41)
+[medusa-js/src/resources/admin/index.ts:44](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L44)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:42](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L42)
+[medusa-js/src/resources/admin/index.ts:45](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L45)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:43](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L43)
+[medusa-js/src/resources/admin/index.ts:46](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L46)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:44](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L44)
+[medusa-js/src/resources/admin/index.ts:47](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L47)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:61](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L61)
+[medusa-js/src/resources/admin/index.ts:65](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L65)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:52](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L52)
+[medusa-js/src/resources/admin/index.ts:55](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L55)
 
 ___
 
@@ -144,7 +144,27 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:51](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L51)
+[medusa-js/src/resources/admin/index.ts:54](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L54)
+
+___
+
+### paymentCollections
+
+• **paymentCollections**: [`AdminPaymentCollectionsResource`](AdminPaymentCollectionsResource.md)
+
+#### Defined in
+
+[medusa-js/src/resources/admin/index.ts:68](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L68)
+
+___
+
+### payments
+
+• **payments**: [`AdminPaymentsResource`](AdminPaymentsResource.md)
+
+#### Defined in
+
+[medusa-js/src/resources/admin/index.ts:69](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L69)
 
 ___
 
@@ -154,7 +174,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:45](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L45)
+[medusa-js/src/resources/admin/index.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L48)
 
 ___
 
@@ -164,7 +184,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:47](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L47)
+[medusa-js/src/resources/admin/index.ts:50](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L50)
 
 ___
 
@@ -174,7 +194,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:48](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L48)
+[medusa-js/src/resources/admin/index.ts:51](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L51)
 
 ___
 
@@ -184,7 +204,17 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:46](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L46)
+[medusa-js/src/resources/admin/index.ts:49](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L49)
+
+___
+
+### publishableApiKeys
+
+• **publishableApiKeys**: [`AdminPublishableApiKeyResource`](AdminPublishableApiKeyResource.md)
+
+#### Defined in
+
+[medusa-js/src/resources/admin/index.ts:56](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L56)
 
 ___
 
@@ -194,7 +224,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:60](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L60)
+[medusa-js/src/resources/admin/index.ts:64](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L64)
 
 ___
 
@@ -204,7 +234,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:53](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L53)
+[medusa-js/src/resources/admin/index.ts:57](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L57)
 
 ___
 
@@ -214,7 +244,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:50](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L50)
+[medusa-js/src/resources/admin/index.ts:53](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L53)
 
 ___
 
@@ -224,7 +254,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:55](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L55)
+[medusa-js/src/resources/admin/index.ts:59](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L59)
 
 ___
 
@@ -234,7 +264,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:59](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L59)
+[medusa-js/src/resources/admin/index.ts:63](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L63)
 
 ___
 
@@ -244,7 +274,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:57](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L57)
+[medusa-js/src/resources/admin/index.ts:61](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L61)
 
 ___
 
@@ -254,7 +284,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:58](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L58)
+[medusa-js/src/resources/admin/index.ts:62](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L62)
 
 ___
 
@@ -264,7 +294,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:56](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L56)
+[medusa-js/src/resources/admin/index.ts:60](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L60)
 
 ___
 
@@ -274,7 +304,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:62](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L62)
+[medusa-js/src/resources/admin/index.ts:66](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L66)
 
 ___
 
@@ -284,7 +314,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:63](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L63)
+[medusa-js/src/resources/admin/index.ts:67](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L67)
 
 ___
 
@@ -294,7 +324,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:49](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L49)
+[medusa-js/src/resources/admin/index.ts:52](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L52)
 
 ___
 
@@ -304,4 +334,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/index.ts:54](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/index.ts#L54)
+[medusa-js/src/resources/admin/index.ts:58](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/index.ts#L58)

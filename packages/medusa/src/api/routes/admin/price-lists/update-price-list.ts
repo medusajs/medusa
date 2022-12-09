@@ -33,6 +33,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           name:
  *             description: "The name of the Price List"
@@ -138,6 +139,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             price_list:
  *               $ref: "#/components/schemas/price_list"

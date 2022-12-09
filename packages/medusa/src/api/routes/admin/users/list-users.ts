@@ -33,6 +33,7 @@ import UserService from "../../../../services/user"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             users:
  *               type: array

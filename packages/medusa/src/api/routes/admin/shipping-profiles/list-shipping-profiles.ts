@@ -33,6 +33,7 @@ import { ShippingProfileService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             shipping_profiles:
  *               type: array

@@ -19,6 +19,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - variant_id
  *           - quantity
@@ -65,6 +66,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
  *               $ref: "#/components/schemas/order_edit"

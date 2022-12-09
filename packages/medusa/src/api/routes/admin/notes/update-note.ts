@@ -15,6 +15,7 @@ import { EntityManager } from "typeorm"
  *  content:
  *    application/json:
  *      schema:
+ *        type: object
  *        required:
  *          - value
  *        properties:
@@ -54,6 +55,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             note:
  *               $ref: "#/components/schemas/note"

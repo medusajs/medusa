@@ -25,7 +25,7 @@ In addition, because medusa-react is built on top of react-query, you can pass a
 
 import * as React from "react"
 import { QueryClient } from "react-query"
-import { MedusaProvider } from "../src"
+import { MedusaProvider } from "medusa-react"
 import MyStorefront from "./my-storefront"
 
 // Your react-query's query client config

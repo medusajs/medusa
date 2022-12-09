@@ -172,11 +172,19 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     }
     if (region_id || currency_code) {
       qb.andWhere(
-        new Brackets((qb) =>
-          qb
-            .where({ region_id: region_id })
-            .orWhere({ currency_code: currency_code })
-        )
+        new Brackets((qb) => {
+          if (region_id && !currency_code) {
+            qb.where({ region_id: region_id })
+          }
+          if (!region_id && currency_code) {
+            qb.where({ currency_code: currency_code })
+          }
+          if (currency_code && region_id) {
+            qb.where({ region_id: region_id }).orWhere({
+              currency_code: currency_code,
+            })
+          }
+        })
       )
     } else if (!customer_id && !include_discount_prices) {
       qb.andWhere("price_list.id IS null")

@@ -36,6 +36,7 @@ import { EntityManager } from "typeorm"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            batch_job:
  *              $ref: "#/components/schemas/batch_job"

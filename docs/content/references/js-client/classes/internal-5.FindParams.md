@@ -18,6 +18,10 @@
 
   ↳ [`GetOrderEditsOrderEditParams`](internal-13.GetOrderEditsOrderEditParams.md)
 
+  ↳ [`GetPaymentCollectionsParams`](internal-15.GetPaymentCollectionsParams.md)
+
+  ↳ [`GetPaymentsParams`](internal-16.GetPaymentsParams.md)
+
 ## Properties
 
 ### expand

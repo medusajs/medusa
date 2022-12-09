@@ -28,6 +28,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           claim_items:
  *             description: The Claim Items that the Claim will consist of.
@@ -138,6 +139,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order:
  *               $ref: "#/components/schemas/order"
