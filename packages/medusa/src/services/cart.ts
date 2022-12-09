@@ -28,12 +28,7 @@ import {
   LineItemUpdate,
   LineItemValidateData,
 } from "../types/cart"
-import {
-  AddressPayload,
-  FindConfig,
-  TotalField,
-  WithRequiredProperty,
-} from "../types/common"
+import { AddressPayload, FindConfig, TotalField, WithRequiredProperty, } from "../types/common"
 import { buildQuery, isDefined, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
@@ -1704,29 +1699,25 @@ class CartService extends TransactionBaseService {
           )
         }
 
-        const paymentSessionInput: PaymentSessionInput = {
-          cart: {
-            context: cart.context,
-            id: cart.id,
-            email: cart.email,
-            shipping_address: cart.shipping_address,
-            shipping_methods: cart.shipping_methods,
-          },
+        const partialSessionInput: Omit<PaymentSessionInput, "provider_id"> = {
+          cart: cart as Cart,
           customer: cart.customer,
           amount: cart.total,
           currency_code: cart.region.currency_code,
-          provider_id: "",
         }
 
         if (total > 0) {
           // If only one payment session exists, we preselect it
           if (region.payment_providers.length === 1 && !cart.payment_session) {
             const paymentProvider = region.payment_providers[0]
-            paymentSessionInput.provider_id = paymentProvider.id
+            const paymentSessionInput = {
+              ...partialSessionInput,
+              provider_id: paymentProvider.id,
+            }
 
             const paymentSession = await this.paymentProviderService_
               .withTransaction(transactionManager)
-              .createSession(paymentProvider.id, paymentSessionInput)
+              .createSession(paymentSessionInput)
 
             paymentSession.is_selected = true
 
@@ -1735,10 +1726,14 @@ class CartService extends TransactionBaseService {
             await Promise.all(
               region.payment_providers.map(async (paymentProvider) => {
                 if (!seen.includes(paymentProvider.id)) {
-                  paymentSessionInput.provider_id = paymentProvider.id
+                  const paymentSessionInput = {
+                    ...partialSessionInput,
+                    provider_id: paymentProvider.id,
+                  }
+
                   return this.paymentProviderService_
                     .withTransaction(transactionManager)
-                    .createSession(paymentProvider.id, paymentSessionInput)
+                    .createSession(paymentSessionInput)
                 }
                 return
               })

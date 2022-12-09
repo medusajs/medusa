@@ -55,21 +55,21 @@ describe("PaymentProviderService", () => {
 
       expect(createPayment).toBeCalledTimes(1)
       expect(createPayment).toBeCalledWith({
-         amount: 100,
-         cart: {
-           object: "cart",
-           total: 100,
-           region: {
-            currency_code: "usd"
-          },
-         },
-         collected_data: {},
-         currency_code: "usd",
-         object: "cart",
-         region: {
-           currency_code: "usd"
-         },
-         total: 100,
+        amount: 100,
+        object: "cart",
+        total: 100,
+        region: {
+          currency_code: "usd"
+        },
+        cart: {
+          context: undefined,
+          email: undefined,
+          id: undefined,
+          shipping_address: undefined,
+          shipping_methods: undefined
+        },
+        collected_data: {},
+        currency_code: "usd",
       })
     })
   })
@@ -191,20 +191,20 @@ describe(`PaymentProviderService`, () => {
     expect(testPayServiceMock.createPayment).toBeCalledTimes(1)
     expect(testPayServiceMock.createPayment).toBeCalledWith({
       amount: 100,
-      cart: {
-        object: "cart",
-        total: 100,
-        region: {
-          currency_code: "usd"
-        },
-      },
-      collected_data: {},
-      currency_code: "usd",
       object: "cart",
+      total: 100,
       region: {
         currency_code: "usd"
       },
-      total: 100,
+      cart: {
+        context: undefined,
+        email: undefined,
+        id: undefined,
+        shipping_address: undefined,
+        shipping_methods: undefined
+      },
+      collected_data: {},
+      currency_code: "usd",
     })
   })
 

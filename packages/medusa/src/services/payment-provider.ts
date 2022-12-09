@@ -3,7 +3,6 @@ import { BasePaymentService } from "medusa-interfaces"
 import {
   AbstractPaymentService,
   PaymentContext,
-  PaymentSessionData,
   PaymentSessionResponse,
   TransactionBaseService,
 } from "../interfaces"
@@ -12,7 +11,7 @@ import { PaymentSessionRepository } from "../repositories/payment-session"
 import { PaymentRepository } from "../repositories/payment"
 import { RefundRepository } from "../repositories/refund"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
-import { buildQuery } from "../utils"
+import { buildQuery, isString } from "../utils"
 import { FindConfig, Selector } from "../types/common"
 import {
   Cart,
@@ -176,80 +175,45 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   /**
    * Creates a payment session with the given provider.
-   * @param providerId - the id of the provider to create payment with
-   * @param cartOrData - a cart object used to calculate the amount, etc. from
+   * @param providerIdOrSessionInput - the id of the provider to create payment with
+   * @param cart - a cart object used to calculate the amount, etc. from
    * @return the payment session
    */
-  async createSession(
-    providerId: string,
-    // Make the cart required, this is temporary until later refactoring
-    cartOrData: Cart | PaymentSessionInput
+  async createSession<
+    TInput extends string | PaymentSessionInput = string | PaymentSessionInput
+  >(
+    providerIdOrSessionInput: TInput,
+    ...[cart]: TInput extends string ? [Cart] : [never?]
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const provider = this.retrieveProvider(
-        providerId
-      ) as AbstractPaymentService
+      const providerId = isString(providerIdOrSessionInput)
+        ? providerIdOrSessionInput
+        : providerIdOrSessionInput.provider_id
+      const data = (
+        isString(providerIdOrSessionInput) ? cart : providerIdOrSessionInput
+      ) as Cart | PaymentSessionInput
 
-      const cart =
-        "object" in cartOrData && cartOrData.object === "cart"
-          ? cartOrData
-          : ((cartOrData as PaymentSessionInput).cart as Cart)
-
-      const context = {} as Cart & PaymentContext
-
-      // TODO: only to support legacy API
-      if ("object" in cartOrData && cartOrData.object === "cart") {
-        context.cart = {
-          context: cart.context,
-          shipping_address: cart.shipping_address,
-          id: cart.id,
-          email: cart.email,
-          shipping_methods: cart.shipping_methods,
-        }
-        context.amount = cart.total!
-        context.currency_code = cart.region?.currency_code
-        context.collected_data = cart.customer?.metadata ?? {}
-        Object.assign(context, cart)
-      } else {
-        const data = cartOrData as PaymentSessionInput
-        context.cart = data.cart
-        context.amount = data.amount
-        context.currency_code = data.currency_code
-        context.collected_data = data.customer?.metadata ?? {}
-        Object.assign(context, cart)
-      }
+      const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
+      const context = this.buildCreatePaymentContext(data)
 
       const paymentResponse = await provider
         .withTransaction(transactionManager)
         .createPayment(context)
 
-      // TODO: only to support legacy API
-      let sessionData = paymentResponse as PaymentSessionData
+      const sessionData = paymentResponse.session_data ?? paymentResponse
 
-      // TODO: only to support legacy API, the if will not be necessary in the future
-      if (paymentResponse.collected_data) {
-        sessionData = paymentResponse.session_data
-        await this.processCollectedData(
-          {
-            customer: { id: cart.customer?.id },
-          },
-          paymentResponse.collected_data
-        )
-      }
-
-      const sessionRepo = transactionManager.getCustomRepository(
-        this.paymentSessionRepository_
+      await this.processCollectedData(
+        {
+          customer: { id: context.customer?.id },
+        },
+        paymentResponse
       )
 
-      const toCreate = {
-        cart_id: cart.id,
-        provider_id: providerId,
-        data: sessionData,
-        status: "pending",
-      }
-
-      const created = sessionRepo.create(toCreate)
-      return await sessionRepo.save(created)
+      return await this.saveSession(providerId, {
+        cartId: context.id,
+        sessionData,
+        status: PaymentSessionStatus.PENDING,
+      })
     })
   }
 
@@ -259,9 +223,9 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const provider = this.retrieveProvider(
+      const provider = this.retrieveProvider<AbstractPaymentService>(
         sessionInput.provider_id
-      ) as AbstractPaymentService
+      )
 
       const context = {
         ...sessionInput,
@@ -272,31 +236,20 @@ export default class PaymentProviderService extends TransactionBaseService {
         .withTransaction(transactionManager)
         .createPaymentNew(context)
 
-      let sessionData = paymentResponse as PaymentSessionData
+      const sessionData = paymentResponse.session_data ?? paymentResponse
 
-      if (paymentResponse.collected_data) {
-        sessionData = paymentResponse.session_data
-        await this.processCollectedData(
-          {
-            customer: { id: sessionInput.customer?.id },
-          },
-          paymentResponse.collected_data
-        )
-      }
-
-      const sessionRepo = transactionManager.getCustomRepository(
-        this.paymentSessionRepository_
+      await this.processCollectedData(
+        {
+          customer: { id: sessionInput.customer?.id },
+        },
+        paymentResponse
       )
 
-      const toCreate = {
-        provider_id: sessionInput.provider_id,
-        data: sessionData,
-        status: "pending",
+      return await this.saveSession(sessionInput.provider_id, {
+        sessionData,
         amount: sessionInput.amount,
-      } as PaymentSession
-
-      const created = sessionRepo.create(toCreate)
-      return await sessionRepo.save(created)
+        status: PaymentSessionStatus.PENDING,
+      })
     })
   }
 
@@ -314,7 +267,9 @@ export default class PaymentProviderService extends TransactionBaseService {
   ): Promise<PaymentSession> {
     return this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)
-      const provider = this.retrieveProvider(paymentSession.provider_id)
+      const provider = this.retrieveProvider<AbstractPaymentService>(
+        paymentSession.provider_id
+      )
       await provider.withTransaction(transactionManager).deletePayment(session)
 
       const sessionRepo = transactionManager.getCustomRepository(
@@ -323,20 +278,27 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       await sessionRepo.remove(session)
 
-      const sessionData = await provider
+      const context = this.buildCreatePaymentContext(cart)
+
+      const paymentResponse = await provider
         .withTransaction(transactionManager)
-        .createPayment(cart)
+        .createPayment(context)
 
-      const toCreate = {
-        cart_id: cart.id,
-        provider_id: session.provider_id,
-        data: sessionData,
-        is_selected: true,
-        status: "pending",
-      }
+      const sessionData = paymentResponse.session_data ?? paymentResponse
 
-      const created = sessionRepo.create(toCreate)
-      return await sessionRepo.save(created)
+      await this.processCollectedData(
+        {
+          customer: { id: context.customer?.id },
+        },
+        paymentResponse
+      )
+
+      return await this.saveSession(session.provider_id, {
+        sessionData,
+        cartId: cart.id,
+        isSelected: true,
+        status: PaymentSessionStatus.PENDING,
+      })
     })
   }
 
@@ -483,7 +445,9 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await this.atomicPhase_(async (transactionManager) => {
       const { payment_session: paymentSession, currency_code, amount } = data
 
-      const provider = this.retrieveProvider(paymentSession.provider_id)
+      const provider = this.retrieveProvider<AbstractPaymentService>(
+        paymentSession.provider_id
+      )
       const paymentData = await provider
         .withTransaction(transactionManager)
         .getPaymentData(paymentSession)
@@ -785,21 +749,111 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   /**
+   * Build the create session context for both legacy and new API
+   * @param cartOrData
+   * @protected
+   */
+  protected buildCreatePaymentContext(
+    cartOrData: Cart | PaymentSessionInput
+  ): Cart & PaymentContext {
+    const cart =
+      "object" in cartOrData && cartOrData.object === "cart"
+        ? cartOrData
+        : ((cartOrData as PaymentSessionInput).cart as Cart)
+
+    const context = {} as Cart & PaymentContext
+
+    // TODO: only to support legacy API. Once we are ready to break the API, the cartOrData will only support PaymentSessionInput
+    if ("object" in cartOrData && cartOrData.object === "cart") {
+      context.cart = {
+        context: cart.context,
+        shipping_address: cart.shipping_address,
+        id: cart.id,
+        email: cart.email,
+        shipping_methods: cart.shipping_methods,
+      }
+      context.amount = cart.total!
+      context.currency_code = cart.region?.currency_code
+      context.collected_data = cart.customer?.metadata ?? {}
+      Object.assign(context, cart)
+    } else {
+      const data = cartOrData as PaymentSessionInput
+      context.cart = data.cart
+      context.amount = data.amount
+      context.currency_code = data.currency_code
+      context.collected_data = data.customer?.metadata ?? {}
+      Object.assign(context, cart)
+    }
+
+    return context
+  }
+
+  /**
+   * Persist a Payment session data
+   * @param providerId
+   * @param data
+   * @protected
+   */
+  protected async saveSession(
+    providerId: string,
+    data: {
+      cartId?: string
+      amount?: number
+      sessionData: Record<string, unknown>
+      isSelected?: boolean
+      status: PaymentSessionStatus
+    }
+  ): Promise<PaymentSession> {
+    const manager = this.transactionManager_ ?? this.manager_
+
+    if (
+      data.amount != null &&
+      !this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Unable to save the payment session with an amoutn. The feature flag order edit is not enabled."
+      )
+    }
+
+    const sessionRepo = manager.getCustomRepository(
+      this.paymentSessionRepository_
+    )
+
+    const toCreate = {
+      cart_id: data.cartId,
+      provider_id: providerId,
+      data: data.sessionData,
+      isSelected: data.isSelected,
+      status: data.status,
+    }
+
+    const created = sessionRepo.create(toCreate)
+    return await sessionRepo.save(created)
+  }
+
+  /**
    * Process the collected data. Can be used every time we need to process some collected data returned by the provide
    * @param data
-   * @param collectedData
+   * @param paymentResponse
    * @protected
    */
   protected async processCollectedData(
     data: { customer?: { id?: string } } = {},
-    collectedData?: PaymentSessionResponse["collected_data"]
+    paymentResponse: PaymentSessionResponse | Record<string, unknown>
   ): Promise<void> {
+    const { collected_data } = paymentResponse as PaymentSessionResponse
+
+    if (!collected_data) {
+      return
+    }
+
     const manager = this.transactionManager_ ?? this.manager_
 
-    if (collectedData?.customer && data.customer?.id) {
+    if (collected_data.customer && data.customer?.id) {
       await this.customerService_
         .withTransaction(manager)
-        .update(data.customer.id, { metadata: collectedData.customer })
+        .update(data.customer.id, { metadata: collected_data.customer })
     }
   }
 }
