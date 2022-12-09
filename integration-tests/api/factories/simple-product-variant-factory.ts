@@ -14,7 +14,7 @@ export type ProductVariantFactoryData = {
   inventory_quantity?: number
   title?: string
   options?: { option_id: string; value: string }[]
-  prices?: { currency: string; amount: number, region_id?: string }[]
+  prices?: { currency: string; amount: number; region_id?: string }[]
 }
 
 export const simpleProductVariantFactory = async (
@@ -32,7 +32,7 @@ export const simpleProductVariantFactory = async (
   const toSave = manager.create(ProductVariant, {
     id,
     product_id: data.product_id,
-    sku: data.sku ,
+    sku: data.sku,
     inventory_quantity:
       typeof data.inventory_quantity !== "undefined"
         ? data.inventory_quantity
@@ -44,6 +44,7 @@ export const simpleProductVariantFactory = async (
 
   const options = data.options || [{ option_id: "test-option", value: "Large" }]
   for (const o of options) {
+    console.log(`${o.value}-${o.option_id}`)
     await manager.insert(ProductOptionValue, {
       id: `${o.value}-${o.option_id}`,
       value: o.value,
@@ -59,7 +60,7 @@ export const simpleProductVariantFactory = async (
       variant_id: id,
       currency_code: p.currency,
       amount: p.amount,
-      region_id: p.region_id ,
+      region_id: p.region_id,
     })
   }
 
