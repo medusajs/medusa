@@ -220,6 +220,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             payment_status: cart.payment_session.status,
             type: "cart",
           },
+          recovery_point: "started",
         }
       }
     }
