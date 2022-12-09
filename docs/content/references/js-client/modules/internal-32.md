@@ -2,37 +2,115 @@
 
 ## Classes
 
-- [Discount](../classes/internal-32.Discount.md)
-- [GiftCard](../classes/internal-32.GiftCard.md)
-- [Item](../classes/internal-32.Item.md)
-- [StorePostCartReq](../classes/internal-32.StorePostCartReq.md)
-- [StorePostCartsCartPaymentSessionReq](../classes/internal-32.StorePostCartsCartPaymentSessionReq.md)
-- [StorePostCartsCartPaymentSessionUpdateReq](../classes/internal-32.StorePostCartsCartPaymentSessionUpdateReq.md)
-- [StorePostCartsCartReq](../classes/internal-32.StorePostCartsCartReq.md)
-- [StorePostCartsCartShippingMethodReq](../classes/internal-32.StorePostCartsCartShippingMethodReq.md)
+- [AdminCreateUserRequest](../classes/internal-32.AdminCreateUserRequest.md)
+- [AdminResetPasswordRequest](../classes/internal-32.AdminResetPasswordRequest.md)
+- [AdminResetPasswordTokenRequest](../classes/internal-32.AdminResetPasswordTokenRequest.md)
+- [AdminUpdateUserRequest](../classes/internal-32.AdminUpdateUserRequest.md)
 
 ## Type Aliases
 
-### StoreCartsRes
+### AdminCreateUserPayload
 
-Ƭ **StoreCartsRes**: `Object`
+Ƭ **AdminCreateUserPayload**: `Omit`<[`AdminCreateUserRequest`](../classes/internal-32.AdminCreateUserRequest.md), ``"role"``\> \| { `role?`: [`CreateUserRoles`](internal-32.md#createuserroles)  }
+
+#### Defined in
+
+[medusa-js/src/typings.ts:31](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L31)
+
+___
+
+### AdminUpdateUserPayload
+
+Ƭ **AdminUpdateUserPayload**: `Omit`<[`AdminUpdateUserRequest`](../classes/internal-32.AdminUpdateUserRequest.md), ``"role"``\> & { `role?`: [`UpdateUserRoles`](internal-32.md#updateuserroles)  }
+
+#### Defined in
+
+[medusa-js/src/typings.ts:41](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L41)
+
+___
+
+### AdminUserRes
+
+Ƭ **AdminUserRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `cart` | `Omit`<[`Cart`](../classes/internal.Cart.md), ``"refundable_amount"`` \| ``"refunded_total"``\> |
+| `user` | `Omit`<[`User`](../classes/internal-1.User.md), ``"password_hash"``\> |
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/index.d.ts:8
+medusa/dist/api/routes/admin/users/index.d.ts:6
 
 ___
 
-### StoreCompleteCartRes
+### AdminUsersListRes
 
-Ƭ **StoreCompleteCartRes**: { `data`: [`Cart`](../classes/internal.Cart.md) ; `type`: ``"cart"``  } \| { `data`: [`Order`](../classes/internal.Order.md) ; `type`: ``"order"``  } \| { `data`: [`Swap`](../classes/internal.Swap.md) ; `type`: ``"swap"``  }
+Ƭ **AdminUsersListRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `users` | `Omit`<[`User`](../classes/internal-1.User.md), ``"password_hash"``\>[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/index.d.ts:11
+medusa/dist/api/routes/admin/users/index.d.ts:9
+
+___
+
+### CreateUserRoles
+
+Ƭ **CreateUserRoles**: \`${CreateUserRolesEnum}\`
+
+#### Defined in
+
+[medusa-js/src/typings.ts:28](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L28)
+
+___
+
+### CreateUserRolesEnum
+
+Ƭ **CreateUserRolesEnum**: [`NoUndefined`](internal-32.md#noundefined)<[`AdminCreateUserRequest`](../classes/internal-32.AdminCreateUserRequest.md)[``"role"``]\>
+
+#### Defined in
+
+[medusa-js/src/typings.ts:25](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L25)
+
+___
+
+### NoUndefined
+
+Ƭ **NoUndefined**<`T`\>: `T` extends `undefined` ? `never` : `T`
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `T` |
+
+#### Defined in
+
+[medusa-js/src/typings.ts:23](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L23)
+
+___
+
+### UpdateUserRoles
+
+Ƭ **UpdateUserRoles**: \`${UpdateUserRolesEnum}\`
+
+#### Defined in
+
+[medusa-js/src/typings.ts:39](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L39)
+
+___
+
+### UpdateUserRolesEnum
+
+Ƭ **UpdateUserRolesEnum**: [`NoUndefined`](internal-32.md#noundefined)<[`AdminUpdateUserRequest`](../classes/internal-32.AdminUpdateUserRequest.md)[``"role"``]\>
+
+#### Defined in
+
+[medusa-js/src/typings.ts:37](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L37)

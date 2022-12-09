@@ -167,10 +167,18 @@ describe("CartService", () => {
     })
     const cartRepository = MockRepository()
     const customerService = {
-      retrieveByEmail: jest.fn().mockReturnValue(
+      retrieveUnregisteredByEmail: jest.fn().mockReturnValue(
         Promise.resolve({
           id: IdMap.getId("customer"),
           email: "email@test.com",
+          has_account: false,
+        })
+      ),
+      retrieveRegisteredByEmail: jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: IdMap.getId("customer"),
+          email: "email@test.com",
+          has_account: true,
         })
       ),
       withTransaction: function () {
@@ -970,12 +978,13 @@ describe("CartService", () => {
 
   describe("updateEmail", () => {
     const customerService = {
-      retrieveByEmail: jest.fn().mockImplementation((email) => {
+      retrieveUnregisteredByEmail: jest.fn().mockImplementation((email) => {
         if (email === "no@mail.com") {
           return Promise.reject()
         }
         return Promise.resolve({
           id: IdMap.getId("existing"),
+          has_account: false,
           email,
         })
       }),
@@ -1025,6 +1034,7 @@ describe("CartService", () => {
           customer: {
             id: IdMap.getId("existing"),
             email: "test@testdom.com",
+            has_account: false,
           },
           email: "test@testdom.com",
         })

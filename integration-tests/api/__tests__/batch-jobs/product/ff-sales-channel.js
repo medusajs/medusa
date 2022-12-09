@@ -61,7 +61,6 @@ describe("Product import - Sales Channel", () => {
       env: { MEDUSA_FF_SALES_CHANNELS: true },
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
