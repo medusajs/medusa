@@ -219,7 +219,20 @@ If you pick the second option, you’ll need to create a personal access token o
 
 ##### Last Step: Steps with Default Values
 
-For the rest of the steps, you can keep the default values provided by Netlify and press the “Enter” key on your keyboard for each.
+For the rest of the steps, you can keep most the default values provided by Netlify and press the "Enter" key on your keyboard for each. There are the following exceptions:
+
+1. Set build command to `yarn run build`
+
+```
+? Your build command (hugo build/yarn run build/etc): yarn run build
+```
+
+2. Set deploy directory to `public`
+
+```
+? Directory to deploy (blank for current dir): public
+```
+
 
 #### Set Environment Variables
 
