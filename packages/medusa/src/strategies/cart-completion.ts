@@ -213,22 +213,20 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         idempotency_key: idempotencyKey,
       })
 
-    if (cart.payment_session) {
-      if (
-        cart.payment_session.status === "requires_more" ||
-        cart.payment_session.status === "pending"
-      ) {
-        await this.cartService_.withTransaction(manager).deleteTaxLines(id)
+    if (
+      cart.payment_session?.status === "requires_more" ||
+      cart.payment_session?.status === "pending"
+    ) {
+      await this.cartService_.withTransaction(manager).deleteTaxLines(id)
 
-        return {
-          response_code: 200,
-          response_body: {
-            data: cart,
-            payment_status: cart.payment_session.status,
-            type: "cart",
-          },
-          recovery_point: CartCompletionSteps.STARTED,
-        }
+      return {
+        response_code: 200,
+        response_body: {
+          data: cart,
+          payment_status: cart.payment_session.status,
+          type: "cart",
+        },
+        recovery_point: CartCompletionSteps.STARTED,
       }
     }
 
