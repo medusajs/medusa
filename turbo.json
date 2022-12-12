@@ -17,7 +17,6 @@
     }
   },
   "globalDependencies": [
-    "turbo.json",
-    "dfca22219be04e3b76b39400377aa9fbe36acb04"
+    "turbo.json"
   ]
 }
