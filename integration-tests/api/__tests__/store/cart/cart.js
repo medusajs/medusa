@@ -520,6 +520,7 @@ describe("/store/carts", () => {
 
       let discountCart
       let discount
+
       beforeEach(async () => {
         discount = await simpleDiscountFactory(dbConnection, discountData, 100)
         discountCart = await simpleCartFactory(
@@ -1040,6 +1041,86 @@ describe("/store/carts", () => {
         ])
       )
       expect(response.status).toEqual(200)
+    })
+
+    it("successfully removes adjustments upon update without discounts", async () => {
+      const discountData = {
+        code: "MEDUSA185DKK",
+        id: "medusa-185",
+        rule: {
+          allocation: "total",
+          type: "fixed",
+          value: 185,
+        },
+        regions: ["test-region"],
+      }
+
+      const cartId =  "discount-cart"
+
+      const discount = await simpleDiscountFactory(dbConnection, discountData, 100)
+      const discountCart = await simpleCartFactory(
+        dbConnection,
+        {
+          id: cartId,
+          customer: "test-customer",
+          region: "test-region",
+          shipping_address: {
+            address_1: "next door",
+            first_name: "lebron",
+            last_name: "james",
+            country_code: "dk",
+            postal_code: "100",
+          },
+          shipping_methods: [
+            {
+              shipping_option: "test-option",
+              price: 1000,
+            },
+          ],
+        },
+        100
+      )
+      await dbConnection.manager
+        .createQueryBuilder()
+        .relation(Cart, "discounts")
+        .of(discountCart)
+        .add(discount)
+
+      const api = useApi()
+
+      let response = await api
+        .post(
+          `/store/carts/${cartId}/line-items`,
+          {
+            quantity: 1,
+            variant_id: "test-variant-quantity",
+          },
+        )
+
+      expect(response.data.cart.items.length).toEqual(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            adjustments: [
+              expect.objectContaining({
+                amount: 185,
+                discount_id: "medusa-185",
+              }),
+            ],
+          }),
+        ])
+      )
+
+      response = await api
+        .post(
+          `/store/carts/${cartId}`,
+          {
+            discounts: [],
+          },
+        )
+
+      expect(response.data.cart.items.length).toEqual(1)
+      expect(response.data.cart.items[0].adjustments).toHaveLength(0)
     })
 
     it("successfully passes customer conditions with `not_in` operator and applies discount", async () => {
@@ -2035,17 +2116,23 @@ describe("/store/carts", () => {
   })
 
   describe("DELETE /store/carts/:id/discounts/:code", () => {
+    const discountData = {
+      code: "MEDUSA185DKK",
+      id: "medusa-185",
+      rule: {
+        allocation: "total",
+        type: "fixed",
+        value: 185,
+      },
+      regions: ["test-region"],
+    }
+
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-        await dbConnection.manager.query(
-          `INSERT INTO "cart_discounts" (cart_id, discount_id)
-           VALUES ('test-cart', 'free-shipping')`
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await cartSeeder(dbConnection)
+      await dbConnection.manager.query(
+        `INSERT INTO "cart_discounts" (cart_id, discount_id)
+         VALUES ('test-cart', 'free-shipping')`
+      )
     })
 
     afterEach(async () => {
@@ -2073,16 +2160,74 @@ describe("/store/carts", () => {
       expect(response.data.cart.shipping_total).toBe(1000)
       expect(response.status).toEqual(200)
     })
+
+    it("removes line item adjustments upon discount deletion", async () => {
+      const cartId = "discount-cart"
+      const discount = await simpleDiscountFactory(dbConnection, discountData, 100)
+      const discountCart = await simpleCartFactory(
+        dbConnection,
+        {
+          id: cartId,
+          customer: "test-customer",
+          region: "test-region",
+          shipping_address: {
+            address_1: "next door",
+            first_name: "lebron",
+            last_name: "james",
+            country_code: "dk",
+            postal_code: "100",
+          },
+          shipping_methods: [
+            {
+              shipping_option: "test-option",
+              price: 1000,
+            },
+          ],
+        },
+        100
+      )
+      await dbConnection.manager
+        .createQueryBuilder()
+        .relation(Cart, "discounts")
+        .of(discountCart)
+        .add(discount)
+
+      const api = useApi()
+
+      let response = await api
+        .post(
+          `/store/carts/${cartId}/line-items`,
+          {
+            quantity: 1,
+            variant_id: "test-variant-quantity",
+          },
+        )
+
+      expect(response.data.cart.items.length).toEqual(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            adjustments: [
+              expect.objectContaining({
+                amount: 185,
+                discount_id: "medusa-185",
+              }),
+            ],
+          }),
+        ])
+      )
+
+      response = await api
+        .delete(`/store/carts/${cartId}/discounts/${discountData.code}`)
+
+      expect(response.data.cart.items.length).toEqual(1)
+      expect(response.data.cart.items[0].adjustments).toHaveLength(0)
+    })
   })
 
   describe("get-cart with session customer", () => {
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await cartSeeder(dbConnection)
     })
 
     afterEach(async () => {
