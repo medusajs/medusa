@@ -54,7 +54,7 @@ const toTest = [
           type: "order",
         })
 
-        expect(cartServiceMock.createTaxLines).toHaveBeenCalledTimes(1)
+        expect(cartServiceMock.createTaxLines).toHaveBeenCalledTimes(3)
         expect(cartServiceMock.createTaxLines).toHaveBeenCalledWith(
           expect.objectContaining({ id: "test-cart" })
         )
