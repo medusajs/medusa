@@ -4,7 +4,7 @@ import { ProductCollection } from "@medusajs/medusa"
 
 export type Data = {
   title?: string,
-  handle: string
+  handle?: string
 }
 
 export const simpleProductCollectionFactory = async <
@@ -12,7 +12,7 @@ export const simpleProductCollectionFactory = async <
   TResult = TData extends Array<Data> ? ProductCollection[] : ProductCollection
 >(
   connection: Connection,
-  data: TData,
+  data?: TData,
   seed?: number
 ): Promise<TResult> => {
   if (typeof seed !== "undefined") {
@@ -20,6 +20,10 @@ export const simpleProductCollectionFactory = async <
   }
 
   const manager = connection.manager
+
+  data = data || [{
+    title: faker.datatype.string(10),
+  }] as TData
 
   const collectionsData = Array.isArray(data) ? data : [data]
 
