@@ -6,6 +6,7 @@ import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
 import {
   BatchJobService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
@@ -17,7 +18,12 @@ import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
 } from "../../../types/product-variant"
-import { BatchJob, SalesChannel } from "../../../models"
+import {
+  BatchJob,
+  Product,
+  ProductCollection,
+  SalesChannel,
+} from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
@@ -59,6 +65,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
   protected readonly batchJobService_: BatchJobService
+  protected readonly productCollectionService_: ProductCollectionService
   protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: ShippingProfileService
@@ -77,6 +84,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     shippingProfileService,
     regionService,
     fileService,
+    productCollectionService,
     manager,
     featureFlagRouter,
   }: ProductImportInjectedProps) {
@@ -106,6 +114,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
     this.regionService_ = regionService
+    this.productCollectionService_ = productCollectionService
   }
 
   async buildTemplate(): Promise<string> {
@@ -405,7 +414,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           )
         }
 
-        await productServiceTx.create(productData)
+        const product = await productServiceTx.create(productData)
+
+        if (productOp["product.collection.handle"]) {
+          await this.assignProductToCollection(product, {
+            title: productOp["product.collection.title"] as string,
+            handle: productOp["product.collection.handle"] as string,
+          })
+        }
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
@@ -451,16 +467,70 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         delete productData.options // for now not supported in the update method
 
-        await productServiceTx.update(
+        const product = await productServiceTx.update(
           productOp["product.id"] as string,
           productData
         )
+
+        if (productOp["product.collection.handle"]) {
+          await this.assignProductToCollection(product, {
+            title: productOp["product.collection.title"] as string,
+            handle: productOp["product.collection.handle"] as string,
+          })
+        }
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
       await this.updateProgress(batchJob.id)
     }
+  }
+
+  private async assignProductToCollection(
+    product: Product,
+    collectionData: { title: string; handle: string }
+  ): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+    const productCollectionServiceTx =
+      this.productCollectionService_.withTransaction(transactionManager)
+
+    if (product.collection_id) {
+      const currentCollection = await productCollectionServiceTx.retrieve(
+        product.collection_id,
+        {
+          select: ["handle"],
+        }
+      )
+
+      if (currentCollection.handle === collectionData.handle) {
+        return
+      }
+
+      await productCollectionServiceTx.removeProducts(product.collection_id, [
+        product.id,
+      ])
+    }
+
+    let shouldCreateCollection = false
+
+    let collection = await productCollectionServiceTx
+      .retrieveByHandle(collectionData.handle, { select: ["id"] })
+      .catch((e) => {
+        if ("type" in e && e.type === MedusaError.Types.NOT_FOUND) {
+          shouldCreateCollection = true
+          return
+        }
+        throw e
+      })
+
+    if (shouldCreateCollection) {
+      collection = await productCollectionServiceTx.create(collectionData)
+    }
+
+    await productCollectionServiceTx.addProducts(
+      (collection as ProductCollection).id,
+      [product.id]
+    )
   }
 
   /**

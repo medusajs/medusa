@@ -220,6 +220,10 @@ describe("Product import batch job", () => {
               value: "123_1",
             }),
           ],
+          collection: expect.objectContaining({
+            handle: "test-collection1",
+            title: "Test collection 1"
+          })
         }),
         expect.objectContaining({
           title: "Test product",
@@ -279,6 +283,10 @@ describe("Product import batch job", () => {
             }),
           ],
           tags: [],
+          collection: expect.objectContaining({
+            handle: "test-collection1",
+            title: "Test collection 1"
+          })
         }),
         // UPDATED PRODUCT
         expect.objectContaining({
@@ -373,6 +381,10 @@ describe("Product import batch job", () => {
               value: "123",
             }),
           ],
+          collection: expect.objectContaining({
+            handle: "test-collection2",
+            title: "Test collection"
+          })
         }),
       ])
     )
