@@ -265,7 +265,7 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsNumber()
   @IsOptional()
-  inventory_quantity = 0
+  inventory_quantity?: number = 0
 
   @IsBoolean()
   @IsOptional()
