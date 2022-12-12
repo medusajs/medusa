@@ -1486,8 +1486,7 @@ class OrderService extends TransactionBaseService {
         .withTransaction(manager)
         .refundPayment(order.payments, refundAmount, reason, note)
 
-      let result = await this.retrieve(orderId, {
-        select: ["paid_total", "total", "refundable_amount", "refunded_total"],
+      let result = await this.retrieveWithTotals(orderId, {
         relations: ["payments"],
       })
 
