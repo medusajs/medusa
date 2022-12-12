@@ -2453,7 +2453,7 @@ describe("/admin/orders", () => {
       expect(response.data.order).toEqual(
         expect.objectContaining({
           payment_status: "partially_refunded",
-          // refunded_total: 500,
+          refunded_total: 500,
           subtotal: 1000,
           total: 1000,
           paid_total: 1000,
