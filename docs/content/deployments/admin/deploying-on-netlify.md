@@ -219,7 +219,7 @@ If you pick the second option, you’ll need to create a personal access token o
 
 ##### Last Step: Steps with Default Values
 
-For the rest of the steps, you can keep most the default values provided by Netlify and press the "Enter" key on your keyboard for each. There are the following exceptions:
+For the rest of the steps, you can keep most of the default values provided by Netlify, except for the following options:
 
 1. Set build command to `yarn run build`
 
