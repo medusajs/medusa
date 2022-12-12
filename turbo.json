@@ -7,16 +7,7 @@
         "^build"
       ],
       "outputs": [
-        "dist/**",
-        "api/**",
-        "helpers/**",
-        "loaders/**",
-        "migrations/**",
-        "models/**",
-        "repositories/**",
-        "services/**",
-        "subscribers/**",
-        "utils/**"
+        "!src/**"
       ]
     },
     "test": {
