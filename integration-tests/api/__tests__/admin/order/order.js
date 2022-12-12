@@ -6,6 +6,7 @@ const {
   CustomShippingOption,
   ShippingMethod,
 } = require("@medusajs/medusa")
+const idMap = require("medusa-test-utils/src/id-map").default
 
 const setupServer = require("../../../../helpers/setup-server")
 const { useApi } = require("../../../../helpers/use-api")
@@ -22,7 +23,11 @@ const {
   callGet,
   partial,
 } = require("../../../helpers/call-helpers")
-const { simpleShippingOptionFactory } = require("../../../factories")
+const {
+  simpleShippingOptionFactory,
+  simpleOrderFactory,
+  simplePaymentFactory,
+} = require("../../../factories")
 
 jest.setTimeout(30000)
 
@@ -2358,6 +2363,76 @@ describe("/admin/orders", () => {
           "Relations [variants] are not valid"
         )
       }
+    })
+  })
+
+  describe("POST /orders/:id/refund", () => {
+    const orderId = idMap.getId("refund-order-1")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+
+      await simpleOrderFactory(dbConnection, {
+        id: orderId,
+        tax_rate: null,
+        email: "test@testson.com",
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        line_items: [
+          {
+            id: idMap.getId("item-1"),
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await simplePaymentFactory(dbConnection, {
+        provider_id: "test-pay",
+        order: orderId,
+        amount: 300,
+        captured: true,
+      })
+
+      await simplePaymentFactory(dbConnection, {
+        provider_id: "test-pay",
+        order: orderId,
+        amount: 700,
+        captured: true,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("set correct status on partially refunded order", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/orders/${orderId}/refund`,
+        { amount: 500, reason: "other" },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          payment_status: "partially_refunded",
+          refunded_total: 500,
+          subtotal: 1000,
+          total: 1000,
+          paid_total: 1000,
+          refundable_amount: 500,
+        })
+      )
     })
   })
 })
