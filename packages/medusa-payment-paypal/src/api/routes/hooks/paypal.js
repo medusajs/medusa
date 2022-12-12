@@ -73,7 +73,7 @@ export default async (req, res) => {
   async function autorizePaymentCollection(req, id, orderId) {
     const manager = req.scope.resolve("manager")
     const paymentCollectionService = req.scope.resolve(
-      "paymentCollectonService"
+      "paymentCollectionService"
     )
 
     await manager.transaction(async (manager) => {

@@ -39,6 +39,7 @@ import { ProductService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             option_id:
  *               type: string

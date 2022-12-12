@@ -1,4 +1,5 @@
 import CustomerService from "../../../../services/customer"
+
 /**
  * @oas [get] /auth
  * operationId: "GetAuth"
@@ -31,6 +32,7 @@ import CustomerService from "../../../../services/customer"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            customer:
  *              $ref: "#/components/schemas/customer"
@@ -48,16 +50,11 @@ import CustomerService from "../../../../services/customer"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  if (req.user && req.user.customer_id) {
-    const customerService: CustomerService =
-      req.scope.resolve("customerService")
+  const customerService: CustomerService = req.scope.resolve("customerService")
 
-    const customer = await customerService.retrieve(req.user.customer_id, {
-      relations: ["shipping_addresses", "orders", "orders.items"],
-    })
+  const customer = await customerService.retrieve(req.user.customer_id, {
+    relations: ["shipping_addresses", "orders", "orders.items"],
+  })
 
-    res.json({ customer })
-  } else {
-    res.sendStatus(401)
-  }
+  res.json({ customer })
 }

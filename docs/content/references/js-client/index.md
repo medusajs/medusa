@@ -50,6 +50,10 @@
 - [internal](modules/internal-45.md)
 - [internal](modules/internal-46.md)
 - [internal](modules/internal-47.md)
+- [internal](modules/internal-48.md)
+- [internal](modules/internal-49.md)
+- [internal](modules/internal-50.md)
+- [internal](modules/internal-51.md)
 
 ## Classes
 
@@ -69,10 +73,13 @@
 - [AdminNotificationsResource](classes/AdminNotificationsResource.md)
 - [AdminOrderEditsResource](classes/AdminOrderEditsResource.md)
 - [AdminOrdersResource](classes/AdminOrdersResource.md)
+- [AdminPaymentCollectionsResource](classes/AdminPaymentCollectionsResource.md)
+- [AdminPaymentsResource](classes/AdminPaymentsResource.md)
 - [AdminPriceListResource](classes/AdminPriceListResource.md)
 - [AdminProductTagsResource](classes/AdminProductTagsResource.md)
 - [AdminProductTypesResource](classes/AdminProductTypesResource.md)
 - [AdminProductsResource](classes/AdminProductsResource.md)
+- [AdminPublishableApiKeyResource](classes/AdminPublishableApiKeyResource.md)
 - [AdminRegionsResource](classes/AdminRegionsResource.md)
 - [AdminReturnReasonsResource](classes/AdminReturnReasonsResource.md)
 - [AdminReturnsResource](classes/AdminReturnsResource.md)
@@ -93,6 +100,7 @@
 - [LineItemsResource](classes/LineItemsResource.md)
 - [OrderEditsResource](classes/OrderEditsResource.md)
 - [OrdersResource](classes/OrdersResource.md)
+- [PaymentCollectionsResource](classes/PaymentCollectionsResource.md)
 - [PaymentMethodsResource](classes/PaymentMethodsResource.md)
 - [ProductTypesResource](classes/ProductTypesResource.md)
 - [ProductVariantsResource](classes/ProductVariantsResource.md)

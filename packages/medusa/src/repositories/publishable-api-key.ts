@@ -1,7 +1,7 @@
 import { flatten, groupBy, merge } from "lodash"
 import { EntityRepository, FindManyOptions, Repository } from "typeorm"
 
-import { PublishableApiKey } from "../models/publishable-api-key"
+import { PublishableApiKey } from "../models"
 
 @EntityRepository(PublishableApiKey)
 export class PublishableApiKeyRepository extends Repository<PublishableApiKey> {

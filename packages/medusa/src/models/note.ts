@@ -46,6 +46,7 @@ export class Note extends SoftDeletableEntity {
  * title: "Note"
  * description: "Notes are elements which we can use in association with different resources to allow users to describe additional information in relation to these."
  * x-resourceId: note
+ * type: object
  * required:
  *   - value
  *   - resource_type

@@ -1,27 +1,36 @@
 import { EntityManager } from "typeorm"
 import {
   AbstractPriceSelectionStrategy,
+  ICacheService,
   IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
   PriceType,
-} from "../interfaces/price-selection-strategy"
+} from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { TaxServiceRate } from "../types/tax-service"
 import { FlagRouter } from "../utils/flag-router"
-import { isDefined } from "../utils/is-defined"
+import { isDefined } from "../utils"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
-  private moneyAmountRepository_: typeof MoneyAmountRepository
-  private featureFlagRouter_: FlagRouter
-  private manager_: EntityManager
+  protected manager_: EntityManager
 
-  constructor({ manager, featureFlagRouter, moneyAmountRepository }) {
+  protected readonly featureFlagRouter_: FlagRouter
+  protected moneyAmountRepository_: typeof MoneyAmountRepository
+  protected cacheService_: ICacheService
+
+  constructor({
+    manager,
+    featureFlagRouter,
+    moneyAmountRepository,
+    cacheService,
+  }) {
     super()
     this.manager_ = manager
     this.moneyAmountRepository_ = moneyAmountRepository
     this.featureFlagRouter_ = featureFlagRouter
+    this.cacheService_ = cacheService
   }
 
   withTransaction(manager: EntityManager): IPriceSelectionStrategy {
@@ -33,6 +42,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       manager: manager,
       moneyAmountRepository: this.moneyAmountRepository_,
       featureFlagRouter: this.featureFlagRouter_,
+      cacheService: this.cacheService_,
     })
   }
 
@@ -40,14 +50,30 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
+    // TODO: Refactor using the cache decorators when it will be finished
+    const cacheKey = this.getCacheKey(variant_id, context)
+    const cached = await this.cacheService_
+      .get<PriceSelectionResult>(cacheKey)
+      .catch(() => void 0)
+    if (cached) {
+      return cached
+    }
+
+    let result
+
     if (
       this.featureFlagRouter_.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
       )
     ) {
-      return this.calculateVariantPrice_new(variant_id, context)
+      result = await this.calculateVariantPrice_new(variant_id, context)
+    } else {
+      result = await this.calculateVariantPrice_old(variant_id, context)
     }
-    return this.calculateVariantPrice_old(variant_id, context)
+
+    await this.cacheService_.set(cacheKey, result)
+
+    return result
   }
 
   private async calculateVariantPrice_new(
@@ -212,6 +238,21 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     }
 
     return result
+  }
+
+  private getCacheKey(
+    variantId: string,
+    context: PriceSelectionContext
+  ): string {
+    const taxRate =
+      context.tax_rates?.reduce(
+        (accRate: number, nextTaxRate: TaxServiceRate) => {
+          return accRate + (nextTaxRate.rate || 0) / 100
+        },
+        0
+      ) || 0
+
+    return `ps:${variantId}:${context.region_id}:${context.currency_code}:${context.customer_id}:${context.quantity}:${context.include_discount_prices}:${taxRate}`
   }
 }
 

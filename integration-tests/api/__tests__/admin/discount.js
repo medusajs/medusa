@@ -24,6 +24,9 @@ const adminReqConfig = {
   },
 }
 
+const validRegionId = "test-region"
+const invalidRegionId = "not-a-valid-region"
+
 describe("/admin/discounts", () => {
   let medusaProcess
   let dbConnection
@@ -408,6 +411,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -471,6 +475,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -538,6 +543,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -576,6 +582,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: [validRegionId],
         },
         adminReqConfig
       )
@@ -630,6 +637,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -654,6 +662,7 @@ describe("/admin/discounts", () => {
                   },
                 ],
               },
+              regions: [validRegionId],
             },
             {
               headers: {
@@ -690,6 +699,7 @@ describe("/admin/discounts", () => {
                 },
               ],
             },
+            regions: [validRegionId],
             usage_limit: 10,
           },
           adminReqConfig
@@ -729,6 +739,7 @@ describe("/admin/discounts", () => {
               },
             ],
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -755,6 +766,7 @@ describe("/admin/discounts", () => {
                   },
                 ],
               },
+              regions: [validRegionId],
             },
             {
               headers: {
@@ -779,6 +791,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -822,6 +835,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -844,6 +858,7 @@ describe("/admin/discounts", () => {
               id: response.data.discount.rule.id,
               type: "free_shipping",
             },
+            regions: [validRegionId],
           },
           adminReqConfig
         )
@@ -869,6 +884,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -883,7 +899,7 @@ describe("/admin/discounts", () => {
         })
       )
 
-      await api
+      const err = await api
         .post(
           `/admin/discounts/${response.data.discount.id}`,
           {
@@ -891,13 +907,12 @@ describe("/admin/discounts", () => {
             is_dynamic: false,
           },
           adminReqConfig
-        )
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            "property is_dynamic should not exist"
-          )
-        })
+        ).catch(e => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "property is_dynamic should not exist"
+      )
     })
 
     it("automatically sets the code to an uppercase string on update", async () => {
@@ -913,6 +928,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -958,6 +974,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -991,10 +1008,9 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to create a fixed discount with multiple regions", async () => {
-      expect.assertions(2)
       const api = useApi()
 
-      await api
+      const err = await api
         .post(
           "/admin/discounts",
           {
@@ -1007,20 +1023,18 @@ describe("/admin/discounts", () => {
               allocation: "total",
             },
             usage_limit: 10,
-            regions: ["test-region", "test-region-2"],
+            regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
-        )
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            `Fixed discounts can have one region`
-          )
-        })
+        ).catch(e => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `Fixed discounts can have one region`
+      )
     })
 
     it("fails to update a fixed discount with multiple regions", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const response = await api.post(
@@ -1033,30 +1047,28 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
       )
 
-      await api
+      const err = await api
         .post(
           `/admin/discounts/${response.data.discount.id}`,
           {
-            regions: ["test-region", "test-region-2"],
+            regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
-        )
+        ).catch(e => e)
 
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            `Fixed discounts can have one region`
-          )
-        })
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `Fixed discounts can have one region`
+      )
     })
 
     it("fails to add a region to a fixed discount with an existing region", async () => {
-      expect.assertions(2)
       const api = useApi()
 
       const response = await api.post(
@@ -1070,24 +1082,22 @@ describe("/admin/discounts", () => {
             allocation: "total",
           },
           usage_limit: 10,
-          regions: ["test-region"],
+          regions: [validRegionId],
         },
         adminReqConfig
       )
 
-      await api
+      const err = await api
         .post(
           `/admin/discounts/${response.data.discount.id}/regions/test-region-2`,
           {},
           adminReqConfig
-        )
+        ).catch(e => e)
 
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual(
-            `Fixed discounts can have one region`
-          )
-        })
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `Fixed discounts can have one region`
+      )
     })
 
     it("creates a discount with start and end dates", async () => {
@@ -1103,6 +1113,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
           starts_at: new Date("09/15/2021 11:50"),
           ends_at: new Date("09/15/2021 17:50"),
@@ -1172,6 +1183,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
           starts_at: new Date("09/15/2021 11:50"),
           ends_at: new Date("09/15/2021 17:50"),
@@ -1215,10 +1227,9 @@ describe("/admin/discounts", () => {
     })
 
     it("fails to create discount with end date before start date", async () => {
-      expect.assertions(2)
       const api = useApi()
 
-      await api
+      const err = await api
         .post(
           "/admin/discounts",
           {
@@ -1229,20 +1240,91 @@ describe("/admin/discounts", () => {
               value: 10,
               allocation: "total",
             },
+            regions: [validRegionId],
             usage_limit: 10,
             starts_at: new Date("09/15/2021 11:50"),
             ends_at: new Date("09/14/2021 17:50"),
           },
           adminReqConfig
-        )
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data).toEqual(
-            expect.objectContaining({
-              message: `"ends_at" must be greater than "starts_at"`,
-            })
-          )
+        ).catch(e => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data).toEqual(
+        expect.objectContaining({
+          message: `"ends_at" must be greater than "starts_at"`,
         })
+      )
+    })
+
+    it("fails to create a discount if the regions contains an invalid regionId ", async () => {
+      const api = useApi()
+
+      const err = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+          },
+          regions: [validRegionId, invalidRegionId],
+        },
+        adminReqConfig
+      ).catch(e => e)
+
+      expect(err.response.status).toEqual(404)
+      expect(err.response.data.message).toEqual(
+        `Region with not-a-valid-region was not found`
+      )
+    })
+
+    it("fails to create a discount if the regions contains only invalid regionIds ", async () => {
+      const api = useApi()
+
+      const err = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+          },
+          regions: [invalidRegionId],
+        },
+        adminReqConfig
+      ).catch(e => e)
+
+      expect(err.response.status).toEqual(404)
+      expect(err.response.data.message).toEqual(
+        `Region with not-a-valid-region was not found`
+      )
+    })
+
+    it("fails to create a discount if regions are not present ", async () => {
+      const api = useApi()
+
+      const err = await api.post(
+        "/admin/discounts",
+        {
+          code: "HELLOWORLD",
+          rule: {
+            description: "test",
+            type: "percentage",
+            value: 10,
+            allocation: "total",
+          },
+        },
+        adminReqConfig
+      ).catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `each value in regions must be a string, regions must be an array`
+      )
     })
   })
 
@@ -1306,7 +1388,10 @@ describe("/admin/discounts", () => {
     let manager
     beforeEach(async () => {
       manager = dbConnection.manager
+
       await adminSeeder(dbConnection)
+      await discountSeeder(dbConnection)
+
       await manager.insert(DiscountRule, {
         id: "test-discount-rule",
         description: "Test discount rule",
@@ -1345,6 +1430,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
@@ -1374,6 +1460,7 @@ describe("/admin/discounts", () => {
               value: 10,
               allocation: "total",
             },
+            regions: [validRegionId],
             usage_limit: 10,
           },
           adminReqConfig
@@ -2033,7 +2120,9 @@ describe("/admin/discounts", () => {
   describe("GET /admin/discounts/code/:code", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
+
       await adminSeeder(dbConnection)
+      await discountSeeder(dbConnection)
 
       await manager.insert(DiscountRule, {
         id: "test-discount-rule-fixed",
@@ -2115,15 +2204,12 @@ describe("/admin/discounts", () => {
 
     it("should respond with 404 on non-existing code", async () => {
       const api = useApi()
+      const err = await api.get("/admin/discounts/code/non-existing", adminReqConfig).catch(e => e)
 
-      try {
-        await api.get("/admin/discounts/code/non-existing", adminReqConfig)
-      } catch (error) {
-        expect(error.response.status).toEqual(404)
-        expect(error.response.data.message).toBe(
-          "Discount with code non-existing was not found"
-        )
-      }
+      expect(err.response.status).toEqual(404)
+      expect(err.response.data.message).toBe(
+        "Discount with code non-existing was not found"
+      )
     })
 
     it("should trim and uppercase code on insert", async () => {
@@ -2139,6 +2225,7 @@ describe("/admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           usage_limit: 10,
         },
         adminReqConfig
