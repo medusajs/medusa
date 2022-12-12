@@ -169,7 +169,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "gift_cards",
         "items",
         "items.adjustments",
-        "items.tax_lines",
         "region",
         "region.tax_rates",
         "shipping_address",
@@ -188,11 +187,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       }
     }
 
-    const hasTaxLines = cart.items.some((item) => !!item.tax_lines.length)
-
-    if (!hasTaxLines) {
-      await this.cartService_.withTransaction(manager).createTaxLines(cart)
-    }
+    await this.cartService_.withTransaction(manager).createTaxLines(cart)
 
     return {
       recovery_point: "tax_lines_created",
