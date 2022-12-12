@@ -91,23 +91,23 @@ export const useAdminCreateVariant = (
   )
 }
 
+type UpdateDataWithVariant = AdminPostProductsProductVariantsReq & {
+  variant_id: string
+}
+type UpdateVariantMutation<TOptionsOrVariantId> = UseMutationOptions<
+  Response<AdminProductsRes>,
+  Error,
+  (TOptionsOrVariantId extends string ? AdminPostProductsProductVariantsReq : UpdateDataWithVariant)
+>
+
 /**
- *
  * @param productId
  * @param optionsOrVariantId Deprecated: this property will only accept a string in the future major release. use useAdminUpdateVariant("product_id", "variant_id", options) instead
  * @param options
  */
 export const useAdminUpdateVariant = <
-  TOptions extends UseMutationOptions<
-    Response<AdminProductsRes>,
-    Error,
-    AdminPostProductsProductVariantsReq & { variant_id?: string }
-  > = UseMutationOptions<
-    Response<AdminProductsRes>,
-    Error,
-    AdminPostProductsProductVariantsReq & { variant_id?: string }
-  >,
-  TOptionsOrVariantId extends string | TOptions = string | TOptions
+  TOptionsOrVariantId extends string | TOptions,
+  TOptions extends UpdateVariantMutation<TOptionsOrVariantId> = UpdateVariantMutation<TOptionsOrVariantId>,
 >(
   productId: string,
   optionsOrVariantId?: TOptionsOrVariantId,
@@ -120,8 +120,10 @@ export const useAdminUpdateVariant = <
   const queryClient = useQueryClient()
 
   return useMutation(
-    ({ variant_id, ...payload }: AdminPostProductsProductVariantsReq & { variant_id?: string }) =>
-      client.admin.products.updateVariant(productId, (variantId ?? variant_id) as string, payload),
+    (data) => {
+      const { variant_id, ...payload } = data as UpdateDataWithVariant
+      return client.admin.products.updateVariant(productId, (variantId ?? variant_id) as string, payload)
+    },
     buildOptions(
       queryClient,
       [adminProductKeys.lists(), adminProductKeys.detail(productId)],
