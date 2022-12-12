@@ -6,7 +6,9 @@
         "^build"
       ],
       "outputs": [
-        "!src/**"
+        "!node_modules/**",
+        "!src/**",
+        "/*/**"
       ]
     },
     "test": {
