@@ -812,7 +812,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-        "Unable to save the payment session with an amoutn. The feature flag order edit is not enabled."
+        "Unable to save the payment session with an amount. The feature flag order edit is not enabled."
       )
     }
 
@@ -820,12 +820,13 @@ export default class PaymentProviderService extends TransactionBaseService {
       this.paymentSessionRepository_
     )
 
-    const toCreate = {
+    const toCreate: Partial<PaymentSession> = {
       cart_id: data.cartId,
       provider_id: providerId,
       data: data.sessionData,
-      isSelected: data.isSelected,
+      is_selected: data.isSelected,
       status: data.status,
+      amount: data.amount,
     }
 
     const created = sessionRepo.create(toCreate)
