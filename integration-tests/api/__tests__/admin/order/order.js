@@ -2434,6 +2434,7 @@ describe("/admin/orders", () => {
         })
       )
     })
+
     it("set correct status on partially refunded order", async () => {
       const api = useApi()
 
