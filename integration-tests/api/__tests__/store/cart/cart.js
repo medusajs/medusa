@@ -1642,6 +1642,44 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("partially updates shipping and billing address while retaining the addresses country codes", async () => {
+      const api = useApi()
+
+      // Partially update the shipping address
+      await api
+        .post("/store/carts/test-cart", {
+          shipping_address: {
+            last_name: "james",
+          },
+        })
+        .catch((error) => console.log(error))
+
+      // Partially update the billing address
+      const response = await api.post("/store/carts/test-cart", {
+        billing_address: {
+          first_name: "bruce",
+          last_name: "banner",
+          country_code: "us",
+        },
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart).toEqual(
+        expect.objectContaining({
+          shipping_address: expect.objectContaining({
+            first_name: "lebron",
+            last_name: "james",
+            country_code: "us",
+          }),
+          billing_address: expect.objectContaining({
+            first_name: "bruce",
+            last_name: "banner",
+            country_code: "us",
+          }),
+        })
+      )
+    })
+
     it("adds free shipping to cart then removes it again", async () => {
       const api = useApi()
 
