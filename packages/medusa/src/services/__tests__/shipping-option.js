@@ -165,9 +165,26 @@ describe("ShippingOptionService", () => {
         })
       } catch (error) {
         expect(error.message).toEqual(
-          "Flat rate shipping options must have a positive amount"
+          "Shipping options of type `flat_rate` must have a positive `amount`"
         )
       }
+    })
+
+    it("sets a price to", async () => {
+      await optionService.update(IdMap.getId("validId"), {
+        price_type: "flat_rate",
+        amount: 0,
+      })
+
+      expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRepository.save).toHaveBeenCalledWith({
+        provider_id: "provider",
+        data: {
+          provider_data: "true",
+        },
+        price_type: "flat_rate",
+        amount: 0,
+      })
     })
 
     it("sets calculated price", async () => {
