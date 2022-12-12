@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
+import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Cart,
   Order,
@@ -18,12 +19,12 @@ import {
   CreateShippingOptionInput,
   ShippingMethodUpdate,
   UpdateShippingOptionInput,
+  ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
 import { buildQuery, isDefined, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
-import { FlagRouter } from "../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -397,6 +398,42 @@ class ShippingOptionService extends TransactionBaseService {
     return option
   }
 
+  private async validateAndMutatePrice(
+    option: ShippingOption | CreateShippingOptionInput,
+    priceInput: ValidatePriceTypeAndAmountInput
+  ): Promise<Omit<ShippingOption, "beforeInsert"> | CreateShippingOptionInput> {
+    const option_:
+      | Omit<ShippingOption, "beforeInsert">
+      | CreateShippingOptionInput = { ...option }
+
+    if (isDefined(priceInput.amount)) {
+      option_.amount = priceInput.amount
+    }
+
+    if (isDefined(priceInput.price_type)) {
+      option_.price_type = await this.validatePriceType_(
+        priceInput.price_type,
+        option_ as ShippingOption
+      )
+
+      if (priceInput.price_type === ShippingOptionPriceType.CALCULATED) {
+        option_.amount = null
+      }
+    }
+
+    if (
+      option_.price_type === ShippingOptionPriceType.FLAT_RATE &&
+      (option_.amount == null || option_.amount < 0)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping options of type `flat_rate` must have an `amount`"
+      )
+    }
+
+    return option_
+  }
+
   /**
    * Creates a new shipping option. Used both for outbound and inbound shipping
    * options. The difference is registered by the `is_return` field which
@@ -406,8 +443,12 @@ class ShippingOptionService extends TransactionBaseService {
    */
   async create(data: CreateShippingOptionInput): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
+      const optionWithValidatedPrice = await this.validateAndMutatePrice(data, {
+        price_type: data.price_type,
+      })
+
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      const option = optionRepo.create(data as DeepPartial<ShippingOption>)
+      const option = optionRepo.create(optionWithValidatedPrice)
 
       const region = await this.regionService_
         .withTransaction(manager)
@@ -426,10 +467,6 @@ class ShippingOptionService extends TransactionBaseService {
         )
       }
 
-      option.price_type = await this.validatePriceType_(data.price_type, option)
-      option.amount =
-        data.price_type === "calculated" ? null : data.amount ?? null
-
       if (
         this.featureFlagRouter_.isFeatureEnabled(
           TaxInclusivePricingFeatureFlag.key
@@ -440,7 +477,9 @@ class ShippingOptionService extends TransactionBaseService {
         }
       }
 
-      const isValid = await this.providerService_.validateOption(option)
+      const isValid = await this.providerService_.validateOption(
+        option as ShippingOption
+      )
 
       if (!isValid) {
         throw new MedusaError(
@@ -496,7 +535,8 @@ class ShippingOptionService extends TransactionBaseService {
   ): Promise<ShippingOptionPriceType> {
     if (
       !priceType ||
-      (priceType !== "flat_rate" && priceType !== "calculated")
+      (priceType !== ShippingOptionPriceType.FLAT_RATE &&
+        priceType !== ShippingOptionPriceType.CALCULATED)
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -504,8 +544,11 @@ class ShippingOptionService extends TransactionBaseService {
       )
     }
 
-    if (priceType === "calculated") {
-      const canCalculate = await this.providerService_.canCalculate(option)
+    if (priceType === ShippingOptionPriceType.CALCULATED) {
+      const canCalculate = await this.providerService_.canCalculate({
+        provider_id: option.provider_id,
+        data: option.data,
+      })
       if (!canCalculate) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -597,26 +640,20 @@ class ShippingOptionService extends TransactionBaseService {
         option.requirements = acc
       }
 
-      if (isDefined(update.price_type)) {
-        option.price_type = await this.validatePriceType_(
-          update.price_type,
-          option
-        )
-        if (update.price_type === "calculated") {
-          option.amount = null
+      const optionWithValidatedPrice = await this.validateAndMutatePrice(
+        option,
+        {
+          price_type: update.price_type,
+          amount: update.amount,
         }
-      }
-
-      if (isDefined(update.amount) && option.price_type !== "calculated") {
-        option.amount = update.amount
-      }
+      )
 
       if (isDefined(update.name)) {
-        option.name = update.name
+        optionWithValidatedPrice.name = update.name
       }
 
       if (isDefined(update.admin_only)) {
-        option.admin_only = update.admin_only
+        optionWithValidatedPrice.admin_only = update.admin_only
       }
 
       if (
@@ -625,12 +662,12 @@ class ShippingOptionService extends TransactionBaseService {
         )
       ) {
         if (typeof update.includes_tax !== "undefined") {
-          option.includes_tax = update.includes_tax
+          optionWithValidatedPrice.includes_tax = update.includes_tax
         }
       }
 
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      return await optionRepo.save(option)
+      return await optionRepo.save(optionWithValidatedPrice)
     })
   }
 
