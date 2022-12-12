@@ -90,9 +90,9 @@ fetch(`<SERVER_URL>/admin/sales-channels`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     name: 'App',
 	  description: 'Mobile app'
@@ -139,8 +139,8 @@ fetch(`<SERVER_URL>/admin/sales-channels`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/sales-channels' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/sales-channels' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -181,8 +181,8 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -232,9 +232,9 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "is_disabled": false
 }'
@@ -283,8 +283,8 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -344,9 +344,9 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "product_ids": [
       {
@@ -398,8 +398,8 @@ fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -461,9 +461,9 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```jsx
-curl --location --request DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "product_ids": [
       {
@@ -519,8 +519,8 @@ fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```jsx
-curl --location --request GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>

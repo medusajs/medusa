@@ -6,7 +6,7 @@ In this document, you’ll learn how you can create an [Entity](overview.md).
 
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
 
-```tsx
+```tsx title=src/models/post.ts
 import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
 import { BaseEntity} from "@medusajs/medusa";
 import { generateEntityId } from "@medusajs/medusa/dist/utils"
@@ -50,9 +50,9 @@ You can learn more about Migrations, how to create them, and how to run them in 
 
 ### Create a Repository
 
-Entities data can be easily accessed and modified using Typeorm [Repositories](https://typeorm.io/working-with-repository). To create a repository, create a file in `src/repositories`. For example, here’s a repository `PostRepository` that resides in `src/repositories/post.ts`:
+Entities data can be easily accessed and modified using Typeorm [Repositories](https://typeorm.io/working-with-repository). To create a repository, create a file in `src/repositories`. For example, here’s a repository `PostRepository` created in `src/repositories/post.ts`:
 
-```tsx
+```tsx title=src/repositories/post.ts
 import { EntityRepository, Repository } from "typeorm"
 
 import { Post } from "../models/post"
@@ -75,7 +75,7 @@ Be careful with your file names as it can cause unclear errors in Typeorm. Make 
 
 Before trying this step make sure that you’ve created and run your migrations. You also need to re-build your code using:
 
-```bash npm2yarn noHeader
+```bash npm2yarn noReport
 npm run build
 ```
 

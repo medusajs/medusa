@@ -83,11 +83,13 @@
   --ifm-code-border-color: #E5E7EB;
   --ifm-code-background: #F9FAFB;
   --ifm-code-color: #4B5563;
+  --ifm-code-tabs-color: #6F6F6F;
   --ifm-code-tabs-active-bg: transparent;
   --ifm-code-tabs-active-color: #F4F4F4;
   --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
   --ifm-pre-padding: 16px;
   --docusaurus-highlighted-code-line-bg: #393939;
+  --ifm-code-title-color: #737373;
 
   /* Tooltip */
   --ifm-tooltip-background-color: #fff;

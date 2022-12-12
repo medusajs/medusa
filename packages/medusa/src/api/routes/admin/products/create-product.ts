@@ -1,8 +1,4 @@
 import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
-import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -12,6 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
@@ -23,13 +20,16 @@ import {
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { ProductStatus } from "../../../../models"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductStatus } from "../../../../models"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -413,7 +413,7 @@ class ProductVariantReq {
 
   @IsNumber()
   @IsOptional()
-  inventory_quantity = 0
+  inventory_quantity?: number = 0
 
   @IsBoolean()
   @IsOptional()
