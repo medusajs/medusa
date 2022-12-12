@@ -2,14 +2,20 @@
 
 ## Classes
 
-- [StoreGetProductTypesParams](../classes/internal-40.StoreGetProductTypesParams.md)
+- [StorePostOrderEditsOrderEditDecline](../classes/internal-40.StorePostOrderEditsOrderEditDecline.md)
 
 ## Type Aliases
 
-### StoreProductTypesListRes
+### StoreOrderEditsRes
 
-Ƭ **StoreProductTypesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `product_types`: [`ProductType`](../classes/internal.ProductType.md)[]  }
+Ƭ **StoreOrderEditsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `order_edit` | `Omit`<[`OrderEdit`](../classes/internal.OrderEdit.md), ``"internal_note"`` \| ``"created_by"`` \| ``"confirmed_by"`` \| ``"canceled_by"``\> |
 
 #### Defined in
 
-medusa/dist/api/routes/store/product-types/index.d.ts:9
+medusa/dist/api/routes/store/order-edits/index.d.ts:4

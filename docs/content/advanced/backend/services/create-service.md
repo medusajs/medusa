@@ -8,7 +8,7 @@ To create a service, create a TypeScript or JavaScript file in `src/services` to
 
 For example, if you want to create a service `helloService`, create the file `hello.ts` in `src/services` with the following content:
 
-```ts
+```ts title=/src/services/hello.ts
 import { TransactionBaseService } from '@medusajs/medusa';
 import { EntityManager } from 'typeorm';
 
@@ -54,7 +54,7 @@ In this section, you'll learn how to use services throughout your Medusa server.
 
 Before using your service, make sure you run the `build` command:
 
-```bash npm2yarn noHeader
+```bash npm2yarn noReport
 npm run build
 ```
 

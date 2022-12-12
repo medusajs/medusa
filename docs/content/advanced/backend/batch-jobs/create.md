@@ -43,7 +43,7 @@ Batch job strategies must extend the abstract class `AbstractBatchJobStrategy` a
 
 Add the following content to the file you created:
 
-```tsx
+```tsx title=src/strategies/publish.ts
 import { AbstractBatchJobStrategy, BatchJobService } from '@medusajs/medusa'
 import { EntityManager } from 'typeorm'
 
@@ -274,6 +274,7 @@ medusa.admin.batchJobs.create({
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -293,9 +294,9 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "type": "publish-products",
     "context": { },
@@ -328,7 +329,9 @@ medusa.admin.batchJobs.retrieve(batchJobId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`)
+fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ batch_job }) => {
   console.log(batch_job.status, batch_job.result);
@@ -339,8 +342,8 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`)
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 
@@ -349,7 +352,7 @@ curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
 
 Based on the batch job strategy implemented in this documentation, the `result` property could be something like this:
 
-```json noHeader
+```json noReport
 "result": {
     "count": 1,
     "stat_descriptors": [
@@ -382,7 +385,8 @@ medusa.admin.batchJobs.confirm(batchJobId)
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
-  method: 'POST'
+  method: 'POST',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {
@@ -394,8 +398,8 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
+-H 'Authorization: Bearer <API_TOKEN>'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 

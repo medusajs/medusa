@@ -48,7 +48,7 @@ The first step to create a payment provider is to create a JavaScript or TypeScr
 
 For example, create the file `src/services/my-payment.ts` with the following content:
 
-```ts
+```ts title=src/services/my-payment.ts
 import { AbstractPaymentService, Cart, Data, Payment, PaymentSession, PaymentSessionStatus, TransactionBaseService } from "@medusajs/medusa"
 import { EntityManager } from "typeorm";
 

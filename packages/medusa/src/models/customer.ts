@@ -99,7 +99,7 @@ export class Customer extends SoftDeletableEntity {
  *     example: Arno
  *   last_name:
  *     type: string
- *     description: The customer's first name
+ *     description: The customer's last name
  *     example: Willms
  *   billing_address_id:
  *     type: string

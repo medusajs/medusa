@@ -65,7 +65,6 @@
     "test:integration": "NODE_ENV=test jest --runInBand --bail --config=integration-tests/jest.config.js",
     "test:integration:api": "NODE_ENV=test jest --detectOpenHandles --forceExit --runInBand --bail --config=integration-tests/jest.config.js --projects=integration-tests/api",
     "test:integration:plugins": "NODE_ENV=test jest --runInBand --bail --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
-    "test:fixtures": "NODE_ENV=test jest --config=docs-util/jest.config.js --runInBand --bail",
     "openapi:generate": "node ./scripts/build-openapi.js",
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",

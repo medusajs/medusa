@@ -10,7 +10,7 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-20.md#adminreturnreasonsres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-23.md#adminreturnreasonsres)\>
 
 **`Description`**
 
@@ -20,18 +20,18 @@ Creates a return reason.
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostReturnReasonsReq`](internal-20.AdminPostReturnReasonsReq.md) |
+| `payload` | [`AdminPostReturnReasonsReq`](internal-23.AdminPostReturnReasonsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-20.md#adminreturnreasonsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-23.md#adminreturnreasonsres)\>
 
 Created return reason.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:18](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L18)
+[medusa-js/src/resources/admin/return-reasons.ts:18](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/return-reasons.ts#L18)
 
 ___
 
@@ -58,13 +58,13 @@ Deleted response
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:48](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L48)
+[medusa-js/src/resources/admin/return-reasons.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/return-reasons.ts#L48)
 
 ___
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsListRes`](../modules/internal-20.md#adminreturnreasonslistres)\>
+▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsListRes`](../modules/internal-23.md#adminreturnreasonslistres)\>
 
 **`Description`**
 
@@ -78,19 +78,19 @@ Lists return reasons matching a query
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsListRes`](../modules/internal-20.md#adminreturnreasonslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsListRes`](../modules/internal-23.md#adminreturnreasonslistres)\>
 
 a list of return reasons matching the query.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:75](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L75)
+[medusa-js/src/resources/admin/return-reasons.ts:75](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/return-reasons.ts#L75)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-20.md#adminreturnreasonsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-23.md#adminreturnreasonsres)\>
 
 **`Description`**
 
@@ -105,19 +105,19 @@ retrieves a return reason
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-20.md#adminreturnreasonsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-23.md#adminreturnreasonsres)\>
 
 the return reason with the given id
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:62](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L62)
+[medusa-js/src/resources/admin/return-reasons.ts:62](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/return-reasons.ts#L62)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-20.md#adminreturnreasonsres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-23.md#adminreturnreasonsres)\>
 
 **`Description`**
 
@@ -128,15 +128,15 @@ Updates a return reason
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the return reason to update. |
-| `payload` | [`AdminPostReturnReasonsReasonReq`](internal-20.AdminPostReturnReasonsReasonReq.md) | update to apply to return reason. |
+| `payload` | [`AdminPostReturnReasonsReasonReq`](internal-23.AdminPostReturnReasonsReasonReq.md) | update to apply to return reason. |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-20.md#adminreturnreasonsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnReasonsRes`](../modules/internal-23.md#adminreturnreasonsres)\>
 
 the updated return reason.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/return-reasons.ts:33](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/admin/return-reasons.ts#L33)
+[medusa-js/src/resources/admin/return-reasons.ts:33](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/return-reasons.ts#L33)
