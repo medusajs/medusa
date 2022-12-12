@@ -15,7 +15,7 @@ export type PaymentSessionInput = {
   customer?: {
     id: string
 
-    // The paymentCustomerId returned by the plugin will be stored here
+    // If the payment plugin return some data to collect on the customer, they will be store in the metadata
     metadata: Record<string, unknown>
   } | null
   currency_code: string

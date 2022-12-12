@@ -52,11 +52,15 @@ class CartSubscriber {
         return
       }
 
+      const paymentProviderServiceTx =
+        this.paymentProviderService_.withTransaction(transactionManager)
+
       return await Promise.all(
         cart.payment_sessions.map(async (paymentSession) => {
-          return await this.paymentProviderService_
-            .withTransaction(transactionManager)
-            .updateSession(paymentSession, cart)
+          return await paymentProviderServiceTx.updateSession(
+            paymentSession,
+            cart
+          )
         })
       )
     })
