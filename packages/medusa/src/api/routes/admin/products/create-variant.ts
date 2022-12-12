@@ -7,13 +7,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { ProductService, ProductVariantService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductService, ProductVariantService } from "../../../../services"
 
-import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /products/{id}/variants
@@ -217,7 +220,7 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     return await productVariantService
       .withTransaction(transactionManager)
-      .create(id, validated)
+      .create(id, validated as CreateProductVariantInput)
   })
 
   const product = await productService.retrieve(id, {
@@ -262,7 +265,7 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsNumber()
   @IsOptional()
-  inventory_quantity = 0
+  inventory_quantity?: number = 0
 
   @IsBoolean()
   @IsOptional()
@@ -313,5 +316,5 @@ export class AdminPostProductsProductVariantsReq {
   @Type(() => ProductVariantOptionReq)
   @ValidateNested({ each: true })
   @IsArray()
-  options: ProductVariantOptionReq[] = []
+  options?: ProductVariantOptionReq[] = []
 }
