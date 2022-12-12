@@ -1487,12 +1487,20 @@ class OrderService extends TransactionBaseService {
         .refundPayment(order.payments, refundAmount, reason, note)
 
       let result = await this.retrieve(orderId, {
-        select: ["refundable_amount", "total", "refunded_total"],
+        select: ["paid_total", "total", "refundable_amount", "refunded_total"],
         relations: ["payments"],
       })
 
       if (result.refunded_total > 0 && result.refundable_amount > 0) {
         result.payment_status = PaymentStatus.PARTIALLY_REFUNDED
+        result = await orderRepo.save(result)
+      }
+
+      if (
+        result.paid_total > 0 &&
+        result.refunded_total === result.paid_total
+      ) {
+        result.payment_status = PaymentStatus.REFUNDED
         result = await orderRepo.save(result)
       }
 

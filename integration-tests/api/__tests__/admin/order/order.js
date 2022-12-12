@@ -2410,6 +2410,30 @@ describe("/admin/orders", () => {
       await db.teardown()
     })
 
+    it("set status on refunded order", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/orders/${orderId}/refund`,
+        { amount: 1000, reason: "other" },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          payment_status: "refunded",
+          refunded_total: 1000,
+          subtotal: 1000,
+          total: 1000,
+          paid_total: 1000,
+          refundable_amount: 0,
+        })
+      )
+    })
     it("set correct status on partially refunded order", async () => {
       const api = useApi()
 
