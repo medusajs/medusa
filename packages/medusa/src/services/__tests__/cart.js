@@ -1528,7 +1528,6 @@ describe("CartService", () => {
 
       expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
       expect(paymentProviderService.createSession).toHaveBeenCalledWith(
-        "provider_1",
         {
           cart: cart1,
           customer: cart1.customer,
@@ -1538,7 +1537,6 @@ describe("CartService", () => {
         }
       )
       expect(paymentProviderService.createSession).toHaveBeenCalledWith(
-        "provider_2",
         {
           cart: cart1,
           customer: cart1.customer,
