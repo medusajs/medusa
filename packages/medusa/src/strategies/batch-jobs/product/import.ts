@@ -422,6 +422,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           delete productData.collection
         }
 
+        // TODO: we should only pass the expected data and should not have to cast the entire object. Here we are passing everything contained in productData
         await productServiceTx.create(
           productData as unknown as CreateProductInput
         )
@@ -485,6 +486,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           delete productData.collection
         }
 
+        // TODO: we should only pass the expected data. Here we are passing everything contained in productData
         await productServiceTx.update(
           productOp["product.id"] as string,
           productData
