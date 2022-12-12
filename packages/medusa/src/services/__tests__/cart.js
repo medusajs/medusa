@@ -1,12 +1,12 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { FlagRouter } from "../../utils/flag-router"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { FlagRouter } from "../../utils/flag-router"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -1100,7 +1100,7 @@ describe("CartService", () => {
         last_name: "James",
         address_1: "24 Dunks Drive",
         city: "Los Angeles",
-        country_code: "US",
+        country_code: "us",
         province: "CA",
         postal_code: "93011",
         phone: "+1 (222) 333 4444",
