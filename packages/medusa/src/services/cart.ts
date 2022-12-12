@@ -1053,7 +1053,7 @@ class CartService extends TransactionBaseService {
           }
         }
 
-        if (isDefined(data.discounts)) {
+        if (isDefined(data.discounts) && data.discounts.length) {
           const previousDiscounts = [...cart.discounts]
           cart.discounts.length = 0
 
@@ -1081,6 +1081,9 @@ class CartService extends TransactionBaseService {
           if (hasFreeShipping) {
             await this.adjustFreeShipping_(cart, true)
           }
+        } else if (isDefined(data.discounts) && !data.discounts.length) {
+          cart.discounts.length = 0
+          await this.refreshAdjustments_(cart)
         }
 
         if ("gift_cards" in data) {
@@ -1411,6 +1414,8 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
           relations: [
+            "items",
+            "region",
             "discounts",
             "discounts.rule",
             "payment_sessions",
@@ -1435,7 +1440,9 @@ class CartService extends TransactionBaseService {
         )
         const updatedCart = await cartRepo.save(cart)
 
-        if (updatedCart.payment_sessions?.length) {
+        await this.refreshAdjustments_(updatedCart)
+
+        if (cart.payment_sessions?.length) {
           await this.setPaymentSessions(cartId)
         }
 
