@@ -364,6 +364,8 @@ export const allowedAdminOrdersRelations = [
   "discounts.rule",
   "shipping_methods",
   "payments",
+  "items",
+  "items.variant",
   "fulfillments",
   "fulfillments.items",
   "fulfillments.items.item",
