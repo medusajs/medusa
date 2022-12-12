@@ -96,9 +96,9 @@ class StripeBase extends AbstractPaymentService {
    */
   async retrieveCustomer(customerId) {
     if (!customerId) {
-      return Promise.resolve()
+      return
     }
-    return this.stripe_.customers.retrieve(customerId)
+    return await this.stripe_.customers.retrieve(customerId)
   }
 
   /**
