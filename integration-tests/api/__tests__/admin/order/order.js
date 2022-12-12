@@ -1448,6 +1448,38 @@ describe("/admin/orders", () => {
       }
     })
 
+    it("allow fulfillments relations", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/orders?fields=id&expand=fulfillments,fulfillments.items,fulfillments.items.item",
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order-w-f",
+            fulfillments: expect.arrayContaining([
+              expect.objectContaining({
+                id: "fulfillment-on-order-1",
+                items: [],
+              }),
+              expect.objectContaining({
+                id: "fulfillment-on-order-2",
+                items: [],
+              }),
+            ]),
+          }),
+        ])
+      )
+    })
+
     it("lists all orders with a fulfillment status = fulfilled and payment status = captured", async () => {
       const api = useApi()
 

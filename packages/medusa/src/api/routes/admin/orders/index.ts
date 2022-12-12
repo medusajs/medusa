@@ -365,6 +365,8 @@ export const allowedAdminOrdersRelations = [
   "shipping_methods",
   "payments",
   "fulfillments",
+  "fulfillments.items",
+  "fulfillments.items.item",
   "fulfillments.tracking_links",
   "returns",
   "claims",
