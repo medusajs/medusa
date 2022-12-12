@@ -427,7 +427,7 @@ class ShippingOptionService extends TransactionBaseService {
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Shipping options of type `flat_rate` must have a positive `amount`"
+        "Shipping options of type `flat_rate` must have an `amount`"
       )
     }
 
