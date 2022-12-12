@@ -41,7 +41,7 @@ describe("useAdminUpdateVariant hook", () => {
       options: [],
     }
 
-    let { result, waitFor } = renderHook(
+    const { result, waitFor } = renderHook(
       () => useAdminUpdateVariant("test-product"),
       {
         wrapper: createWrapper(),
