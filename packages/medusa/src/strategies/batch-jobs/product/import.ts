@@ -18,12 +18,7 @@ import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
 } from "../../../types/product-variant"
-import {
-  BatchJob,
-  Product,
-  ProductCollection,
-  SalesChannel,
-} from "../../../models"
+import { BatchJob, SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
 import { transformProductData, transformVariantData } from "./utils"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
@@ -394,6 +389,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
     const productServiceTx =
       this.productService_.withTransaction(transactionManager)
+    const productCollectionServiceTx =
+      this.productCollectionService_.withTransaction(transactionManager)
 
     const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
       SalesChannelFeatureFlag.key
@@ -414,14 +411,17 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           )
         }
 
-        const product = await productServiceTx.create(productData)
-
-        if (productOp["product.collection.handle"]) {
-          await this.assignProductToCollection(product, {
-            title: productOp["product.collection.title"] as string,
-            handle: productOp["product.collection.handle"] as string,
-          })
+        if (
+          productOp["product.collection.handle"] != null &&
+          productOp["product.collection.handle"] !== ""
+        ) {
+          productData["collection"] =
+            await productCollectionServiceTx.retrieveByHandle(
+              productOp["product.collection.handle"] as string
+            )
         }
+
+        await productServiceTx.create(productData)
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
@@ -448,6 +448,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
     const productServiceTx =
       this.productService_.withTransaction(transactionManager)
+    const productCollectionServiceTx =
+      this.productCollectionService_.withTransaction(transactionManager)
 
     const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
       SalesChannelFeatureFlag.key
@@ -467,59 +469,26 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         delete productData.options // for now not supported in the update method
 
-        const product = await productServiceTx.update(
+        if (
+          productOp["product.collection.handle"] != null &&
+          productOp["product.collection.handle"] !== ""
+        ) {
+          productData["collection"] =
+            await productCollectionServiceTx.retrieveByHandle(
+              productOp["product.collection.handle"] as string
+            )
+        }
+
+        await productServiceTx.update(
           productOp["product.id"] as string,
           productData
         )
-
-        if (productOp["product.collection.handle"]) {
-          await this.assignProductToCollection(product, {
-            title: productOp["product.collection.title"] as string,
-            handle: productOp["product.collection.handle"] as string,
-          })
-        }
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
 
       await this.updateProgress(batchJob.id)
     }
-  }
-
-  private async assignProductToCollection(
-    product: Product,
-    collectionData: { title: string; handle: string }
-  ): Promise<void> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-    const productCollectionServiceTx =
-      this.productCollectionService_.withTransaction(transactionManager)
-
-    if (product.collection_id) {
-      const currentCollection = await productCollectionServiceTx.retrieve(
-        product.collection_id,
-        {
-          select: ["handle"],
-        }
-      )
-
-      if (currentCollection.handle === collectionData.handle) {
-        return
-      }
-
-      await productCollectionServiceTx.removeProducts(product.collection_id, [
-        product.id,
-      ])
-    }
-
-    const collection = await productCollectionServiceTx.retrieveByHandle(
-      collectionData.handle,
-      { select: ["id"] }
-    )
-
-    await productCollectionServiceTx.addProducts(
-      (collection as ProductCollection).id,
-      [product.id]
-    )
   }
 
   /**

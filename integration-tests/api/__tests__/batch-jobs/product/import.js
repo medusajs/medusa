@@ -9,6 +9,7 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 const batchJobSeeder = require("../../../helpers/batch-job-seeder")
 const userSeeder = require("../../../helpers/user-seeder")
 const { simpleProductFactory } = require("../../../factories")
+const { simpleProductCollectionFactory } = require("../../../factories/simple-product-collection-factory");
 
 const adminReqConfig = {
   headers: {
@@ -49,6 +50,9 @@ describe("Product import batch job", () => {
   let medusaProcess
   let dbConnection
 
+  let collectionHandle1 = "test-collection1"
+  let collectionHandle2 = "test-collection2"
+
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
@@ -72,14 +76,14 @@ describe("Product import batch job", () => {
   })
 
   beforeEach(async () => {
-    try {
-      await batchJobSeeder(dbConnection)
-      await adminSeeder(dbConnection)
-      await userSeeder(dbConnection)
-    } catch (e) {
-      console.log(e)
-      throw e
-    }
+    await batchJobSeeder(dbConnection)
+    await adminSeeder(dbConnection)
+    await userSeeder(dbConnection)
+    await simpleProductCollectionFactory(dbConnection, [{
+      handle: collectionHandle1
+    }, {
+      handle: collectionHandle2
+    }])
   })
 
   afterEach(async () => {
@@ -221,8 +225,7 @@ describe("Product import batch job", () => {
             }),
           ],
           collection: expect.objectContaining({
-            handle: "test-collection1",
-            title: "Test collection 1"
+            handle: collectionHandle1,
           })
         }),
         expect.objectContaining({
@@ -284,8 +287,7 @@ describe("Product import batch job", () => {
           ],
           tags: [],
           collection: expect.objectContaining({
-            handle: "test-collection1",
-            title: "Test collection 1"
+            handle: collectionHandle1,
           })
         }),
         // UPDATED PRODUCT
@@ -382,8 +384,7 @@ describe("Product import batch job", () => {
             }),
           ],
           collection: expect.objectContaining({
-            handle: "test-collection2",
-            title: "Test collection"
+            handle: collectionHandle2
           })
         }),
       ])
