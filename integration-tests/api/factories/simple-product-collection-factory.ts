@@ -7,11 +7,14 @@ export type Data = {
   handle: string
 }
 
-export const simpleProductCollectionFactory = async (
+export const simpleProductCollectionFactory = async <
+  TData extends Data | Data[] = Data | Data[],
+  TResult = TData extends Array<Data> ? ProductCollection[] : ProductCollection
+>(
   connection: Connection,
-  data: Data | Data[],
+  data: TData,
   seed?: number
-): Promise<ProductCollection | ProductCollection[]> => {
+): Promise<TResult> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
@@ -32,5 +35,5 @@ export const simpleProductCollectionFactory = async (
   }
 
   const productCollections = await manager.save(collections)
-  return Array.isArray(data) ? productCollections : productCollections[0]
+  return (Array.isArray(data) ? productCollections : productCollections[0]) as unknown as TResult
 }
