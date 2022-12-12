@@ -504,7 +504,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       for (const [, { exportDescriptor: columnSchema }] of Object.entries(
         this.columnsDefinition
       )) {
-        if (!columnSchema || "isDynamic" in columnSchema) continue
+        if (!columnSchema || "isDynamic" in columnSchema) {
+          continue
+        }
 
         if (columnSchema.entityName === "product") {
           const formattedContent = csvCellContentFormatter(
