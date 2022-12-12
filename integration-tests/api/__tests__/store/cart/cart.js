@@ -1043,7 +1043,7 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
 
-    it.only("successfully removes adjustments upon update without discounts", async () => {
+    it("successfully removes adjustments upon update without discounts", async () => {
       const discountData = {
         code: "MEDUSA185DKK",
         id: "medusa-185",
@@ -1095,9 +1095,6 @@ describe("/store/carts", () => {
             quantity: 1,
             variant_id: "test-variant-quantity",
           },
-          {
-            withCredentials: true,
-          }
         )
 
       expect(response.data.cart.items.length).toEqual(1)
@@ -1120,9 +1117,6 @@ describe("/store/carts", () => {
           {
             discounts: [],
           },
-          {
-            withCredentials: true,
-          }
         )
 
       expect(response.data.cart.items.length).toEqual(1)
@@ -2207,9 +2201,6 @@ describe("/store/carts", () => {
             quantity: 1,
             variant_id: "test-variant-quantity",
           },
-          {
-            withCredentials: true,
-          }
         )
 
       expect(response.data.cart.items.length).toEqual(1)
@@ -2227,12 +2218,7 @@ describe("/store/carts", () => {
       )
 
       response = await api
-        .delete(
-          `/store/carts/${cartId}/discounts/${discountData.code}`,
-          {
-            withCredentials: true,
-          }
-        )
+        .delete(`/store/carts/${cartId}/discounts/${discountData.code}`)
 
       expect(response.data.cart.items.length).toEqual(1)
       expect(response.data.cart.items[0].adjustments).toHaveLength(0)
