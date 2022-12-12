@@ -423,11 +423,11 @@ class ShippingOptionService extends TransactionBaseService {
 
     if (
       option_.price_type === ShippingOptionPriceType.FLAT_RATE &&
-      (!option_?.amount || option_.amount < 0)
+      (option_.amount == null || option_.amount < 0)
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Flat rate shipping options must have a positive amount"
+        "Shipping options of type `flat_rate` must have a positive `amount`"
       )
     }
 
