@@ -63,10 +63,10 @@ jobs:
           extension: pipeline
 
       - name: Build Packages
-        run: yarn build
+        run: yarn build --force
 
       - name: Run unit tests
-        run: yarn test
+        run: yarn test --force
 
   integration-tests-api:
     needs: setup
@@ -124,7 +124,7 @@ jobs:
         run: yarn build --force
 
       - name: Run integration tests
-        run: yarn test:integration:api
+        run: yarn test:integration:api --force
         env:
           DB_PASSWORD: postgres
           SPLIT: ${{ steps['split-tests'].outputs['split'] }}
@@ -176,6 +176,6 @@ jobs:
         run: yarn build --force
 
       - name: Run plugin integration tests
-        run: yarn test:integration:plugins
+        run: yarn test:integration:plugins --force
         env:
           DB_PASSWORD: postgres
