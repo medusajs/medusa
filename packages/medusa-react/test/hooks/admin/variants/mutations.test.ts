@@ -1,8 +1,4 @@
-import {
-  useAdminCreateVariant,
-  useAdminUpdateVariant,
-  useAdminDeleteVariant,
-} from "../../../../src/"
+import { useAdminCreateVariant, useAdminDeleteVariant, useAdminUpdateVariant, } from "../../../../src/"
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
@@ -45,7 +41,7 @@ describe("useAdminUpdateVariant hook", () => {
       options: [],
     }
 
-    const { result, waitFor } = renderHook(
+    let { result, waitFor } = renderHook(
       () => useAdminUpdateVariant("test-product"),
       {
         wrapper: createWrapper(),
@@ -62,7 +58,31 @@ describe("useAdminUpdateVariant hook", () => {
     expect(result.current.data.response.status).toEqual(200)
     expect(result.current.data.product).toEqual(fixtures.get("product"))
   })
+
+  test("updates a variant and returns it using the new hook api", async () => {
+    const variant = {
+      title: "Example variant",
+      inventory_quantity: 5,
+      prices: [],
+      options: [],
+    }
+
+    let { result, waitFor } = renderHook(
+      () => useAdminUpdateVariant("test-product", "test-variant"),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate(variant)
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.product).toEqual(fixtures.get("product"))
+  })
 })
+
 
 describe("useAdminDeleteVariant hook", () => {
   test("deletes a variant", async () => {

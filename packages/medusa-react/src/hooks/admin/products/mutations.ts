@@ -91,27 +91,41 @@ export const useAdminCreateVariant = (
   )
 }
 
-export const useAdminUpdateVariant = (
-  productId: string,
-  options?: UseMutationOptions<
+/**
+ *
+ * @param productId
+ * @param optionsOrVariantId Deprecated: this property will only accept a string in the future major release. use useAdminUpdateVariant("product_id", "variant_id", options) instead
+ * @param options
+ */
+export const useAdminUpdateVariant = <
+  TOptions extends UseMutationOptions<
     Response<AdminProductsRes>,
     Error,
-    AdminPostProductsProductVariantsReq & { variant_id: string }
-  >
+    AdminPostProductsProductVariantsReq & { variant_id?: string }
+  > = UseMutationOptions<
+    Response<AdminProductsRes>,
+    Error,
+    AdminPostProductsProductVariantsReq & { variant_id?: string }
+  >,
+  TOptionsOrVariantId extends string | TOptions = string | TOptions
+>(
+  productId: string,
+  optionsOrVariantId?: TOptionsOrVariantId,
+  options?: TOptionsOrVariantId extends string ? TOptions : never
 ) => {
+  const variantId = typeof optionsOrVariantId === "string" ? optionsOrVariantId : undefined
+  const options_ = typeof optionsOrVariantId === "string" ? options : optionsOrVariantId
+
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    ({
-      variant_id,
-      ...payload
-    }: AdminPostProductsProductVariantsReq & { variant_id: string }) =>
-      client.admin.products.updateVariant(productId, variant_id, payload),
+    ({ variant_id, ...payload }: AdminPostProductsProductVariantsReq & { variant_id?: string }) =>
+      client.admin.products.updateVariant(productId, (variantId ?? variant_id) as string, payload),
     buildOptions(
       queryClient,
       [adminProductKeys.lists(), adminProductKeys.detail(productId)],
-      options
+      options_ as TOptions
     )
   )
 }
