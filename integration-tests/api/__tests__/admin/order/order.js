@@ -29,6 +29,12 @@ const {
   simplePaymentFactory,
 } = require("../../../factories")
 
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
+
 jest.setTimeout(30000)
 
 describe("/admin/orders", () => {
@@ -2416,11 +2422,7 @@ describe("/admin/orders", () => {
       const response = await api.post(
         `/admin/orders/${orderId}/refund`,
         { amount: 1000, reason: "other" },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.data.order).toEqual(
@@ -2441,11 +2443,7 @@ describe("/admin/orders", () => {
       const response = await api.post(
         `/admin/orders/${orderId}/refund`,
         { amount: 500, reason: "other" },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.data.order).toEqual(
