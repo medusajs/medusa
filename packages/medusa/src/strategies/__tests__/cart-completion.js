@@ -7,25 +7,22 @@ const IdempotencyKeyServiceMock = {
     return this
   },
   workStage: jest.fn().mockImplementation(async (key, fn) => {
-    try {
-      const { recovery_point, response_code, response_body } = await fn(
-        MockManager
-      )
+    const { recovery_point, response_code, response_body } = await fn(
+      MockManager
+    )
 
-      if (recovery_point) {
-        return {
-          idempotency_key: key,
-          recovery_point,
-        }
-      } else {
-        return {
-          recovery_point: "finished",
-          response_body,
-          response_code,
-        }
-      }
-    } catch (err) {
-      return { error: err }
+    const data = {
+      recovery_point: recovery_point ?? "finished",
+    }
+
+    if (!recovery_point) {
+      data.response_body = response_body
+      data.response_code = response_code
+    }
+
+    return {
+      ...data,
+      idempotency_key: key,
     }
   }),
   update: jest.fn().mockImplementation((key, data) => {
@@ -39,7 +36,7 @@ const toTest = [
     {
       cart: {
         id: "test-cart",
-        items: [],
+        items: [{ id: "item", tax_lines: [] }],
         payment: { data: "some-data" },
         payment_session: { status: "authorized" },
         total: 1000,
@@ -94,7 +91,7 @@ const toTest = [
     {
       cart: {
         id: "test-cart",
-        items: [],
+        items: [{ id: "item", tax_lines: [] }],
         completed_at: "2021-01-02",
         payment: { data: "some-data" },
         payment_session: { status: "authorized" },
@@ -121,7 +118,7 @@ const toTest = [
     {
       cart: {
         id: "test-cart",
-        items: [],
+        items: [{ id: "item", tax_lines: [] }],
         payment: { data: "some-data" },
         payment_session: { status: "requires_more" },
         total: 1000,
@@ -148,7 +145,7 @@ const toTest = [
       cart: {
         id: "test-cart",
         type: "swap",
-        items: [],
+        items: [{ id: "item", tax_lines: [] }],
         payment: { data: "some-data" },
         payment_session: { status: "authorized" },
         total: 1000,
@@ -185,7 +182,12 @@ describe("CartCompletionStrategy", () => {
           withTransaction: function () {
             return this
           },
-          createTaxLines: jest.fn(() => Promise.resolve(cart)),
+          createTaxLines: jest.fn(() => {
+            cart.items[0].tax_lines = [{
+              id: "tax_lines"
+            }]
+            return Promise.resolve(cart)
+          }),
           deleteTaxLines: jest.fn(() => Promise.resolve(cart)),
           authorizePayment: jest.fn(() => Promise.resolve(cart)),
           retrieve: jest.fn(() => Promise.resolve(cart)),

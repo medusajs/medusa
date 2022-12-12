@@ -204,7 +204,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     idempotencyKey: IdempotencyKey,
     { context, manager }: { context: any; manager: EntityManager }
   ) {
-    await this.handleCreateTaxLines(id, { manager })
+    const res = await this.handleCreateTaxLines(id, { manager })
+    if (res.response_code) {
+      return res
+    }
 
     const cart = await this.cartService_
       .withTransaction(manager)
@@ -241,7 +244,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     id: string,
     { manager }: { manager: EntityManager }
   ) {
-    await this.handleCreateTaxLines(id, { manager })
+    const res = await this.handleCreateTaxLines(id, { manager })
+    if (res.response_code) {
+      return res
+    }
 
     const orderServiceTx = this.orderService_.withTransaction(manager)
 
