@@ -28,7 +28,7 @@ export const simpleProductCollectionFactory = async <
   for (const collectionData of collectionsData) {
     const collection_ = manager.create(ProductCollection, {
       id: `simple-id-${Math.random() * 1000}`,
-      title: collectionData.title ?? "",
+      title: collectionData.title ?? faker.datatype.string(10),
       handle: collectionData.handle
     })
     collections.push(collection_)
