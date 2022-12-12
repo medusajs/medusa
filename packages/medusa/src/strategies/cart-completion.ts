@@ -66,7 +66,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 .withTransaction(transactionManager)
                 .workStage(
                   idempotencyKey.idempotency_key,
-                  async (manager) => await this.handleStarted(id, { manager })
+                  async (manager) =>
+                    await this.handleCreateTaxLines(id, { manager })
                 )
             })
             .catch((e) => {
@@ -156,7 +157,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     }
   }
 
-  protected async handleStarted(
+  protected async handleCreateTaxLines(
     id: string,
     { manager }: { manager: EntityManager }
   ) {
@@ -168,6 +169,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "gift_cards",
         "items",
         "items.adjustments",
+        "items.tax_lines",
         "region",
         "region.tax_rates",
         "shipping_address",
@@ -186,7 +188,11 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       }
     }
 
-    await this.cartService_.withTransaction(manager).createTaxLines(cart)
+    const hasTaxLines = cart.items.some((item) => !!item.tax_lines.length)
+
+    if (!hasTaxLines) {
+      await this.cartService_.withTransaction(manager).createTaxLines(cart)
+    }
 
     return {
       recovery_point: "tax_lines_created",
@@ -198,6 +204,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     idempotencyKey: IdempotencyKey,
     { context, manager }: { context: any; manager: EntityManager }
   ) {
+    await this.handleCreateTaxLines(id, { manager })
+
     const cart = await this.cartService_
       .withTransaction(manager)
       .authorizePayment(id, {
@@ -233,6 +241,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     id: string,
     { manager }: { manager: EntityManager }
   ) {
+    await this.handleCreateTaxLines(id, { manager })
+
     const orderServiceTx = this.orderService_.withTransaction(manager)
 
     const cart = await this.cartService_
