@@ -589,6 +589,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const paymentRepo = transactionManager.getCustomRepository(
         this.paymentRepository_
       )
+
       let paymentToRefund = payments.find(
         (payment) => payment.amount - payment.amount_refunded > 0
       )
