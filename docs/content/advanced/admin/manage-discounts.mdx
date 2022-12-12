@@ -105,9 +105,9 @@ fetch(`<YOUR_SERVER>/admin/discounts`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/discounts' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<YOUR_SERVER>/admin/discounts' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "code": "<CODE>",
     "rule": {
@@ -179,9 +179,9 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
   "description": "New description",
   "is_disabled": true
@@ -253,9 +253,9 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
   "operator": "in",
   "products": [
@@ -317,8 +317,8 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}&exp
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>&expand=products' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>&expand=products' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -378,9 +378,9 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "products": [
       "<PRODUCT_ID_1>",
@@ -430,8 +430,8 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -473,8 +473,8 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>

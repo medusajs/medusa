@@ -22,7 +22,7 @@ The Contentful migrations are located in the `contentful-migrations` directory i
 
 Here’s an example of a migration created in a new file `contentful-migrations/rich-text.js`:
 
-```jsx
+```jsx title=contentful-migrations/rich-text.js
 #! /usr/bin/env node
 
 require("dotenv").config();
@@ -152,7 +152,7 @@ After creating a new content model in your Contentful Space, you must add the ne
 
 To render the Rich Text content you created in the previous example, create the file `src/components/rich-text/rich-text.js` with the following content:
 
-```jsx
+```jsx title=src/components/rich-text/rich-text.js
 import React from "react"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 
@@ -180,13 +180,13 @@ Since the Rich Text model can be added to any page, you must edit `src/pages/{Co
 
 In `src/pages/{ContentfulPage.slug}.js`, import the `RichText` component at the top of the file:
 
-```jsx
+```jsx title=src/pages/{ContentfulPage.slug}.js
 import RichText from "../components/rich-text/rich-text"
 ```
 
 Then, in the returned JSX add a new case to the switch statement:
 
-```jsx
+```jsx title=src/pages/{ContentfulPage.slug}.js
 switch (cm.internal.type) {
   //...
   case "ContentfulRichText":
@@ -200,7 +200,7 @@ If the content model of a tile is Rich Text, you’ll display it with the `RichT
 
 Finally, to retrieve all necessary data of the Rich Text content, in the `query` GraphQL variable add the following after the `... on ContentfulTileSection` fragment:
 
-```jsx
+```jsx title=src/pages/{ContentfulPage.slug}.js
 export const query = graphql`
         # find the following line
         ... on ContentfulTileSection {
@@ -246,7 +246,7 @@ In the example migration, you also edited the product page to include a new Cont
 
 To render them on the Product Page, add the following in the GraphQL query defined in the `query` variable inside `product`:
 
-```jsx
+```jsx title=src/pages/{ContentfulPage.slug}.js
 export const query = graphql`
   query ($id: String!) {
     product: contentfulProduct(id: { eq: $id }) {
@@ -275,13 +275,13 @@ If you added other accepted Content Models to the `contentModules` field of the 
 
 Then, in `src/views/product.js` import the `RichText` component:
 
-```jsx
+```jsx title=src/views/product.js
 import RichText from "../components/rich-text/rich-text"
 ```
 
 And in the returned JSX add the following before the last `</div>`:
 
-```jsx
+```jsx title=src/views/product.js
 <div className={styles.contentModules}>
   {product.contentModules?.map((cm) => {
     switch (cm.internal.type) {
