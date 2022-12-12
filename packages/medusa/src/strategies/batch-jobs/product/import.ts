@@ -13,7 +13,7 @@ import {
   SalesChannelService,
   ShippingProfileService,
 } from "../../../services"
-import { CreateProductInput, UpdateProductInput } from "../../../types/product"
+import { CreateProductInput } from "../../../types/product"
 import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
@@ -397,9 +397,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     )
 
     for (const productOp of productOps) {
-      const productData = transformProductData(
-        productOp
-      ) as unknown as CreateProductInput
+      const productData = transformProductData(productOp)
 
       try {
         if (isSalesChannelsFeatureOn && productOp["product.sales_channels"]) {
@@ -415,13 +413,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           productOp["product.collection.handle"] != null &&
           productOp["product.collection.handle"] !== ""
         ) {
-          productData["collection"] =
+          productData.collection_id = (
             await productCollectionServiceTx.retrieveByHandle(
-              productOp["product.collection.handle"] as string
+              productOp["product.collection.handle"] as string,
+              { select: ["id"] }
             )
+          ).id
+          delete productData.collection
         }
 
-        await productServiceTx.create(productData)
+        await productServiceTx.create(
+          productData as unknown as CreateProductInput
+        )
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
@@ -456,7 +459,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     )
 
     for (const productOp of productOps) {
-      const productData = transformProductData(productOp) as UpdateProductInput
+      const productData = transformProductData(productOp)
       try {
         if (isSalesChannelsFeatureOn) {
           productData["sales_channels"] = await this.processSalesChannels(
@@ -473,10 +476,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           productOp["product.collection.handle"] != null &&
           productOp["product.collection.handle"] !== ""
         ) {
-          productData["collection"] =
+          productData.collection_id = (
             await productCollectionServiceTx.retrieveByHandle(
-              productOp["product.collection.handle"] as string
+              productOp["product.collection.handle"] as string,
+              { select: ["id"] }
             )
+          ).id
+          delete productData.collection
         }
 
         await productServiceTx.update(
