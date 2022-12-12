@@ -511,21 +511,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       ])
     }
 
-    let shouldCreateCollection = false
-
-    let collection = await productCollectionServiceTx
-      .retrieveByHandle(collectionData.handle, { select: ["id"] })
-      .catch((e) => {
-        if ("type" in e && e.type === MedusaError.Types.NOT_FOUND) {
-          shouldCreateCollection = true
-          return
-        }
-        throw e
-      })
-
-    if (shouldCreateCollection) {
-      collection = await productCollectionServiceTx.create(collectionData)
-    }
+    const collection = await productCollectionServiceTx.retrieveByHandle(
+      collectionData.handle,
+      { select: ["id"] }
+    )
 
     await productCollectionServiceTx.addProducts(
       (collection as ProductCollection).id,
