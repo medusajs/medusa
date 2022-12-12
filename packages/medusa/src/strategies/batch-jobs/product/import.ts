@@ -6,13 +6,14 @@ import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import CsvParser from "../../../services/csv-parser"
 import {
   BatchJobService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
   SalesChannelService,
   ShippingProfileService,
 } from "../../../services"
-import { CreateProductInput, UpdateProductInput } from "../../../types/product"
+import { CreateProductInput } from "../../../types/product"
 import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
@@ -59,6 +60,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
   protected readonly batchJobService_: BatchJobService
+  protected readonly productCollectionService_: ProductCollectionService
   protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: ShippingProfileService
@@ -77,6 +79,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     shippingProfileService,
     regionService,
     fileService,
+    productCollectionService,
     manager,
     featureFlagRouter,
   }: ProductImportInjectedProps) {
@@ -106,6 +109,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
     this.regionService_ = regionService
+    this.productCollectionService_ = productCollectionService
   }
 
   async buildTemplate(): Promise<string> {
@@ -385,15 +389,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
     const productServiceTx =
       this.productService_.withTransaction(transactionManager)
+    const productCollectionServiceTx =
+      this.productCollectionService_.withTransaction(transactionManager)
 
     const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
       SalesChannelFeatureFlag.key
     )
 
     for (const productOp of productOps) {
-      const productData = transformProductData(
-        productOp
-      ) as unknown as CreateProductInput
+      const productData = transformProductData(productOp)
 
       try {
         if (isSalesChannelsFeatureOn && productOp["product.sales_channels"]) {
@@ -405,7 +409,23 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
           )
         }
 
-        await productServiceTx.create(productData)
+        if (
+          productOp["product.collection.handle"] != null &&
+          productOp["product.collection.handle"] !== ""
+        ) {
+          productData.collection_id = (
+            await productCollectionServiceTx.retrieveByHandle(
+              productOp["product.collection.handle"] as string,
+              { select: ["id"] }
+            )
+          ).id
+          delete productData.collection
+        }
+
+        // TODO: we should only pass the expected data and should not have to cast the entire object. Here we are passing everything contained in productData
+        await productServiceTx.create(
+          productData as unknown as CreateProductInput
+        )
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(productOp, e.message)
       }
@@ -432,13 +452,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
     const productServiceTx =
       this.productService_.withTransaction(transactionManager)
+    const productCollectionServiceTx =
+      this.productCollectionService_.withTransaction(transactionManager)
 
     const isSalesChannelsFeatureOn = this.featureFlagRouter_.isFeatureEnabled(
       SalesChannelFeatureFlag.key
     )
 
     for (const productOp of productOps) {
-      const productData = transformProductData(productOp) as UpdateProductInput
+      const productData = transformProductData(productOp)
       try {
         if (isSalesChannelsFeatureOn) {
           productData["sales_channels"] = await this.processSalesChannels(
@@ -451,6 +473,20 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         delete productData.options // for now not supported in the update method
 
+        if (
+          productOp["product.collection.handle"] != null &&
+          productOp["product.collection.handle"] !== ""
+        ) {
+          productData.collection_id = (
+            await productCollectionServiceTx.retrieveByHandle(
+              productOp["product.collection.handle"] as string,
+              { select: ["id"] }
+            )
+          ).id
+          delete productData.collection
+        }
+
+        // TODO: we should only pass the expected data. Here we are passing everything contained in productData
         await productServiceTx.update(
           productOp["product.id"] as string,
           productData
