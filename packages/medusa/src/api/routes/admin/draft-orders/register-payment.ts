@@ -107,10 +107,16 @@ export default async (req, res) => {
     await orderService.withTransaction(manager).capturePayment(result.id)
   })
 
-  const order = await orderService.retrieveWithTotals(result.id, {
-    relations: defaultOrderRelations,
-    select: defaultOrderFields,
-  })
+  const order = await orderService.retrieveWithTotals(
+    result.id,
+    {
+      relations: defaultOrderRelations,
+      select: defaultOrderFields,
+    },
+    {
+      force_taxes: true,
+    }
+  )
 
   res.status(200).json({ order })
 }
