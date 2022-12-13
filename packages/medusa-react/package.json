@@ -1,5 +1,5 @@
 {
-  "version": "3.0.1",
+  "version": "4.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,7 +22,7 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.6.2",
+    "@medusajs/medusa": "^1.7.0",
     "react": ">=16",
     "react-query": ">= 3.29.0"
   },
