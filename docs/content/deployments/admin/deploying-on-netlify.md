@@ -100,7 +100,14 @@ After you authorize Netlify to use GitHub, you’ll be asked to pick the reposit
 
 ![Choose Repository](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001871/Medusa%20Docs/Netlify/D0r6Q1e_th5uei.png)
 
-In the form that shows, keep all fields the same and click on the “Show advanced” button before the “Deploy site” button.
+In the "Basic build settings" section, make sure the fields have the following values:
+
+- Base directory: (leave empty)
+- Build command: yarn build
+- Publish directory: public
+
+
+Next, click the “Show advanced” button, which is above the “Deploy site” button.
 
 ![Show advanced Button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001884/Medusa%20Docs/Netlify/nUdwRbq_d2kmo6.png)
 
@@ -211,7 +218,20 @@ If you pick the second option, you’ll need to create a personal access token o
 
 ##### Last Step: Steps with Default Values
 
-For the rest of the steps, you can keep the default values provided by Netlify and press the “Enter” key on your keyboard for each.
+For the rest of the steps, you can keep most of the default values provided by Netlify, except for the following options:
+
+1. Set build command to `yarn run build`
+
+```
+? Your build command (hugo build/yarn run build/etc): yarn run build
+```
+
+2. Set deploy directory to `public`
+
+```
+? Directory to deploy (blank for current dir): public
+```
+
 
 #### Set Environment Variables
 
@@ -226,10 +246,16 @@ If you haven’t deployed your Medusa server yet, you can leave the value blank 
 Run the following command to add the environment variable:
 
 ```bash
-netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
+netlify env:set MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
 ```
 
 Where `<YOUR_SERVER_URL>` is the URL of your Medusa server.
+
+:::note
+
+In previous versions of the admin, the environment variable name was `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` instead. The admin remains backwards compatible, so if you've used this an older version you can keep the same environment variables. However, it's highly recommended you change it to `MEDUSA_BACKEND_URL`.
+
+:::
 
 #### Check deployment status
 
