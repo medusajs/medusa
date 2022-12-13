@@ -15,7 +15,7 @@ import {
   LineItem,
   ProductVariant,
   Region,
-  ShippingMethod
+  ShippingMethod,
 } from "../../models"
 import { FlagRouter } from "../../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"

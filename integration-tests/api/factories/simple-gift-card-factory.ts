@@ -27,6 +27,7 @@ export const simpleGiftCardFactory = async (
     region_id: data.region_id,
     value: data.value,
     balance: data.balance,
+    tax_rate: data.tax_rate,
   })
 
   return await manager.save(toSave)
