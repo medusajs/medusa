@@ -91,20 +91,6 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
   "no_notification_order",
 ]
 
-export const allowedAdminDraftOrdersFields = [
-  "id",
-  "status",
-  "display_id",
-  "cart_id",
-  "canceled_at",
-  "created_at",
-  "updated_at",
-  "metadata",
-  "no_notification_order",
-]
-
-export const allowedAdminDraftOrdersRelations = ["cart"]
-
 export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
   order: Order
 }

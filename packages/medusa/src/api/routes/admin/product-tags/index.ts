@@ -15,7 +15,6 @@ export default (app) => {
     transformQuery(AdminGetProductTagsParams, {
       defaultFields: defaultAdminProductTagsFields,
       defaultRelations: defaultAdminProductTagsRelations,
-      allowedFields: allowedAdminProductTagsFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-product-tags").default)
@@ -23,13 +22,6 @@ export default (app) => {
 
   return app
 }
-
-export const allowedAdminProductTagsFields = [
-  "id",
-  "value",
-  "created_at",
-  "updated_at",
-]
 
 export const defaultAdminProductTagsFields = [
   "id",
