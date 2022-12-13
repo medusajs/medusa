@@ -4381,7 +4381,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.7.0-alpha.0
+    "@medusajs/medusa": 1.7.0-alpha.0
     "@types/jest": ^26.0.19
     axios: ^0.24.0
     cross-env: ^7.0.3
