@@ -46,7 +46,7 @@ medusa migrations run
 
 If you want to add demo data into your server, you should also seed the database using the following command:
 
-```bash npm2yarn noReport
+```bash npm2yarn
 npm run seed
 ```
 
