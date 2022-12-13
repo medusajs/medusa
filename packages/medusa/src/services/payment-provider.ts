@@ -834,7 +834,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   /**
-   * Process the collected data. Can be used every time we need to process some collected data returned by the provide
+   * Process the collected data. Can be used every time we need to process some collected data returned by the provider
    * @param data
    * @param paymentResponse
    * @protected
