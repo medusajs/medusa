@@ -75,9 +75,9 @@ fetch(`<SERVER_URL>/admin/customer-groups`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/customer-groups' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/customer-groups' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "name": "VIP"
 }'
@@ -121,8 +121,8 @@ fetch(`<SERVER_URL>/admin/customer-groups`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/customer-groups' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/customer-groups' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -165,8 +165,8 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -220,9 +220,9 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "metadata": {
 			"is_seller": true
@@ -269,8 +269,8 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -330,9 +330,9 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "customer_ids": [
         {
@@ -378,8 +378,8 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -441,9 +441,9 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "customer_ids": [
         {

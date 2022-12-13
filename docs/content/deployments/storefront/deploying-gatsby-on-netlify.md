@@ -138,7 +138,7 @@ If you haven’t added any products to your Medusa server, the build process mig
 
 Alternatively, you can seed the server with demo data by running this command in the root directory of the server:
 
-```bash noHeader
+```bash noReport
 medusa seed -f data/seed.json
 ```
 
@@ -198,7 +198,7 @@ You’ll have to follow five steps for the initialization:
 
 You’ll be asked to either connect to an existing Netlify website or create a new one. Choose the second option to create a new site:
 
-```bash noHeader
+```bash noReport
 ? What would you like to do? 
   ⇄  Connect this directory to an existing Netlify site 
 ❯ +  Create & configure a new site
@@ -216,7 +216,7 @@ You’ll be asked to optionally enter a site name.
 
 At this point, the website is created on Netlify. However, Netlify needs to configure Webhooks and deployment keys. You’ll be asked to either authorize GitHub through Netlify’s website or through a personal access token. You’re free to choose either:
 
-```bash noHeader
+```bash noReport
 ? Netlify CLI needs access to your GitHub account to configure Webhooks and Depl
 oy Keys. What would you like to do? (Use arrow keys)
 ❯ Authorize with GitHub through app.netlify.com 
@@ -271,7 +271,7 @@ If you haven’t added any products to your Medusa server, the build process mig
 
 Alternatively, you can seed the server with demo data by running this command in the root directory of the server:
 
-```bash noHeader
+```bash noReport
 medusa seed -f data/seed.json
 ```
 
