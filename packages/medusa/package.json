@@ -41,9 +41,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build && yarn run build:oas && yarn build:client",
     "build:oas": "ts-node src/scripts/oas/build-oas.ts --skipJSONSchema",
-    "build:oas:verbose": "yarn run build:oas --verbose",
     "build:client": "ts-node src/scripts/oas/build-client.ts",
-    "build:client:verbose": "ts-node src/scripts/oas/build-client.ts --verbose",
     "serve": "node dist/app.js",
     "test": "jest",
     "test:unit": "jest"
