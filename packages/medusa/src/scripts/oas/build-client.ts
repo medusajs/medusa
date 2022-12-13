@@ -2,6 +2,7 @@ import path from "path"
 import { generate, HttpClient, Indent } from "openapi-typescript-codegen"
 import { upperFirst } from "lodash"
 import fs from "fs"
+import logger from "../../loaders/logger"
 
 type ApiType = "store" | "admin"
 
@@ -9,7 +10,7 @@ const cliParams = process.argv.slice(2)
 const isVerbose = cliParams.includes("--verbose") || cliParams.includes("-V")
 const debug = (...args) => {
   if (isVerbose) {
-    console.debug(...args)
+    logger.debug(...args)
   }
 }
 

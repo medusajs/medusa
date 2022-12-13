@@ -9,6 +9,7 @@ import { IOptions } from "class-validator-jsonschema/src/options"
 import { validationMetadatasToSchemas } from "class-validator-jsonschema"
 import { IsTypeJSONSchemaConverter } from "../../utils/validators/is-type"
 import { IsNullableJSONSchemaConverter } from "../../utils/validators/is-nullable"
+import logger from "../../loaders/logger"
 
 type ApiType = "store" | "admin"
 
@@ -17,7 +18,7 @@ const skipJSONSchema = cliParams.includes("--skipJSONSchema")
 const isVerbose = cliParams.includes("--verbose") || cliParams.includes("-V")
 const debug = (...args) => {
   if (isVerbose) {
-    console.debug(...args)
+    logger.debug(...args)
   }
 }
 
