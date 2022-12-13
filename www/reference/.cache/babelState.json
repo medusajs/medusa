@@ -1,0 +1,188 @@
+{
+  "stages": {
+    "develop": {
+      "plugins": [
+        {
+          "name": "babel-plugin-lodash",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-optional-chaining/lib/index.js",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-nullish-coalescing-operator/lib/index.js",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-numeric-separator/lib/index.js",
+          "options": {}
+        }
+      ],
+      "presets": [
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@emotion/babel-preset-css-prop/dist/emotion-babel-preset-css-prop.cjs.js",
+          "options": {
+            "sourceMap": true,
+            "autoLabel": "dev-only",
+            "plugins": [],
+            "labelFormat": "[local]",
+            "cssPropOptimization": true
+          }
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/preset-typescript/lib/index.js",
+          "options": {
+            "plugins": [],
+            "allExtensions": false,
+            "isTSX": false,
+            "jsxPragma": "React"
+          }
+        }
+      ],
+      "options": {
+        "cacheDirectory": true,
+        "sourceType": "unambiguous"
+      }
+    },
+    "develop-html": {
+      "plugins": [
+        {
+          "name": "babel-plugin-lodash",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-optional-chaining/lib/index.js",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-nullish-coalescing-operator/lib/index.js",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-numeric-separator/lib/index.js",
+          "options": {}
+        }
+      ],
+      "presets": [
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@emotion/babel-preset-css-prop/dist/emotion-babel-preset-css-prop.cjs.js",
+          "options": {
+            "sourceMap": true,
+            "autoLabel": "dev-only",
+            "plugins": [],
+            "labelFormat": "[local]",
+            "cssPropOptimization": true
+          }
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/preset-typescript/lib/index.js",
+          "options": {
+            "plugins": [],
+            "allExtensions": false,
+            "isTSX": false,
+            "jsxPragma": "React"
+          }
+        }
+      ],
+      "options": {
+        "cacheDirectory": true,
+        "sourceType": "unambiguous"
+      }
+    },
+    "build-html": {
+      "plugins": [
+        {
+          "name": "babel-plugin-lodash",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-optional-chaining/lib/index.js",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-nullish-coalescing-operator/lib/index.js",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-numeric-separator/lib/index.js",
+          "options": {}
+        }
+      ],
+      "presets": [
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@emotion/babel-preset-css-prop/dist/emotion-babel-preset-css-prop.cjs.js",
+          "options": {
+            "sourceMap": true,
+            "autoLabel": "dev-only",
+            "plugins": [],
+            "labelFormat": "[local]",
+            "cssPropOptimization": true
+          }
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/preset-typescript/lib/index.js",
+          "options": {
+            "plugins": [],
+            "allExtensions": false,
+            "isTSX": false,
+            "jsxPragma": "React"
+          }
+        }
+      ],
+      "options": {
+        "cacheDirectory": true,
+        "sourceType": "unambiguous"
+      }
+    },
+    "build-javascript": {
+      "plugins": [
+        {
+          "name": "babel-plugin-lodash",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-optional-chaining/lib/index.js",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-nullish-coalescing-operator/lib/index.js",
+          "options": {}
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/plugin-proposal-numeric-separator/lib/index.js",
+          "options": {}
+        }
+      ],
+      "presets": [
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@emotion/babel-preset-css-prop/dist/emotion-babel-preset-css-prop.cjs.js",
+          "options": {
+            "sourceMap": true,
+            "autoLabel": "dev-only",
+            "plugins": [],
+            "labelFormat": "[local]",
+            "cssPropOptimization": true
+          }
+        },
+        {
+          "name": "/Users/oliverjuhl/Desktop/medusa/core/www/reference/node_modules/@babel/preset-typescript/lib/index.js",
+          "options": {
+            "plugins": [],
+            "allExtensions": false,
+            "isTSX": false,
+            "jsxPragma": "React"
+          }
+        }
+      ],
+      "options": {
+        "cacheDirectory": true,
+        "sourceType": "unambiguous"
+      }
+    }
+  },
+  "browserslist": [
+    ">0.25%",
+    "not dead"
+  ]
+}

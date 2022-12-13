@@ -6,7 +6,7 @@ However, this comes at the expense of important features that are needed in a pr
 
 Therefore, you might experience the following error when going through a checkout flow in one of Medusa's starters while using SQLite:
 
-```bash noHeader
+```bash noReport
 Error: Transaction already started for the given connection, commit current transaction before starting a new one.
 ```
 
@@ -16,7 +16,7 @@ You can learn how to install PostgreSQL on your machine in the [Set Up your Deve
 
 Then in your `medusa-config.js`, you should change the project configuration to use Postgres as the database type:
 
-```jsx
+```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
     //...
@@ -31,7 +31,7 @@ Where `DATABASE_URL` is the connection string to your PostgreSQL database. You c
 
 Make sure to also remove the following lines that are used to configure an SQLite database:
 
-```jsx
+```jsx title=medusa-config.js
 database_type: "sqlite",
 database_database: "./medusa-db.sql",
 ```
@@ -46,7 +46,7 @@ medusa migrations run
 
 If you want to add demo data into your server, you should also seed the database using the following command:
 
-```bash npm2yarn noHeader
+```bash npm2yarn noReport
 npm run seed
 ```
 

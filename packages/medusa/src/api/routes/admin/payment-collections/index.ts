@@ -8,7 +8,7 @@ import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-edi
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 import { GetPaymentCollectionsParams } from "./get-payment-collection"
-import { AdminUpdatePaymentCollectionRequest } from "./update-payment-collection"
+import { AdminUpdatePaymentCollectionsReq } from "./update-payment-collection"
 import { PaymentCollection } from "../../../../models"
 
 const route = Router()
@@ -32,7 +32,7 @@ export default (app, container) => {
 
   route.post(
     "/:id",
-    transformBody(AdminUpdatePaymentCollectionRequest),
+    transformBody(AdminUpdatePaymentCollectionsReq),
     middlewares.wrap(require("./update-payment-collection").default)
   )
 
@@ -68,7 +68,7 @@ export const defaulPaymentCollectionRelations = [
   "payments",
 ]
 
-export type AdminPaymentCollectionRes = {
+export type AdminPaymentCollectionsRes = {
   payment_collection: PaymentCollection
 }
 export type AdminPaymentCollectionDeleteRes = {

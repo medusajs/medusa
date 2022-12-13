@@ -8,6 +8,7 @@ import {
   ManyToMany,
   OneToMany,
   OneToOne,
+  Unique,
 } from "typeorm"
 
 import { Address } from "./address"
@@ -18,8 +19,9 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
+@Unique(["email", "has_account"])
 export class Customer extends SoftDeletableEntity {
-  @Index({ unique: true })
+  @Index()
   @Column()
   email: string
 
@@ -100,7 +102,7 @@ export class Customer extends SoftDeletableEntity {
  *     example: Arno
  *   last_name:
  *     type: string
- *     description: The customer's first name
+ *     description: The customer's last name
  *     example: Willms
  *   billing_address_id:
  *     type: string

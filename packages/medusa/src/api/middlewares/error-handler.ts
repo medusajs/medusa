@@ -46,6 +46,9 @@ export default () => {
       case MedusaError.Types.UNAUTHORIZED:
         statusCode = 401
         break
+      case MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR:
+        statusCode = 422
+        break
       case MedusaError.Types.DUPLICATE_ERROR:
         statusCode = 422
         errObj.code = INVALID_REQUEST_ERROR

@@ -129,7 +129,7 @@ html:not([data-theme="dark"]) .doc-footer {
   z-index: var(--ifm-z-index-overlay);
 }
 
-.tabs-wrapper:not(.code-tabs) .tabs-container > div {
+.tabs-wrapper:not(.code-tabs) > .tabs-container > div:not(.tablist-wrapper) {
   padding-top: var(--ifm-base-margin-vertical);
 }
 

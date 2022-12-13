@@ -3,10 +3,10 @@ import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /payment-collections/{id}
- * operationId: "GetPaymentCollectonsPaymentCollection"
+ * operationId: "GetPaymentCollectionsPaymentCollection"
  * summary: "Retrieve an PaymentCollection"
  * description: "Retrieves a PaymentCollection."
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the PaymentCollection.
  *   - (query) expand {string} Comma separated list of relations to include in the results.
@@ -25,8 +25,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/payment-collections/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl --location --request GET 'https://medusa-url.com/store/payment-collections/{id}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

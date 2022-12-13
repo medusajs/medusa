@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import copy from 'copy-text-to-clipboard';
+
 import Tooltip from '../Tooltip';
+import copy from 'copy-text-to-clipboard';
 
 export default function CopyButton ({ children, buttonClassName, text, tooltipClassName }) {
   const [isCopied, setIsCopied] = useState(false);

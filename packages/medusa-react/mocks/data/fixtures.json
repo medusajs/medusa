@@ -1154,8 +1154,8 @@
     "publishable_api_key": {
       "id": "pubkey_1234",
       "created_by": "admin_user",
-      "created_at":  "2021-11-08 11:58:56.975971+01",
-      "updated_at":  "2021-11-08 11:58:56.975971+01",
+      "created_at": "2021-11-08 11:58:56.975971+01",
+      "updated_at": "2021-11-08 11:58:56.975971+01",
       "revoked_by": null,
       "revoked_at": null
     },
@@ -1324,6 +1324,76 @@
         "created_at": "2022-07-05T15:16:01.959Z",
         "deleted_at": null
       }
-    ]
+    ],
+    "payment_collection": {
+      "id": "paycol_01GJK7P9MRHM6XWCJG70JFB8PF",
+      "created_at": "2022-11-23T21:53:19.367Z",
+      "updated_at": "2022-11-24T12:57:08.652Z",
+      "deleted_at": null,
+      "type": "order_edit",
+      "status": "authorized",
+      "description": null,
+      "amount": 900,
+      "authorized_amount": 900,
+      "region_id": "test-region",
+      "currency_code": "usd",
+      "metadata": null,
+      "created_by": "admin_user",
+      "payment_sessions": [
+        {
+          "id": "ps_01GJMVD71Z4WF9FXXGT7DHGPCM",
+          "created_at": "2022-11-24T12:57:07.883Z",
+          "updated_at": "2022-11-24T12:57:08.652Z",
+          "cart_id": null,
+          "provider_id": "test-pay",
+          "is_selected": null,
+          "status": "authorized",
+          "data": {},
+          "idempotency_key": null,
+          "amount": 900,
+          "payment_authorized_at": "2022-11-24T12:57:08.672Z"
+        }
+      ]
+    },
+    "payment_sessions": {
+      "id": "ps_01GJMVD71Z4WF9FXXGT7DHGPCM",
+      "created_at": "2022-11-24T12:57:07.883Z",
+      "updated_at": "2022-11-24T12:57:08.652Z",
+      "cart_id": null,
+      "provider_id": "test-pay",
+      "is_selected": null,
+      "status": "authorized",
+      "data": {},
+      "idempotency_key": null,
+      "amount": 900,
+      "payment_authorized_at": "2022-11-24T12:57:08.672Z"
+    },
+    "payment": {
+      "id": "pay_A1GJEVD71Z4WF9FXFGT7D1GP15",
+      "swap_id": null,
+      "cart_id": null,
+      "order_id": null,
+      "amount": 900,
+      "currency_code": "usd",
+      "amount_refunded": 0,
+      "amount_captured": 900,
+      "provider_id": "manual",
+      "data": {},
+      "captured_at": "2022-11-17T21:24:35.871Z",
+      "canceled_at": null,
+      "created_at": "2022-11-16T21:24:35.871Z",
+      "updated_at": "2022-11-16T21:24:35.871Z",
+      "metadata": null,
+      "idempotency_key": null
+    },
+    "refund": {
+      "order_id": null,
+      "payment_id": "pay_A1GJEVD71Z4WF9FXFGT7D1GP15",
+      "amount": 900,
+      "note": null,
+      "reason": "return",
+      "metadata": null,
+      "idempotency_key": null
+    }
   }
 }

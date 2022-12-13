@@ -3,6 +3,7 @@ import { TransactionBaseService } from "../interfaces"
 import { EntityManager } from "typeorm"
 import ProductVariantService from "./product-variant"
 import { ProductVariant } from "../models"
+import { isDefined } from "../utils"
 
 type InventoryServiceProps = {
   manager: EntityManager
@@ -62,22 +63,29 @@ class InventoryService extends TransactionBaseService {
    * @return true if the inventory covers the quantity
    */
   async confirmInventory(
-    variantId: string | undefined | null,
+    variantId: string | null | undefined,
     quantity: number
   ): Promise<boolean> {
     // if variantId is undefined then confirm inventory as it
     // is a custom item that is not managed
-    if (typeof variantId === "undefined" || variantId === null) {
+    if (!isDefined(variantId) || variantId === null) {
       return true
     }
 
     const variant = await this.productVariantService_
       .withTransaction(this.manager_)
-      .retrieve(variantId)
+      .retrieve(variantId, {
+        select: [
+          "id",
+          "inventory_quantity",
+          "allow_backorder",
+          "manage_inventory",
+        ],
+      })
+
     const { inventory_quantity, allow_backorder, manage_inventory } = variant
     const isCovered =
       !manage_inventory || allow_backorder || inventory_quantity >= quantity
-
     if (!isCovered) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,

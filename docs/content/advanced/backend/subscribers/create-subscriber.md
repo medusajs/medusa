@@ -16,9 +16,9 @@ After creating the file under `src/subscribers`, in the constructor of your subs
 
 The `eventBusService.subscribe` method receives the name of the event as a first parameter and as a second parameter a method in your subscriber that will handle this event.
 
-For example, here is the `OrderNotifierSubscriber` class which is created in `src/subscribers/orderNotifier.js`:
+For example, here is the `OrderNotifierSubscriber` class created in `src/subscribers/orderNotifier.js`:
 
-```ts
+```ts title=src/subscribers/orderNotifier.js
 class OrderNotifierSubscriber {
   constructor({ eventBusService }) {
     eventBusService.subscribe("order.placed", this.handleOrder);

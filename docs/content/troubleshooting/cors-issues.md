@@ -10,7 +10,7 @@ In your `medusa-config.js` , you should ensure that you've configured your CORS 
 
 The default configuration uses the following CORS settings:
 
-```jsx
+```jsx title=medusa-config.js
 // CORS when consuming Medusa from admin
 const ADMIN_CORS = process.env.ADMIN_CORS || "http://localhost:7000,http://localhost:7001"
 

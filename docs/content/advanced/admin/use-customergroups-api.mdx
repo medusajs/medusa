@@ -57,6 +57,7 @@ medusa.admin.customerGroups.create({
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -74,9 +75,9 @@ fetch(`<SERVER_URL>/admin/customer-groups`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/customer-groups' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/customer-groups' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "name": "VIP"
 }'
@@ -107,7 +108,9 @@ medusa.admin.customerGroups.list()
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/customer-groups`)
+fetch(`<SERVER_URL>/admin/customer-groups`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ customer_groups, limit, offset, count }) => {
   console.log(customer_groups.length)
@@ -118,8 +121,8 @@ fetch(`<SERVER_URL>/admin/customer-groups`)
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/customer-groups' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/customer-groups' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -149,7 +152,9 @@ medusa.admin.customerGroups.retrieve(customerGroupId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`)
+fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
@@ -160,8 +165,8 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`)
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -195,6 +200,7 @@ medusa.admin.customerGroups.update(customerGroupId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -214,9 +220,9 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "metadata": {
 			"is_seller": true
@@ -250,7 +256,8 @@ medusa.admin.customerGroups.delete(customerGroupId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
-	method: 'DELETE'
+	method: 'DELETE',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
@@ -262,8 +269,8 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -301,6 +308,7 @@ medusa.admin.customerGroups.addCustomers(customerGroupId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -322,9 +330,9 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "customer_ids": [
         {
@@ -357,7 +365,9 @@ medusa.admin.customerGroups.listCustomers(customerGroupId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`)
+fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ customers, count, offset, limit }) => {
   console.log(customers.length)
@@ -368,8 +378,8 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`)
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -409,6 +419,7 @@ medusa.admin.customerGroups.removeCustomers(customer_group_id, {
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
   method: 'DELETE',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -430,9 +441,9 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "customer_ids": [
         {

@@ -82,7 +82,7 @@ The `--seed` flag creates an SQLite database and seeds it with some demo data.
 
 Once the command is done executing, change to the newly created `medusa-server` directory. Then, in `medusa-config.js`, change the exported object at the end of the file to enable Redis:
 
-```jsx
+```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
     redis_url: REDIS_URL,
@@ -128,7 +128,7 @@ Where:
 
 Finally, open `medusa-config.js` and add the following new item to the `plugins` array:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   //...
   {

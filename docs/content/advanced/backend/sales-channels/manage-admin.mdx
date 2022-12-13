@@ -71,6 +71,7 @@ medusa.admin.salesChannels.create({
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -89,9 +90,9 @@ fetch(`<SERVER_URL>/admin/sales-channels`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     name: 'App',
 	  description: 'Mobile app'
@@ -125,7 +126,9 @@ medusa.admin.salesChannels.list()
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels`)
+fetch(`<SERVER_URL>/admin/sales-channels`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ sales_channels, limit, offset, count }) => {
   console.log(sales_channels.length)
@@ -136,8 +139,8 @@ fetch(`<SERVER_URL>/admin/sales-channels`)
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/sales-channels' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/sales-channels' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -165,7 +168,9 @@ medusa.admin.salesChannels.retrieve(salesChannelId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`)
+fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ sales_channels, limit, offset, count }) => {
   console.log(sales_channels.length)
@@ -176,8 +181,8 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`)
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -209,6 +214,7 @@ medusa.admin.salesChannels.update(salesChannelId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -226,9 +232,9 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "is_disabled": false
 }'
@@ -264,7 +270,8 @@ medusa.admin.salesChannels.delete(salesChannelId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
-  method: 'DELETE'
+  method: 'DELETE',
+  credentials: 'include',
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
@@ -276,8 +283,8 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -315,6 +322,7 @@ medusa.admin.salesChannels.addProducts(salesChannelId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -336,9 +344,9 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "product_ids": [
       {
@@ -377,7 +385,9 @@ medusa.admin.products.list({
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`)
+fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
@@ -388,8 +398,8 @@ fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`)
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -429,6 +439,7 @@ medusa.admin.salesChannels.removeProducts(salesChannelId, {
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
   method: 'DELETE',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -450,9 +461,9 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```jsx
-curl --location --request DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "product_ids": [
       {
@@ -495,7 +506,9 @@ medusa.admin.orders.list({
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`)
+fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
+  credentials: 'include',
+})
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
   console.log(orders.length)
@@ -506,8 +519,8 @@ fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`)
 <TabItem value="curl" label="cURL">
 
 ```jsx
-curl --location --request GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>

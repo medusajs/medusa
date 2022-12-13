@@ -66,7 +66,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                 .withTransaction(transactionManager)
                 .workStage(
                   idempotencyKey.idempotency_key,
-                  async (manager) => await this.handleStarted(id, { manager })
+                  async (manager) =>
+                    await this.handleCreateTaxLines(id, { manager })
                 )
             })
             .catch((e) => {
@@ -156,7 +157,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     }
   }
 
-  protected async handleStarted(
+  protected async handleCreateTaxLines(
     id: string,
     { manager }: { manager: EntityManager }
   ) {
@@ -198,6 +199,11 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     idempotencyKey: IdempotencyKey,
     { context, manager }: { context: any; manager: EntityManager }
   ) {
+    const res = await this.handleCreateTaxLines(id, { manager })
+    if (res.response_code) {
+      return res
+    }
+
     const cart = await this.cartService_
       .withTransaction(manager)
       .authorizePayment(id, {
@@ -233,6 +239,11 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     id: string,
     { manager }: { manager: EntityManager }
   ) {
+    const res = await this.handleCreateTaxLines(id, { manager })
+    if (res.response_code) {
+      return res
+    }
+
     const orderServiceTx = this.orderService_.withTransaction(manager)
 
     const cart = await this.cartService_

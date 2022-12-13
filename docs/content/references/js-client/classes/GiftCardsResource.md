@@ -10,7 +10,7 @@
 
 ### retrieve
 
-▸ **retrieve**(`code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreGiftCardsRes`](../modules/internal-35.md#storegiftcardsres)\>
+▸ **retrieve**(`code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreGiftCardsRes`](../modules/internal-38.md#storegiftcardsres)\>
 
 **`Description`**
 
@@ -25,8 +25,8 @@ Retrieves a single GiftCard
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreGiftCardsRes`](../modules/internal-35.md#storegiftcardsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreGiftCardsRes`](../modules/internal-38.md#storegiftcardsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/gift-cards.ts:12](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa-js/src/resources/gift-cards.ts#L12)
+[medusa-js/src/resources/gift-cards.ts:12](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/gift-cards.ts#L12)
