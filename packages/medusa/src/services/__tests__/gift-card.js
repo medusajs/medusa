@@ -27,6 +27,7 @@ describe("GiftCardService", () => {
       retrieve: () => {
         return Promise.resolve({
           id: IdMap.getId("region-id"),
+          tax_rate: 19,
         })
       },
     }
@@ -48,8 +49,8 @@ describe("GiftCardService", () => {
       jest.clearAllMocks()
     })
 
-    it("correctly creates a giftcard", async () => {
-      await giftCardService.create(giftCard)
+    it.only("correctly creates a giftcard", async () => {
+      const re = await giftCardService.create(giftCard)
 
       expect(giftCardRepo.create).toHaveBeenCalledTimes(1)
       expect(giftCardRepo.create).toHaveBeenCalledWith({
@@ -57,6 +58,7 @@ describe("GiftCardService", () => {
         order_id: IdMap.getId("order-id"),
         is_disabled: true,
         code: expect.any(String),
+        tax_rate: null
       })
     })
   })

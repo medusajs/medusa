@@ -12,7 +12,7 @@ import {
   LineItemTaxLine,
   Region,
   ShippingMethod,
-  ShippingMethodTaxLine,
+  ShippingMethodTaxLine
 } from "../models"
 import { TaxProviderService } from "./index"
 import { LineAllocationsMap } from "../types/totals"
@@ -31,6 +31,13 @@ type LineItemTotals = {
   original_tax_total: number
   tax_lines: LineItemTaxLine[]
   discount_total: number
+}
+
+type GiftCardTransaction = {
+  tax_rate: number | null
+  is_taxable: boolean | null
+  amount: number,
+  gift_card: GiftCard
 }
 
 type ShippingMethodTotals = {
@@ -451,11 +458,7 @@ export default class NewTotalsService extends TransactionBaseService {
       giftCards,
     }: {
       region: Region
-      giftCardTransactions?: {
-        tax_rate: number | null
-        is_taxable: boolean | null
-        amount: number
-      }[]
+      giftCardTransactions?: GiftCardTransaction[]
       giftCards?: GiftCard[]
     }
   ): Promise<{
@@ -497,6 +500,7 @@ export default class NewTotalsService extends TransactionBaseService {
 
       let taxAmountFromGiftCard = Math.round(taxableAmount * (giftCard.tax_rate / 100))
       acc.totalTaxFromGiftCards = acc.totalTaxFromGiftCards + taxAmountFromGiftCard
+      // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
       giftCardableBalance = giftCardableBalance - taxableAmount
 
       return acc
@@ -517,11 +521,7 @@ export default class NewTotalsService extends TransactionBaseService {
     giftCardTransactions,
     region,
   }: {
-    giftCardTransactions: {
-      tax_rate: number | null
-      is_taxable: boolean | null
-      amount: number
-    }[]
+    giftCardTransactions: GiftCardTransaction[]
     region: { gift_cards_taxable: boolean; tax_rate: number }
   }): { total: number; tax_total: number } {
     return giftCardTransactions.reduce(
@@ -537,6 +537,13 @@ export default class NewTotalsService extends TransactionBaseService {
         // TODO: Check if this needs to be switched to giftCard.tax_rate as well
         if (next.is_taxable === null && region?.gift_cards_taxable) {
           taxMultiplier = region.tax_rate / 100
+        }
+
+        // Adding to the above comment about backwards compatability, this
+        // is needed for those gift cards that have a tax_rate, but the GiftCardTransactions
+        // weren't updated
+        if (next.is_taxable === null && next.gift_card?.tax_rate) {
+          taxMultiplier = next.gift_card.tax_rate / 100
         }
 
         return {

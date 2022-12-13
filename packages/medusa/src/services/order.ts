@@ -306,6 +306,7 @@ class OrderService extends TransactionBaseService {
       relationSet.add("discounts.rule")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
+      relationSet.add("gift_card_transactions.gift_card")
       relationSet.add("refunds")
       relationSet.add("shipping_methods")
       relationSet.add("shipping_methods.tax_lines")
