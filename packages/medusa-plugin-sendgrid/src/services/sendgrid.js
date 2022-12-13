@@ -1163,21 +1163,27 @@ class SendGridService extends NotificationService {
     return data
   }
 
-  async orderRefundCreatedData({ refund_id }) {
-    const refund = await this.paymentProviderService.retrieveRefund(refund_id, {
+  async orderRefundCreatedData({ id, refund_id }) {
+    const order = await this.orderService_.retrieveWithTotals(id, {
       select: [
-        'id',
-        'amount',
-        'reason',
+        'total',
       ],
       relations: [
-        'order'
+        'refunds',
+        'items',
       ]
     })
 
+    const refund = order.refunds.find((refund) => refund.id === refund_id)
+
     return {
+      order,
       refund,
-      email: refund.order.email
+      refund_amount: `${this.humanPrice_(
+        refund.amount,
+        order.currency_code
+      )} ${order.currency_code}`,
+      email: order.email
     }
   }
 
