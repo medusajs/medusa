@@ -885,9 +885,7 @@ describe("/admin/draft-orders", () => {
         adminReqConfig
       )
 
-      const dorder = updatedDraftOrder.data.draft_order
-
-      expect(dorder.cart.total).toEqual(7200)
+      expect(updatedDraftOrder.data.draft_order.cart.total).toEqual(7200)
 
       const orderWithNoDiscount = await api.post(
         "/admin/draft-orders/test-draft-order",
