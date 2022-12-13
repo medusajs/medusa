@@ -12,7 +12,7 @@ import {
   LineItemTaxLine,
   Region,
   ShippingMethod,
-  ShippingMethodTaxLine
+  ShippingMethodTaxLine,
 } from "../models"
 import { TaxProviderService } from "./index"
 import { LineAllocationsMap } from "../types/totals"
@@ -36,7 +36,7 @@ type LineItemTotals = {
 type GiftCardTransaction = {
   tax_rate: number | null
   is_taxable: boolean | null
-  amount: number,
+  amount: number
   gift_card: GiftCard
 }
 
@@ -472,7 +472,7 @@ export default class NewTotalsService extends TransactionBaseService {
       )
     }
 
-    if (giftCardTransactions) {
+    if (giftCardTransactions?.length) {
       return this.getGiftCardTransactionsTotals({
         giftCardTransactions,
         region,
@@ -491,20 +491,28 @@ export default class NewTotalsService extends TransactionBaseService {
     let giftCardableBalance = giftCardableAmount
 
     // If a gift card is not taxable, the tax_rate for the giftcard will be null
-    const { totalGiftCardBalance, totalTaxFromGiftCards } = giftCards.reduce((acc, giftCard) => {
-      acc.totalGiftCardBalance = acc.totalGiftCardBalance + giftCard.balance
+    const { totalGiftCardBalance, totalTaxFromGiftCards } = giftCards.reduce(
+      (acc, giftCard) => {
+        acc.totalGiftCardBalance = acc.totalGiftCardBalance + giftCard.balance
 
-      let taxableAmount = Math.min(giftCardableBalance, giftCard.balance)
-      // skip tax, if the taxable amount is not a positive number or tax rate is not set
-      if (taxableAmount <= 0 || !giftCard.tax_rate) return acc
+        const taxableAmount = Math.min(giftCardableBalance, giftCard.balance)
+        // skip tax, if the taxable amount is not a positive number or tax rate is not set
+        if (taxableAmount <= 0 || !giftCard.tax_rate) {
+          return acc
+        }
 
-      let taxAmountFromGiftCard = Math.round(taxableAmount * (giftCard.tax_rate / 100))
-      acc.totalTaxFromGiftCards = acc.totalTaxFromGiftCards + taxAmountFromGiftCard
-      // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
-      giftCardableBalance = giftCardableBalance - taxableAmount
+        const taxAmountFromGiftCard = Math.round(
+          taxableAmount * (giftCard.tax_rate / 100)
+        )
+        acc.totalTaxFromGiftCards =
+          acc.totalTaxFromGiftCards + taxAmountFromGiftCard
+        // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
+        giftCardableBalance = giftCardableBalance - taxableAmount
 
-      return acc
-    }, { totalGiftCardBalance: 0, totalTaxFromGiftCards: 0 })
+        return acc
+      },
+      { totalGiftCardBalance: 0, totalTaxFromGiftCards: 0 }
+    )
 
     result.tax_total = totalTaxFromGiftCards
     result.total = Math.min(giftCardableAmount, totalGiftCardBalance)
