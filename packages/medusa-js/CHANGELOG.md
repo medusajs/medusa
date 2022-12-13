@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.4-alpha.1
+
+### Patch Changes
+
+- [`275f119bf`](https://github.com/medusajs/medusa/commit/275f119bf8a2e8c43d9f715e533644939b98fdbf) Thanks [@olivermrbl](https://github.com/olivermrbl)! - update deps
+
 ## 1.3.4-alpha.0
 
 ### Patch Changes
