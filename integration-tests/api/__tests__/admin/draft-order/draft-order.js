@@ -865,18 +865,39 @@ describe("/admin/draft-orders", () => {
 
       expect(response.status).toEqual(200)
 
-      const updatedDraftOrder = await api.get(
-        `/admin/draft-orders/test-draft-order`,
-        adminReqConfig
-      )
-
-      const dorder = updatedDraftOrder.data.draft_order
+      const dorder = response.data.draft_order
 
       expect(dorder.cart.email).toEqual("lebron@james.com")
       expect(dorder.cart.billing_address.first_name).toEqual("lebron")
       expect(dorder.cart.shipping_address.last_name).toEqual("james")
       expect(dorder.cart.discounts[0].code).toEqual("TEST")
-      expect(dorder.cart.subtotal).not.toEqual(undefined)
+      expect(dorder.cart.subtotal).toEqual(7200)
+    })
+
+    it("updates the draft order, removing discount", async () => {
+      const api = useApi()
+
+      const updatedDraftOrder = await api.post(
+        "/admin/draft-orders/test-draft-order",
+        {
+          discounts: [{ code: "TEST" }],
+        },
+        adminReqConfig
+      )
+
+      const dorder = updatedDraftOrder.data.draft_order
+
+      expect(dorder.cart.total).toEqual(7200)
+
+      const orderWithNoDiscount = await api.post(
+        "/admin/draft-orders/test-draft-order",
+        {
+          discounts: [],
+        },
+        adminReqConfig
+      )
+
+      expect(orderWithNoDiscount.data.draft_order.cart.total).toEqual(8000)
     })
   })
 })
