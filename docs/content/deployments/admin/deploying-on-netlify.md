@@ -100,13 +100,12 @@ After you authorize Netlify to use GitHub, you’ll be asked to pick the reposit
 
 ![Choose Repository](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001871/Medusa%20Docs/Netlify/D0r6Q1e_th5uei.png)
 
-A section titled "Basic build settings" will appear. There should be three inputs that display, with some default settings set. Ensure the fields are set as follows (you may need to change the publish directory):
+In the "Basic build settings" section, make sure the fields have the following values:
 
-```
-Base directory: (leave blank)
-Build command: yarn build
-Publish directory: public
-```
+- Base directory: leave empty
+- Build command: yarn build
+- Publish directory: public
+
 
 Next, click the “Show advanced” button, which is above the “Deploy site” button.
 
