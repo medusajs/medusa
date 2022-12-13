@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/create-sales-channel.d.ts:78
+medusa/dist/api/routes/admin/sales-channels/create-sales-channel.d.ts:80
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/create-sales-channel.d.ts:79
+medusa/dist/api/routes/admin/sales-channels/create-sales-channel.d.ts:81
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/create-sales-channel.d.ts:77
+medusa/dist/api/routes/admin/sales-channels/create-sales-channel.d.ts:79

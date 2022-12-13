@@ -1,6 +1,6 @@
 # Class: ProductBatchSalesChannel
 
-[internal](../modules/internal-25.md).ProductBatchSalesChannel
+[internal](../modules/internal-21.md).ProductBatchSalesChannel
 
 ## Properties
 

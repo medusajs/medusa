@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/update-customer.d.ts:101
+medusa/dist/api/routes/admin/customers/update-customer.d.ts:103
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/update-customer.d.ts:102
+medusa/dist/api/routes/admin/customers/update-customer.d.ts:104
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/update-customer.d.ts:107
+medusa/dist/api/routes/admin/customers/update-customer.d.ts:109
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/update-customer.d.ts:103
+medusa/dist/api/routes/admin/customers/update-customer.d.ts:105
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/update-customer.d.ts:106
+medusa/dist/api/routes/admin/customers/update-customer.d.ts:108
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/update-customer.d.ts:104
+medusa/dist/api/routes/admin/customers/update-customer.d.ts:106
 
 ___
 
@@ -70,4 +70,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/update-customer.d.ts:105
+medusa/dist/api/routes/admin/customers/update-customer.d.ts:107

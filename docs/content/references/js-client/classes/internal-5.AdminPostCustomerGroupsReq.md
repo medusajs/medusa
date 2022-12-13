@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/create-customer-group.d.ts:64
+medusa/dist/api/routes/admin/customer-groups/create-customer-group.d.ts:65
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/create-customer-group.d.ts:63
+medusa/dist/api/routes/admin/customer-groups/create-customer-group.d.ts:64

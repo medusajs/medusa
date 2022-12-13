@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payments.ts:27](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/payments.ts#L27)
+[medusa-js/src/resources/admin/payments.ts:27](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payments.ts#L27)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payments.ts:35](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/payments.ts#L35)
+[medusa-js/src/resources/admin/payments.ts:35](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payments.ts#L35)
 
 ___
 
@@ -69,4 +69,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payments.ts:12](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/payments.ts#L12)
+[medusa-js/src/resources/admin/payments.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payments.ts#L12)
