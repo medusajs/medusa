@@ -76,6 +76,7 @@ export default async (req, res) => {
     draftOrder.cart_id,
     {
       relations: defaultAdminDraftOrdersCartRelations,
+      select: defaultAdminDraftOrdersCartFields,
     },
     {
       force_taxes: true,
