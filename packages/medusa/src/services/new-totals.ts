@@ -488,31 +488,21 @@ export default class NewTotalsService extends TransactionBaseService {
       return result
     }
 
-    let giftCardableBalance = giftCardableAmount
-
     // If a gift card is not taxable, the tax_rate for the giftcard will be null
-    const { totalGiftCardBalance, totalTaxFromGiftCards } = giftCards.reduce(
-      (acc, giftCard) => {
-        acc.totalGiftCardBalance = acc.totalGiftCardBalance + giftCard.balance
+    const { totalGiftCardBalance, totalTaxFromGiftCards } = giftCards.reduce((acc, giftCard) => {
+      acc.totalGiftCardBalance += giftCard.balance
 
-        const taxableAmount = Math.min(giftCardableBalance, giftCard.balance)
-        // skip tax, if the taxable amount is not a positive number or tax rate is not set
-        if (taxableAmount <= 0 || !giftCard.tax_rate) {
-          return acc
-        }
+      let taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
+      // skip tax, if the taxable amount is not a positive number or tax rate is not set
+      if (taxableAmount <= 0 || !giftCard.tax_rate) return acc
 
-        const taxAmountFromGiftCard = Math.round(
-          taxableAmount * (giftCard.tax_rate / 100)
-        )
-        acc.totalTaxFromGiftCards =
-          acc.totalTaxFromGiftCards + taxAmountFromGiftCard
-        // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
-        giftCardableBalance = giftCardableBalance - taxableAmount
+      let taxAmountFromGiftCard = Math.round(taxableAmount * (giftCard.tax_rate / 100))
+      acc.totalTaxFromGiftCards += taxAmountFromGiftCard
+      // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
+      acc.giftCardableBalance -= taxableAmount
 
-        return acc
-      },
-      { totalGiftCardBalance: 0, totalTaxFromGiftCards: 0 }
-    )
+      return acc
+    }, { totalGiftCardBalance: 0, totalTaxFromGiftCards: 0, giftCardableBalance: giftCardableAmount })
 
     result.tax_total = totalTaxFromGiftCards
     result.total = Math.min(giftCardableAmount, totalGiftCardBalance)
@@ -543,15 +533,10 @@ export default class NewTotalsService extends TransactionBaseService {
         // This is a backwards compatability fix for orders that were created
         // before we added the gift card tax rate.
         // TODO: Check if this needs to be switched to giftCard.tax_rate as well
-        if (next.is_taxable === null && region?.gift_cards_taxable) {
-          taxMultiplier = region.tax_rate / 100
-        }
-
-        // Adding to the above comment about backwards compatability, this
-        // is needed for those gift cards that have a tax_rate, but the GiftCardTransactions
-        // weren't updated
-        if (next.is_taxable === null && next.gift_card?.tax_rate) {
-          taxMultiplier = next.gift_card.tax_rate / 100
+        if (next.is_taxable === null) {
+          if (region?.gift_cards_taxable || next.gift_card?.tax_rate) {
+            taxMultiplier = (next.gift_card?.tax_rate ?? region.tax_rate) / 100
+          }
         }
 
         return {

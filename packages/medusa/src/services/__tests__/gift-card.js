@@ -49,8 +49,8 @@ describe("GiftCardService", () => {
       jest.clearAllMocks()
     })
 
-    it.only("correctly creates a giftcard", async () => {
-      const re = await giftCardService.create(giftCard)
+    it("correctly creates a giftcard", async () => {
+      await giftCardService.create(giftCard)
 
       expect(giftCardRepo.create).toHaveBeenCalledTimes(1)
       expect(giftCardRepo.create).toHaveBeenCalledWith({

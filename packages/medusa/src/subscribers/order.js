@@ -30,7 +30,7 @@ class OrderSubscriber {
   }
 
   handleOrderPlaced = async (data) => {
-    const order = await this.orderService_.retrieve(data.id, {
+    const order = await this.orderService_.retrieveWithTotals(data.id, {
       select: ["subtotal"],
       relations: ["discounts", "discounts.rule", "items", "gift_cards"],
     })
@@ -43,7 +43,7 @@ class OrderSubscriber {
               region_id: order.region_id,
               order_id: order.id,
               value: i.unit_price,
-              balance: i.unit_price,
+              balance: i.subtotal / i.quantity,
               metadata: i.metadata,
             })
           }
