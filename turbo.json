@@ -1,22 +1,14 @@
 {
-  "$schema": "https://turborepo.org/schema.json",
-  "baseBranch": "origin/master",
+  "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
       "dependsOn": [
         "^build"
       ],
       "outputs": [
-        "dist/**",
-        "api/**",
-        "helpers/**",
-        "loaders/**",
-        "migrations/**",
-        "models/**",
-        "repositories/**",
-        "services/**",
-        "subscribers/**",
-        "utils/**"
+        "!node_modules/**",
+        "!src/**",
+        "/*/**"
       ]
     },
     "test": {
@@ -25,5 +17,8 @@
       ],
       "outputs": []
     }
-  }
+  },
+  "globalDependencies": [
+    "turbo.json"
+  ]
 }
