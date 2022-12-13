@@ -7,7 +7,7 @@ In this document, you will learn how to make a container of Medusa's app on Dock
 ### Node.js
 Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
 
-```bash noHeader
+```bash noReport
 node -v
 ```
 
@@ -21,18 +21,18 @@ It is assumed that you have Docker installed on your system. You can install it 
 
 ### 1. Clone Medusa's starter project from GitHub
 
-```bash noHeader
+```bash noReport
 git clone https://github.com/medusajs/medusa-starter-default.git my-medusa-starter
 ```
 
 ### 2. Change to the newly created project directory
-```bash noHeader
+```bash noReport
 cd my-medusa-starter
 ```
 
 ### 3.  Rename the environment variables(.env) file
 
-```bash noHeader
+```bash noReport
 mv .env.template .env
 ```
 
@@ -40,7 +40,7 @@ mv .env.template .env
 
 Make sure the Docker Desktop app is running. Then, run the following command:
 
-```bash noHeader
+```bash noReport
 docker-compose up --build
 ```
 
@@ -48,7 +48,7 @@ docker-compose up --build
 
 If you get the error `ERROR: for postgres  Cannot start service postgres: Ports are not available`, change the ports used for PostgreSQL in `docker-compose.yml` to something like this:
 
-```yml noHeader
+```yml noReport
   postgres:
     ports:
       - "5433:5433"
@@ -68,7 +68,7 @@ Once done, your server will be accessible at `http://localhost:9000`.
 
 You can test out your server using tools like Postman or by sending a cURL request:
 
-```bash noHeader
+```bash noReport
 curl -X GET localhost:9000/store/products | python -m json.tool
 ```
 
@@ -76,7 +76,7 @@ curl -X GET localhost:9000/store/products | python -m json.tool
 
 This command uses Python to format the result of the request better in your command line. If you don't want to use Python you can simply send a request without the formatting:
 
-```bash noHeader
+```bash noReport
 curl localhost:9000/store/products
 ```
 

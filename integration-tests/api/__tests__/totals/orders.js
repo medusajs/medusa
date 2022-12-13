@@ -14,14 +14,15 @@ const {
 
 jest.setTimeout(30000)
 
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
+
 describe("Order Totals", () => {
   let medusaProcess
   let dbConnection
-
-  const doAfterEach = async () => {
-    const db = useDb()
-    return await db.teardown()
-  }
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
@@ -36,137 +37,154 @@ describe("Order Totals", () => {
   })
 
   afterEach(async () => {
-    return await doAfterEach()
+    const db = useDb()
+    await db.teardown()
   })
 
-  test("calculates totals correctly for order with non-taxable gift card", async () => {
-    await adminSeeder(dbConnection)
-    await simpleProductFactory(dbConnection, {
-      variants: [
-        { id: "variant_1", prices: [{ currency: "usd", amount: 95600 }] },
-        { id: "variant_2", prices: [{ currency: "usd", amount: 79600 }] },
-      ],
+  describe("GET /admin/orders/:id/totals", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simpleProductFactory(dbConnection, {
+        variants: [
+          { id: "variant_1", prices: [{ currency: "usd", amount: 95600 }] },
+          { id: "variant_2", prices: [{ currency: "usd", amount: 79600 }] },
+        ],
+      })
     })
 
-    const region = await simpleRegionFactory(dbConnection, {
-      gift_cards_taxable: false,
-      tax_rate: 25,
+    it("calculates totals correctly for order with non-taxable gift card", async () => {
+      const api = useApi()
+
+      // Seed data
+      const region = await simpleRegionFactory(dbConnection, {
+        gift_cards_taxable: false,
+        tax_rate: 25,
+      })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        id: "test-cart",
+        email: "testnation@medusajs.com",
+        region: region.id,
+        line_items: [],
+      })
+
+      const giftCard = await simpleGiftCardFactory(dbConnection, {
+        region_id: region.id,
+        value: 160000,
+        balance: 160000,
+      })
+
+      // Add variant 1 to cart
+      await api.post("/store/carts/test-cart/line-items", {
+        quantity: 1,
+        variant_id: "variant_1",
+      })
+
+      // Add variant 2 to cart
+      await api.post("/store/carts/test-cart/line-items", {
+        quantity: 1,
+        variant_id: "variant_2",
+      })
+
+      // Add gift card to cart
+      await api.post("/store/carts/test-cart", {
+        gift_cards: [{ code: giftCard.code }],
+      })
+
+      // Init payment sessions
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+      // Complete cart
+      const response = await api.post(`/store/carts/test-cart/complete`)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.type).toEqual("order")
+      const orderId = response.data.data.id
+
+      // Retrieve the completed order
+      const { data } = await api.get(`/admin/orders/${orderId}`, adminReqConfig)
+
+      expect(data.order.gift_card_transactions).toHaveLength(1)
+      expect(data.order.gift_card_transactions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 160000,
+            is_taxable: false,
+            tax_rate: null,
+          }),
+        ])
+      )
+      expect(data.order.gift_card_total).toEqual(160000)
+      expect(data.order.gift_card_tax_total).toEqual(0)
+      expect(data.order.total).toEqual(59000)
     })
 
-    const cart = await simpleCartFactory(dbConnection, {
-      id: "test-cart",
-      email: "testnation@medusajs.com",
-      region: region.id,
-      line_items: [],
-    })
+    it("calculates totals correctly for order with taxable gift card", async () => {
+      const api = useApi()
+      // Seed data
+      const region = await simpleRegionFactory(dbConnection, {
+        gift_cards_taxable: true,
+        tax_rate: 25,
+      })
 
-    const giftCard = await simpleGiftCardFactory(dbConnection, {
-      region_id: region.id,
-      value: 160000,
-      balance: 160000,
-    })
+      const cart = await simpleCartFactory(dbConnection, {
+        id: "test-cart",
+        email: "testnation@medusajs.com",
+        region: region.id,
+        line_items: [],
+      })
 
-    const api = useApi()
+      const giftCard = await simpleGiftCardFactory(dbConnection, {
+        region_id: region.id,
+        value: 160000,
+        balance: 160000,
+      })
 
-    await api.post("/store/carts/test-cart/line-items", {
-      quantity: 1,
-      variant_id: "variant_1",
-    })
-    await api.post("/store/carts/test-cart/line-items", {
-      quantity: 1,
-      variant_id: "variant_2",
-    })
-    await api.post("/store/carts/test-cart", {
-      gift_cards: [{ code: giftCard.code }],
-    })
-    await api.post(`/store/carts/${cart.id}/payment-sessions`)
-    const response = await api.post(`/store/carts/test-cart/complete`)
-    expect(response.status).toEqual(200)
-    expect(response.data.type).toEqual("order")
-    const orderId = response.data.data.id
+      // Add variant 1 to cart
+      await api.post("/store/carts/test-cart/line-items", {
+        quantity: 1,
+        variant_id: "variant_1",
+      })
 
-    const { data } = await api.get(`/admin/orders/${orderId}`, {
-      headers: { Authorization: `Bearer test_token` },
-    })
+      // Add variant 2 to cart
+      await api.post("/store/carts/test-cart/line-items", {
+        quantity: 1,
+        variant_id: "variant_2",
+      })
 
-    expect(data.order.gift_card_transactions).toHaveLength(1)
-    expect(data.order.gift_card_transactions).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          amount: 160000,
-          is_taxable: false,
-          tax_rate: null,
-        }),
-      ])
-    )
-    expect(data.order.gift_card_total).toEqual(160000)
-    expect(data.order.gift_card_tax_total).toEqual(0)
-    expect(data.order.total).toEqual(59000)
-  })
+      // Add gift card to cart
+      await api.post("/store/carts/test-cart", {
+        gift_cards: [{ code: giftCard.code }],
+      })
 
-  test("calculates totals correctly for order with taxable gift card", async () => {
-    await adminSeeder(dbConnection)
-    await simpleProductFactory(dbConnection, {
-      variants: [
-        { id: "variant_1", prices: [{ currency: "usd", amount: 95600 }] },
-        { id: "variant_2", prices: [{ currency: "usd", amount: 79600 }] },
-      ],
-    })
+      // Init payment sessions
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
 
-    const region = await simpleRegionFactory(dbConnection, {
-      gift_cards_taxable: true,
-      tax_rate: 25,
-    })
+      // Complete cart
+      const response = await api.post(`/store/carts/test-cart/complete`)
 
-    const cart = await simpleCartFactory(dbConnection, {
-      id: "test-cart",
-      email: "testnation@medusajs.com",
-      region: region.id,
-      line_items: [],
-    })
+      expect(response.status).toEqual(200)
+      expect(response.data.type).toEqual("order")
+      const orderId = response.data.data.id
 
-    const giftCard = await simpleGiftCardFactory(dbConnection, {
-      region_id: region.id,
-      value: 160000,
-      balance: 160000,
-    })
+      // Retrieve the completed order
+      const { data } = await api.get(`/admin/orders/${orderId}`, adminReqConfig)
 
-    const api = useApi()
-
-    await api.post("/store/carts/test-cart/line-items", {
-      quantity: 1,
-      variant_id: "variant_1",
+      expect(data.order.gift_card_transactions).toHaveLength(1)
+      expect(data.order.gift_card_transactions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 160000,
+            is_taxable: true,
+            tax_rate: 25,
+          }),
+        ])
+      )
+      expect(data.order.gift_card_total).toEqual(160000)
+      expect(data.order.gift_card_tax_total).toEqual(40000)
+      expect(data.order.tax_total).toEqual(3800)
+      expect(data.order.total).toEqual(19000)
     })
-    await api.post("/store/carts/test-cart/line-items", {
-      quantity: 1,
-      variant_id: "variant_2",
-    })
-    await api.post("/store/carts/test-cart", {
-      gift_cards: [{ code: giftCard.code }],
-    })
-    await api.post(`/store/carts/${cart.id}/payment-sessions`)
-    const response = await api.post(`/store/carts/test-cart/complete`)
-    expect(response.status).toEqual(200)
-    expect(response.data.type).toEqual("order")
-    const orderId = response.data.data.id
-
-    const { data } = await api.get(`/admin/orders/${orderId}`, {
-      headers: { Authorization: `Bearer test_token` },
-    })
-
-    expect(data.order.gift_card_transactions).toHaveLength(1)
-    expect(data.order.gift_card_transactions).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          amount: 160000,
-          is_taxable: true,
-          tax_rate: 25,
-        }),
-      ])
-    )
-    expect(data.order.gift_card_total).toEqual(160000)
-    expect(data.order.gift_card_tax_total).toEqual(40000)
-    expect(data.order.tax_total).toEqual(3800)
-    expect(data.order.total).toEqual(19000)
   })
 })

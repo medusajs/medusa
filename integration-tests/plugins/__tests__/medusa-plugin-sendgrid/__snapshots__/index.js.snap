@@ -2415,7 +2415,7 @@ Object {
       "address_2": null,
       "city": "ville la something",
       "company": null,
-      "country_code": null,
+      "country_code": "us",
       "created_at": Any<Date>,
       "customer_id": null,
       "deleted_at": null,

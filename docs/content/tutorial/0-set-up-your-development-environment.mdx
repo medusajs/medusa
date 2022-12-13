@@ -18,7 +18,7 @@ Node.js is the environment that makes it possible for Medusa to run, so you must
 
 Medusa supports versions 14 and 16 of Node.js. You can check your Node.js version using the following command:
 
-```bash noHeader
+```bash noReport
 node -v
 ```
 
@@ -49,7 +49,7 @@ For other Linux distributions, you can check out [Node.js’s guide](https://nod
 
 You can use the following commands to install Node.js on macOS:
 
-<Tabs>
+<Tabs groupId="homebrew" wrapperClassName='code-tabs'>
 <TabItem value="homebrew" label="Homebrew">
 
 ```bash
@@ -60,7 +60,12 @@ brew install node
 <TabItem value="no-homebrew" label="Without Homebrew">
 
 ```bash
-curl "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+curl \
+ "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- \
+  https://nodejs.org/dist/latest/ | sed -nE \ 
+  's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" \
+  > "$HOME/Downloads/node-latest.pkg" && 
+  sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
 ```
 
 </TabItem>
@@ -118,7 +123,7 @@ The final installation required to get started with Medusa is the Medusa CLI. It
 
 You can install Medusa’s CLI with the following command:
 
-```bash npm2yarn noHeader
+```bash npm2yarn noReport
 npm install @medusajs/medusa-cli -g
 ```
 
@@ -153,8 +158,10 @@ You can [download the PostgreSQL Windows installer](https://www.postgresql.org/d
 If you’re using Ubuntu, you can use the following commands to download and install PostgreSQL:
 
 ```bash
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo sh -c \
+  'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - \
+  https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt-get update
 sudo apt-get -y install postgresql
 ```
@@ -172,7 +179,9 @@ You can download PostgreSQL on your macOS using [the installer on their website]
 Make sure the Docker Desktop app is running, then run the following command to quickly spin up a PostgreSQL instance:
 
 ```bash
-docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=medusa-docker -p 5432:5432 -d postgres
+docker run --name postgres -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres -e \
+  POSTGRES_DB=medusa-docker -p 5432:5432 -d postgres
 ```
 
 Where:
@@ -221,9 +230,11 @@ sudo service redis-server start
 If you use Ubuntu you can use the following commands to install Redis:
 
 ```bash
-curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+curl -fsSL https://packages.redis.io/gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 
-echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" \
+  | sudo tee /etc/apt/sources.list.d/redis.list
 
 sudo apt-get update
 sudo apt-get install redis

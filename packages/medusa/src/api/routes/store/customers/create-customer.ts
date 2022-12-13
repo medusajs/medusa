@@ -120,6 +120,11 @@ export default async (req, res) => {
     }
   )
 
+  customer = await customerService.retrieve(customer.id, {
+    relations: defaultStoreCustomersRelations,
+    select: defaultStoreCustomersFields,
+  })
+
   // Add JWT to cookie
   const {
     projectConfig: { jwt_secret },
@@ -128,19 +133,16 @@ export default async (req, res) => {
     expiresIn: "30d",
   })
 
-  customer = await customerService.retrieve(customer.id, {
-    relations: defaultStoreCustomersRelations,
-    select: defaultStoreCustomersFields,
-  })
-
   res.status(200).json({ customer })
 }
 
 export class StorePostCustomersReq {
   @IsString()
+  @IsOptional()
   first_name: string
 
   @IsString()
+  @IsOptional()
   last_name: string
 
   @IsEmail()
