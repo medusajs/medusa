@@ -2,6 +2,7 @@ import { asClass, asValue, createContainer } from "awilix"
 import {
   defaultContainerMock,
   giftCards,
+  giftCardsWithTaxRate,
   lineItems,
   shippingMethods,
 } from "../__fixtures__/new-totals"
@@ -528,14 +529,16 @@ describe("New totals service", () => {
         )
       })
 
-      it("should compute the gift cards totals amount in a taxable region", async () => {
+      it("should compute the gift cards totals amount if gift cards have a tax rate", async () => {
         const maxAmount = 1000
 
-        const testGiftCard = giftCards[0]
+        const testGiftCard = giftCardsWithTaxRate[0]
 
         const region = {
+          // These values should be involved in calculating tax rates for a gift card
+          // GiftCard.tax_rate will be the source of truth for tax calculations
           gift_cards_taxable: true,
-          tax_rate: 20,
+          tax_rate: 0,
         } as Region
 
         const gitCardTotals = await newTotalsService.getGiftCardTotals(
