@@ -1164,11 +1164,11 @@ class SendGridService extends NotificationService {
   async orderRefundCreatedData({ id, refund_id }) {
     const order = await this.orderService_.retrieveWithTotals(id, {
       select: [
-        'total',
+        "total",
       ],
       relations: [
-        'refunds',
-        'items',
+        "refunds",
+        "items",
       ]
     })
 
