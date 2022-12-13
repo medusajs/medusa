@@ -12,4 +12,5 @@ node_modules
 /services
 /models
 /subscribers
+/utils
 
