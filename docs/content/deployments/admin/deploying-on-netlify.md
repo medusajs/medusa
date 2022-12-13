@@ -102,7 +102,7 @@ After you authorize Netlify to use GitHub, you’ll be asked to pick the reposit
 
 In the "Basic build settings" section, make sure the fields have the following values:
 
-- Base directory: leave empty
+- Base directory: (leave empty)
 - Build command: yarn build
 - Publish directory: public
 
