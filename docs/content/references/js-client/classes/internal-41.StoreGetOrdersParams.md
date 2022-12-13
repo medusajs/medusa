@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/orders/lookup-order.d.ts:73
+medusa/dist/api/routes/store/orders/lookup-order.d.ts:74
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/orders/lookup-order.d.ts:74
+medusa/dist/api/routes/store/orders/lookup-order.d.ts:75
 
 ___
 
@@ -30,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/orders/lookup-order.d.ts:75
+medusa/dist/api/routes/store/orders/lookup-order.d.ts:76

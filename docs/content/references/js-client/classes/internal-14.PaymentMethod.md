@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/orders/update-order.d.ts:141
+medusa/dist/api/routes/admin/orders/update-order.d.ts:143
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/orders/update-order.d.ts:140
+medusa/dist/api/routes/admin/orders/update-order.d.ts:142

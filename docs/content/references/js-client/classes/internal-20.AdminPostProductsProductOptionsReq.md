@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/add-option.d.ts:71
+medusa/dist/api/routes/admin/products/add-option.d.ts:73

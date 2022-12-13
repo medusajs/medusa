@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:113
+medusa/dist/api/routes/admin/regions/update-region.d.ts:115
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:117
+medusa/dist/api/routes/admin/regions/update-region.d.ts:119
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:109
+medusa/dist/api/routes/admin/regions/update-region.d.ts:111
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:116
+medusa/dist/api/routes/admin/regions/update-region.d.ts:118
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:112
+medusa/dist/api/routes/admin/regions/update-region.d.ts:114
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:118
+medusa/dist/api/routes/admin/regions/update-region.d.ts:120
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:119
+medusa/dist/api/routes/admin/regions/update-region.d.ts:121
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:108
+medusa/dist/api/routes/admin/regions/update-region.d.ts:110
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:115
+medusa/dist/api/routes/admin/regions/update-region.d.ts:117
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:110
+medusa/dist/api/routes/admin/regions/update-region.d.ts:112
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:114
+medusa/dist/api/routes/admin/regions/update-region.d.ts:116
 
 ___
 
@@ -120,4 +120,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/update-region.d.ts:111
+medusa/dist/api/routes/admin/regions/update-region.d.ts:113
