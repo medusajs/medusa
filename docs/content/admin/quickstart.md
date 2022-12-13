@@ -16,7 +16,7 @@ If you’re not very familiar with Medusa’s architecture, you can learn more a
 
 ### Node.js
 
-As Medusa Admin uses Vite 3, it requires versions 14.8+ or 16+. You can check which version of Node you have by running the following command:
+As Medusa Admin uses [Vite 3](https://vitejs.dev/guide/#scaffolding-your-first-vite-project), it requires versions 14.8+ or 16+. You can check which version of Node you have by running the following command:
 
 ```bash noReport
 node -v
