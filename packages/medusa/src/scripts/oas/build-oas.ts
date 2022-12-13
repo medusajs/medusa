@@ -1,5 +1,5 @@
 import * as path from "path"
-import * as fs from "fs"
+import { mkdir, writeFile } from "fs/promises"
 
 import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@readme/openapi-parser"
@@ -26,7 +26,7 @@ const run = async () => {
   debug("Generate OAS from codebase.")
 
   const targetDir = path.resolve(__dirname, "../../../", "dist/oas")
-  fs.mkdirSync(targetDir, { recursive: true })
+  await mkdir(targetDir, { recursive: true })
 
   for (const apiType of ["store", "admin"]) {
     debug(`Building OAS for ${apiType} api.`)
@@ -89,15 +89,11 @@ const getOASFromCodebase = async (apiType: ApiType) => {
   return oas
 }
 
-const exportOASToJSON = (oas, apiType: ApiType, targetDir: string) => {
+const exportOASToJSON = async (oas, apiType: ApiType, targetDir: string) => {
   debug("Exporting OAS to JSON.")
 
   const json = JSON.stringify(oas, null, 2)
-  fs.writeFile(path.resolve(targetDir, `${apiType}.oas.json`), json, (err) => {
-    if (err) {
-      throw err
-    }
-  })
+  await writeFile(path.resolve(targetDir, `${apiType}.oas.json`), json)
 }
 
 const getJSONSchemaOptions = (): Partial<IOptions> => ({

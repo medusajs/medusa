@@ -1,7 +1,7 @@
 import path from "path"
 import { generate, HttpClient, Indent } from "openapi-typescript-codegen"
 import { upperFirst } from "lodash"
-import fs from "fs"
+import { mkdir, readFile } from "fs/promises"
 import logger from "../../loaders/logger"
 
 type ApiType = "store" | "admin"
@@ -22,7 +22,7 @@ const run = async () => {
     "../../../../",
     "medusa-client/src"
   )
-  fs.mkdirSync(targetPackageSrcDir, { recursive: true })
+  await mkdir(targetPackageSrcDir, { recursive: true })
 
   for (const apiType of ["store", "admin"]) {
     debug(`Building Client for ${apiType} api.`)
@@ -33,13 +33,13 @@ const run = async () => {
   debug("Client successfully generated.")
 }
 
-const getOASFromFile = (apiType: ApiType) => {
+const getOASFromFile = async (apiType: ApiType) => {
   const jsonFile = path.resolve(
     __dirname,
     "../../../",
     `dist/oas/${apiType}.oas.json`
   )
-  const jsonString = fs.readFileSync(jsonFile, "utf8")
+  const jsonString = await readFile(jsonFile, "utf8")
   return JSON.parse(jsonString)
 }
 
