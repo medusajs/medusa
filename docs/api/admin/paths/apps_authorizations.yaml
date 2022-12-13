@@ -7,6 +7,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - application_name
             - state
@@ -37,6 +38,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               apps:
                 $ref: ../components/schemas/OAuth.yaml

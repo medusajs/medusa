@@ -16,6 +16,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - return_items
           properties:
@@ -114,6 +115,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               order:
                 $ref: ../components/schemas/order.yaml

@@ -145,213 +145,6 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/store'
 paths:
-  /auth:
-    post:
-      operationId: PostAuth
-      summary: Customer Login
-      description: >-
-        Logs a Customer in and authorizes them to view their details. Successful
-        authentication will set a session cookie in the Customer's browser.
-      parameters: []
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.auth.authenticate({
-              email: 'user@example.com',
-              password: 'user@example.com'
-            })
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request POST 'https://medusa-url.com/store/auth' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-                "email": "user@example.com",
-                "password": "supersecret"
-            }'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/incorrect_credentials'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                password:
-                  type: string
-                  description: The Customer's password.
-    delete:
-      operationId: DeleteAuth
-      summary: Customer Log out
-      description: Destroys a Customer's authenticated session.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE 'https://medusa-url.com/store/auth'
-            \
-
-            --header 'Cookie: connect.sid={sid}'
-      security:
-        - cookie_auth: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetAuth
-      summary: Get Current Customer
-      description: Gets the currently logged in Customer.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.auth.getSession()
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/store/auth' \
-            --header 'Cookie: connect.sid={sid}'
-      security:
-        - cookie_auth: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/auth/{email}':
-    get:
-      operationId: GetAuthEmail
-      summary: Check if email exists
-      description: Checks if a Customer with the given email has signed up.
-      parameters:
-        - in: path
-          name: email
-          schema:
-            type: string
-            format: email
-          required: true
-          description: The email to check if exists.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.auth.exists('user@example.com')
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/auth/user@example.com' \
-
-            --header 'Cookie: connect.sid={sid}'
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  exists:
-                    type: boolean
-                    description: Whether email exists or not.
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -399,6 +192,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -458,6 +252,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -520,6 +315,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   type:
                     type: string
@@ -579,6 +375,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 region_id:
                   type: string
@@ -648,6 +445,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -661,92 +459,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/carts/{id}/line-items':
-    post:
-      operationId: PostCartsCartLineItems
-      summary: Add a Line Item
-      description: >-
-        Generates a Line Item with a given Product Variant and adds it to the
-        Cart
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart to add the Line Item to.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.carts.lineItems.create(cart_id, {
-              variant_id,
-              quantity: 1
-            })
-
-            .then(({ cart }) => {
-              console.log(cart.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/store/carts/{id}/line-items' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "variant_id": "{variant_id}",
-                "quantity": 1
-            }'
-      tags:
-        - Cart
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - variant_id
-                - quantity
-              properties:
-                variant_id:
-                  type: string
-                  description: >-
-                    The id of the Product Variant to generate the Line Item
-                    from.
-                quantity:
-                  type: integer
-                  description: The quantity of the Product Variant to add to the Line Item.
-                metadata:
-                  type: object
-                  description: >-
-                    An optional key-value map with additional details about the
-                    Line Item.
   '/carts/{id}/payment-sessions':
     post:
       operationId: PostCartsCartPaymentSessions
@@ -788,6 +500,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -846,6 +559,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -904,6 +618,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -969,6 +684,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -1042,6 +758,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -1108,6 +825,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -1171,6 +889,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -1199,6 +918,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 region_id:
                   type: string
@@ -1295,6 +1015,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -1357,6 +1078,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -1419,6 +1141,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
@@ -1443,6 +1166,59 @@ paths:
                 provider_id:
                   type: string
                   description: The ID of the Payment Provider.
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Get Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.giftCards.retrieve(code)
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/gift-cards/{code}'
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/gift_card'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/collections/{id}':
     get:
       operationId: GetCollectionsCollection
@@ -1482,6 +1258,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
@@ -1586,6 +1363,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   collections:
                     type: array
@@ -1620,6 +1398,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - address
               properties:
@@ -1695,6 +1474,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -1719,6 +1499,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - first_name
                 - last_name
@@ -1783,6 +1564,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -1797,6 +1579,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   code:
                     type: string
@@ -1861,6 +1644,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -1935,6 +1719,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -1991,6 +1776,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -2015,6 +1801,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 first_name:
                   description: The Customer's first name.
@@ -2082,6 +1869,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -2139,6 +1927,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   payment_methods:
                     type: array
@@ -2370,6 +2159,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   orders:
                     type: array
@@ -2408,6 +2198,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - email
               properties:
@@ -2474,6 +2265,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - email
                 - password
@@ -2529,6 +2321,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -2536,58 +2329,6 @@ paths:
           $ref: '#/components/responses/400_error'
         '401':
           $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/gift-cards/{code}':
-    get:
-      operationId: GetGiftCardsCode
-      summary: Get Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.giftCards.retrieve(code)
-
-            .then(({ gift_card }) => {
-              console.log(gift_card.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/gift-cards/{code}'
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
-        '400':
-          $ref: '#/components/responses/400_error'
         '404':
           $ref: '#/components/responses/not_found_error'
         '409':
@@ -2634,6 +2375,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -2661,6 +2403,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 declined_reason:
                   type: string
@@ -2691,6 +2434,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -2741,9 +2485,80 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /orders/customer/confirm:
+    post:
+      operationId: PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept
+      summary: Verify a claim to orders
+      description: >-
+        Verifies the claim order token provided to the customer upon request of
+        order ownership
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - token
+              properties:
+                token:
+                  description: The invite token provided by the admin.
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.orders.confirmRequest(
+              token,
+            )
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // an error occurred
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/orders/customer/confirm' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "token": "{token}",
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Invite
+      responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2797,6 +2612,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -2849,6 +2665,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -2924,9 +2741,764 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /orders/batch/customer/token:
+    post:
+      operationId: PostOrdersCustomerOrderClaim
+      summary: Claim orders for signed in account
+      description: >-
+        Sends an email to emails registered to orders provided with link to
+        transfer order ownership
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - order_ids
+              properties:
+                order_ids:
+                  description: The ids of the orders to claim
+                  type: array
+                  items:
+                    type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.orders.claimOrders({
+              display_ids,
+            })
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // an error occurred
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/batch/customer/token' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "display_ids": ["id"],
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Invite
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions/batch/authorize':
+    post:
+      operationId: PostPaymentCollectionsSessionsBatchAuthorize
+      summary: Authorize Payment Sessions of a Payment Collection
+      description: Authorizes Payment Sessions of a Payment Collection.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collections.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                session_ids:
+                  description: List of Payment Session IDs to authorize.
+                  type: array
+                  items:
+                    type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.paymentCollections.authorize(payment_id)
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions/batch/authorize'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/payment_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions/{session_id}/authorize':
+    post:
+      operationId: PostPaymentCollectionsSessionsSessionAuthorize
+      summary: Authorize a Payment Session of a Payment Collection
+      description: Authorizes a Payment Session of a Payment Collection.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collections.
+          schema:
+            type: string
+        - in: path
+          name: session_id
+          required: true
+          description: The ID of the Payment Session.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.paymentCollections.authorize(payment_id, session_id)
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}/authorize'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_session:
+                    $ref: '#/components/schemas/payment_session'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}':
+    get:
+      operationId: GetPaymentCollectionsPaymentCollection
+      summary: Retrieve an PaymentCollection
+      description: Retrieves a PaymentCollection.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PaymentCollection.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.paymentCollections.retrieve(paymentCollectionId)
+              .then(({ payment_collection }) => {
+                console.log(payment_collection.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/payment-collections/{id}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/payment_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions/batch':
+    post:
+      operationId: PostPaymentCollectionsPaymentCollectionSessionsBatch
+      summary: Manage Multiple Payment Sessions from Payment Collections
+      description: Manages Multiple Payment Sessions from Payment Collections.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collections.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                sessions:
+                  description: >-
+                    An array of payment sessions related to the Payment
+                    Collection. If the session_id is not provided, existing
+                    sessions not present will be deleted and the provided ones
+                    will be created.
+                  type: array
+                  items:
+                    required:
+                      - provider_id
+                      - amount
+                    properties:
+                      provider_id:
+                        type: string
+                        description: The ID of the Payment Provider.
+                      amount:
+                        type: integer
+                        description: The amount .
+                      session_id:
+                        type: string
+                        description: The ID of the Payment Session to be updated.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            // Total amount = 10000
+
+            // Adding two new sessions
+
+            medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
+              {
+                provider_id: "stripe",
+                amount: 5000,
+              },
+              {
+                provider_id: "manual",
+                amount: 5000,
+              },
+            ])
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+
+            // Updating one session and removing the other
+
+            medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
+              {
+                provider_id: "stripe",
+                amount: 10000,
+                session_id: "ps_123456"
+              },
+            ])
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/payment_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions':
+    post:
+      operationId: PostPaymentCollectionsSessions
+      summary: Manage Payment Sessions from Payment Collections
+      description: Manages Payment Sessions from Payment Collections.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - provider_id
+              properties:
+                provider_id:
+                  type: string
+                  description: The ID of the Payment Provider.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            // Total amount = 10000
+
+            // Adding a payment session
+
+            medusa.paymentCollections.managePaymentSession(payment_id, {
+            provider_id: "stripe" })
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/payment_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions/{session_id}':
+    post:
+      operationId: PostPaymentCollectionsPaymentCollectionPaymentSessionsSession
+      summary: Refresh a Payment Session
+      description: >-
+        Refreshes a Payment Session to ensure that it is in sync with the
+        Payment Collection.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the PaymentCollection.
+          schema:
+            type: string
+        - in: path
+          name: session_id
+          required: true
+          description: The id of the Payment Session to be refreshed.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - provider_id
+                - customer_id
+              properties:
+                provider_id:
+                  description: The Payment Provider id.
+                  type: string
+                customer_id:
+                  description: The Customer id.
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.paymentCollections.refreshPaymentSession(payment_collection_id,
+            session_id, payload)
+
+            .then(({ payment_session }) => {
+              console.log(payment_session.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}'
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_session:
+                    $ref: '#/components/schemas/payment_session'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /auth:
+    post:
+      operationId: PostAuth
+      summary: Customer Login
+      description: >-
+        Logs a Customer in and authorizes them to view their details. Successful
+        authentication will set a session cookie in the Customer's browser.
+      parameters: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.auth.authenticate({
+              email: 'user@example.com',
+              password: 'user@example.com'
+            })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request POST 'https://medusa-url.com/store/auth' \
+            --header 'Content-Type: application/json' \
+            --data-raw '{
+                "email": "user@example.com",
+                "password": "supersecret"
+            }'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/incorrect_credentials'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                password:
+                  type: string
+                  description: The Customer's password.
+    delete:
+      operationId: DeleteAuth
+      summary: Customer Log out
+      description: Destroys a Customer's authenticated session.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE 'https://medusa-url.com/store/auth'
+            \
+
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetAuth
+      summary: Get Current Customer
+      description: Gets the currently logged in Customer.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.auth.getSession()
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/store/auth' \
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/auth/{email}':
+    get:
+      operationId: GetAuthEmail
+      summary: Check if email exists
+      description: Checks if a Customer with the given email has signed up.
+      parameters:
+        - in: path
+          name: email
+          schema:
+            type: string
+            format: email
+          required: true
+          description: The email to check if exists.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.auth.exists('user@example.com')
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/auth/user@example.com' \
+
+            --header 'Cookie: connect.sid={sid}'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exists:
+                    type: boolean
+                    description: Whether email exists or not.
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3067,6 +3639,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product_types:
                     $ref: '#/components/schemas/product_type'
@@ -3154,6 +3727,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     allOf:
@@ -3354,6 +3928,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   products:
                     type: array
@@ -3441,6 +4016,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   hits:
                     type: array
@@ -3496,6 +4072,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -3597,6 +4174,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   regions:
                     type: array
@@ -3651,6 +4229,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   return_reason:
                     $ref: '#/components/schemas/return_reason'
@@ -3696,6 +4275,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   return_reasons:
                     type: array
@@ -3720,6 +4300,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - order_id
                 - items
@@ -3808,6 +4389,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
@@ -3871,6 +4453,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   shipping_options:
                     type: array
@@ -3925,6 +4508,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   shipping_options:
                     type: array
@@ -3951,6 +4535,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - order_id
                 - return_items
@@ -4057,6 +4642,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   swap:
                     $ref: '#/components/schemas/swap'
@@ -4109,6 +4695,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   swap:
                     $ref: '#/components/schemas/swap'
@@ -4168,6 +4755,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   variant:
                     allOf:
@@ -4264,6 +4852,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   variants:
                     type: array
@@ -4281,6 +4870,93 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/carts/{id}/line-items':
+    post:
+      operationId: PostCartsCartLineItems
+      summary: Add a Line Item
+      description: >-
+        Generates a Line Item with a given Product Variant and adds it to the
+        Cart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart to add the Line Item to.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.carts.lineItems.create(cart_id, {
+              variant_id,
+              quantity: 1
+            })
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/carts/{id}/line-items' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "variant_id": "{variant_id}",
+                "quantity": 1
+            }'
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - variant_id
+                - quantity
+              properties:
+                variant_id:
+                  type: string
+                  description: >-
+                    The id of the Product Variant to generate the Line Item
+                    from.
+                quantity:
+                  type: integer
+                  description: The quantity of the Product Variant to add to the Line Item.
+                metadata:
+                  type: object
+                  description: >-
+                    An optional key-value map with additional details about the
+                    Line Item.
 components:
   responses:
     default_error:
@@ -4486,6 +5162,7 @@ components:
       title: Address Fields
       description: Address fields used when creating/updating an address.
       x-resourceId: address
+      type: object
       properties:
         company:
           type: string
@@ -4540,6 +5217,7 @@ components:
       title: Address
       description: An address.
       x-resourceId: address
+      type: object
       properties:
         id:
           type: string
@@ -4623,6 +5301,7 @@ components:
       title: Batch Job
       description: A Batch Job.
       x-resourceId: batch_job
+      type: object
       required:
         - type
       properties:
@@ -4765,6 +5444,7 @@ components:
       title: Cart
       description: Represents a user cart
       x-resourceId: cart
+      type: object
       properties:
         id:
           type: string
@@ -4942,6 +5622,7 @@ components:
       title: Claim Image
       description: Represents photo documentation of a claim.
       x-resourceId: claim_image
+      type: object
       required:
         - claim_item_id
         - url
@@ -4985,6 +5666,7 @@ components:
         Represents a claimed item along with information about the reasons for
         the claim.
       x-resourceId: claim_item
+      type: object
       required:
         - claim_order_id
         - item_id
@@ -5072,6 +5754,7 @@ components:
         order consists of a subset of items associated with an original order,
         and can contain additional information about fulfillments and returns.
       x-resourceId: claim_order
+      type: object
       required:
         - type
         - order_id
@@ -5193,6 +5876,7 @@ components:
         Claim Tags are user defined tags that can be assigned to claim items for
         easy filtering and grouping.
       x-resourceId: claim_tag
+      type: object
       required:
         - value
       properties:
@@ -5225,6 +5909,7 @@ components:
       title: Country
       description: Country details
       x-resourceId: country
+      type: object
       required:
         - iso_2
         - iso_3
@@ -5279,6 +5964,7 @@ components:
       title: Currency
       description: Currency
       x-resourceId: currency
+      type: object
       required:
         - code
         - symbol
@@ -5314,6 +6000,7 @@ components:
         can attach a Custom Shipping Option to a cart in order to set a custom
         price for a particular Shipping Option
       x-resourceId: custom_shipping_option
+      type: object
       required:
         - price
         - shipping_option_id
@@ -5372,6 +6059,7 @@ components:
       title: Customer Group
       description: Represents a customer group
       x-resourceId: customer_group
+      type: object
       required:
         - name
       properties:
@@ -5419,6 +6107,7 @@ components:
       title: Customer
       description: Represents a customer
       x-resourceId: customer
+      type: object
       required:
         - email
       properties:
@@ -5436,7 +6125,7 @@ components:
           example: Arno
         last_name:
           type: string
-          description: The customer's first name
+          description: The customer's last name
           example: Willms
         billing_address_id:
           type: string
@@ -5492,6 +6181,7 @@ components:
       title: Product Tag Discount Condition
       description: Associates a discount condition with a customer group
       x-resourceId: discount_condition_customer_group
+      type: object
       required:
         - customer_group_id
         - condition_id
@@ -5527,6 +6217,7 @@ components:
       title: Product Collection Discount Condition
       description: Associates a discount condition with a product collection
       x-resourceId: discount_condition_product_collection
+      type: object
       required:
         - product_collection_id
         - condition_id
@@ -5562,6 +6253,7 @@ components:
       title: Product Tag Discount Condition
       description: Associates a discount condition with a product tag
       x-resourceId: discount_condition_product_tag
+      type: object
       required:
         - product_tag_id
         - condition_id
@@ -5597,6 +6289,7 @@ components:
       title: Product Type Discount Condition
       description: Associates a discount condition with a product type
       x-resourceId: discount_condition_product
+      type: object
       required:
         - product_type_id
         - condition_id
@@ -5632,6 +6325,7 @@ components:
       title: Product Discount Condition
       description: Associates a discount condition with a product
       x-resourceId: discount_condition_product
+      type: object
       required:
         - product_id
         - condition_id
@@ -5667,6 +6361,7 @@ components:
       title: Discount Condition
       description: Holds rule conditions for when a discount is applicable
       x-resourceId: discount_condition
+      type: object
       required:
         - type
         - operator
@@ -5764,6 +6459,7 @@ components:
         Holds the rules that governs how a Discount is calculated when applied
         to a Cart.
       x-resourceId: discount_rule
+      type: object
       required:
         - type
         - value
@@ -5831,6 +6527,7 @@ components:
         Represents a discount that can be applied to a cart for promotional
         purposes.
       x-resourceId: discount
+      type: object
       required:
         - code
         - is_dynamic
@@ -5923,6 +6620,7 @@ components:
       title: DraftOrder
       description: Represents a draft order
       x-resourceId: draft-order
+      type: object
       properties:
         id:
           type: string
@@ -5997,6 +6695,7 @@ components:
         Correlates a Line Item with a Fulfillment, keeping track of the quantity
         of the Line Item.
       x-resourceId: fulfillment_item
+      type: object
       required:
         - fulfillment_id
         - item_id
@@ -6028,6 +6727,7 @@ components:
         Represents a fulfillment provider plugin and holds its installation
         status.
       x-resourceId: fulfillment_provider
+      type: object
       properties:
         id:
           description: The id of the fulfillment provider as given by the plugin.
@@ -6051,6 +6751,7 @@ components:
         these providers through webhooks in order to automatically update and
         synchronize the state of Fulfillments.
       x-resourceId: fulfillment
+      type: object
       required:
         - provider_id
       properties:
@@ -6166,6 +6867,7 @@ components:
         Gift Card Transactions are created once a Customer uses a Gift Card to
         pay for their Order
       x-resourceId: gift_card_transaction
+      type: object
       required:
         - gift_card_id
         - amount
@@ -6212,6 +6914,7 @@ components:
         Gift Cards are redeemable and represent a value that can be used towards
         the payment of an Order.
       x-resourceId: gift_card
+      type: object
       required:
         - code
         - value
@@ -6283,6 +6986,7 @@ components:
         Idempotency Key is used to continue a process in case of any failure
         that might occur.
       x-resourceId: idempotency_key
+      type: object
       required:
         - idempotency_key
       properties:
@@ -6337,6 +7041,7 @@ components:
       title: Image
       description: Images holds a reference to a URL at which the image file can be found.
       x-resourceId: image
+      type: object
       required:
         - url
       properties:
@@ -6369,6 +7074,7 @@ components:
       title: Invite
       description: Represents an invite
       x-resourceId: invite
+      type: object
       required:
         - user_email
       properties:
@@ -6420,6 +7126,7 @@ components:
       title: Line Item Adjustment
       description: Represents an Line Item Adjustment
       x-resourceId: line_item_adjustment
+      type: object
       required:
         - item_id
         - description
@@ -6460,6 +7167,7 @@ components:
       title: Line Item Tax Line
       description: Represents an Line Item Tax Line
       x-resourceId: line_item_tax_line
+      type: object
       required:
         - item_id
         - rate
@@ -6510,6 +7218,7 @@ components:
         Returns. Line Items may also be created when processing Swaps and
         Claims.
       x-resourceId: line_item
+      type: object
       required:
         - title
         - unit_price
@@ -6704,6 +7413,7 @@ components:
         region-based pricing is used the amount will be in the currency defined
         for the Reigon.
       x-resourceId: money_amount
+      type: object
       required:
         - currency_code
         - amount
@@ -6787,6 +7497,7 @@ components:
         resources to allow users to describe additional information in relation
         to these.
       x-resourceId: note
+      type: object
       required:
         - value
         - resource_type
@@ -6838,6 +7549,7 @@ components:
         Represents a notification provider plugin and holds its installation
         status.
       x-resourceId: notification_provider
+      type: object
       required:
         - id
       properties:
@@ -6860,6 +7572,7 @@ components:
         used to show a chronological timeline for communications sent to a
         Customer regarding an Order, and enables resends.
       x-resourceId: notification
+      type: object
       required:
         - resource_type
         - resource_id
@@ -6927,6 +7640,7 @@ components:
       title: Notification Resend
       description: A resend of a Notification.
       x-resourceId: notification_resend
+      type: object
       properties:
         id:
           description: The notification resend's ID
@@ -6990,6 +7704,7 @@ components:
       title: OAuth
       description: Represent an OAuth app
       x-resourceId: OAuth
+      type: object
       required:
         - id
         - display_name
@@ -7023,6 +7738,7 @@ components:
       title: Order Edit
       description: Order edit keeps track of order items changes.
       x-resourceId: order_edit
+      type: object
       required:
         - order_id
         - order
@@ -7151,6 +7867,7 @@ components:
       title: Order Item Change
       description: Represents an order edit item change
       x-resourceId: order_item_change
+      type: object
       required:
         - type
         - order_edit_id
@@ -7208,6 +7925,7 @@ components:
       title: Order
       description: Represents an order
       x-resourceId: order
+      type: object
       required:
         - customer_id
         - email
@@ -7486,6 +8204,7 @@ components:
       title: Payment Collection
       description: Payment Collection
       x-resourceId: payment_collection
+      type: object
       required:
         - type
         - status
@@ -7511,12 +8230,7 @@ components:
             - awaiting
             - authorized
             - partially_authorized
-            - captured
-            - partially_captured
-            - refunded
-            - partially_refunded
             - canceled
-            - requires_action
         description:
           type: string
           description: Description of the payment collection
@@ -7526,12 +8240,6 @@ components:
         authorized_amount:
           type: number
           description: Authorized amount of the payment collection.
-        captured_amount:
-          type: number
-          description: Captured amount of the payment collection.
-        refunded_amount:
-          type: number
-          description: Refunded amount of the payment collection.
         region_id:
           type: string
           description: The region's ID
@@ -7583,6 +8291,7 @@ components:
       title: Payment Provider
       description: Represents a Payment Provider plugin and holds its installation status.
       x-resourceId: payment_provider
+      type: object
       required:
         - id
       properties:
@@ -7607,6 +8316,7 @@ components:
         Sessions will eventually get promoted to Payments to indicate that they
         are authorized for capture/refunds/etc.
       x-resourceId: payment_session
+      type: object
       required:
         - cart_id
         - provider_id
@@ -7680,6 +8390,7 @@ components:
         Payments represent an amount authorized with a given payment method,
         Payments can be captured, canceled or refunded.
       x-resourceId: payment
+      type: object
       required:
         - amount
         - currency_code
@@ -7777,6 +8488,7 @@ components:
         Price Lists represents a set of prices that overrides the default price
         for one or more product variants.
       x-resourceId: price_list
+      type: object
       required:
         - name
         - description
@@ -7853,6 +8565,7 @@ components:
       title: Product Collection
       description: Product Collections represents a group of Products that are related.
       x-resourceId: product_collection
+      type: object
       required:
         - title
       properties:
@@ -7902,6 +8615,7 @@ components:
         Product Option Value for each of the Product Options defined on the
         Product.
       x-resourceId: product_option_value
+      type: object
       required:
         - value
         - option_id
@@ -7960,6 +8674,7 @@ components:
         variants of a Product. Common Product Options are "Size" and "Color",
         but Medusa doesn't limit what Product Options that can be defined.
       x-resourceId: product_option
+      type: object
       required:
         - title
         - product_id
@@ -8007,6 +8722,7 @@ components:
       title: Product Tag
       description: Product Tags can be added to Products for easy filtering and grouping.
       x-resourceId: product_tag
+      type: object
       required:
         - value
       properties:
@@ -8041,6 +8757,7 @@ components:
         Associates a tax rate with a product to indicate that the product is
         taxed in a certain way
       x-resourceId: product_tax_rate
+      type: object
       required:
         - product_id
         - rate_id
@@ -8078,6 +8795,7 @@ components:
         Associates a tax rate with a product type to indicate that the product
         type is taxed in a certain way
       x-resourceId: product_type_tax_rate
+      type: object
       required:
         - product_type_id
         - rate_id
@@ -8115,6 +8833,7 @@ components:
         Product Type can be added to Products for filtering and reporting
         purposes.
       x-resourceId: product_type
+      type: object
       required:
         - value
       properties:
@@ -8151,6 +8870,7 @@ components:
         Product can have is given by the number of available Product Option
         combinations.
       x-resourceId: product_variant
+      type: object
       required:
         - title
         - product_id
@@ -8304,6 +9024,7 @@ components:
       title: Product Variant Prices Fields
       description: Product Variants Prices Fields that are only available in some requests.
       x-resourceId: product_variant_prices_fields
+      type: object
       properties:
         original_price:
           type: number
@@ -8347,6 +9068,7 @@ components:
         such as images and descriptions. Products can have multiple options
         which define the properties that Product Variants differ by.
       x-resourceId: product
+      type: object
       required:
         - title
         - profile_id
@@ -8537,6 +9259,62 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
+    publishable_api_key_sales_channel:
+      title: Publishable API key sales channel
+      description: Holds mapping between Publishable API keys and Sales Channels
+      x-resourceId: publishable_api_key_sales_channel
+      type: object
+      properties:
+        sales_channel_id:
+          type: string
+          description: The sales channel's ID
+          example: sc_01G1G5V21KADXNGH29BJMAJ4B4
+        publishable_key_id:
+          type: string
+          description: The publishable API key's ID
+          example: pak_01G1G5V21KADXNGH29BJMAJ4B4
+    publishable_api_key:
+      title: Publishable API key
+      description: >-
+        Publishable API key defines scopes (i.e. resources) that are available
+        within a request.
+      x-resourceId: publishable_api_key
+      type: object
+      properties:
+        id:
+          type: string
+          description: The key's ID
+          example: pk_01G1G5V27GYX4QXNARRQCW1N8T
+        created_by:
+          type: string
+          description: The unique identifier of the user that created the key.
+          example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
+        created_by_user:
+          description: >-
+            A user object. Available if the relation `created_by_user` is
+            expanded.
+          type: object
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        revoked_by:
+          type: string
+          description: The unique identifier of the user that revoked the key.
+          example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
+        revoked_by_user:
+          description: >-
+            A user object. Available if the relation `revoked_by_user` is
+            expanded.
+          type: object
+        revoked_at:
+          type: string
+          description: The date with timezone at which the key was revoked.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
     refund:
       title: Refund
       description: >-
@@ -8544,6 +9322,7 @@ components:
         a given reason. Refunds may occur in relation to Returns, Swaps and
         Claims, but can also be initiated by a store operator.
       x-resourceId: refund
+      type: object
       required:
         - order_id
         - amount
@@ -8610,6 +9389,7 @@ components:
         Region can consist of multiple countries to accomodate common shopping
         settings across countries.
       x-resourceId: region
+      type: object
       required:
         - name
         - currency_code
@@ -8714,6 +9494,7 @@ components:
         Correlates a Line Item with a Return, keeping track of the quantity of
         the Line Item that will be returned.
       x-resourceId: return_item
+      type: object
       required:
         - return_id
         - item_id
@@ -8772,6 +9553,7 @@ components:
         A Reason for why a given product is returned. A Return Reason can be
         used on Return Items in order to indicate why a Line Item was returned.
       x-resourceId: return_reason
+      type: object
       required:
         - value
         - label
@@ -8826,6 +9608,7 @@ components:
         to send back, along with how the items will be returned. Returns can be
         used as part of a Swap.
       x-resourceId: return
+      type: object
       required:
         - refund_amount
       properties:
@@ -8926,6 +9709,7 @@ components:
       title: Sales Channel
       description: A Sales Channel
       x-resourceId: sales_channel
+      type: object
       required:
         - name
       properties:
@@ -8961,6 +9745,7 @@ components:
       title: Shipping Method Tax Line
       description: Shipping Method Tax Line
       x-resourceId: shipping_method_tax_line
+      type: object
       required:
         - shipping_method_id
         - rate
@@ -9010,6 +9795,7 @@ components:
         contain additional details, that can be necessary for the Fulfillment
         Provider to handle the shipment.
       x-resourceId: shipping_method
+      type: object
       required:
         - shipping_option_id
         - price
@@ -9094,6 +9880,7 @@ components:
         A requirement that a Cart must satisfy for the Shipping Option to be
         available to the Cart.
       x-resourceId: shipping_option_requirement
+      type: object
       required:
         - shipping_option_id
         - type
@@ -9142,6 +9929,7 @@ components:
         Shipping Methods. This distinction makes it possible to customize
         individual Shipping Methods with additional information.
       x-resourceId: shipping_option
+      type: object
       required:
         - name
         - region_id
@@ -9248,6 +10036,7 @@ components:
         Shipping Profiles have a set of defined Shipping Options that can be
         used to fulfill a given set of Products.
       x-resourceId: shipping_profile
+      type: object
       required:
         - name
         - type
@@ -9311,6 +10100,7 @@ components:
         Associates a tax rate with a shipping option to indicate that the
         shipping option is taxed in a certain way
       x-resourceId: shipping_tax_rate
+      type: object
       required:
         - shipping_option_id
         - rate_id
@@ -9346,6 +10136,7 @@ components:
       title: Staged Job
       description: A staged job resource
       x-resourceId: staged_job
+      type: object
       required:
         - event_name
       properties:
@@ -9365,6 +10156,7 @@ components:
       title: Store
       description: 'Holds settings for the Store, such as name, currencies, etc.'
       x-resourceId: store
+      type: object
       properties:
         id:
           type: string
@@ -9432,6 +10224,7 @@ components:
         Products being returned exceed the amount to be paid for the new
         Products, a Refund will be issued for the difference.
       x-resourceId: swap
+      type: object
       required:
         - fulfillment_status
         - payment_status
@@ -9579,6 +10372,7 @@ components:
       title: Tax Line
       description: Line item that specifies an amount of tax to add to a line item.
       x-resourceId: tax_line
+      type: object
       required:
         - rate
         - name
@@ -9616,6 +10410,7 @@ components:
       title: Tax Provider
       description: The tax service used to calculate taxes
       x-resourceId: tax_provider
+      type: object
       properties:
         id:
           description: The id of the tax provider as given by the plugin.
@@ -9634,6 +10429,7 @@ components:
         A Tax Rate can be used to associate a certain rate to charge on products
         within a given Region
       x-resourceId: line_item
+      type: object
       required:
         - name
         - region_id
@@ -9717,6 +10513,7 @@ components:
         Fulfillment. Tracking Links can optionally contain a URL that can be
         visited to see the status of the shipment.
       x-resourceId: tracking_link
+      type: object
       required:
         - tracking_number
         - fulfillment_id
@@ -9770,6 +10567,7 @@ components:
       title: User
       description: Represents a User who can manage store settings.
       x-resourceId: user
+      type: object
       required:
         - email
       properties:
@@ -9813,6 +10611,7 @@ components:
     multiple_errors:
       title: Multiple Errors
       x-resourceId: multiple_errors
+      type: object
       properties:
         errors:
           type: array
@@ -9827,6 +10626,7 @@ components:
     error:
       title: Response Error
       x-resourceId: error
+      type: object
       properties:
         code:
           type: string
