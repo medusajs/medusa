@@ -50,7 +50,7 @@ Completes a cart.
 Payment authorization is attempted and if more work is required, we simply return the cart for further updates.
 If payment is authorized and order is not yet created, we make sure to do so.
 The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
-If not provuided, we will generate one for the request.
+If not provided, we will generate one for the request.
 
 #### Parameters
 
