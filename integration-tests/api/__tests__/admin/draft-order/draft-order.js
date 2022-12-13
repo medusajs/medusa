@@ -871,7 +871,7 @@ describe("/admin/draft-orders", () => {
       expect(dorder.cart.billing_address.first_name).toEqual("lebron")
       expect(dorder.cart.shipping_address.last_name).toEqual("james")
       expect(dorder.cart.discounts[0].code).toEqual("TEST")
-      expect(dorder.cart.subtotal).toEqual(7200)
+      expect(dorder.cart.total).toEqual(7200)
     })
 
     it("updates the draft order, removing discount", async () => {
