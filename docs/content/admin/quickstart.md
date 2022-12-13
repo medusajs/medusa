@@ -22,6 +22,12 @@ Instead of manually following this guide to install then later deploy the Medusa
 
 ## Install the Admin
 
+:::tip
+
+It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for the installation process as it's much faster than using NPM.
+
+:::
+
 Start by cloning the [Admin GitHub repository](https://github.com/medusajs/admin) and changing to the cloned directory:
 
 ```bash
@@ -43,7 +49,7 @@ Before running your Medusa admin, make sure that your Medusa server is running.
 
 To run your Medusa server, go to the directory holding the server and run:
 
-```bash npm2yarn noReport
+```bash npm2yarn
 npm run start
 ```
 
@@ -65,7 +71,7 @@ Use your Medusa admin’s user credentials to log in.
 
 If you installed the demo data when you installed the Medusa server by using the `--seed` option or running:
 
-```bash npm2yarn noReport
+```bash npm2yarn
 npm run seed
 ```
 
