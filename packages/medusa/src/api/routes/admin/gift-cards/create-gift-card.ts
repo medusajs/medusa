@@ -87,15 +87,14 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminPostGiftCardsReq, req.body)
-
+  const validatedBody: AdminPostGiftCardsReq = req.validatedBody
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   const newly = await manager.transaction(async (transactionManager) => {
     return await giftCardService.withTransaction(transactionManager).create({
-      ...validated,
-      balance: validated.value,
+      ...validatedBody,
+      balance: validatedBody.value,
     })
   })
 

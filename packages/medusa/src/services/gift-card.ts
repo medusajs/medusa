@@ -161,10 +161,12 @@ class GiftCardService extends TransactionBaseService {
 
       const code = GiftCardService.generateCode()
 
+      const taxRate = region.gift_cards_taxable ? region.tax_rate : null
       const toCreate = {
         code,
         ...giftCard,
         region_id: region.id,
+        tax_rate: taxRate,
       }
 
       const created = giftCardRepo.create(toCreate)
