@@ -2,7 +2,7 @@
 
 You add payment providers to your Medusa instance by adding them as plugins in `medusa-config.js`:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   ...
   // You can create a Stripe account via: https://stripe.com

@@ -1,5 +1,14 @@
 # Change Log
 
+## 4.0.0
+
+### Patch Changes
+
+- [#2771](https://github.com/medusajs/medusa/pull/2771) [`c2c38dd09`](https://github.com/medusajs/medusa/commit/c2c38dd091dd0938c8be63e515ccbc3158f72378) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - Adds appropriate optional type to several endpoint fields related to products. Also fixes the use of wrong payload type for `useAdminUpdateVariant` hook in `medusa-react`.
+
+- Updated dependencies [[`198fe78c1`](https://github.com/medusajs/medusa/commit/198fe78c138455f16d02406234fcfb05c4581372), [`72f70bc78`](https://github.com/medusajs/medusa/commit/72f70bc789e7c4a9df512745f7fc809595a3b503), [`e63777e3c`](https://github.com/medusajs/medusa/commit/e63777e3c52fe34ed502c3b0ceb82e3e1e993474), [`70a8d3450`](https://github.com/medusajs/medusa/commit/70a8d3450fb8551bb25a3e50be4ef74dc361c946), [`1b21af87a`](https://github.com/medusajs/medusa/commit/1b21af87ab80c18013f0f44434e59b873c2313aa), [`ed121922b`](https://github.com/medusajs/medusa/commit/ed121922b04e2e2af672fa6ab5ad69cd3cf17040), [`346461755`](https://github.com/medusajs/medusa/commit/3464617553770353a5d781caea8bdf880c72909f), [`e18b59de6`](https://github.com/medusajs/medusa/commit/e18b59de66ef52698d3f6b5ebec9f212a52fce02), [`42d9c7222`](https://github.com/medusajs/medusa/commit/42d9c7222b05ea231a920ea0694f6be8c13a956a), [`33aa3edb8`](https://github.com/medusajs/medusa/commit/33aa3edb805c217cf8e024af4c5be1835eb397dd), [`1dc816039`](https://github.com/medusajs/medusa/commit/1dc816039cdd332d50e3d979f78c5ee0f820db97), [`a6243618f`](https://github.com/medusajs/medusa/commit/a6243618fef5f9dd51ccba9e07e7849dd177202c), [`cb2a32a82`](https://github.com/medusajs/medusa/commit/cb2a32a82b2a4d89e57a120262a9eee002ee29a9), [`c2c38dd09`](https://github.com/medusajs/medusa/commit/c2c38dd091dd0938c8be63e515ccbc3158f72378), [`424efff91`](https://github.com/medusajs/medusa/commit/424efff91943dad3982b44a8549e828678c3e1b4), [`b2ea8b7d4`](https://github.com/medusajs/medusa/commit/b2ea8b7d45e91f671cd8c20fe9270c0e9c5f94cc), [`b5d6682db`](https://github.com/medusajs/medusa/commit/b5d6682db66a7e4f6729c24fbec075a2faef87c4), [`d68e81fb3`](https://github.com/medusajs/medusa/commit/d68e81fb3df116af70738eef93e227f41b72d80b)]:
+  - @medusajs/medusa@1.7.0
+
 ## 3.0.1
 
 ### Patch Changes

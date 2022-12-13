@@ -602,7 +602,7 @@ class ProductService extends TransactionBaseService {
       }
 
       for (const [key, value] of Object.entries(rest)) {
-        if (typeof value !== `undefined`) {
+        if (isDefined(value)) {
           product[key] = value
         }
       }

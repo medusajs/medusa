@@ -74,3 +74,8 @@ export type UpdateShippingOptionInput = {
   data?: string
   includes_tax?: boolean
 }
+
+export type ValidatePriceTypeAndAmountInput = {
+  amount?: number
+  price_type?: ShippingOptionPriceType
+}

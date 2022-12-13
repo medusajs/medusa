@@ -30,7 +30,7 @@ For the example in this tutorial, you can create the file `src/loaders/publish.t
 
 To create a cron job, add the following code in the file you created, which is `src/loaders/publish.ts` in this example:
 
-```ts
+```ts title=src/loaders/publish.ts
 const publishJob = async (container, options) => {
   const eventBus = container.resolve("eventBusService");
   eventBus.createCronJob("publish-products", {}, "0 0 * * *", async () => {
@@ -111,7 +111,7 @@ Once it is time to run your cron job based on the cron job expression pattern, t
 
 For example, the above cron job will run at 12 AM and, when it runs, you can see the following logged on your Medusa server:
 
-```bash noHeader
+```bash noReport
 info:    Processing cron job: publish-products
 ```
 
