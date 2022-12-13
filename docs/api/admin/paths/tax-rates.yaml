@@ -26,6 +26,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - code
             - name
@@ -78,6 +79,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               tax_rate:
                 $ref: ../components/schemas/tax_rate.yaml
@@ -192,6 +194,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               tax_rates:
                 type: array

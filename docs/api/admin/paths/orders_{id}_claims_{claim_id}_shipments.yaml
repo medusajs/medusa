@@ -20,6 +20,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - fulfillment_id
           properties:
@@ -53,6 +54,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               order:
                 $ref: ../components/schemas/order.yaml
