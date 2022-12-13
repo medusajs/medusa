@@ -1,6 +1,6 @@
 {
   "name": "integration-tests-plugins",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -9,11 +9,11 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
-    "@medusajs/medusa": "*",
+    "@medusajs/medusa": "1.7.0-alpha.0",
     "faker": "^5.5.3",
-    "medusa-fulfillment-webshipper": "*",
-    "medusa-interfaces": "*",
-    "medusa-plugin-sendgrid": "*",
+    "medusa-fulfillment-webshipper": "1.3.4-alpha.0",
+    "medusa-interfaces": "1.3.4-alpha.0",
+    "medusa-plugin-sendgrid": "1.3.4-alpha.0",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {

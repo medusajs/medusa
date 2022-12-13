@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.1.39-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [[`1b21af87a`](https://github.com/medusajs/medusa/commit/1b21af87ab80c18013f0f44434e59b873c2313aa)]:
+  - medusa-core-utils@1.1.36-alpha.0
+  - medusa-interfaces@1.3.4-alpha.0
+  - medusa-test-utils@1.1.38-alpha.0
+
 ## 1.1.38
 
 ### Patch Changes

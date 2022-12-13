@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.1.40-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [[`1b21af87a`](https://github.com/medusajs/medusa/commit/1b21af87ab80c18013f0f44434e59b873c2313aa)]:
+  - medusa-core-utils@1.1.36-alpha.0
+  - medusa-interfaces@1.3.4-alpha.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,25 +15,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-payment-adyen
 
-
-
-
-
 ## [1.1.38](https://github.com/medusajs/medusa/compare/medusa-payment-adyen@1.1.37...medusa-payment-adyen@1.1.38) (2021-12-29)
 
 **Note:** Version bump only for package medusa-payment-adyen
 
-
-
-
-
 ## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-payment-adyen@1.1.36...medusa-payment-adyen@1.1.37) (2021-12-17)
 
 **Note:** Version bump only for package medusa-payment-adyen
-
-
-
-
 
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-payment-adyen@1.1.35...medusa-payment-adyen@1.1.36) (2021-12-08)
 
