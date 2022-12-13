@@ -31,7 +31,6 @@ class SendGridService extends NotificationService {
       fulfillmentProviderService,
       totalsService,
       productVariantService,
-      paymentProviderService
     },
     options
   ) {
@@ -50,7 +49,6 @@ class SendGridService extends NotificationService {
     this.fulfillmentService_ = fulfillmentService
     this.totalsService_ = totalsService
     this.productVariantService_ = productVariantService
-    this.paymentProviderService = paymentProviderService
 
     SendGrid.setApiKey(options.api_key)
   }
