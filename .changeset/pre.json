@@ -43,6 +43,7 @@
     "medusa-test-utils": "1.1.37"
   },
   "changesets": [
-    "pink-dingos-jog"
+    "pink-dingos-jog",
+    "sharp-fireants-breathe"
   ]
 }

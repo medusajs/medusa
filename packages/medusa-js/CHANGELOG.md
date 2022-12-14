@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.5-hotfix-medusa-js.1
+
+### Patch Changes
+
+- [`83ae36285`](https://github.com/medusajs/medusa/commit/83ae3628532c82e329f36a1eaf901b7eaf5332a8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Move medusa from peerdeps to deps
+
 ## 1.3.5-hotfix-medusa-js.0
 
 ### Patch Changes
