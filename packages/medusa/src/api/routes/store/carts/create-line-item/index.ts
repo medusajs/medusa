@@ -1,6 +1,5 @@
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
-import { validator } from "../../../../../utils/validator"
 import {
   CreateLineItemSteps,
   handleAddOrUpdateLineItem,
@@ -72,7 +71,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const customerId: string | undefined = req.user?.customer_id
-  const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
+  const validated: StorePostCartsCartLineItemsReq = req.validatedBody
 
   const manager: EntityManager = req.scope.resolve("manager")
 

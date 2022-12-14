@@ -1,7 +1,6 @@
 import { IsObject } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
@@ -61,10 +60,7 @@ import { EntityManager } from "typeorm"
 export default async (req, res) => {
   const { id, provider_id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartPaymentSessionUpdateReq,
-    req.body
-  )
+  const validated: StorePostCartsCartPaymentSessionUpdateReq = req.validatedBody
 
   const cartService: CartService = req.scope.resolve("cartService")
 

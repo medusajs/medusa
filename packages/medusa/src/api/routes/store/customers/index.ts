@@ -10,6 +10,8 @@ import {
   defaultStoreOrdersRelations,
 } from "../orders"
 import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
+import { StorePostCustomersResetPasswordReq } from "./reset-password"
+import { StorePostCustomersCustomerPasswordTokenReq } from "./reset-password-token"
 
 const route = Router()
 
@@ -24,15 +26,21 @@ export default (app, container) => {
     route.use("/", router)
   }
 
-  route.post("/", middlewares.wrap(require("./create-customer").default))
+  route.post(
+    "/",
+    transformBody(StorePostCustomersReq),
+    middlewares.wrap(require("./create-customer").default)
+  )
 
   route.post(
     "/password-reset",
+    transformBody(StorePostCustomersResetPasswordReq),
     middlewares.wrap(require("./reset-password").default)
   )
 
   route.post(
     "/password-token",
+    transformBody(StorePostCustomersCustomerPasswordTokenReq),
     middlewares.wrap(require("./reset-password-token").default)
   )
 

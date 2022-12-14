@@ -3,7 +3,6 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /carts/{id}/line-items/{line_id}
@@ -60,10 +59,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id, line_id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartLineItemsItemReq,
-    req.body
-  )
+  const validated: StorePostCartsCartLineItemsItemReq = req.validatedBody
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")

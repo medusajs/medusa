@@ -1,6 +1,5 @@
 import CustomerService from "../../../../services/customer"
 import { IsEmail } from "class-validator"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
@@ -62,10 +61,8 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = (await validator(
-    StorePostCustomersCustomerPasswordTokenReq,
-    req.body
-  )) as StorePostCustomersCustomerPasswordTokenReq
+  const validated: StorePostCustomersCustomerPasswordTokenReq =
+    req.validatedBody
 
   const customerService: CustomerService = req.scope.resolve(
     "customerService"

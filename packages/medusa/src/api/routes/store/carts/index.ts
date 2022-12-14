@@ -13,6 +13,11 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { StorePostCartsCartLineItemsReq } from "./create-line-item"
+import { StorePostCartsCartLineItemsItemReq } from "./update-line-item"
+import { StorePostCartsCartPaymentSessionUpdateReq } from "./update-payment-session"
+import { StorePostCartsCartPaymentSessionReq } from "./set-payment-session"
+import { StorePostCartsCartShippingMethodReq } from "./add-shipping-method"
 
 const route = Router()
 
@@ -71,7 +76,9 @@ export default (app, container) => {
     middlewares.wrap(require("./complete-cart").default)
   )
 
-  // DEPRECATION
+  /**
+   * @deprecated
+   */
   route.post(
     "/:id/complete-cart",
     middlewares.wrap(require("./complete-cart").default)
@@ -80,10 +87,12 @@ export default (app, container) => {
   // Line items
   route.post(
     "/:id/line-items",
+    transformBody(StorePostCartsCartLineItemsReq),
     middlewares.wrap(require("./create-line-item").default)
   )
   route.post(
     "/:id/line-items/:line_id",
+    transformBody(StorePostCartsCartLineItemsItemReq),
     middlewares.wrap(require("./update-line-item").default)
   )
   route.delete(
@@ -104,6 +113,7 @@ export default (app, container) => {
 
   route.post(
     "/:id/payment-sessions/:provider_id",
+    transformBody(StorePostCartsCartPaymentSessionUpdateReq),
     middlewares.wrap(require("./update-payment-session").default)
   )
 
@@ -119,12 +129,14 @@ export default (app, container) => {
 
   route.post(
     "/:id/payment-session",
+    transformBody(StorePostCartsCartPaymentSessionReq),
     middlewares.wrap(require("./set-payment-session").default)
   )
 
   // Shipping Options
   route.post(
     "/:id/shipping-methods",
+    transformBody(StorePostCartsCartShippingMethodReq),
     middlewares.wrap(require("./add-shipping-method").default)
   )
 

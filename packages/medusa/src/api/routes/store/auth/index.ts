@@ -1,6 +1,7 @@
 import { Router } from "express"
-import middlewares from "../../../middlewares"
+import middlewares, { transformBody } from "../../../middlewares"
 import { Customer } from "./../../../.."
+import { StorePostAuthReq } from "./create-session"
 
 const route = Router()
 
@@ -13,7 +14,11 @@ export default (app) => {
     middlewares.wrap(require("./get-session").default)
   )
   route.get("/:email", middlewares.wrap(require("./exists").default))
-  route.delete("/", middlewares.wrap(require("./delete-session").default))
+  route.delete(
+    "/",
+    transformBody(StorePostAuthReq),
+    middlewares.wrap(require("./delete-session").default)
+  )
   route.post("/", middlewares.wrap(require("./create-session").default))
 
   return app

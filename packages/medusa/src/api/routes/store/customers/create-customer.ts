@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken"
 import { EntityManager } from "typeorm"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers
@@ -108,7 +107,7 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StorePostCustomersReq, req.body)
+  const validated: StorePostCustomersReq = req.validatedBody
 
   const customerService: CustomerService = req.scope.resolve("customerService")
   const manager: EntityManager = req.scope.resolve("manager")

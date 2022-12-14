@@ -2,7 +2,6 @@ import { IsEmail, IsString } from "class-validator"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
@@ -81,10 +80,7 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = (await validator(
-    StorePostCustomersResetPasswordReq,
-    req.body
-  )) as StorePostCustomersResetPasswordReq
+  const validated: StorePostCustomersResetPasswordReq = req.validatedBody
 
   const customerService: CustomerService = req.scope.resolve("customerService")
   let customer = await customerService.retrieveRegisteredByEmail(
