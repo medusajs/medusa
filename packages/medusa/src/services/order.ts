@@ -697,7 +697,7 @@ class OrderService extends TransactionBaseService {
         [
           cart.items.map((lineItem) => {
             return [
-              lineItem.is_giftcard ?? this.createGiftCardsFromLineItem_(order, lineItem),
+              (lineItem.is_giftcard) ? this.createGiftCardsFromLineItem_(order, lineItem) : null,
               lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
               inventoryServiceTx.adjustInventory(
                 lineItem.variant_id,
@@ -737,16 +737,20 @@ class OrderService extends TransactionBaseService {
     // additional type safety/strictness
     if (!lineItem.subtotal || !lineItem.quantity) return createGiftCardPromises
 
+    // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
+    // We divide here by quantity to get the value of the product/variant as a lineItem
+    // contains quantity. The subtotal is multiplicative of pure price per product and quantity
+    const taxExclusivePrice = lineItem.subtotal / lineItem.quantity
     // The tax_lines contains all the taxes that is applicable on the purchase of the gift card
     // On utilizing the gift card, the same set of taxRate will apply to gift card
     // We calculate the summation of all taxes and add that as a snapshot in the giftcard.tax_rate column
-    const giftCardTaxRate = lineItem.tax_lines.reduce((sum, taxLine) => sum + (taxLine.rate / 100), 0)
+    const giftCardTaxRate = lineItem.tax_lines.reduce(
+      (sum, taxLine) => sum + Math.round(
+        taxExclusivePrice * (taxLine.rate / 100)
+      ), 0
+    )
 
     for (let qty = 0; qty < lineItem.quantity; qty++) {
-      // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
-      // We divide here by quantity to get the value of the product/variant as a lineItem
-      // contains quantity and subtotal is multiplicative of pure price * quantity
-      const taxExclusivePrice = lineItem.subtotal / lineItem.quantity
       const createGiftCardPromise = this.giftCardService_.create({
         region_id: order.region_id,
         order_id: order.id,
