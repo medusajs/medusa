@@ -48,6 +48,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               currencies:
                 type: array

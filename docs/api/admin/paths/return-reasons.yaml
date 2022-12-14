@@ -7,6 +7,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - label
             - value
@@ -48,6 +49,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               return_reason:
                 $ref: ../components/schemas/return_reason.yaml
@@ -88,6 +90,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               return_reasons:
                 type: array

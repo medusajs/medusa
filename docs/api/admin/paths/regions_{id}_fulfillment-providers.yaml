@@ -14,6 +14,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - provider_id
           properties:
@@ -41,6 +42,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               region:
                 $ref: ../components/schemas/region.yaml

@@ -4,6 +4,8 @@
 
 - [ShippingAddressPayload](../classes/internal-41.ShippingAddressPayload.md)
 - [StoreGetOrdersParams](../classes/internal-41.StoreGetOrdersParams.md)
+- [StorePostCustomersCustomerAcceptClaimReq](../classes/internal-41.StorePostCustomersCustomerAcceptClaimReq.md)
+- [StorePostCustomersCustomerOrderClaimReq](../classes/internal-41.StorePostCustomersCustomerOrderClaimReq.md)
 
 ## Type Aliases
 

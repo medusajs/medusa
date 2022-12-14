@@ -30,6 +30,10 @@ details summary {
   width: 50%;
 }
 
+.reference-table .tooltip-container code {
+  white-space: nowrap;
+}
+
 .reference-table .theme-code-block span {
   max-width: 100%;
   word-break: break-word;

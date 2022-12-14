@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-payment-session.d.ts:57
+medusa/dist/api/routes/store/carts/update-payment-session.d.ts:58

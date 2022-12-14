@@ -152,7 +152,7 @@ console.log("hello")
 ```
 ~~~
 
-### Remove Report Buttons
+### Remove Report Button
 
 Some code block don't need a report button. To remove the report button, use the `noReport` metadata.
 
@@ -160,6 +160,18 @@ For example:
 
 ~~~md
 ```bash noReport
+medusa new my-medusa-store --seed
+```
+~~~
+
+### Remove Copy Button
+
+Some code blocks don't need a copy button. To remove the copy button, use the `noCopy` metadata:
+
+For example:
+
+~~~md
+```bash noCopy
 medusa new my-medusa-store --seed
 ```
 ~~~
