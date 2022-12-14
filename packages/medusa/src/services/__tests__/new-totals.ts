@@ -529,7 +529,7 @@ describe("New totals service", () => {
         )
       })
 
-      it("should compute the gift cards totals amount if gift cards have a tax rate", async () => {
+      it("should compute the gift cards totals amount using the gift card tax rate", async () => {
         const maxAmount = 1000
 
         const testGiftCard = giftCardsWithTaxRate[0]

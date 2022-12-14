@@ -36,15 +36,20 @@ class OrderSubscriber {
     })
 
     await Promise.all(
-      order.items.map(async (i) => {
-        if (i.is_giftcard) {
-          for (let qty = 0; qty < i.quantity; qty++) {
+      order.items.map(async (lineItem) => {
+        if (lineItem.is_giftcard) {
+          for (let qty = 0; qty < lineItem.quantity; qty++) {
+            // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
+            // We divide here by quantity to get the value of the product/variant as a lineItem
+            // contains quantity and subtotal is multiplicative of pure price * quantity
+            const taxExclusivePrice = lineItem.subtotal / lineItem.quantity
+
             await this.giftCardService_.create({
               region_id: order.region_id,
               order_id: order.id,
-              value: i.unit_price,
-              balance: i.subtotal / i.quantity,
-              metadata: i.metadata,
+              value: taxExclusivePrice,
+              balance: taxExclusivePrice,
+              metadata: lineItem.metadata,
             })
           }
         }

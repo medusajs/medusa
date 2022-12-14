@@ -661,29 +661,32 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      let gcBalance =
+      const giftCardableAmount =
         (cart.region?.gift_cards_taxable
           ? cart.subtotal! - cart.discount_total!
           : cart.total! + cart.gift_card_total!) || 0 // we re add the gift card total to compensate the fact that the decorate total already removed this amount from the total
-      const gcService = this.giftCardService_.withTransaction(manager)
+
+      let giftCardableAmountBalance = giftCardableAmount
+      const giftCardService = this.giftCardService_.withTransaction(manager)
 
       for (const giftCard of cart.gift_cards) {
-        const newBalance = Math.max(0, giftCard.balance - gcBalance)
-        const usage = giftCard.balance - newBalance
-        await gcService.update(giftCard.id, {
-          balance: newBalance,
-          is_disabled: newBalance === 0,
+        const newGiftCardBalance = Math.max(0, giftCard.balance - giftCardableAmountBalance)
+        const giftCardBalanceUsed = giftCard.balance - newGiftCardBalance
+
+        await giftCardService.update(giftCard.id, {
+          balance: newGiftCardBalance,
+          is_disabled: newGiftCardBalance === 0,
         })
 
-        await gcService.createTransaction({
+        await giftCardService.createTransaction({
           gift_card_id: giftCard.id,
           order_id: order.id,
-          amount: usage,
+          amount: giftCardBalanceUsed,
           is_taxable: !!giftCard.tax_rate,
           tax_rate: giftCard.tax_rate
         })
 
-        gcBalance = gcBalance - usage
+        giftCardableAmountBalance = giftCardableAmountBalance - giftCardBalanceUsed
       }
 
       const shippingOptionServiceTx =

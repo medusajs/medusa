@@ -8,6 +8,7 @@ export type GiftCardFactoryData = {
   region_id: string
   value: number
   balance: number
+  tax_rate?: number
 }
 
 export const simpleGiftCardFactory = async (
