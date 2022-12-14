@@ -5,6 +5,7 @@ description: >-
   order and can eventually be referenced in Fulfillments and Returns. Line Items
   may also be created when processing Swaps and Claims.
 x-resourceId: line_item
+type: object
 required:
   - title
   - unit_price

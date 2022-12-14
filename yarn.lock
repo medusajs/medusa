@@ -4413,6 +4413,8 @@ __metadata:
     qs: ^6.10.3
     retry-axios: ^2.6.0
     typescript: ^4.1.3
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.0
   languageName: unknown
   linkType: soft
 

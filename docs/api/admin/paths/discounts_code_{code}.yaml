@@ -40,6 +40,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               discount:
                 $ref: ../components/schemas/discount.yaml

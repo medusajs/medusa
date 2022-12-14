@@ -18,6 +18,12 @@ This document assumes you already have a Medusa server installed. If you don’t
 
 ## Installation
 
+:::tip
+
+It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for the installation process as it's much faster than using NPM.
+
+:::
+
 1\. Create a new Next.js project using the [Medusa starter template](https://github.com/medusajs/nextjs-starter-medusa):
 
 ```bash

@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/notes/update-note.d.ts:71
+medusa/dist/api/routes/admin/notes/update-note.d.ts:73

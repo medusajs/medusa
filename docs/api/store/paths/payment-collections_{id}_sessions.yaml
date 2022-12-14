@@ -1,0 +1,58 @@
+post:
+  operationId: PostPaymentCollectionsSessions
+  summary: Manage Payment Sessions from Payment Collections
+  description: Manages Payment Sessions from Payment Collections.
+  x-authenticated: false
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Payment Collection.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+            - provider_id
+          properties:
+            provider_id:
+              type: string
+              description: The ID of the Payment Provider.
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/payment-collections_{id}_sessions/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/payment-collections_{id}_sessions/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Payment
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            properties:
+              payment_collection:
+                $ref: ../components/schemas/payment_collection.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
