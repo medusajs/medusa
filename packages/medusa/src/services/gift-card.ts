@@ -3,7 +3,7 @@ import randomize from "randomatic"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
 import { TransactionBaseService } from "../interfaces"
-import { GiftCard } from "../models"
+import { GiftCard, Region } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { GiftCardTransactionRepository } from "../repositories/gift-card-transaction"
 import {
@@ -160,8 +160,7 @@ class GiftCardService extends TransactionBaseService {
         .retrieve(giftCard.region_id)
 
       const code = GiftCardService.generateCode()
-
-      const taxRate = region.gift_cards_taxable ? region.tax_rate : null
+      const taxRate = this.computeTaxRateForGiftCard_(giftCard.tax_rate, region)
       const toCreate = {
         code,
         ...giftCard,
@@ -180,6 +179,19 @@ class GiftCardService extends TransactionBaseService {
 
       return result
     })
+  }
+
+  protected computeTaxRateForGiftCard_(giftCardTaxRate: number | null, region: Region): number | null {
+    // If a tax rate has been provided as an input from an external input, use that
+    // This would handle cases where gift cards are created as a part of an order where taxes better defined
+    // or to handle usecases outside of the opinions of the core.
+    if (giftCardTaxRate) {
+      return giftCardTaxRate
+    }
+
+    // Outside the context of the taxRate input, the gift card checks if the region taxes gift cards
+    // if so, it adds the region tax rate.
+    return region.gift_cards_taxable ? region.tax_rate : null
   }
 
   protected async retrieve_(

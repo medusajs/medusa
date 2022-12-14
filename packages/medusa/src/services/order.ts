@@ -18,6 +18,7 @@ import {
   Return,
   Swap,
   TrackingLink,
+  GiftCard,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
@@ -550,7 +551,7 @@ class OrderService extends TransactionBaseService {
 
       const cart = isString(cartOrId)
         ? await cartServiceTx.retrieveWithTotals(cartOrId, {
-            relations: ["region", "payment"],
+            relations: ["region", "payment", "items"],
           })
         : cartOrId
 
@@ -564,10 +565,10 @@ class OrderService extends TransactionBaseService {
       const { payment, region, total } = cart
 
       await Promise.all(
-        cart.items.map(async (item) => {
+        cart.items.map(async (lineItem) => {
           return await inventoryServiceTx.confirmInventory(
-            item.variant_id,
-            item.quantity
+            lineItem.variant_id,
+            lineItem.quantity
           )
         })
       ).catch(async (err) => {
@@ -695,12 +696,13 @@ class OrderService extends TransactionBaseService {
 
       await Promise.all(
         [
-          cart.items.map((item) => {
+          cart.items.map((lineItem) => {
             return [
-              lineItemServiceTx.update(item.id, { order_id: order.id }),
+              lineItem.is_giftcard ?? this.createGiftCardsFromLineItem_(order, lineItem),
+              lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
               inventoryServiceTx.adjustInventory(
-                item.variant_id,
-                -item.quantity
+                lineItem.variant_id,
+                -lineItem.quantity
               ),
             ]
           }),
@@ -727,6 +729,28 @@ class OrderService extends TransactionBaseService {
 
       return order
     })
+  }
+
+  protected async createGiftCardsFromLineItem_(order: Order, lineItem: LineItem): Promise<GiftCard[]> {
+    const createGiftCardPromises = []
+
+    for (let qty = 0; qty < lineItem.quantity; qty++) {
+      // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
+      // We divide here by quantity to get the value of the product/variant as a lineItem
+      // contains quantity and subtotal is multiplicative of pure price * quantity
+      const taxExclusivePrice = lineItem.subtotal / lineItem.quantity
+      const createGiftCardPromise = this.giftCardService_.create({
+        region_id: order.region_id,
+        order_id: order.id,
+        value: taxExclusivePrice,
+        balance: taxExclusivePrice,
+        metadata: lineItem.metadata,
+      })
+
+      createGiftCardPromises.push(createGiftCardPromise)
+    }
+
+    return createGiftCardPromises
   }
 
   /**

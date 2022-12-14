@@ -532,7 +532,9 @@ export default class NewTotalsService extends TransactionBaseService {
         //
         // This is a backwards compatability fix for orders that were created
         // before we added the gift card tax rate.
-        // TODO: Check if this needs to be switched to giftCard.tax_rate as well
+        // We prioritize the giftCard.tax_rate as we create a snapshot of the tax
+        // on order creation to create gift cards on the gift card itself.
+        // If its created outside of the order, we refer to the region tax
         if (next.is_taxable === null) {
           if (region?.gift_cards_taxable || next.gift_card?.tax_rate) {
             taxMultiplier = (next.gift_card?.tax_rate ?? region.tax_rate) / 100

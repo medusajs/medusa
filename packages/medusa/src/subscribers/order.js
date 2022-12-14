@@ -31,30 +31,8 @@ class OrderSubscriber {
 
   handleOrderPlaced = async (data) => {
     const order = await this.orderService_.retrieveWithTotals(data.id, {
-      select: ["subtotal"],
-      relations: ["discounts", "discounts.rule", "items", "gift_cards"],
+      relations: ["discounts", "discounts.rule"],
     })
-
-    await Promise.all(
-      order.items.map(async (lineItem) => {
-        if (lineItem.is_giftcard) {
-          for (let qty = 0; qty < lineItem.quantity; qty++) {
-            // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
-            // We divide here by quantity to get the value of the product/variant as a lineItem
-            // contains quantity and subtotal is multiplicative of pure price * quantity
-            const taxExclusivePrice = lineItem.subtotal / lineItem.quantity
-
-            await this.giftCardService_.create({
-              region_id: order.region_id,
-              order_id: order.id,
-              value: taxExclusivePrice,
-              balance: taxExclusivePrice,
-              metadata: lineItem.metadata,
-            })
-          }
-        }
-      })
-    )
 
     await Promise.all(
       order.discounts.map(async (d) => {
