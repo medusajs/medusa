@@ -730,8 +730,12 @@ class OrderService extends TransactionBaseService {
     })
   }
 
-  protected async createGiftCardsFromLineItem_(order: Order, lineItem: LineItem): Promise<GiftCard[]> {
-    const createGiftCardPromises = []
+  protected async createGiftCardsFromLineItem_(order: Order, lineItem: LineItem): Promise<Promise<GiftCard>[]> {
+    const createGiftCardPromises: Promise<GiftCard>[] = []
+
+    // LineItem type doesn't promise either the subtotal or quantity. Adding a check here provides
+    // additional type safety/strictness
+    if (!lineItem.subtotal || !lineItem.quantity) return createGiftCardPromises
 
     for (let qty = 0; qty < lineItem.quantity; qty++) {
       // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
