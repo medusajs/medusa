@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customers/update-customer.d.ts:98
+medusa/dist/api/routes/admin/customers/update-customer.d.ts:100

@@ -1,4 +1,4 @@
-# Events List
+# Events Reference
 
 This document details all events in Medusa, when they are triggered, and what data your handler method will receive when the event is triggered.
 
@@ -45,7 +45,7 @@ Triggered when a batch job is created.
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of batch job
 }
@@ -66,7 +66,7 @@ Triggered when a batch job is updated.
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of batch job
 }
@@ -87,7 +87,7 @@ Triggered when a batch job is canceled.
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of batch job
 }
@@ -110,7 +110,7 @@ Triggered after the `preProcessBatchJob` of a batch job stategy is done executin
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of batch job
 }
@@ -133,7 +133,7 @@ Triggered after the batch job is done pre-processing and the batch job is not in
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of batch job
 }
@@ -154,7 +154,7 @@ Triggered when a batch job starts processing after it's confirmed.
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of batch job
 }
@@ -175,7 +175,7 @@ Triggered when a batch job is done processing and is completed.
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of batch job
 }
@@ -196,7 +196,7 @@ Triggered when an error occurs while running a batch job and the batch job fails
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of batch job
 }
@@ -254,7 +254,7 @@ Triggered when a cart is created.
 <td>
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of cart
 }
@@ -319,7 +319,7 @@ Triggered when a claim is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of claim
   no_notification //boolean indicating whether a notification should be sent or not
@@ -344,7 +344,7 @@ Triggered when a claim is updated.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of claim
   no_notification //boolean indicating whether a notification should be sent or not
@@ -369,7 +369,7 @@ Triggered when a claim is canceled.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of claim
   no_notification //boolean indicating whether a notification should be sent or not
@@ -394,7 +394,7 @@ Triggered when fulfillment is created for a claim.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of claim
   fulfillment_id, //string ID of the fulfillment created
@@ -420,7 +420,7 @@ Triggered when a claim fulfillment is set as “shipped”.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of claim
   fulfillment_id, //string ID of the fulfillment created
@@ -446,7 +446,7 @@ Triggered when a claim of type “refunded” has been refunded.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of claim
   no_notification //boolean indicating whether a notification should be sent or not
@@ -493,7 +493,7 @@ Triggered when claim items are created and associated with a claim. This happens
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of claim item
 }
@@ -517,7 +517,7 @@ Triggered when a claim item is updated. This happens when a claim is updated.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of claim item
 }
@@ -541,9 +541,55 @@ Triggered when a claim is canceled.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of claim item
+}
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+## Currency Events
+
+This section holds all events related to currencies.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`currency.updated`
+
+</td>
+<td>
+
+Triggered when a currency is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  code //string 3 character ISO code of the updated currency.
 }
 ```
 
@@ -623,7 +669,7 @@ Triggered when a customer requests to reset their password.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of customer
   email, //string email of the customer
@@ -673,7 +719,7 @@ Triggered when a draft order is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of draft order
 }
@@ -697,7 +743,7 @@ Triggered when a draft order and data associated with it (email, billing address
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of draft order
 }
@@ -790,7 +836,7 @@ Triggered when an invite is created for a user to join the admin team.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of invite
   token, //string token generated to validate the invited user
@@ -837,7 +883,7 @@ Triggered when a note is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of note
 }
@@ -861,7 +907,7 @@ Triggered when a note is updated.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of note
 }
@@ -885,7 +931,7 @@ Triggered when a note is deleted.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of note
 }
@@ -996,7 +1042,7 @@ Triggered when a new order is placed.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   no_notification //boolean indicating whether a notification should be sent or not
@@ -1021,7 +1067,7 @@ Triggered when an order and data associated with it (shipping method, shipping a
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   no_notification //(optional) boolean indicating whether a notification should be sent or not
@@ -1046,7 +1092,7 @@ Triggered when an order is canceled.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   no_notification //boolean indicating whether a notification should be sent or not
@@ -1071,10 +1117,34 @@ Triggered when an order is completed.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   no_notification //boolean indicating whether a notification should be sent or not
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`order.orders_claimed`
+
+</td>
+<td>
+
+Triggered when an order is claimed.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, //string ID of order
 }
 ```
 
@@ -1096,7 +1166,7 @@ Triggered when a gift card in an order is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of order
 }
@@ -1120,7 +1190,7 @@ Triggered when the payment of an order is captured.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   no_notification //boolean indicating whether a notification should be sent or not
@@ -1145,7 +1215,7 @@ Triggered when capturing the payment of an order fails.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   payment_id, //string ID of Payment
@@ -1172,7 +1242,7 @@ Triggered when fulfillment is created for an order.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   fulfillment_id, //string ID of fulfillment
@@ -1198,7 +1268,7 @@ Triggered when a shipment is created for fulfillment and the fulfillment is regi
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   fulfillment_id, //string ID of fulfillment
@@ -1224,7 +1294,7 @@ Triggered when fulfillment of an order is canceled.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   fulfillment_id, //string ID of fulfillment
@@ -1250,7 +1320,7 @@ Triggered when a return of an order is requested.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   return_id, //string ID of return
@@ -1276,7 +1346,7 @@ Triggered when the items of an order have been returned and the order has been r
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   return_id, //string ID of return
@@ -1302,7 +1372,7 @@ Triggered when the order is being registered as “returned” but there are add
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   return_id, //string ID of return
@@ -1328,7 +1398,7 @@ Triggered when the order’s payment is refunded.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
   refund_id, //string ID of refund
@@ -1354,7 +1424,7 @@ Triggered when the refund of the order’s payment fails.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
 }
@@ -1378,11 +1448,505 @@ Triggered when a swap for an order is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of order
 }
 ```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+## Order Edit Events
+
+This section holds all events related to order edits.
+
+:::note
+
+As of Medusa v1.3.9, Order Edits are available but guarded by a feature flag. To use Order Edits either:
+
+1. Enable the `MEDUSA_FF_ORDER_EDITING` environment variable;
+2. Or enable the `order_editing` key in the Medusa server's settings.
+
+You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
+
+:::
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`order-edit.created`
+
+</td>
+<td>
+
+Triggered when a order edit is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, //string ID of order edit
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`order-edit.updated`
+
+</td>
+<td>
+
+Triggered when an order edit is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, //string ID of order edit
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`order-edit.canceled`
+
+</td>
+<td>
+
+Triggered when an order edit is canceled.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, //string ID of order edit
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`order-edit.declined`
+
+</td>
+<td>
+
+Triggered when an order edit is declined.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, //string ID of order edit
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`order-edit.requested`
+
+</td>
+<td>
+
+Triggered when an order edit is requested.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id //string ID of order edit
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`order-edit.confirmed`
+
+</td>
+<td>
+
+Triggered when an order edit is confirmed.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, //string ID of order edit
+}
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+## Order Edit Item Changes Events
+
+This section holds all events related to order edit item changes.
+
+:::note
+
+As of Medusa v1.3.9, Order Edits are available but guarded by a feature flag. To use Order Edits either:
+
+1. Enable the `MEDUSA_FF_ORDER_EDITING` environment variable;
+2. Or enable the `order_editing` key in the Medusa server's settings.
+
+You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
+
+:::
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`order-edit-item-change.CREATED`
+
+</td>
+<td>
+
+Triggered when an order edit item change is created.
+
+</td>
+<td>
+
+```js noReport noCopy
+{
+  id //string ID of item change
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`order-edit-item-change.DELETED`
+
+</td>
+<td>
+
+Triggered when an order edit item change is deleted.
+
+</td>
+<td>
+
+```js noReport noCopy
+{
+  id //string ID of item change
+}
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+## Payment Events
+
+This section holds all events related to payment.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+`payment.created`
+
+</td>
+<td>
+
+Triggered when a payment is created.
+
+</td>
+<td>
+
+The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`payment.updated`
+
+</td>
+<td>
+
+Triggered when a payment is updated.
+
+</td>
+<td>
+
+The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`payment.payment_captured`
+
+</td>
+<td>
+
+Triggered when a payment is captured.
+
+</td>
+<td>
+
+The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`payment.payment_capture_failed`
+
+</td>
+<td>
+
+Triggered when the capturing of a payment fails.
+
+</td>
+<td>
+
+The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+
+In addition, an error object is passed within the same object as the Payment provider:
+
+```js noReport noCopy
+{
+  id, //string ID of payment
+  //... other payment fields
+  error: {
+    name, //string
+    nessage, //string
+    stack, //(optional) string
+  }
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`payment.payment_refund_created`
+
+</td>
+<td>
+
+Triggered when a refund of a payment is created.
+
+</td>
+<td>
+
+The entire refund passed as an object. You can refer to the [Refund entity](../../../references/entities/classes/Refund.md) for an idea of what fields to expect.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`payment.payment_refund_failed`
+
+</td>
+<td>
+
+Triggered when a payment's refund fails.
+
+</td>
+<td>
+
+The entire payment passed as an object. You can refer to the [Payment entity](../../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+## Payment Collection Events
+
+This section holds all events related to payment collections.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+`payment-collection.created`
+
+</td>
+<td>
+
+Triggered when a payment collection is created.
+
+</td>
+<td>
+
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`payment-collection.updated`
+
+</td>
+<td>
+
+Triggered when a payment collection is update.
+
+</td>
+<td>
+
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`payment-collection.deleted`
+
+</td>
+<td>
+
+Triggered when a payment collection is deleted.
+
+</td>
+<td>
+
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`payment-collection.payment_authorized`
+
+</td>
+<td>
+
+Triggered when a payment collection is either marked authorized or its payment session is authorized.
+
+</td>
+<td>
+
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1425,7 +1989,7 @@ Triggered when a product is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of product
 }
@@ -1447,11 +2011,11 @@ Triggered when a product and data associated with it (options, variant orders, e
 </td>
 <td>
 
-The entire product passed as an object. You can refer to the [Product entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/product.ts) for an idea of what fields to expect.
+The entire product passed as an object. You can refer to the [Product entity](../../../references/entities/classes/Product.md) for an idea of what fields to expect.
 
 In one case, when the `/admin/products/{id}` endpoint is used to update the product, the payload is an object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //id of product
   fields //an array of field names that were updated
@@ -1476,7 +2040,7 @@ Triggered when a product is deleted.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of product
 }
@@ -1522,7 +2086,7 @@ Triggered when a product variant is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of variant
   product_id //string ID of product
@@ -1547,7 +2111,7 @@ Triggered when a product variant is updated.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of variant
   product_id, //string ID of product
@@ -1573,11 +2137,93 @@ Triggered when a product variant is deleted.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of variant
   product_id, //string ID of product
   metadata //object of the `metadata` field of the variant
+}
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+## Publishable API Key Events
+
+This section holds all events related to publishable API keys.
+
+:::note
+
+As of Medusa v1.6.3, Publishable API Keys are available but guarded by a feature flag. To use Publishable API Keys either:
+
+1. Enable the `MEDUSA_FF_PUBLISHABLE_API_KEYS` environment variable;
+2. Or enable the `publishable_api_keys` key in the Medusa server's settings.
+
+You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
+
+:::
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+`publishable_api_key.created`
+
+</td>
+<td>
+
+Triggered when a publishable API key is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id //string ID of publishable API key
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`publishable_api_key.revoked`
+
+</td>
+<td>
+
+Triggered when a publishable API key is revoked.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id //string ID of publishable API key
 }
 ```
 
@@ -1621,7 +2267,7 @@ Triggered when a region is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of region
 }
@@ -1645,7 +2291,7 @@ Triggered when a region or data associated with it (countries, fulfillment provi
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of region
   fields //array of names of updated fields
@@ -1670,7 +2316,7 @@ Triggered when a region is deleted.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of region
 }
@@ -1726,7 +2372,7 @@ Triggered when a sales channel is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of sales channel
 }
@@ -1750,7 +2396,7 @@ Triggered when a sales channel is updated
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of sales channel
 }
@@ -1774,7 +2420,7 @@ Triggered when a sales channel is deleted.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of sales channel
 }
@@ -1819,7 +2465,7 @@ Triggered when a swap is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   no_notification //boolean indicating whether a notification should be sent or not
@@ -1844,7 +2490,7 @@ Triggered when a swap is registered as received.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   order_id, //string ID of order
@@ -1870,7 +2516,7 @@ Triggered when fulfillment is created for a swap.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   fulfillment_id, //string ID of fulfillment
@@ -1896,7 +2542,7 @@ Triggered when a shipment is created for a swap and the fulfillment associated w
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   fulfillment_id, //string ID of fulfillment
@@ -1922,7 +2568,7 @@ Triggered when payment is completed for a swap which happens when the cart assoc
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   no_notification //boolean indicating whether a notification should be sent or not
@@ -1947,7 +2593,7 @@ Triggered when the payment is captured for a swap.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   no_notification //boolean indicating whether a notification should be sent or not
@@ -1972,7 +2618,7 @@ Triggered when the capturing of the payment of a swap fails.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   no_notification //boolean indicating whether a notification should be sent or not
@@ -1997,7 +2643,7 @@ Triggered when a swap’s amount difference is processed and refunded.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   no_notification //boolean indicating whether a notification should be sent or not
@@ -2022,7 +2668,7 @@ Triggered when processing and refunding a swap’s amount difference fails.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id, //string ID of swap
   no_notification //boolean indicating whether a notification should be sent or not
@@ -2069,7 +2715,7 @@ Triggered when a user is created.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of user
 }
@@ -2093,7 +2739,7 @@ Triggered when a user is updated.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of user
 }
@@ -2117,7 +2763,7 @@ Triggered when a user requests to reset their password.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   email, //string email of user requesting to reset their password
   token //token create to reset the password
@@ -2142,7 +2788,7 @@ Triggered when a user is deleted.
 
 Object of the following format:
 
-```js
+```js noReport noCopy
 {
   id //string ID of user
 }

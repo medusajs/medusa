@@ -30,6 +30,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customers:
                 type: array

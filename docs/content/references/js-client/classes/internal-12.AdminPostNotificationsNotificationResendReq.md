@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/notifications/resend-notification.d.ts:63
+medusa/dist/api/routes/admin/notifications/resend-notification.d.ts:65

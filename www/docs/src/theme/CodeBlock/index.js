@@ -17,7 +17,7 @@ function maybeStringifyChildren(children) {
   // The children is now guaranteed to be one/more plain strings
   return Array.isArray(children) ? children.join('') : children;
 }
-export default function CodeBlock({children: rawChildren, noReport = false, ...props}) {
+export default function CodeBlock({children: rawChildren, noReport = false, noCopy = false, ...props}) {
   // The Prism theme on SSR is always the default theme but the site theme can
   // be in a different mode. React hydration doesn't update DOM styles that come
   // from SSR. Hence force a re-render after mounting to apply the current
@@ -37,7 +37,7 @@ export default function CodeBlock({children: rawChildren, noReport = false, ...p
           {title}
         </div>
       )}
-      <CodeBlockComp key={String(isBrowser)} {...props} noReport={noReport} className={title ? '' : 'no-header-block'}>
+      <CodeBlockComp key={String(isBrowser)} {...props} noReport={noReport} noCopy={noCopy} className={title ? '' : 'no-header-block'}>
         {children}
       </CodeBlockComp>
     </div>

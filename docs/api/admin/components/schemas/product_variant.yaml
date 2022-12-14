@@ -4,6 +4,7 @@ description: >-
   configurations. The maximum number of Product Variants that a Product can have
   is given by the number of available Product Option combinations.
 x-resourceId: product_variant
+type: object
 required:
   - title
   - product_id

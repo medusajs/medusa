@@ -46,14 +46,28 @@ You can also create endpoints that don't reside under these two prefixes, simila
 
 If you’re adding a storefront or admin endpoint and you want to access these endpoints from the storefront or Medusa admin, you need to pass your endpoints Cross-Origin Resource Origin (CORS) options using the `cors` package.
 
-First, you need to import your Medusa configurations along with the `cors` library:
+First, you need to import the necessary utility functions and types from Medusa's packages with the `cors` library:
 
 ```ts
+import { getConfigFile, parseCorsOrigins } from "medusa-core-utils"
+import { ConfigModule } from "@medusajs/medusa/dist/types/global"
 import cors from "cors"
-import { projectConfig } from "../../medusa-config"
 ```
 
-Then, create an object that will hold the Cross-Origin Resource Sharing (CORS) configurations. If it’s a storefront endpoint, pass the `origin` property storefront options:
+Next, in the exported function, retrieve the CORS configurations of your server using the utility functions you imported:
+
+```ts
+export default (rootDirectory) => {
+  //...
+
+  const { configModule } = getConfigFile<ConfigModule>(rootDirectory, "medusa-config")
+  const { projectConfig } = configModule
+
+  //....
+}
+```
+
+Then, create an object that will hold the CORS configurations. If it’s a storefront endpoint, pass the `origin` property storefront options:
 
 ```ts
 const corsOptions = {
@@ -71,7 +85,7 @@ const corsOptions = {
 }
 ```
 
-Finally, for each route you add, create an `OPTIONS` request and add `cors` as a middleware for the route:
+Finally, for each route you add, create an `OPTIONS` request and add `cors` as a middleware for the route passing it the CORS option:
 
 ```ts
 router.options("/admin/hello", cors(corsOptions))

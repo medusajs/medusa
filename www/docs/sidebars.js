@@ -194,6 +194,11 @@ module.exports = {
               id: "advanced/backend/upgrade-guides/1-6-1",
               label: "v1.6.1"
             },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-7-0",
+              label: "v1.7.0"
+            },
           ]
         },
         {
