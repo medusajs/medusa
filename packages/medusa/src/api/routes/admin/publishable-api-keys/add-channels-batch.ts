@@ -66,7 +66,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Publishable Api Key
+ *   - PublishableApiKey
  * responses:
  *   200:
  *     description: OK
