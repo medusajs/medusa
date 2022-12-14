@@ -214,7 +214,7 @@ describe("OrderService", () => {
 
       expect(cartService.retrieveWithTotals).toHaveBeenCalledTimes(1)
       expect(cartService.retrieveWithTotals).toHaveBeenCalledWith("cart_id", {
-        relations: ["region", "payment"],
+        relations: ["region", "payment", "items"],
       })
 
       expect(paymentProviderService.updatePayment).toHaveBeenCalledTimes(1)
