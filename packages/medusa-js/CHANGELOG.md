@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.5-hotfix-medusa-js.0
+
+### Patch Changes
+
+- [`386d13a9c`](https://github.com/medusajs/medusa/commit/386d13a9cae74b321e715a907918fc389f7fb693) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Force version bump
+
 ## 1.3.4
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # Change Log
 
+## 4.0.1-hotfix-medusa-js.0
+
+### Patch Changes
+
+- Updated dependencies [[`386d13a9c`](https://github.com/medusajs/medusa/commit/386d13a9cae74b321e715a907918fc389f7fb693)]:
+  - @medusajs/medusa-js@1.3.5-hotfix-medusa-js.0
+
 ## 4.0.0
 
 ### Patch Changes
