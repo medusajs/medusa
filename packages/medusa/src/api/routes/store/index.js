@@ -17,6 +17,7 @@ import shippingOptionRoutes from "./shipping-options"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
 import paymentCollectionRoutes from "./payment-collections"
+import { parseCorsOrigins } from "medusa-core-utils"
 
 const route = Router()
 
@@ -26,17 +27,19 @@ export default (app, container, config) => {
   const storeCors = config.store_cors || ""
   route.use(
     cors({
-      origin: storeCors.split(","),
+      origin: parseCorsOrigins(storeCors),
       credentials: true,
     })
   )
+
+  const featureFlagRouter = container.resolve("featureFlagRouter")
 
   route.use(middlewares.authenticateCustomer())
 
   authRoutes(route)
   collectionRoutes(route)
   customerRoutes(route, container)
-  productRoutes(route)
+  productRoutes(route, featureFlagRouter)
   productTypesRoutes(route)
   orderRoutes(route)
   orderEditRoutes(route)

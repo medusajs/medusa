@@ -111,6 +111,7 @@ export class Region extends SoftDeletableEntity {
  * title: "Region"
  * description: "Regions hold settings for how Customers in a given geographical location shop. The is, for example, where currencies and tax rates are defined. A Region can consist of multiple countries to accomodate common shopping settings across countries."
  * x-resourceId: region
+ * type: object
  * required:
  *   - name
  *   - currency_code

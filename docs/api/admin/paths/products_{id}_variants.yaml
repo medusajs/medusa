@@ -16,6 +16,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - title
             - prices
@@ -139,6 +140,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               product:
                 $ref: ../components/schemas/product.yaml
@@ -204,6 +206,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               variants:
                 type: array

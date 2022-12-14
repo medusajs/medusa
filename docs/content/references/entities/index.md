@@ -90,6 +90,8 @@ displayed_sidebar: entitiesSidebar
 - [ProductType](classes/ProductType.md)
 - [ProductTypeTaxRate](classes/ProductTypeTaxRate.md)
 - [ProductVariant](classes/ProductVariant.md)
+- [PublishableApiKey](classes/PublishableApiKey.md)
+- [PublishableApiKeySalesChannel](classes/PublishableApiKeySalesChannel.md)
 - [Refund](classes/Refund.md)
 - [Region](classes/Region.md)
 - [Return](classes/Return.md)

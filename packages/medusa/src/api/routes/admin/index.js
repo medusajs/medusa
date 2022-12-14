@@ -36,6 +36,7 @@ import userRoutes, { unauthenticatedUserRoutes } from "./users"
 import variantRoutes from "./variants"
 import paymentCollectionRoutes from "./payment-collections"
 import paymentRoutes from "./payments"
+import { parseCorsOrigins } from "medusa-core-utils"
 
 const route = Router()
 
@@ -45,7 +46,7 @@ export default (app, container, config) => {
   const adminCors = config.admin_cors || ""
   route.use(
     cors({
-      origin: adminCors.split(","),
+      origin: parseCorsOrigins(adminCors),
       credentials: true,
     })
   )

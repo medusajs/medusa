@@ -28,6 +28,7 @@ import SwapService from "../../../../services/swap"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             swap:
  *               $ref: "#/components/schemas/swap"

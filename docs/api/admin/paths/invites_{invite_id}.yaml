@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string

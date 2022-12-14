@@ -51,7 +51,7 @@ Make sure to replace `<YOUR_API_KEY>` with your API Key and `<YOUR_NEWSLETTER_LI
 
 Open `medusa-config.js` and add the new plugin into the `plugins` array:
 
-```js
+```js title=medusa-config.js
 const plugins = [
   ...,
   {
@@ -72,7 +72,7 @@ This plugin adds a new `POST` endpoint at `/mailchimp/subscribe`. This endpoint 
 
 Try sending a `POST` request to `/mailchimp/subscribe` with the following JSON body:
 
-```json noHeader
+```json noReport
 {
   "email": "example@gmail.com"
 }
@@ -90,7 +90,7 @@ If you check your Mailchimp dashboard, you should find the email added to your A
 
 Here’s an example of sending additional data with the subscription:
 
-```json noHeader
+```json noReport
 {
     "email": "example@gmail.com",
     "data": {
@@ -107,7 +107,7 @@ If you want to subscribe to users without using this endpoint or at a specific p
 
 Here’s an example of using the `mailchimpService` inside an endpoint:
 
-```jsx
+```jsx title=src/api/index.ts
 const mailchimpService = req.scope.resolve("mailchimpService")
 
 mailchimpService.subscribeNewsletter(

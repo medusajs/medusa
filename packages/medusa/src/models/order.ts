@@ -282,6 +282,7 @@ export class Order extends BaseEntity {
  * title: "Order"
  * description: "Represents an order"
  * x-resourceId: order
+ * type: object
  * required:
  *   - customer_id
  *   - email

@@ -8,6 +8,7 @@ description: >-
   amount to be paid for the new Products, a Refund will be issued for the
   difference.
 x-resourceId: swap
+type: object
 required:
   - fulfillment_status
   - payment_status

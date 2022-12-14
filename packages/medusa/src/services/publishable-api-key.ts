@@ -2,12 +2,13 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager, ILike } from "typeorm"
 
 import { IEventBusService, TransactionBaseService } from "../interfaces"
-import { PublishableApiKey } from "../models"
+import { PublishableApiKey, SalesChannel } from "../models"
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
+import { PublishableApiKeySalesChannelRepository } from "../repositories/publishable-api-key-sales-channel"
 import { FindConfig, Selector } from "../types/common"
 import {
   CreatePublishableApiKeyInput,
-  UpdatePublishableApiKeyInput
+  UpdatePublishableApiKeyInput,
 } from "../types/publishable-api-key"
 import { buildQuery, isDefined, isString } from "../utils"
 
@@ -16,6 +17,7 @@ type InjectedDependencies = {
 
   eventBusService: IEventBusService
   publishableApiKeyRepository: typeof PublishableApiKeyRepository
+  publishableApiKeySalesChannelRepository: typeof PublishableApiKeySalesChannelRepository
 }
 
 /**
@@ -30,19 +32,23 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: IEventBusService
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
+  protected readonly publishableApiKeySalesChannelRepository_: typeof PublishableApiKeySalesChannelRepository
 
   constructor({
     manager,
     eventBusService,
     publishableApiKeyRepository,
+    publishableApiKeySalesChannelRepository,
   }: InjectedDependencies) {
     super(arguments[0])
 
     this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.publishableApiKeyRepository_ = publishableApiKeyRepository
+    this.publishableApiKeySalesChannelRepository_ =
+      publishableApiKeySalesChannelRepository
   }
 
   /**
@@ -245,6 +251,91 @@ protected readonly eventBusService_: IEventBusService
   async isValid(publishableApiKeyId: string): Promise<boolean> {
     const pubKey = await this.retrieve(publishableApiKeyId)
     return pubKey.revoked_by === null
+  }
+
+  /**
+   * Associate provided sales channels with the publishable api key.
+   *
+   * @param publishableApiKeyId
+   * @param salesChannelIds
+   */
+  async addSalesChannels(
+    publishableApiKeyId: string,
+    salesChannelIds: string[]
+  ): Promise<void | never> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const pubKeySalesChannelRepo = transactionManager.getCustomRepository(
+        this.publishableApiKeySalesChannelRepository_
+      )
+
+      await pubKeySalesChannelRepo.addSalesChannels(
+        publishableApiKeyId,
+        salesChannelIds
+      )
+    })
+  }
+
+  /**
+   * Remove provided sales channels from the publishable api key scope.
+   *
+   * @param publishableApiKeyId
+   * @param salesChannelIds
+   */
+  async removeSalesChannels(
+    publishableApiKeyId: string,
+    salesChannelIds: string[]
+  ): Promise<void | never> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const pubKeySalesChannelRepo = transactionManager.getCustomRepository(
+        this.publishableApiKeySalesChannelRepository_
+      )
+
+      await pubKeySalesChannelRepo.removeSalesChannels(
+        publishableApiKeyId,
+        salesChannelIds
+      )
+    })
+  }
+
+  /**
+   * List SalesChannels associated with the PublishableKey
+   *
+   * @param publishableApiKeyId - id of the key SalesChannels are listed for
+   */
+  async listSalesChannels(
+    publishableApiKeyId: string
+  ): Promise<SalesChannel[]> {
+    const manager = this.manager_
+    const pubKeySalesChannelRepo = manager.getCustomRepository(
+      this.publishableApiKeySalesChannelRepository_
+    )
+
+    return await pubKeySalesChannelRepo.findSalesChannels(publishableApiKeyId)
+  }
+
+  /**
+   * Get a map of resources ids that are withing the key's scope.
+   *
+   * @param publishableApiKeyId
+   */
+  async getResourceScopes(
+    publishableApiKeyId: string
+  ): Promise<{ sales_channel_id: string[] }> {
+    const manager = this.manager_
+    const pubKeySalesChannelRepo = manager.getCustomRepository(
+      this.publishableApiKeySalesChannelRepository_
+    )
+
+    const salesChannels = await pubKeySalesChannelRepo.find({
+      select: ["sales_channel_id"],
+      where: { publishable_key_id: publishableApiKeyId },
+    })
+
+    return {
+      sales_channel_id: salesChannels.map(
+        ({ sales_channel_id }) => sales_channel_id
+      ),
+    }
   }
 }
 

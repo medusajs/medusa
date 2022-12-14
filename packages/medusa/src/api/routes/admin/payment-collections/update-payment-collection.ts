@@ -15,6 +15,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           description:
  *             description: An optional description to create or update the payment collection.
@@ -55,6 +56,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             payment_collection:
  *               $ref: "#/components/schemas/payment_collection"
@@ -73,7 +75,7 @@ import { PaymentCollectionService } from "../../../../services"
  */
 export default async (req, res) => {
   const { id } = req.params
-  const data = req.validatedBody as AdminUpdatePaymentCollectionRequest
+  const data = req.validatedBody as AdminUpdatePaymentCollectionsReq
 
   const paymentCollectionService: PaymentCollectionService = req.scope.resolve(
     "paymentCollectionService"
@@ -91,7 +93,7 @@ export default async (req, res) => {
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
-export class AdminUpdatePaymentCollectionRequest {
+export class AdminUpdatePaymentCollectionsReq {
   @IsString()
   @IsOptional()
   description?: string

@@ -42,6 +42,7 @@ export class DiscountConditionCustomerGroup {
  * title: "Product Tag Discount Condition"
  * description: "Associates a discount condition with a customer group"
  * x-resourceId: discount_condition_customer_group
+ * type: object
  * required:
  *   - customer_group_id
  *   - condition_id

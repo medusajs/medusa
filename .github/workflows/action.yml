@@ -123,28 +123,8 @@ jobs:
       - name: Build Packages
         run: yarn build
 
-      - name: Install dev cli
-        run: sudo npm i -g medusa-dev-cli@latest
-
-      - name: Set path to medusa repo
-        run: medusa-dev --set-path-to-repo `pwd`
-
-      - name: Set npm registry
-        run: |
-          yarn config set npmRegistryServer http://localhost:4873
-          echo -e 'unsafeHttpWhitelist:\n - "localhost"' >> .yarnrc.yml
-
-      - name: Force install
-        run: medusa-dev --force-install --external-registry
-        working-directory: integration-tests/api
-
-      - name: Build integration tests
-        run: yarn build
-        working-directory: integration-tests/api
-
       - name: Run integration tests
-        run: yarn test
-        working-directory: integration-tests/api
+        run: yarn test:integration:api
         env:
           DB_PASSWORD: postgres
           SPLIT: ${{ steps['split-tests'].outputs['split'] }}
@@ -195,26 +175,7 @@ jobs:
       - name: Build Packages
         run: yarn build
 
-      - name: Install dev cli
-        run: sudo npm i -g medusa-dev-cli
-
-      - name: Set path to medusa repo
-        run: medusa-dev --set-path-to-repo `pwd`
-
-      - name: Set npm registry
-        run: |
-          yarn config set npmRegistryServer http://localhost:4873
-          echo -e 'unsafeHttpWhitelist:\n - "localhost"' >> .yarnrc.yml
-
-      - name: Force install
-        run: medusa-dev --force-install --external-registry
-        working-directory: integration-tests/plugins
-
-      - name: Build plugin integration tests
-        run: yarn build
-        working-directory: integration-tests/plugins
-
       - name: Run plugin integration tests
-        run: yarn test:integration:plugins --silent=false
+        run: yarn test:integration:plugins
         env:
           DB_PASSWORD: postgres

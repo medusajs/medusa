@@ -23,6 +23,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - amount
  *           - reason
@@ -74,6 +75,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order:
  *               $ref: "#/components/schemas/order"

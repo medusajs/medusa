@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-line-item.d.ts:82
+medusa/dist/api/routes/admin/draft-orders/update-line-item.d.ts:84
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-line-item.d.ts:81
+medusa/dist/api/routes/admin/draft-orders/update-line-item.d.ts:83
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-line-item.d.ts:79
+medusa/dist/api/routes/admin/draft-orders/update-line-item.d.ts:81
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/update-line-item.d.ts:80
+medusa/dist/api/routes/admin/draft-orders/update-line-item.d.ts:82

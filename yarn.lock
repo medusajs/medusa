@@ -216,7 +216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:^7.12.1, @babel/cli@npm:^7.13.0, @babel/cli@npm:^7.14.3, @babel/cli@npm:^7.15.4, @babel/cli@npm:^7.16.0, @babel/cli@npm:^7.7.5":
+"@babel/cli@npm:^7.12.1, @babel/cli@npm:^7.14.3, @babel/cli@npm:^7.15.4, @babel/cli@npm:^7.16.0, @babel/cli@npm:^7.7.5":
   version: 7.18.6
   resolution: "@babel/cli@npm:7.18.6"
   dependencies:
@@ -240,6 +240,33 @@ __metadata:
     babel: ./bin/babel.js
     babel-external-helpers: ./bin/babel-external-helpers.js
   checksum: d9db59862c482a6013ecb89140d337a72b75d1221674cf7276c4a614dac24126f879c8561433c76f73c2683e03db5d5e83d6d0c042ad7a102985f96cc9b99bc3
+  languageName: node
+  linkType: hard
+
+"@babel/cli@npm:^7.12.10":
+  version: 7.19.3
+  resolution: "@babel/cli@npm:7.19.3"
+  dependencies:
+    "@jridgewell/trace-mapping": ^0.3.8
+    "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
+    chokidar: ^3.4.0
+    commander: ^4.0.1
+    convert-source-map: ^1.1.0
+    fs-readdir-recursive: ^1.1.0
+    glob: ^7.2.0
+    make-dir: ^2.1.0
+    slash: ^2.0.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  dependenciesMeta:
+    "@nicolo-ribaudo/chokidar-2":
+      optional: true
+    chokidar:
+      optional: true
+  bin:
+    babel: ./bin/babel.js
+    babel-external-helpers: ./bin/babel-external-helpers.js
+  checksum: e996aa6a1cde07555ef83782d5809049e6ebecb16884e94acad6eea9a7f6323f6303ee74004a31b29b5ead257ad697f33650b6983e4e9fb14ef1f2908ea5c0a1
   languageName: node
   linkType: hard
 
@@ -292,7 +319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.1.0, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.12.7, @babel/core@npm:^7.13.8, @babel/core@npm:^7.14.0, @babel/core@npm:^7.14.3, @babel/core@npm:^7.15.5, @babel/core@npm:^7.16.0, @babel/core@npm:^7.18.6, @babel/core@npm:^7.7.2, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.0":
+"@babel/core@npm:^7.1.0, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.12.7, @babel/core@npm:^7.14.0, @babel/core@npm:^7.14.3, @babel/core@npm:^7.15.5, @babel/core@npm:^7.16.0, @babel/core@npm:^7.18.6, @babel/core@npm:^7.7.2, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.0":
   version: 7.18.6
   resolution: "@babel/core@npm:7.18.6"
   dependencies:
@@ -632,6 +659,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/node@npm:^7.12.10":
+  version: 7.20.5
+  resolution: "@babel/node@npm:7.20.5"
+  dependencies:
+    "@babel/register": ^7.18.9
+    commander: ^4.0.1
+    core-js: ^3.26.0
+    node-environment-flags: ^1.0.5
+    regenerator-runtime: ^0.13.11
+    v8flags: ^3.1.1
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  bin:
+    babel-node: ./bin/babel-node.js
+  checksum: 83a0203b3f62b7a584d9177678d6a7d8e2a343f1bf9891b28155314b740140bd5560aca4848f54bd2c35446190c3af35898bdec98323a38035465ddb65863e54
+  languageName: node
+  linkType: hard
+
 "@babel/node@npm:^7.12.6, @babel/node@npm:^7.15.4, @babel/node@npm:^7.16.0, @babel/node@npm:^7.7.4":
   version: 7.18.6
   resolution: "@babel/node@npm:7.18.6"
@@ -709,7 +754,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-class-properties@npm:^7.0.0, @babel/plugin-proposal-class-properties@npm:^7.10.4, @babel/plugin-proposal-class-properties@npm:^7.12.1, @babel/plugin-proposal-class-properties@npm:^7.13.0, @babel/plugin-proposal-class-properties@npm:^7.14.0, @babel/plugin-proposal-class-properties@npm:^7.14.5, @babel/plugin-proposal-class-properties@npm:^7.16.0, @babel/plugin-proposal-class-properties@npm:^7.18.6, @babel/plugin-proposal-class-properties@npm:^7.7.4":
+"@babel/plugin-proposal-class-properties@npm:^7.0.0, @babel/plugin-proposal-class-properties@npm:^7.10.4, @babel/plugin-proposal-class-properties@npm:^7.12.1, @babel/plugin-proposal-class-properties@npm:^7.14.0, @babel/plugin-proposal-class-properties@npm:^7.14.5, @babel/plugin-proposal-class-properties@npm:^7.16.0, @babel/plugin-proposal-class-properties@npm:^7.18.6, @babel/plugin-proposal-class-properties@npm:^7.7.4":
   version: 7.18.6
   resolution: "@babel/plugin-proposal-class-properties@npm:7.18.6"
   dependencies:
@@ -1668,7 +1713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-env@npm:^7.11.5, @babel/preset-env@npm:^7.12.11, @babel/preset-env@npm:^7.12.7, @babel/preset-env@npm:^7.13.9, @babel/preset-env@npm:^7.15.4, @babel/preset-env@npm:^7.15.6, @babel/preset-env@npm:^7.16.4, @babel/preset-env@npm:^7.18.6, @babel/preset-env@npm:^7.7.5":
+"@babel/preset-env@npm:^7.11.5, @babel/preset-env@npm:^7.12.11, @babel/preset-env@npm:^7.12.7, @babel/preset-env@npm:^7.15.4, @babel/preset-env@npm:^7.15.6, @babel/preset-env@npm:^7.16.4, @babel/preset-env@npm:^7.18.6, @babel/preset-env@npm:^7.7.5":
   version: 7.18.6
   resolution: "@babel/preset-env@npm:7.18.6"
   dependencies:
@@ -1825,6 +1870,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/register@npm:^7.18.9":
+  version: 7.18.9
+  resolution: "@babel/register@npm:7.18.9"
+  dependencies:
+    clone-deep: ^4.0.1
+    find-cache-dir: ^2.0.0
+    make-dir: ^2.1.0
+    pirates: ^4.0.5
+    source-map-support: ^0.5.16
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: b19c1445adf202732a2e0d554749257da22e56f0fc159709200d962413fbd4e7bd1d684222e60c08a2b8ad8fe511d8699fbc978d92816953fc9cbb6cbcc40d63
+  languageName: node
+  linkType: hard
+
 "@babel/runtime-corejs3@npm:^7.10.2":
   version: 7.18.6
   resolution: "@babel/runtime-corejs3@npm:7.18.6"
@@ -1835,7 +1895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.9, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2, @babel/runtime@npm:^7.9.6":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2, @babel/runtime@npm:^7.9.6":
   version: 7.18.6
   resolution: "@babel/runtime@npm:7.18.6"
   dependencies:
@@ -4368,7 +4428,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.6.2
+    "@medusajs/medusa": ^1.7.0
     "@types/jest": ^26.0.19
     axios: ^0.24.0
     cross-env: ^7.0.3
@@ -4377,10 +4437,12 @@ __metadata:
     qs: ^6.10.3
     retry-axios: ^2.6.0
     typescript: ^4.1.3
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.0
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.3.3, @medusajs/medusa@^1.6.2, @medusajs/medusa@^1.6.5, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.3.3, @medusajs/medusa@^1.6.5, @medusajs/medusa@^1.7.0, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -4416,8 +4478,9 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.2
     jsonwebtoken: ^8.5.1
-    medusa-core-utils: ^1.1.35
+    medusa-core-utils: ^1.1.36
     medusa-interfaces: ^1.3.3
+    medusa-telemetry: ^0.0.15
     medusa-test-utils: ^1.1.37
     morgan: ^1.9.1
     multer: ^1.4.2
@@ -10864,7 +10927,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-medusa-package@^1.0.0, babel-preset-medusa-package@^1.1.19, babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package":
+"babel-preset-medusa-package@*, babel-preset-medusa-package@^1.0.0, babel-preset-medusa-package@^1.1.19, babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package":
   version: 0.0.0-use.local
   resolution: "babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package"
   dependencies:
@@ -12969,6 +13032,13 @@ __metadata:
   version: 3.23.4
   resolution: "core-js@npm:3.23.4"
   checksum: 08e85e495f4d99df899978413dfd2e5e13233e64f9918cd8baa7fb30d82992ef9e0c6d47f7d5c25f581d9d6e7446dcb878d0c167e01344ffe6c20ab62d4bdd4c
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^3.26.0":
+  version: 3.26.1
+  resolution: "core-js@npm:3.26.1"
+  checksum: 82d36c6f54fc0349998fa7fc67d200ba272f1cd1674c6786dc17f9d259d6555fc05662044528eae73ad6e90f71d503ab5c060ad4745492ef804308209f9aec13
   languageName: node
   linkType: hard
 
@@ -16186,6 +16256,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"faker@npm:^5.5.3":
+  version: 5.5.3
+  resolution: "faker@npm:5.5.3"
+  checksum: 55ee2fb6425df717253f237b4e952c94efe33da23a5826ca41c6ecb31ccfb49d06c5de64b82b6994ca9c76c05eab4dbf779cea047455fff6e62cc9d585c7d460
+  languageName: node
+  linkType: hard
+
 "fast-copy@npm:^2.1.0":
   version: 2.1.3
   resolution: "fast-copy@npm:2.1.3"
@@ -17923,7 +18000,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.0.0, glob@npm:^7.1.1, glob@npm:^7.1.2, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6, glob@npm:^7.2.3":
+"glob@npm:^7.0.0, glob@npm:^7.1.1, glob@npm:^7.1.2, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6, glob@npm:^7.2.0, glob@npm:^7.2.3":
   version: 7.2.3
   resolution: "glob@npm:7.2.3"
   dependencies:
@@ -19309,6 +19386,40 @@ __metadata:
   checksum: e8c6185548a2da6a04b6d2096d9173451ae8aa01432bfd8a5ffcd29fb871ed7764419a4fd693fbfb99621891b54c131f5473f21660d4808d25c6818618f2de73
   languageName: node
   linkType: hard
+
+"integration-tests-api@workspace:integration-tests/api":
+  version: 0.0.0-use.local
+  resolution: "integration-tests-api@workspace:integration-tests/api"
+  dependencies:
+    "@babel/cli": ^7.12.10
+    "@babel/core": ^7.12.10
+    "@babel/node": ^7.12.10
+    "@medusajs/medusa": "*"
+    babel-preset-medusa-package: "*"
+    faker: ^5.5.3
+    jest: ^26.6.3
+    medusa-interfaces: "*"
+    typeorm: ^0.2.31
+  languageName: unknown
+  linkType: soft
+
+"integration-tests-plugins@workspace:integration-tests/plugins":
+  version: 0.0.0-use.local
+  resolution: "integration-tests-plugins@workspace:integration-tests/plugins"
+  dependencies:
+    "@babel/cli": ^7.12.10
+    "@babel/core": ^7.12.10
+    "@babel/node": ^7.12.10
+    "@medusajs/medusa": "*"
+    babel-preset-medusa-package: "*"
+    faker: ^5.5.3
+    jest: ^26.6.3
+    medusa-fulfillment-webshipper: "*"
+    medusa-interfaces: "*"
+    medusa-plugin-sendgrid: "*"
+    typeorm: ^0.2.31
+  languageName: unknown
+  linkType: soft
 
 "internal-slot@npm:^1.0.3":
   version: 1.0.3
@@ -23625,24 +23736,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.32, medusa-core-utils@^1.1.34, medusa-core-utils@^1.1.35, medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.32, medusa-core-utils@^1.1.34, medusa-core-utils@^1.1.36, medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
-    "@babel/cli": ^7.13.0
-    "@babel/core": ^7.13.8
-    "@babel/plugin-proposal-class-properties": ^7.13.0
-    "@babel/plugin-transform-classes": ^7.9.5
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.13.9
-    "@babel/preset-typescript": ^7.16.0
-    "@babel/runtime": ^7.13.9
     class-transformer: ^0.5.1
     class-validator: ^0.13.1
     cross-env: ^5.2.1
     jest: ^25.5.2
     joi: ^17.3.0
     joi-objectid: ^3.0.1
+    ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -23778,7 +23882,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-fulfillment-webshipper@workspace:packages/medusa-fulfillment-webshipper":
+"medusa-fulfillment-webshipper@*, medusa-fulfillment-webshipper@workspace:packages/medusa-fulfillment-webshipper":
   version: 0.0.0-use.local
   resolution: "medusa-fulfillment-webshipper@workspace:packages/medusa-fulfillment-webshipper"
   dependencies:
@@ -23803,7 +23907,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-interfaces@^1.3.1, medusa-interfaces@^1.3.3, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@*, medusa-interfaces@^1.3.1, medusa-interfaces@^1.3.3, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -23957,7 +24061,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.32
+    medusa-core-utils: ^1.1.36
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
@@ -24192,12 +24296,12 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.36
     medusa-test-utils: ^1.1.37
     pg: ^8.5.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/medusa": ^1.6.5
+    "@medusajs/medusa": ^1.7.0
     medusa-interfaces: 1.x
   languageName: unknown
   linkType: soft
@@ -24230,7 +24334,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-plugin-sendgrid@workspace:packages/medusa-plugin-sendgrid":
+"medusa-plugin-sendgrid@*, medusa-plugin-sendgrid@workspace:packages/medusa-plugin-sendgrid":
   version: 0.0.0-use.local
   resolution: "medusa-plugin-sendgrid@workspace:packages/medusa-plugin-sendgrid"
   dependencies:
@@ -24372,7 +24476,7 @@ __metadata:
     ts-jest: ^27.1.4
     tslib: ^2.3.1
   peerDependencies:
-    "@medusajs/medusa": ^1.6.2
+    "@medusajs/medusa": ^1.7.0
     react: ">=16"
     react-query: ">= 3.29.0"
   languageName: unknown
@@ -24410,7 +24514,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-telemetry@0.0.15, medusa-telemetry@workspace:packages/medusa-telemetry":
+"medusa-telemetry@0.0.15, medusa-telemetry@^0.0.15, medusa-telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
   dependencies:
@@ -29279,6 +29383,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"regenerator-runtime@npm:^0.13.11":
+  version: 0.13.11
+  resolution: "regenerator-runtime@npm:0.13.11"
+  checksum: 12b069dc774001fbb0014f6a28f11c09ebfe3c0d984d88c9bced77fdb6fedbacbca434d24da9ae9371bfbf23f754869307fb51a4c98a8b8b18e5ef748677ca24
+  languageName: node
+  linkType: hard
+
 "regenerator-runtime@npm:^0.13.3, regenerator-runtime@npm:^0.13.4, regenerator-runtime@npm:^0.13.5, regenerator-runtime@npm:^0.13.7, regenerator-runtime@npm:^0.13.9":
   version: 0.13.9
   resolution: "regenerator-runtime@npm:0.13.9"
@@ -30111,7 +30222,7 @@ __metadata:
     swagger-inline: ^3.2.2
     ts-jest: ^26.5.6
     ts-node: ^10.9.1
-    turbo: ^1.3.1
+    turbo: ^1.6.3
     typedoc: 0.23.10
     typedoc-frontmatter-plugin: "link:docs-util/typedoc-plugins/typedoc-frontmatter-plugin"
     typedoc-monorepo-link-types: ^0.0.2
@@ -33154,146 +33265,66 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-android-arm64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-android-arm64@npm:1.3.1"
-  conditions: os=android & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"turbo-darwin-64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-darwin-64@npm:1.3.1"
+"turbo-darwin-64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "turbo-darwin-64@npm:1.6.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-darwin-arm64@npm:1.3.1"
+"turbo-darwin-arm64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "turbo-darwin-arm64@npm:1.6.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-freebsd-64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-freebsd-64@npm:1.3.1"
-  conditions: os=freebsd & cpu=x64
-  languageName: node
-  linkType: hard
-
-"turbo-freebsd-arm64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-freebsd-arm64@npm:1.3.1"
-  conditions: os=freebsd & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"turbo-linux-32@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-linux-32@npm:1.3.1"
-  conditions: os=linux & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"turbo-linux-64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-linux-64@npm:1.3.1"
+"turbo-linux-64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "turbo-linux-64@npm:1.6.3"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-linux-arm64@npm:1.3.1"
+"turbo-linux-arm64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "turbo-linux-arm64@npm:1.6.3"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-linux-arm@npm:1.3.1"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"turbo-linux-mips64le@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-linux-mips64le@npm:1.3.1"
-  conditions: os=linux & cpu=mips64el
-  languageName: node
-  linkType: hard
-
-"turbo-linux-ppc64le@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-linux-ppc64le@npm:1.3.1"
-  conditions: os=linux & cpu=ppc64
-  languageName: node
-  linkType: hard
-
-"turbo-windows-32@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-windows-32@npm:1.3.1"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"turbo-windows-64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-windows-64@npm:1.3.1"
+"turbo-windows-64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "turbo-windows-64@npm:1.6.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-windows-arm64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "turbo-windows-arm64@npm:1.3.1"
+"turbo-windows-arm64@npm:1.6.3":
+  version: 1.6.3
+  resolution: "turbo-windows-arm64@npm:1.6.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "turbo@npm:1.3.1"
+"turbo@npm:^1.6.3":
+  version: 1.6.3
+  resolution: "turbo@npm:1.6.3"
   dependencies:
-    turbo-android-arm64: 1.3.1
-    turbo-darwin-64: 1.3.1
-    turbo-darwin-arm64: 1.3.1
-    turbo-freebsd-64: 1.3.1
-    turbo-freebsd-arm64: 1.3.1
-    turbo-linux-32: 1.3.1
-    turbo-linux-64: 1.3.1
-    turbo-linux-arm: 1.3.1
-    turbo-linux-arm64: 1.3.1
-    turbo-linux-mips64le: 1.3.1
-    turbo-linux-ppc64le: 1.3.1
-    turbo-windows-32: 1.3.1
-    turbo-windows-64: 1.3.1
-    turbo-windows-arm64: 1.3.1
+    turbo-darwin-64: 1.6.3
+    turbo-darwin-arm64: 1.6.3
+    turbo-linux-64: 1.6.3
+    turbo-linux-arm64: 1.6.3
+    turbo-windows-64: 1.6.3
+    turbo-windows-arm64: 1.6.3
   dependenciesMeta:
-    turbo-android-arm64:
-      optional: true
     turbo-darwin-64:
       optional: true
     turbo-darwin-arm64:
       optional: true
-    turbo-freebsd-64:
-      optional: true
-    turbo-freebsd-arm64:
-      optional: true
-    turbo-linux-32:
-      optional: true
     turbo-linux-64:
       optional: true
-    turbo-linux-arm:
-      optional: true
     turbo-linux-arm64:
-      optional: true
-    turbo-linux-mips64le:
-      optional: true
-    turbo-linux-ppc64le:
-      optional: true
-    turbo-windows-32:
       optional: true
     turbo-windows-64:
       optional: true
@@ -33301,7 +33332,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: 62093ccfb8cce6d8e6c7161f50660e8d5d1fbdbcf2e2f8514a001fdef7cdc9fa0f21013c4507b7020f2d66b4ab313a436b9d4a5aa10358ebe11b98acd7a939ea
+  checksum: 9335cd7f676b4e439ac1f66eba496fe31f3f9a7d09346824f94c26d7b8602ff2231056441a448b739ec2d68c3e4ae43f07c9cd79a73d94275a89fc1f9a19475a
   languageName: node
   linkType: hard
 

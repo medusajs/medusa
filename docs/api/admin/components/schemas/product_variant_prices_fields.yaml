@@ -1,6 +1,7 @@
 title: Product Variant Prices Fields
 description: Product Variants Prices Fields that are only available in some requests.
 x-resourceId: product_variant_prices_fields
+type: object
 properties:
   original_price:
     type: number
