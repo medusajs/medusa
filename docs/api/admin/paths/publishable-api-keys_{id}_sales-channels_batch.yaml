@@ -43,7 +43,7 @@ post:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Publishable Api Key
+    - PublishableApiKey
   responses:
     '200':
       description: OK
@@ -112,7 +112,7 @@ delete:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Publishable Api Key
+    - PublishableApiKey
   responses:
     '200':
       description: OK

@@ -202,115 +202,6 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
-  /apps/authorizations:
-    post:
-      operationId: PostApps
-      summary: Generate Token for App
-      description: Generates a token for an application.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - application_name
-                - state
-                - code
-              properties:
-                application_name:
-                  type: string
-                  description: Name of the application for the token to be generated for.
-                state:
-                  type: string
-                  description: State of the application.
-                code:
-                  type: string
-                  description: The code for the generated token.
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/apps/authorizations' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "application_name": "example",
-                "state": "ready",
-                "code": "token"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - App
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  apps:
-                    $ref: '#/components/schemas/OAuth'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /apps:
-    get:
-      operationId: GetApps
-      summary: List Applications
-      description: Retrieve a list of applications.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/admin/apps' \
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - App
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  apps:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OAuth'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /auth:
     post:
       operationId: PostAuth
@@ -466,6 +357,602 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/batch-jobs/{id}/cancel':
+    post:
+      operationId: PostBatchJobsBatchJobCancel
+      summary: Cancel a Batch Job
+      description: Marks a batch job as canceled
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the batch job.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.batchJobs.cancel(batch_job_id)
+
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/batch-jobs/{id}/cancel' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/batch-jobs/{id}/confirm':
+    post:
+      operationId: PostBatchJobsBatchJobConfirmProcessing
+      summary: Confirm a Batch Job
+      description: Confirms that a previously requested batch job should be executed.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the batch job.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.batchJobs.confirm(batch_job_id)
+
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/batch-jobs/{id}/confirm' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /batch-jobs:
+    post:
+      operationId: PostBatchJobs
+      summary: Create a Batch Job
+      description: Creates a Batch Job.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - type
+                - context
+              properties:
+                type:
+                  type: string
+                  description: The type of batch job to start.
+                  example: product-export
+                context:
+                  type: object
+                  description: >-
+                    Additional infomration regarding the batch to be used for
+                    processing.
+                  example:
+                    shape:
+                      prices:
+                        - region: null
+                          currency_code: eur
+                      dynamicImageColumnCount: 4
+                      dynamicOptionColumnCount: 2
+                    list_config:
+                      skip: 0
+                      take: 50
+                      order:
+                        created_at: DESC
+                      relations:
+                        - variants
+                        - variant.prices
+                        - images
+                dry_run:
+                  type: boolean
+                  description: >-
+                    Set a batch job in dry_run mode to get some information on
+                    what will be done without applying any modifications.
+                  default: false
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.batchJobs.create({
+              type: 'product-export',
+              context: {},
+              dry_run: false
+            }).then((({ batch_job }) => {
+              console.log(batch_job.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/batch-jobs' \
+
+            --header 'Content-Type: application/json' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --data-raw '{
+                "type": "product-export",
+                "context": { }
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Batch Job
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetBatchJobs
+      summary: List Batch Jobs
+      description: Retrieve a list of Batch Jobs.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of batch jobs to return.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: offset
+          description: The number of batch jobs to skip before results.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: id
+          style: form
+          explode: false
+          description: Filter by the batch ID
+          schema:
+            oneOf:
+              - type: string
+                description: batch job ID
+              - type: array
+                description: multiple batch job IDs
+                items:
+                  type: string
+        - in: query
+          name: type
+          style: form
+          explode: false
+          description: Filter by the batch type
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: confirmed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was confirmed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: pre_processed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was pre processed,
+            i.e. less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: completed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was completed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: failed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was failed, i.e. less
+            than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: canceled_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was canceled, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: order
+          description: Field used to order retrieved batch jobs
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each order of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each order of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.batchJobs.list()
+
+            .then(({ batch_jobs, limit, offset, count }) => {
+              console.log(batch_jobs.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/batch-jobs' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_jobs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/batch_job'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/batch-jobs/{id}':
+    get:
+      operationId: GetBatchJobsBatchJob
+      summary: Get a Batch Job
+      description: Retrieves a Batch Job.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Batch Job
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.batchJobs.retrieve(batch_job_id)
+
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/batch-jobs/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2013,137 +2500,11 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/batch-jobs/{id}/cancel':
+  /apps/authorizations:
     post:
-      operationId: PostBatchJobsBatchJobCancel
-      summary: Cancel a Batch Job
-      description: Marks a batch job as canceled
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the batch job.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.cancel(batch_job_id)
-
-            .then(({ batch_job }) => {
-              console.log(batch_job.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/batch-jobs/{id}/cancel' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/batch-jobs/{id}/confirm':
-    post:
-      operationId: PostBatchJobsBatchJobConfirmProcessing
-      summary: Confirm a Batch Job
-      description: Confirms that a previously requested batch job should be executed.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the batch job.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.confirm(batch_job_id)
-
-            .then(({ batch_job }) => {
-              console.log(batch_job.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/batch-jobs/{id}/confirm' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /batch-jobs:
-    post:
-      operationId: PostBatchJobs
-      summary: Create a Batch Job
-      description: Creates a Batch Job.
+      operationId: PostApps
+      summary: Generate Token for App
+      description: Generates a token for an application.
       x-authenticated: true
       requestBody:
         content:
@@ -2151,87 +2512,50 @@ paths:
             schema:
               type: object
               required:
-                - type
-                - context
+                - application_name
+                - state
+                - code
               properties:
-                type:
+                application_name:
                   type: string
-                  description: The type of batch job to start.
-                  example: product-export
-                context:
-                  type: object
-                  description: >-
-                    Additional infomration regarding the batch to be used for
-                    processing.
-                  example:
-                    shape:
-                      prices:
-                        - region: null
-                          currency_code: eur
-                      dynamicImageColumnCount: 4
-                      dynamicOptionColumnCount: 2
-                    list_config:
-                      skip: 0
-                      take: 50
-                      order:
-                        created_at: DESC
-                      relations:
-                        - variants
-                        - variant.prices
-                        - images
-                dry_run:
-                  type: boolean
-                  description: >-
-                    Set a batch job in dry_run mode to get some information on
-                    what will be done without applying any modifications.
-                  default: false
+                  description: Name of the application for the token to be generated for.
+                state:
+                  type: string
+                  description: State of the application.
+                code:
+                  type: string
+                  description: The code for the generated token.
       x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.create({
-              type: 'product-export',
-              context: {},
-              dry_run: false
-            }).then((({ batch_job }) => {
-              console.log(batch_job.id);
-            });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/batch-jobs' \
-
-            --header 'Content-Type: application/json' \
+            'https://medusa-url.com/admin/apps/authorizations' \
 
             --header 'Authorization: Bearer {api_token}' \
 
+            --header 'Content-Type: application/json' \
+
             --data-raw '{
-                "type": "product-export",
-                "context": { }
+                "application_name": "example",
+                "state": "ready",
+                "code": "token"
             }'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Batch Job
+        - App
       responses:
-        '201':
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
+                  apps:
+                    $ref: '#/components/schemas/OAuth'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2244,275 +2568,23 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /apps:
     get:
-      operationId: GetBatchJobs
-      summary: List Batch Jobs
-      description: Retrieve a list of Batch Jobs.
+      operationId: GetApps
+      summary: List Applications
+      description: Retrieve a list of applications.
       x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of batch jobs to return.
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          description: The number of batch jobs to skip before results.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: id
-          style: form
-          explode: false
-          description: Filter by the batch ID
-          schema:
-            oneOf:
-              - type: string
-                description: batch job ID
-              - type: array
-                description: multiple batch job IDs
-                items:
-                  type: string
-        - in: query
-          name: type
-          style: form
-          explode: false
-          description: Filter by the batch type
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: confirmed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was confirmed, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: pre_processed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was pre processed,
-            i.e. less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: completed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was completed, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: failed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was failed, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: canceled_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was canceled, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: order
-          description: Field used to order retrieved batch jobs
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each order of
-            the result.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated) Which fields should be included in each order of
-            the result.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was created, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was updated, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
       x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.list()
-
-            .then(({ batch_jobs, limit, offset, count }) => {
-              console.log(batch_jobs.length);
-            });
         - lang: Shell
           label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/batch-jobs' \
-
+          source: |
+            curl --location --request GET 'https://medusa-url.com/admin/apps' \
             --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Batch Job
+        - App
       responses:
         '200':
           description: OK
@@ -2521,82 +2593,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  batch_jobs:
+                  apps:
                     type: array
                     items:
-                      $ref: '#/components/schemas/batch_job'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/batch-jobs/{id}':
-    get:
-      operationId: GetBatchJobsBatchJob
-      summary: Get a Batch Job
-      description: Retrieves a Batch Job.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Batch Job
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.retrieve(batch_job_id)
-
-            .then(({ batch_job }) => {
-              console.log(batch_job.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/batch-jobs/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
+                      $ref: '#/components/schemas/OAuth'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -14704,7 +14704,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Publishable Api Key
+        - PublishableApiKey
       responses:
         '200':
           description: OK
@@ -14802,7 +14802,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Publishable Api Key
+        - PublishableApiKey
       responses:
         '200':
           description: OK
@@ -14951,7 +14951,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - PublishableApiKeys
+        - PublishableApiKey
       responses:
         '200':
           description: OK
@@ -15099,12 +15099,19 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/publishable-api-keys/:id/sales-channels':
+  '/publishable-api-keys/{id}/sales-channels':
     get:
       operationId: GetPublishableApiKeySalesChannels
       summary: List PublishableApiKey's SalesChannels
       description: List PublishableApiKey's SalesChannels
       x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Publishable Api Key.
+          schema:
+            type: string
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15132,7 +15139,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - PublishableApiKeySalesChannels
+        - PublishableApiKey
       responses:
         '200':
           description: OK
@@ -16347,11 +16354,11 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /shipping-options:
+  /return-reasons:
     post:
-      operationId: PostShippingOptions
-      summary: Create Shipping Option
-      description: Creates a Shipping Option
+      operationId: PostReturnReasons
+      summary: Create a Return Reason
+      description: Creates a Return Reason
       x-authenticated: true
       requestBody:
         content:
@@ -16359,79 +16366,28 @@ paths:
             schema:
               type: object
               required:
-                - name
-                - region_id
-                - provider_id
-                - data
-                - price_type
+                - label
+                - value
               properties:
-                name:
-                  description: The name of the Shipping Option
+                label:
+                  description: The label to display to the Customer.
                   type: string
-                region_id:
+                value:
                   description: >-
-                    The ID of the Region in which the Shipping Option will be
-                    available.
+                    The value that the Return Reason will be identified by. Must
+                    be unique.
                   type: string
-                provider_id:
-                  description: >-
-                    The ID of the Fulfillment Provider that handles the Shipping
-                    Option.
+                parent_return_reason_id:
+                  description: The ID of the parent return reason.
                   type: string
-                profile_id:
-                  description: >-
-                    The ID of the Shipping Profile to add the Shipping Option
-                    to.
-                  type: number
-                data:
-                  description: >-
-                    The data needed for the Fulfillment Provider to handle
-                    shipping with this Shipping Option.
-                  type: object
-                price_type:
-                  description: The type of the Shipping Option price.
+                description:
+                  description: An optional description to for the Reason.
                   type: string
-                  enum:
-                    - flat_rate
-                    - calculated
-                amount:
-                  description: The amount to charge for the Shipping Option.
-                  type: integer
-                requirements:
-                  description: >-
-                    The requirements that must be satisfied for the Shipping
-                    Option to be available.
-                  type: array
-                  items:
-                    required:
-                      - type
-                      - amount
-                    properties:
-                      type:
-                        description: The type of the requirement
-                        type: string
-                        enum:
-                          - max_subtotal
-                          - min_subtotal
-                      amount:
-                        description: The amount to compare with.
-                        type: integer
-                is_return:
-                  description: Whether the Shipping Option defines a return shipment.
-                  type: boolean
-                  default: false
-                admin_only:
-                  description: 'If true, the option can be used for draft orders'
-                  type: boolean
-                  default: false
                 metadata:
                   description: >-
                     An optional set of key-value pairs with additional
                     information.
                   type: object
-                includes_tax:
-                  description: '[EXPERIMENTAL] Tax included in prices of shipping option'
-                  type: boolean
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16443,40 +16399,33 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.shippingOptions.create({
-              name: 'PostFake',
-              region_id: "saasf",
-              provider_id: "manual",
-              data: {
-              },
-              price_type: 'flat_rate'
+            medusa.admin.returnReasons.create({
+              label: 'Damaged',
+              value: 'damaged'
             })
 
-            .then(({ shipping_option }) => {
-              console.log(shipping_option.id);
+            .then(({ return_reason }) => {
+              console.log(return_reason.id);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/shipping-options' \
+            'https://medusa-url.com/admin/return-reasons' \
 
             --header 'Authorization: Bearer {api_token}' \
 
             --header 'Content-Type: application/json' \
 
             --data-raw '{
-                "name": "PostFake",
-                "region_id": "afasf",
-                "provider_id": "manual",
-                "data": {},
-                "price_type": "flat_rate"
+                "label": "Damaged",
+                "value": "damaged"
             }'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Shipping Option
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -16485,8 +16434,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  shipping_option:
-                    $ref: '#/components/schemas/shipping_option'
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -16500,26 +16449,10 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
     get:
-      operationId: GetShippingOptions
-      summary: List Shipping Options
-      description: Retrieves a list of Shipping Options.
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
       x-authenticated: true
-      parameters:
-        - in: query
-          name: region_id
-          schema:
-            type: string
-          description: Region ID to fetch options from
-        - in: query
-          name: is_return
-          schema:
-            type: boolean
-          description: Flag for fetching return options only
-        - in: query
-          name: admin_only
-          schema:
-            type: boolean
-          description: Flag for fetching admin specific options
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16531,23 +16464,23 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.shippingOptions.list()
+            medusa.admin.returnReasons.list()
 
-            .then(({ shipping_options, count }) => {
-              console.log(shipping_options.length);
+            .then(({ return_reasons }) => {
+              console.log(return_reasons.length);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request GET
-            'https://medusa-url.com/admin/shipping-options' \
+            'https://medusa-url.com/admin/return-reasons' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Shipping Option
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -16556,13 +16489,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  shipping_options:
+                  return_reasons:
                     type: array
                     items:
-                      $ref: '#/components/schemas/shipping_option'
-                  count:
-                    type: integer
-                    description: The total number of items available
+                      $ref: '#/components/schemas/return_reason'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -16575,17 +16505,17 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/shipping-options/{id}':
+  '/return-reasons/{id}':
     delete:
-      operationId: DeleteShippingOptionsOption
-      summary: Delete a Shipping Option
-      description: Deletes a Shipping Option.
+      operationId: DeleteReturnReason
+      summary: Delete a Return Reason
+      description: Deletes a return reason.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The ID of the Shipping Option.
+          description: The ID of the return reason
           schema:
             type: string
       x-codeSamples:
@@ -16599,7 +16529,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.shippingOptions.delete(option_id)
+            medusa.admin.returnReasons.delete(return_reason_id)
 
             .then(({ id, object, deleted }) => {
               console.log(id);
@@ -16608,14 +16538,14 @@ paths:
           label: cURL
           source: >
             curl --location --request DELETE
-            'https://medusa-url.com/admin/shipping-options/{option_id}' \
+            'https://medusa-url.com/admin/return-reasons/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Shipping Option
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -16626,11 +16556,11 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The ID of the deleted Shipping Option.
+                    description: The ID of the deleted return reason
                   object:
                     type: string
                     description: The type of the object that was deleted.
-                    default: shipping-option
+                    default: return_reason
                   deleted:
                     type: boolean
                     description: Whether or not the items were deleted.
@@ -16648,15 +16578,15 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
     get:
-      operationId: GetShippingOptionsOption
-      summary: Get a Shipping Option
-      description: Retrieves a Shipping Option.
+      operationId: GetReturnReasonsReason
+      summary: Get a Return Reason
+      description: Retrieves a Return Reason.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The ID of the Shipping Option.
+          description: The ID of the Return Reason.
           schema:
             type: string
       x-codeSamples:
@@ -16670,23 +16600,23 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.shippingOptions.retrieve(option_id)
+            medusa.admin.returnReasons.retrieve(return_reason_id)
 
-            .then(({ shipping_option }) => {
-              console.log(shipping_option.id);
+            .then(({ return_reason }) => {
+              console.log(return_reason.id);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request GET
-            'https://medusa-url.com/admin/shipping-options/{id}' \
+            'https://medusa-url.com/admin/return-reasons/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Shipping Option
+        - Return Reason
       responses:
         '200':
           description: OK
@@ -16695,8 +16625,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  shipping_option:
-                    $ref: '#/components/schemas/shipping_option'
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -16710,15 +16640,15 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
     post:
-      operationId: PostShippingOptionsOption
-      summary: Update Shipping Option
-      description: Updates a Shipping Option
+      operationId: PostReturnReasonsReason
+      summary: Update a Return Reason
+      description: Updates a Return Reason
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The ID of the Shipping Option.
+          description: The ID of the Return Reason.
           schema:
             type: string
       requestBody:
@@ -16726,48 +16656,23 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - requirements
               properties:
-                name:
-                  description: The name of the Shipping Option
+                label:
+                  description: The label to display to the Customer.
                   type: string
-                amount:
-                  description: The amount to charge for the Shipping Option.
-                  type: integer
-                admin_only:
-                  description: 'If true, the option can be used for draft orders'
-                  type: boolean
+                value:
+                  description: >-
+                    The value that the Return Reason will be identified by. Must
+                    be unique.
+                  type: string
+                description:
+                  description: An optional description to for the Reason.
+                  type: string
                 metadata:
                   description: >-
                     An optional set of key-value pairs with additional
                     information.
                   type: object
-                requirements:
-                  description: >-
-                    The requirements that must be satisfied for the Shipping
-                    Option to be available.
-                  type: array
-                  items:
-                    required:
-                      - type
-                      - amount
-                    properties:
-                      id:
-                        description: The ID of the requirement
-                        type: string
-                      type:
-                        description: The type of the requirement
-                        type: string
-                        enum:
-                          - max_subtotal
-                          - min_subtotal
-                      amount:
-                        description: The amount to compare with.
-                        type: integer
-                includes_tax:
-                  description: '[EXPERIMENTAL] Tax included in prices of shipping option'
-                  type: boolean
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16779,35 +16684,271 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.shippingOptions.update(option_id, {
-              name: 'PostFake',
-              requirements: [
-                {
-                  id,
-                  type: 'max_subtotal',
-                  amount: 1000
-                }
-              ]
+            medusa.admin.returnReasons.update(return_reason_id, {
+              label: 'Damaged'
             })
 
-            .then(({ shipping_option }) => {
-              console.log(shipping_option.id);
+            .then(({ return_reason }) => {
+              console.log(return_reason.id);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/shipping-options/{id}' \
+            'https://medusa-url.com/admin/return-reasons/{id}' \
 
             --header 'Authorization: Bearer {api_token}' \
 
             --header 'Content-Type: application/json' \
 
             --data-raw '{
-                "requirements": [
+                "label": "Damaged"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/returns/{id}/cancel':
+    post:
+      operationId: PostReturnsReturnCancel
+      summary: Cancel a Return
+      description: Registers a Return as canceled.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Return.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.cancel(return_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/returns/{id}/cancel' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /returns:
+    get:
+      operationId: GetReturns
+      summary: List Returns
+      description: Retrieves a list of Returns
+      parameters:
+        - in: query
+          name: limit
+          description: The upper limit for the amount of responses returned.
+          schema:
+            type: number
+            default: '50'
+        - in: query
+          name: offset
+          description: The offset of the list returned.
+          schema:
+            type: number
+            default: '0'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.list()
+
+            .then(({ returns, limit, offset, count }) => {
+              console.log(returns.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET 'https://medusa-url.com/admin/returns'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  returns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/returns/{id}/receive':
+    post:
+      operationId: PostReturnsReturnReceive
+      summary: Receive a Return
+      description: >-
+        Registers a Return as received. Updates statuses on Orders and Swaps
+        accordingly.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Return.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - items
+              properties:
+                items:
+                  description: The Line Items that have been received.
+                  type: array
+                  items:
+                    required:
+                      - item_id
+                      - quantity
+                    properties:
+                      item_id:
+                        description: The ID of the Line Item.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+                refund:
+                  description: The amount to refund.
+                  type: number
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.receive(return_id, {
+              items: [
+                {
+                  item_id,
+                  quantity: 1
+                }
+              ]
+            })
+
+            .then((data) => {
+              console.log(data.return.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/returns/{id}/receive' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "items": [
                   {
-                    "type": "max_subtotal",
-                    "amount": 1000
+                    "item_id": "asafg",
+                    "quantity": 1
                   }
                 ]
             }'
@@ -16815,7 +16956,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Shipping Option
+        - Return
       responses:
         '200':
           description: OK
@@ -16824,352 +16965,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  shipping_option:
-                    $ref: '#/components/schemas/shipping_option'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /shipping-profiles:
-    post:
-      operationId: PostShippingProfiles
-      summary: Create a Shipping Profile
-      description: Creates a Shipping Profile
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  description: The name of the Shipping Profile
-                  type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.create({
-              name: 'Large Products'
-            })
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/shipping-profiles' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "Large Products"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/shipping_profile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetShippingProfiles
-      summary: List Shipping Profiles
-      description: Retrieves a list of Shipping Profile.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.list()
-
-            .then(({ shipping_profiles }) => {
-              console.log(shipping_profiles.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/shipping-profiles' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_profiles:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_profile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/shipping-profiles/{id}':
-    delete:
-      operationId: DeleteShippingProfilesProfile
-      summary: Delete a Shipping Profile
-      description: Deletes a Shipping Profile.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.delete(profile_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/shipping-profiles/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Shipping Profile.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: shipping_profile
-                  deleted:
-                    type: boolean
-                    description: Whether or not the items were deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetShippingProfilesProfile
-      summary: Get a Shipping Profile
-      description: Retrieves a Shipping Profile.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.retrieve(profile_id)
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/shipping-profiles/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/shipping_profile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostShippingProfilesProfile
-      summary: Update a Shipping Profile
-      description: Updates a Shipping Profile
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  description: The name of the Shipping Profile
-                  type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.update(shipping_profile_id, {
-              name: 'Large Products'
-            })
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/shipping-profiles/{id} \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "Large Products"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/shipping_profile'
+                  return:
+                    $ref: '#/components/schemas/return'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -17862,259 +17659,11 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/returns/{id}/cancel':
+  /shipping-profiles:
     post:
-      operationId: PostReturnsReturnCancel
-      summary: Cancel a Return
-      description: Registers a Return as canceled.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Return.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.cancel(return_id)
-
-            .then(({ order }) => {
-              console.log(order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/returns/{id}/cancel' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /returns:
-    get:
-      operationId: GetReturns
-      summary: List Returns
-      description: Retrieves a list of Returns
-      parameters:
-        - in: query
-          name: limit
-          description: The upper limit for the amount of responses returned.
-          schema:
-            type: number
-            default: '50'
-        - in: query
-          name: offset
-          description: The offset of the list returned.
-          schema:
-            type: number
-            default: '0'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.list()
-
-            .then(({ returns, limit, offset, count }) => {
-              console.log(returns.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET 'https://medusa-url.com/admin/returns'
-            \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  returns:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/returns/{id}/receive':
-    post:
-      operationId: PostReturnsReturnReceive
-      summary: Receive a Return
-      description: >-
-        Registers a Return as received. Updates statuses on Orders and Swaps
-        accordingly.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Return.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - items
-              properties:
-                items:
-                  description: The Line Items that have been received.
-                  type: array
-                  items:
-                    required:
-                      - item_id
-                      - quantity
-                    properties:
-                      item_id:
-                        description: The ID of the Line Item.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item.
-                        type: integer
-                refund:
-                  description: The amount to refund.
-                  type: number
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.receive(return_id, {
-              items: [
-                {
-                  item_id,
-                  quantity: 1
-                }
-              ]
-            })
-
-            .then((data) => {
-              console.log(data.return.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/returns/{id}/receive' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "items": [
-                  {
-                    "item_id": "asafg",
-                    "quantity": 1
-                  }
-                ]
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  return:
-                    $ref: '#/components/schemas/return'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /return-reasons:
-    post:
-      operationId: PostReturnReasons
-      summary: Create a Return Reason
-      description: Creates a Return Reason
+      operationId: PostShippingProfiles
+      summary: Create a Shipping Profile
+      description: Creates a Shipping Profile
       x-authenticated: true
       requestBody:
         content:
@@ -18122,28 +17671,11 @@ paths:
             schema:
               type: object
               required:
-                - label
-                - value
+                - name
               properties:
-                label:
-                  description: The label to display to the Customer.
+                name:
+                  description: The name of the Shipping Profile
                   type: string
-                value:
-                  description: >-
-                    The value that the Return Reason will be identified by. Must
-                    be unique.
-                  type: string
-                parent_return_reason_id:
-                  description: The ID of the parent return reason.
-                  type: string
-                description:
-                  description: An optional description to for the Reason.
-                  type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs with additional
-                    information.
-                  type: object
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -18155,33 +17687,31 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.returnReasons.create({
-              label: 'Damaged',
-              value: 'damaged'
+            medusa.admin.shippingProfiles.create({
+              name: 'Large Products'
             })
 
-            .then(({ return_reason }) => {
-              console.log(return_reason.id);
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/return-reasons' \
+            'https://medusa-url.com/admin/shipping-profiles' \
 
             --header 'Authorization: Bearer {api_token}' \
 
             --header 'Content-Type: application/json' \
 
             --data-raw '{
-                "label": "Damaged",
-                "value": "damaged"
+                "name": "Large Products"
             }'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Return Reason
+        - Shipping Profile
       responses:
         '200':
           description: OK
@@ -18190,8 +17720,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
+                  shipping_profile:
+                    $ref: '#/components/schemas/shipping_profile'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -18205,9 +17735,9 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
     get:
-      operationId: GetReturnReasons
-      summary: List Return Reasons
-      description: Retrieves a list of Return Reasons.
+      operationId: GetShippingProfiles
+      summary: List Shipping Profiles
+      description: Retrieves a list of Shipping Profile.
       x-authenticated: true
       x-codeSamples:
         - lang: JavaScript
@@ -18220,23 +17750,23 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.returnReasons.list()
+            medusa.admin.shippingProfiles.list()
 
-            .then(({ return_reasons }) => {
-              console.log(return_reasons.length);
+            .then(({ shipping_profiles }) => {
+              console.log(shipping_profiles.length);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request GET
-            'https://medusa-url.com/admin/return-reasons' \
+            'https://medusa-url.com/admin/shipping-profiles' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Return Reason
+        - Shipping Profile
       responses:
         '200':
           description: OK
@@ -18245,10 +17775,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  return_reasons:
+                  shipping_profiles:
                     type: array
                     items:
-                      $ref: '#/components/schemas/return_reason'
+                      $ref: '#/components/schemas/shipping_profile'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -18261,17 +17791,17 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/return-reasons/{id}':
+  '/shipping-profiles/{id}':
     delete:
-      operationId: DeleteReturnReason
-      summary: Delete a Return Reason
-      description: Deletes a return reason.
+      operationId: DeleteShippingProfilesProfile
+      summary: Delete a Shipping Profile
+      description: Deletes a Shipping Profile.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The ID of the return reason
+          description: The ID of the Shipping Profile.
           schema:
             type: string
       x-codeSamples:
@@ -18285,7 +17815,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.returnReasons.delete(return_reason_id)
+            medusa.admin.shippingProfiles.delete(profile_id)
 
             .then(({ id, object, deleted }) => {
               console.log(id);
@@ -18294,14 +17824,14 @@ paths:
           label: cURL
           source: >
             curl --location --request DELETE
-            'https://medusa-url.com/admin/return-reasons/{id}' \
+            'https://medusa-url.com/admin/shipping-profiles/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Return Reason
+        - Shipping Profile
       responses:
         '200':
           description: OK
@@ -18312,11 +17842,11 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: The ID of the deleted return reason
+                    description: The ID of the deleted Shipping Profile.
                   object:
                     type: string
                     description: The type of the object that was deleted.
-                    default: return_reason
+                    default: shipping_profile
                   deleted:
                     type: boolean
                     description: Whether or not the items were deleted.
@@ -18334,15 +17864,15 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
     get:
-      operationId: GetReturnReasonsReason
-      summary: Get a Return Reason
-      description: Retrieves a Return Reason.
+      operationId: GetShippingProfilesProfile
+      summary: Get a Shipping Profile
+      description: Retrieves a Shipping Profile.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The ID of the Return Reason.
+          description: The ID of the Shipping Profile.
           schema:
             type: string
       x-codeSamples:
@@ -18356,23 +17886,23 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.returnReasons.retrieve(return_reason_id)
+            medusa.admin.shippingProfiles.retrieve(profile_id)
 
-            .then(({ return_reason }) => {
-              console.log(return_reason.id);
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request GET
-            'https://medusa-url.com/admin/return-reasons/{id}' \
+            'https://medusa-url.com/admin/shipping-profiles/{id}' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Return Reason
+        - Shipping Profile
       responses:
         '200':
           description: OK
@@ -18381,8 +17911,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
+                  shipping_profile:
+                    $ref: '#/components/schemas/shipping_profile'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -18396,15 +17926,14 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
     post:
-      operationId: PostReturnReasonsReason
-      summary: Update a Return Reason
-      description: Updates a Return Reason
-      x-authenticated: true
+      operationId: PostShippingProfilesProfile
+      summary: Update a Shipping Profile
+      description: Updates a Shipping Profile
       parameters:
         - in: path
           name: id
           required: true
-          description: The ID of the Return Reason.
+          description: The ID of the Shipping Profile.
           schema:
             type: string
       requestBody:
@@ -18413,22 +17942,9 @@ paths:
             schema:
               type: object
               properties:
-                label:
-                  description: The label to display to the Customer.
+                name:
+                  description: The name of the Shipping Profile
                   type: string
-                value:
-                  description: >-
-                    The value that the Return Reason will be identified by. Must
-                    be unique.
-                  type: string
-                description:
-                  description: An optional description to for the Reason.
-                  type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs with additional
-                    information.
-                  type: object
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -18440,31 +17956,31 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.returnReasons.update(return_reason_id, {
-              label: 'Damaged'
+            medusa.admin.shippingProfiles.update(shipping_profile_id, {
+              name: 'Large Products'
             })
 
-            .then(({ return_reason }) => {
-              console.log(return_reason.id);
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/return-reasons/{id}' \
+            'https://medusa-url.com/admin/shipping-profiles/{id} \
 
             --header 'Authorization: Bearer {api_token}' \
 
             --header 'Content-Type: application/json' \
 
             --data-raw '{
-                "label": "Damaged"
+                "name": "Large Products"
             }'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Return Reason
+        - Shipping Profile
       responses:
         '200':
           description: OK
@@ -18473,8 +17989,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
+                  shipping_profile:
+                    $ref: '#/components/schemas/shipping_profile'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -18879,6 +18395,497 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/tax_provider'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /shipping-options:
+    post:
+      operationId: PostShippingOptions
+      summary: Create Shipping Option
+      description: Creates a Shipping Option
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - region_id
+                - provider_id
+                - data
+                - price_type
+              properties:
+                name:
+                  description: The name of the Shipping Option
+                  type: string
+                region_id:
+                  description: >-
+                    The ID of the Region in which the Shipping Option will be
+                    available.
+                  type: string
+                provider_id:
+                  description: >-
+                    The ID of the Fulfillment Provider that handles the Shipping
+                    Option.
+                  type: string
+                profile_id:
+                  description: >-
+                    The ID of the Shipping Profile to add the Shipping Option
+                    to.
+                  type: number
+                data:
+                  description: >-
+                    The data needed for the Fulfillment Provider to handle
+                    shipping with this Shipping Option.
+                  type: object
+                price_type:
+                  description: The type of the Shipping Option price.
+                  type: string
+                  enum:
+                    - flat_rate
+                    - calculated
+                amount:
+                  description: The amount to charge for the Shipping Option.
+                  type: integer
+                requirements:
+                  description: >-
+                    The requirements that must be satisfied for the Shipping
+                    Option to be available.
+                  type: array
+                  items:
+                    required:
+                      - type
+                      - amount
+                    properties:
+                      type:
+                        description: The type of the requirement
+                        type: string
+                        enum:
+                          - max_subtotal
+                          - min_subtotal
+                      amount:
+                        description: The amount to compare with.
+                        type: integer
+                is_return:
+                  description: Whether the Shipping Option defines a return shipment.
+                  type: boolean
+                  default: false
+                admin_only:
+                  description: 'If true, the option can be used for draft orders'
+                  type: boolean
+                  default: false
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+                includes_tax:
+                  description: '[EXPERIMENTAL] Tax included in prices of shipping option'
+                  type: boolean
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.create({
+              name: 'PostFake',
+              region_id: "saasf",
+              provider_id: "manual",
+              data: {
+              },
+              price_type: 'flat_rate'
+            })
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/shipping-options' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "PostFake",
+                "region_id": "afasf",
+                "provider_id": "manual",
+                "data": {},
+                "price_type": "flat_rate"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/shipping_option'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetShippingOptions
+      summary: List Shipping Options
+      description: Retrieves a list of Shipping Options.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: region_id
+          schema:
+            type: string
+          description: Region ID to fetch options from
+        - in: query
+          name: is_return
+          schema:
+            type: boolean
+          description: Flag for fetching return options only
+        - in: query
+          name: admin_only
+          schema:
+            type: boolean
+          description: Flag for fetching admin specific options
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.list()
+
+            .then(({ shipping_options, count }) => {
+              console.log(shipping_options.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/shipping-options' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_option'
+                  count:
+                    type: integer
+                    description: The total number of items available
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/shipping-options/{id}':
+    delete:
+      operationId: DeleteShippingOptionsOption
+      summary: Delete a Shipping Option
+      description: Deletes a Shipping Option.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Option.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.delete(option_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/shipping-options/{option_id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Shipping Option.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: shipping-option
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetShippingOptionsOption
+      summary: Get a Shipping Option
+      description: Retrieves a Shipping Option.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Option.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.retrieve(option_id)
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/shipping-options/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/shipping_option'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostShippingOptionsOption
+      summary: Update Shipping Option
+      description: Updates a Shipping Option
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Option.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - requirements
+              properties:
+                name:
+                  description: The name of the Shipping Option
+                  type: string
+                amount:
+                  description: The amount to charge for the Shipping Option.
+                  type: integer
+                admin_only:
+                  description: 'If true, the option can be used for draft orders'
+                  type: boolean
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+                requirements:
+                  description: >-
+                    The requirements that must be satisfied for the Shipping
+                    Option to be available.
+                  type: array
+                  items:
+                    required:
+                      - type
+                      - amount
+                    properties:
+                      id:
+                        description: The ID of the requirement
+                        type: string
+                      type:
+                        description: The type of the requirement
+                        type: string
+                        enum:
+                          - max_subtotal
+                          - min_subtotal
+                      amount:
+                        description: The amount to compare with.
+                        type: integer
+                includes_tax:
+                  description: '[EXPERIMENTAL] Tax included in prices of shipping option'
+                  type: boolean
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.update(option_id, {
+              name: 'PostFake',
+              requirements: [
+                {
+                  id,
+                  type: 'max_subtotal',
+                  amount: 1000
+                }
+              ]
+            })
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/shipping-options/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "requirements": [
+                  {
+                    "type": "max_subtotal",
+                    "amount": 1000
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/shipping_option'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -20222,165 +20229,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /variants:
-    get:
-      operationId: GetVariants
-      summary: List Product Variants
-      description: Retrieves a list of Product Variants
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: id
-          description: A Product Variant id to filter by.
-          schema:
-            type: string
-        - in: query
-          name: ids
-          description: A comma separated list of Product Variant ids to filter by.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: A comma separated list of Product Variant relations to load.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: A comma separated list of Product Variant fields to include.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many product variants to skip in the result.
-          schema:
-            type: number
-            default: '0'
-        - in: query
-          name: limit
-          description: Maximum number of Product Variants to return.
-          schema:
-            type: number
-            default: '100'
-        - in: query
-          name: cart_id
-          description: The id of the cart to use for price selection.
-          schema:
-            type: string
-        - in: query
-          name: region_id
-          description: The id of the region to use for price selection.
-          schema:
-            type: string
-        - in: query
-          name: currency_code
-          description: The currency code to use for price selection.
-          schema:
-            type: string
-        - in: query
-          name: customer_id
-          description: The id of the customer to use for price selection.
-          schema:
-            type: string
-        - in: query
-          name: title
-          style: form
-          explode: false
-          description: product variant title to search for.
-          schema:
-            oneOf:
-              - type: string
-                description: a single title to search by
-              - type: array
-                description: multiple titles to search by
-                items:
-                  type: string
-        - in: query
-          name: inventory_quantity
-          description: Filter by available inventory quantity
-          schema:
-            oneOf:
-              - type: number
-                description: a specific number to search by.
-              - type: object
-                description: search using less and greater than comparisons.
-                properties:
-                  lt:
-                    type: number
-                    description: filter by inventory quantity less than this number
-                  gt:
-                    type: number
-                    description: filter by inventory quantity greater than this number
-                  lte:
-                    type: number
-                    description: >-
-                      filter by inventory quantity less than or equal to this
-                      number
-                  gte:
-                    type: number
-                    description: >-
-                      filter by inventory quantity greater than or equal to this
-                      number
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.variants.list()
-
-            .then(({ variants, limit, offset, count }) => {
-              console.log(variants.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/variants' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Product Variant
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  variants:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_variant'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /uploads/protected:
     post:
       operationId: PostUploadsProtected
@@ -21070,6 +20918,165 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /variants:
+    get:
+      operationId: GetVariants
+      summary: List Product Variants
+      description: Retrieves a list of Product Variants
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: id
+          description: A Product Variant id to filter by.
+          schema:
+            type: string
+        - in: query
+          name: ids
+          description: A comma separated list of Product Variant ids to filter by.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: A comma separated list of Product Variant relations to load.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: A comma separated list of Product Variant fields to include.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many product variants to skip in the result.
+          schema:
+            type: number
+            default: '0'
+        - in: query
+          name: limit
+          description: Maximum number of Product Variants to return.
+          schema:
+            type: number
+            default: '100'
+        - in: query
+          name: cart_id
+          description: The id of the cart to use for price selection.
+          schema:
+            type: string
+        - in: query
+          name: region_id
+          description: The id of the region to use for price selection.
+          schema:
+            type: string
+        - in: query
+          name: currency_code
+          description: The currency code to use for price selection.
+          schema:
+            type: string
+        - in: query
+          name: customer_id
+          description: The id of the customer to use for price selection.
+          schema:
+            type: string
+        - in: query
+          name: title
+          style: form
+          explode: false
+          description: product variant title to search for.
+          schema:
+            oneOf:
+              - type: string
+                description: a single title to search by
+              - type: array
+                description: multiple titles to search by
+                items:
+                  type: string
+        - in: query
+          name: inventory_quantity
+          description: Filter by available inventory quantity
+          schema:
+            oneOf:
+              - type: number
+                description: a specific number to search by.
+              - type: object
+                description: search using less and greater than comparisons.
+                properties:
+                  lt:
+                    type: number
+                    description: filter by inventory quantity less than this number
+                  gt:
+                    type: number
+                    description: filter by inventory quantity greater than this number
+                  lte:
+                    type: number
+                    description: >-
+                      filter by inventory quantity less than or equal to this
+                      number
+                  gte:
+                    type: number
+                    description: >-
+                      filter by inventory quantity greater than or equal to this
+                      number
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.variants.list()
+
+            .then(({ variants, limit, offset, count }) => {
+              console.log(variants.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/variants' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  variants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_variant'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
         '400':
           $ref: '#/components/responses/400_error'
         '401':

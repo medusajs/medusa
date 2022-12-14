@@ -202,115 +202,6 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
-  /apps/authorizations:
-    post:
-      operationId: PostApps
-      summary: Generate Token for App
-      description: Generates a token for an application.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - application_name
-                - state
-                - code
-              properties:
-                application_name:
-                  type: string
-                  description: Name of the application for the token to be generated for.
-                state:
-                  type: string
-                  description: State of the application.
-                code:
-                  type: string
-                  description: The code for the generated token.
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/apps/authorizations' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "application_name": "example",
-                "state": "ready",
-                "code": "token"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - App
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  apps:
-                    $ref: '#/components/schemas/OAuth'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /apps:
-    get:
-      operationId: GetApps
-      summary: List Applications
-      description: Retrieve a list of applications.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/admin/apps' \
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - App
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  apps:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OAuth'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /auth:
     post:
       operationId: PostAuth
@@ -1219,6 +1110,633 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/collections/{id}/products/batch':
+    post:
+      operationId: PostProductsToCollection
+      summary: Update Products
+      description: Updates products associated with a Product Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - product_ids
+              properties:
+                product_ids:
+                  description: An array of Product IDs to add to the Product Collection.
+                  type: array
+                  items:
+                    description: The ID of a Product to add to the Product Collection.
+                    type: string
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/collections/{id}/products/batch' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "product_ids": [
+                    "prod_01G1G5V2MBA328390B5AXJ610F"
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteProductsFromCollection
+      summary: Remove Product
+      description: Removes products associated with a Product Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - product_ids
+              properties:
+                product_ids:
+                  description: >-
+                    An array of Product IDs to remove from the Product
+                    Collection.
+                  type: array
+                  items:
+                    description: The ID of a Product to add to the Product Collection.
+                    type: string
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/collections/{id}/products/batch' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "product_ids": [
+                    "prod_01G1G5V2MBA328390B5AXJ610F"
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the collection
+                  object:
+                    type: string
+                    description: The type of object the removal was executed on
+                    default: product-collection
+                  removed_products:
+                    description: The IDs of the products removed from the collection
+                    type: array
+                    items:
+                      description: The ID of a Product to add to the Product Collection.
+                      type: string
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /collections:
+    post:
+      operationId: PostCollections
+      summary: Create a Collection
+      description: Creates a Product Collection.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  description: The title to identify the Collection by.
+                handle:
+                  type: string
+                  description: >-
+                    An optional handle to be used in slugs, if none is provided
+                    we will kebab-case the title.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.collections.create({
+              title: 'New Collection'
+            })
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/collections' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "title": "New Collection"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetCollections
+      summary: List Collections
+      description: Retrieve a list of Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of collections to return.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: offset
+          description: The number of collections to skip before the results.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: title
+          description: The title of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: handle
+          description: The handle of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: a search term to search titles and handles.
+          schema:
+            type: string
+        - in: query
+          name: discount_condition_id
+          description: >-
+            The discount condition id on which to filter the product
+            collections.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting collections were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.collections.list()
+
+            .then(({ collections, limit, offset, count }) => {
+              console.log(collections.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/collections' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/collections/{id}':
+    delete:
+      operationId: DeleteCollectionsCollection
+      summary: Delete a Collection
+      description: Deletes a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.collections.delete(collection_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Collection
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: product-collection
+                  deleted:
+                    type: boolean
+                    description: Whether the collection was deleted successfully or not.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetCollectionsCollection
+      summary: Get a Collection
+      description: Retrieves a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Product Collection
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.collections.retrieve(collection_id)
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostCollectionsCollection
+      summary: Update a Collection
+      description: Updates a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title to identify the Collection by.
+                handle:
+                  type: string
+                  description: >-
+                    An optional handle to be used in slugs, if none is provided
+                    we will kebab-case the title.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.collections.update(collection_id, {
+              title: 'New Collection'
+            })
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "title": "New Collection"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -1982,54 +2500,52 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/collections/{id}/products/batch':
+  /apps/authorizations:
     post:
-      operationId: PostProductsToCollection
-      summary: Update Products
-      description: Updates products associated with a Product Collection
+      operationId: PostApps
+      summary: Generate Token for App
+      description: Generates a token for an application.
       x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Collection.
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
             schema:
               type: object
               required:
-                - product_ids
+                - application_name
+                - state
+                - code
               properties:
-                product_ids:
-                  description: An array of Product IDs to add to the Product Collection.
-                  type: array
-                  items:
-                    description: The ID of a Product to add to the Product Collection.
-                    type: string
+                application_name:
+                  type: string
+                  description: Name of the application for the token to be generated for.
+                state:
+                  type: string
+                  description: State of the application.
+                code:
+                  type: string
+                  description: The code for the generated token.
       x-codeSamples:
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/collections/{id}/products/batch' \
+            'https://medusa-url.com/admin/apps/authorizations' \
 
             --header 'Authorization: Bearer {api_token}' \
 
             --header 'Content-Type: application/json' \
 
             --data-raw '{
-                "product_ids": [
-                    "prod_01G1G5V2MBA328390B5AXJ610F"
-                ]
+                "application_name": "example",
+                "state": "ready",
+                "code": "token"
             }'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Collection
+        - App
       responses:
         '200':
           description: OK
@@ -2038,8 +2554,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                  apps:
+                    $ref: '#/components/schemas/OAuth'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2052,55 +2568,23 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-    delete:
-      operationId: DeleteProductsFromCollection
-      summary: Remove Product
-      description: Removes products associated with a Product Collection
+  /apps:
+    get:
+      operationId: GetApps
+      summary: List Applications
+      description: Retrieve a list of applications.
       x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Collection.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - product_ids
-              properties:
-                product_ids:
-                  description: >-
-                    An array of Product IDs to remove from the Product
-                    Collection.
-                  type: array
-                  items:
-                    description: The ID of a Product to add to the Product Collection.
-                    type: string
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/collections/{id}/products/batch' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "product_ids": [
-                    "prod_01G1G5V2MBA328390B5AXJ610F"
-                ]
-            }'
+          source: |
+            curl --location --request GET 'https://medusa-url.com/admin/apps' \
+            --header 'Authorization: Bearer {api_token}'
       security:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Collection
+        - App
       responses:
         '200':
           description: OK
@@ -2109,494 +2593,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                    description: The ID of the collection
-                  object:
-                    type: string
-                    description: The type of object the removal was executed on
-                    default: product-collection
-                  removed_products:
-                    description: The IDs of the products removed from the collection
+                  apps:
                     type: array
                     items:
-                      description: The ID of a Product to add to the Product Collection.
-                      type: string
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /collections:
-    post:
-      operationId: PostCollections
-      summary: Create a Collection
-      description: Creates a Product Collection.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - title
-              properties:
-                title:
-                  type: string
-                  description: The title to identify the Collection by.
-                handle:
-                  type: string
-                  description: >-
-                    An optional handle to be used in slugs, if none is provided
-                    we will kebab-case the title.
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.collections.create({
-              title: 'New Collection'
-            })
-
-            .then(({ collection }) => {
-              console.log(collection.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/collections' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "title": "New Collection"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetCollections
-      summary: List Collections
-      description: Retrieve a list of Product Collection.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of collections to return.
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          description: The number of collections to skip before the results.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: title
-          description: The title of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: handle
-          description: The handle of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: a search term to search titles and handles.
-          schema:
-            type: string
-        - in: query
-          name: discount_condition_id
-          description: >-
-            The discount condition id on which to filter the product
-            collections.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: deleted_at
-          description: Date comparison for when resulting collections were deleted.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.collections.list()
-
-            .then(({ collections, limit, offset, count }) => {
-              console.log(collections.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/collections' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_collection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/collections/{id}':
-    delete:
-      operationId: DeleteCollectionsCollection
-      summary: Delete a Collection
-      description: Deletes a Product Collection.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Collection.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.collections.delete(collection_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/collections/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Collection
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: product-collection
-                  deleted:
-                    type: boolean
-                    description: Whether the collection was deleted successfully or not.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetCollectionsCollection
-      summary: Get a Collection
-      description: Retrieves a Product Collection.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Product Collection
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.collections.retrieve(collection_id)
-
-            .then(({ collection }) => {
-              console.log(collection.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/collections/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostCollectionsCollection
-      summary: Update a Collection
-      description: Updates a Product Collection.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Collection.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  description: The title to identify the Collection by.
-                handle:
-                  type: string
-                  description: >-
-                    An optional handle to be used in slugs, if none is provided
-                    we will kebab-case the title.
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.collections.update(collection_id, {
-              title: 'New Collection'
-            })
-
-            .then(({ collection }) => {
-              console.log(collection.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/collections/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "title": "New Collection"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                      $ref: '#/components/schemas/OAuth'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2980,6 +2980,865 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /draft-orders:
+    post:
+      operationId: PostDraftOrders
+      summary: Create a Draft Order
+      description: Creates a Draft Order
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - items
+                - region_id
+                - shipping_methods
+              properties:
+                status:
+                  description: The status of the draft order
+                  type: string
+                  enum:
+                    - open
+                    - completed
+                email:
+                  description: The email of the customer of the draft order
+                  type: string
+                  format: email
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: string
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: string
+                items:
+                  description: The Line Items that have been received.
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - quantity
+                    properties:
+                      variant_id:
+                        description: >-
+                          The ID of the Product Variant to generate the Line
+                          Item from.
+                        type: string
+                      unit_price:
+                        description: The potential custom price of the item.
+                        type: integer
+                      title:
+                        description: The potential custom title of the item.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+                      metadata:
+                        description: >-
+                          The optional key-value map with additional details
+                          about the Line Item.
+                        type: object
+                region_id:
+                  description: The ID of the region for the draft order
+                  type: string
+                discounts:
+                  description: The discounts to add on the draft order
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code of the discount to apply
+                        type: string
+                customer_id:
+                  description: The ID of the customer to add on the draft order
+                  type: string
+                no_notification_order:
+                  description: >-
+                    An optional flag passed to the resulting order to determine
+                    use of notifications.
+                  type: boolean
+                shipping_methods:
+                  description: The shipping methods for the draft order
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - option_id
+                    properties:
+                      option_id:
+                        description: The ID of the shipping option in use
+                        type: string
+                      data:
+                        description: >-
+                          The optional additional data needed for the shipping
+                          method
+                        type: object
+                      price:
+                        description: The potential custom price of the shipping
+                        type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Draft Order.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.create({
+              email: 'user@example.com',
+              region_id,
+              items: [
+                {
+                  quantity: 1
+                }
+              ],
+              shipping_methods: [
+                {
+                  option_id
+                }
+              ],
+            })
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/draft-orders' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "email": "user@example.com",
+                "region_id": "{region_id}"
+                "items": [
+                   {
+                     "quantity": 1
+                   }
+                ],
+                "shipping_methods": [
+                   {
+                     "option_id": "{option_id}"
+                   }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetDraftOrders
+      summary: List Draft Orders
+      description: Retrieves an list of Draft Orders
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: offset
+          description: The number of items to skip before the results.
+          schema:
+            type: number
+            default: '0'
+        - in: query
+          name: limit
+          description: Limit the number of items returned.
+          schema:
+            type: number
+            default: '50'
+        - in: query
+          name: q
+          description: >-
+            a search term to search emails in carts associated with draft orders
+            and display IDs of draft orders
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.list()
+
+            .then(({ draft_orders, limit, offset, count }) => {
+              console.log(draft_orders.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/draft-orders' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draft_orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/draft-order'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/draft-orders/{id}/line-items':
+    post:
+      operationId: PostDraftOrdersDraftOrderLineItems
+      summary: Create a Line Item
+      description: Creates a Line Item for the Draft Order
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Draft Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quantity
+              properties:
+                variant_id:
+                  description: >-
+                    The ID of the Product Variant to generate the Line Item
+                    from.
+                  type: string
+                unit_price:
+                  description: The potential custom price of the item.
+                  type: integer
+                title:
+                  description: The potential custom title of the item.
+                  type: string
+                  default: Custom item
+                quantity:
+                  description: The quantity of the Line Item.
+                  type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Line Item.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.addLineItem(draft_order_id, {
+              quantity: 1
+            })
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/draft-orders/{id}/line-items' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "quantity": 1
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/draft-orders/{id}':
+    delete:
+      operationId: DeleteDraftOrdersDraftOrder
+      summary: Delete a Draft Order
+      description: Deletes a Draft Order
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Draft Order.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.delete(draft_order_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/draft-orders/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Draft Order.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: draft-order
+                  deleted:
+                    type: boolean
+                    description: Whether the draft order was deleted successfully or not.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetDraftOrdersDraftOrder
+      summary: Get a Draft Order
+      description: Retrieves a Draft Order.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Draft Order.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.retrieve(draft_order_id)
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/draft-orders/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/draft-orders/{id}/line-items/{line_id}':
+    delete:
+      operationId: DeleteDraftOrdersDraftOrderLineItemsItem
+      summary: Delete a Line Item
+      description: Removes a Line Item from a Draft Order.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Draft Order.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The ID of the Draft Order.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.removeLineItem(draft_order_id, item_id)
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/draft-orders/{id}/line-items/{line_id}'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostDraftOrdersDraftOrderLineItemsItem
+      summary: Update a Line Item
+      description: Updates a Line Item for a Draft Order
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Draft Order.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The ID of the Line Item.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                unit_price:
+                  description: The potential custom price of the item.
+                  type: integer
+                title:
+                  description: The potential custom title of the item.
+                  type: string
+                quantity:
+                  description: The quantity of the Line Item.
+                  type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Line Item.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.updateLineItem(draft_order_id, line_id, {
+              quantity: 1
+            })
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/draft-orders/{id}/line-items/{line_id}'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "quantity": 1
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/draft-orders/{id}/pay':
+    post:
+      summary: Registers a Payment
+      operationId: PostDraftOrdersDraftOrderRegisterPayment
+      description: Registers a payment for a Draft Order.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Draft Order id.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.markPaid(draft_order_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/draft-orders/{id}/pay' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    $ref: '#/components/schemas/draft-order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/admin/draft-orders/{id}':
+    post:
+      operationId: PostDraftOrdersDraftOrder
+      summary: Update a Draft Order
+      description: Updates a Draft Order.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Draft Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                region_id:
+                  type: string
+                  description: The ID of the Region to create the Draft Order in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO code for the Country.
+                  externalDocs:
+                    url: >-
+                      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+                    description: See a list of codes.
+                email:
+                  type: string
+                  description: An email to be used on the Draft Order.
+                  format: email
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: string
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: string
+                discounts:
+                  description: An array of Discount codes to add to the Draft Order.
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Discount is identifed by.
+                        type: string
+                no_notification_order:
+                  description: >-
+                    An optional flag passed to the resulting order to determine
+                    use of notifications.
+                  type: boolean
+                customer_id:
+                  description: The ID of the Customer to associate the Draft Order with.
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.draftOrders.update(draft_order_id, {
+              email: "user@example.com"
+            })
+
+            .then(({ draft_order }) => {
+              console.log(draft_order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/draft-orders/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "email": "user@example.com"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Draft Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  draft_order:
+                    $ref: '#/components/schemas/draft-order'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -4745,865 +5604,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /draft-orders:
-    post:
-      operationId: PostDraftOrders
-      summary: Create a Draft Order
-      description: Creates a Draft Order
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - items
-                - region_id
-                - shipping_methods
-              properties:
-                status:
-                  description: The status of the draft order
-                  type: string
-                  enum:
-                    - open
-                    - completed
-                email:
-                  description: The email of the customer of the draft order
-                  type: string
-                  format: email
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: '#/components/schemas/address_fields'
-                    - type: string
-                shipping_address:
-                  description: The Address to be used for shipping.
-                  anyOf:
-                    - $ref: '#/components/schemas/address_fields'
-                    - type: string
-                items:
-                  description: The Line Items that have been received.
-                  type: array
-                  items:
-                    type: object
-                    required:
-                      - quantity
-                    properties:
-                      variant_id:
-                        description: >-
-                          The ID of the Product Variant to generate the Line
-                          Item from.
-                        type: string
-                      unit_price:
-                        description: The potential custom price of the item.
-                        type: integer
-                      title:
-                        description: The potential custom title of the item.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item.
-                        type: integer
-                      metadata:
-                        description: >-
-                          The optional key-value map with additional details
-                          about the Line Item.
-                        type: object
-                region_id:
-                  description: The ID of the region for the draft order
-                  type: string
-                discounts:
-                  description: The discounts to add on the draft order
-                  type: array
-                  items:
-                    type: object
-                    required:
-                      - code
-                    properties:
-                      code:
-                        description: The code of the discount to apply
-                        type: string
-                customer_id:
-                  description: The ID of the customer to add on the draft order
-                  type: string
-                no_notification_order:
-                  description: >-
-                    An optional flag passed to the resulting order to determine
-                    use of notifications.
-                  type: boolean
-                shipping_methods:
-                  description: The shipping methods for the draft order
-                  type: array
-                  items:
-                    type: object
-                    required:
-                      - option_id
-                    properties:
-                      option_id:
-                        description: The ID of the shipping option in use
-                        type: string
-                      data:
-                        description: >-
-                          The optional additional data needed for the shipping
-                          method
-                        type: object
-                      price:
-                        description: The potential custom price of the shipping
-                        type: integer
-                metadata:
-                  description: >-
-                    The optional key-value map with additional details about the
-                    Draft Order.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.create({
-              email: 'user@example.com',
-              region_id,
-              items: [
-                {
-                  quantity: 1
-                }
-              ],
-              shipping_methods: [
-                {
-                  option_id
-                }
-              ],
-            })
-
-            .then(({ draft_order }) => {
-              console.log(draft_order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/draft-orders' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "email": "user@example.com",
-                "region_id": "{region_id}"
-                "items": [
-                   {
-                     "quantity": 1
-                   }
-                ],
-                "shipping_methods": [
-                   {
-                     "option_id": "{option_id}"
-                   }
-                ]
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  draft_order:
-                    $ref: '#/components/schemas/draft-order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetDraftOrders
-      summary: List Draft Orders
-      description: Retrieves an list of Draft Orders
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: offset
-          description: The number of items to skip before the results.
-          schema:
-            type: number
-            default: '0'
-        - in: query
-          name: limit
-          description: Limit the number of items returned.
-          schema:
-            type: number
-            default: '50'
-        - in: query
-          name: q
-          description: >-
-            a search term to search emails in carts associated with draft orders
-            and display IDs of draft orders
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.list()
-
-            .then(({ draft_orders, limit, offset, count }) => {
-              console.log(draft_orders.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/draft-orders' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  draft_orders:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/draft-order'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/draft-orders/{id}/line-items':
-    post:
-      operationId: PostDraftOrdersDraftOrderLineItems
-      summary: Create a Line Item
-      description: Creates a Line Item for the Draft Order
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Draft Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - quantity
-              properties:
-                variant_id:
-                  description: >-
-                    The ID of the Product Variant to generate the Line Item
-                    from.
-                  type: string
-                unit_price:
-                  description: The potential custom price of the item.
-                  type: integer
-                title:
-                  description: The potential custom title of the item.
-                  type: string
-                  default: Custom item
-                quantity:
-                  description: The quantity of the Line Item.
-                  type: integer
-                metadata:
-                  description: >-
-                    The optional key-value map with additional details about the
-                    Line Item.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.addLineItem(draft_order_id, {
-              quantity: 1
-            })
-
-            .then(({ draft_order }) => {
-              console.log(draft_order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/draft-orders/{id}/line-items' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "quantity": 1
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  draft_order:
-                    $ref: '#/components/schemas/draft-order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/draft-orders/{id}':
-    delete:
-      operationId: DeleteDraftOrdersDraftOrder
-      summary: Delete a Draft Order
-      description: Deletes a Draft Order
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Draft Order.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.delete(draft_order_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/draft-orders/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Draft Order.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: draft-order
-                  deleted:
-                    type: boolean
-                    description: Whether the draft order was deleted successfully or not.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetDraftOrdersDraftOrder
-      summary: Get a Draft Order
-      description: Retrieves a Draft Order.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Draft Order.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.retrieve(draft_order_id)
-
-            .then(({ draft_order }) => {
-              console.log(draft_order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/draft-orders/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  draft_order:
-                    $ref: '#/components/schemas/draft-order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/draft-orders/{id}/line-items/{line_id}':
-    delete:
-      operationId: DeleteDraftOrdersDraftOrderLineItemsItem
-      summary: Delete a Line Item
-      description: Removes a Line Item from a Draft Order.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Draft Order.
-          schema:
-            type: string
-        - in: path
-          name: line_id
-          required: true
-          description: The ID of the Draft Order.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.removeLineItem(draft_order_id, item_id)
-
-            .then(({ draft_order }) => {
-              console.log(draft_order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/draft-orders/{id}/line-items/{line_id}'
-            \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  draft_order:
-                    $ref: '#/components/schemas/draft-order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostDraftOrdersDraftOrderLineItemsItem
-      summary: Update a Line Item
-      description: Updates a Line Item for a Draft Order
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Draft Order.
-          schema:
-            type: string
-        - in: path
-          name: line_id
-          required: true
-          description: The ID of the Line Item.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                unit_price:
-                  description: The potential custom price of the item.
-                  type: integer
-                title:
-                  description: The potential custom title of the item.
-                  type: string
-                quantity:
-                  description: The quantity of the Line Item.
-                  type: integer
-                metadata:
-                  description: >-
-                    The optional key-value map with additional details about the
-                    Line Item.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.updateLineItem(draft_order_id, line_id, {
-              quantity: 1
-            })
-
-            .then(({ draft_order }) => {
-              console.log(draft_order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/draft-orders/{id}/line-items/{line_id}'
-            \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "quantity": 1
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  draft_order:
-                    $ref: '#/components/schemas/draft-order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/draft-orders/{id}/pay':
-    post:
-      summary: Registers a Payment
-      operationId: PostDraftOrdersDraftOrderRegisterPayment
-      description: Registers a payment for a Draft Order.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The Draft Order id.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.markPaid(draft_order_id)
-
-            .then(({ order }) => {
-              console.log(order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/draft-orders/{id}/pay' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order:
-                    $ref: '#/components/schemas/draft-order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/admin/draft-orders/{id}':
-    post:
-      operationId: PostDraftOrdersDraftOrder
-      summary: Update a Draft Order
-      description: Updates a Draft Order.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Draft Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                region_id:
-                  type: string
-                  description: The ID of the Region to create the Draft Order in.
-                country_code:
-                  type: string
-                  description: The 2 character ISO code for the Country.
-                  externalDocs:
-                    url: >-
-                      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
-                    description: See a list of codes.
-                email:
-                  type: string
-                  description: An email to be used on the Draft Order.
-                  format: email
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: '#/components/schemas/address_fields'
-                    - type: string
-                shipping_address:
-                  description: The Address to be used for shipping.
-                  anyOf:
-                    - $ref: '#/components/schemas/address_fields'
-                    - type: string
-                discounts:
-                  description: An array of Discount codes to add to the Draft Order.
-                  type: array
-                  items:
-                    type: object
-                    required:
-                      - code
-                    properties:
-                      code:
-                        description: The code that a Discount is identifed by.
-                        type: string
-                no_notification_order:
-                  description: >-
-                    An optional flag passed to the resulting order to determine
-                    use of notifications.
-                  type: boolean
-                customer_id:
-                  description: The ID of the Customer to associate the Draft Order with.
-                  type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.draftOrders.update(draft_order_id, {
-              email: "user@example.com"
-            })
-
-            .then(({ draft_order }) => {
-              console.log(draft_order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/draft-orders/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "email": "user@example.com"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Draft Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  draft_order:
-                    $ref: '#/components/schemas/draft-order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -6965,874 +6965,6 @@ paths:
           $ref: '#/components/responses/invalid_state_error'
         '422':
           $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/order-edits/{id}/items':
-    post:
-      operationId: PostOrderEditsEditLineItems
-      summary: Add an line item to an order (edit)
-      description: Create an OrderEdit LineItem.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Order Edit.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - variant_id
-                - quantity
-              properties:
-                variant_id:
-                  description: The ID of the variant ID to add
-                  type: string
-                quantity:
-                  description: The quantity to add
-                  type: number
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
-                  type: object
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.addLineItem(order_edit_id, {
-              variant_id, 
-              quantity 
-            })
-
-            .then(({ order_edit }) => {
-               console.log(order_edit.id)
-            })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/order-edits/{id}/items' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{ "variant_id": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6",
-            "quantity": 3 }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/order-edits/{id}/cancel':
-    post:
-      operationId: PostOrderEditsOrderEditCancel
-      summary: Cancel an OrderEdit
-      description: Cancels an OrderEdit.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the OrderEdit.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.cancel(order_edit_id)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/order-edits/{id}/cancel' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/order-edits/{id}/confirm':
-    post:
-      operationId: PostOrderEditsOrderEditConfirm
-      summary: Confirms an OrderEdit
-      description: Confirms an OrderEdit.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the order edit.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.confirm(order_edit_id)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/order-edits/{id}/confirm' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /order-edits:
-    post:
-      operationId: PostOrderEdits
-      summary: Create an OrderEdit
-      description: Creates an OrderEdit.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - order_id
-              properties:
-                order_id:
-                  description: The ID of the order to create the edit for.
-                  type: string
-                internal_note:
-                  description: An optional note to create for the order edit.
-                  type: string
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.create({ order_id })
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/order-edits' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{ "order_id": "my_order_id", "internal_note":
-            "my_optional_note" }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetOrderEdits
-      summary: List OrderEdits
-      description: List OrderEdits.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching order edit internal note.
-          schema:
-            type: string
-        - in: query
-          name: order_id
-          description: List order edits by order id.
-          schema:
-            type: string
-        - in: query
-          name: limit
-          description: The number of items in the response
-          schema:
-            type: number
-            default: '20'
-        - in: query
-          name: offset
-          description: The offset of items in response
-          schema:
-            type: number
-            default: '0'
-        - in: query
-          name: expand
-          description: Comma separated list of relations to include in the results.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: Comma separated list of fields to include in the results.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.list()
-              .then(({ order_edits, count, limit, offset }) => {
-                console.log(order_edits.length)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/order-edits' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edits:
-                    type: array
-                    $ref: '#/components/schemas/order_edit'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/order-edits/{id}/items/{item_id}':
-    delete:
-      operationId: DeleteOrderEditsOrderEditLineItemsLineItem
-      summary: Delete line items from an order edit and create change item
-      description: Delete line items from an order edit and create change item
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Order Edit to delete from.
-          schema:
-            type: string
-        - in: path
-          name: item_id
-          required: true
-          description: The ID of the order edit item to delete from order.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.removeLineItem(order_edit_id, line_item_id)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostOrderEditsEditLineItemsLineItem
-      summary: Create or update the order edit change holding the line item changes
-      description: Create or update the order edit change holding the line item changes
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Order Edit to update.
-          schema:
-            type: string
-        - in: path
-          name: item_id
-          required: true
-          description: The ID of the order edit item to update.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - quantity
-              properties:
-                quantity:
-                  description: The quantity to update
-                  type: number
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id,
-            {
-                quantity: 5
-              })
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{ "quantity": 5 }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/order-edits/{id}/changes/{change_id}':
-    delete:
-      operationId: DeleteOrderEditsOrderEditItemChange
-      summary: Delete an Order Edit Item Change
-      description: Deletes an Order Edit Item Change
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Order Edit to delete.
-          schema:
-            type: string
-        - in: path
-          name: change_id
-          required: true
-          description: The ID of the Order Edit Item Change to delete.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.deleteItemChange(order_edit_id,
-            item_change_id)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/order-edits/{id}/changes/{change_id}'
-            \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Order Edit Item Change.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    format: item_change
-                  deleted:
-                    type: boolean
-                    description: Whether or not the Order Edit Item Change was deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-  '/order-edits/{id}':
-    delete:
-      operationId: DeleteOrderEditsOrderEdit
-      summary: Delete an Order Edit
-      description: Deletes an Order Edit
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Order Edit to delete.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.delete(order_edit_id)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/order-edits/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Order Edit.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    format: order_edit
-                  deleted:
-                    type: boolean
-                    description: Whether or not the Order Edit was deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-    get:
-      operationId: GetOrderEditsOrderEdit
-      summary: Retrieve an OrderEdit
-      description: Retrieves a OrderEdit.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the OrderEdit.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: Comma separated list of relations to include in the results.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: Comma separated list of fields to include in the results.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.retrieve(orderEditId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/order-edits/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostOrderEditsOrderEdit
-      summary: Updates an OrderEdit
-      description: Updates a OrderEdit.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the OrderEdit.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                internal_note:
-                  description: An optional note to create or update for the order edit.
-                  type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.update(order_edit_id, {
-              internal_note: "internal reason XY"
-            })
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/order-edits/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "internal_note": "internal reason XY"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/order-edits/{id}/request':
-    post:
-      operationId: PostOrderEditsOrderEditRequest
-      summary: Request order edit confirmation
-      description: Request customer confirmation of an Order Edit
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Order Edit to request confirmation from.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.orderEdits.requestConfirmation(order_edit_id)
-              .then({ order_edit }) => {
-                console.log(order_edit.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/order-edits/{id}/request' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - OrderEdit
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
         '500':
           $ref: '#/components/responses/500_error'
   '/orders/{id}/shipping-methods':
@@ -10464,6 +9596,874 @@ paths:
           $ref: '#/components/responses/invalid_state_error'
         '422':
           $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/order-edits/{id}/items':
+    post:
+      operationId: PostOrderEditsEditLineItems
+      summary: Add an line item to an order (edit)
+      description: Create an OrderEdit LineItem.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Order Edit.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - variant_id
+                - quantity
+              properties:
+                variant_id:
+                  description: The ID of the variant ID to add
+                  type: string
+                quantity:
+                  description: The quantity to add
+                  type: number
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.addLineItem(order_edit_id, {
+              variant_id, 
+              quantity 
+            })
+
+            .then(({ order_edit }) => {
+               console.log(order_edit.id)
+            })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/order-edits/{id}/items' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{ "variant_id": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6",
+            "quantity": 3 }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/order-edits/{id}/cancel':
+    post:
+      operationId: PostOrderEditsOrderEditCancel
+      summary: Cancel an OrderEdit
+      description: Cancels an OrderEdit.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the OrderEdit.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.cancel(order_edit_id)
+              .then(({ order_edit }) => {
+                console.log(order_edit.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/order-edits/{id}/cancel' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/order-edits/{id}/confirm':
+    post:
+      operationId: PostOrderEditsOrderEditConfirm
+      summary: Confirms an OrderEdit
+      description: Confirms an OrderEdit.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the order edit.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.confirm(order_edit_id)
+              .then(({ order_edit }) => {
+                console.log(order_edit.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/order-edits/{id}/confirm' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /order-edits:
+    post:
+      operationId: PostOrderEdits
+      summary: Create an OrderEdit
+      description: Creates an OrderEdit.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - order_id
+              properties:
+                order_id:
+                  description: The ID of the order to create the edit for.
+                  type: string
+                internal_note:
+                  description: An optional note to create for the order edit.
+                  type: string
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.create({ order_id })
+              .then(({ order_edit }) => {
+                console.log(order_edit.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/order-edits' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{ "order_id": "my_order_id", "internal_note":
+            "my_optional_note" }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetOrderEdits
+      summary: List OrderEdits
+      description: List OrderEdits.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching order edit internal note.
+          schema:
+            type: string
+        - in: query
+          name: order_id
+          description: List order edits by order id.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: The number of items in the response
+          schema:
+            type: number
+            default: '20'
+        - in: query
+          name: offset
+          description: The offset of items in response
+          schema:
+            type: number
+            default: '0'
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.list()
+              .then(({ order_edits, count, limit, offset }) => {
+                console.log(order_edits.length)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/order-edits' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edits:
+                    type: array
+                    $ref: '#/components/schemas/order_edit'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/order-edits/{id}/items/{item_id}':
+    delete:
+      operationId: DeleteOrderEditsOrderEditLineItemsLineItem
+      summary: Delete line items from an order edit and create change item
+      description: Delete line items from an order edit and create change item
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Order Edit to delete from.
+          schema:
+            type: string
+        - in: path
+          name: item_id
+          required: true
+          description: The ID of the order edit item to delete from order.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.removeLineItem(order_edit_id, line_item_id)
+              .then(({ order_edit }) => {
+                console.log(order_edit.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostOrderEditsEditLineItemsLineItem
+      summary: Create or update the order edit change holding the line item changes
+      description: Create or update the order edit change holding the line item changes
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Order Edit to update.
+          schema:
+            type: string
+        - in: path
+          name: item_id
+          required: true
+          description: The ID of the order edit item to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quantity
+              properties:
+                quantity:
+                  description: The quantity to update
+                  type: number
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id,
+            {
+                quantity: 5
+              })
+              .then(({ order_edit }) => {
+                console.log(order_edit.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{ "quantity": 5 }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/order-edits/{id}/changes/{change_id}':
+    delete:
+      operationId: DeleteOrderEditsOrderEditItemChange
+      summary: Delete an Order Edit Item Change
+      description: Deletes an Order Edit Item Change
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Order Edit to delete.
+          schema:
+            type: string
+        - in: path
+          name: change_id
+          required: true
+          description: The ID of the Order Edit Item Change to delete.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.deleteItemChange(order_edit_id,
+            item_change_id)
+              .then(({ id, object, deleted }) => {
+                console.log(id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/order-edits/{id}/changes/{change_id}'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Order Edit Item Change.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    format: item_change
+                  deleted:
+                    type: boolean
+                    description: Whether or not the Order Edit Item Change was deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+  '/order-edits/{id}':
+    delete:
+      operationId: DeleteOrderEditsOrderEdit
+      summary: Delete an Order Edit
+      description: Deletes an Order Edit
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Order Edit to delete.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.delete(order_edit_id)
+              .then(({ id, object, deleted }) => {
+                console.log(id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/order-edits/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Order Edit.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    format: order_edit
+                  deleted:
+                    type: boolean
+                    description: Whether or not the Order Edit was deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+    get:
+      operationId: GetOrderEditsOrderEdit
+      summary: Retrieve an OrderEdit
+      description: Retrieves a OrderEdit.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the OrderEdit.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.retrieve(orderEditId)
+              .then(({ order_edit }) => {
+                console.log(order_edit.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/order-edits/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostOrderEditsOrderEdit
+      summary: Updates an OrderEdit
+      description: Updates a OrderEdit.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the OrderEdit.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                internal_note:
+                  description: An optional note to create or update for the order edit.
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.update(order_edit_id, {
+              internal_note: "internal reason XY"
+            })
+              .then(({ order_edit }) => {
+                console.log(order_edit.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/order-edits/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "internal_note": "internal reason XY"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/order-edits/{id}/request':
+    post:
+      operationId: PostOrderEditsOrderEditRequest
+      summary: Request order edit confirmation
+      description: Request customer confirmation of an Order Edit
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Order Edit to request confirmation from.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.orderEdits.requestConfirmation(order_edit_id)
+              .then({ order_edit }) => {
+                console.log(order_edit.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/order-edits/{id}/request' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - OrderEdit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_edit:
+                    $ref: '#/components/schemas/order_edit'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
         '500':
           $ref: '#/components/responses/500_error'
   '/payment-collections/{id}':
@@ -14704,7 +14704,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Publishable Api Key
+        - PublishableApiKey
       responses:
         '200':
           description: OK
@@ -14802,7 +14802,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Publishable Api Key
+        - PublishableApiKey
       responses:
         '200':
           description: OK
@@ -14951,7 +14951,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - PublishableApiKeys
+        - PublishableApiKey
       responses:
         '200':
           description: OK
@@ -15099,12 +15099,19 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/publishable-api-keys/:id/sales-channels':
+  '/publishable-api-keys/{id}/sales-channels':
     get:
       operationId: GetPublishableApiKeySalesChannels
       summary: List PublishableApiKey's SalesChannels
       description: List PublishableApiKey's SalesChannels
       x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Publishable Api Key.
+          schema:
+            type: string
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15132,7 +15139,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - PublishableApiKeySalesChannels
+        - PublishableApiKey
       responses:
         '200':
           description: OK
@@ -16724,254 +16731,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/returns/{id}/cancel':
-    post:
-      operationId: PostReturnsReturnCancel
-      summary: Cancel a Return
-      description: Registers a Return as canceled.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Return.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.cancel(return_id)
-
-            .then(({ order }) => {
-              console.log(order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/returns/{id}/cancel' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /returns:
-    get:
-      operationId: GetReturns
-      summary: List Returns
-      description: Retrieves a list of Returns
-      parameters:
-        - in: query
-          name: limit
-          description: The upper limit for the amount of responses returned.
-          schema:
-            type: number
-            default: '50'
-        - in: query
-          name: offset
-          description: The offset of the list returned.
-          schema:
-            type: number
-            default: '0'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.list()
-
-            .then(({ returns, limit, offset, count }) => {
-              console.log(returns.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET 'https://medusa-url.com/admin/returns'
-            \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  returns:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/returns/{id}/receive':
-    post:
-      operationId: PostReturnsReturnReceive
-      summary: Receive a Return
-      description: >-
-        Registers a Return as received. Updates statuses on Orders and Swaps
-        accordingly.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Return.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - items
-              properties:
-                items:
-                  description: The Line Items that have been received.
-                  type: array
-                  items:
-                    required:
-                      - item_id
-                      - quantity
-                    properties:
-                      item_id:
-                        description: The ID of the Line Item.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item.
-                        type: integer
-                refund:
-                  description: The amount to refund.
-                  type: number
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.receive(return_id, {
-              items: [
-                {
-                  item_id,
-                  quantity: 1
-                }
-              ]
-            })
-
-            .then((data) => {
-              console.log(data.return.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/returns/{id}/receive' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "items": [
-                  {
-                    "item_id": "asafg",
-                    "quantity": 1
-                  }
-                ]
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  return:
-                    $ref: '#/components/schemas/return'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   '/sales-channels/{id}/products/batch':
     post:
       operationId: PostSalesChannelsChannelProductsBatch
@@ -17640,6 +17399,254 @@ paths:
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/returns/{id}/cancel':
+    post:
+      operationId: PostReturnsReturnCancel
+      summary: Cancel a Return
+      description: Registers a Return as canceled.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Return.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.cancel(return_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/returns/{id}/cancel' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /returns:
+    get:
+      operationId: GetReturns
+      summary: List Returns
+      description: Retrieves a list of Returns
+      parameters:
+        - in: query
+          name: limit
+          description: The upper limit for the amount of responses returned.
+          schema:
+            type: number
+            default: '50'
+        - in: query
+          name: offset
+          description: The offset of the list returned.
+          schema:
+            type: number
+            default: '0'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.list()
+
+            .then(({ returns, limit, offset, count }) => {
+              console.log(returns.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET 'https://medusa-url.com/admin/returns'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  returns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/returns/{id}/receive':
+    post:
+      operationId: PostReturnsReturnReceive
+      summary: Receive a Return
+      description: >-
+        Registers a Return as received. Updates statuses on Orders and Swaps
+        accordingly.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Return.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - items
+              properties:
+                items:
+                  description: The Line Items that have been received.
+                  type: array
+                  items:
+                    required:
+                      - item_id
+                      - quantity
+                    properties:
+                      item_id:
+                        description: The ID of the Line Item.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+                refund:
+                  description: The amount to refund.
+                  type: number
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.receive(return_id, {
+              items: [
+                {
+                  item_id,
+                  quantity: 1
+                }
+              ]
+            })
+
+            .then((data) => {
+              console.log(data.return.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/returns/{id}/receive' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "items": [
+                  {
+                    "item_id": "asafg",
+                    "quantity": 1
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  return:
+                    $ref: '#/components/schemas/return'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -18891,6 +18898,147 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/swaps/{id}':
+    get:
+      operationId: GetSwapsSwap
+      summary: Get a Swap
+      description: Retrieves a Swap.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Swap.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.swaps.retrieve(swap_id)
+
+            .then(({ swap }) => {
+              console.log(swap.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/swaps/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  swap:
+                    $ref: '#/components/schemas/swap'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /swaps:
+    get:
+      operationId: GetSwaps
+      summary: List Swaps
+      description: Retrieves a list of Swaps.
+      parameters:
+        - in: query
+          name: limit
+          description: The upper limit for the amount of responses returned.
+          schema:
+            type: number
+            default: '50'
+        - in: query
+          name: offset
+          description: The offset of the list returned.
+          schema:
+            type: number
+            default: '0'
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.swaps.list()
+
+            .then(({ swaps }) => {
+              console.log(swaps.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/admin/swaps' \
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Swap
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  swaps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/swap'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/tax-rates/{id}/product-types/batch':
     post:
       operationId: PostTaxRatesTaxRateProductTypes
@@ -20069,147 +20217,6 @@ paths:
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/swaps/{id}':
-    get:
-      operationId: GetSwapsSwap
-      summary: Get a Swap
-      description: Retrieves a Swap.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Swap.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.swaps.retrieve(swap_id)
-
-            .then(({ swap }) => {
-              console.log(swap.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/swaps/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /swaps:
-    get:
-      operationId: GetSwaps
-      summary: List Swaps
-      description: Retrieves a list of Swaps.
-      parameters:
-        - in: query
-          name: limit
-          description: The upper limit for the amount of responses returned.
-          schema:
-            type: number
-            default: '50'
-        - in: query
-          name: offset
-          description: The offset of the list returned.
-          schema:
-            type: number
-            default: '0'
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.swaps.list()
-
-            .then(({ swaps }) => {
-              console.log(swaps.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/admin/swaps' \
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Swap
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  swaps:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/swap'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
         '400':
           $ref: '#/components/responses/400_error'
         '401':

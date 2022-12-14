@@ -96,7 +96,7 @@ get:
     - api_token: []
     - cookie_auth: []
   tags:
-    - PublishableApiKeys
+    - PublishableApiKey
   responses:
     '200':
       description: OK
