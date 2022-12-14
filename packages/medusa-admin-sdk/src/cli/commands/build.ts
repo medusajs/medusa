@@ -1,5 +1,6 @@
 import react from "@vitejs/plugin-react"
 import { existsSync } from "fs"
+import inquirer from "inquirer"
 import { dirname, resolve } from "path"
 import { build } from "vite"
 import { Logger } from "../../logger"
@@ -14,7 +15,7 @@ type BuildCommandOptions = {
 
 const logger = new Logger("Build")
 
-export default async function ({
+export default async function buildUi({
   ext = false,
   outDir,
   force = false,
@@ -98,4 +99,19 @@ function defineEnv({
   return {
     __MEDUSA_BACKEND_URL__: JSON.stringify(url),
   }
+}
+
+export function questionary() {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "backend_url",
+        message: "Please enter the backend url",
+        validate: (input: string) => {},
+      },
+    ])
+    .then(async (answers) => {
+      console.log(answers)
+    })
 }
