@@ -4,6 +4,7 @@ description: >-
   attach a Custom Shipping Option to a cart in order to set a custom price for a
   particular Shipping Option
 x-resourceId: custom_shipping_option
+type: object
 required:
   - price
   - shipping_option_id

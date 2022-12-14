@@ -1,17 +1,6 @@
 # Namespace: internal
 
-## Type Aliases
+## Classes
 
-### StoreCustomersListPaymentMethodsRes
-
-Ƭ **StoreCustomersListPaymentMethodsRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `payment_methods` | { `data`: `object` ; `provider_id`: `string`  }[] |
-
-#### Defined in
-
-medusa/dist/api/routes/store/customers/index.d.ts:15
+- [StorePostCartsCartLineItemsItemReq](../classes/internal-39.StorePostCartsCartLineItemsItemReq.md)
+- [StorePostCartsCartLineItemsReq](../classes/internal-39.StorePostCartsCartLineItemsReq.md)

@@ -34,16 +34,6 @@ ___
 
 #### Defined in
 
-medusa/dist/models/payment-collection.d.ts:12
-
-___
-
-### CAPTURED
-
-• **CAPTURED** = ``"captured"``
-
-#### Defined in
-
 medusa/dist/models/payment-collection.d.ts:8
 
 ___
@@ -65,43 +55,3 @@ ___
 #### Defined in
 
 medusa/dist/models/payment-collection.d.ts:7
-
-___
-
-### PARTIALLY\_CAPTURED
-
-• **PARTIALLY\_CAPTURED** = ``"partially_captured"``
-
-#### Defined in
-
-medusa/dist/models/payment-collection.d.ts:9
-
-___
-
-### PARTIALLY\_REFUNDED
-
-• **PARTIALLY\_REFUNDED** = ``"partially_refunded"``
-
-#### Defined in
-
-medusa/dist/models/payment-collection.d.ts:11
-
-___
-
-### REFUNDED
-
-• **REFUNDED** = ``"refunded"``
-
-#### Defined in
-
-medusa/dist/models/payment-collection.d.ts:10
-
-___
-
-### REQUIRES\_ACTION
-
-• **REQUIRES\_ACTION** = ``"requires_action"``
-
-#### Defined in
-
-medusa/dist/models/payment-collection.d.ts:13

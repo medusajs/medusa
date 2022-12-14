@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/address.ts:36](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L36)
+[models/address.ts:36](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L36)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:39](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L39)
+[models/address.ts:39](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L39)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:42](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L42)
+[models/address.ts:42](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L42)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:27](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L27)
+[models/address.ts:27](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L27)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:49](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L49)
+[models/address.ts:49](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L49)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:45](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L45)
+[models/address.ts:45](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L45)
 
 ___
 
@@ -92,7 +92,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:24](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L24)
+[models/address.ts:24](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L24)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:20](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L20)
+[models/address.ts:20](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L20)
 
 ___
 
@@ -126,7 +126,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:30](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L30)
+[models/address.ts:30](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L30)
 
 ___
 
@@ -150,7 +150,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:33](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L33)
+[models/address.ts:33](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L33)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:61](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L61)
+[models/address.ts:61](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L61)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:58](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L58)
+[models/address.ts:58](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L58)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:55](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L55)
+[models/address.ts:55](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L55)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[models/address.ts:52](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L52)
+[models/address.ts:52](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L52)
 
 ___
 
@@ -214,7 +214,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -228,4 +228,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/address.ts:63](https://github.com/medusajs/medusa/blob/884322447/packages/medusa/src/models/address.ts#L63)
+[models/address.ts:63](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/address.ts#L63)

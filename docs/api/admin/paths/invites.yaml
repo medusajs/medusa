@@ -7,6 +7,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - user
             - role
@@ -76,6 +77,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               invites:
                 type: array

@@ -75,4 +75,4 @@ medusa/dist/api/routes/admin/discounts/index.d.ts:11
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:86
+medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:87

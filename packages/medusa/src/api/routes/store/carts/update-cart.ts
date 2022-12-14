@@ -137,6 +137,10 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
   const manager: EntityManager = req.scope.resolve("manager")
 
+  if (req.user?.customer_id) {
+    validated.customer_id = req.user.customer_id
+  }
+
   await manager.transaction(async (transactionManager) => {
     await cartService.withTransaction(transactionManager).update(id, validated)
 

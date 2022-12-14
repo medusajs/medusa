@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -86,6 +87,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               shipping_option:
                 $ref: ../components/schemas/shipping_option.yaml
@@ -117,6 +119,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - requirements
           properties:
@@ -177,6 +180,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               shipping_option:
                 $ref: ../components/schemas/shipping_option.yaml

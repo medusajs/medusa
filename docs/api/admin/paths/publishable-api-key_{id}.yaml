@@ -1,0 +1,57 @@
+post:
+  operationId: PostPublishableApiKysPublishableApiKey
+  summary: Updates a PublishableApiKey
+  description: Updates a PublishableApiKey.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the PublishableApiKey.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            title:
+              description: A title to update for the key.
+              type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/publishable-api-key_{id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/publishable-api-key_{id}/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - PublishableApiKey
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              publishable_api_key:
+                $ref: ../components/schemas/publishable_api_key.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

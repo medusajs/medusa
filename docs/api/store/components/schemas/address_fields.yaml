@@ -1,6 +1,7 @@
 title: Address Fields
 description: Address fields used when creating/updating an address.
 x-resourceId: address
+type: object
 properties:
   company:
     type: string

@@ -76,54 +76,22 @@ yarn test
 
 ### Run API Integration Tests
 
-API integration tests are used to test out Medusa’s core endpoints. To run the API integration tests:
+API integration tests are used to test out Medusa’s core endpoints.
 
-1. Change to the `integrations-tests/api` directory:
-
-```bash
-cd integration-tests/api
-```
-
-2\. Install dependencies using Medusa’s dev CLI tool:
+To run the API integration tests, run the following command in the root directory of the repository:
 
 ```bash
-medusa-dev --force-install --external-registry
+yarn test:integration:api
 ```
-
-3\. Run the test command:
-
-```bash
-yarn test
-```
-
-:::info
-
-The `--force-install` option passed to `medusa-dev` ensures that the packages are installing from the local registry rather than copied as explained in [the next section](#test-in-a-local-server).
-
-:::
 
 ### Run Plugin Integration Tests
 
 Plugin integration tests are used to test out Medusa’s official plugins, which are also stored in the `packages` directory in the repository.
 
-To run the plugin integration tests:
-
-1. Change to the `integrations-tests/plugins` directory:
+To run the plugin integration tests, run the following command in the root directory of the repository:
 
 ```bash
-cd integration-tests/plugins
-```
-
-2\. Install dependencies using Medusa’s dev CLI tool:
-
-```bash
-medusa-dev --force-install --external-registry
-```
-
-3\. Run the test command:
-
-```bash
-yarn test
+yarn test:integration:plugins
 ```
 
 ## Test in a Local Server

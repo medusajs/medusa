@@ -19,7 +19,7 @@ subscribers when events happen. Events will run asynchronously.
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:47](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L47)
+[packages/medusa/src/services/event-bus.ts:47](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L47)
 
 ## Properties
 
@@ -29,7 +29,7 @@ subscribers when events happen. Events will run asynchronously.
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:33](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L33)
+[packages/medusa/src/services/event-bus.ts:33](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L33)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:38](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L38)
+[packages/medusa/src/services/event-bus.ts:38](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L38)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:41](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L41)
+[packages/medusa/src/services/event-bus.ts:41](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L41)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:45](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L45)
+[packages/medusa/src/services/event-bus.ts:45](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L45)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:35](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L35)
+[packages/medusa/src/services/event-bus.ts:35](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L35)
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:34](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L34)
+[packages/medusa/src/services/event-bus.ts:34](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L34)
 
 ___
 
@@ -89,7 +89,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:37](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L37)
+[packages/medusa/src/services/event-bus.ts:37](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L37)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:42](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L42)
+[packages/medusa/src/services/event-bus.ts:42](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L42)
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:39](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L39)
+[packages/medusa/src/services/event-bus.ts:39](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L39)
 
 ___
 
@@ -119,7 +119,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:40](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L40)
+[packages/medusa/src/services/event-bus.ts:40](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L40)
 
 ___
 
@@ -129,7 +129,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:43](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L43)
+[packages/medusa/src/services/event-bus.ts:43](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L43)
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:36](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L36)
+[packages/medusa/src/services/event-bus.ts:36](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L36)
 
 ___
 
@@ -149,7 +149,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:44](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L44)
+[packages/medusa/src/services/event-bus.ts:44](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L44)
 
 ## Methods
 
@@ -182,7 +182,7 @@ void
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:323](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L323)
+[packages/medusa/src/services/event-bus.ts:323](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L323)
 
 ___
 
@@ -215,7 +215,7 @@ resolves to the results of the subscriber calls.
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:296](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L296)
+[packages/medusa/src/services/event-bus.ts:296](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L296)
 
 ___
 
@@ -247,7 +247,7 @@ the job from our queue
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:188](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L188)
+[packages/medusa/src/services/event-bus.ts:188](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L188)
 
 ___
 
@@ -261,7 +261,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:230](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L230)
+[packages/medusa/src/services/event-bus.ts:230](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L230)
 
 ___
 
@@ -286,7 +286,7 @@ this
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:167](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L167)
+[packages/medusa/src/services/event-bus.ts:167](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L167)
 
 ___
 
@@ -300,7 +300,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:220](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L220)
+[packages/medusa/src/services/event-bus.ts:220](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L220)
 
 ___
 
@@ -314,7 +314,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:225](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L225)
+[packages/medusa/src/services/event-bus.ts:225](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L225)
 
 ___
 
@@ -339,7 +339,7 @@ this
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:127](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L127)
+[packages/medusa/src/services/event-bus.ts:127](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L127)
 
 ___
 
@@ -364,7 +364,7 @@ this
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:145](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L145)
+[packages/medusa/src/services/event-bus.ts:145](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L145)
 
 ___
 
@@ -384,7 +384,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:97](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L97)
+[packages/medusa/src/services/event-bus.ts:97](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L97)
 
 ___
 
@@ -417,4 +417,4 @@ resolves to the results of the subscriber calls.
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:265](https://github.com/medusajs/medusa/blob/a4dd26e13/packages/medusa/src/services/event-bus.ts#L265)
+[packages/medusa/src/services/event-bus.ts:265](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/event-bus.ts#L265)
