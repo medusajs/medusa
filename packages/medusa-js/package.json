@@ -32,6 +32,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "devDependencies": {
+    "@medusajs/medusa": "^1.7.0",
     "@types/jest": "^26.0.19",
     "cross-env": "^7.0.3",
     "jest": "^26.6.3",
