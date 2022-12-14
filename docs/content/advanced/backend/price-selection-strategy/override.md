@@ -12,7 +12,7 @@ If you’re interested in learning what a price selection strategy is and how it
 
 Create a TypeScript or JavaScript file in `src/strategies` of your Medusa server project with a class that extends the `AbstractPriceSelectionStrategy` class:
 
-```typescript
+```typescript title=src/strategies/price.ts
 import { AbstractPriceSelectionStrategy, IPriceSelectionStrategy, PriceSelectionContext, PriceSelectionResult } from "@medusajs/medusa";
 
 import { EntityManager } from "typeorm";
@@ -80,7 +80,7 @@ This method accepts the variant ID as a first parameter and the [context](./inde
 
 This method must return an object having the following fields:
 
-```typescript noHeader
+```typescript noReport
 {
   originalPrice, //number | null
   calculatedPrice, //number | null

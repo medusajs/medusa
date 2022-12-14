@@ -85,7 +85,7 @@ Where `<YOUR_APP_ID>` and `<YOUR_ADMIN_API_KEY>` are respectively the Applicatio
 
 Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   //...
   {
@@ -170,7 +170,7 @@ The Next.js storefront has the Algolia integration available out of the box. To 
 
 First, ensure that the search feature is enabled in `store.config.json`:
 
-```json
+```json title=store.config.json
 {
   "features": {
     "search": true
@@ -190,7 +190,7 @@ Where `<YOUR_APP_ID>` and `<YOUR_SEARCH_API_KEY>` are respectively the Applicati
 
 Finally, change the code in `src/lib/search-client.ts` to the following:
 
-```jsx
+```jsx title=src/lib/search-client.ts
 import algoliasearch from "algoliasearch/lite"
 
 const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || "" // You should add this to your environment variables
@@ -247,7 +247,7 @@ In Gatsby, environment variables that should be public and available in the brow
 
 Then, create the file `src/components/header/search.jsx` with the following content:
 
-```jsx
+```jsx title=src/components/header/search.jsx
 import {
   Highlight,
   Hits,
@@ -310,13 +310,13 @@ If you named your environment variables differently based on your framework, mak
 
 Finally, import this file at the beginning of `src/components/header/index.jsx`:
 
-```jsx
+```jsx title=src/components/header/index.jsx
 import Search from "./search"
 ```
 
 And add the `Search` component in the returned JSX before `RegionPopover`:
 
-```jsx
+```jsx title=src/components/header/index.jsx
 //...
 <Search />
 <RegionPopover regions={mockData.regions} />

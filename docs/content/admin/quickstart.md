@@ -43,7 +43,7 @@ Before running your Medusa admin, make sure that your Medusa server is running.
 
 To run your Medusa server, go to the directory holding the server and run:
 
-```bash npm2yarn noHeader
+```bash npm2yarn noReport
 npm run start
 ```
 
@@ -65,7 +65,7 @@ Use your Medusa admin’s user credentials to log in.
 
 If you installed the demo data when you installed the Medusa server by using the `--seed` option or running:
 
-```bash npm2yarn noHeader
+```bash npm2yarn noReport
 npm run seed
 ```
 

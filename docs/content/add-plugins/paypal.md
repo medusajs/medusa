@@ -51,7 +51,7 @@ Notice that during development it’s highly recommended to set `PAYPAL_SANDBOX`
 
 Then, in `medusa-config.js`, add the PayPal plugin to the `plugins` array with the configurations necessary:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   //other plugins...
   {
@@ -119,7 +119,7 @@ Medusa has a Next.js storefront that you can easily use with your Medusa server.
 
 In your `.env.local` file (or the file you’re using for your environment variables), add the following variable:
 
-```bash
+```bash title=.env.local
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=<YOUR_CLIENT_ID>
 ```
 
@@ -137,7 +137,7 @@ Medusa also has a Gatsby storefront that you can use as your ecommerce storefron
 
 In your `.env.development` file (or the file you’re using for your environment variables) add the following variable with its value set to the Client ID:
 
-```bash
+```bash title=.env.development
 GATSBY_PAYPAL_CLIENT_ID=<CLIENT_ID>
 ```
 
@@ -149,7 +149,7 @@ npm install @paypal/react-paypal-js
 
 Next, create a new file `src/components/payment/paypal-payment/index.jsx` with the following content:
 
-```jsx
+```jsx title=src/components/payment/paypal-payment/index.jsx
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import React, { useMemo, useState } from "react";
 
@@ -253,7 +253,7 @@ The last step is to add this component as the component to render when PayPal is
 
 In `src/components/payment/index.js` you’ll find in the return statement a switch statement that checks the payment provider for each payment session and renders the component based on the ID. Add before the `default` case a case for `paypal`:
 
-```jsx
+```jsx title=src/components/payment/index.js
 switch (ps.provider_id) {
   case "stripe":
     //...

@@ -10,7 +10,7 @@ Custom endpoints reside under the `src/api` directory in your Medusa Backend. T
 
 To create a new endpoint, start by creating a new file in `src/api` called `index.ts`. At its basic format, `index.ts` should look something like this:
 
-```ts
+```ts title=src/api/index.ts
 import { Router } from "express"
 
 export default (rootDirectory, pluginOptions) => {
@@ -86,7 +86,7 @@ router.get("/admin/hello", cors(corsOptions), (req, res) => {
 
 You can add more than one endpoint in `src/api/index.ts`:
 
-```ts
+```ts title=src/api/index.ts
 router.options("/store/hello", cors(storeCorsOptions))
 router.get("/store/hello", cors(storeCorsOptions), (req, res) => {
   res.json({
@@ -108,7 +108,7 @@ Alternatively, you can add multiple files for each endpoint or set of endpoints 
 
 To do that with the previous example, first, create the file `src/api/store.ts` with the following content:
 
-```ts
+```ts title=src/api/store.ts
 import cors from "cors"
 import { projectConfig } from "../../medusa-config"
 
@@ -130,7 +130,7 @@ You export a function that receives an Express router as a parameter and adds th
 
 Next, create the file `src/api/admin.ts` with the following content:
 
-```ts
+```ts title=src/api/admin.ts
 import cors from "cors"
 import { projectConfig } from "../../medusa-config"
 
@@ -152,14 +152,15 @@ Again, you export a function that receives an Express router as a parameter and 
 
 Finally, in `src/api/index.ts` import the two functions at the beginning of the file:
 
-```ts
+```ts title=src/api/index.ts
+import { Router } from "express"
 import storeRoutes from "./store"
 import adminRoutes from "./admin"
 ```
 
 and in the exported function, call each of the functions passing them the Express router:
 
-```ts
+```ts title=src/api/index.ts
 export default () => {
   const router = Router()
 
