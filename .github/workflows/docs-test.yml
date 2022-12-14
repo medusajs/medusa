@@ -36,7 +36,7 @@ jobs:
         working-directory: www/docs
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
-        run: yarn build
+        run: yarn build --force
         
   lint:
     runs-on: ubuntu-latest

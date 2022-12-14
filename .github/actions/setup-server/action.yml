@@ -31,7 +31,7 @@ runs:
 
     - name: Build Packages
       shell: "bash"
-      run: yarn build
+      run: yarn build --force
 
     - name: Install dev cli
       shell: "bash"

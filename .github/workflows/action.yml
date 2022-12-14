@@ -63,7 +63,7 @@ jobs:
           extension: pipeline
 
       - name: Build Packages
-        run: yarn build
+        run: yarn build --force
 
       - name: Run unit tests
         run: yarn test
@@ -121,7 +121,7 @@ jobs:
           extension: pipeline
 
       - name: Build Packages
-        run: yarn build
+        run: yarn build --force
 
       - name: Run integration tests
         run: yarn test:integration:api
@@ -173,7 +173,7 @@ jobs:
           extension: pipeline
 
       - name: Build Packages
-        run: yarn build
+        run: yarn build --force
 
       - name: Run plugin integration tests
         run: yarn test:integration:plugins

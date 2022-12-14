@@ -89,7 +89,7 @@ jobs:
 
       - name: Build Packages
         shell: "bash"
-        run: yarn build
+        run: yarn build --force
 
       - name: Create an .npmrc
         env:

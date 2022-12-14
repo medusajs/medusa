@@ -40,7 +40,7 @@ jobs:
         run: yarn
 
       - name: Build all packages
-        run: yarn build
+        run: yarn build --force
 
       - name: Version staging packages
         run: yarn version:staging

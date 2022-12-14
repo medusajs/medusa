@@ -38,7 +38,7 @@ jobs:
           extension: reference
 
       - name: Build Packages
-        run: yarn build
+        run: yarn build --force
 
       - name: Generate Entities Reference
         run: yarn generate:entities
