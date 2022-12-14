@@ -7,6 +7,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - email
             - items
@@ -126,6 +127,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               draft_order:
                 $ref: ../components/schemas/draft-order.yaml
@@ -186,6 +188,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               draft_orders:
                 type: array

@@ -98,7 +98,6 @@ class OrderService extends TransactionBaseService {
     UPDATED: "order.updated",
     CANCELED: "order.canceled",
     COMPLETED: "order.completed",
-    ORDERS_CLAIMED: "order.orders_claimed",
   }
 
   protected manager_: EntityManager

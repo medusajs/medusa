@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-profiles.ts:12](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L12)
+[medusa-js/src/resources/admin/shipping-profiles.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L12)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-profiles.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L29)
+[medusa-js/src/resources/admin/shipping-profiles.ts:29](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L29)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-profiles.ts:45](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L45)
+[medusa-js/src/resources/admin/shipping-profiles.ts:45](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L45)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-profiles.ts:37](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L37)
+[medusa-js/src/resources/admin/shipping-profiles.ts:37](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L37)
 
 ___
 
@@ -109,4 +109,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/shipping-profiles.ts:20](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L20)
+[medusa-js/src/resources/admin/shipping-profiles.ts:20](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L20)

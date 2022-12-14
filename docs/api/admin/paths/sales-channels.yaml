@@ -7,6 +7,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - name
           properties:
@@ -39,6 +40,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               sales_channel:
                 $ref: ../components/schemas/sales_channel.yaml
@@ -197,6 +199,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               sales_channels:
                 type: array

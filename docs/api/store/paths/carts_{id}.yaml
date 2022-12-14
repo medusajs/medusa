@@ -26,6 +26,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               cart:
                 $ref: ../components/schemas/cart.yaml
@@ -54,6 +55,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             region_id:
               type: string
@@ -132,6 +134,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               cart:
                 $ref: ../components/schemas/cart.yaml

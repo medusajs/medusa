@@ -4,6 +4,8 @@ This document will guide you through setting up the Medusa admin in minutes, as 
 
 ## Prerequisites
 
+### Medusa Server
+
 The Medusa admin is connected to the Medusa server. So, make sure to install the Medusa server first before proceeding with the admin. You can check out the [quickstart guide to install the Medusa server](../quickstart/quick-start).
 
 :::tip
@@ -11,6 +13,16 @@ The Medusa admin is connected to the Medusa server. So, make sure to install the
 If you’re not very familiar with Medusa’s architecture, you can learn more about it in the [Architecture Overview](../introduction#architecture-overview).
 
 :::
+
+### Node.js
+
+As Medusa Admin uses [Vite 3](https://vitejs.dev/guide/#scaffolding-your-first-vite-project), it requires versions 14.8+ or 16+. You can check which version of Node you have by running the following command:
+
+```bash noReport
+node -v
+```
+
+You can install Node from the [official website](https://nodejs.org/en/).
 
 ## Instant Deployment to Netlify
 
@@ -21,6 +33,12 @@ Instead of manually following this guide to install then later deploy the Medusa
 </a>
 
 ## Install the Admin
+
+:::tip
+
+It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for the installation process as it's much faster than using NPM.
+
+:::
 
 Start by cloning the [Admin GitHub repository](https://github.com/medusajs/admin) and changing to the cloned directory:
 
@@ -43,7 +61,7 @@ Before running your Medusa admin, make sure that your Medusa server is running.
 
 To run your Medusa server, go to the directory holding the server and run:
 
-```bash npm2yarn noReport
+```bash npm2yarn
 npm run start
 ```
 
@@ -65,7 +83,7 @@ Use your Medusa admin’s user credentials to log in.
 
 If you installed the demo data when you installed the Medusa server by using the `--seed` option or running:
 
-```bash npm2yarn noReport
+```bash npm2yarn
 npm run seed
 ```
 

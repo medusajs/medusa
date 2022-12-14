@@ -33,6 +33,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               store:
                 $ref: ../components/schemas/store.yaml
@@ -83,6 +84,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               store:
                 $ref: ../components/schemas/store.yaml
