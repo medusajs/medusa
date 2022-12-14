@@ -194,7 +194,7 @@ class GiftCardService extends TransactionBaseService {
 
     // Outside the context of the taxRate input, the gift card checks if the region taxes gift cards
     // if so, it adds the region tax rate.
-    return region.gift_cards_taxable ? region.tax_rate : null || null
+    return (region.gift_cards_taxable ? region.tax_rate : null) || null
   }
 
   protected async retrieve_(

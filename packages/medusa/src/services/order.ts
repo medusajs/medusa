@@ -737,6 +737,11 @@ class OrderService extends TransactionBaseService {
     // additional type safety/strictness
     if (!lineItem.subtotal || !lineItem.quantity) return createGiftCardPromises
 
+    // The tax_lines contains all the taxes that is applicable on the purchase of the gift card
+    // On utilizing the gift card, the same set of taxRate will apply to gift card
+    // We calculate the summation of all taxes and add that as a snapshot in the giftcard.tax_rate column
+    const giftCardTaxRate = lineItem.tax_lines.reduce((sum, taxLine) => sum + (taxLine.rate / 100), 0)
+
     for (let qty = 0; qty < lineItem.quantity; qty++) {
       // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
       // We divide here by quantity to get the value of the product/variant as a lineItem
@@ -748,6 +753,7 @@ class OrderService extends TransactionBaseService {
         value: taxExclusivePrice,
         balance: taxExclusivePrice,
         metadata: lineItem.metadata,
+        tax_rate: giftCardTaxRate || null
       })
 
       createGiftCardPromises.push(createGiftCardPromise)
