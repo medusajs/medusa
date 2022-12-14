@@ -355,6 +355,1124 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/collections/{id}':
+    get:
+      operationId: GetCollectionsCollection
+      summary: Get a Collection
+      description: Retrieves a Product Collection.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.collections.retrieve(collection_id)
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/collections/{id}'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.collections.list()
+
+            .then(({ collections, limit, offset, count }) => {
+              console.log(collections.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/collections'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /customers/me/addresses:
+    post:
+      operationId: PostCustomersCustomerAddresses
+      summary: Add a Shipping Address
+      description: Adds a Shipping Address to a Customer's saved addresses.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - address
+              properties:
+                address:
+                  description: The Address to add to the Customer.
+                  allOf:
+                    - $ref: '#/components/schemas/address_fields'
+                    - type: object
+                      required:
+                        - first_name
+                        - last_name
+                        - address_1
+                        - city
+                        - country_code
+                        - postal_code
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.customers.addresses.addAddress({
+              address: {
+                first_name: 'Celia',
+                last_name: 'Schumm',
+                address_1: '225 Bednar Curve',
+                city: 'Danielville',
+                country_code: 'US',
+                postal_code: '85137',
+                phone: '981-596-6748 x90188',
+                company: 'Wyman LLC',
+                address_2: '',
+                province: 'Georgia',
+                metadata: {}
+              }
+            })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/customers/me/addresses' \
+
+            --header 'Cookie: connect.sid={sid}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "address": {
+                  "first_name": "Celia",
+                  "last_name": "Schumm",
+                  "address_1": "225 Bednar Curve",
+                  "city": "Danielville",
+                  "country_code": "US",
+                  "postal_code": "85137"
+                }
+            }'
+      security:
+        - cookie_auth: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer account.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - first_name
+                - last_name
+                - email
+                - password
+              properties:
+                first_name:
+                  description: The Customer's first name.
+                  type: string
+                last_name:
+                  description: The Customer's last name.
+                  type: string
+                email:
+                  description: The email of the customer.
+                  type: string
+                  format: email
+                password:
+                  description: The Customer's password.
+                  type: string
+                  format: password
+                phone:
+                  description: The Customer's phone number.
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.customers.create({
+              first_name: 'Alec',
+              last_name: 'Reynolds',
+              email: 'user@example.com',
+              password: 'supersecret'
+            })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/customers' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "first_name": "Alec",
+                "last_name": "Reynolds",
+                "email": "user@example.com",
+                "password": "supersecret"
+            }'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          description: A customer with the same email exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: The error code
+                  type:
+                    type: string
+                    description: The type of error
+                  message:
+                    type: string
+                    description: Human-readable message with details about the error
+              example:
+                code: invalid_request_error
+                type: duplicate_error
+                message: >-
+                  A customer with the given email already has an account. Log in
+                  instead
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/customers/me/addresses/{address_id}':
+    delete:
+      operationId: DeleteCustomersCustomerAddressesAddress
+      summary: Delete an Address
+      description: Removes an Address from the Customer's saved addresses.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to remove.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.customers.addresses.deleteAddress(address_id)
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
+
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostCustomersCustomerAddressesAddress
+      summary: Update a Shipping Address
+      description: Updates a Customer's saved Shipping Address.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/address_fields'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.customers.addresses.updateAddress(address_id, {
+              first_name: 'Gina'
+            })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
+
+            --header 'Cookie: connect.sid={sid}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "first_name": "Gina"
+            }'
+      security:
+        - cookie_auth: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /customers/me:
+    get:
+      operationId: GetCustomersCustomer
+      summary: Get a Customer
+      description: >-
+        Retrieves a Customer - the Customer must be logged in to retrieve their
+        details.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.customers.retrieve()
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/customers/me' \
+
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update Customer
+      description: Updates a Customer's saved details.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  description: The Customer's first name.
+                  type: string
+                last_name:
+                  description: The Customer's last name.
+                  type: string
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address_fields'
+                      description: The full billing address object
+                    - type: string
+                      description: The ID of an existing billing address
+                password:
+                  description: The Customer's password.
+                  type: string
+                phone:
+                  description: The Customer's phone number.
+                  type: string
+                email:
+                  description: The email of the customer.
+                  type: string
+                metadata:
+                  description: Metadata about the customer.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.customers.update({
+              first_name: 'Laury'
+            })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/customers/me' \
+
+            --header 'Cookie: connect.sid={sid}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "first_name": "Laury"
+            }'
+      security:
+        - cookie_auth: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /customers/me/payment-methods:
+    get:
+      operationId: GetCustomersCustomerPaymentMethods
+      summary: Get Payment Methods
+      description: >-
+        Retrieves a list of a Customer's saved payment methods. Payment methods
+        are saved with Payment Providers and it is their responsibility to fetch
+        saved methods.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.customers.paymentMethods.list()
+
+            .then(({ payment_methods }) => {
+              console.log(payment_methods.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/customers/me/payment-methods' \
+
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_methods:
+                    type: array
+                    items:
+                      properties:
+                        provider_id:
+                          type: string
+                          description: >-
+                            The id of the Payment Provider where the payment
+                            method is saved.
+                        data:
+                          type: object
+                          description: >-
+                            The data needed for the Payment Provider to use the
+                            saved payment method.
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /customers/me/orders:
+    get:
+      operationId: GetCustomersCustomerOrders
+      summary: List Orders
+      description: Retrieves a list of a Customer's Orders.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching orders.
+          schema:
+            type: string
+        - in: query
+          name: id
+          description: Id of the order to search for.
+          schema:
+            type: string
+        - in: query
+          name: status
+          style: form
+          explode: false
+          description: Status to search for.
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: fulfillment_status
+          style: form
+          explode: false
+          description: Fulfillment status to search for.
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: payment_status
+          style: form
+          explode: false
+          description: Payment status to search for.
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: display_id
+          description: Display id to search for.
+          schema:
+            type: string
+        - in: query
+          name: cart_id
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: email
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: region_id
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: currency_code
+          style: form
+          explode: false
+          description: The 3 character ISO currency code to set prices based on.
+          schema:
+            type: string
+            externalDocs:
+              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+              description: See a list of codes.
+        - in: query
+          name: tax_rate
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: canceled_at
+          description: Date comparison for when resulting collections were canceled.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: limit
+          description: How many orders to return.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: offset
+          description: The offset in the resulting orders.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated string) Which fields should be included in the
+            resulting orders.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated string) Which relations should be expanded in the
+            resulting orders.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged
+
+            medusa.customers.listOrders()
+
+            .then(({ orders, limit, offset, count }) => {
+              console.log(orders);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/customers/me/orders' \
+
+            --header 'Cookie: connect.sid={sid}'
+      security:
+        - cookie_auth: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /customers/password-token:
+    post:
+      operationId: PostCustomersCustomerPasswordToken
+      summary: Request Password Reset
+      description: >-
+        Creates a reset password token to be used in a subsequent
+        /reset-password request. The password token should be sent out of band
+        e.g. via email and will not be returned.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  description: The email of the customer.
+                  type: string
+                  format: email
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.customers.generatePasswordToken({
+              email: 'user@example.com'
+            })
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // failed
+            })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/customers/password-token' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "email": "user@example.com"
+            }'
+      tags:
+        - Customer
+      responses:
+        '204':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /customers/password-reset:
+    post:
+      operationId: PostCustomersResetPassword
+      summary: Reset Password
+      description: >-
+        Resets a Customer's password using a password token created by a
+        previous /password-token request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - token
+              properties:
+                email:
+                  description: The email of the customer.
+                  type: string
+                  format: email
+                password:
+                  description: The Customer's password.
+                  type: string
+                  format: password
+                token:
+                  description: The reset password token
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.customers.resetPassword({
+              email: 'user@example.com',
+              password: 'supersecret',
+              token: 'supersecrettoken'
+            })
+
+            .then(({ customer }) => {
+              console.log(customer.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/customers/password-reset' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "email": "user@example.com",
+                "password": "supersecret",
+                "token": "supersecrettoken"
+            }'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -1429,955 +2547,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /customers/me/addresses:
-    post:
-      operationId: PostCustomersCustomerAddresses
-      summary: Add a Shipping Address
-      description: Adds a Shipping Address to a Customer's saved addresses.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - address
-              properties:
-                address:
-                  description: The Address to add to the Customer.
-                  allOf:
-                    - $ref: '#/components/schemas/address_fields'
-                    - type: object
-                      required:
-                        - first_name
-                        - last_name
-                        - address_1
-                        - city
-                        - country_code
-                        - postal_code
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.customers.addresses.addAddress({
-              address: {
-                first_name: 'Celia',
-                last_name: 'Schumm',
-                address_1: '225 Bednar Curve',
-                city: 'Danielville',
-                country_code: 'US',
-                postal_code: '85137',
-                phone: '981-596-6748 x90188',
-                company: 'Wyman LLC',
-                address_2: '',
-                province: 'Georgia',
-                metadata: {}
-              }
-            })
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/store/customers/me/addresses' \
-
-            --header 'Cookie: connect.sid={sid}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "address": {
-                  "first_name": "Celia",
-                  "last_name": "Schumm",
-                  "address_1": "225 Bednar Curve",
-                  "city": "Danielville",
-                  "country_code": "US",
-                  "postal_code": "85137"
-                }
-            }'
-      security:
-        - cookie_auth: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer account.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - first_name
-                - last_name
-                - email
-                - password
-              properties:
-                first_name:
-                  description: The Customer's first name.
-                  type: string
-                last_name:
-                  description: The Customer's last name.
-                  type: string
-                email:
-                  description: The email of the customer.
-                  type: string
-                  format: email
-                password:
-                  description: The Customer's password.
-                  type: string
-                  format: password
-                phone:
-                  description: The Customer's phone number.
-                  type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.customers.create({
-              first_name: 'Alec',
-              last_name: 'Reynolds',
-              email: 'user@example.com',
-              password: 'supersecret'
-            })
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/store/customers' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "first_name": "Alec",
-                "last_name": "Reynolds",
-                "email": "user@example.com",
-                "password": "supersecret"
-            }'
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          description: A customer with the same email exists
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                    description: The error code
-                  type:
-                    type: string
-                    description: The type of error
-                  message:
-                    type: string
-                    description: Human-readable message with details about the error
-              example:
-                code: invalid_request_error
-                type: duplicate_error
-                message: >-
-                  A customer with the given email already has an account. Log in
-                  instead
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/customers/me/addresses/{address_id}':
-    delete:
-      operationId: DeleteCustomersCustomerAddressesAddress
-      summary: Delete an Address
-      description: Removes an Address from the Customer's saved addresses.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to remove.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.customers.addresses.deleteAddress(address_id)
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
-
-            --header 'Cookie: connect.sid={sid}'
-      security:
-        - cookie_auth: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostCustomersCustomerAddressesAddress
-      summary: Update a Shipping Address
-      description: Updates a Customer's saved Shipping Address.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to update.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              anyOf:
-                - $ref: '#/components/schemas/address_fields'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.customers.addresses.updateAddress(address_id, {
-              first_name: 'Gina'
-            })
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
-
-            --header 'Cookie: connect.sid={sid}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "first_name": "Gina"
-            }'
-      security:
-        - cookie_auth: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /customers/me:
-    get:
-      operationId: GetCustomersCustomer
-      summary: Get a Customer
-      description: >-
-        Retrieves a Customer - the Customer must be logged in to retrieve their
-        details.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.customers.retrieve()
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/customers/me' \
-
-            --header 'Cookie: connect.sid={sid}'
-      security:
-        - cookie_auth: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update Customer
-      description: Updates a Customer's saved details.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                first_name:
-                  description: The Customer's first name.
-                  type: string
-                last_name:
-                  description: The Customer's last name.
-                  type: string
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: '#/components/schemas/address_fields'
-                      description: The full billing address object
-                    - type: string
-                      description: The ID of an existing billing address
-                password:
-                  description: The Customer's password.
-                  type: string
-                phone:
-                  description: The Customer's phone number.
-                  type: string
-                email:
-                  description: The email of the customer.
-                  type: string
-                metadata:
-                  description: Metadata about the customer.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.customers.update({
-              first_name: 'Laury'
-            })
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/store/customers/me' \
-
-            --header 'Cookie: connect.sid={sid}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "first_name": "Laury"
-            }'
-      security:
-        - cookie_auth: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /customers/me/payment-methods:
-    get:
-      operationId: GetCustomersCustomerPaymentMethods
-      summary: Get Payment Methods
-      description: >-
-        Retrieves a list of a Customer's saved payment methods. Payment methods
-        are saved with Payment Providers and it is their responsibility to fetch
-        saved methods.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.customers.paymentMethods.list()
-
-            .then(({ payment_methods }) => {
-              console.log(payment_methods.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/customers/me/payment-methods' \
-
-            --header 'Cookie: connect.sid={sid}'
-      security:
-        - cookie_auth: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payment_methods:
-                    type: array
-                    items:
-                      properties:
-                        provider_id:
-                          type: string
-                          description: >-
-                            The id of the Payment Provider where the payment
-                            method is saved.
-                        data:
-                          type: object
-                          description: >-
-                            The data needed for the Payment Provider to use the
-                            saved payment method.
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /customers/me/orders:
-    get:
-      operationId: GetCustomersCustomerOrders
-      summary: List Orders
-      description: Retrieves a list of a Customer's Orders.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching orders.
-          schema:
-            type: string
-        - in: query
-          name: id
-          description: Id of the order to search for.
-          schema:
-            type: string
-        - in: query
-          name: status
-          style: form
-          explode: false
-          description: Status to search for.
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: fulfillment_status
-          style: form
-          explode: false
-          description: Fulfillment status to search for.
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: payment_status
-          style: form
-          explode: false
-          description: Payment status to search for.
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: display_id
-          description: Display id to search for.
-          schema:
-            type: string
-        - in: query
-          name: cart_id
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: email
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: region_id
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: currency_code
-          style: form
-          explode: false
-          description: The 3 character ISO currency code to set prices based on.
-          schema:
-            type: string
-            externalDocs:
-              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
-              description: See a list of codes.
-        - in: query
-          name: tax_rate
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: canceled_at
-          description: Date comparison for when resulting collections were canceled.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: limit
-          description: How many orders to return.
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          description: The offset in the resulting orders.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated string) Which fields should be included in the
-            resulting orders.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated string) Which relations should be expanded in the
-            resulting orders.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged
-
-            medusa.customers.listOrders()
-
-            .then(({ orders, limit, offset, count }) => {
-              console.log(orders);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/customers/me/orders' \
-
-            --header 'Cookie: connect.sid={sid}'
-      security:
-        - cookie_auth: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  orders:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/order'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /customers/password-token:
-    post:
-      operationId: PostCustomersCustomerPasswordToken
-      summary: Request Password Reset
-      description: >-
-        Creates a reset password token to be used in a subsequent
-        /reset-password request. The password token should be sent out of band
-        e.g. via email and will not be returned.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-              properties:
-                email:
-                  description: The email of the customer.
-                  type: string
-                  format: email
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.customers.generatePasswordToken({
-              email: 'user@example.com'
-            })
-
-            .then(() => {
-              // successful
-            })
-
-            .catch(() => {
-              // failed
-            })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/store/customers/password-token' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "email": "user@example.com"
-            }'
-      tags:
-        - Customer
-      responses:
-        '204':
-          description: OK
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /customers/password-reset:
-    post:
-      operationId: PostCustomersResetPassword
-      summary: Reset Password
-      description: >-
-        Resets a Customer's password using a password token created by a
-        previous /password-token request.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-                - token
-              properties:
-                email:
-                  description: The email of the customer.
-                  type: string
-                  format: email
-                password:
-                  description: The Customer's password.
-                  type: string
-                  format: password
-                token:
-                  description: The reset password token
-                  type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.customers.resetPassword({
-              email: 'user@example.com',
-              password: 'supersecret',
-              token: 'supersecrettoken'
-            })
-
-            .then(({ customer }) => {
-              console.log(customer.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/store/customers/password-reset' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "email": "user@example.com",
-                "password": "supersecret",
-                "token": "supersecrettoken"
-            }'
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   '/order-edits/{id}/complete':
     post:
       operationId: PostOrderEditsOrderEditComplete
@@ -2860,175 +3029,6 @@ paths:
           $ref: '#/components/responses/400_error'
         '401':
           $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/collections/{id}':
-    get:
-      operationId: GetCollectionsCollection
-      summary: Get a Collection
-      description: Retrieves a Product Collection.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.collections.retrieve(collection_id)
-
-            .then(({ collection }) => {
-              console.log(collection.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/collections/{id}'
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.collections.list()
-
-            .then(({ collections, limit, offset, count }) => {
-              console.log(collections.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/collections'
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_collection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
         '404':
           $ref: '#/components/responses/not_found_error'
         '409':
@@ -4190,107 +4190,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/return-reasons/{id}':
-    get:
-      operationId: GetReturnReasonsReason
-      summary: Get a Return Reason
-      description: Retrieves a Return Reason.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Return Reason.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.returnReasons.retrieve(reason_id)
-
-            .then(({ return_reason }) => {
-              console.log(return_reason.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/return-reasons/{id}'
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /return-reasons:
-    get:
-      operationId: GetReturnReasons
-      summary: List Return Reasons
-      description: Retrieves a list of Return Reasons.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.returnReasons.list()
-
-            .then(({ return_reasons }) => {
-              console.log(return_reasons.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/return-reasons'
-      tags:
-        - Return Reason
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  return_reasons:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return_reason'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /returns:
     post:
       operationId: PostReturns
@@ -4393,6 +4292,107 @@ paths:
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/return-reasons/{id}':
+    get:
+      operationId: GetReturnReasonsReason
+      summary: Get a Return Reason
+      description: Retrieves a Return Reason.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Return Reason.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.returnReasons.retrieve(reason_id)
+
+            .then(({ return_reason }) => {
+              console.log(return_reason.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/return-reasons/{id}'
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  return_reason:
+                    $ref: '#/components/schemas/return_reason'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /return-reasons:
+    get:
+      operationId: GetReturnReasons
+      summary: List Return Reasons
+      description: Retrieves a list of Return Reasons.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.returnReasons.list()
+
+            .then(({ return_reasons }) => {
+              console.log(return_reasons.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/return-reasons'
+      tags:
+        - Return Reason
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  return_reasons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/return_reason'
         '400':
           $ref: '#/components/responses/400_error'
         '404':

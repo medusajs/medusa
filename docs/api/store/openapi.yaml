@@ -145,6 +145,14 @@ tags:
 servers:
   - url: https://api.medusa-commerce.com/store
 paths:
+  /auth:
+    $ref: paths/auth.yaml
+  /auth/{email}:
+    $ref: paths/auth_{email}.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
+  /collections:
+    $ref: paths/collections.yaml
   /carts/{id}/shipping-methods:
     $ref: paths/carts_{id}_shipping-methods.yaml
   /carts/{id}/taxes:
@@ -169,10 +177,6 @@ paths:
     $ref: paths/carts_{id}_payment-session.yaml
   /gift-cards/{code}:
     $ref: paths/gift-cards_{code}.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
-  /collections:
-    $ref: paths/collections.yaml
   /customers/me/addresses:
     $ref: paths/customers_me_addresses.yaml
   /customers:
@@ -189,22 +193,6 @@ paths:
     $ref: paths/customers_password-token.yaml
   /customers/password-reset:
     $ref: paths/customers_password-reset.yaml
-  /order-edits/{id}/complete:
-    $ref: paths/order-edits_{id}_complete.yaml
-  /order-edits/{id}/decline:
-    $ref: paths/order-edits_{id}_decline.yaml
-  /order-edits/{id}:
-    $ref: paths/order-edits_{id}.yaml
-  /orders/customer/confirm:
-    $ref: paths/orders_customer_confirm.yaml
-  /orders/cart/{cart_id}:
-    $ref: paths/orders_cart_{cart_id}.yaml
-  /orders/{id}:
-    $ref: paths/orders_{id}.yaml
-  /orders:
-    $ref: paths/orders.yaml
-  /orders/batch/customer/token:
-    $ref: paths/orders_batch_customer_token.yaml
   /payment-collections/{id}/sessions/batch/authorize:
     $ref: paths/payment-collections_{id}_sessions_batch_authorize.yaml
   /payment-collections/{id}/sessions/{session_id}/authorize:
@@ -217,10 +205,22 @@ paths:
     $ref: paths/payment-collections_{id}_sessions.yaml
   /payment-collections/{id}/sessions/{session_id}:
     $ref: paths/payment-collections_{id}_sessions_{session_id}.yaml
-  /auth:
-    $ref: paths/auth.yaml
-  /auth/{email}:
-    $ref: paths/auth_{email}.yaml
+  /orders/customer/confirm:
+    $ref: paths/orders_customer_confirm.yaml
+  /orders/cart/{cart_id}:
+    $ref: paths/orders_cart_{cart_id}.yaml
+  /orders/{id}:
+    $ref: paths/orders_{id}.yaml
+  /orders:
+    $ref: paths/orders.yaml
+  /orders/batch/customer/token:
+    $ref: paths/orders_batch_customer_token.yaml
+  /order-edits/{id}/complete:
+    $ref: paths/order-edits_{id}_complete.yaml
+  /order-edits/{id}/decline:
+    $ref: paths/order-edits_{id}_decline.yaml
+  /order-edits/{id}:
+    $ref: paths/order-edits_{id}.yaml
   /product-types:
     $ref: paths/product-types.yaml
   /products/{id}:
