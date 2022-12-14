@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [get] /publishable-api-keys/{id}/sales-channels
+ * @oas [get] /publishable-api-keys/:id/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
  * summary: "List PublishableApiKey's SalesChannels"
  * description: "List PublishableApiKey's SalesChannels"
@@ -30,7 +30,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKey
+ *   - PublishableApiKeySalesChannels
  * responses:
  *   200:
  *     description: OK

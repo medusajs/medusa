@@ -1,8 +1,8 @@
-import { Request, Response } from "express"
 import { IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 
-import { extendedFindParamsMixin } from "../../../../types/common"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
+import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
  * @oas [get] /publishable-api-keys
@@ -36,7 +36,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKey
+ *   - PublishableApiKeys
  * responses:
  *   200:
  *     description: OK

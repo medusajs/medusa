@@ -1,10 +1,10 @@
 import { IsArray, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
 
+import { EntityManager } from "typeorm"
 import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
+import { Type } from "class-transformer"
 
 /**
  * @oas [delete] /publishable-api-keys/{id}/sales-channels/batch
@@ -66,7 +66,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Key
  * responses:
  *   200:
  *     description: OK
