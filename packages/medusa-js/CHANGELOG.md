@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.5-hotfix-peerdeps.0
+
+### Patch Changes
+
+- [`6b73d087b`](https://github.com/medusajs/medusa/commit/6b73d087b677b3b0fe750b67f7ba0553195a110e) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix: missing devDependency was failing repo build task
+
 ## 1.3.4
 
 ### Patch Changes
