@@ -15,13 +15,11 @@
   "author": "Oliver Juhl",
   "license": "MIT",
   "dependencies": {
+    "@medusajs/medusa": "^1.7.0",
     "axios": "^0.24.0",
     "form-data": "^4.0.0",
     "qs": "^6.10.3",
     "retry-axios": "^2.6.0"
-  },
-  "peerDependencies": {
-    "@medusajs/medusa": "^1.7.0"
   },
   "repository": {
     "type": "git",
