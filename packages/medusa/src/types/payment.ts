@@ -1,4 +1,10 @@
-import { Address, Cart, ShippingMethod } from "../models"
+import {
+  Address,
+  Cart,
+  Customer,
+  PaymentSession,
+  ShippingMethod,
+} from "../models"
 
 export type PaymentSessionInput = {
   provider_id: string
@@ -12,13 +18,17 @@ export type PaymentSessionInput = {
         shipping_address: Address | null
         shipping_methods: ShippingMethod[]
       }
-  customer?: {
-    id: string
-
-    // If the payment plugin return some data to collect on the customer, they will be store in the metadata
-    metadata: Record<string, unknown>
-  } | null
+  customer?: Customer | null
   currency_code: string
   amount: number
+  resource_id?: string
+}
+
+export type CreatePaymentInput = {
+  cart_id?: string
+  amount: number
+  currency_code: string
+  provider_id?: string
+  payment_session: PaymentSession
   resource_id?: string
 }

@@ -109,7 +109,7 @@ class StripeBase extends AbstractPaymentService {
    */
   async createPayment(context) {
     const intentRequestData = this.getPaymentIntentOptions()
-    const { id: cart_id, email, context: cart_context, collected_data, currency_code, amount, resource_id } = context
+    const { id: cart_id, email, context: cart_context, currency_code, amount, resource_id, customer } = context
 
     if (!isDefined(currency_code) || !isDefined(amount)) {
       throw new MedusaError(
@@ -133,8 +133,8 @@ class StripeBase extends AbstractPaymentService {
       intentRequest.automatic_payment_methods = { enabled: true }
     }
 
-    if (collected_data?.stripe_id) {
-      intentRequest.customer = collected_data.stripe_id
+    if (customer?.metadata?.stripe_id) {
+      intentRequest.customer = customer?.metadata?.stripe_id
     } else {
       const stripeCustomer = await this.stripe_.customers.create({
         email,
@@ -149,45 +149,7 @@ class StripeBase extends AbstractPaymentService {
 
     return {
       session_data,
-			collected_data: {
-				customer: {
-					stripe_id: intentRequest.customer
-				}
-			}
-    }
-  }
-
-  async createPaymentNew(paymentInput) {
-    const intentRequestData = this.getPaymentIntentOptions()
-    const { customer, currency_code, amount, resource_id, cart } = paymentInput
-    const { email } = customer ?? {}
-
-    const intentRequest = {
-      description:
-        cart?.context?.payment_description ??
-        this.options_?.payment_description,
-      amount: Math.round(amount),
-      currency: currency_code,
-      metadata: { resource_id },
-      capture_method: this.options_.capture ? "automatic" : "manual",
-      ...intentRequestData,
-    }
-
-    if (collected_data?.stripe_id) {
-      intentRequest.customer = collected_data.stripe_id
-    } else {
-      const stripeCustomer = await this.stripe_.customers.create({
-        email,
-      })
-
-      intentRequest.customer = stripeCustomer.id
-    }
-
-    const session_data = await this.stripe_.paymentIntents.create(intentRequest)
-
-    return {
-      session_data,
-			collected_data: {
+			update_requests: {
 				customer: {
 					stripe_id: intentRequest.customer
 				}
@@ -250,45 +212,26 @@ class StripeBase extends AbstractPaymentService {
   /**
    * Updates Stripe payment intent.
    * @param {PaymentSessionData} paymentSessionData - payment session data.
-   * @param {Cart} cart
+   * @param {Cart & PaymentContext} context
    * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
-  async updatePayment(paymentSessionData, cart) {
+  async updatePayment(paymentSessionData, context) {
+    const { amount, customer } = context
     try {
-      const stripeId = cart.customer?.metadata?.stripe_id || undefined
+      const stripeId = customer?.metadata?.stripe_id || undefined
 
       if (stripeId !== paymentSessionData.customer) {
-        return await this.createPayment(cart)
+        return await this.createPayment(context)
       } else {
         if (
-          cart.total &&
-          paymentSessionData.amount === Math.round(cart.total)
+          amount &&
+          paymentSessionData.amount === Math.round(amount)
         ) {
           return paymentSessionData
         }
 
         return await this.stripe_.paymentIntents.update(paymentSessionData.id, {
-          amount: Math.round(cart.total),
-        })
-      }
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async updatePaymentNew(paymentSessionData, paymentInput) {
-    try {
-      const stripeId = paymentInput.customer?.metadata?.stripe_id
-
-      if (stripeId !== paymentSessionData.customer) {
-        return await this.createPaymentNew(paymentInput)
-      } else {
-        if (paymentSessionData.amount === Math.round(paymentInput.amount)) {
-          return paymentSessionData
-        }
-
-        return await this.stripe_.paymentIntents.update(paymentSessionData.id, {
-          amount: Math.round(paymentInput.amount),
+          amount: Math.round(amount),
         })
       }
     } catch (error) {

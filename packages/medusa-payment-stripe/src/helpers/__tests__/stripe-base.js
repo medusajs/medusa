@@ -23,7 +23,6 @@ describe("StripeBase", () => {
         cart,
         amount: cart.total,
         currency_code: cart.region?.currency_code,
-        collected_data: cart.customer?.metadata,
       }
       Object.assign(context, cart)
 
@@ -35,7 +34,7 @@ describe("StripeBase", () => {
           description: undefined,
           amount: 100,
         },
-        collected_data: {
+        update_requests: {
           customer: {
             stripe_id: "cus_lebron"
           }
@@ -49,7 +48,6 @@ describe("StripeBase", () => {
         cart,
         amount: cart.total,
         currency_code: cart.region?.currency_code,
-        collected_data: cart.customer?.metadata,
       }
       Object.assign(context, cart)
 
@@ -63,7 +61,7 @@ describe("StripeBase", () => {
           description: 'some description',
           amount: 100,
         },
-        collected_data: {
+        update_requests: {
           customer: {
             stripe_id: "cus_lebron"
           }
@@ -84,7 +82,6 @@ describe("StripeBase", () => {
         cart,
         amount: cart.total,
         currency_code: cart.region?.currency_code,
-        collected_data: cart.customer?.metadata,
       }
       Object.assign(context, cart)
 
@@ -98,7 +95,7 @@ describe("StripeBase", () => {
           description: "test options description",
           amount: 100,
         },
-        collected_data: {
+        update_requests: {
           customer: {
             stripe_id: "cus_lebron"
           }

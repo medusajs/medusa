@@ -21,12 +21,11 @@ import {
   PaymentSessionStatus,
   Refund,
 } from "../models"
-import { PaymentProviderDataInput } from "../types/payment-collection"
 import { FlagRouter } from "../utils/flag-router"
 import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import PaymentService from "./payment"
 import { Logger } from "../types/global"
-import { PaymentSessionInput } from "../types/payment"
+import { CreatePaymentInput, PaymentSessionInput } from "../types/payment"
 import { CustomerService } from "./index"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
@@ -175,7 +174,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   /**
    * Creates a payment session with the given provider.
-   * @param providerIdOrSessionInput - the id of the provider to create payment with
+   * @param providerIdOrSessionInput - the id of the provider to create payment with or the input data
    * @param cart - a cart object used to calculate the amount, etc. from
    * @return the payment session
    */
@@ -194,7 +193,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       ) as Cart | PaymentSessionInput
 
       const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
-      const context = this.buildCreatePaymentContext(data)
+      const context = this.buildPaymentContext(data)
 
       const paymentResponse = await provider
         .withTransaction(transactionManager)
@@ -202,7 +201,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const sessionData = paymentResponse.session_data ?? paymentResponse
 
-      await this.processCollectedData(
+      await this.processUpdateRequestsData(
         {
           customer: { id: context.customer?.id },
         },
@@ -217,53 +216,21 @@ export default class PaymentProviderService extends TransactionBaseService {
     })
   }
 
-  async createSessionNew(
-    sessionInput: Omit<PaymentSessionInput, "cart"> & {
-      cart?: PaymentSessionInput["cart"]
-    }
-  ): Promise<PaymentSession> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const provider = this.retrieveProvider<AbstractPaymentService>(
-        sessionInput.provider_id
-      )
-
-      const context = {
-        ...sessionInput,
-        collected_data: sessionInput.customer?.metadata ?? {},
-      } as PaymentContext
-
-      const paymentResponse = await provider
-        .withTransaction(transactionManager)
-        .createPaymentNew(context)
-
-      const sessionData = paymentResponse.session_data ?? paymentResponse
-
-      await this.processCollectedData(
-        {
-          customer: { id: sessionInput.customer?.id },
-        },
-        paymentResponse
-      )
-
-      return await this.saveSession(sessionInput.provider_id, {
-        sessionData,
-        amount: sessionInput.amount,
-        status: PaymentSessionStatus.PENDING,
-      })
-    })
-  }
-
   /**
    * Refreshes a payment session with the given provider.
    * This means, that we delete the current one and create a new.
    * @param paymentSession - the payment session object to
    *    update
-   * @param cart - a cart object used to calculate the amount, etc. from
+   * @param sessionInput
    * @return the payment session
    */
   async refreshSession(
-    paymentSession: PaymentSession,
-    cart: Cart
+    paymentSession: {
+      id: string
+      data: Record<string, unknown>
+      provider_id: string
+    },
+    sessionInput: PaymentSessionInput
   ): Promise<PaymentSession> {
     return this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)
@@ -277,98 +244,37 @@ export default class PaymentProviderService extends TransactionBaseService {
       )
 
       await sessionRepo.remove(session)
-
-      const context = this.buildCreatePaymentContext(cart)
-
-      const paymentResponse = await provider
-        .withTransaction(transactionManager)
-        .createPayment(context)
-
-      const sessionData = paymentResponse.session_data ?? paymentResponse
-
-      await this.processCollectedData(
-        {
-          customer: { id: context.customer?.id },
-        },
-        paymentResponse
-      )
-
-      return await this.saveSession(session.provider_id, {
-        sessionData,
-        cartId: cart.id,
-        isSelected: true,
-        status: PaymentSessionStatus.PENDING,
-      })
-    })
-  }
-
-  async refreshSessionNew(
-    paymentSession: PaymentSession,
-    sessionInput: Omit<PaymentSessionInput, "cart"> & {
-      cart?: PaymentSessionInput["cart"]
-    }
-  ): Promise<PaymentSession> {
-    return this.atomicPhase_(async (transactionManager) => {
-      const session = await this.retrieveSession(paymentSession.id)
-      const provider = this.retrieveProvider(paymentSession.provider_id)
-
-      await provider.withTransaction(transactionManager).deletePayment(session)
-
-      const sessionRepo = transactionManager.getCustomRepository(
-        this.paymentSessionRepository_
-      )
-
-      await sessionRepo.remove(session)
-
-      return await this.createSessionNew(sessionInput)
+      return await this.createSession(sessionInput)
     })
   }
 
   /**
-   * Updates an existing payment session.
-   * @param paymentSession - the payment session object to
-   *    update
-   * @param cart - the cart object to update for
-   * @return the updated payment session
+   * Update a payment session with the given provider.
+   * @param paymentSession - The paymentSession to update
+   * @param sessionInput
+   * @return the payment session
    */
   async updateSession(
-    paymentSession: PaymentSession,
-    cart: Cart
-  ): Promise<PaymentSession> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const session = await this.retrieveSession(paymentSession.id)
-      const provider = this.retrieveProvider(paymentSession.provider_id)
-      session.data = await provider
-        .withTransaction(transactionManager)
-        .updatePayment(paymentSession.data, cart)
-
-      const sessionRepo = transactionManager.getCustomRepository(
-        this.paymentSessionRepository_
-      )
-      return await sessionRepo.save(session)
-    })
-  }
-
-  async updateSessionNew(
-    paymentSession: PaymentSession,
-    sessionInput: Omit<PaymentSessionInput, "cart"> & {
-      cart?: PaymentSessionInput["cart"]
-    }
+    paymentSession: {
+      id: string
+      data: Record<string, unknown>
+      provider_id: string
+    },
+    sessionInput: Cart | PaymentSessionInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
-      session.amount = sessionInput.amount
-      paymentSession.data.amount = sessionInput.amount
+      const context = this.buildPaymentContext(sessionInput)
+
       session.data = await provider
         .withTransaction(transactionManager)
-        .updatePaymentNew(paymentSession.data, sessionInput)
+        .updatePayment(paymentSession.data, context)
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
       )
-
       return await sessionRepo.save(session)
     })
   }
@@ -395,15 +301,6 @@ export default class PaymentProviderService extends TransactionBaseService {
       )
 
       return await sessionRepo.remove(session)
-    })
-  }
-
-  async deleteSessionNew(paymentSession: PaymentSession): Promise<void> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const provider = this.retrieveProvider(paymentSession.provider_id)
-      return await provider
-        .withTransaction(transactionManager)
-        .deletePayment(paymentSession)
     })
   }
 
@@ -436,28 +333,22 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
   }
 
-  async createPayment(data: {
-    cart_id: string
-    amount: number
-    currency_code: string
-    payment_session: PaymentSession
-  }): Promise<Payment> {
+  async createPayment(data: CreatePaymentInput): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const { payment_session: paymentSession, currency_code, amount } = data
+      const { payment_session, currency_code, amount, provider_id } = data
+      const providerId = provider_id ?? payment_session.provider_id
 
-      const provider = this.retrieveProvider<AbstractPaymentService>(
-        paymentSession.provider_id
-      )
+      const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
       const paymentData = await provider
         .withTransaction(transactionManager)
-        .getPaymentData(paymentSession)
+        .getPaymentData(payment_session)
 
       const paymentRepo = transactionManager.getCustomRepository(
         this.paymentRepository_
       )
 
       const created = paymentRepo.create({
-        provider_id: paymentSession.provider_id,
+        provider_id: providerId,
         amount,
         currency_code,
         data: paymentData,
@@ -465,30 +356,6 @@ export default class PaymentProviderService extends TransactionBaseService {
       })
 
       return await paymentRepo.save(created)
-    })
-  }
-
-  async createPaymentNew(
-    paymentInput: Omit<PaymentProviderDataInput, "customer"> & {
-      payment_session: PaymentSession
-    }
-  ): Promise<Payment> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const { payment_session, currency_code, amount, provider_id } =
-        paymentInput
-
-      const provider = this.retrieveProvider(provider_id)
-      const paymentData = await provider
-        .withTransaction(transactionManager)
-        .getPaymentData(payment_session)
-
-      const paymentService = this.container_.paymentService
-      return await paymentService.withTransaction(transactionManager).create({
-        provider_id,
-        amount,
-        currency_code,
-        data: paymentData,
-      })
     })
   }
 
@@ -753,7 +620,7 @@ export default class PaymentProviderService extends TransactionBaseService {
    * @param cartOrData
    * @protected
    */
-  protected buildCreatePaymentContext(
+  protected buildPaymentContext(
     cartOrData: Cart | PaymentSessionInput
   ): Cart & PaymentContext {
     const cart =
@@ -774,14 +641,12 @@ export default class PaymentProviderService extends TransactionBaseService {
       }
       context.amount = cart.total!
       context.currency_code = cart.region?.currency_code
-      context.collected_data = cart.customer?.metadata ?? {}
       Object.assign(context, cart)
     } else {
       const data = cartOrData as PaymentSessionInput
       context.cart = data.cart
       context.amount = data.amount
       context.currency_code = data.currency_code
-      context.collected_data = data.customer?.metadata ?? {}
       Object.assign(context, cart)
     }
 
@@ -839,22 +704,22 @@ export default class PaymentProviderService extends TransactionBaseService {
    * @param paymentResponse
    * @protected
    */
-  protected async processCollectedData(
+  protected async processUpdateRequestsData(
     data: { customer?: { id?: string } } = {},
     paymentResponse: PaymentSessionResponse | Record<string, unknown>
   ): Promise<void> {
-    const { collected_data } = paymentResponse as PaymentSessionResponse
+    const { update_requests } = paymentResponse as PaymentSessionResponse
 
-    if (!collected_data) {
+    if (!update_requests) {
       return
     }
 
     const manager = this.transactionManager_ ?? this.manager_
 
-    if (collected_data.customer && data.customer?.id) {
+    if (update_requests.customer && data.customer?.id) {
       await this.customerService_
         .withTransaction(manager)
-        .update(data.customer.id, { metadata: collected_data.customer })
+        .update(data.customer.id, { metadata: update_requests.customer })
     }
   }
 }

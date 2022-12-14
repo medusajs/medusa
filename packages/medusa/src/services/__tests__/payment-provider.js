@@ -68,7 +68,6 @@ describe("PaymentProviderService", () => {
           shipping_address: undefined,
           shipping_methods: undefined
         },
-        collected_data: {},
         currency_code: "usd",
       })
     })
@@ -109,6 +108,7 @@ describe("PaymentProviderService", () => {
           },
         },
         {
+          object: "cart",
           total: 100,
         }
       )
@@ -117,7 +117,17 @@ describe("PaymentProviderService", () => {
       expect(updatePayment).toBeCalledWith(
         { id: "1234" },
         {
+          object: "cart",
+          amount: 100,
           total: 100,
+          cart: {
+            context: undefined,
+            email: undefined,
+            id: undefined,
+            shipping_address: undefined,
+            shipping_methods: undefined
+          },
+          currency_code: undefined,
         }
       )
     })
@@ -203,7 +213,6 @@ describe(`PaymentProviderService`, () => {
         shipping_address: undefined,
         shipping_methods: undefined
       },
-      collected_data: {},
       currency_code: "usd",
     })
   })
@@ -218,6 +227,7 @@ describe(`PaymentProviderService`, () => {
         },
       },
       {
+        object: "cart",
         total: 100,
       }
     )
@@ -226,7 +236,16 @@ describe(`PaymentProviderService`, () => {
     expect(testPayServiceMock.updatePayment).toBeCalledWith(
       { id: "1234" },
       {
+        amount: 100,
+        object: "cart",
         total: 100,
+        cart: {
+          context: undefined,
+          email: undefined,
+          id: undefined,
+          shipping_address: undefined,
+          shipping_methods: undefined
+        },
       }
     )
   })
@@ -242,6 +261,7 @@ describe(`PaymentProviderService`, () => {
       },
       {
         total: 100,
+        provider_id: "default_provider",
       }
     )
 

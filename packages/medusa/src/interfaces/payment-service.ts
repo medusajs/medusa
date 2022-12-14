@@ -9,7 +9,6 @@ import {
   ShippingMethod,
 } from "../models"
 import { PaymentService } from "medusa-interfaces"
-import { PaymentProviderDataInput } from "../types/payment-collection"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
@@ -26,11 +25,11 @@ export type PaymentContext = {
   currency_code: string
   amount: number
   resource_id?: string
-  collected_data: Record<string, unknown>
+  customer?: Customer
 }
 
 export type PaymentSessionResponse = {
-  collected_data: { customer: Record<string, unknown> }
+  update_requests: { customer: Record<string, unknown> }
   session_data: Record<string, unknown>
 }
 
@@ -116,36 +115,31 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionResponse>
 
   /**
-   * @deprecated use createPayment(context: CreateSessionContext): Promise<PaymentSessionResponse> instead
+   * @deprecated use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
    * @param cart
    */
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
 
+  public abstract retrievePayment(paymentData: PaymentData): Promise<Data>
+
   /**
-   * @param context
+   * @param paymentSessionData
+   * @param context The type of this argument is meant to be temporary and once the previous method signature
+   * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
    */
-  public abstract createPaymentNew(
-    context: PaymentContext
+  public abstract updatePayment(
+    paymentSessionData: PaymentSessionData,
+    context: Cart & PaymentContext
   ): Promise<PaymentSessionResponse>
 
   /**
-   * @deprecated use createPaymentNew(context: PaymentContext): Promise<PaymentSessionResponse> instead
-   * @param paymentInput
+   * @deprecated use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * @param paymentSessionData
+   * @param cart
    */
-  public abstract createPaymentNew(
-    paymentInput: PaymentProviderDataInput
-  ): Promise<PaymentSessionData>
-
-  public abstract retrievePayment(paymentData: PaymentData): Promise<Data>
-
   public abstract updatePayment(
     paymentSessionData: PaymentSessionData,
     cart: Cart
-  ): Promise<PaymentSessionData>
-
-  public abstract updatePaymentNew(
-    paymentSessionData: PaymentSessionData,
-    paymentInput: PaymentProviderDataInput
   ): Promise<PaymentSessionData>
 
   public abstract authorizePayment(
