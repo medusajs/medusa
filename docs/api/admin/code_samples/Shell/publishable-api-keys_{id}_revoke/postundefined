@@ -1,0 +1,3 @@
+curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys/pubkey_123/revoke' \
+--header 'Authorization: Bearer {api_token}'
+-d '{ "created_by": "user_123", "revoked_by": "user_123" }'

@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/products.ts:14](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/products.ts#L14)
+[medusa-js/src/resources/products.ts:14](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/products.ts#L14)
 
 ## Methods
 
@@ -39,7 +39,7 @@ Retrieves a list of products
 
 #### Defined in
 
-[medusa-js/src/resources/products.ts:50](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/products.ts#L50)
+[medusa-js/src/resources/products.ts:50](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/products.ts#L50)
 
 ___
 
@@ -64,7 +64,7 @@ Retrieves a single Product
 
 #### Defined in
 
-[medusa-js/src/resources/products.ts:22](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/products.ts#L22)
+[medusa-js/src/resources/products.ts:22](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/products.ts#L22)
 
 ___
 
@@ -89,4 +89,4 @@ Searches for products
 
 #### Defined in
 
-[medusa-js/src/resources/products.ts:36](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/products.ts#L36)
+[medusa-js/src/resources/products.ts:36](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/products.ts#L36)

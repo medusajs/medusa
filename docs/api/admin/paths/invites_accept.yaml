@@ -6,6 +6,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - token
             - user

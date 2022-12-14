@@ -25,13 +25,13 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payment-collections.ts:36](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/payment-collections.ts#L36)
+[medusa-js/src/resources/admin/payment-collections.ts:36](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payment-collections.ts#L36)
 
 ___
 
 ### markAsAuthorized
 
-▸ **markAsAuthorized**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionRes`](../modules/internal-15.md#adminpaymentcollectionres)\>
+▸ **markAsAuthorized**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
 
 #### Parameters
 
@@ -42,17 +42,17 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionRes`](../modules/internal-15.md#adminpaymentcollectionres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payment-collections.ts:44](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/payment-collections.ts#L44)
+[medusa-js/src/resources/admin/payment-collections.ts:44](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payment-collections.ts#L44)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionRes`](../modules/internal-15.md#adminpaymentcollectionres)\>
+▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
 
 #### Parameters
 
@@ -64,30 +64,30 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionRes`](../modules/internal-15.md#adminpaymentcollectionres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payment-collections.ts:12](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/payment-collections.ts#L12)
+[medusa-js/src/resources/admin/payment-collections.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payment-collections.ts#L12)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionRes`](../modules/internal-15.md#adminpaymentcollectionres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminUpdatePaymentCollectionRequest`](internal-15.AdminUpdatePaymentCollectionRequest.md) |
+| `payload` | [`AdminUpdatePaymentCollectionsReq`](internal-15.AdminUpdatePaymentCollectionsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionRes`](../modules/internal-15.md#adminpaymentcollectionres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payment-collections.ts:27](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/payment-collections.ts#L27)
+[medusa-js/src/resources/admin/payment-collections.ts:27](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payment-collections.ts#L27)

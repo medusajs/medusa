@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -104,6 +105,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               tax_rate:
                 $ref: ../components/schemas/tax_rate.yaml
@@ -153,6 +155,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             code:
               type: string
@@ -201,6 +204,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               tax_rate:
                 $ref: ../components/schemas/tax_rate.yaml

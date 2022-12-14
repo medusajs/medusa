@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -86,6 +87,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               gift_card:
                 $ref: ../components/schemas/gift_card.yaml
@@ -119,6 +121,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             balance:
               type: integer
@@ -160,6 +163,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               gift_card:
                 $ref: ../components/schemas/gift_card.yaml

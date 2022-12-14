@@ -7,6 +7,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - name
             - currency_code
@@ -76,6 +77,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               region:
                 $ref: ../components/schemas/region.yaml
@@ -155,6 +157,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               regions:
                 type: array

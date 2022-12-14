@@ -16,6 +16,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             to:
               description: >-
@@ -42,6 +43,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               notification:
                 $ref: ../components/schemas/notification.yaml

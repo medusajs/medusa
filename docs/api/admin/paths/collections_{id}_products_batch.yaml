@@ -14,6 +14,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - product_ids
           properties:
@@ -39,6 +40,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               collection:
                 $ref: ../components/schemas/product_collection.yaml
@@ -70,6 +72,7 @@ delete:
     content:
       application/json:
         schema:
+          type: object
           required:
             - product_ids
           properties:
@@ -95,6 +98,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
