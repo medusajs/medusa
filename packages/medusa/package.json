@@ -39,7 +39,7 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "build": "tsc --build && yarn run build:oas && yarn build:client",
+    "build": "tsc --build",
     "build:oas": "ts-node src/scripts/oas/build-oas.ts --skipJSONSchema",
     "build:client": "ts-node src/scripts/oas/build-client.ts",
     "serve": "node dist/app.js",
