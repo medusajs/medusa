@@ -113,7 +113,7 @@ Next, click the “Show advanced” button, which is above the “Deploy site”
 
 Under the “Advanced build settings” section click on the “New variable” button. This will show two inputs for the key and value of the environment variable.
 
-For the first field enter the key `GATSBY_MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
+For the first field enter the key `MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
 
 :::caution
 
@@ -121,7 +121,11 @@ If you haven’t deployed your Medusa server yet, you can leave the value blank 
 
 :::
 
-![Environment Variable](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001898/Medusa%20Docs/Netlify/DnutZfT_rv8iel.png)
+:::note
+
+In previous versions of the admin, the environment variable name was `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` instead. The admin remains backwards compatible, so if you've used this an older version you can keep the same environment variables. However, it's highly recommended you change it to `MEDUSA_BACKEND_URL`.
+
+:::
 
 Once you’re done, scroll down and click on Deploy site.
 

@@ -24,6 +24,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml
@@ -48,6 +49,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             first_name:
               description: The Customer's first name.
@@ -93,6 +95,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml

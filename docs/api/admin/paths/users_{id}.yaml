@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -86,6 +87,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               user:
                 $ref: ../components/schemas/user.yaml
@@ -117,6 +119,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             first_name:
               description: The name of the User.
@@ -157,6 +160,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               user:
                 $ref: ../components/schemas/user.yaml

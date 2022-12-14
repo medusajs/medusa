@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -86,6 +87,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               sales_channel:
                 $ref: ../components/schemas/sales_channel.yaml
@@ -117,6 +119,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             name:
               type: string
@@ -147,6 +150,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               sales_channel:
                 $ref: ../components/schemas/sales_channel.yaml

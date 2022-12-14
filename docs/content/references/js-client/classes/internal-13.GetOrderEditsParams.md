@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/order-edits/list-order-edit.d.ts:73
+medusa/dist/api/routes/admin/order-edits/list-order-edit.d.ts:74
 
 ___
 
@@ -82,4 +82,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/order-edits/list-order-edit.d.ts:72
+medusa/dist/api/routes/admin/order-edits/list-order-edit.d.ts:73
