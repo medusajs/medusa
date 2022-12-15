@@ -6,6 +6,7 @@ description: >-
   pricing, the given price in a specific Region. If region-based pricing is used
   the amount will be in the currency defined for the Reigon.
 x-resourceId: money_amount
+type: object
 required:
   - currency_code
   - amount

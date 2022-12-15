@@ -41,6 +41,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               order:
                 $ref: ../components/schemas/order.yaml

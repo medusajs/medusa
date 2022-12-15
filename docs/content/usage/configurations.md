@@ -194,9 +194,22 @@ In a development environment, if this option is not set the default secret is �
 
 :::
 
-## Admin CORS
+## CORS Configurations
 
-Medusa uses Cross-Origin Resource Sharing (CORS) to only allow specific origins to access the server. To make sure your Admin dashboard can access the Medusa server’s admin endpoints, set this configuration:
+Medusa uses Cross-Origin Resource Sharing (CORS) to only allow specific origins to access the server.
+
+The Admin and the Storefront have different CORS configurations that must be configured.
+
+### Accepted Patterns
+
+For both of the Admin and the Storefront CORS configurations, the value is expected to be a string. This string can be a comma-separated list of accepted origins. Every origin in that list can be of the following types:
+
+1. The accepted origin as is. For example, `http://localhost:8000`.
+2. A regular expression pattern that can match more than one origin. For example, `*.example.com`. The regex pattern that the server tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+
+### Admin CORS
+
+To make sure your Admin dashboard can access the Medusa server’s admin endpoints, set this configuration:
 
 ```jsx
 module.exports = {
@@ -223,9 +236,9 @@ Make sure that the URL is without a backslash at the end. For example, you shoul
 
 :::
 
-## Storefront CORS
+### Storefront CORS
 
-Medusa uses CORS to only allow specific origins to access the server. To make sure your Storefront dashboard can access the Medusa server, set this configuration:
+To make sure your Storefront dashboard can access the Medusa server, set this configuration:
 
 ```jsx
 module.exports = {

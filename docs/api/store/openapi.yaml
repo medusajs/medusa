@@ -149,6 +149,10 @@ paths:
     $ref: paths/auth.yaml
   /auth/{email}:
     $ref: paths/auth_{email}.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
+  /collections:
+    $ref: paths/collections.yaml
   /carts/{id}/shipping-methods:
     $ref: paths/carts_{id}_shipping-methods.yaml
   /carts/{id}/taxes:
@@ -157,8 +161,6 @@ paths:
     $ref: paths/carts_{id}_complete.yaml
   /carts:
     $ref: paths/carts.yaml
-  /carts/{id}/line-items:
-    $ref: paths/carts_{id}_line-items.yaml
   /carts/{id}/payment-sessions:
     $ref: paths/carts_{id}_payment-sessions.yaml
   /carts/{id}/discounts/{code}:
@@ -173,10 +175,8 @@ paths:
     $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
   /carts/{id}/payment-session:
     $ref: paths/carts_{id}_payment-session.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
-  /collections:
-    $ref: paths/collections.yaml
+  /gift-cards/{code}:
+    $ref: paths/gift-cards_{code}.yaml
   /customers/me/addresses:
     $ref: paths/customers_me_addresses.yaml
   /customers:
@@ -193,20 +193,34 @@ paths:
     $ref: paths/customers_password-token.yaml
   /customers/password-reset:
     $ref: paths/customers_password-reset.yaml
-  /gift-cards/{code}:
-    $ref: paths/gift-cards_{code}.yaml
-  /order-edits/{id}/complete:
-    $ref: paths/order-edits_{id}_complete.yaml
-  /order-edits/{id}/decline:
-    $ref: paths/order-edits_{id}_decline.yaml
-  /order-edits/{id}:
-    $ref: paths/order-edits_{id}.yaml
+  /payment-collections/{id}/sessions/batch/authorize:
+    $ref: paths/payment-collections_{id}_sessions_batch_authorize.yaml
+  /payment-collections/{id}/sessions/{session_id}/authorize:
+    $ref: paths/payment-collections_{id}_sessions_{session_id}_authorize.yaml
+  /payment-collections/{id}:
+    $ref: paths/payment-collections_{id}.yaml
+  /payment-collections/{id}/sessions/batch:
+    $ref: paths/payment-collections_{id}_sessions_batch.yaml
+  /payment-collections/{id}/sessions:
+    $ref: paths/payment-collections_{id}_sessions.yaml
+  /payment-collections/{id}/sessions/{session_id}:
+    $ref: paths/payment-collections_{id}_sessions_{session_id}.yaml
+  /orders/customer/confirm:
+    $ref: paths/orders_customer_confirm.yaml
   /orders/cart/{cart_id}:
     $ref: paths/orders_cart_{cart_id}.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
   /orders:
     $ref: paths/orders.yaml
+  /orders/batch/customer/token:
+    $ref: paths/orders_batch_customer_token.yaml
+  /order-edits/{id}/complete:
+    $ref: paths/order-edits_{id}_complete.yaml
+  /order-edits/{id}/decline:
+    $ref: paths/order-edits_{id}_decline.yaml
+  /order-edits/{id}:
+    $ref: paths/order-edits_{id}.yaml
   /product-types:
     $ref: paths/product-types.yaml
   /products/{id}:
@@ -237,6 +251,8 @@ paths:
     $ref: paths/variants_{variant_id}.yaml
   /variants:
     $ref: paths/variants.yaml
+  /carts/{id}/line-items:
+    $ref: paths/carts_{id}_line-items.yaml
 components:
   securitySchemes:
     cookie_auth:

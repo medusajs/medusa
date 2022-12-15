@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/publishable-api-keys/update-publishable-api-key.d.ts:70
+medusa/dist/api/routes/admin/publishable-api-keys/update-publishable-api-key.d.ts:72
