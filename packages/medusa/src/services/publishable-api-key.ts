@@ -2,7 +2,7 @@ import { EntityManager, ILike } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
-import { FindConfig, Selector } from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import { PublishableApiKey, SalesChannel } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
@@ -302,16 +302,21 @@ class PublishableApiKeyService extends TransactionBaseService {
    * List SalesChannels associated with the PublishableKey
    *
    * @param publishableApiKeyId - id of the key SalesChannels are listed for
+   * @param q - free text search param
    */
   async listSalesChannels(
-    publishableApiKeyId: string
+    publishableApiKeyId: string,
+    q?: string
   ): Promise<SalesChannel[]> {
     const manager = this.manager_
     const pubKeySalesChannelRepo = manager.getCustomRepository(
       this.publishableApiKeySalesChannelRepository_
     )
 
-    return await pubKeySalesChannelRepo.findSalesChannels(publishableApiKeyId)
+    return await pubKeySalesChannelRepo.findSalesChannels(
+      publishableApiKeyId,
+      q
+    )
   }
 
   /**

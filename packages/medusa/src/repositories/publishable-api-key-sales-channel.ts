@@ -1,4 +1,4 @@
-import { EntityRepository, In, Repository } from "typeorm"
+import { Brackets, EntityRepository, In, Repository } from "typeorm"
 
 import { PublishableApiKeySalesChannel, SalesChannel } from "../models"
 
@@ -8,11 +8,13 @@ export class PublishableApiKeySalesChannelRepository extends Repository<Publisha
    * Query a list of sales channels that are assigned to the publishable key scope
    *
    * @param publishableApiKeyId - id of the key to retrieve channels for
+   * @param q - free text search param
    */
   public async findSalesChannels(
-    publishableApiKeyId: string
+    publishableApiKeyId: string,
+    q?: string
   ): Promise<SalesChannel[]> {
-    const data = await this.createQueryBuilder("PublishableKeySalesChannel")
+    const query = this.createQueryBuilder("PublishableKeySalesChannel")
       .select("PublishableKeySalesChannel.sales_channel_id")
       .innerJoinAndMapOne(
         "PublishableKeySalesChannel.sales_channel_id",
@@ -26,9 +28,20 @@ export class PublishableApiKeySalesChannelRepository extends Repository<Publisha
           publishableApiKeyId,
         }
       )
-      .getMany()
 
-    return data.map(
+    if (q) {
+      query.andWhere(
+        new Brackets((qb) => {
+          qb.where(`SalesChannel.description ILIKE :q`, {
+            q: `%${q}%`,
+          }).orWhere(`SalesChannel.name ILIKE :q`, { q: `%${q}%` })
+        })
+      )
+    }
+
+    const records = await query.getMany()
+
+    return records.map(
       (record) => record.sales_channel_id as unknown as SalesChannel
     )
   }
