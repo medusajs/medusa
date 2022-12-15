@@ -2121,58 +2121,6 @@ describe("/store/carts", () => {
       expect(cartWithGiftcard.status).toEqual(200)
     })
 
-    it.only("bug use case", async () => {
-      const api = useApi()
-
-      // Add gift card to cart
-      try {
-        const giftCardLineItem = await api.post(
-          "/store/carts/tax-cart/line-items",
-          {
-            variant_id: "giftcard-denom-2",
-            quantity: 1,
-          },
-          { withCredentials: true }
-        )
-
-        console.log("giftCardLineItem - ", giftCardLineItem.data)
-      } catch (err) {
-        console.log("err - ", err)
-        return
-      }
-
-      const cartWithGiftcard = await api.get(`/store/carts/tax-cart`)
-console.log("cartWithGiftcard items - ", cartWithGiftcard.data.cart.items)
-console.log("cartWithGiftcard cart - ", cartWithGiftcard.data.cart)
-      // Ensure that the discount is only applied to the standard item
-      const giftCardLineItemId = cartWithGiftcard.data.cart.items.find(
-        (item) => item.is_giftcard
-      ).id
-      expect(cartWithGiftcard.data.cart.items).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            is_giftcard: true,
-            unit_price: 30000,
-            quantity: 1,
-            subtotal: 30000,
-            tax_total: 0,
-            original_total: 30000,
-            original_tax_total: 0,
-            total: 30000,
-            variant: expect.objectContaining({
-              id: 'giftcard-denom-2',
-              product: expect.objectContaining({
-                is_giftcard: true,
-              })
-            })
-          }),
-        ])
-      )
-
-      expect(cartWithGiftcard.data.cart.total).toBe(31000) // 1000 (giftcard) + 900 (standard item with 10% discount) + 1000 Shipping
-      expect(cartWithGiftcard.status).toEqual(200)
-    })
-
     it("adds no more than 1 shipping method per shipping profile", async () => {
       const api = useApi()
       const addShippingMethod = async (option_id) => {
