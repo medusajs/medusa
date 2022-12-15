@@ -25,7 +25,6 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING=false] /store/carts", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: false },
-      verbose: true
     })
     dbConnection = connection
     medusaProcess = process
