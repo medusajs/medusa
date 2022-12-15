@@ -15,7 +15,6 @@ export default (app) => {
     transformQuery(AdminGetProductTypesParams, {
       defaultFields: defaultAdminProductTypeFields,
       defaultRelations: defaultAdminProductTypeRelations,
-      allowedFields: allowedAdminProductTypeFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-product-types").default)
@@ -23,13 +22,6 @@ export default (app) => {
 
   return app
 }
-
-export const allowedAdminProductTypeFields = [
-  "id",
-  "value",
-  "created_at",
-  "updated_at",
-]
 
 export const defaultAdminProductTypeFields = [
   "id",

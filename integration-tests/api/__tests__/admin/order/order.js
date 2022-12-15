@@ -1444,22 +1444,6 @@ describe("/admin/orders", () => {
       )
     })
 
-    it("throws on invalid relation", async () => {
-      const api = useApi()
-
-      try {
-        await api.get("/admin/orders?fields=id&expand=variants", {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        })
-      } catch (error) {
-        expect(error.response.data.message).toBe(
-          "Relations [variants] are not valid"
-        )
-      }
-    })
-
     it("lists all orders with a fulfillment status = fulfilled and payment status = captured", async () => {
       const api = useApi()
 
@@ -2354,22 +2338,6 @@ describe("/admin/orders", () => {
           }),
         })
       )
-    })
-
-    it("throws on invalid relation", async () => {
-      const api = useApi()
-
-      try {
-        await api.get("/admin/orders/test-order?fields=id&expand=variants", {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        })
-      } catch (error) {
-        expect(error.response.data.message).toBe(
-          "Relations [variants] are not valid"
-        )
-      }
     })
   })
 
