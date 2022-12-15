@@ -1,10 +1,16 @@
-import { IsOptional, IsString } from "class-validator"
+import { Transform } from "class-transformer"
+import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { AddressPayload } from "./common"
 
 export class AdminListCustomerSelector {
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === "true")
+  has_account?: boolean
 
   @IsOptional()
   @IsString({ each: true })
