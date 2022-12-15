@@ -2681,6 +2681,55 @@ Object of the following format:
 </tbody>
 </table>
 
+## Token Events
+
+This section holds all events related to tokens.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`order-update-token.created`
+
+</td>
+<td>
+
+Triggered when a customer requests to claim an order and a token is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  old_email, //string email of order
+  new_customer_id, //string ID of customer
+  orders, //array of string IDs of orders
+  token, //string token used for verification
+}
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
 ## User Events
 
 This section holds all events related to users.
