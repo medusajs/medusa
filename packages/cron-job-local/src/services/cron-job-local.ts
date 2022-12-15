@@ -1,9 +1,6 @@
 import {
-  EventHandler,
-  IEventBusService,
-  Logger,
-  MedusaContainer,
-  TransactionBaseService
+  AbstractCronJobService, Logger,
+  MedusaContainer
 } from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
 
@@ -15,9 +12,8 @@ type InjectedDependencies = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class LocalEventBus
-  extends TransactionBaseService
-  implements IEventBusService
+export default class LocalCronJobService
+  extends AbstractCronJobService
 {
   protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly logger_: Logger
@@ -35,19 +31,11 @@ export default class LocalEventBus
   /**
    * @return this
    */
-  subscribe(event: string | symbol, handler: EventHandler): this {
+  protected registerCronHandler_(
+    event: string | symbol,
+  ): this {
     this.logger_.info(
-      `[${event.toString()}] Local Event Bus installed. Subscribe is unavailable.`
-    )
-    return this
-  }
-
-  /**
-   * @return this
-   */
-  unsubscribe(event: string | symbol, subscriber: EventHandler): this {
-    this.logger_.info(
-      `[${event.toString()}] Local Event Bus installed. Unsubscribe is unavailable.`
+      `[${event.toString()}] Local Cron Job module installed. Cron jobs are unavailable.`
     )
     return this
   }
@@ -55,14 +43,11 @@ export default class LocalEventBus
   /**
    * @return void
    */
-  async emit<T>(
+  createCronJob<T>(
     eventName: string,
-    data: T,
-    options: { delay?: number } = {}
-  ): Promise<void> {
+  ): void {
     this.logger_.info(
-      `[${eventName}] Local Event Bus installed. Emitting events has no effect.`
+      `[${eventName}] Local Cron Job module installed. Cron jobs are unavailable.`
     )
   }
-
 }

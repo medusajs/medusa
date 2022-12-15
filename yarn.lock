@@ -4346,6 +4346,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/cron-job-local@workspace:packages/cron-job-local":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/cron-job-local@workspace:packages/cron-job-local"
+  dependencies:
+    "@medusajs/medusa": ^1.6.5
+    cross-env: ^5.2.1
+    jest: ^25.5.2
+    ts-jest: ^25.5.1
+    typeorm: ^0.2.45
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": 1.x.x
+    medusa-interfaces: 1.x.x
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/event-bus-local@workspace:packages/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/event-bus-local"
