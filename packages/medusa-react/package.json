@@ -46,6 +46,7 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.16.0",
+    "@medusajs/medusa": "^1.7.0",
     "@size-limit/preset-small-lib": "^6.0.4",
     "@storybook/addon-contexts": "^5.3.21",
     "@storybook/addon-essentials": "^6.3.12",
