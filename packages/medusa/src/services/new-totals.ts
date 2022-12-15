@@ -221,6 +221,7 @@ export default class NewTotalsService extends TransactionBaseService {
         totals.tax_lines,
         calculationContext
       )
+
       const noDiscountContext = {
         ...calculationContext,
         allocation_map: {}, // Don't account for discounts
@@ -504,7 +505,7 @@ export default class NewTotalsService extends TransactionBaseService {
       return acc
     }, { totalGiftCardBalance: 0, totalTaxFromGiftCards: 0, giftCardableBalance: giftCardableAmount })
 
-    result.tax_total = totalTaxFromGiftCards
+    result.tax_total = Math.round(totalTaxFromGiftCards)
     result.total = Math.min(giftCardableAmount, totalGiftCardBalance)
 
     return result
@@ -543,7 +544,7 @@ export default class NewTotalsService extends TransactionBaseService {
 
         return {
           total: acc.total + next.amount,
-          tax_total: acc.tax_total + next.amount * taxMultiplier,
+          tax_total: Math.round(acc.tax_total + next.amount * taxMultiplier),
         }
       },
       {

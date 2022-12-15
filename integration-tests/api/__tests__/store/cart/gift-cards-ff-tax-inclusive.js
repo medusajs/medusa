@@ -10,6 +10,7 @@ const {
   simpleProductFactory,
   simpleCartFactory,
   simpleCustomerFactory,
+  simpleGiftCardFactory,
 } = require("../../../factories")
 
 jest.setTimeout(30000)
@@ -155,6 +156,90 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING=true] /store/carts", () => {
       expect(createdGiftCard.tax_rate).toEqual(19)
       expect(createdGiftCard.value).toEqual(25210)
       expect(createdGiftCard.balance).toEqual(25210)
+    })
+
+    it("applying a gift card shows correct total values", async () => {
+      const api = useApi()
+      const giftCard = await simpleGiftCardFactory(dbConnection, {
+        region_id: region.id,
+        value: 25210,
+        balance: 25210,
+        tax_rate: region.tax_rate,
+      })
+      const expensiveProduct = await simpleProductFactory(dbConnection, {
+        variants: [{
+          title: "Product cost higher than gift card balance",
+          prices: [{
+            amount: 50000,
+            currency: "usd",
+            region_id: region.id,
+          }],
+        }]
+      })
+
+      const customerRes = await api.post("/store/customers", customerData, {
+        withCredentials: true,
+      })
+
+      const cartFactory = await simpleCartFactory(dbConnection, {
+        customer,
+        region,
+        line_items: [],
+      })
+
+      const response = await api.post(
+        `/store/carts/${cartFactory.id}/line-items`,
+        {
+          variant_id: expensiveProduct.variants[0].id,
+          quantity: 1,
+        },
+        { withCredentials: true }
+      )
+
+      // Add gift card to cart
+      await api.post(`/store/carts/${cartFactory.id}`, {
+        gift_cards: [{ code: giftCard.code }],
+      })
+
+      const getCartResponse = await api.get(`/store/carts/${cartFactory.id}`)
+      const cart = getCartResponse.data.cart
+      await api.post(`/store/carts/${cart.id}/payment-sessions`)
+      const createdOrder = await api.post(`/store/carts/${cart.id}/complete-cart`)
+
+      expect(createdOrder.data.data).toEqual(
+        expect.objectContaining({
+          subtotal: 42017,
+          discount_total: 0,
+          shipping_total: 0,
+          refunded_total: 0,
+          paid_total: 20000,
+          refundable_amount: 20000,
+          gift_card_total: 25210,
+          gift_card_tax_total: 4790,
+          tax_total: 3193,
+          total: 20000,
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              includes_tax: true,
+              unit_price: 50000,
+              is_giftcard: false,
+              quantity: 1,
+              subtotal: 42017,
+              discount_total: 0,
+              total: 50000,
+              original_total: 50000,
+              original_tax_total: 7983,
+              tax_total: 7983,
+              refundable: 50000,
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 19
+                })
+              ]),
+            })
+          ]),
+        }),
+      )
     })
   })
 })

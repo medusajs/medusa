@@ -993,7 +993,7 @@ class TotalsService extends TransactionBaseService {
 
           return {
             total: acc.total + next.amount,
-            tax_total: acc.tax_total + next.amount * taxMultiplier,
+            tax_total: Math.round(acc.tax_total + next.amount * taxMultiplier),
           }
         },
         {
