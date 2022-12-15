@@ -7,11 +7,11 @@ import {
   PriceSelectionResult,
   PriceType,
 } from "../interfaces"
+import { isDefined } from "medusa-core-utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { TaxServiceRate } from "../types/tax-service"
 import { FlagRouter } from "../utils/flag-router"
-import { isDefined } from "../utils"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   protected manager_: EntityManager

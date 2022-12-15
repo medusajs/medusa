@@ -1,7 +1,6 @@
 import { AbstractPaymentService } from "@medusajs/medusa"
 import Stripe from "stripe"
-import { isDefined } from "@medusajs/medusa/dist/utils";
-import { MedusaError } from "medusa-core-utils";
+import { isDefined, MedusaError } from "medusa-core-utils";
 import { PaymentSessionStatus } from "@medusajs/medusa/dist";
 
 class StripeBase extends AbstractPaymentService {
@@ -256,7 +255,7 @@ class StripeBase extends AbstractPaymentService {
   /**
    * Updates customer of Stripe payment intent.
    * @param {string} paymentIntentId - id of payment intent to update
-   * @param {string} customerId - id of new Stripe customer
+   * @param {string} customerId - id of \ Stripe customer
    * @return {object} Stripe payment intent
    */
   async updatePaymentIntentCustomer(paymentIntentId, customerId) {

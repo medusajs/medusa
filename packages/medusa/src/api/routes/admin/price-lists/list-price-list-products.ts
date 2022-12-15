@@ -17,7 +17,7 @@ import { ProductStatus } from "../../../../models"
 import { Request } from "express"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /price-lists/{id}/products
