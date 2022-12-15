@@ -491,13 +491,19 @@ export default class NewTotalsService extends TransactionBaseService {
 
     // If a gift card is not taxable, the tax_rate for the giftcard will be null
     const { totalGiftCardBalance, totalTaxFromGiftCards } = giftCards.reduce((acc, giftCard) => {
+      let taxableAmount = 0
+
       acc.totalGiftCardBalance += giftCard.balance
 
-      let taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
+      // Add to the taxable amount only if the gift cards can be taxed.
+      if (region.gift_cards_taxable) {
+        taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
+      }
       // skip tax, if the taxable amount is not a positive number or tax rate is not set
       if (taxableAmount <= 0 || !giftCard.tax_rate) return acc
 
       let taxAmountFromGiftCard = Math.round(taxableAmount * (giftCard.tax_rate / 100))
+
       acc.totalTaxFromGiftCards += taxAmountFromGiftCard
       // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
       acc.giftCardableBalance -= taxableAmount
