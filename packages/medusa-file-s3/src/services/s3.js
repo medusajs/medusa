@@ -14,7 +14,7 @@ class S3Service extends AbstractFileService {
     this.secretAccessKey_ = options.secret_access_key
     this.region_ = options.region
     this.endpoint_ = options.endpoint
-    this.s3Options_ = options.options
+    this.s3Config_ = options.config
   }
 
   upload(file) {
@@ -130,7 +130,7 @@ class S3Service extends AbstractFileService {
       secretAccessKey: this.secretAccessKey_,
       region: this.region_,
       endpoint: this.endpoint_,
-      ...this.s3Options_,
+      ...this.s3Config_,
     }
 
     aws.config.update(config, true)
