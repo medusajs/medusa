@@ -138,6 +138,12 @@ export default async ({
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 
+  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
+  track("MODULES_INIT_STARTED")
+  await moduleLoader({ container, configModule, logger: Logger })
+  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
+  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
+
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
   await expressLoader({ app: expressApp, configModule })
@@ -190,12 +196,6 @@ export default async ({
   const searchAct =
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
-
-  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
-  track("MODULES_INIT_STARTED")
-  await moduleLoader({ container, configModule, logger: Logger })
-  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
-  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
   return { container, dbConnection, app: expressApp }
 }

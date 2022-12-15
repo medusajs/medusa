@@ -1,9 +1,9 @@
 import Bull from "bull"
 import Redis from "ioredis"
 import { EntityManager } from "typeorm"
-import { ConfigModule, Logger } from "../types/global"
-import { StagedJobRepository } from "../repositories/staged-job"
 import { StagedJob } from "../models"
+import { StagedJobRepository } from "../repositories/staged-job"
+import { ConfigModule, Logger } from "../types/global"
 import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
@@ -12,6 +12,11 @@ type InjectedDependencies = {
   stagedJobRepository: typeof StagedJobRepository
   redisClient: Redis.Redis
   redisSubscriber: Redis.Redis
+}
+
+export type EventData<T = unknown> = {
+  eventName: string
+  data: T
 }
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
@@ -334,6 +339,42 @@ export default class EventBusService {
         data,
       },
       { repeat: { cron } }
+    )
+  }
+
+  /**
+   * Processes one or more job
+   * @param data - the events - either one or several
+   * @param options - options for the queue
+   * @return void
+   */
+  async process<T>(
+    data: EventData | EventData[],
+    options: EmitOptions = {}
+  ): Promise<void> {
+    let events_ = data as EventData[]
+    if (!Array.isArray(data)) {
+      events_ = [data]
+    }
+
+    const opts: { removeOnComplete: boolean } & EmitOptions = {
+      removeOnComplete: true,
+    }
+
+    if (typeof options.attempts === "number") {
+      opts.attempts = options.attempts
+      if (typeof options.backoff !== "undefined") {
+        opts.backoff = options.backoff
+      }
+    }
+    if (typeof options.delay === "number") {
+      opts.delay = options.delay
+    }
+
+    await Promise.all(
+      events_.map((job) => {
+        this.queue_.add({ eventName: job.eventName, data: job.data }, opts)
+      })
     )
   }
 }
