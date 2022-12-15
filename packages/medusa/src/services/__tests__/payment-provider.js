@@ -48,7 +48,7 @@ describe("PaymentProviderService", () => {
       await providerService.createSession("default_provider", {
         object: "cart",
         region: {
-          currency_code: "usd"
+          currency_code: "usd",
         },
         total: 100,
       })
@@ -59,14 +59,14 @@ describe("PaymentProviderService", () => {
         object: "cart",
         total: 100,
         region: {
-          currency_code: "usd"
+          currency_code: "usd",
         },
         cart: {
           context: undefined,
           email: undefined,
           id: undefined,
           shipping_address: undefined,
-          shipping_methods: undefined
+          shipping_methods: undefined,
         },
         currency_code: "usd",
       })
@@ -125,7 +125,7 @@ describe("PaymentProviderService", () => {
             email: undefined,
             id: undefined,
             shipping_address: undefined,
-            shipping_methods: undefined
+            shipping_methods: undefined,
           },
           currency_code: undefined,
         }
@@ -193,7 +193,7 @@ describe(`PaymentProviderService`, () => {
     await providerService.createSession("default_provider", {
       object: "cart",
       region: {
-        currency_code: "usd"
+        currency_code: "usd",
       },
       total: 100,
     })
@@ -204,14 +204,14 @@ describe(`PaymentProviderService`, () => {
       object: "cart",
       total: 100,
       region: {
-        currency_code: "usd"
+        currency_code: "usd",
       },
       cart: {
         context: undefined,
         email: undefined,
         id: undefined,
         shipping_address: undefined,
-        shipping_methods: undefined
+        shipping_methods: undefined,
       },
       currency_code: "usd",
     })
@@ -244,7 +244,7 @@ describe(`PaymentProviderService`, () => {
           email: undefined,
           id: undefined,
           shipping_address: undefined,
-          shipping_methods: undefined
+          shipping_methods: undefined,
         },
       }
     )
@@ -260,8 +260,9 @@ describe(`PaymentProviderService`, () => {
         },
       },
       {
-        total: 100,
         provider_id: "default_provider",
+        amount: 100,
+        currency_code: "usd",
       }
     )
 

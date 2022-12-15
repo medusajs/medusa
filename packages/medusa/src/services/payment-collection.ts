@@ -251,10 +251,14 @@ export default class PaymentCollectionService extends TransactionBaseService {
         )
       }
 
-      sessionsInput = sessionsInput.filter((session) => {
-        return !!payCol.region.payment_providers.find(({ id }) => {
-          return id === session.provider_id
+      const payColRegionProviderMap = new Map(
+        payCol.region.payment_providers.map((provider) => {
+          return [provider.id, provider]
         })
+      )
+
+      sessionsInput = sessionsInput.filter((session) => {
+        return !!payColRegionProviderMap.get(session.provider_id)
       })
 
       if (!this.isValidTotalAmount(payCol.amount, sessionsInput)) {
@@ -273,15 +277,21 @@ export default class PaymentCollectionService extends TransactionBaseService {
             })
             .catch(() => null)
 
+      const payColSessionMap = new Map(
+        (payCol.payment_sessions ?? []).map((session) => {
+          return [session.id, session]
+        })
+      )
+
       const paymentProviderTx =
         this.paymentProviderService_.withTransaction(manager)
+
       const selectedSessionIds: string[] = []
       const paymentSessions: PaymentSession[] = []
 
       for (const session of sessionsInput) {
-        const existingSession = payCol.payment_sessions?.find(
-          (sess) => session.session_id === sess?.id
-        )
+        const existingSession =
+          session.session_id && payColSessionMap.get(session.session_id)
 
         const inputData: PaymentSessionInput = {
           cart: {
@@ -298,22 +308,19 @@ export default class PaymentCollectionService extends TransactionBaseService {
           customer,
         }
 
+        let paymentSession
+
         if (existingSession) {
-          const paymentSession = await paymentProviderTx.updateSession(
+          paymentSession = await paymentProviderTx.updateSession(
             existingSession,
             inputData
           )
-
-          selectedSessionIds.push(existingSession.id)
-          paymentSessions.push(paymentSession)
         } else {
-          const paymentSession = await paymentProviderTx.createSession(
-            inputData
-          )
-
-          selectedSessionIds.push(paymentSession.id)
-          paymentSessions.push(paymentSession)
+          paymentSession = await paymentProviderTx.createSession(inputData)
         }
+
+        selectedSessionIds.push(paymentSession.id)
+        paymentSessions.push(paymentSession)
       }
 
       if (payCol.payment_sessions?.length) {
@@ -624,13 +631,16 @@ export default class PaymentCollectionService extends TransactionBaseService {
           continue
         }
 
-        const auth = await paymentProviderTx.authorizePayment(session, context)
+        const paymentSession = await paymentProviderTx.authorizePayment(
+          session,
+          context
+        )
 
-        if (auth) {
-          payCol.payment_sessions[i] = auth
+        if (paymentSession) {
+          payCol.payment_sessions[i] = paymentSession
         }
 
-        if (auth?.status === PaymentSessionStatus.AUTHORIZED) {
+        if (paymentSession?.status === PaymentSessionStatus.AUTHORIZED) {
           authorizedAmount += session.amount
 
           const inputData: CreatePaymentInput = {
@@ -638,7 +648,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
             currency_code: payCol.currency_code,
             provider_id: session.provider_id,
             resource_id: payCol.id,
-            payment_session: auth,
+            payment_session: paymentSession,
           }
 
           payCol.payments.push(await paymentProviderTx.createPayment(inputData))

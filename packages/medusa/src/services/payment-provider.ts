@@ -215,10 +215,17 @@ export default class PaymentProviderService extends TransactionBaseService {
         paymentResponse
       )
 
+      const amount = this.featureFlagRouter_.isFeatureEnabled(
+        OrderEditingFeatureFlag.key
+      )
+        ? context.amount
+        : undefined
+
       return await this.saveSession(providerId, {
         cartId: context.id,
         sessionData,
         status: PaymentSessionStatus.PENDING,
+        amount,
       })
     })
   }
@@ -270,19 +277,25 @@ export default class PaymentProviderService extends TransactionBaseService {
     sessionInput: Cart | PaymentSessionInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const session = await this.retrieveSession(paymentSession.id)
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
       const context = this.buildPaymentContext(sessionInput)
 
-      session.data = await provider
+      const sessionData = await provider
         .withTransaction(transactionManager)
         .updatePayment(paymentSession.data, context)
 
-      const sessionRepo = transactionManager.getCustomRepository(
-        this.paymentSessionRepository_
+      const amount = this.featureFlagRouter_.isFeatureEnabled(
+        OrderEditingFeatureFlag.key
       )
-      return await sessionRepo.save(session)
+        ? context.amount
+        : undefined
+
+      return await this.saveSession(paymentSession.provider_id, {
+        payment_session_id: paymentSession.id,
+        sessionData,
+        amount,
+      })
     })
   }
 
@@ -661,7 +674,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   /**
-   * Persist a Payment session data
+   * Create or update a Payment session data.
    * @param providerId
    * @param data
    * @protected
@@ -669,11 +682,12 @@ export default class PaymentProviderService extends TransactionBaseService {
   protected async saveSession(
     providerId: string,
     data: {
+      payment_session_id?: string
       cartId?: string
       amount?: number
       sessionData: Record<string, unknown>
       isSelected?: boolean
-      status: PaymentSessionStatus
+      status?: PaymentSessionStatus
     }
   ): Promise<PaymentSession> {
     const manager = this.transactionManager_ ?? this.manager_
@@ -692,17 +706,25 @@ export default class PaymentProviderService extends TransactionBaseService {
       this.paymentSessionRepository_
     )
 
-    const toCreate: Partial<PaymentSession> = {
-      cart_id: data.cartId,
-      provider_id: providerId,
-      data: data.sessionData,
-      is_selected: data.isSelected,
-      status: data.status,
-      amount: data.amount,
-    }
+    if (data.payment_session_id) {
+      const session = await this.retrieveSession(data.payment_session_id)
+      session.data = data.sessionData ?? session.data
+      session.status = data.status ?? session.status
+      session.amount = data.amount ?? session.amount
+      return await sessionRepo.save(session)
+    } else {
+      const toCreate: Partial<PaymentSession> = {
+        cart_id: data.cartId || null,
+        provider_id: providerId,
+        data: data.sessionData,
+        is_selected: data.isSelected,
+        status: data.status,
+        amount: data.amount,
+      }
 
-    const created = sessionRepo.create(toCreate)
-    return await sessionRepo.save(created)
+      const created = sessionRepo.create(toCreate)
+      return await sessionRepo.save(created)
+    }
   }
 
   /**
