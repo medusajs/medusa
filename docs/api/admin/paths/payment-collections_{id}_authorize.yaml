@@ -1,0 +1,49 @@
+post:
+  operationId: PostPaymentCollectionsPaymentCollectionAuthorize
+  summary: Set the status of PaymentCollection as Authorized
+  description: Sets the status of PaymentCollection as Authorized.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the PaymentCollection.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/payment-collections_{id}_authorize/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/payment-collections_{id}_authorize/postundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - PaymentCollection
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              payment_collection:
+                $ref: ../components/schemas/payment_collection.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

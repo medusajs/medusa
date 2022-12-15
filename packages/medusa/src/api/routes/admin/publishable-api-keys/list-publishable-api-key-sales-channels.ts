@@ -3,11 +3,13 @@ import { Request, Response } from "express"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [get] /publishable-api-keys/:id/sales-channels
+ * @oas [get] /publishable-api-keys/{id}/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
  * summary: "List PublishableApiKey's SalesChannels"
  * description: "List PublishableApiKey's SalesChannels"
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Publishable Api Key.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -28,7 +30,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKeySalesChannels
+ *   - PublishableApiKey
  * responses:
  *   200:
  *     description: OK

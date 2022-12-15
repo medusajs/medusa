@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:47](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L47)
+[medusa-js/src/typings.ts:47](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/typings.ts#L47)
 
 ___
 
@@ -41,4 +41,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/typings.ts:45](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/typings.ts#L45)
+[medusa-js/src/typings.ts:45](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/typings.ts#L45)

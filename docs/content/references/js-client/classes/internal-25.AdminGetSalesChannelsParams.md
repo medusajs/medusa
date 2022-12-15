@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:147
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:148
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:149
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:150
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:146
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:147
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:143
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:144
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:145
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:146
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:150
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:151
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:144
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:145
 
 ___
 
@@ -142,4 +142,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:148
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:149

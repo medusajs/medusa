@@ -54,7 +54,20 @@ constructor({ productService, eventBusService }) {
 }
 ```
 
-You can then use `this.productService` anywhere in your subscriber’s methods.
+You can then use `this.productService` anywhere in your subscriber’s methods. For example:
+
+```ts
+handleOrder = async (data) => {
+  //...
+  const product = this.productService.list()
+}
+```
+
+:::note
+
+When using attributes defined in the subscriber, such as the `productService` in the example above, you must use an arrow function to declare the method. Otherwise, the attribute will be undefined when used.
+
+:::
 
 ## What’s Next
 

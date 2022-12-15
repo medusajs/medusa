@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/add-to-shipping-options.d.ts:95
+medusa/dist/api/routes/admin/tax-rates/add-to-shipping-options.d.ts:97

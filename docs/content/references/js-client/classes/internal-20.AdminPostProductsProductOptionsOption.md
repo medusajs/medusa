@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-option.d.ts:72
+medusa/dist/api/routes/admin/products/update-option.d.ts:74

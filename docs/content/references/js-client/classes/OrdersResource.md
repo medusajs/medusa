@@ -8,6 +8,31 @@
 
 ## Methods
 
+### confirmRequest
+
+▸ **confirmRequest**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<`any`\>
+
+**`Description`**
+
+Grant access to a list of orders
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `payload` | [`StorePostCustomersCustomerAcceptClaimReq`](internal-41.StorePostCustomersCustomerAcceptClaimReq.md) | signed token to grant access |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<`any`\>
+
+#### Defined in
+
+[medusa-js/src/resources/orders.ts:78](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/orders.ts#L78)
+
+___
+
 ### lookupOrder
 
 ▸ **lookupOrder**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrdersRes`](../modules/internal-41.md#storeordersres)\>
@@ -29,7 +54,32 @@ Look up an order using order details
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:41](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/orders.ts#L41)
+[medusa-js/src/resources/orders.ts:46](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/orders.ts#L46)
+
+___
+
+### requestCustomerOrders
+
+▸ **requestCustomerOrders**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<`any`\>
+
+**`Description`**
+
+Request access to a list of orders
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `payload` | [`StorePostCustomersCustomerOrderClaimReq`](internal-41.StorePostCustomersCustomerOrderClaimReq.md) | display ids of orders to request |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<`any`\>
+
+#### Defined in
+
+[medusa-js/src/resources/orders.ts:64](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/orders.ts#L64)
 
 ___
 
@@ -54,7 +104,7 @@ Retrieves an order
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/orders.ts#L13)
+[medusa-js/src/resources/orders.ts:18](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/orders.ts#L18)
 
 ___
 
@@ -79,4 +129,4 @@ Retrieves an order by cart id
 
 #### Defined in
 
-[medusa-js/src/resources/orders.ts:27](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/orders.ts#L27)
+[medusa-js/src/resources/orders.ts:32](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/orders.ts#L32)

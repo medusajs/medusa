@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/order-edits/update-order-edit-line-item.d.ts:71
+medusa/dist/api/routes/admin/order-edits/update-order-edit-line-item.d.ts:73

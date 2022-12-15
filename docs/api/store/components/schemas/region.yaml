@@ -5,6 +5,7 @@ description: >-
   consist of multiple countries to accomodate common shopping settings across
   countries.
 x-resourceId: region
+type: object
 required:
   - name
   - currency_code
