@@ -5,7 +5,7 @@ import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@readme/openapi-parser"
 import { defaultMetadataStorage } from "class-transformer/cjs/storage"
 
-import { IOptions } from "class-validator-jsonschema/src/options"
+import { IOptions } from "class-validator-jsonschema/build/options"
 import { validationMetadatasToSchemas } from "class-validator-jsonschema"
 import { IsTypeJSONSchemaConverter } from "../../utils/validators/is-type"
 import { IsNullableJSONSchemaConverter } from "../../utils/validators/is-nullable"

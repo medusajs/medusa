@@ -9,7 +9,7 @@ import {
 import { isDate } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { validator } from "../validator"
-import { IOptions } from "class-validator-jsonschema/src/options"
+import { IOptions } from "class-validator-jsonschema/build/options"
 
 async function typeValidator(
   typedClass: any,

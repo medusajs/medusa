@@ -3,7 +3,7 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from "class-validator"
-import { IOptions } from "class-validator-jsonschema/src/options"
+import { IOptions } from "class-validator-jsonschema/build/options"
 
 export function IsNullable(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
