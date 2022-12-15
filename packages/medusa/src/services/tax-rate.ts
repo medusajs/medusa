@@ -1,9 +1,11 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { ProductTaxRate } from "../models/product-tax-rate"
-import { ProductTypeTaxRate } from "../models/product-type-tax-rate"
-import { ShippingTaxRate } from "../models/shipping-tax-rate"
-import { TaxRate } from "../models/tax-rate"
+import {
+  ProductTaxRate,
+  ProductTypeTaxRate,
+  ShippingTaxRate,
+  TaxRate,
+} from "../models"
 import { TaxRateRepository } from "../repositories/tax-rate"
 import ProductService from "../services/product"
 import ProductTypeService from "../services/product-type"
@@ -15,7 +17,7 @@ import {
   TaxRateListByConfig,
   UpdateTaxRateInput,
 } from "../types/tax-rate"
-import { buildQuery, isDefined, PostgresError } from "../utils"
+import { buildQuery, PostgresError } from "../utils"
 import { TransactionBaseService } from "../interfaces"
 import { FindConditions } from "typeorm/find-options/FindConditions"
 

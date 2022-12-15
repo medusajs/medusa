@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
 import {
   AbstractPaymentService,
@@ -194,6 +194,13 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
       const context = this.buildPaymentContext(data)
+
+      if (!isDefined(context.currency_code) || !isDefined(context.amount)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          "`currency_code` and `amount` are required to create payment session."
+        )
+      }
 
       const paymentResponse = await provider
         .withTransaction(transactionManager)

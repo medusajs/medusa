@@ -35,35 +35,38 @@ class CartSubscriber {
   }
 
   async onCustomerUpdated(cartId) {
-    await this.manager_.transaction(async (transactionManager) => {
-      const cart = await this.cartService_
-        .withTransaction(transactionManager)
-        .retrieveWithTotals(cartId, {
-          relations: [
-            "billing_address",
-            "region",
-            "region.payment_providers",
-            "payment_sessions",
-            "customer",
-          ],
-        })
+    await this.manager_.transaction(
+      "SERIALIZABLE",
+      async (transactionManager) => {
+        const cart = await this.cartService_
+          .withTransaction(transactionManager)
+          .retrieveWithTotals(cartId, {
+            relations: [
+              "billing_address",
+              "region",
+              "region.payment_providers",
+              "payment_sessions",
+              "customer",
+            ],
+          })
 
-      if (!cart.payment_sessions?.length) {
-        return
+        if (!cart.payment_sessions?.length) {
+          return
+        }
+
+        const paymentProviderServiceTx =
+          this.paymentProviderService_.withTransaction(transactionManager)
+
+        return await Promise.all(
+          cart.payment_sessions.map(async (paymentSession) => {
+            return await paymentProviderServiceTx.updateSession(
+              paymentSession,
+              cart
+            )
+          })
+        )
       }
-
-      const paymentProviderServiceTx =
-        this.paymentProviderService_.withTransaction(transactionManager)
-
-      return await Promise.all(
-        cart.payment_sessions.map(async (paymentSession) => {
-          return await paymentProviderServiceTx.updateSession(
-            paymentSession,
-            cart
-          )
-        })
-      )
-    })
+    )
   }
 }
 

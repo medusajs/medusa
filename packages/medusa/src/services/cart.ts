@@ -1,5 +1,5 @@
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -34,7 +34,7 @@ import {
   TotalField,
   WithRequiredProperty,
 } from "../types/common"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import CustomShippingOptionService from "./custom-shipping-option"

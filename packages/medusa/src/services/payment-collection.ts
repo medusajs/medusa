@@ -1,8 +1,8 @@
 import { DeepPartial, EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { FindConfig } from "../types/common"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { PaymentCollectionRepository } from "../repositories/payment-collection"
 import {
   PaymentCollection,

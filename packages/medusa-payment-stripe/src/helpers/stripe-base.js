@@ -1,6 +1,5 @@
 import { AbstractPaymentService } from "@medusajs/medusa"
 import Stripe from "stripe"
-import { isDefined, MedusaError } from "medusa-core-utils";
 import { PaymentSessionStatus } from "@medusajs/medusa/dist";
 
 class StripeBase extends AbstractPaymentService {
@@ -110,13 +109,6 @@ class StripeBase extends AbstractPaymentService {
     const intentRequestData = this.getPaymentIntentOptions()
     const { id: cart_id, email, context: cart_context, currency_code, amount, resource_id, customer } = context
 
-    if (!isDefined(currency_code) || !isDefined(amount)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        'Unable to create a new payment, one of the "currency_code" or "amount" values is not provided. Both values are required.'
-      )
-    }
-
     const intentRequest = {
       description:
         cart_context.payment_description ??
@@ -148,17 +140,17 @@ class StripeBase extends AbstractPaymentService {
 
     return {
       session_data,
-			update_requests: {
-				customer: {
-					stripe_id: intentRequest.customer
-				}
-			}
+      update_requests: {
+        customer: {
+          stripe_id: intentRequest.customer
+        }
+      }
     }
   }
 
   /**
    * Retrieves Stripe payment intent.
-   * @param {PaymentData} paymentData - the data of the payment to retrieve
+   * @param {PaymentData} data - the data of the payment to retrieve
    * @return {Promise<Data>} Stripe payment intent
    */
   async retrievePayment(data) {

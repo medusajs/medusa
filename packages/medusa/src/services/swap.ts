@@ -1,7 +1,7 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
-import { buildQuery, isDefined, setMetadata, validateId } from "../utils"
+import { buildQuery, setMetadata, validateId } from "../utils"
 import { TransactionBaseService } from "../interfaces"
 
 import LineItemAdjustmentService from "./line-item-adjustment"
