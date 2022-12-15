@@ -9,12 +9,12 @@ export interface IBackgroundJobService extends TransactionBaseService {
   create<T>(
     eventName: string,
     data: T,
-    options: Record<string, unknown>,
+    options: Record<string, unknown> | any,
     handler: BackgroundJobHandler
-  ): Promise<void | unknown>
+  ): Promise<void | unknown> | void
 }
 
-export abstract class AbstractCronJobService
+export abstract class AbstractBackgroundJobService
   extends TransactionBaseService
   implements IBackgroundJobService
 {
@@ -25,12 +25,7 @@ export abstract class AbstractCronJobService
   public abstract create<T>(
     eventName: string,
     data: T,
-    options: Record<string, unknown>,
+    options: Record<string, unknown> | any,
     handler: BackgroundJobHandler
-  ): Promise<void | unknown>
-
-  protected abstract registerBackgroundJobHandler(
-    eventName: string,
-    handler: BackgroundJobHandler
-  ): this
+  ): Promise<void | unknown> | void
 }

@@ -29,23 +29,11 @@ export default class LocalBackgroundJobService
   }
 
   /**
-   * @return this
-   */
-  protected registerBackgroundJobHandler_(
-    event: string | symbol,
-  ): this {
-    this.logger_.info(
-      `[${event.toString()}] Local Background Job module installed. Cron jobs are unavailable.`
-    )
-    return this
-  }
-
-  /**
    * @return void
    */
-  createBackgroundJob<T>(
+  create<T>(
     eventName: string,
-  ): void {
+  ) : void {
     this.logger_.info(
       `[${eventName}] Local Background Job module installed. Cron jobs are unavailable.`
     )
