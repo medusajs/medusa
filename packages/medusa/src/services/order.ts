@@ -697,7 +697,7 @@ class OrderService extends TransactionBaseService {
         [
           cart.items.map((lineItem) => {
             return [
-              (lineItem.is_giftcard) ? this.createGiftCardsFromLineItem_(order, lineItem) : null,
+              (lineItem.is_giftcard) ? this.createGiftCardsFromLineItem_(order, lineItem, manager) : null,
               lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
               inventoryServiceTx.adjustInventory(
                 lineItem.variant_id,
@@ -730,7 +730,7 @@ class OrderService extends TransactionBaseService {
     })
   }
 
-  protected async createGiftCardsFromLineItem_(order: Order, lineItem: LineItem): Promise<Promise<GiftCard>[]> {
+  protected async createGiftCardsFromLineItem_(order: Order, lineItem: LineItem, manager: EntityManager): Promise<Promise<GiftCard>[]> {
     const createGiftCardPromises: Promise<GiftCard>[] = []
 
     // LineItem type doesn't promise either the subtotal or quantity. Adding a check here provides
@@ -745,13 +745,11 @@ class OrderService extends TransactionBaseService {
     // On utilizing the gift card, the same set of taxRate will apply to gift card
     // We calculate the summation of all taxes and add that as a snapshot in the giftcard.tax_rate column
     const giftCardTaxRate = lineItem.tax_lines.reduce(
-      (sum, taxLine) => sum + Math.round(
-        taxExclusivePrice * (taxLine.rate / 100)
-      ), 0
+      (sum, taxLine) => sum + taxLine.rate, 0
     )
 
     for (let qty = 0; qty < lineItem.quantity; qty++) {
-      const createGiftCardPromise = this.giftCardService_.create({
+      const createGiftCardPromise = this.giftCardService_.withTransaction(manager).create({
         region_id: order.region_id,
         order_id: order.id,
         value: taxExclusivePrice,
