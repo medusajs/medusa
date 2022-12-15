@@ -302,11 +302,11 @@ class PublishableApiKeyService extends TransactionBaseService {
    * List SalesChannels associated with the PublishableKey
    *
    * @param publishableApiKeyId - id of the key SalesChannels are listed for
-   * @param q - free text search param
+   * @param config - querying params
    */
   async listSalesChannels(
     publishableApiKeyId: string,
-    q?: string
+    config?: { q?: string }
   ): Promise<SalesChannel[]> {
     const manager = this.manager_
     const pubKeySalesChannelRepo = manager.getCustomRepository(
@@ -315,7 +315,7 @@ class PublishableApiKeyService extends TransactionBaseService {
 
     return await pubKeySalesChannelRepo.findSalesChannels(
       publishableApiKeyId,
-      q
+      config
     )
   }
 

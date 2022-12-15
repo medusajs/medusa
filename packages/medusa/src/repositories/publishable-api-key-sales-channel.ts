@@ -8,11 +8,11 @@ export class PublishableApiKeySalesChannelRepository extends Repository<Publisha
    * Query a list of sales channels that are assigned to the publishable key scope
    *
    * @param publishableApiKeyId - id of the key to retrieve channels for
-   * @param q - free text search param
+   * @param config - querying params
    */
   public async findSalesChannels(
     publishableApiKeyId: string,
-    q?: string
+    config?: { q?: string }
   ): Promise<SalesChannel[]> {
     const query = this.createQueryBuilder("PublishableKeySalesChannel")
       .select("PublishableKeySalesChannel.sales_channel_id")
@@ -29,12 +29,12 @@ export class PublishableApiKeySalesChannelRepository extends Repository<Publisha
         }
       )
 
-    if (q) {
+    if (config?.q) {
       query.andWhere(
         new Brackets((qb) => {
           qb.where(`SalesChannel.description ILIKE :q`, {
-            q: `%${q}%`,
-          }).orWhere(`SalesChannel.name ILIKE :q`, { q: `%${q}%` })
+            q: `%${config.q}%`,
+          }).orWhere(`SalesChannel.name ILIKE :q`, { q: `%${config.q}%` })
         })
       )
     }

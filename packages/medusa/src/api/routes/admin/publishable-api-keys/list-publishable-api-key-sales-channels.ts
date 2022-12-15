@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { IsOptional, IsString } from "class-validator"
 
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
-import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
  * @oas [get] /publishable-api-keys/{id}/sales-channels
@@ -66,17 +65,16 @@ export default async (req: Request, res: Response) => {
 
   const filterableFields = req.filterableFields
 
-  const salesChannels = await publishableApiKeyService.listSalesChannels(
-    id,
-    filterableFields.q as string | undefined
-  )
+  const salesChannels = await publishableApiKeyService.listSalesChannels(id, {
+    q: filterableFields.q as string | undefined,
+  })
 
   return res.json({
     sales_channels: salesChannels,
   })
 }
 
-export class GetPublishableApiKeySalesChannelsParams extends extendedFindParamsMixin() {
+export class GetPublishableApiKeySalesChannelsParams {
   @IsOptional()
   @IsString()
   q?: string
