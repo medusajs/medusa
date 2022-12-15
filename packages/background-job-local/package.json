@@ -1,12 +1,12 @@
 {
-  "name": "@medusajs/cron-job-local",
+  "name": "@medusajs/background-job-local",
   "version": "0.0.0",
-  "description": "Local Cron Job Module for Medusa",
+  "description": "Local Background Job Module for Medusa",
   "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/cron-job-local"
+    "directory": "packages/background-job-local"
   },
   "publishConfig": {
     "access": "public"

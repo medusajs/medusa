@@ -1,5 +1,5 @@
 import {
-  AbstractCronJobService, Logger,
+  AbstractBackgroundJobService, Logger,
   MedusaContainer
 } from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
@@ -12,8 +12,8 @@ type InjectedDependencies = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class LocalCronJobService
-  extends AbstractCronJobService
+export default class LocalBackgroundJobService
+  extends AbstractBackgroundJobService
 {
   protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly logger_: Logger
@@ -31,11 +31,11 @@ export default class LocalCronJobService
   /**
    * @return this
    */
-  protected registerCronHandler_(
+  protected registerBackgroundJobHandler_(
     event: string | symbol,
   ): this {
     this.logger_.info(
-      `[${event.toString()}] Local Cron Job module installed. Cron jobs are unavailable.`
+      `[${event.toString()}] Local Background Job module installed. Cron jobs are unavailable.`
     )
     return this
   }
@@ -43,11 +43,11 @@ export default class LocalCronJobService
   /**
    * @return void
    */
-  createCronJob<T>(
+  createBackgroundJob<T>(
     eventName: string,
   ): void {
     this.logger_.info(
-      `[${eventName}] Local Cron Job module installed. Cron jobs are unavailable.`
+      `[${eventName}] Local Background Job module installed. Cron jobs are unavailable.`
     )
   }
 }

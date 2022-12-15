@@ -4346,9 +4346,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/cron-job-local@workspace:packages/cron-job-local":
+"@medusajs/cron-job-local@workspace:packages/background-job-local":
   version: 0.0.0-use.local
-  resolution: "@medusajs/cron-job-local@workspace:packages/cron-job-local"
+  resolution: "@medusajs/cron-job-local@workspace:packages/background-job-local"
   dependencies:
     "@medusajs/medusa": ^1.6.5
     cross-env: ^5.2.1

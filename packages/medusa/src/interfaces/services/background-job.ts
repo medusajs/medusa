@@ -1,23 +1,22 @@
 import { TransactionBaseService } from "../transaction-base-service"
 
-export type CronHandler<T = unknown> = (
+export type BackgroundJobHandler<T = unknown> = (
   data: T,
   eventName: string
 ) => Promise<void>
 
-export interface ICronJobService extends TransactionBaseService {
+export interface IBackgroundJobService extends TransactionBaseService {
   create<T>(
     eventName: string,
     data: T,
-    cronSchedule: string,
     options: Record<string, unknown>,
-    handler: CronHandler
+    handler: BackgroundJobHandler
   ): Promise<void | unknown>
 }
 
 export abstract class AbstractCronJobService
   extends TransactionBaseService
-  implements ICronJobService
+  implements IBackgroundJobService
 {
   protected constructor(container: unknown, config?: Record<string, unknown>) {
     super(container, config)
@@ -26,13 +25,12 @@ export abstract class AbstractCronJobService
   public abstract create<T>(
     eventName: string,
     data: T,
-    cronSchedule: string,
     options: Record<string, unknown>,
-    handler: CronHandler
+    handler: BackgroundJobHandler
   ): Promise<void | unknown>
 
-  protected abstract registerCronHandler(
+  protected abstract registerBackgroundJobHandler(
     eventName: string,
-    handler: CronHandler
+    handler: BackgroundJobHandler
   ): this
 }
