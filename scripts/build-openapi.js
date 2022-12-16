@@ -13,7 +13,7 @@ const run = async () => {
   for (const apiType of ["store", "admin"]) {
     const inputJsonFile = path.resolve(
       basePath,
-      `packages/medusa/dist/oas/${apiType}.oas.json`
+      `packages/medusa/oas/${apiType}.oas.json`
     )
     const outputJsonFile = path.resolve(
       basePath,

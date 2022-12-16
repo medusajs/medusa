@@ -14,14 +14,13 @@ const debug = (...args) => {
   }
 }
 
+// Current package root directory
+const packagePath = path.resolve(__dirname, "../../../")
+
 const run = async () => {
   debug("Generate Client from OAS.")
 
-  const targetPackageSrcDir = path.resolve(
-    __dirname,
-    "../../../../",
-    "medusa-client/src"
-  )
+  const targetPackageSrcDir = path.resolve(packagePath, "../medusa-client/src")
   await mkdir(targetPackageSrcDir, { recursive: true })
 
   for (const apiType of ["store", "admin"]) {
@@ -34,11 +33,7 @@ const run = async () => {
 }
 
 const getOASFromFile = async (apiType: ApiType) => {
-  const jsonFile = path.resolve(
-    __dirname,
-    "../../../",
-    `dist/oas/${apiType}.oas.json`
-  )
+  const jsonFile = path.resolve(packagePath, `oas/${apiType}.oas.json`)
   const jsonString = await readFile(jsonFile, "utf8")
   return JSON.parse(jsonString)
 }

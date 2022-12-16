@@ -22,10 +22,15 @@ const debug = (...args) => {
   }
 }
 
+// Current package root directory
+const packagePath = path.resolve(__dirname, "../../../")
+// Current package src directory
+const basePath = path.resolve(packagePath, "src/")
+
 const run = async () => {
   debug("Generate OAS from codebase.")
 
-  const targetDir = path.resolve(__dirname, "../../../", "dist/oas")
+  const targetDir = path.resolve(packagePath, "oas/")
   await mkdir(targetDir, { recursive: true })
 
   for (const apiType of ["store", "admin"]) {
@@ -41,12 +46,12 @@ const getOASFromCodebase = async (apiType: ApiType) => {
   debug("Parse JSDoc from path and schema definitions.")
   const gen = await swaggerInline(
     [
-      path.resolve(__dirname, "../../", "models"),
-      path.resolve(__dirname, "../../", "api/middlewares"),
-      path.resolve(__dirname, "../../", `api/routes/${apiType}`),
+      path.resolve(basePath, "models"),
+      path.resolve(basePath, "api/middlewares"),
+      path.resolve(basePath, `api/routes/${apiType}`),
     ],
     {
-      base: path.resolve(__dirname, "./", `${apiType}-spec3-base.yaml`),
+      base: path.resolve(basePath, `scripts/oas/${apiType}-spec3-base.yaml`),
       format: ".json",
     }
   )
@@ -55,16 +60,18 @@ const getOASFromCodebase = async (apiType: ApiType) => {
   const oas = await OpenAPIParser.parse(JSON.parse(gen))
 
   if (!skipJSONSchema) {
-    debug("Parse Class with class-validator for schema definitions.")
-    const api_ = require("../../api")
-    const models_ = require("../../models")
+    debug(
+      "Register and parse class-validator classes to infer schema definitions."
+    )
+    await import("../../api")
+    await import("../../models")
     const schemas = validationMetadatasToSchemas(getJSONSchemaOptions())
 
     const jsdocKeys = Object.keys(oas.components.schemas)
     const classKeys = Object.keys(schemas)
 
     debug("Augment OAS with schemas from classes.")
-    oas.components.schemas = Object.assign(oas.components.schemas, schemas)
+    Object.assign(oas.components.schemas, schemas)
 
     if (isVerbose) {
       // List all schemas and their declaration origin.
