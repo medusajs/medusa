@@ -7,21 +7,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { omit, pickBy } from "lodash"
 import {
   CartService,
   ProductService,
   RegionService,
 } from "../../../../services"
-import { isDefined } from "medusa-core-utils"
-import { defaultStoreProductsRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { Product } from "../../../../models"
 import PricingService from "../../../../services/pricing"
 import { DateComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { IsType } from "../../../../utils/validators/is-type"
 import { FlagRouter } from "../../../../utils/flag-router"
@@ -133,6 +128,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *   - (query) limit=100 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) order {string} the field used to order the customer groups.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -196,10 +192,11 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
+  const validated = req.validatedQuery as StoreGetProductsParams
+  const filterableFields = req.filterableFields
+  const listConfig = req.listConfig
+
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-
-  const validated = await validator(StoreGetProductsParams, req.query)
-
   if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
     if (req.publishableApiKeyScopes?.sales_channel_id.length) {
       validated.sales_channel_id =
@@ -208,42 +205,8 @@ export default async (req, res) => {
     }
   }
 
-  const filterableFields: StoreGetProductsParams = omit(validated, [
-    "fields",
-    "expand",
-    "limit",
-    "offset",
-    "cart_id",
-    "region_id",
-    "currency_code",
-  ])
-
-  // get only published products for store endpoint
-  filterableFields["status"] = ["published"]
-
-  let includeFields: (keyof Product)[] = []
-  if (validated.fields) {
-    const set = new Set(validated.fields.split(",")) as Set<keyof Product>
-    set.add("id")
-    includeFields = [...set]
-  }
-
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
-  const listConfig = {
-    select: includeFields.length ? includeFields : undefined,
-    relations: expandFields.length
-      ? expandFields
-      : defaultStoreProductsRelations,
-    skip: validated.offset,
-    take: validated.limit,
-  }
-
   const [rawProducts, count] = await productService.listAndCount(
-    pickBy(filterableFields, (val) => isDefined(val)),
+    filterableFields,
     listConfig
   )
 
@@ -294,6 +257,10 @@ export class StoreGetProductsPaginationParams extends PriceSelectionParams {
   @IsOptional()
   @Type(() => Number)
   limit?: number = 100
+
+  @IsString()
+  @IsOptional()
+  order?: string
 }
 
 export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
