@@ -1,5 +1,6 @@
 import { Transform } from "class-transformer"
 import { IsBoolean, IsOptional, IsString } from "class-validator"
+import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { AddressPayload } from "./common"
 
 export class AdminListCustomerSelector {
@@ -9,7 +10,7 @@ export class AdminListCustomerSelector {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   has_account?: boolean
 
   @IsOptional()
