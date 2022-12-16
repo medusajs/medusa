@@ -21,7 +21,7 @@ export default class CacheService implements ICacheService {
    */
   async set(
     key: string,
-    data: Record<string, unknown>,
+    data: Record<string, unknown> | Record<string, unknown>[],
     ttl: number = DEFAULT_CACHE_TIME
   ): Promise<void> {
     ttl = Number(process.env.CACHE_TTL ?? ttl)

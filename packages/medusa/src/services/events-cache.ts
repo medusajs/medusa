@@ -16,17 +16,21 @@ export class EventsCacheService implements IEventsCacheService {
     this.eventBusService_ = eventBusService
   }
 
-  async prepare(uniqueId: string, options: Record<string, unknown>) {
+  async prepare(uniqueId: string) {
     // default TTL is 30 sec
-    await this.cacheService_.set(uniqueId, options)
+    await this.cacheService_.set(uniqueId, [])
   }
 
   async emit<T>(uniqueId: string, eventData: EventData) {
-    const existing = this.cacheService_.get(uniqueId)
+    const existing = await this.cacheService_.get<EventData[]>(uniqueId)
 
-    const merged = { ...existing, ...eventData }
+    if (!existing) {
+      return
+    }
 
-    await this.cacheService_.set(uniqueId, merged)
+    existing.push(eventData)
+
+    await this.cacheService_.set(uniqueId, existing)
   }
 
   async emitImmediately<T>(

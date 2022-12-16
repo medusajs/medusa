@@ -5,6 +5,7 @@ import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
 import { sleep } from "../utils/sleep"
+import CacheService from "./cache"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -12,6 +13,7 @@ type InjectedDependencies = {
   stagedJobRepository: typeof StagedJobRepository
   redisClient: Redis.Redis
   redisSubscriber: Redis.Redis
+  cacheService: CacheService
 }
 
 export type EventData<T = unknown> = {
@@ -44,6 +46,7 @@ export default class EventBusService {
   protected readonly redisClient_: Redis.Redis
   protected readonly redisSubscriber_: Redis.Redis
   protected readonly cronQueue_: Bull
+  protected readonly cacheService_: CacheService
   protected queue_: Bull
   protected shouldEnqueuerRun: boolean
   protected transactionManager_: EntityManager | undefined
@@ -56,6 +59,7 @@ export default class EventBusService {
       stagedJobRepository,
       redisClient,
       redisSubscriber,
+      cacheService,
     }: InjectedDependencies,
     config: ConfigModule,
     singleton = true
@@ -64,6 +68,7 @@ export default class EventBusService {
     this.manager_ = manager
     this.logger_ = logger
     this.stagedJobRepository_ = stagedJobRepository
+    this.cacheService_ = cacheService
 
     if (singleton) {
       const opts = {
@@ -111,6 +116,7 @@ export default class EventBusService {
         logger: this.logger_,
         redisClient: this.redisClient_,
         redisSubscriber: this.redisSubscriber_,
+        cacheService: this.cacheService_,
       },
       this.config_,
       false
@@ -181,6 +187,10 @@ export default class EventBusService {
     this.cronHandlers_.set(event, [...cronHandlers, subscriber])
 
     return this
+  }
+
+  async tempEventsCache(uniqueId: string) {
+    const cache = await this.cacheService_.get(uniqueId)
   }
 
   /**
