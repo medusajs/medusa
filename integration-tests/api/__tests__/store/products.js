@@ -6,6 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const { simpleProductFactory } = require("../../factories")
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+
 jest.setTimeout(30000)
 
 describe("/store/products", () => {
@@ -33,6 +34,154 @@ describe("/store/products", () => {
     afterEach(async () => {
       const db = useDb()
       await db.teardown()
+    })
+
+    it("returns a list of ordered products by id ASC", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?order=id")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(6)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "giftcard",
+          }),
+          expect.objectContaining({
+            id: "test-product",
+          }),
+          expect.objectContaining({
+            id: "test-product1",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_3",
+          }),
+        ])
+      )
+    })
+
+    it("returns a list of ordered products by id DESC", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?order=-id")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(6)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product_filtering_3",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_2",
+          }),
+          expect.objectContaining({
+            id: "test-product_filtering_1",
+          }),
+          expect.objectContaining({
+            id: "test-product1",
+          }),
+          expect.objectContaining({
+            id: "test-product",
+          }),
+          expect.objectContaining({
+            id: "giftcard",
+          }),
+        ])
+      )
+    })
+
+    it("returns a list of ordered products by variants title DESC", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?order=-variants.title")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(6)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            variants: [
+              expect.objectContaining({
+                id: "test-variant_2",
+                title: "Test variant rank (2)",
+              }),
+              expect.objectContaining({
+                id: "test-variant_1",
+                title: "Test variant rank (1)",
+              }),
+              expect.objectContaining({
+                id: "test-variant",
+                title: "Test variant",
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: "test-product1",
+            variants: [
+              expect.objectContaining({
+                id: "test-variant_4",
+                title: "Test variant rank (2)",
+              }),
+              expect.objectContaining({
+                id: "test-variant_3",
+                title: "Test variant rank (2)",
+              }),
+            ],
+          }),
+        ])
+      )
+    })
+
+    it("returns a list of products with the variants ordered by title ASC", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?order=variants.title")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(6)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            variants: [
+              expect.objectContaining({
+                id: "test-variant",
+                title: "Test variant",
+              }),
+              expect.objectContaining({
+                id: "test-variant_1",
+                title: "Test variant rank (1)",
+              }),
+              expect.objectContaining({
+                id: "test-variant_2",
+                title: "Test variant rank (2)",
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: "test-product1",
+            variants: [
+              expect.objectContaining({
+                id: "test-variant_4",
+                title: "Test variant rank (2)",
+              }),
+              expect.objectContaining({
+                id: "test-variant_3",
+                title: "Test variant rank (2)",
+              }),
+            ],
+          }),
+        ])
+      )
     })
 
     it("returns a list of products in collection", async () => {
@@ -67,7 +216,7 @@ describe("/store/products", () => {
       }
     })
 
-    it("returns a list of products in with a given tag", async () => {
+    it("returns a list of products with a given tag", async () => {
       const api = useApi()
 
       const notExpected = [expect.objectContaining({ id: "tag4" })]

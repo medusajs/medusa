@@ -71,6 +71,10 @@ export class ProductRepository extends Repository<Product> {
       const toSelect: string[] = []
       const parsed = Object.entries(optionsWithoutRelations.order).reduce(
         (acc, [k, v]) => {
+          if (k.includes(".")) {
+            // we don't order by relation at this stage
+            return acc
+          }
           const key = `product.${k}`
           toSelect.push(key)
           acc[key] = v
@@ -151,7 +155,8 @@ export class ProductRepository extends Repository<Product> {
     entityIds: string[],
     groupedRelations: { [toplevel: string]: string[] },
     withDeleted = false,
-    select: (keyof Product)[] = []
+    select: (keyof Product)[] = [],
+    order: { [column: string]: "ASC" | "DESC" } = {}
   ): Promise<Product[]> {
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
@@ -162,20 +167,32 @@ export class ProductRepository extends Repository<Product> {
         }
 
         if (toplevel === "variants") {
-          querybuilder = querybuilder
-            .leftJoinAndSelect(
-              `products.${toplevel}`,
-              toplevel,
-              "variants.deleted_at IS NULL"
-            )
-            .orderBy({
-              "variants.variant_rank": "ASC",
-            })
+          querybuilder = querybuilder.leftJoinAndSelect(
+            `products.${toplevel}`,
+            toplevel,
+            "variants.deleted_at IS NULL"
+          )
+
+          order["variants.variant_rank"] = "ASC"
         } else {
           querybuilder = querybuilder.leftJoinAndSelect(
             `products.${toplevel}`,
             toplevel
           )
+        }
+
+        if (order) {
+          const toSelect: string[] = []
+          const parsed = Object.entries(order).reduce((acc, [k, v]) => {
+            if (k.startsWith(toplevel)) {
+              const key = `${k}`
+              toSelect.push(key)
+              acc[key] = v
+            }
+            return acc
+          }, {})
+          querybuilder.addSelect(toSelect)
+          querybuilder.orderBy(parsed)
         }
 
         for (const rel of rels) {
@@ -251,12 +268,16 @@ export class ProductRepository extends Repository<Product> {
       entitiesIds,
       groupedRelations,
       idsOrOptionsWithoutRelations.withDeleted,
-      idsOrOptionsWithoutRelations.select
+      idsOrOptionsWithoutRelations.select,
+      idsOrOptionsWithoutRelations.order
     )
 
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
+    const entitiesAndRelations = groupBy(entitiesIdsWithRelations, "id")
+    const entitiesToReturn = map(entitiesIds, (id) =>
+      merge({}, ...entitiesAndRelations[id])
+    )
+    /* const entitiesToReturn =
+      this.mergeEntitiesWithRelations(entitiesAndRelations)*/
 
     return [entitiesToReturn, count]
   }
@@ -298,7 +319,10 @@ export class ProductRepository extends Repository<Product> {
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
       groupedRelations,
-      withDeleted
+      withDeleted,
+      typeof idsOrOptionsWithoutRelations === "string"
+        ? {}
+        : (idsOrOptionsWithoutRelations as any)?.order
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
