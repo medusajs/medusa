@@ -196,12 +196,17 @@ export default async (req, res) => {
   const filterableFields = req.filterableFields
   const listConfig = req.listConfig
 
+  // get only published products for store endpoint
+  filterableFields["status"] = ["published"]
+
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
     if (req.publishableApiKeyScopes?.sales_channel_id.length) {
-      validated.sales_channel_id =
-        validated.sales_channel_id ||
+      filterableFields.sales_channel_id =
+        filterableFields.sales_channel_id ||
         req.publishableApiKeyScopes.sales_channel_id
+
+      listConfig.relations.push("sales_channels")
     }
   }
 

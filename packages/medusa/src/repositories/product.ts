@@ -276,8 +276,6 @@ export class ProductRepository extends Repository<Product> {
     const entitiesToReturn = map(entitiesIds, (id) =>
       merge({}, ...entitiesAndRelations[id])
     )
-    /* const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)*/
 
     return [entitiesToReturn, count]
   }
@@ -320,7 +318,7 @@ export class ProductRepository extends Repository<Product> {
       entitiesIds,
       groupedRelations,
       withDeleted,
-      typeof idsOrOptionsWithoutRelations === "string"
+      Array.isArray(idsOrOptionsWithoutRelations)
         ? {}
         : (idsOrOptionsWithoutRelations as any)?.order
     )

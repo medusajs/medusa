@@ -50,7 +50,7 @@ export function getListConfig<TModel extends BaseEntity>(
   expand?: string[],
   limit = 50,
   offset = 0,
-  order?: { [k: symbol]: "DESC" | "ASC" }
+  order: { [k: symbol]: "DESC" | "ASC" } = {}
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
   if (isDefined(fields)) {
@@ -66,8 +66,14 @@ export function getListConfig<TModel extends BaseEntity>(
     expandFields = expand
   }
 
-  const orderBy: Record<string, "DESC" | "ASC"> = order ?? {
-    created_at: "DESC",
+  const orderBy: Record<string, "DESC" | "ASC"> = {}
+
+  // If no order or none of the order is targeting the top parent entity, then order the top parent by created_at desc
+  if (
+    !Object.keys(order).length ||
+    Object.keys(order).every((key) => key.includes("."))
+  ) {
+    orderBy["created_at"] = "DESC"
   }
 
   return {
