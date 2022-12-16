@@ -16,6 +16,7 @@ type ApiType = "store" | "admin"
 const cliParams = process.argv.slice(2)
 const skipJSONSchema = cliParams.includes("--skipJSONSchema")
 const isVerbose = cliParams.includes("--verbose") || cliParams.includes("-V")
+const onlyValidate = cliParams.includes("--onlyValidate")
 const debug = (...args) => {
   if (isVerbose) {
     logger.debug(...args)
@@ -31,18 +32,22 @@ const run = async () => {
   debug("Generate OAS from codebase.")
 
   const targetDir = path.resolve(packagePath, "oas/")
-  await mkdir(targetDir, { recursive: true })
+  if (!onlyValidate) {
+    await mkdir(targetDir, { recursive: true })
+  }
 
   for (const apiType of ["store", "admin"]) {
     debug(`Building OAS for ${apiType} api.`)
-    const oas = await getOASFromCodebase(apiType as ApiType)
-    exportOASToJSON(oas, apiType as ApiType, targetDir)
+    const oas = await getOASFromCodebase(apiType as ApiType, onlyValidate)
+    if (!onlyValidate) {
+      await exportOASToJSON(oas, apiType as ApiType, targetDir)
+    }
   }
 
   debug("OAS successfully generated.")
 }
 
-const getOASFromCodebase = async (apiType: ApiType) => {
+const getOASFromCodebase = async (apiType: ApiType, validate = false) => {
   debug("Parse JSDoc from path and schema definitions.")
   const gen = await swaggerInline(
     [
@@ -89,8 +94,12 @@ const getOASFromCodebase = async (apiType: ApiType) => {
   try {
     await OpenAPIParser.validate(JSON.parse(JSON.stringify(oas)))
   } catch (err) {
-    debug("OAS validation failed.")
-    logger.warn(err)
+    if (validate) {
+      throw err
+    } else {
+      debug("OAS validation failed.")
+      logger.warn(err)
+    }
   }
 
   return oas
@@ -111,7 +120,7 @@ const getJSONSchemaOptions = (): Partial<IOptions> => ({
     IsType: IsTypeJSONSchemaConverter,
     IsGreaterThan: () => {},
     IsISO8601Duration: () => {},
-    ExactlyOne: (meta, options) => {
+    ExactlyOne: (meta, _options) => {
       return {
         type: "array",
         items: {

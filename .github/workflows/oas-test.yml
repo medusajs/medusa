@@ -2,7 +2,8 @@ name: OAS Comments Format Validation
 on: 
   pull_request:
     paths:
-      - packages/medusa/src/api/routes/**
+      - packages/medusa/src/api/**
+      - packages/medusa/src/models/**
 
 jobs:
   docs-test:
@@ -31,4 +32,5 @@ jobs:
 
       - name: Build OAS
         run: |
-          yarn openapi:generate --dry-run
+          yarn build:oas --onlyValidate --verbose
+        working-directory: packages/medusa
