@@ -199,6 +199,11 @@ module.exports = {
               id: "advanced/backend/upgrade-guides/1-7-0",
               label: "v1.7.0"
             },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/admin/admin-vite",
+              label: "Medusa Admin: Vite"
+            },
           ]
         },
         {
