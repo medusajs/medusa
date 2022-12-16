@@ -1,51 +1,62 @@
 #!/usr/bin/env node
 
-const fs = require("fs")
+const fs = require("fs/promises")
 const path = require("path")
-const { exec } = require("child_process")
+const execa = require("execa")
 const yaml = require("js-yaml")
 
-const run = () => {
+const basePath = path.resolve(__dirname, `../`)
+
+const run = async () => {
+  await generateOASSource()
+
   for (const apiType of ["store", "admin"]) {
     const inputJsonFile = path.resolve(
-      __dirname,
-      "../",
+      basePath,
       `packages/medusa/dist/oas/${apiType}.oas.json`
     )
     const outputJsonFile = path.resolve(
-      __dirname,
-      "../",
+      basePath,
       `docs/api/${apiType}-spec3.json`
     )
     const outputYamlFile = path.resolve(
-      __dirname,
-      "../",
+      basePath,
       `docs/api/${apiType}-spec3.yaml`
     )
 
-    fs.copyFileSync(inputJsonFile, outputJsonFile)
-    jsonFileToYamlFile(inputJsonFile, outputYamlFile)
-    generateReference(apiType)
+    await fs.copyFile(inputJsonFile, outputJsonFile)
+    await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
+    await generateReference(apiType)
   }
 }
 
-const jsonFileToYamlFile = (inputJsonFile, outputYamlFile) => {
-  const jsonString = fs.readFileSync(inputJsonFile, "utf8")
+const generateOASSource = async () => {
+  const { all: logs } = await execa("yarn", ["build:oas", "--verbose"], {
+    cwd: path.resolve(basePath, "packages/medusa"),
+    all: true,
+  })
+  console.log(logs)
+}
+
+const jsonFileToYamlFile = async (inputJsonFile, outputYamlFile) => {
+  const jsonString = await fs.readFile(inputJsonFile, "utf8")
   const jsonObject = JSON.parse(jsonString)
   const yamlString = yaml.dump(jsonObject)
-  fs.writeFileSync(outputYamlFile, yamlString, "utf8")
+  await fs.writeFile(outputYamlFile, yamlString, "utf8")
 }
 
-const generateReference = (apiType) => {
-  exec(
-    `rm -rf docs/api/${apiType}/ && yarn run -- redocly split docs/api/${apiType}.oas.yaml --outDir=docs/api/${apiType}/`,
-    (error, stdout, stderr) => {
-      if (error) {
-        throw new Error(`error: ${error.message}`)
-      }
-      console.log(`${stderr || stdout}`)
-    }
+const generateReference = async (apiType) => {
+  const srcFile = path.resolve(basePath, `docs/api/${apiType}-spec3.yaml`)
+  const outDir = path.resolve(basePath, `docs/api/${apiType}`)
+  await fs.rm(outDir, { recursive: true, force: true })
+  const { all: logs } = await execa(
+    "redocly",
+    ["split", srcFile, `--outDir=${outDir}`],
+    { cwd: basePath, all: true }
   )
+  console.log(logs)
 }
 
-run()
+void (async () => {
+  await run()
+})()
