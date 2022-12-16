@@ -173,7 +173,7 @@ export default async (req, res) => {
     await cartService.update(draftOrder.cart_id, cartDataToUpdate)
   })
 
-  draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
+  draftOrder.cart = await cartService.retrieveWithTotals(draftOrder.cart_id, {
     relations: defaultAdminDraftOrdersCartRelations,
     select: defaultAdminDraftOrdersCartFields,
   })
