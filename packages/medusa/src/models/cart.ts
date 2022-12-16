@@ -167,8 +167,6 @@
  *     type: integer
  *     description: The total of gift cards with taxes
  *     example: 0
- *   thisWillFail:
- *     $ref: "#/components/schemas/lolIDontExist"
  */
 
 import {
