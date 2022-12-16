@@ -698,8 +698,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
-       "Amount on payment sessions is only available with the OrderEditing API currently guarded by feature flag `MEDUSA_FF_ORDER_EDITING`.  Read more about feature flags here: https://docs.medusajs.com/advanced/backend/feature-flags/toggle/"
-        "Unable to save the payment session with an amount. The feature flag order edit is not enabled."
+        "Amount on payment sessions is only available with the OrderEditing API currently guarded by feature flag `MEDUSA_FF_ORDER_EDITING`.  Read more about feature flags here: https://docs.medusajs.com/advanced/backend/feature-flags/toggle/"
       )
     }
 
@@ -749,7 +748,9 @@ export default class PaymentProviderService extends TransactionBaseService {
     if (update_requests.customer_metadata && data.customer?.id) {
       await this.customerService_
         .withTransaction(manager)
-        .update(data.customer.id, { metadata: update_requests.customer_metadata })
+        .update(data.customer.id, {
+          metadata: update_requests.customer_metadata,
+        })
     }
   }
 }
