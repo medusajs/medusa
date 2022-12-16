@@ -48,7 +48,7 @@ class BatchJobSubscriber {
         await batchJobServiceTx.setPreProcessingDone(batchJob.id)
       })
     } catch (e) {
-      await this.batchJobService_.setFailed(data.id, e)
+      await this.batchJobService_.setFailed(data.id, e.message)
       throw e
     }
   }
@@ -68,7 +68,7 @@ class BatchJobSubscriber {
         await batchJobServiceTx.complete(batchJob.id)
       })
     } catch (e) {
-      await this.batchJobService_.setFailed(data.id, e)
+      await this.batchJobService_.setFailed(data.id, e.message)
       throw e
     }
   }
