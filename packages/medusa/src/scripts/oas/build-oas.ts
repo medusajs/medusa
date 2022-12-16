@@ -95,7 +95,8 @@ const getOASFromCodebase = async (apiType: ApiType, validate = false) => {
     await OpenAPIParser.validate(JSON.parse(JSON.stringify(oas)))
   } catch (err) {
     if (validate) {
-      throw err
+      logger.error(`Error in OAS ${apiType}`, err)
+      process.exit(1)
     } else {
       debug("OAS validation failed.")
       logger.warn(err)
