@@ -96,6 +96,7 @@ class BatchJobService extends TransactionBaseService {
     eventBusService,
     strategyResolverService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -339,7 +340,7 @@ class BatchJobService extends TransactionBaseService {
 
   async setFailed(
     batchJobOrId: string | BatchJob,
-    error?: BatchJobResultError
+    error?: BatchJobResultError | string
   ): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob = batchJobOrId as BatchJob
