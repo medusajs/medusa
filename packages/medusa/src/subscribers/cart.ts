@@ -59,10 +59,7 @@ class CartSubscriber {
 
         return await Promise.all(
           cart.payment_sessions.map(async (paymentSession) => {
-            return await paymentProviderServiceTx.updateSession(
-              paymentSession,
-              cart
-            )
+            return paymentProviderServiceTx.updateSession(paymentSession, cart)
           })
         )
       }
