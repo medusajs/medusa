@@ -66,7 +66,7 @@ export function getListConfig<TModel extends BaseEntity>(
     expandFields = expand
   }
 
-  const orderBy: Record<string, "DESC" | "ASC"> = {}
+  let orderBy: { [k: symbol]: "DESC" | "ASC" } = {}
 
   // If no order or none of the order is targeting the top parent entity, then order the top parent by created_at desc
   if (
@@ -74,6 +74,8 @@ export function getListConfig<TModel extends BaseEntity>(
     Object.keys(order).every((key) => key.includes("."))
   ) {
     orderBy["created_at"] = "DESC"
+  } else {
+    orderBy = order
   }
 
   return {
