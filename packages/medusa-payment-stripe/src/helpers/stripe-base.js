@@ -141,7 +141,7 @@ class StripeBase extends AbstractPaymentService {
     return {
       session_data,
       update_requests: {
-        customer: {
+        customer_metadata: {
           stripe_id: intentRequest.customer
         }
       }

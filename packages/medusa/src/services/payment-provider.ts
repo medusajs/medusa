@@ -746,10 +746,10 @@ export default class PaymentProviderService extends TransactionBaseService {
 
     const manager = this.transactionManager_ ?? this.manager_
 
-    if (update_requests.customer && data.customer?.id) {
+    if (update_requests.customer_metadata && data.customer?.id) {
       await this.customerService_
         .withTransaction(manager)
-        .update(data.customer.id, { metadata: update_requests.customer })
+        .update(data.customer.id, { metadata: update_requests.customer_metadata })
     }
   }
 }

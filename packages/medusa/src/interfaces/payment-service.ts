@@ -29,7 +29,7 @@ export type PaymentContext = {
 }
 
 export type PaymentSessionResponse = {
-  update_requests: { customer: Record<string, unknown> }
+  update_requests: { customer_metadata: Record<string, unknown> }
   session_data: Record<string, unknown>
 }
 

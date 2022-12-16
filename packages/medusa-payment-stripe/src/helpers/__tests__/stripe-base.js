@@ -35,7 +35,7 @@ describe("StripeBase", () => {
           amount: 100,
         },
         update_requests: {
-          customer: {
+          customer_metadata: {
             stripe_id: "cus_lebron"
           }
         }
@@ -62,7 +62,7 @@ describe("StripeBase", () => {
           amount: 100,
         },
         update_requests: {
-          customer: {
+          customer_metadata: {
             stripe_id: "cus_lebron"
           }
         }
@@ -96,7 +96,7 @@ describe("StripeBase", () => {
           amount: 100,
         },
         update_requests: {
-          customer: {
+          customer_metadata: {
             stripe_id: "cus_lebron"
           }
         }
