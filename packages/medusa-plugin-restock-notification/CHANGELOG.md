@@ -1,5 +1,15 @@
 # Change Log
 
+## 2.0.1-swap-prod-search-20221216101823
+
+### Patch Changes
+
+- [#2808](https://github.com/medusajs/medusa/pull/2808) [`0a9c89185`](https://github.com/medusajs/medusa/commit/0a9c891853c4d16b553d38268a3408ca1daa71f0) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - chore: explicitly add devDependencies for monorepo peerDependencies
+
+- Updated dependencies [[`7cced6006`](https://github.com/medusajs/medusa/commit/7cced6006a9a6f9108009e9f3e191e9f3ba1b168), [`17c3f34e3`](https://github.com/medusajs/medusa/commit/17c3f34e3df0a4c3656ad8909608331e207155f1), [`71b536e01`](https://github.com/medusajs/medusa/commit/71b536e01e32e3ab3fb5d295df9d67497a8bbe6d)]:
+  - medusa-core-utils@1.1.37-swap-prod-search-20221216101823
+  - @medusajs/medusa@1.7.1-swap-prod-search-20221216101823
+
 ## 2.0.0
 
 ### Patch Changes

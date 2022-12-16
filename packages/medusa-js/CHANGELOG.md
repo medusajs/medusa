@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.3.5-swap-prod-search-20221216101823
+
+### Patch Changes
+
+- [#2804](https://github.com/medusajs/medusa/pull/2804) [`7bb9cd6af`](https://github.com/medusajs/medusa/commit/7bb9cd6aff1d832e6e159f2c878be88a054eddaa) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - fix: missing devDependency was failing repo build task
+
+- Updated dependencies [[`7cced6006`](https://github.com/medusajs/medusa/commit/7cced6006a9a6f9108009e9f3e191e9f3ba1b168), [`17c3f34e3`](https://github.com/medusajs/medusa/commit/17c3f34e3df0a4c3656ad8909608331e207155f1), [`71b536e01`](https://github.com/medusajs/medusa/commit/71b536e01e32e3ab3fb5d295df9d67497a8bbe6d)]:
+  - @medusajs/medusa@1.7.1-swap-prod-search-20221216101823
+
 ## 1.3.4
 
 ### Patch Changes
