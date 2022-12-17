@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:180
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:185
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:185
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:190
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:183
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:188
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:182
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:187
 
 ___
 
@@ -50,17 +50,17 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:189
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:194
 
 ___
 
 ### regions
 
-• `Optional` **regions**: `string`[]
+• **regions**: `string`[]
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:188
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:193
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:181
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:186
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:184
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:189
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:187
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:192
 
 ___
 
@@ -100,4 +100,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/create-discount.d.ts:186
+medusa/dist/api/routes/admin/discounts/create-discount.d.ts:191

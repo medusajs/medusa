@@ -28,6 +28,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            collection:
  *              $ref: "#/components/schemas/product_collection"

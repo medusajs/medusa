@@ -15,6 +15,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - items
           properties:
@@ -55,6 +56,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               return:
                 $ref: ../components/schemas/return.yaml

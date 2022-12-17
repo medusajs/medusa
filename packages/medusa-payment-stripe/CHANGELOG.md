@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.1.49
+
+### Patch Changes
+
+- [#2666](https://github.com/medusajs/medusa/pull/2666) [`63d2a0eb1`](https://github.com/medusajs/medusa/commit/63d2a0eb1bb55301cb4d3c6399c04c59d376c1f6) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-plugin-stripe): Correct hooks import
+
+- Updated dependencies [[`1b21af87a`](https://github.com/medusajs/medusa/commit/1b21af87ab80c18013f0f44434e59b873c2313aa)]:
+  - medusa-core-utils@1.1.36
+
 ## 1.1.48
 
 ### Patch Changes

@@ -66,4 +66,4 @@ medusa/dist/api/routes/admin/price-lists/index.d.ts:21
 
 #### Defined in
 
-medusa/dist/api/routes/admin/price-lists/list-price-list-products.d.ts:174
+medusa/dist/api/routes/admin/price-lists/list-price-list-products.d.ts:175

@@ -72,4 +72,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/publishable-api-keys/list-publishable-api-keys.d.ts:62
+medusa/dist/api/routes/admin/publishable-api-keys/list-publishable-api-keys.d.ts:63

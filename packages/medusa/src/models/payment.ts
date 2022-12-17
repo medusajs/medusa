@@ -91,6 +91,7 @@ export class Payment extends BaseEntity {
  * title: "Payment"
  * description: "Payments represent an amount authorized with a given payment method, Payments can be captured, canceled or refunded."
  * x-resourceId: payment
+ * type: object
  * required:
  *   - amount
  *   - currency_code

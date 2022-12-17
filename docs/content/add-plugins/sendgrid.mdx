@@ -79,7 +79,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   {
     "beforeInsert": [Function],
     "billing_address": null,
@@ -306,7 +306,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   {
     "beforeInsert": [Function],
     "billing_address": null,
@@ -537,7 +537,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   {
     "date": Any<String>,
     "email": "test@testson.com",
@@ -819,7 +819,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   {
     "date": Any<String>,
     "email": "test@testson.com",
@@ -1261,7 +1261,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   {
     "date": Any<String>,
     "email": "test@testson.com",
@@ -1703,7 +1703,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   {
     "claim": Object {
       "canceled_at": null,
@@ -2000,7 +2000,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   {
     "locale": null,
     "swap": Object {
@@ -2509,7 +2509,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   Object {
     "additional_total": "16.88 USD",
     "date": Any<String>,
@@ -3089,7 +3089,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   {
     "locale": null,
     "swap": Object {
@@ -3599,7 +3599,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   Object {
     "code": Any<String>,
     "value": 4,
@@ -3766,7 +3766,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   Object {
     "id": Any<String>,
     "email": "test@testson.com",
@@ -3786,7 +3786,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   Object {
     "email": "test@testson.com",
     "token": Any<String>,
@@ -3803,7 +3803,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```json noHeader
+  ```json noReport
   Object {
     "product": Object {
       "collection_id": null,
@@ -3918,7 +3918,7 @@ Where `<ORDER_PLACED_TEMPLATE_ID` is the ID of your template for order placed em
 
 Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array of plugins:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   ...,
   {

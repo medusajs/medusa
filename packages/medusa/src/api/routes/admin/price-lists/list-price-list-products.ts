@@ -160,6 +160,7 @@ import { isDefined } from "../../../../utils"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             products:
  *               type: array

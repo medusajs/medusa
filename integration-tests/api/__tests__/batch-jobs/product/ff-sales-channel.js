@@ -8,6 +8,7 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 const userSeeder = require("../../../helpers/user-seeder")
 const { simpleSalesChannelFactory } = require("../../../factories")
 const batchJobSeeder = require("../../../helpers/batch-job-seeder")
+const { simpleProductCollectionFactory } = require("../../../factories/simple-product-collection-factory");
 
 const startServerWithEnvironment =
   require("../../../../helpers/start-server-with-environment").default
@@ -51,6 +52,8 @@ describe("Product import - Sales Channel", () => {
   let dbConnection
   let medusaProcess
 
+  let collectionHandle1 = "test-collection1"
+
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
 
@@ -61,7 +64,6 @@ describe("Product import - Sales Channel", () => {
       env: { MEDUSA_FF_SALES_CHANNELS: true },
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
@@ -86,6 +88,9 @@ describe("Product import - Sales Channel", () => {
       })
       await simpleSalesChannelFactory(dbConnection, {
         name: "Import Sales Channel 2",
+      })
+      await simpleProductCollectionFactory(dbConnection, {
+        handle: collectionHandle1
       })
     } catch (e) {
       console.log(e)
@@ -163,6 +168,9 @@ describe("Product import - Sales Channel", () => {
             is_disabled: false,
           }),
         ],
+        collection: expect.objectContaining({
+          handle: collectionHandle1
+        })
       }),
     ])
   })

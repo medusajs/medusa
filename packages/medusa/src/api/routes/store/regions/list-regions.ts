@@ -80,6 +80,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             regions:
  *               type: array

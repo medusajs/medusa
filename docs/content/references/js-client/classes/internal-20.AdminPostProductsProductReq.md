@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:293
+medusa/dist/api/routes/admin/products/update-product.d.ts:295
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:286
+medusa/dist/api/routes/admin/products/update-product.d.ts:288
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:287
+medusa/dist/api/routes/admin/products/update-product.d.ts:289
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:290
+medusa/dist/api/routes/admin/products/update-product.d.ts:292
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:299
+medusa/dist/api/routes/admin/products/update-product.d.ts:301
 
 ___
 
@@ -60,17 +60,17 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:301
+medusa/dist/api/routes/admin/products/update-product.d.ts:303
 
 ___
 
 ### images
 
-• **images**: `string`[]
+• `Optional` **images**: `string`[]
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:288
+medusa/dist/api/routes/admin/products/update-product.d.ts:290
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:298
+medusa/dist/api/routes/admin/products/update-product.d.ts:300
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:304
+medusa/dist/api/routes/admin/products/update-product.d.ts:306
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:305
+medusa/dist/api/routes/admin/products/update-product.d.ts:307
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:303
+medusa/dist/api/routes/admin/products/update-product.d.ts:305
 
 ___
 
@@ -120,17 +120,17 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:302
+medusa/dist/api/routes/admin/products/update-product.d.ts:304
 
 ___
 
 ### sales\_channels
 
-• **sales\_channels**: ``null`` \| [`ProductSalesChannelReq`](internal-20.ProductSalesChannelReq.md)[]
+• `Optional` **sales\_channels**: ``null`` \| [`ProductSalesChannelReq`](internal-20.ProductSalesChannelReq.md)[]
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:295
+medusa/dist/api/routes/admin/products/update-product.d.ts:297
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:291
+medusa/dist/api/routes/admin/products/update-product.d.ts:293
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:285
+medusa/dist/api/routes/admin/products/update-product.d.ts:287
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:294
+medusa/dist/api/routes/admin/products/update-product.d.ts:296
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:289
+medusa/dist/api/routes/admin/products/update-product.d.ts:291
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:284
+medusa/dist/api/routes/admin/products/update-product.d.ts:286
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:292
+medusa/dist/api/routes/admin/products/update-product.d.ts:294
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:296
+medusa/dist/api/routes/admin/products/update-product.d.ts:298
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:297
+medusa/dist/api/routes/admin/products/update-product.d.ts:299
 
 ___
 
@@ -220,4 +220,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/products/update-product.d.ts:300
+medusa/dist/api/routes/admin/products/update-product.d.ts:302

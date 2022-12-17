@@ -42,6 +42,7 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             store:
  *               $ref: "#/components/schemas/store"

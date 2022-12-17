@@ -40,6 +40,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             customer_group:
  *               $ref: "#/components/schemas/customer_group"

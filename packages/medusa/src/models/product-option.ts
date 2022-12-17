@@ -44,6 +44,7 @@ export class ProductOption extends SoftDeletableEntity {
  * title: "Product Option"
  * description: "Product Options define properties that may vary between different variants of a Product. Common Product Options are \"Size\" and \"Color\", but Medusa doesn't limit what Product Options that can be defined."
  * x-resourceId: product_option
+ * type: object
  * required:
  *   - title
  *   - product_id

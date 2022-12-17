@@ -100,13 +100,20 @@ After you authorize Netlify to use GitHub, you’ll be asked to pick the reposit
 
 ![Choose Repository](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001871/Medusa%20Docs/Netlify/D0r6Q1e_th5uei.png)
 
-In the form that shows, keep all fields the same and click on the “Show advanced” button before the “Deploy site” button.
+In the "Basic build settings" section, make sure the fields have the following values:
+
+- Base directory: (leave empty)
+- Build command: yarn build
+- Publish directory: public
+
+
+Next, click the “Show advanced” button, which is above the “Deploy site” button.
 
 ![Show advanced Button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001884/Medusa%20Docs/Netlify/nUdwRbq_d2kmo6.png)
 
 Under the “Advanced build settings” section click on the “New variable” button. This will show two inputs for the key and value of the environment variable.
 
-For the first field enter the key `GATSBY_MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
+For the first field enter the key `MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
 
 :::caution
 
@@ -114,7 +121,11 @@ If you haven’t deployed your Medusa server yet, you can leave the value blank 
 
 :::
 
-![Environment Variable](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001898/Medusa%20Docs/Netlify/DnutZfT_rv8iel.png)
+:::note
+
+In previous versions of the admin, the environment variable name was `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` instead. The admin remains backwards compatible, so if you've used this an older version you can keep the same environment variables. However, it's highly recommended you change it to `MEDUSA_BACKEND_URL`.
+
+:::
 
 Once you’re done, scroll down and click on Deploy site.
 
@@ -180,7 +191,7 @@ You’ll have to follow five steps for the initialization:
 
 You’ll be asked to either connect to an existing Netlify website or create a new one. Choose the second option to create a new site:
 
-```bash noHeader
+```bash noReport
 ? What would you like to do? 
   ⇄  Connect this directory to an existing Netlify site 
 ❯ +  Create & configure a new site
@@ -198,7 +209,7 @@ You’ll be asked to optionally enter a site name.
 
 At this point, the website is created on Netlify. However, Netlify needs to configure Webhooks and deployment keys. You’ll be asked to either authorize GitHub through Netlify’s website or through a personal access token. You’re free to choose either:
 
-```bash noHeader
+```bash noReport
 ? Netlify CLI needs access to your GitHub account to configure Webhooks and Depl
 oy Keys. What would you like to do? (Use arrow keys)
 ❯ Authorize with GitHub through app.netlify.com 
@@ -211,7 +222,20 @@ If you pick the second option, you’ll need to create a personal access token o
 
 ##### Last Step: Steps with Default Values
 
-For the rest of the steps, you can keep the default values provided by Netlify and press the “Enter” key on your keyboard for each.
+For the rest of the steps, you can keep most of the default values provided by Netlify, except for the following options:
+
+1. Set build command to `yarn run build`
+
+```
+? Your build command (hugo build/yarn run build/etc): yarn run build
+```
+
+2. Set deploy directory to `public`
+
+```
+? Directory to deploy (blank for current dir): public
+```
+
 
 #### Set Environment Variables
 
@@ -226,10 +250,16 @@ If you haven’t deployed your Medusa server yet, you can leave the value blank 
 Run the following command to add the environment variable:
 
 ```bash
-netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
+netlify env:set MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
 ```
 
 Where `<YOUR_SERVER_URL>` is the URL of your Medusa server.
+
+:::note
+
+In previous versions of the admin, the environment variable name was `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` instead. The admin remains backwards compatible, so if you've used this an older version you can keep the same environment variables. However, it's highly recommended you change it to `MEDUSA_BACKEND_URL`.
+
+:::
 
 #### Check deployment status
 

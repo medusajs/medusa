@@ -13,6 +13,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - application_name
  *           - state
@@ -50,6 +51,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            apps:
  *              $ref: "#/components/schemas/OAuth"

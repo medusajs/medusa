@@ -31,6 +31,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml
@@ -85,6 +86,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml

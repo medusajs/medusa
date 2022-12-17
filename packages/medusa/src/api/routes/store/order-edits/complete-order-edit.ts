@@ -41,6 +41,7 @@ import { MedusaError } from "medusa-core-utils"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
  *               $ref: "#/components/schemas/order_edit"
@@ -76,7 +77,7 @@ export default async (req: Request, res: Response) => {
       paymentProviderService.withTransaction(manager)
 
     const orderEdit = await orderEditServiceTx.retrieve(id, {
-      relations: ["payment_collection"],
+      relations: ["payment_collection", "payment_collection.payments"],
     })
 
     if (orderEdit.status === OrderEditStatus.CONFIRMED) {

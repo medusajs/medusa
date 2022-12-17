@@ -59,7 +59,8 @@ const DbTestUtil = {
         continue
       }
 
-      await manager.query(`DELETE FROM "${entity.tableName}";`)
+      await manager.query(`DELETE
+                           FROM "${entity.tableName}";`)
     }
     if (connectionType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = ON`)
@@ -81,27 +82,12 @@ module.exports = {
     const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
     const { projectConfig, featureFlags } = require(configPath)
 
-    const featureFlagsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `feature-flags`
-    )).default
+    const featureFlagsLoader =
+      require("@medusajs/medusa/dist/loaders/feature-flags").default
 
     const featureFlagsRouter = featureFlagsLoader({ featureFlags })
 
-    const modelsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `models`
-    )).default
+    const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
 
     const entities = modelsLoader({}, { register: false })
 
@@ -119,10 +105,11 @@ module.exports = {
     } else {
       await dbFactory.createFromTemplate(DB_NAME)
 
-      // get migraitons with enabled featureflags
+      // get migrations with enabled featureflags
       const migrationDir = path.resolve(
         path.join(
-          cwd,
+          __dirname,
+          `../../`,
           `node_modules`,
           `@medusajs`,
           `medusa`,
@@ -132,16 +119,9 @@ module.exports = {
         )
       )
 
-      const { getEnabledMigrations } = require(path.join(
-        cwd,
-        `node_modules`,
-        `@medusajs`,
-        `medusa`,
-        `dist`,
-        `commands`,
-        `utils`,
-        `get-migrations`
-      ))
+      const {
+        getEnabledMigrations,
+      } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
       const enabledMigrations = await getEnabledMigrations(
         [migrationDir],
@@ -157,6 +137,7 @@ module.exports = {
         url: DB_URL,
         entities: enabledEntities,
         migrations: enabledMigrations,
+        name: "integration-tests",
       })
 
       await dbConnection.runMigrations()

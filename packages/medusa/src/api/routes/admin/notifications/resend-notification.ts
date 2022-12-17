@@ -22,6 +22,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           to:
  *             description: "A new address or user identifier that the Notification should be sent to"
@@ -53,6 +54,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             notification:
  *               $ref: "#/components/schemas/notification"

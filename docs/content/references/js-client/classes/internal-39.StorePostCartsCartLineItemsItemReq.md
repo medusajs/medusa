@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/carts/update-line-item.d.ts:55
+medusa/dist/api/routes/store/carts/update-line-item.d.ts:56

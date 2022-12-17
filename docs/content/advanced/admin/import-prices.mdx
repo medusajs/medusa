@@ -1,9 +1,9 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# How to Import Prices
+# How to Bulk Import Prices
 
-In this document, you’ll learn how to import prices into a price list using the Admin APIs.
+In this document, you’ll learn how to bulk import prices into a price list using the Admin APIs.
 
 ## Overview
 
@@ -95,10 +95,10 @@ fetch(`<YOUR_SERVER>/admin/uploads`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/uploads' \
-	--header 'Authorization: Bearer {api_token}' \
-	--header 'Content-Type: text/csv' \
-	--form 'files=@"<FILE_PATH_1>"'
+curl -L -X POST '<YOUR_SERVER>/admin/uploads' \
+	-H 'Authorization: Bearer {api_token}' \
+	-H 'Content-Type: text/csv' \
+	-F 'files=@"<FILE_PATH_1>"'
 ```
 
 </TabItem>
@@ -158,9 +158,9 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs' \
---header 'Authorization: Bearer {api_token}' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs' \
+-H 'Authorization: Bearer {api_token}' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "type": "price-list-import",
     "context": { 
@@ -225,8 +225,8 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
---header 'Authorization: Bearer {api_token}'
+curl -L -X GET '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>' \
+-H 'Authorization: Bearer {api_token}'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 
@@ -239,7 +239,7 @@ If the batch job has been pre-processed, the status of the batch job will be `pr
 
 Here’s an example of the `result` property:
 
-```json noHeader
+```json noReport
 "result": {
     "count": 5, // Total number of prices to be added
     "stat_descriptors": [ //details about the prices to be added
@@ -287,8 +287,8 @@ fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
---header 'Authorization: Bearer {api_token}'
+curl -L -X POST '<YOUR_SERVER>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
+-H 'Authorization: Bearer {api_token}'
 # <BATCH_JOB_ID> is the ID of the batch job
 ```
 

@@ -349,6 +349,15 @@ export default class PaymentProviderService extends TransactionBaseService {
     })
   }
 
+  async deleteSessionNew(paymentSession: PaymentSession): Promise<void> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const provider = this.retrieveProvider(paymentSession.provider_id)
+      return await provider
+        .withTransaction(transactionManager)
+        .deletePayment(paymentSession)
+    })
+  }
+
   /**
    * Finds a provider given an id
    * @param {string} providerId - the id of the provider to get
@@ -580,6 +589,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const paymentRepo = transactionManager.getCustomRepository(
         this.paymentRepository_
       )
+
       let paymentToRefund = payments.find(
         (payment) => payment.amount - payment.amount_refunded > 0
       )
