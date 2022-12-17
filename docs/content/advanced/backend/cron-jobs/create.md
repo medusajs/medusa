@@ -32,8 +32,8 @@ To create a cron job, add the following code in the file you created, which is `
 
 ```ts title=src/loaders/publish.ts
 const publishJob = async (container, options) => {
-  const eventBus = container.resolve("eventBusService");
-  eventBus.createCronJob("publish-products", {}, "0 0 * * *", async () => {
+  const backgroundJob = container.resolve("backgroundJobService");
+  backgroundJob.createCronJob("publish-products", {}, "0 0 * * *", async () => {
     //job to execute
     const productService = container.resolve("productService");
     const draftProducts = await productService.list({
@@ -51,9 +51,15 @@ const publishJob = async (container, options) => {
 export default publishJob;
 ```
 
-This file should export a function that accepts a `container` and `options` parameters. `container` is the dependency container that you can use to resolve services, such as the [EventBusService](../../../references/services/classes/EventBusService.md). `options` are the plugin’s options if this cron job is created in a plugin.
+:::info
 
-You then resolve the `EventBusService` and use the `eventBus.createCronJob` method to create the cron job. This method accepts four parameters:
+The service taking care of background jobs was renamed in 1.7.1. If you are running a version < 1.7.1, use `eventBusService` instead of `backgroundJobService`.
+
+:::
+
+This file should export a function that accepts a `container` and `options` parameters. `container` is the dependency container that you can use to resolve services, such as the [BackgroundJobService](../../../references/services/classes/BackgroundJobService.md). `options` are the plugin’s options if this cron job is created in a plugin.
+
+You then resolve the `BackgroundJobService` and use the `backgroundJobService.createCronJob` method to create the cron job. This method accepts four parameters:
 
 - The first parameter is a unique name to give to the cron job. In the example above, you use the name `publish-products`;
 - The second parameter is an object which can be used to [pass data to the job](#pass-data-to-the-cron-job);
@@ -73,7 +79,7 @@ To pass data to your cron job, you can add them to the object passed as a second
 For example:
 
 ```ts
-eventBus.createCronJob("publish-products", {
+backgroundJobService.createCronJob("publish-products", {
     data: {
       productId
     }
@@ -119,7 +125,7 @@ If you log anything in the cron job, for example using `console.log`, or if any 
 
 :::tip
 
-To test the previous example out instantly, you can change the cron job expression pattern passed as the third parameter to `eventBus.createCronJob` to `* * * * *`. This will run the cron job every minute.
+To test the previous example out instantly, you can change the cron job expression pattern passed as the third parameter to `backgroundJobService.createCronJob` to `* * * * *`. This will run the cron job every minute.
 
 :::
 

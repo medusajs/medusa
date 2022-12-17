@@ -3,11 +3,14 @@ const inventorySync = async (container, options) => {
     return
   } else {
     const brightpearlService = container.resolve("brightpearlService")
-    const eventBus = container.resolve("eventBusService")
+    const backgroundJobService = container.resolve("backgroundJobService")
     try {
       const pattern = options.inventory_sync_cron
-      eventBus.createCronJob("inventory-sync", {}, pattern, () =>
-        brightpearlService.syncInventory()
+      backgroundJobService.createBackgroundJob(
+        "inventory-sync",
+        {},
+        pattern,
+        () => brightpearlService.syncInventory()
       )
     } catch (err) {
       if (err.name === "not_allowed") {

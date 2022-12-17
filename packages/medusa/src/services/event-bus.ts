@@ -1,9 +1,9 @@
 import Bull from "bull"
 import Redis from "ioredis"
 import { EntityManager } from "typeorm"
-import { ConfigModule, Logger } from "../types/global"
-import { StagedJobRepository } from "../repositories/staged-job"
 import { StagedJob } from "../models"
+import { StagedJobRepository } from "../repositories/staged-job"
+import { ConfigModule, Logger } from "../types/global"
 import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
@@ -159,6 +159,7 @@ export default class EventBusService {
 
   /**
    * Adds a function to a list of event subscribers.
+   * @deprecated All cron job logic has been refactored to the `BackgroundJobService`. This method will be removed in a future release.
    * @param event - the event that the subscriber will listen for.
    * @param subscriber - the function to be called when a certain event
    * happens. Subscribers must return a Promise.
@@ -290,6 +291,7 @@ export default class EventBusService {
 
   /**
    * Handles incoming jobs.
+   * @deprecated All cron job logic has been refactored to the `BackgroundJobService`. This method will be removed in a future release.
    * @param job The job object
    * @return resolves to the results of the subscriber calls.
    */
@@ -314,6 +316,7 @@ export default class EventBusService {
 
   /**
    * Registers a cron job.
+   * @deprecated All cron job logic has been refactored to the `BackgroundJobService`. This method will be removed in a future release.
    * @param eventName - the name of the event
    * @param data - the data to be sent with the event
    * @param cron - the cron pattern
