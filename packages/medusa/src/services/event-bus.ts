@@ -136,46 +136,6 @@ export default class EventBusService implements IEventBusService {
    * happens. Subscribers must return a Promise.
    * @return this
    */
-  subscribe(event: string | symbol, subscriber: Subscriber): this {
-    if (typeof subscriber !== "function") {
-      throw new Error("Subscriber must be a function")
-    }
-
-    const observers = this.observers_.get(event) ?? []
-    this.observers_.set(event, [...observers, subscriber])
-
-    return this
-  }
-
-  /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * happens. Subscribers must return a Promise.
-   * @return this
-   */
-  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
-    if (typeof subscriber !== "function") {
-      throw new Error("Subscriber must be a function")
-    }
-
-    if (this.observers_.get(event)?.length) {
-      const index = this.observers_.get(event)?.indexOf(subscriber)
-      if (index !== -1) {
-        this.observers_.get(event)?.splice(index as number, 1)
-      }
-    }
-
-    return this
-  }
-
-  /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * happens. Subscribers must return a Promise.
-   * @return this
-   */
   protected registerCronHandler_(
     event: string | symbol,
     subscriber: Subscriber
@@ -192,52 +152,6 @@ export default class EventBusService implements IEventBusService {
 
   async tempEventsCache(uniqueId: string) {
     const cache = await this.cacheService_.get(uniqueId)
-  }
-
-  /**
-   * Calls all subscribers when an event occurs.
-   * @param {string} eventName - the name of the event to be process.
-   * @param data - the data to send to the subscriber.
-   * @param options - options to add the job with
-   * @return the job from our queue
-   */
-  async emit<T>(
-    eventName: string,
-    data: T,
-    options: EmitOptions & { uniqId?: string } = {}
-  ): Promise<StagedJob | void> {
-    // If we have a transaction manager, we are in an ongoing transaction so
-    // instead of adding the job the queue for immediate processing, we will
-    // keep track of it until the transaction is committed. Only then, will
-    // we add the jobs to the queue. This is to ensure that jobs from a
-    // transaction are not processed if the transaction fails.
-    if (options?.uniqId) {
-      const cache = await this.cacheService_.get<EventData[]>(options.uniqId)
-
-      if (cache) {
-        const updateEvents = [...cache, { event_name: eventName, data }]
-
-        await this.cacheService_.set(options.uniqId, updateEvents)
-      } else {
-        await this.cacheService_.set(options.uniqId, [
-          { event_name: eventName, data },
-        ])
-      }
-    } else {
-      const opts: { removeOnComplete: boolean } & EmitOptions = {
-        removeOnComplete: true,
-      }
-      if (typeof options.attempts === "number") {
-        opts.attempts = options.attempts
-        if (typeof options.backoff !== "undefined") {
-          opts.backoff = options.backoff
-        }
-      }
-      if (typeof options.delay === "number") {
-        opts.delay = options.delay
-      }
-      this.queue_.add({ eventName, data }, opts)
-    }
   }
 
   startEnqueuer(): void {
@@ -360,8 +274,93 @@ export default class EventBusService implements IEventBusService {
     )
   }
 
+  /**
+   * Adds a function to a list of event subscribers.
+   * @param event - the event that the subscriber will listen for.
+   * @param subscriber - the function to be called when a certain event
+   * happens. Subscribers must return a Promise.
+   * @return this
+   */
+  subscribe(event: string | symbol, subscriber: Subscriber): this {
+    if (typeof subscriber !== "function") {
+      throw new Error("Subscriber must be a function")
+    }
+
+    const observers = this.observers_.get(event) ?? []
+    this.observers_.set(event, [...observers, subscriber])
+
+    return this
+  }
+
+  /**
+   * Adds a function to a list of event subscribers.
+   * @param event - the event that the subscriber will listen for.
+   * @param subscriber - the function to be called when a certain event
+   * happens. Subscribers must return a Promise.
+   * @return this
+   */
+  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
+    if (typeof subscriber !== "function") {
+      throw new Error("Subscriber must be a function")
+    }
+
+    if (this.observers_.get(event)?.length) {
+      const index = this.observers_.get(event)?.indexOf(subscriber)
+      if (index !== -1) {
+        this.observers_.get(event)?.splice(index as number, 1)
+      }
+    }
+
+    return this
+  }
+
+  /**
+   * Calls all subscribers when an event occurs.
+   * @param {string} eventName - the name of the event to be process.
+   * @param data - the data to send to the subscriber.
+   * @param options - options to add the job with
+   * @return the job from our queue
+   */
+  async emit<T>(
+    eventName: string,
+    data: T,
+    options: EmitOptions & { uniqId?: string } = {}
+  ): Promise<StagedJob | void> {
+    // If we have a transaction manager, we are in an ongoing transaction so
+    // instead of adding the job the queue for immediate processing, we will
+    // keep track of it until the transaction is committed. Only then, will
+    // we add the jobs to the queue. This is to ensure that jobs from a
+    // transaction are not processed if the transaction fails.
+    if (options?.uniqId) {
+      const cache = await this.cacheService_.get<EventData[]>(options.uniqId)
+
+      if (cache) {
+        const updateEvents = [...cache, { event_name: eventName, data }]
+
+        await this.cacheService_.set(options.uniqId, updateEvents)
+      } else {
+        await this.cacheService_.set(options.uniqId, [
+          { event_name: eventName, data },
+        ])
+      }
+    } else {
+      const opts: { removeOnComplete: boolean } & EmitOptions = {
+        removeOnComplete: true,
+      }
+      if (typeof options.attempts === "number") {
+        opts.attempts = options.attempts
+        if (typeof options.backoff !== "undefined") {
+          opts.backoff = options.backoff
+        }
+      }
+      if (typeof options.delay === "number") {
+        opts.delay = options.delay
+      }
+      this.queue_.add({ eventName, data }, opts)
+    }
+  }
+
   async prepareEventsCache(uniqueId: string, ttl = 30) {
-    // default TTL is 30 sec
     await this.cacheService_.set(uniqueId, [], ttl)
   }
 
