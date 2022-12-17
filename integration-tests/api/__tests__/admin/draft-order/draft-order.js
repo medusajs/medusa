@@ -401,7 +401,7 @@ describe("/admin/draft-orders", () => {
         payload,
         adminReqConfig
       )
-      expect(ated.data.draft_order.cart.items).toEqual([])
+      expect(response.data.draft_order.cart.items).toEqual([])
       expect(response.status).toEqual(200)
     })
 
