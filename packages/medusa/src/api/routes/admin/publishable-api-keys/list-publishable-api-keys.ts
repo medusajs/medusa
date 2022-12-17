@@ -36,13 +36,14 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKeys
+ *   - PublishableApiKey
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             publishable_api_keys:
  *               type: array

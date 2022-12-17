@@ -7,6 +7,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - type
             - context
@@ -62,6 +63,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               batch_job:
                 $ref: ../components/schemas/batch_job.yaml
@@ -338,6 +340,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               batch_jobs:
                 type: array

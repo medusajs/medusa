@@ -10,6 +10,7 @@ import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
 import { extendedFindParamsMixin } from "../../../../types/common"
 import { Request, Response } from "express"
 import { DiscountService } from "../../../../services"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /discounts
@@ -65,6 +66,7 @@ import { DiscountService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             discounts:
  *               type: array
@@ -126,11 +128,11 @@ export class AdminGetDiscountsParams extends extendedFindParamsMixin({
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_dynamic?: boolean
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_disabled?: boolean
 }

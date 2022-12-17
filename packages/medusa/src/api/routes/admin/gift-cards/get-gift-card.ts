@@ -35,6 +35,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             gift_card:
  *               $ref: "#/components/schemas/gift_card"

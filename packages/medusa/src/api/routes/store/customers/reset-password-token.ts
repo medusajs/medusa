@@ -12,6 +12,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - email
  *         properties:
@@ -61,16 +62,18 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(
+  const validated = (await validator(
     StorePostCustomersCustomerPasswordTokenReq,
     req.body
-  )
+  )) as StorePostCustomersCustomerPasswordTokenReq
 
   const customerService: CustomerService = req.scope.resolve(
     "customerService"
   ) as CustomerService
 
-  const customer = await customerService.retrieveByEmail(validated.email)
+  const customer = await customerService.retrieveRegisteredByEmail(
+    validated.email
+  )
 
   // Will generate a token and send it to the customer via an email provider
   const manager: EntityManager = req.scope.resolve("manager")

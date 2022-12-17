@@ -45,6 +45,11 @@ describe("GET /store/order-edits/:id/complete", () => {
         `/store/order-edits/${orderEditId}/complete`,
         {
           flags: [OrderEditingFeatureFlag],
+          clientSession: {
+            jwt: {
+              user: IdMap.getId("lebron"),
+            },
+          },
         }
       )
     })

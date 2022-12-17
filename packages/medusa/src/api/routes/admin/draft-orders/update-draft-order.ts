@@ -31,6 +31,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           region_id:
  *             type: string
@@ -105,6 +106,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             draft_order:
  *               $ref: "#/components/schemas/draft-order"
@@ -171,7 +173,7 @@ export default async (req, res) => {
     await cartService.update(draftOrder.cart_id, cartDataToUpdate)
   })
 
-  draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
+  draftOrder.cart = await cartService.retrieveWithTotals(draftOrder.cart_id, {
     relations: defaultAdminDraftOrdersCartRelations,
     select: defaultAdminDraftOrdersCartFields,
   })

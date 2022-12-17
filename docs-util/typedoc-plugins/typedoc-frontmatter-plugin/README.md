@@ -33,3 +33,11 @@ frontmatterData: {
   pagesPattern: "internal\\.",
 },
 ```
+
+## Building the Plugin
+
+Before using any command that makes use of this plugin, make sure to run the `build` command:
+
+```bash
+yarn build
+```

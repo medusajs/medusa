@@ -38,6 +38,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               draft_order:
                 $ref: ../components/schemas/draft-order.yaml
@@ -75,6 +76,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             unit_price:
               description: The potential custom price of the item.
@@ -112,6 +114,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               draft_order:
                 $ref: ../components/schemas/draft-order.yaml

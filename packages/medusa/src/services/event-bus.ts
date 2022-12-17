@@ -55,28 +55,28 @@ export default class EventBusService {
     config: ConfigModule,
     singleton = true
   ) {
-    const opts = {
-      createClient: (type: string): Redis.Redis => {
-        switch (type) {
-          case "client":
-            return redisClient
-          case "subscriber":
-            return redisSubscriber
-          default:
-            if (config.projectConfig.redis_url) {
-              return new Redis(config.projectConfig.redis_url)
-            }
-            return redisClient
-        }
-      },
-    }
-
     this.config_ = config
     this.manager_ = manager
     this.logger_ = logger
     this.stagedJobRepository_ = stagedJobRepository
 
     if (singleton) {
+      const opts = {
+        createClient: (type: string): Redis.Redis => {
+          switch (type) {
+            case "client":
+              return redisClient
+            case "subscriber":
+              return redisSubscriber
+            default:
+              if (config.projectConfig.redis_url) {
+                return new Redis(config.projectConfig.redis_url)
+              }
+              return redisClient
+          }
+        },
+      }
+
       this.observers_ = new Map()
       this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
       this.cronHandlers_ = new Map()

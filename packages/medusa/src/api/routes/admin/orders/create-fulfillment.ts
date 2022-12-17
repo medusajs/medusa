@@ -14,6 +14,7 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [post] /orders/{id}/fulfillment
@@ -27,6 +28,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - items
  *         properties:
@@ -93,6 +95,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order:
  *               $ref: "#/components/schemas/order"
@@ -145,7 +148,7 @@ export class AdminPostOrdersOrderFulfillmentsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   no_notification?: boolean
 
   @IsObject()

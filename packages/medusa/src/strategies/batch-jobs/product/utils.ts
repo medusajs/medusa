@@ -17,11 +17,10 @@ export function pickObjectPropsByRegex(
 
   for (const k in data) {
     if (variantKeyPredicate(k)) {
-      const formattedData =
+      ret[k] =
         typeof data[k] === "string"
           ? csvRevertCellContentFormatter(data[k] as string)
           : data[k]
-      ret[k] = formattedData
     }
   }
 

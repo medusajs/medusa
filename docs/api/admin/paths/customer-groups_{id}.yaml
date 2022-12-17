@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -96,6 +97,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer_group:
                 $ref: ../components/schemas/customer_group.yaml
@@ -127,6 +129,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             name:
               description: Name of the customer group
@@ -154,6 +157,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer_group:
                 $ref: ../components/schemas/customer_group.yaml

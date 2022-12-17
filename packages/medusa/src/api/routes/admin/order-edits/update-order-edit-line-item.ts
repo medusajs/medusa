@@ -20,6 +20,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - quantity
  *         properties:
@@ -57,6 +58,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
  *               $ref: "#/components/schemas/order_edit"

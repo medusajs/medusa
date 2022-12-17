@@ -37,7 +37,7 @@ When you create a price list, you can specify different conditions to control wh
 
 In the body of your request, aside from the required fields, you can send the following fields to apply different conditions:
 
-```js noHeader
+```js noReport
 {
   prices: [
     {
@@ -135,9 +135,9 @@ fetch(`<SERVER_URL>/admin/price-lists`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<YOUR_SERVER_URL>/admin/price-lists' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<YOUR_SERVER_URL>/admin/price-lists' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "name": "New Price List",
     "description": "A new price list",
@@ -200,8 +200,8 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 <TabItem value="curl" label="cURL">
 
 ```jsx
-curl --location --request GET '<SERVER_URL>/admin/price-lists/{id}' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/price-lists/{id}' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -251,9 +251,9 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "ends_at": "2022-10-11"
 }'
@@ -326,9 +326,9 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/prices/batch`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "prices": [
         {
@@ -379,8 +379,8 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/products/${productId}/price
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -420,8 +420,8 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/variants/${variantId}/price
 <TabItem value="curl" label="cURL">
 
 ```jsx
-curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -463,8 +463,8 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 <TabItem value="curl" label="cURL">
 
 ```jsx
-curl --location --request DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>

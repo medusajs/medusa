@@ -30,6 +30,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             shipping_options:
  *               type: array

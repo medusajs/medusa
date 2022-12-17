@@ -15,6 +15,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - name
  *         properties:
@@ -61,6 +62,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             sales_channel:
  *               $ref: "#/components/schemas/sales_channel"

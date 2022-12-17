@@ -1,8 +1,7 @@
-import _ from "lodash"
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
+import { FlagRouter } from "../../utils/flag-router"
 import ShippingOptionService from "../shipping-option"
-import { FlagRouter } from "../../utils/flag-router";
-import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing";
 
 describe("ShippingOptionService", () => {
   describe("retrieve", () => {
@@ -38,11 +37,18 @@ describe("ShippingOptionService", () => {
           case IdMap.getId("validId"):
             return Promise.resolve({
               provider_id: "provider",
+              amount: 100,
               data: {
                 provider_data: "true",
               },
             })
-
+          case "flat-rate-no-amount":
+            return Promise.resolve({
+              provider_id: "provider",
+              data: {
+                provider_data: "true",
+              },
+            })
           default:
             return Promise.resolve({})
         }
@@ -137,7 +143,7 @@ describe("ShippingOptionService", () => {
     it("sets flat rate price", async () => {
       await optionService.update(IdMap.getId("validId"), {
         price_type: "flat_rate",
-        amount: 100,
+        amount: 200,
       })
 
       expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
@@ -147,7 +153,37 @@ describe("ShippingOptionService", () => {
           provider_data: "true",
         },
         price_type: "flat_rate",
-        amount: 100,
+        amount: 200,
+      })
+    })
+
+    it("throws on flat rate but no amount", async () => {
+      expect.assertions(1)
+      try {
+        await optionService.update(IdMap.getId("flat-rate-no-amount"), {
+          price_type: "flat_rate",
+        })
+      } catch (error) {
+        expect(error.message).toEqual(
+          "Shipping options of type `flat_rate` must have an `amount`"
+        )
+      }
+    })
+
+    it("sets a price to", async () => {
+      await optionService.update(IdMap.getId("validId"), {
+        price_type: "flat_rate",
+        amount: 0,
+      })
+
+      expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
+      expect(shippingOptionRepository.save).toHaveBeenCalledWith({
+        provider_id: "provider",
+        data: {
+          provider_data: "true",
+        },
+        price_type: "flat_rate",
+        amount: 0,
       })
     })
 
@@ -158,10 +194,8 @@ describe("ShippingOptionService", () => {
 
       expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledTimes(1)
       expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledWith({
-        amount: null,
         data: { provider_data: "true" },
         provider_id: "provider",
-        price_type: "calculated",
       })
 
       expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
@@ -645,7 +679,7 @@ describe("ShippingOptionService", () => {
       totalsService,
       fulfillmentProviderService: providerService,
       featureFlagRouter: new FlagRouter({
-        [TaxInclusivePricingFeatureFlag.key]: true
+        [TaxInclusivePricingFeatureFlag.key]: true,
       }),
     })
 
@@ -653,11 +687,11 @@ describe("ShippingOptionService", () => {
       jest.clearAllMocks()
     })
 
-    it("should create a shipping method that also includes the taxes",  async () => {
+    it("should create a shipping method that also includes the taxes", async () => {
       await optionService.createShippingMethod("random_id", {}, { price: 10 })
       expect(shippingMethodRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
-          includes_tax: true
+          includes_tax: true,
         })
       )
     })

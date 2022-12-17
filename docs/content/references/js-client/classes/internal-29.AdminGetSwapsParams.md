@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/swaps/list-swaps.d.ts:67
+medusa/dist/api/routes/admin/swaps/list-swaps.d.ts:68
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/swaps/list-swaps.d.ts:68
+medusa/dist/api/routes/admin/swaps/list-swaps.d.ts:69

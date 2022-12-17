@@ -47,22 +47,6 @@ export const defaultAdminGiftCardFields: (keyof GiftCard)[] = [
 
 export const defaultAdminGiftCardRelations = ["region", "order"]
 
-export const allowedAdminGiftCardFields = [
-  "id",
-  "code",
-  "value",
-  "balance",
-  "region_id",
-  "is_disabled",
-  "ends_at",
-  "created_at",
-  "updated_at",
-  "deleted_at",
-  "metadata",
-]
-
-export const allowedAdminGiftCardRelations = ["region"]
-
 export type AdminGiftCardsRes = {
   gift_card: GiftCard
 }

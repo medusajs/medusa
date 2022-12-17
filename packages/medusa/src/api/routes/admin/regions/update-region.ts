@@ -26,6 +26,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           name:
  *             description: "The name of the Region"
@@ -102,6 +103,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             region:
  *               $ref: "#/components/schemas/region"

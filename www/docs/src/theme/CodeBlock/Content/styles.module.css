@@ -58,11 +58,11 @@
   display: flex;
   column-gap: 0.2rem;
   position: absolute;
-  right: calc(var(--ifm-pre-padding) / 4 - 2px);
-  top: calc(var(--ifm-pre-padding) / 4 - 2px);
+  right: var(--ifm-pre-padding);
+  top: var(--ifm-pre-padding);
 }
 
-.buttonGroup button {
+.buttonGroup .code-action {
   display: flex;
   align-items: center;
   background: var(--prism-background-color);
@@ -78,6 +78,10 @@
 .buttonGroup button:focus-visible,
 .buttonGroup button:hover {
   opacity: 1 !important;
+}
+
+.thinCodeWrapper + .buttonGroup {
+  top: calc(var(--ifm-pre-padding) / 4 - 2px) !important;
 }
 
 :global(.theme-code-block:hover) .buttonGroup button {

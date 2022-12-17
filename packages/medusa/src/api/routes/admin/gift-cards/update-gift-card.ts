@@ -18,6 +18,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         properties:
  *           balance:
  *             type: integer
@@ -68,6 +69,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             gift_card:
  *               $ref: "#/components/schemas/gift_card"
