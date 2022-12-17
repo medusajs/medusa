@@ -13,25 +13,3 @@ export interface IEventsCacheService {
 
   invalidate(uniqueId: string): Promise<void>
 }
-
-// export abstract class AbstractEventsCacheService
-//   implements IEventsCacheService
-// {
-//   abstract prepare(
-//     uniqueId: string,
-//     options: Record<string, unknown>
-//   ): Promise<void>
-
-//   abstract emit<T>(
-//     uniqueId: string,
-//     data: T,
-//     options: Record<string, unknown>
-//   ): Promise<void>
-
-//   abstract commit(
-//     uniqueId: string,
-//     options: Record<string, unknown>
-//   ): Promise<void>
-
-//   abstract invalidate(uniqueId: string): Promise<void>
-// }

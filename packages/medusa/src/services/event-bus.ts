@@ -1,6 +1,7 @@
 import Bull from "bull"
 import Redis from "ioredis"
 import { EntityManager } from "typeorm"
+import { IEventBusService } from "../interfaces/services/event-bus"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
@@ -36,7 +37,7 @@ type EmitOptions = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class EventBusService {
+export default class EventBusService implements IEventBusService {
   protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager
   protected readonly logger_: Logger
@@ -203,18 +204,25 @@ export default class EventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions = {}
+    options: EmitOptions & { uniqId?: string } = {}
   ): Promise<StagedJob | void> {
-    if (this.transactionManager_) {
-      const stagedJobRepository = this.transactionManager_.getCustomRepository(
-        this.stagedJobRepository_
-      )
+    // If we have a transaction manager, we are in an ongoing transaction so
+    // instead of adding the job the queue for immediate processing, we will
+    // keep track of it until the transaction is committed. Only then, will
+    // we add the jobs to the queue. This is to ensure that jobs from a
+    // transaction are not processed if the transaction fails.
+    if (options?.uniqId) {
+      const cache = await this.cacheService_.get<EventData[]>(options.uniqId)
 
-      const stagedJobInstance = stagedJobRepository.create({
-        event_name: eventName,
-        data,
-      })
-      return await stagedJobRepository.save(stagedJobInstance)
+      if (cache) {
+        const updateEvents = [...cache, { event_name: eventName, data }]
+
+        await this.cacheService_.set(options.uniqId, updateEvents)
+      } else {
+        await this.cacheService_.set(options.uniqId, [
+          { event_name: eventName, data },
+        ])
+      }
     } else {
       const opts: { removeOnComplete: boolean } & EmitOptions = {
         removeOnComplete: true,
@@ -352,19 +360,16 @@ export default class EventBusService {
     )
   }
 
-  /**
-   * Processes one or more job
-   * @param data - the events - either one or several
-   * @param options - options for the queue
-   * @return void
-   */
-  async process<T>(
-    data: EventData | EventData[],
-    options: EmitOptions = {}
-  ): Promise<void> {
-    let events_ = data as EventData[]
-    if (!Array.isArray(data)) {
-      events_ = [data]
+  async prepareEventsCache(uniqueId: string, ttl = 30) {
+    // default TTL is 30 sec
+    await this.cacheService_.set(uniqueId, [], ttl)
+  }
+
+  async processCachedEvents<T>(uniqueId: string, options: EmitOptions = {}) {
+    const events = await this.cacheService_.get<EventData[]>(uniqueId)
+
+    if (!events) {
+      return
     }
 
     const opts: { removeOnComplete: boolean } & EmitOptions = {
@@ -382,9 +387,13 @@ export default class EventBusService {
     }
 
     await Promise.all(
-      events_.map((job) => {
+      events.map((job) => {
         this.queue_.add({ eventName: job.eventName, data: job.data }, opts)
       })
     )
+  }
+
+  async bustEventsCache(cacheId: string): Promise<void> {
+    await this.cacheService_.invalidate(cacheId)
   }
 }
