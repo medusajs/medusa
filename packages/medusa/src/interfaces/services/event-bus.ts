@@ -19,7 +19,7 @@ export interface IEventBusService {
 
   processCachedEvents<T>(uniqueId: string, options: unknown): void
 
-  bustEventsCache(cacheId: string): void
+  destroyCachedEvents(cacheId: string): void
 }
 
 export abstract class AbstractEventBusService implements IEventBusService {
@@ -38,5 +38,5 @@ export abstract class AbstractEventBusService implements IEventBusService {
 
   abstract processCachedEvents<T>(uniqueId: string, options: unknown): void
 
-  abstract bustEventsCache(cacheId: string): void
+  abstract destroyCachedEvents(cacheId: string): void
 }

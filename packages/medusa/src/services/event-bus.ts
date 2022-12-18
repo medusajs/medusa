@@ -380,7 +380,7 @@ export default class EventBusService implements IEventBusService {
     )
   }
 
-  async bustEventsCache(cacheId: string): Promise<void> {
+  async destroyCachedEvents(cacheId: string): Promise<void> {
     await this.cacheService_.invalidate(cacheId)
   }
 }
