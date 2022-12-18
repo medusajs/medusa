@@ -360,10 +360,6 @@ export default class EventBusService implements IEventBusService {
     }
   }
 
-  async prepareEventsCache(uniqueId: string, ttl = 30) {
-    await this.cacheService_.set(uniqueId, [], ttl)
-  }
-
   async processCachedEvents<T>(uniqueId: string, options: EmitOptions = {}) {
     const events = await this.cacheService_.get<EventData[]>(uniqueId)
 

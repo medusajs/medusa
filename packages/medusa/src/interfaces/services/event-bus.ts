@@ -17,8 +17,6 @@ export interface IEventBusService {
     handler: EventHandler
   ): this | Promise<void | unknown>
 
-  prepareEventsCache(uniqueId: string): void
-
   processCachedEvents<T>(uniqueId: string, options: unknown): void
 
   bustEventsCache(cacheId: string): void
@@ -37,8 +35,6 @@ export abstract class AbstractEventBusService implements IEventBusService {
     eventName: string,
     handler: EventHandler
   ): this | Promise<void | unknown>
-
-  abstract prepareEventsCache(uniqueId: string): void
 
   abstract processCachedEvents<T>(uniqueId: string, options: unknown): void
 
