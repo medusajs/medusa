@@ -20,6 +20,7 @@ type InjectedDependencies = {
 export type EventData<T = unknown> = {
   eventName: string
   data: T
+  options?: EmitOptions
 }
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
@@ -326,6 +327,20 @@ export default class EventBusService implements IEventBusService {
     data: T,
     options: EmitOptions & { uniqId?: string } = {}
   ): Promise<StagedJob | void> {
+    // construct options for the job
+    const opts: { removeOnComplete: boolean } & EmitOptions = {
+      removeOnComplete: true,
+    }
+    if (typeof options.attempts === "number") {
+      opts.attempts = options.attempts
+      if (typeof options.backoff !== "undefined") {
+        opts.backoff = options.backoff
+      }
+    }
+    if (typeof options.delay === "number") {
+      opts.delay = options.delay
+    }
+
     // If we have a transaction manager, we are in an ongoing transaction so
     // instead of adding the job the queue for immediate processing, we will
     // keep track of it until the transaction is committed. Only then, will
@@ -334,28 +349,16 @@ export default class EventBusService implements IEventBusService {
     if (options?.uniqId) {
       const cache = await this.cacheService_.get<EventData[]>(options.uniqId)
 
+      const job = { eventName, data, options: opts }
+
       if (cache) {
-        const updateEvents = [...cache, { event_name: eventName, data }]
+        const updateEvents = [...cache, job]
 
         await this.cacheService_.set(options.uniqId, updateEvents)
       } else {
-        await this.cacheService_.set(options.uniqId, [
-          { event_name: eventName, data },
-        ])
+        await this.cacheService_.set(options.uniqId, [job])
       }
     } else {
-      const opts: { removeOnComplete: boolean } & EmitOptions = {
-        removeOnComplete: true,
-      }
-      if (typeof options.attempts === "number") {
-        opts.attempts = options.attempts
-        if (typeof options.backoff !== "undefined") {
-          opts.backoff = options.backoff
-        }
-      }
-      if (typeof options.delay === "number") {
-        opts.delay = options.delay
-      }
       this.queue_.add({ eventName, data }, opts)
     }
   }
@@ -367,23 +370,12 @@ export default class EventBusService implements IEventBusService {
       return
     }
 
-    const opts: { removeOnComplete: boolean } & EmitOptions = {
-      removeOnComplete: true,
-    }
-
-    if (typeof options.attempts === "number") {
-      opts.attempts = options.attempts
-      if (typeof options.backoff !== "undefined") {
-        opts.backoff = options.backoff
-      }
-    }
-    if (typeof options.delay === "number") {
-      opts.delay = options.delay
-    }
-
     await Promise.all(
       events.map((job) => {
-        this.queue_.add({ eventName: job.eventName, data: job.data }, opts)
+        this.queue_.add(
+          { eventName: job.eventName, data: job.data },
+          job.options ?? options
+        )
       })
     )
   }
