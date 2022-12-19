@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, ILike } from "typeorm"
 import { CustomerService } from "."
 import { CustomerGroup } from ".."
@@ -8,13 +8,7 @@ import {
 } from "../repositories/customer-group"
 import { FindConfig, Selector } from "../types/common"
 import { CustomerGroupUpdate } from "../types/customer-groups"
-import {
-  buildQuery,
-  isDefined,
-  isString,
-  PostgresError,
-  setMetadata,
-} from "../utils"
+import { buildQuery, isString, PostgresError, setMetadata } from "../utils"
 import { TransactionBaseService } from "../interfaces"
 
 type CustomerGroupConstructorProps = {
@@ -35,6 +29,7 @@ class CustomerGroupService extends TransactionBaseService {
     customerGroupRepository,
     customerService,
   }: CustomerGroupConstructorProps) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager

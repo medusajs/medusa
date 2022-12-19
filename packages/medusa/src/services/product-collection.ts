@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, ILike } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
@@ -9,7 +9,7 @@ import {
   CreateProductCollection,
   UpdateProductCollection,
 } from "../types/product-collection"
-import { buildQuery, isDefined, isString, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {

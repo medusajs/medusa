@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ShippingProfileService } from "."
 import { TransactionBaseService } from "../interfaces"
@@ -13,7 +13,7 @@ import {
   FulfillmentItemPartition,
   FulFillmentItemType,
 } from "../types/fulfillment"
-import { buildQuery, isDefined } from "../utils"
+import { buildQuery } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
 import LineItemService from "./line-item"
 import TotalsService from "./totals"

@@ -13,14 +13,13 @@ import {
   ProductService,
   RegionService,
 } from "../../../../services"
-
+import { isDefined } from "medusa-core-utils"
 import { defaultStoreProductsRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Product } from "../../../../models"
 import PricingService from "../../../../services/pricing"
 import { DateComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { isDefined } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"

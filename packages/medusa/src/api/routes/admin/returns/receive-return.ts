@@ -10,7 +10,7 @@ import { OrderService, ReturnService, SwapService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [post] /returns/{id}/receive

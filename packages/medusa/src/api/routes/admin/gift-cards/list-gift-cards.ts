@@ -4,7 +4,7 @@ import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /gift-cards
