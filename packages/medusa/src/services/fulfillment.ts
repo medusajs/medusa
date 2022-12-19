@@ -159,27 +159,34 @@ class FulfillmentService extends TransactionBaseService {
 
   /**
    * Retrieves a fulfillment by its id.
-   * @param id - the id of the fulfillment to retrieve
+   * @param fulfillmentId - the id of the fulfillment to retrieve
    * @param config - optional values to include with fulfillmentRepository query
    * @return the fulfillment
    */
   async retrieve(
-    id: string,
+    fulfillmentId: string,
     config: FindConfig<Fulfillment> = {}
   ): Promise<Fulfillment> {
+    if (!isDefined(fulfillmentId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"fulfillmentId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const fulfillmentRepository = manager.getCustomRepository(
       this.fulfillmentRepository_
     )
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: fulfillmentId }, config)
 
     const fulfillment = await fulfillmentRepository.findOne(query)
 
     if (!fulfillment) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Fulfillment with id: ${id} was not found`
+        `Fulfillment with id: ${fulfillmentId} was not found`
       )
     }
     return fulfillment

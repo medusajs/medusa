@@ -6,7 +6,7 @@ import { OauthRepository } from "../repositories/oauth"
 import { Selector } from "../types/common"
 import { MedusaContainer } from "../types/global"
 import { CreateOauthInput, UpdateOauthInput } from "../types/oauth"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = MedusaContainer & {
@@ -55,6 +55,13 @@ class Oauth extends TransactionBaseService {
   }
 
   async retrieve(oauthId: string): Promise<OAuthModel> {
+    if (!isDefined(oauthId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"oauthId" must be defined`
+      )
+    }
+
     const repo = this.manager.getCustomRepository(this.oauthRepository_)
     const oauth = await repo.findOne({
       id: oauthId,
