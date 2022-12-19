@@ -1108,6 +1108,7 @@ describe("/admin/price-lists", () => {
         dbConnection,
         {
           id: "test-prod-2",
+          title: "MedusaShoes",
           tags: ["test-tag"],
           variants: [{ id: "test-variant-3" }, { id: "test-variant-4" }],
         },
@@ -1120,9 +1121,21 @@ describe("/admin/price-lists", () => {
         dbConnection,
         {
           id: "test-prod-3",
+          title: "MedusaShirt",
           variants: [{ id: "test-variant-5" }],
         },
         3
+      )
+
+      // Used to validate that products that are not associated with the price list are not returned
+      await simpleProductFactory(
+        dbConnection,
+        {
+          id: "test-prod-4",
+          title: "OtherHeadphones",
+          variants: [{ id: "test-variant-6" }],
+        },
+        4
       )
 
       await simplePriceListFactory(dbConnection, {
@@ -1236,7 +1249,7 @@ describe("/admin/price-lists", () => {
       const api = useApi()
 
       const response = await api
-        .get(`/admin/price-lists/test-list/products?q=MedusaHeadphones`, {
+        .get(`/admin/price-lists/test-list/products?q=Headphones`, {
           headers: {
             Authorization: "Bearer test_token",
           },
