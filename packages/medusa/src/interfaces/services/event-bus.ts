@@ -17,7 +17,7 @@ export interface IEventBusService {
     handler: EventHandler
   ): this | Promise<void | unknown>
 
-  processCachedEvents<T>(uniqueId: string, options: unknown): void
+  processCachedEvents<T>(uniqueId: string, options?: unknown): void
 
   destroyCachedEvents(cacheId: string): void
 }

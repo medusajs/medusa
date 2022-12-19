@@ -472,7 +472,7 @@ class ProductService extends TransactionBaseService {
     productId: string,
     update: UpdateProductInput
   ): Promise<Product> {
-    return await this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager, transactionId) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productVariantRepo = manager.getCustomRepository(
         this.productVariantRepository_
@@ -609,12 +609,14 @@ class ProductService extends TransactionBaseService {
 
       const result = await productRepo.save(product)
 
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, {
+      await this.eventBus_.withTransaction(manager).emit(
+        ProductService.Events.UPDATED,
+        {
           id: result.id,
           fields: Object.keys(update),
-        })
+        },
+        { uniqId: transactionId }
+      )
       return result
     })
   }

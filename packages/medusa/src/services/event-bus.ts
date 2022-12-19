@@ -204,24 +204,6 @@ export default class EventBusService implements IEventBusService {
   }
 
   /**
-   * Registers a cron job.
-   * @deprecated All cron job logic has been refactored to the `JobSchedulerService`. This method will be removed in a future release.
-   * @param eventName - the name of the event
-   * @param data - the data to be sent with the event
-   * @param cron - the cron pattern
-   * @param handler - the handler to call on each cron job
-   * @return void
-   */
-  createCronJob<T>(
-    eventName: string,
-    data: T,
-    cron: string,
-    handler: Subscriber
-  ): void {
-    this.jobSchedulerService_.create(eventName, data, cron, handler)
-  }
-
-  /**
    * Adds a function to a list of event subscribers.
    * @param event - the event that the subscriber will listen for.
    * @param subscriber - the function to be called when a certain event
@@ -328,5 +310,23 @@ export default class EventBusService implements IEventBusService {
 
   async destroyCachedEvents(cacheId: string): Promise<void> {
     await this.cacheService_.invalidate(cacheId)
+  }
+
+  /**
+   * Registers a cron job.
+   * @deprecated All cron job logic has been refactored to the `JobSchedulerService`. This method will be removed in a future release.
+   * @param eventName - the name of the event
+   * @param data - the data to be sent with the event
+   * @param cron - the cron pattern
+   * @param handler - the handler to call on each cron job
+   * @return void
+   */
+  createCronJob<T>(
+    eventName: string,
+    data: T,
+    cron: string,
+    handler: Subscriber
+  ): void {
+    this.jobSchedulerService_.create(eventName, data, cron, handler)
   }
 }
