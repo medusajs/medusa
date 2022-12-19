@@ -125,7 +125,7 @@ const getJSONSchemaOptions = (): Partial<IOptions> => ({
       return {
         type: "array",
         items: {
-          type: typeof meta.constraints[0].toString(),
+          type: typeof meta.constraints[0],
         },
         enum: meta.constraints,
       }
