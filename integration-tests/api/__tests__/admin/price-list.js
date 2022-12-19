@@ -638,32 +638,34 @@ describe("/admin/price-lists", () => {
       expect(response.status).toEqual(200)
 
       expect(response.data.price_list.prices.length).toEqual(2)
-      expect(response.data.price_list.prices).toMatchSnapshot([
-        {
-          id: expect.any(String),
-          currency_code: "eur",
-          amount: 101,
-          min_quantity: null,
-          max_quantity: null,
-          price_list_id: "pl_with_some_ma",
-          variant_id: "test-variant",
-          region_id: "region-pl",
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-          deleted_at: null,
-        },
-        {
-          id: "ma_test_4",
-          currency_code: "usd",
-          amount: 1001,
-          price_list_id: "pl_with_some_ma",
-          variant_id: "test-variant",
-          region_id: null,
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-          deleted_at: null,
-        },
-      ])
+      expect(response.data.price_list.prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            currency_code: "eur",
+            amount: 101,
+            min_quantity: null,
+            max_quantity: null,
+            price_list_id: "pl_with_some_ma",
+            variant_id: "test-variant",
+            region_id: "region-pl",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+          }),
+          expect.objectContaining({
+            id: "ma_test_4",
+            currency_code: "usd",
+            amount: 1001,
+            price_list_id: "pl_with_some_ma",
+            variant_id: "test-variant",
+            region_id: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+          }),
+        ])
+      )
     })
   })
 

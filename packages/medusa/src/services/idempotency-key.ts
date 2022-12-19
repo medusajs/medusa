@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { v4 } from "uuid"
 import { TransactionBaseService } from "../interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
@@ -8,7 +8,6 @@ import {
   CreateIdempotencyKeyInput,
   IdempotencyCallbackResult,
 } from "../types/idempotency-key"
-import { isDefined } from "../utils"
 
 const KEY_LOCKED_TIMEOUT = 1000
 
