@@ -5,6 +5,7 @@ import { ConfigModule, Logger } from "../types/global"
 type InjectedDependencies = {
   logger: Logger
   redisClient: Redis.Redis
+  redisSubscriber: Redis.Redis
 }
 
 type ScheduledJobHandler<T = unknown> = (
@@ -16,11 +17,10 @@ export default class ScheduledJobService {
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
   protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]>
-  protected readonly redisClient_: Redis.Redis
   protected readonly queue_: Bull
 
   constructor(
-    { logger, redisClient }: InjectedDependencies,
+    { logger, redisClient, redisSubscriber }: InjectedDependencies,
     config: ConfigModule,
     singleton = true
   ) {
@@ -33,6 +33,8 @@ export default class ScheduledJobService {
           switch (type) {
             case "client":
               return redisClient
+            case "subscriber":
+              return redisSubscriber
             default:
               if (config.projectConfig.redis_url) {
                 return new Redis(config.projectConfig.redis_url)
@@ -43,7 +45,6 @@ export default class ScheduledJobService {
       }
 
       this.handlers_ = new Map()
-      this.redisClient_ = redisClient
       this.queue_ = new Bull(`scheduled-jobs:queue`, opts)
       // Register scheduled job worker
       this.queue_.process(this.scheduledJobsWorker)
@@ -112,7 +113,7 @@ export default class ScheduledJobService {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler(eventName, handler)
 
-    return this.queue_.add(
+    this.queue_.add(
       {
         eventName,
         data,
