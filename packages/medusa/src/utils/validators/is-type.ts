@@ -10,9 +10,12 @@ import { isDate } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { validator } from "../validator"
 import { IOptions } from "class-validator-jsonschema/build/options"
+import { ClassConstructor } from "class-transformer"
+
+type Constraint = ClassConstructor<any>
 
 async function typeValidator(
-  typedClass: any,
+  typedClass: Constraint | Constraint[],
   plain: unknown
 ): Promise<boolean> {
   switch (typedClass) {
@@ -41,7 +44,13 @@ async function typeValidator(
       }
       return true
     default:
-      if (isArray(typedClass) && isArray(plain)) {
+      if (isArray(typedClass)) {
+        if (!isArray(plain)) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Array validation failed: ${plain} is not an array`
+          )
+        }
         const errors: Map<any, string> = new Map()
         const result = (
           await Promise.all(
@@ -63,15 +72,20 @@ async function typeValidator(
           MedusaError.Types.INVALID_DATA,
           Object.fromEntries(errors.entries())
         )
+      } else {
+        // Safe type casting. We validated that typedClass is not an array.
+        return (
+          (await validator(typedClass as Constraint, plain).then(() => true)) &&
+          typeof plain === "object"
+        )
       }
-      return (
-        (await validator(typedClass, plain).then(() => true)) &&
-        typeof plain === "object"
-      )
   }
 }
 
-export function IsType(types: any[], validationOptions?: ValidationOptions) {
+export function IsType(
+  types: Array<Constraint | Constraint[]>,
+  validationOptions?: ValidationOptions
+) {
   return function (object: Object, propertyName: string): void {
     registerDecorator({
       name: "IsType",
@@ -86,7 +100,10 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
             types.map(
               async (v) =>
                 await typeValidator(v, value).catch((e) => {
-                  errors.set(v.name, e.message.split(",").filter(Boolean))
+                  errors.set(
+                    "name" in v && v.name,
+                    e.message.split(",").filter(Boolean)
+                  )
                   return false
                 })
             )
@@ -100,7 +117,11 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
             MedusaError.Types.INVALID_DATA,
             JSON.stringify({
               message: `${args.property} must be one of: ${types.map(
-                (t) => `${t.name || (Array.isArray(t) ? t[0]?.name : "")}`
+                (t) =>
+                  `${
+                    ("name" in t && t.name) ||
+                    (Array.isArray(t) ? t[0]?.name : "")
+                  }`
               )}`,
               details: Object.fromEntries(errors.entries()),
             })
@@ -109,7 +130,8 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
 
         defaultMessage(validationArguments?: ValidationArguments) {
           const names = types.map(
-            (t) => t.name || (isArray(t) ? `${t[0].name}[]` : "")
+            (t) =>
+              ("name" in t && t.name) || (isArray(t) ? `${t[0].name}[]` : "")
           )
           return `${validationArguments?.property} must be one of ${names
             .join(", ")
@@ -120,20 +142,26 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
   }
 }
 
-export function IsTypeJSONSchemaConverter(meta, options: Partial<IOptions>) {
-  const types = meta.constraints[0]
-  if (types.length > 1) {
+export function IsTypeJSONSchemaConverter(
+  meta: { constraints: [Constraint[] | [Constraint[]]] },
+  options: Partial<IOptions>
+) {
+  const constraints = meta.constraints[0]
+  if (constraints.length > 1) {
     return {
-      anyOf: types.map((typed) => {
+      anyOf: constraints.map((typed) => {
         return inferType(typed, options)
       }),
     }
   } else {
-    return inferType(types[0], options)
+    return inferType(constraints[0], options)
   }
 }
 
-export function inferType(typed, options: Partial<IOptions>) {
+export function inferType(
+  typed: Constraint | Constraint[],
+  options: Partial<IOptions>
+) {
   switch (typed) {
     case String: {
       return { type: "string" }
@@ -165,11 +193,13 @@ export function inferType(typed, options: Partial<IOptions>) {
       if (typed === null) {
         return { nullable: true }
       }
-      if (typed.name == "Object") {
-        console.log(typed)
+      if ("name" in typed && typed.name == "Object") {
         return { type: "string" }
       }
-      return { $ref: options.refPointerPrefix + typed.name }
+      return {
+        $ref:
+          options.refPointerPrefix + (("name" in typed && typed.name) || ""),
+      }
     }
   }
 }
