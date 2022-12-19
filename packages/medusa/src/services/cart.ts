@@ -1,5 +1,5 @@
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -34,7 +34,7 @@ import {
   TotalField,
   WithRequiredProperty,
 } from "../types/common"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import CustomShippingOptionService from "./custom-shipping-option"
@@ -54,6 +54,7 @@ import ShippingOptionService from "./shipping-option"
 import StoreService from "./store"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { PaymentSessionInput } from "../types/payment"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -1678,6 +1679,12 @@ class CartService extends TransactionBaseService {
         )
 
         const { total, region } = cart
+        const partialSessionInput: Omit<PaymentSessionInput, "provider_id"> = {
+          cart: cart as Cart,
+          customer: cart.customer,
+          amount: cart.total,
+          currency_code: cart.region.currency_code,
+        }
 
         // If there are existing payment sessions ensure that these are up to date
         const seen: string[] = []
@@ -1695,9 +1702,15 @@ class CartService extends TransactionBaseService {
                   .deleteSession(paymentSession)
               } else {
                 seen.push(paymentSession.provider_id)
+
+                const paymentSessionInput = {
+                  ...partialSessionInput,
+                  provider_id: paymentSession.provider_id,
+                }
+
                 return this.paymentProviderService_
                   .withTransaction(transactionManager)
-                  .updateSession(paymentSession, cart)
+                  .updateSession(paymentSession, paymentSessionInput)
               }
             })
           )
@@ -1707,9 +1720,14 @@ class CartService extends TransactionBaseService {
           // If only one payment session exists, we preselect it
           if (region.payment_providers.length === 1 && !cart.payment_session) {
             const paymentProvider = region.payment_providers[0]
+            const paymentSessionInput = {
+              ...partialSessionInput,
+              provider_id: paymentProvider.id,
+            }
+
             const paymentSession = await this.paymentProviderService_
               .withTransaction(transactionManager)
-              .createSession(paymentProvider.id, cart)
+              .createSession(paymentSessionInput)
 
             paymentSession.is_selected = true
 
@@ -1718,9 +1736,14 @@ class CartService extends TransactionBaseService {
             await Promise.all(
               region.payment_providers.map(async (paymentProvider) => {
                 if (!seen.includes(paymentProvider.id)) {
+                  const paymentSessionInput = {
+                    ...partialSessionInput,
+                    provider_id: paymentProvider.id,
+                  }
+
                   return this.paymentProviderService_
                     .withTransaction(transactionManager)
-                    .createSession(paymentProvider.id, cart)
+                    .createSession(paymentSessionInput)
                 }
                 return
               })
@@ -1792,7 +1815,7 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieve(cartId, {
+        const cart = await this.retrieveWithTotals(cartId, {
           relations: ["payment_sessions"],
         })
 
@@ -1805,7 +1828,13 @@ class CartService extends TransactionBaseService {
             // Delete the session with the provider
             await this.paymentProviderService_
               .withTransaction(transactionManager)
-              .refreshSession(paymentSession, cart)
+              .refreshSession(paymentSession, {
+                cart: cart as Cart,
+                customer: cart.customer,
+                amount: cart.total,
+                currency_code: cart.region.currency_code,
+                provider_id: providerId,
+              })
           }
         }
 

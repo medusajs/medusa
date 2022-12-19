@@ -1,7 +1,7 @@
 import Bull from "bull"
-import { MockRepository, MockManager } from "medusa-test-utils"
-import EventBusService from "../event-bus"
+import { MockManager, MockRepository } from "medusa-test-utils"
 import config from "../../loaders/config"
+import EventBusService from "../event-bus"
 
 jest.genMockFromModule("bull")
 jest.mock("bull")
@@ -36,7 +36,7 @@ describe("EventBusService", () => {
     })
 
     it("creates bull queue", () => {
-      expect(Bull).toHaveBeenCalledTimes(2)
+      expect(Bull).toHaveBeenCalledTimes(1)
       expect(Bull).toHaveBeenCalledWith("EventBusService:queue", {
         createClient: expect.any(Function),
       })
@@ -97,7 +97,8 @@ describe("EventBusService", () => {
   })
 
   describe("emit", () => {
-    let eventBus, job
+    let eventBus
+    let job
     describe("successfully adds job to queue", () => {
       beforeAll(() => {
         jest.resetAllMocks()
@@ -126,7 +127,8 @@ describe("EventBusService", () => {
   })
 
   describe("worker", () => {
-    let eventBus, result
+    let eventBus
+    let result
     describe("successfully runs the worker", () => {
       beforeAll(async () => {
         jest.resetAllMocks()
@@ -134,11 +136,14 @@ describe("EventBusService", () => {
           find: () => Promise.resolve([]),
         })
 
-        eventBus = new EventBusService({
-          manager: MockManager,
-          stagedJobRepository,
-          logger: loggerMock,
-        }, {})
+        eventBus = new EventBusService(
+          {
+            manager: MockManager,
+            stagedJobRepository,
+            logger: loggerMock,
+          },
+          {}
+        )
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
