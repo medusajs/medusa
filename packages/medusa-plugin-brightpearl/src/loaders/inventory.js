@@ -3,10 +3,10 @@ const inventorySync = async (container, options) => {
     return
   } else {
     const brightpearlService = container.resolve("brightpearlService")
-    const backgroundJobService = container.resolve("backgroundJobService")
+    const scheduledJobService = container.resolve("scheduledJobService")
     try {
       const pattern = options.inventory_sync_cron
-      backgroundJobService.createBackgroundJob(
+      scheduledJobService.createScheduledJob(
         "inventory-sync",
         {},
         pattern,

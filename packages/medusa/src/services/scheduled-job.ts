@@ -9,15 +9,15 @@ type InjectedDependencies = {
   redisSubscriber: Redis.Redis
 }
 
-type BackgroundJobHandler<T = unknown> = (
+type ScheduledJobHandler<T = unknown> = (
   data: T,
   eventName: string
 ) => Promise<void>
 
-export default class BackgroundJobService {
+export default class ScheduledJobService {
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
-  protected readonly handlers_: Map<string | symbol, BackgroundJobHandler[]>
+  protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]>
   protected readonly redisClient_: Redis.Redis
   protected readonly redisSubscriber_: Redis.Redis
   protected readonly queue_: Bull
@@ -51,9 +51,9 @@ export default class BackgroundJobService {
       this.handlers_ = new Map()
       this.redisClient_ = redisClient
       this.redisSubscriber_ = redisSubscriber
-      this.queue_ = new Bull(`background-jobs:queue`, opts)
-      // Register background job worker
-      this.queue_.process(this.worker)
+      this.queue_ = new Bull(`scheduled-jobs:queue`, opts)
+      // Register scheduled job worker
+      this.queue_.process(this.scheduledJobsWorker)
     }
   }
 
@@ -66,7 +66,7 @@ export default class BackgroundJobService {
    */
   protected registerHandler_(
     event: string | symbol,
-    handler: BackgroundJobHandler
+    handler: ScheduledJobHandler
   ): this {
     if (typeof handler !== "function") {
       throw new Error("Handler must be a function")
@@ -79,16 +79,16 @@ export default class BackgroundJobService {
   }
 
   /**
-   * Handles incoming background jobs.
+   * Handles incoming scheduled jobs.
    * @param job The job object
    * @return resolves to the results of the subscriber calls.
    */
-  protected worker = async <T>(job: {
+  protected scheduledJobsWorker = async <T>(job: {
     data: { eventName: string; data: T }
   }): Promise<unknown[]> => {
     const { eventName, data } = job.data
     const observers = this.handlers_.get(eventName) || []
-    this.logger_.info(`Processing background job: ${eventName}`)
+    this.logger_.info(`Processing scheduled job: ${eventName}`)
 
     return await Promise.all(
       observers.map(async (subscriber) => {
@@ -103,18 +103,18 @@ export default class BackgroundJobService {
   }
 
   /**
-   * Registers a background job.
+   * Registers a scheduled job.
    * @param eventName - the name of the event
    * @param data - the data to be sent with the event
    * @param schedule - the schedule expression
    * @param handler - the handler to call on the job
    * @return void
    */
-  createBackgroundJob<T>(
+  createScheduledJob<T>(
     eventName: string,
     data: T,
     schedule: string,
-    handler: BackgroundJobHandler
+    handler: ScheduledJobHandler
   ): void {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler_(eventName, handler)
