@@ -1180,28 +1180,6 @@ describe("/admin/price-lists", () => {
       expect(response.data.products).toHaveLength(2)
       expect(response.data.products).toEqual([
         expect.objectContaining({
-          id: "test-prod-1",
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              id: "test-variant-1",
-              prices: expect.arrayContaining([
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-                expect.objectContaining({
-                  currency_code: "usd",
-                  amount: 150,
-                  price_list_id: "test-list",
-                }),
-              ]),
-            }),
-            expect.objectContaining({
-              id: "test-variant-2",
-              prices: expect.arrayContaining([
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-              ]),
-            }),
-          ]),
-        }),
-        expect.objectContaining({
           id: "test-prod-2",
           variants: expect.arrayContaining([
             expect.objectContaining({
@@ -1219,6 +1197,28 @@ describe("/admin/price-lists", () => {
                   amount: 150,
                   price_list_id: "test-list",
                 }),
+              ]),
+            }),
+          ]),
+        }),
+        expect.objectContaining({
+          id: "test-prod-1",
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-variant-1",
+              prices: expect.arrayContaining([
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ]),
+            }),
+            expect.objectContaining({
+              id: "test-variant-2",
+              prices: expect.arrayContaining([
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
               ]),
             }),
           ]),
