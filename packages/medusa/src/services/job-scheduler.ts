@@ -16,7 +16,8 @@ type ScheduledJobHandler<T = unknown> = (
 export default class JobSchedulerService {
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
-  protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]>
+  protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]> =
+    new Map()
   protected readonly queue_: Bull
 
   constructor(
@@ -44,7 +45,6 @@ export default class JobSchedulerService {
         },
       }
 
-      this.handlers_ = new Map()
       this.queue_ = new Bull(`scheduled-jobs:queue`, opts)
       // Register scheduled job worker
       this.queue_.process(this.scheduledJobsWorker)
@@ -61,15 +61,13 @@ export default class JobSchedulerService {
   protected registerHandler(
     event: string | symbol,
     handler: ScheduledJobHandler
-  ): this {
+  ): void {
     if (typeof handler !== "function") {
       throw new Error("Handler must be a function")
     }
 
     const handlers = this.handlers_.get(event) ?? []
     this.handlers_.set(event, [...handlers, handler])
-
-    return this
   }
 
   /**

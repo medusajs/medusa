@@ -33,7 +33,7 @@ To create a scheduled job, add the following code in the file you created, which
 ```ts title=src/loaders/publish.ts
 const publishJob = async (container, options) => {
   const jobSchedulerService = container.resolve("jobSchedulerService");
-  jobSchedulerService.createCronJob("publish-products", {}, "0 0 * * *", async () => {
+  jobSchedulerService.create("publish-products", {}, "0 0 * * *", async () => {
     //job to execute
     const productService = container.resolve("productService");
     const draftProducts = await productService.list({
@@ -59,7 +59,7 @@ The service taking care of background jobs was renamed in v1.7.1. If you are run
 
 This file should export a function that accepts a `container` and `options` parameters. `container` is the dependency container that you can use to resolve services, such as the JobSchedulerService. `options` are the plugin’s options if this scheduled job is created in a plugin.
 
-You then resolve the `JobSchedulerService` and use the `jobSchedulerService.createCronJob` method to create the scheduled job. This method accepts four parameters:
+You then resolve the `JobSchedulerService` and use the `jobSchedulerService.create` method to create the scheduled job. This method accepts four parameters:
 
 - The first parameter is a unique name to give to the scheduled job. In the example above, you use the name `publish-products`;
 - The second parameter is an object which can be used to [pass data to the job](#pass-data-to-the-scheduled-job);
@@ -79,7 +79,7 @@ To pass data to your scheduled job, you can add them to the object passed as a s
 For example:
 
 ```ts
-jobSchedulerService.createCronJob("publish-products", {
+jobSchedulerService.create("publish-products", {
     data: {
       productId
     }
@@ -125,7 +125,7 @@ If you log anything in the scheduled job, for example using `console.log`, or if
 
 :::tip
 
-To test the previous example out instantly, you can change the scheduled job expression pattern passed as the third parameter to `jobSchedulerService.createCronJob` to `* * * * *`. This will run the scheduled job every minute.
+To test the previous example out instantly, you can change the scheduled job expression pattern passed as the third parameter to `jobSchedulerService.create` to `* * * * *`. This will run the scheduled job every minute.
 
 :::
 
