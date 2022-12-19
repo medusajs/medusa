@@ -53,7 +53,7 @@ export default publishJob;
 
 :::info
 
-The service taking care of background jobs was renamed in 1.7.1. If you are running a version < 1.7.1, use `eventBusService` instead of `backgroundJobService`.
+The service taking care of background jobs was renamed in v1.7.1. If you are running a previous version, use `eventBusService` instead of `backgroundJobService`.
 
 :::
 
