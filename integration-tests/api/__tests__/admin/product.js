@@ -1799,11 +1799,11 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product.variants[1].prices.length).toEqual(
+      expect(response.data.product.variants[0].prices.length).toEqual(
         data.prices.length
       )
 
-      expect(response.data.product.variants[1].prices).toEqual(
+      expect(response.data.product.variants[0].prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             amount: 8000,
