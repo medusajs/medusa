@@ -68,11 +68,7 @@ export function getListConfig<TModel extends BaseEntity>(
 
   const orderBy = order
 
-  // If no order or none of the order is targeting the top parent entity, then order the top parent by created_at desc
-  if (
-    !Object.keys(order).length ||
-    Object.keys(order).every((key) => key.includes("."))
-  ) {
+  if (!Object.keys(order).length) {
     orderBy["created_at"] = "DESC"
   }
 

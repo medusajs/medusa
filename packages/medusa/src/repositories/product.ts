@@ -12,6 +12,7 @@ import {
   Selector,
   WithRequiredProperty,
 } from "../types/common"
+import { applyOrdering } from "../utils/repository"
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
   tags: FindOperator<string[]>
@@ -45,6 +46,8 @@ export class ProductRepository extends Repository<Product> {
     optionsWithoutRelations: FindWithoutRelationsOptions,
     shouldCount = false
   ): Promise<[Product[], number]> {
+    const productAlias = "product"
+
     const tags = optionsWithoutRelations?.where?.tags
     delete optionsWithoutRelations?.where?.tags
 
@@ -58,8 +61,8 @@ export class ProductRepository extends Repository<Product> {
       optionsWithoutRelations?.where?.discount_condition_id
     delete optionsWithoutRelations?.where?.discount_condition_id
 
-    const qb = this.createQueryBuilder("product")
-      .select(["product.id"])
+    const qb = this.createQueryBuilder(productAlias)
+      .select([`${productAlias}.id`])
       .skip(optionsWithoutRelations.skip)
       .take(optionsWithoutRelations.take)
 
@@ -67,42 +70,27 @@ export class ProductRepository extends Repository<Product> {
       qb.where(optionsWithoutRelations.where)
     }
 
-    if (optionsWithoutRelations.order) {
-      const toSelect: string[] = []
-      const parsed = Object.entries(optionsWithoutRelations.order).reduce(
-        (acc, [k, v]) => {
-          if (k.includes(".")) {
-            // we don't order by relation at this stage
-            return acc
-          }
-          const key = `product.${k}`
-          toSelect.push(key)
-          acc[key] = v
-          return acc
-        },
-        {}
-      )
-      qb.addSelect(toSelect)
-      qb.orderBy(parsed)
-    }
-
     if (tags) {
-      qb.leftJoin("product.tags", "tags").andWhere(`tags.id IN (:...tag_ids)`, {
-        tag_ids: tags.value,
-      })
+      qb.leftJoin(`${productAlias}.tags`, "tags").andWhere(
+        `tags.id IN (:...tag_ids)`,
+        {
+          tag_ids: tags.value,
+        }
+      )
     }
 
+    const arePricesJoined = !!price_lists
     if (price_lists) {
-      qb.leftJoin("product.variants", "variants")
-        .leftJoin("variants.prices", "ma")
-        .andWhere("ma.price_list_id IN (:...price_list_ids)", {
+      qb.leftJoin(`${productAlias}.variants`, "variants")
+        .leftJoin("variants.prices", "prices")
+        .andWhere("prices.price_list_id IN (:...price_list_ids)", {
           price_list_ids: price_lists.value,
         })
     }
 
     if (sales_channels) {
       qb.innerJoin(
-        "product.sales_channels",
+        `${productAlias}.sales_channels`,
         "sales_channels",
         "sales_channels.id IN (:...sales_channels_ids)",
         { sales_channels_ids: sales_channels.value }
@@ -113,10 +101,19 @@ export class ProductRepository extends Repository<Product> {
       qb.innerJoin(
         "discount_condition_product",
         "dc_product",
-        `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
+        `dc_product.product_id = ${productAlias}.id AND dc_product.condition_id = :dcId`,
         { dcId: discount_condition_id }
       )
     }
+
+    applyOrdering({
+      repository: this,
+      order: optionsWithoutRelations.order ?? {},
+      qb,
+      alias: productAlias,
+      shouldJoin: (relation) =>
+        relation !== "prices" || (relation === "prices" && !arePricesJoined),
+    })
 
     if (optionsWithoutRelations.withDeleted) {
       qb.withDeleted()
@@ -179,20 +176,6 @@ export class ProductRepository extends Repository<Product> {
             `products.${toplevel}`,
             toplevel
           )
-        }
-
-        if (order) {
-          const toSelect: string[] = []
-          const parsed = Object.entries(order).reduce((acc, [k, v]) => {
-            if (k.startsWith(toplevel)) {
-              const key = `${k}`
-              toSelect.push(key)
-              acc[key] = v
-            }
-            return acc
-          }, {})
-          querybuilder.addSelect(toSelect)
-          querybuilder.orderBy(parsed)
         }
 
         for (const rel of rels) {

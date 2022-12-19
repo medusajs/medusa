@@ -1,6 +1,8 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import { Repository, SelectQueryBuilder } from "typeorm"
+import { EntityMetadata, Repository, SelectQueryBuilder } from "typeorm"
 import { FindWithoutRelationsOptions } from "../repositories/customer-group"
+
+// TODO: All the utilities expect (applyOrdering) needs to be re worked depending on the outcome of the product repository
 
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
@@ -162,4 +164,67 @@ export function mergeEntitiesWithRelations<T>(
   return map(entitiesAndRelationsById, (entityAndRelations) =>
     merge({}, ...entityAndRelations)
   )
+}
+
+/**
+ * Apply the appropriate order depending on the requirements
+ * @param repository
+ * @param order
+ * @param qb
+ * @param alias
+ * @param shouldJoin
+ */
+export function applyOrdering<T>({
+  repository,
+  order,
+  qb,
+  alias,
+  shouldJoin,
+}: {
+  repository: Repository<T>
+  order: Record<string, "ASC" | "DESC">
+  qb: SelectQueryBuilder<T>
+  alias: string
+  shouldJoin: (relation: string) => boolean // In case a join is applied elsewhere and therefore should not be re applied here
+}) {
+  const toSelect: string[] = []
+  const parsed = Object.entries(order).reduce(
+    (acc, [orderPath, orderDirection]) => {
+      if (orderPath.includes(".")) {
+        const relationsToJoin = orderPath.split(".")
+        const propToOrder = relationsToJoin.pop()
+
+        relationsToJoin.reduce(
+          ([parent, parentMetadata], child) => {
+            const relationMetadata = (
+              parentMetadata as EntityMetadata
+            ).relations.find(
+              (relationMetadata) => relationMetadata.propertyName === child
+            )
+            const shouldApplyJoin = shouldJoin(child)
+            if (shouldApplyJoin) {
+              qb.leftJoin(`${parent}.${relationMetadata!.propertyPath}`, child)
+            }
+            return [child, relationMetadata!.inverseEntityMetadata]
+          },
+          [alias, repository.metadata]
+        )
+
+        const key = `${
+          relationsToJoin[relationsToJoin.length - 1]
+        }.${propToOrder}`
+        acc[key] = orderDirection
+        toSelect.push(key)
+        return acc
+      }
+
+      const key = `${alias}.${orderPath}`
+      toSelect.push(key)
+      acc[key] = orderDirection
+      return acc
+    },
+    {}
+  )
+  qb.addSelect(toSelect)
+  qb.orderBy(parsed)
 }

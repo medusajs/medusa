@@ -193,7 +193,12 @@ export default async (req, res) => {
   const regionService: RegionService = req.scope.resolve("regionService")
 
   const validated = req.validatedQuery as StoreGetProductsParams
-  const filterableFields = req.filterableFields
+  let {
+    cart_id,
+    region_id: regionId,
+    currency_code: currencyCode,
+    ...filterableFields
+  } = req.filterableFields
   const listConfig = req.listConfig
 
   // get only published products for store endpoint
@@ -215,8 +220,6 @@ export default async (req, res) => {
     listConfig
   )
 
-  let regionId = validated.region_id
-  let currencyCode = validated.currency_code
   if (validated.cart_id) {
     const cart = await cartService.retrieve(validated.cart_id, {
       select: ["id", "region_id"],
@@ -229,7 +232,7 @@ export default async (req, res) => {
   }
 
   const products = await pricingService.setProductPrices(rawProducts, {
-    cart_id: validated.cart_id,
+    cart_id: cart_id,
     region_id: regionId,
     currency_code: currencyCode,
     customer_id: req.user?.customer_id,
