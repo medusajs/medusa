@@ -830,24 +830,31 @@ export default class ClaimService extends TransactionBaseService {
 
   /**
    * Gets an order by id.
-   * @param id - id of the claim order to retrieve
+   * @param claimId - id of the claim order to retrieve
    * @param config - the config object containing query settings
    * @return the order document
    */
   async retrieve(
-    id: string,
+    claimId: string,
     config: FindConfig<ClaimOrder> = {}
   ): Promise<ClaimOrder> {
+    if (!isDefined(claimId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"claimId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const claimRepo = manager.getCustomRepository(this.claimRepository_)
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: claimId }, config)
     const claim = await claimRepo.findOne(query)
 
     if (!claim) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Claim with ${id} was not found`
+        `Claim with ${claimId} was not found`
       )
     }
 

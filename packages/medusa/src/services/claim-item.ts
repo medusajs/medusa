@@ -7,7 +7,7 @@ import { ClaimItemRepository } from "../repositories/claim-item"
 import { ClaimTagRepository } from "../repositories/claim-tag"
 import { CreateClaimItemInput } from "../types/claim"
 import { FindConfig, Selector } from "../types/common"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 
@@ -226,24 +226,31 @@ class ClaimItemService extends TransactionBaseService {
 
   /**
    * Gets a claim item by id.
-   * @param {string} id - id of ClaimItem to retrieve
+   * @param {string} claimItemId - id of ClaimItem to retrieve
    * @param {Object} config - configuration for the find operation
    * @return {Promise<Order>} the ClaimItem
    */
   async retrieve(
-    id: string,
+    claimItemId: string,
     config: FindConfig<ClaimItem> = {}
   ): Promise<ClaimItem> {
+    if (!isDefined(claimItemId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"claimItemId" must be defined`
+      )
+    }
+
     const claimItemRepo = this.manager_.getCustomRepository(
       this.claimItemRepository_
     )
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: claimItemId }, config)
     const item = await claimItemRepo.findOne(query)
 
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Claim item with id: ${id} was not found.`
+        `Claim item with id: ${claimItemId} was not found.`
       )
     }
 

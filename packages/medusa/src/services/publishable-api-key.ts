@@ -94,6 +94,13 @@ class PublishableApiKeyService extends TransactionBaseService {
     publishableApiKeyId: string,
     config: FindConfig<PublishableApiKey> = {}
   ): Promise<PublishableApiKey | never> {
+    if (!isDefined(publishableApiKeyId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"publishableApiKeyId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ id: publishableApiKeyId }, config)
   }
 

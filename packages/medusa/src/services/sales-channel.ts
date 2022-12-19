@@ -11,7 +11,7 @@ import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
 import StoreService from "./store"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -100,6 +100,13 @@ class SalesChannelService extends TransactionBaseService {
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | never> {
+    if (!isDefined(salesChannelId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"salesChannelId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ id: salesChannelId }, config)
   }
 
@@ -114,6 +121,13 @@ class SalesChannelService extends TransactionBaseService {
     name: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | unknown> {
+    if (!isDefined(name)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"name" must be defined`
+      )
+    }
+
     return await this.retrieve_({ name }, config)
   }
 

@@ -7,7 +7,7 @@ import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
 import { ExtendedFindConfig, FindConfig } from "../types/common"
 import { DraftOrderCreateProps } from "../types/draft-orders"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import CartService from "./cart"
 import CustomShippingOptionService from "./custom-shipping-option"
 import EventBusService from "./event-bus"
@@ -80,25 +80,32 @@ class DraftOrderService extends TransactionBaseService {
 
   /**
    * Retrieves a draft order with the given id.
-   * @param id - id of the draft order to retrieve
+   * @param draftOrderId - id of the draft order to retrieve
    * @param config - query object for findOne
    * @return the draft order
    */
   async retrieve(
-    id: string,
+    draftOrderId: string,
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
+    if (!isDefined(draftOrderId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"draftOrderId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const draftOrderRepo = manager.getCustomRepository(
       this.draftOrderRepository_
     )
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: draftOrderId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
     if (!draftOrder) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Draft order with ${id} was not found`
+        `Draft order with ${draftOrderId} was not found`
       )
     }
 
