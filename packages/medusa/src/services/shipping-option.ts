@@ -183,6 +183,13 @@ class ShippingOptionService extends TransactionBaseService {
     optionId,
     options: { select?: (keyof ShippingOption)[]; relations?: string[] } = {}
   ): Promise<ShippingOption> {
+    if (!isDefined(optionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"optionId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const soRepo: ShippingOptionRepository = manager.getCustomRepository(
       this.optionRepository_

@@ -201,20 +201,27 @@ class SwapService extends TransactionBaseService {
   /**
    * Retrieves a swap with the given id.
    *
-   * @param id - the id of the swap to retrieve
+   * @param swapId - the id of the swap to retrieve
    * @param config - the configuration to retrieve the swap
    * @return the swap
    */
   async retrieve(
-    id: string,
+    swapId: string,
     config: Omit<FindConfig<Swap>, "select"> & { select?: string[] } = {}
   ): Promise<Swap | never> {
+    if (!isDefined(swapId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"swapId" must be defined`
+      )
+    }
+
     const swapRepo = this.manager_.getCustomRepository(this.swapRepository_)
 
     const { cartSelects, cartRelations, ...newConfig } =
       this.transformQueryForCart(config)
 
-    const query = buildQuery({ id }, newConfig)
+    const query = buildQuery({ id: swapId }, newConfig)
 
     const relations = query.relations as (keyof Swap)[]
     delete query.relations

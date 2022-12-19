@@ -36,7 +36,7 @@ import {
   UpdateDiscountInput,
   UpdateDiscountRuleInput,
 } from "../types/discount"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
 import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
@@ -253,6 +253,13 @@ class DiscountService extends TransactionBaseService {
     discountId: string,
     config: FindConfig<Discount> = {}
   ): Promise<Discount> {
+    if (!isDefined(discountId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"discountId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
