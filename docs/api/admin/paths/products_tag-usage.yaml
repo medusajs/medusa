@@ -23,6 +23,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               tags:
                 type: array

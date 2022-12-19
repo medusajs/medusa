@@ -18,8 +18,8 @@ import { TaxProviderService } from "./index"
 import { LineAllocationsMap } from "../types/totals"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
-import { calculatePriceTaxAmount, isDefined } from "../utils"
-import { MedusaError } from "medusa-core-utils"
+import { calculatePriceTaxAmount } from "../utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 type LineItemTotals = {
   unit_price: number

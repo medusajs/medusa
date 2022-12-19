@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -86,6 +87,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               region:
                 $ref: ../components/schemas/region.yaml
@@ -117,6 +119,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             name:
               description: The name of the Region
@@ -193,6 +196,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               region:
                 $ref: ../components/schemas/region.yaml

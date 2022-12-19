@@ -1,5 +1,5 @@
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -34,7 +34,7 @@ import {
   TotalField,
   WithRequiredProperty,
 } from "../types/common"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import CustomShippingOptionService from "./custom-shipping-option"
@@ -54,6 +54,7 @@ import ShippingOptionService from "./shipping-option"
 import StoreService from "./store"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { PaymentSessionInput } from "../types/payment"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -214,6 +215,13 @@ class CartService extends TransactionBaseService {
     options: FindConfig<Cart> = {},
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
+    if (!isDefined(cartId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"cartId" must be defined`
+      )
+    }
+
     const { totalsToSelect } = this.transformQueryForTotals_(options)
 
     if (totalsToSelect.length) {
@@ -325,8 +333,20 @@ class CartService extends TransactionBaseService {
           ).id
         }
 
-        if (data.email) {
-          const customer = await this.createOrFetchUserFromEmail_(data.email)
+        if (data.customer_id) {
+          const customer = await this.customerService_
+            .withTransaction(transactionManager)
+            .retrieve(data.customer_id)
+            .catch(() => undefined)
+          rawCart.customer = customer
+          rawCart.customer_id = customer?.id
+          rawCart.email = customer?.email
+        }
+
+        if (!rawCart.email && data.email) {
+          const customer = await this.createOrFetchGuestCustomerFromEmail_(
+            data.email
+          )
           rawCart.customer = customer
           rawCart.customer_id = customer.id
           rawCart.email = customer.email
@@ -992,7 +1012,9 @@ class CartService extends TransactionBaseService {
         if (data.customer_id) {
           await this.updateCustomerId_(cart, data.customer_id)
         } else if (isDefined(data.email)) {
-          const customer = await this.createOrFetchUserFromEmail_(data.email)
+          const customer = await this.createOrFetchGuestCustomerFromEmail_(
+            data.email
+          )
           cart.customer = customer
           cart.customer_id = customer.id
           cart.email = customer.email
@@ -1039,7 +1061,7 @@ class CartService extends TransactionBaseService {
           }
         }
 
-        if (isDefined(data.discounts)) {
+        if (isDefined(data.discounts) && data.discounts.length) {
           const previousDiscounts = [...cart.discounts]
           cart.discounts.length = 0
 
@@ -1067,6 +1089,9 @@ class CartService extends TransactionBaseService {
           if (hasFreeShipping) {
             await this.adjustFreeShipping_(cart, true)
           }
+        } else if (isDefined(data.discounts) && !data.discounts.length) {
+          cart.discounts.length = 0
+          await this.refreshAdjustments_(cart)
         }
 
         if ("gift_cards" in data) {
@@ -1181,14 +1206,14 @@ class CartService extends TransactionBaseService {
    * @param email - the email to use
    * @return the resultign customer object
    */
-  protected async createOrFetchUserFromEmail_(
+  protected async createOrFetchGuestCustomerFromEmail_(
     email: string
   ): Promise<Customer> {
     const validatedEmail = validateEmail(email)
 
     let customer = await this.customerService_
       .withTransaction(this.transactionManager_)
-      .retrieveByEmail(validatedEmail)
+      .retrieveUnregisteredByEmail(validatedEmail)
       .catch(() => undefined)
 
     if (!customer) {
@@ -1220,8 +1245,6 @@ class CartService extends TransactionBaseService {
     } else {
       address = addressOrId as Address
     }
-
-    address.country_code = address.country_code?.toLowerCase() ?? null
 
     if (address.id) {
       cart.billing_address = await addrRepo.save(address)
@@ -1267,11 +1290,11 @@ class CartService extends TransactionBaseService {
       address = addressOrId as Address
     }
 
-    address.country_code = address.country_code?.toLowerCase() ?? null
-
     if (
       address.country_code &&
-      !cart.region.countries.find(({ iso_2 }) => address.country_code === iso_2)
+      !cart.region.countries.find(
+        ({ iso_2 }) => address.country_code?.toLowerCase() === iso_2
+      )
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -1397,6 +1420,8 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
           relations: [
+            "items",
+            "region",
             "discounts",
             "discounts.rule",
             "payment_sessions",
@@ -1421,7 +1446,9 @@ class CartService extends TransactionBaseService {
         )
         const updatedCart = await cartRepo.save(cart)
 
-        if (updatedCart.payment_sessions?.length) {
+        await this.refreshAdjustments_(updatedCart)
+
+        if (cart.payment_sessions?.length) {
           await this.setPaymentSessions(cartId)
         }
 
@@ -1652,6 +1679,12 @@ class CartService extends TransactionBaseService {
         )
 
         const { total, region } = cart
+        const partialSessionInput: Omit<PaymentSessionInput, "provider_id"> = {
+          cart: cart as Cart,
+          customer: cart.customer,
+          amount: cart.total,
+          currency_code: cart.region.currency_code,
+        }
 
         // If there are existing payment sessions ensure that these are up to date
         const seen: string[] = []
@@ -1669,9 +1702,15 @@ class CartService extends TransactionBaseService {
                   .deleteSession(paymentSession)
               } else {
                 seen.push(paymentSession.provider_id)
+
+                const paymentSessionInput = {
+                  ...partialSessionInput,
+                  provider_id: paymentSession.provider_id,
+                }
+
                 return this.paymentProviderService_
                   .withTransaction(transactionManager)
-                  .updateSession(paymentSession, cart)
+                  .updateSession(paymentSession, paymentSessionInput)
               }
             })
           )
@@ -1681,9 +1720,14 @@ class CartService extends TransactionBaseService {
           // If only one payment session exists, we preselect it
           if (region.payment_providers.length === 1 && !cart.payment_session) {
             const paymentProvider = region.payment_providers[0]
+            const paymentSessionInput = {
+              ...partialSessionInput,
+              provider_id: paymentProvider.id,
+            }
+
             const paymentSession = await this.paymentProviderService_
               .withTransaction(transactionManager)
-              .createSession(paymentProvider.id, cart)
+              .createSession(paymentSessionInput)
 
             paymentSession.is_selected = true
 
@@ -1692,9 +1736,14 @@ class CartService extends TransactionBaseService {
             await Promise.all(
               region.payment_providers.map(async (paymentProvider) => {
                 if (!seen.includes(paymentProvider.id)) {
+                  const paymentSessionInput = {
+                    ...partialSessionInput,
+                    provider_id: paymentProvider.id,
+                  }
+
                   return this.paymentProviderService_
                     .withTransaction(transactionManager)
-                    .createSession(paymentProvider.id, cart)
+                    .createSession(paymentSessionInput)
                 }
                 return
               })
@@ -1766,7 +1815,7 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieve(cartId, {
+        const cart = await this.retrieveWithTotals(cartId, {
           relations: ["payment_sessions"],
         })
 
@@ -1779,7 +1828,13 @@ class CartService extends TransactionBaseService {
             // Delete the session with the provider
             await this.paymentProviderService_
               .withTransaction(transactionManager)
-              .refreshSession(paymentSession, cart)
+              .refreshSession(paymentSession, {
+                cart: cart as Cart,
+                customer: cart.customer,
+                amount: cart.total,
+                currency_code: cart.region.currency_code,
+                provider_id: providerId,
+              })
           }
         }
 

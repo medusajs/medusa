@@ -16,9 +16,9 @@ After creating the file under `src/subscribers`, in the constructor of your subs
 
 The `eventBusService.subscribe` method receives the name of the event as a first parameter and as a second parameter a method in your subscriber that will handle this event.
 
-For example, here is the `OrderNotifierSubscriber` class which is created in `src/subscribers/orderNotifier.js`:
+For example, here is the `OrderNotifierSubscriber` class created in `src/subscribers/orderNotifier.js`:
 
-```ts
+```ts title=src/subscribers/orderNotifier.js
 class OrderNotifierSubscriber {
   constructor({ eventBusService }) {
     eventBusService.subscribe("order.placed", this.handleOrder);
@@ -54,7 +54,20 @@ constructor({ productService, eventBusService }) {
 }
 ```
 
-You can then use `this.productService` anywhere in your subscriber’s methods.
+You can then use `this.productService` anywhere in your subscriber’s methods. For example:
+
+```ts
+handleOrder = async (data) => {
+  //...
+  const product = this.productService.list()
+}
+```
+
+:::note
+
+When using attributes defined in the subscriber, such as the `productService` in the example above, you must use an arrow function to declare the method. Otherwise, the attribute will be undefined when used.
+
+:::
 
 ## What’s Next
 

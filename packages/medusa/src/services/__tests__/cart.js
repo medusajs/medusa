@@ -1,12 +1,12 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { FlagRouter } from "../../utils/flag-router"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { FlagRouter } from "../../utils/flag-router"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -167,10 +167,18 @@ describe("CartService", () => {
     })
     const cartRepository = MockRepository()
     const customerService = {
-      retrieveByEmail: jest.fn().mockReturnValue(
+      retrieveUnregisteredByEmail: jest.fn().mockReturnValue(
         Promise.resolve({
           id: IdMap.getId("customer"),
           email: "email@test.com",
+          has_account: false,
+        })
+      ),
+      retrieveRegisteredByEmail: jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: IdMap.getId("customer"),
+          email: "email@test.com",
+          has_account: true,
         })
       ),
       withTransaction: function () {
@@ -970,12 +978,13 @@ describe("CartService", () => {
 
   describe("updateEmail", () => {
     const customerService = {
-      retrieveByEmail: jest.fn().mockImplementation((email) => {
+      retrieveUnregisteredByEmail: jest.fn().mockImplementation((email) => {
         if (email === "no@mail.com") {
           return Promise.reject()
         }
         return Promise.resolve({
           id: IdMap.getId("existing"),
+          has_account: false,
           email,
         })
       }),
@@ -1025,6 +1034,7 @@ describe("CartService", () => {
           customer: {
             id: IdMap.getId("existing"),
             email: "test@testdom.com",
+            has_account: false,
           },
           email: "test@testdom.com",
         })
@@ -1090,7 +1100,7 @@ describe("CartService", () => {
         last_name: "James",
         address_1: "24 Dunks Drive",
         city: "Los Angeles",
-        country_code: "US",
+        country_code: "us",
         province: "CA",
         postal_code: "93011",
         phone: "+1 (222) 333 4444",
@@ -1518,12 +1528,22 @@ describe("CartService", () => {
 
       expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
       expect(paymentProviderService.createSession).toHaveBeenCalledWith(
-        "provider_1",
-        cart1
+        {
+          cart: cart1,
+          customer: cart1.customer,
+          amount: cart1.total,
+          currency_code: cart1.region.currency_code,
+          provider_id: "provider_1",
+        }
       )
       expect(paymentProviderService.createSession).toHaveBeenCalledWith(
-        "provider_2",
-        cart1
+        {
+          cart: cart1,
+          customer: cart1.customer,
+          amount: cart1.total,
+          currency_code: cart1.region.currency_code,
+          provider_id: "provider_2",
+        }
       )
     })
 
@@ -2271,6 +2291,10 @@ describe("CartService", () => {
       await cartService.update(IdMap.getId("with-d"), {
         discounts: [],
       })
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.createAdjustments).toHaveBeenCalledTimes(1)
+
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
         "cart.updated",
@@ -2319,6 +2343,7 @@ describe("CartService", () => {
               },
             },
           ],
+          items: [],
           region_id: IdMap.getId("good"),
         })
       },
@@ -2329,6 +2354,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       taxProviderService: taxProviderServiceMock,
       newTotalsService: newTotalsServiceMock,
       featureFlagRouter: new FlagRouter({}),
@@ -2341,6 +2367,9 @@ describe("CartService", () => {
     it("successfully removes discount", async () => {
       await cartService.removeDiscount(IdMap.getId("fr-cart"), "1234")
 
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.createAdjustments).toHaveBeenCalledTimes(1)
+
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
         "cart.updated",
@@ -2351,6 +2380,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("cart"),
         region_id: IdMap.getId("good"),
+        items: [],
         discounts: [
           {
             code: "FS1234",

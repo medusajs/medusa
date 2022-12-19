@@ -2,52 +2,39 @@
 
 ## Classes
 
-- [StoreGetProductsPaginationParams](../classes/internal-42.StoreGetProductsPaginationParams.md)
-- [StoreGetProductsParams](../classes/internal-42.StoreGetProductsParams.md)
-- [StorePostSearchReq](../classes/internal-42.StorePostSearchReq.md)
+- [StorePaymentCollectionSessionsReq](../classes/internal-42.StorePaymentCollectionSessionsReq.md)
+- [StorePostPaymentCollectionsBatchSessionsAuthorizeReq](../classes/internal-42.StorePostPaymentCollectionsBatchSessionsAuthorizeReq.md)
+- [StorePostPaymentCollectionsBatchSessionsReq](../classes/internal-42.StorePostPaymentCollectionsBatchSessionsReq.md)
+- [StorePostPaymentCollectionsSessionsReq](../classes/internal-42.StorePostPaymentCollectionsSessionsReq.md)
 
 ## Type Aliases
 
-### StorePostSearchRes
+### StorePaymentCollectionsRes
 
-Ƭ **StorePostSearchRes**: `Object`
-
-#### Index signature
-
-▪ [k: `string`]: `unknown`
+Ƭ **StorePaymentCollectionsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `hits` | `unknown`[] |
+| `payment_collection` | [`PaymentCollection`](../classes/internal.PaymentCollection.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/index.d.ts:12
+medusa/dist/api/routes/store/payment-collections/index.d.ts:7
 
 ___
 
-### StoreProductsListRes
+### StorePaymentCollectionsSessionRes
 
-Ƭ **StoreProductsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `products`: [`Product`](../classes/internal.Product.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/store/products/index.d.ts:16
-
-___
-
-### StoreProductsRes
-
-Ƭ **StoreProductsRes**: `Object`
+Ƭ **StorePaymentCollectionsSessionRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `product` | [`Product`](../classes/internal.Product.md) |
+| `payment_session` | [`PaymentSession`](../classes/internal.PaymentSession.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/index.d.ts:9
+medusa/dist/api/routes/store/payment-collections/index.d.ts:10

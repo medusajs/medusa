@@ -1,13 +1,18 @@
 import { Request, Response } from "express"
+import { IsOptional, IsString } from "class-validator"
 
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
+import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
- * @oas [get] /publishable-api-keys/:id/sales-channels
+ * @oas [get] /publishable-api-keys/{id}/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
  * summary: "List PublishableApiKey's SalesChannels"
  * description: "List PublishableApiKey's SalesChannels"
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Publishable Api Key.
+ *   - (query) q {string} Query used for searching sales channels' names and descriptions.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -28,7 +33,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKeySalesChannels
+ *   - PublishableApiKey
  * responses:
  *   200:
  *     description: OK
@@ -59,11 +64,19 @@ export default async (req: Request, res: Response) => {
     "publishableApiKeyService"
   )
 
-  const salesChannels = await publishableApiKeyService.listSalesChannels(id)
+  const filterableFields = req.filterableFields
+
+  const salesChannels = await publishableApiKeyService.listSalesChannels(id, {
+    q: filterableFields.q as string | undefined,
+  })
 
   return res.json({
     sales_channels: salesChannels,
   })
 }
 
-export class GetPublishableApiKeySalesChannelsParams {}
+export class GetPublishableApiKeySalesChannelsParams extends extendedFindParamsMixin() {
+  @IsOptional()
+  @IsString()
+  q?: string
+}

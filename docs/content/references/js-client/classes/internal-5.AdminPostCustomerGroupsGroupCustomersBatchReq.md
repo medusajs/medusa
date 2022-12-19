@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/add-customers-batch.d.ts:88
+medusa/dist/api/routes/admin/customer-groups/add-customers-batch.d.ts:90

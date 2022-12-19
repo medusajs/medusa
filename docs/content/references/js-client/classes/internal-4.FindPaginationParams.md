@@ -8,9 +8,9 @@
 
   ↳ [`AdminGetCurrenciesParams`](internal-4.AdminGetCurrenciesParams.md)
 
-  ↳ [`AdminGetProductTypesParams`](internal-17.AdminGetProductTypesParams.md)
+  ↳ [`AdminGetProductTypesParams`](internal-19.AdminGetProductTypesParams.md)
 
-  ↳ [`StoreGetProductTypesParams`](internal-40.StoreGetProductTypesParams.md)
+  ↳ [`StoreGetProductTypesParams`](internal-44.StoreGetProductTypesParams.md)
 
 ## Properties
 

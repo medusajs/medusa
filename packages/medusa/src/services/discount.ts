@@ -1,6 +1,6 @@
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   DeepPartial,
@@ -212,6 +212,13 @@ class DiscountService extends TransactionBaseService {
         )) as Region[]
       }
 
+      if (!discount.regions?.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Discount must have atleast 1 region"
+        )
+      }
+
       const discountRule = ruleRepo.create(validatedRule)
       const createdDiscountRule = await ruleRepo.save(discountRule)
 
@@ -246,6 +253,13 @@ class DiscountService extends TransactionBaseService {
     discountId: string,
     config: FindConfig<Discount> = {}
   ): Promise<Discount> {
+    if (!isDefined(discountId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"discountId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const discountRepo = manager.getCustomRepository(this.discountRepository_)
 

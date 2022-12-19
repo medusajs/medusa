@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -27,7 +27,7 @@ import {
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import { buildQuery, isDefined, isString, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import CartService from "./cart"
 import CustomerService from "./customer"
@@ -333,6 +333,13 @@ class OrderService extends TransactionBaseService {
     orderId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
+    if (!isDefined(orderId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"orderId" must be defined`
+      )
+    }
+
     const { totalsToSelect } = this.transformQueryForTotals(config)
 
     if (totalsToSelect?.length) {
@@ -698,7 +705,7 @@ class OrderService extends TransactionBaseService {
               ),
             ]
           }),
-          cart.shipping_methods.map((method) => {
+          cart.shipping_methods.map(async (method) => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
@@ -1457,6 +1464,8 @@ class OrderService extends TransactionBaseService {
     const { no_notification } = config
 
     return await this.atomicPhase_(async (manager) => {
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+
       const order = await this.retrieve(orderId, {
         select: ["refundable_amount", "total", "refunded_total"],
         relations: ["payments"],
@@ -1480,7 +1489,22 @@ class OrderService extends TransactionBaseService {
         .withTransaction(manager)
         .refundPayment(order.payments, refundAmount, reason, note)
 
-      const result = await this.retrieve(orderId)
+      let result = await this.retrieveWithTotals(orderId, {
+        relations: ["payments"],
+      })
+
+      if (result.refunded_total > 0 && result.refundable_amount > 0) {
+        result.payment_status = PaymentStatus.PARTIALLY_REFUNDED
+        result = await orderRepo.save(result)
+      }
+
+      if (
+        result.paid_total > 0 &&
+        result.refunded_total === result.paid_total
+      ) {
+        result.payment_status = PaymentStatus.REFUNDED
+        result = await orderRepo.save(result)
+      }
 
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification

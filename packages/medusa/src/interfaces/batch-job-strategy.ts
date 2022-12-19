@@ -69,6 +69,7 @@ export abstract class AbstractBatchJobStrategy
     err: unknown,
     result: T
   ): Promise<void> {
+    // TODO just throw to be handled by the subscriber
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = (await this.batchJobService_
         .withTransaction(transactionManager)
@@ -95,7 +96,7 @@ export abstract class AbstractBatchJobStrategy
             },
             result: {
               ...result,
-              errors: [...existingErrors, resultError],
+              errors: [...existingErrors, resultError.message],
             },
           })
       } else {

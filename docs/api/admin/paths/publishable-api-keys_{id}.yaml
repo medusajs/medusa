@@ -1,0 +1,95 @@
+delete:
+  operationId: DeletePublishableApiKeysPublishableApiKey
+  summary: Delete a PublishableApiKey
+  description: Deletes a PublishableApiKeys
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the PublishableApiKeys to delete.
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/publishable-api-keys_{id}/deleteundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/publishable-api-keys_{id}/deleteundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - PublishableApiKey
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of the deleted PublishableApiKey.
+              object:
+                type: string
+                description: The type of the object that was deleted.
+                format: publishable_api_key
+              deleted:
+                type: boolean
+                description: Whether the PublishableApiKeys was deleted.
+                default: true
+    '400':
+      $ref: ../components/responses/400_error.yaml
+get:
+  operationId: GetPublishableApiKeysPublishableApiKey
+  summary: Get a Publishable API Key
+  description: Retrieve the Publishable Api Key.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the PublishableApiKey.
+      schema:
+        type: string
+  x-authenticated: true
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/publishable-api-keys_{id}/getundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/publishable-api-keys_{id}/getundefined
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - PublishableApiKey
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              publishable_api_key:
+                $ref: ../components/schemas/publishable_api_key.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
