@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import randomize from "randomatic"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
@@ -17,7 +17,7 @@ import {
   CreateGiftCardTransactionInput,
   UpdateGiftCardInput,
 } from "../types/gift-card"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import RegionService from "./region"
 
 type InjectedDependencies = {

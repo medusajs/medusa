@@ -1,6 +1,6 @@
 import { DeepPartial, EntityManager } from "typeorm"
 
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
@@ -13,7 +13,7 @@ import { RegionRepository } from "../repositories/region"
 import { TaxProviderRepository } from "../repositories/tax-provider"
 import { FindConfig, Selector } from "../types/common"
 import { CreateRegionInput, UpdateRegionInput } from "../types/region"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { countries } from "../utils/countries"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
