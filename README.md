@@ -55,7 +55,7 @@ You can learn about all of the ecommerce features that Medusa provides [in our d
 
 ## Roadmap
 
-Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) before starting the implementation process.
+Write-ups for all features will be made available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions) before starting the implementation process.
 
 ### **2022**
 
