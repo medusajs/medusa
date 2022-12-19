@@ -128,8 +128,6 @@ const getJSONSchemaOptions = (): Partial<IOptions> => ({
           type: typeof meta.constraints[0],
         },
         enum: meta.constraints,
-        minItems: 1,
-        maxItems: 1,
         uniqueItems: true,
       }
     },
