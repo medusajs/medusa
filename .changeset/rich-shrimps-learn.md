@@ -1,6 +1,5 @@
 ---
 "@medusajs/medusa": minor
-"integration-tests-api": patch
 ---
 
 Adds tax_rate column to gift_card table to calculate tax accurately for a gift card. This change includes a backfill migration to update gift cards that were already created.

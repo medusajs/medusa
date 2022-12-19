@@ -495,10 +495,7 @@ export default class NewTotalsService extends TransactionBaseService {
 
       acc.totalGiftCardBalance += giftCard.balance
 
-      // Add to the taxable amount only if the gift cards can be taxed.
-      if (region.gift_cards_taxable) {
-        taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
-      }
+      taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
       // skip tax, if the taxable amount is not a positive number or tax rate is not set
       if (taxableAmount <= 0 || !giftCard.tax_rate) return acc
 

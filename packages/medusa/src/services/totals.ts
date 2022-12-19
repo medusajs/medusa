@@ -25,7 +25,10 @@ import {
   LineDiscountAmount,
   SubtotalOptions,
 } from "../types/totals"
-import TaxProviderService from "./tax-provider"
+import {
+  TaxProviderService,
+  NewTotalsService,
+} from "./index"
 import { EntityManager } from "typeorm"
 
 import { calculatePriceTaxAmount, isDefined } from "../utils"
@@ -74,6 +77,7 @@ type GetLineItemTotalOptions = {
 
 type TotalsServiceProps = {
   taxProviderService: TaxProviderService
+  newTotalsService: NewTotalsService
   taxCalculationStrategy: ITaxCalculationStrategy
   manager: EntityManager
   featureFlagRouter: FlagRouter
@@ -105,12 +109,14 @@ class TotalsService extends TransactionBaseService {
   protected transactionManager_: EntityManager
 
   protected readonly taxProviderService_: TaxProviderService
+  protected readonly newTotalsService_: NewTotalsService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
     taxProviderService,
+    newTotalsService,
     taxCalculationStrategy,
     featureFlagRouter,
   }: TotalsServiceProps) {
@@ -118,6 +124,7 @@ class TotalsService extends TransactionBaseService {
 
     this.manager_ = manager
     this.taxProviderService_ = taxProviderService
+    this.newTotalsService_ = newTotalsService
     this.taxCalculationStrategy_ = taxCalculationStrategy
 
     this.manager_ = manager
@@ -962,88 +969,24 @@ class TotalsService extends TransactionBaseService {
     tax_total: number
   }> {
     let giftCardable: number
+
     if (typeof opts.gift_cardable !== "undefined") {
       giftCardable = opts.gift_cardable
     } else {
       const subtotal = await this.getSubtotal(cartOrOrder)
       const discountTotal = await this.getDiscountTotal(cartOrOrder)
+
       giftCardable = subtotal - discountTotal
     }
 
-    if ("gift_card_transactions" in cartOrOrder) {
-      // gift_card_transactions only exist on orders so we can
-      // safely calculate the total based on the gift card transactions
-
-      return cartOrOrder.gift_card_transactions.reduce(
-        (acc, giftCardTransaction) => {
-          const giftCard = giftCardTransaction?.gift_card
-          let taxMultiplier = (giftCardTransaction.tax_rate || 0) / 100
-
-          // Previously we did not record whether a gift card was taxable or not.
-          // All gift cards where is_taxable === null are from the old system,
-          // where we defaulted to taxable gift cards.
-          //
-          // This is a backwards compatability fix for orders that were created
-          // before we added the gift card tax rate.
-          if (
-            giftCardTransaction.is_taxable === null &&
-            cartOrOrder.region?.gift_cards_taxable
-          ) {
-            const taxRate = giftCardTransaction.tax_rate || giftCard?.tax_rate || 0
-            taxMultiplier = taxRate / 100
-          }
-
-          return {
-            total: acc.total + giftCardTransaction.amount,
-            tax_total: Math.round(acc.tax_total + giftCardTransaction.amount * taxMultiplier),
-          }
-        },
-        {
-          total: 0,
-          tax_total: 0,
-        }
-      )
-    }
-
-    if (!cartOrOrder.gift_cards || !cartOrOrder.gift_cards.length) {
-      return {
-        total: 0,
-        tax_total: 0,
+    return await this.newTotalsService_.getGiftCardTotals(
+      giftCardable,
+      {
+        region: cartOrOrder.region,
+        giftCards: cartOrOrder.gift_cards,
+        giftCardTransactions: cartOrOrder['gift_card_transactions']
       }
-    }
-
-    const toReturn = cartOrOrder.gift_cards.reduce(
-      (acc, next) => acc + next.balance,
-      0
     )
-    const orderGiftCardAmount = Math.min(giftCardable, toReturn)
-
-    // If a gift card is not taxable, the tax_rate for the giftcard will be null
-    const { totalGiftCardBalance, totalTaxFromGiftCards } = cartOrOrder.gift_cards.reduce((acc, giftCard) => {
-      let taxableAmount = 0
-
-      acc.totalGiftCardBalance += giftCard.balance
-
-      // Add to the taxable amount only if the gift cards can be taxed.
-      if (cartOrOrder.region.gift_cards_taxable) {
-        taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
-      }
-      // skip tax, if the taxable amount is not a positive number or tax rate is not set
-      if (taxableAmount <= 0 || !giftCard.tax_rate) return acc
-
-      let taxAmountFromGiftCard = Math.round(taxableAmount * (giftCard.tax_rate / 100))
-
-      acc.totalTaxFromGiftCards += taxAmountFromGiftCard
-      // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
-      acc.giftCardableBalance -= taxableAmount
-
-      return acc
-    }, { totalGiftCardBalance: 0, totalTaxFromGiftCards: 0, giftCardableBalance: giftCardable })
-
-    return {
-      total: Math.min(giftCardable, totalGiftCardBalance),
-      tax_total: totalTaxFromGiftCards,
-    }
   }
 
   /**

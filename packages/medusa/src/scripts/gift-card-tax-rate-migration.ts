@@ -1,10 +1,12 @@
 import dotenv from "dotenv"
-import { createConnection } from "typeorm"
+import { createConnection, IsNull } from "typeorm"
 import Logger from "../loaders/logger"
 import { GiftCard } from "../models/gift-card"
 
 dotenv.config()
 
+const BATCH_SIZE = 1000
+const migrationName = 'gift-card-tax-rate-migration'
 const typeormConfig = {
   type: process.env.TYPEORM_CONNECTION,
   url: process.env.TYPEORM_URL,
@@ -16,10 +18,10 @@ const typeormConfig = {
   logging: true,
 }
 
+Logger.info(`typeormConfig: ${JSON.stringify(typeormConfig)}`)
+
 const migrate = async function ({ typeormConfig }): Promise<void> {
   const connection = await createConnection(typeormConfig)
-  const BATCH_SIZE = 1000
-  const migrationName = 'gift-card-tax-rate-migration'
 
   await connection.transaction(async (manager) => {
     let offset = 0
@@ -27,9 +29,10 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
     // Get all the GiftCards where the gift_card.tax_rate is null
     const giftCardsCount = await manager
       .createQueryBuilder()
+      .withDeleted()
       .from(GiftCard, "gc")
       .select("gc.id")
-      .where("gc.tax_rate = :value", { value: null })
+      .where("gc.tax_rate IS NULL")
       .getCount()
 
     const totalBatches = Math.ceil(giftCardsCount / BATCH_SIZE)
@@ -49,10 +52,11 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
       // Get all the GiftCards and its region where the gift_card.tax_rate is null
       const giftCardRegionRecords = await manager
         .createQueryBuilder()
+        .withDeleted()
         .from(GiftCard, "gc")
         .select("gc.id, gc.region_id, gc.tax_rate, r.tax_rate as region_tax_rate")
         .innerJoin("region", "r", "gc.region_id = r.id")
-        .where("gc.tax_rate = :value", { value: null })
+        .where("gc.tax_rate IS NULL")
         .limit(BATCH_SIZE)
         .offset(offset)
         .getRawMany()
@@ -75,9 +79,10 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
 
     const recordsFailedToBackfill = await manager
       .createQueryBuilder()
+      .withDeleted()
       .from(GiftCard, "gc")
       .select("gc.id")
-      .where("gc.tax_rate = :value", { value: null })
+      .where("gc.tax_rate IS NULL")
       .getCount()
 
     if (recordsFailedToBackfill == 0) {
@@ -86,20 +91,20 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
       Logger.info(`${migrationName}: ${recordsFailedToBackfill} GiftCards have no tax_rate set`)
       Logger.info(`${migrationName}: 1. Check if all GiftCards have a region associated with it`)
       Logger.info(`${migrationName}: If not, they need to be associated with a region & re-run migration`)
-      Logger.info(`${migrationName}: 2. Check if regions have a tax_rate added for it`)
+      Logger.info(`${migrationName}: 2. Check if regions have a tax_rate added to it`)
       Logger.info(`${migrationName}: If regions intentionally have no tax_rate, this can be ignored`)
       Logger.info(`${migrationName}: If not, add a tax_rate to region & re-run migration`)
     }
   })
-
-  process.exit()
 }
 
 migrate({ typeormConfig })
   .then(() => {
     Logger.info("Database migration completed")
     process.exit()
+  }).catch((err) => {
+    Logger.error(`Database migration failed - ${JSON.stringify(err)}`)
+    process.exit(1)
   })
-  .catch((err) => console.log(err))
 
 export default migrate

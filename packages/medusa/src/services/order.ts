@@ -22,7 +22,7 @@ import {
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
+import { FindConfig, QuerySelector, Selector, WithRequiredProperty } from "../types/common"
 import {
   CreateFulfillmentOrder,
   FulFillmentItemType,
@@ -730,7 +730,11 @@ class OrderService extends TransactionBaseService {
     })
   }
 
-  protected async createGiftCardsFromLineItem_(order: Order, lineItem: LineItem, manager: EntityManager): Promise<Promise<GiftCard>[]> {
+  protected createGiftCardsFromLineItem_(
+    order: Order,
+    lineItem: LineItem,
+    manager: EntityManager
+  ): Promise<GiftCard>[] {
     const createGiftCardPromises: Promise<GiftCard>[] = []
 
     // LineItem type doesn't promise either the subtotal or quantity. Adding a check here provides
@@ -748,8 +752,10 @@ class OrderService extends TransactionBaseService {
       (sum, taxLine) => sum + taxLine.rate, 0
     )
 
+    const giftCardTxnService = this.giftCardService_.withTransaction(manager)
+
     for (let qty = 0; qty < lineItem.quantity; qty++) {
-      const createGiftCardPromise = this.giftCardService_.withTransaction(manager).create({
+      const createGiftCardPromise = giftCardTxnService.create({
         region_id: order.region_id,
         order_id: order.id,
         value: taxExclusivePrice,
