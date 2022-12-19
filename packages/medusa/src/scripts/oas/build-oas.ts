@@ -12,6 +12,8 @@ import { IsNullableJSONSchemaConverter } from "../../utils/validators/is-nullabl
 import logger from "../../loaders/logger"
 
 type ApiType = "store" | "admin"
+type OAS = Record<string, unknown>
+type Schema = Record<string, unknown>
 
 const cliParams = process.argv.slice(2)
 const skipJSONSchema = cliParams.includes("--skipJSONSchema")
@@ -38,7 +40,8 @@ const run = async () => {
 
   for (const apiType of ["store", "admin"]) {
     debug(`Building OAS for ${apiType} api.`)
-    const oas = await getOASFromCodebase(apiType as ApiType, onlyValidate)
+    const oas = await getOASFromCodebase(apiType as ApiType)
+    await validateOAS(oas, apiType as ApiType, onlyValidate)
     if (!onlyValidate) {
       await exportOASToJSON(oas, apiType as ApiType, targetDir)
     }
@@ -47,7 +50,7 @@ const run = async () => {
   debug("OAS successfully generated.")
 }
 
-const getOASFromCodebase = async (apiType: ApiType, validate = false) => {
+const getOASFromCodebase = async (apiType: ApiType): Promise<OAS> => {
   debug("Parse JSDoc from path and schema definitions.")
   const gen = await swaggerInline(
     [
@@ -65,36 +68,52 @@ const getOASFromCodebase = async (apiType: ApiType, validate = false) => {
   const oas = await OpenAPIParser.parse(JSON.parse(gen))
 
   if (!skipJSONSchema) {
-    debug(
-      "Register and parse class-validator classes to infer schema definitions."
-    )
-    await import("../../api")
-    await import("../../models")
-    const schemas = validationMetadatasToSchemas(getJSONSchemaOptions())
-
-    const jsdocKeys = Object.keys(oas.components.schemas)
-    const classKeys = Object.keys(schemas)
-
-    debug("Augment OAS with schemas from classes.")
-    Object.assign(oas.components.schemas, schemas)
-
-    if (isVerbose) {
-      // List all schemas and their declaration origin.
-      for (const key of Object.keys(oas.components.schemas)) {
-        debug(
-          `${jsdocKeys.includes(key) ? 1 : 0}, ${
-            classKeys.includes(key) ? 1 : 0
-          }, ${key}`
-        )
-      }
-    }
+    const schemas = await loadTransformClassValidatorsAsSchemas()
+    augmentOASWithSchemas(oas, schemas)
   }
 
+  return oas
+}
+
+const loadTransformClassValidatorsAsSchemas = async (): Promise<Schema> => {
+  debug("Extract schemas from decorated classes.")
+
+  await import("../../api")
+  await import("../../models")
+  return validationMetadatasToSchemas(getJSONSchemaOptions())
+}
+
+const augmentOASWithSchemas = (oas, schemas): void => {
+  debug("Augment OAS with schemas from classes.")
+
+  const jsdocKeys = Object.keys(oas.components.schemas)
+  const classKeys = Object.keys(schemas)
+
+  Object.assign(oas.components.schemas, schemas)
+
+  if (isVerbose) {
+    // List all schemas and their declaration origin.
+    for (const key of Object.keys(oas.components.schemas)) {
+      debug(
+        `${jsdocKeys.includes(key) ? 1 : 0}, ${
+          classKeys.includes(key) ? 1 : 0
+        }, ${key}`
+      )
+    }
+  }
+}
+
+const validateOAS = async (
+  oas: OAS,
+  apiType: ApiType,
+  shouldThrow = false
+): Promise<void> => {
   debug("Validate generated OAS.")
+
   try {
     await OpenAPIParser.validate(JSON.parse(JSON.stringify(oas)))
   } catch (err) {
-    if (validate) {
+    if (shouldThrow) {
       logger.error(`Error in OAS ${apiType}`, err)
       process.exit(1)
     } else {
@@ -102,11 +121,13 @@ const getOASFromCodebase = async (apiType: ApiType, validate = false) => {
       logger.warn(err)
     }
   }
-
-  return oas
 }
 
-const exportOASToJSON = async (oas, apiType: ApiType, targetDir: string) => {
+const exportOASToJSON = async (
+  oas,
+  apiType: ApiType,
+  targetDir: string
+): Promise<void> => {
   debug("Exporting OAS to JSON.")
 
   const json = JSON.stringify(oas, null, 2)
