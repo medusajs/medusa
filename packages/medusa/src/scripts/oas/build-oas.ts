@@ -1,19 +1,16 @@
 import * as path from "path"
 import { mkdir, writeFile } from "fs/promises"
-
 import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@apidevtools/swagger-parser"
 import { defaultMetadataStorage } from "class-transformer/cjs/storage"
-
 import { IOptions } from "class-validator-jsonschema/build/options"
 import { validationMetadatasToSchemas } from "class-validator-jsonschema"
 import { IsTypeJSONSchemaConverter } from "../../utils/validators/is-type"
 import { IsNullableJSONSchemaConverter } from "../../utils/validators/is-nullable"
 import logger from "../../loaders/logger"
+import { OpenAPIObject, SchemaObject } from "openapi3-ts"
 
 type ApiType = "store" | "admin"
-type OAS = Record<string, unknown>
-type Schema = Record<string, unknown>
 
 const cliParams = process.argv.slice(2)
 const skipJSONSchema = cliParams.includes("--skipJSONSchema")
@@ -50,7 +47,7 @@ const run = async () => {
   debug("OAS successfully generated.")
 }
 
-const getOASFromCodebase = async (apiType: ApiType): Promise<OAS> => {
+const getOASFromCodebase = async (apiType: ApiType): Promise<OpenAPIObject> => {
   debug("Parse JSDoc from path and schema definitions.")
   const gen = await swaggerInline(
     [
@@ -75,7 +72,9 @@ const getOASFromCodebase = async (apiType: ApiType): Promise<OAS> => {
   return oas
 }
 
-const loadTransformClassValidatorsAsSchemas = async (): Promise<Schema> => {
+const loadTransformClassValidatorsAsSchemas = async (): Promise<
+  Record<string, SchemaObject>
+> => {
   debug("Extract schemas from decorated classes.")
 
   await import("../../api")
@@ -83,8 +82,18 @@ const loadTransformClassValidatorsAsSchemas = async (): Promise<Schema> => {
   return validationMetadatasToSchemas(getJSONSchemaOptions())
 }
 
-const augmentOASWithSchemas = (oas, schemas): void => {
+const augmentOASWithSchemas = (
+  oas: OpenAPIObject,
+  schemas: Record<string, SchemaObject>
+): void => {
   debug("Augment OAS with schemas from classes.")
+
+  if (!oas.components) {
+    oas.components = { schemas: {} }
+  }
+  if (!oas.components.schemas) {
+    oas.components.schemas = {}
+  }
 
   const jsdocKeys = Object.keys(oas.components.schemas)
   const classKeys = Object.keys(schemas)
@@ -104,7 +113,7 @@ const augmentOASWithSchemas = (oas, schemas): void => {
 }
 
 const validateOAS = async (
-  oas: OAS,
+  oas: OpenAPIObject,
   apiType: ApiType,
   shouldThrow = false
 ): Promise<void> => {
@@ -124,7 +133,7 @@ const validateOAS = async (
 }
 
 const exportOASToJSON = async (
-  oas,
+  oas: OpenAPIObject,
   apiType: ApiType,
   targetDir: string
 ): Promise<void> => {

@@ -3,9 +3,9 @@ import { generate, HttpClient, Indent } from "openapi-typescript-codegen"
 import { upperFirst } from "lodash"
 import { mkdir, readFile } from "fs/promises"
 import logger from "../../loaders/logger"
+import { OpenAPIObject } from "openapi3-ts"
 
 type ApiType = "store" | "admin"
-type OAS = Record<string, unknown>
 
 const cliParams = process.argv.slice(2)
 const isVerbose = cliParams.includes("--verbose") || cliParams.includes("-V")
@@ -33,14 +33,14 @@ const run = async () => {
   debug("Client successfully generated.")
 }
 
-const getOASFromFile = async (apiType: ApiType): Promise<OAS> => {
+const getOASFromFile = async (apiType: ApiType): Promise<OpenAPIObject> => {
   const jsonFile = path.resolve(packagePath, `oas/${apiType}.oas.json`)
   const jsonString = await readFile(jsonFile, "utf8")
   return JSON.parse(jsonString)
 }
 
 const generateClientSDK = async (
-  oas: OAS,
+  oas: OpenAPIObject,
   apiType: ApiType,
   targetPackageSrcDir: string
 ) => {
