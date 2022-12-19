@@ -215,6 +215,13 @@ class CartService extends TransactionBaseService {
     options: FindConfig<Cart> = {},
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
+    if (!isDefined(cartId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"cartId" must be defined`
+      )
+    }
+
     const { totalsToSelect } = this.transformQueryForTotals_(options)
 
     if (totalsToSelect.length) {
@@ -1107,7 +1114,7 @@ class CartService extends TransactionBaseService {
           }
         }
 
-        if (isDefined(data.discounts)) {
+        if (isDefined(data.discounts) && data.discounts.length) {
           const previousDiscounts = [...cart.discounts]
           cart.discounts.length = 0
 
@@ -1135,6 +1142,9 @@ class CartService extends TransactionBaseService {
           if (hasFreeShipping) {
             await this.adjustFreeShipping_(cart, true)
           }
+        } else if (isDefined(data.discounts) && !data.discounts.length) {
+          cart.discounts.length = 0
+          await this.refreshAdjustments_(cart)
         }
 
         if ("gift_cards" in data) {
@@ -1289,8 +1299,6 @@ class CartService extends TransactionBaseService {
       address = addressOrId as Address
     }
 
-    address.country_code = address.country_code?.toLowerCase() ?? null
-
     if (address.id) {
       cart.billing_address = await addrRepo.save(address)
     } else {
@@ -1335,11 +1343,11 @@ class CartService extends TransactionBaseService {
       address = addressOrId as Address
     }
 
-    address.country_code = address.country_code?.toLowerCase() ?? null
-
     if (
       address.country_code &&
-      !cart.region.countries.find(({ iso_2 }) => address.country_code === iso_2)
+      !cart.region.countries.find(
+        ({ iso_2 }) => address.country_code?.toLowerCase() === iso_2
+      )
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -1465,6 +1473,8 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
           relations: [
+            "items",
+            "region",
             "discounts",
             "discounts.rule",
             "payment_sessions",
@@ -1489,7 +1499,9 @@ class CartService extends TransactionBaseService {
         )
         const updatedCart = await cartRepo.save(cart)
 
-        if (updatedCart.payment_sessions?.length) {
+        await this.refreshAdjustments_(updatedCart)
+
+        if (cart.payment_sessions?.length) {
           await this.setPaymentSessions(cartId)
         }
 

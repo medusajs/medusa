@@ -14,4 +14,4 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/create-address.d.ts:97
+medusa/dist/api/routes/store/customers/create-address.d.ts:99

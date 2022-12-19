@@ -106,6 +106,55 @@ describe("/store/carts", () => {
       await db.teardown()
     })
 
+    it("retrieves an order by id, with totals", async () => {
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+
+      const cartRes = await api.post("/store/carts", {
+        region_id: region.id,
+      })
+
+      const cartId = cartRes.data.cart.id
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product.variants[0].id,
+        quantity: 1,
+      })
+
+      await api.post(`/store/carts/${cartId}`, {
+        email: "testmailer@medusajs.com",
+      })
+
+      await api.post(`/store/carts/${cartId}/payment-sessions`).catch((err) => {
+        console.error("Error creating payment session: ", err.response.data)
+        return err.response
+      })
+
+      const responseSuccess = await api.post(`/store/carts/${cartId}/complete`)
+
+      const orderId = responseSuccess.data.data.id
+
+      const response = await api.get("/store/orders/" + orderId)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          id: orderId,
+          total: 100,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          tax_total: 0,
+          subtotal: 100,
+          discount_total: 0,
+          shipping_total: 0,
+          refunded_total: 0,
+          paid_total: 100,
+        })
+      )
+    })
+
     it("looks up order", async () => {
       const api = useApi()
 

@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/uploads/get-download-url.d.ts:70
+medusa/dist/api/routes/admin/uploads/get-download-url.d.ts:72

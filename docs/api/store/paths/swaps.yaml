@@ -8,6 +8,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - order_id
             - return_items
@@ -72,6 +73,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               swap:
                 $ref: ../components/schemas/swap.yaml

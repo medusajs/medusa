@@ -18,7 +18,7 @@ import {
 import ProductService from "./product"
 import RegionService from "./region"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import { FilterableProductProps } from "../types/product"
 import ProductVariantService from "./product-variant"
 import { FilterableProductVariantProps } from "../types/product-variant"
@@ -89,6 +89,13 @@ class PriceListService extends TransactionBaseService {
     priceListId: string,
     config: FindConfig<PriceList> = {}
   ): Promise<PriceList> {
+    if (!isDefined(priceListId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"priceListId" must be defined`
+      )
+    }
+
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
 
     const query = buildQuery({ id: priceListId }, config)

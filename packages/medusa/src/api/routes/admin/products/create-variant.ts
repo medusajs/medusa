@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import {
   IsArray,
   IsBoolean,
@@ -8,17 +9,20 @@ import {
   ValidateNested,
 } from "class-validator"
 import { Type } from "class-transformer"
+
 import {
   ProductService,
   ProductVariantService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-
 import { IInventoryService } from "../../../../interfaces"
-import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
+
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 /**
  * @oas [post] /products/{id}/variants
@@ -224,7 +228,12 @@ export default async (req, res) => {
 
   // TODO: This would be a place to implement a distributed transaction
 
-  const variant = await productVariantService.create(id, validated)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const variant = await manager.transaction(async (transactionManager) => {
+    return await productVariantService
+      .withTransaction(transactionManager)
+      .create(id, validated as CreateProductVariantInput)
+  })
 
   if (validated.manage_inventory) {
     const inventoryItem = await inventoryService.createInventoryItem({
@@ -288,7 +297,7 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsNumber()
   @IsOptional()
-  inventory_quantity = 0
+  inventory_quantity?: number = 0
 
   @IsBoolean()
   @IsOptional()
@@ -339,5 +348,5 @@ export class AdminPostProductsProductVariantsReq {
   @Type(() => ProductVariantOptionReq)
   @ValidateNested({ each: true })
   @IsArray()
-  options: ProductVariantOptionReq[] = []
+  options?: ProductVariantOptionReq[] = []
 }

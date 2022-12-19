@@ -14,6 +14,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           required:
             - customer_ids
           properties:
@@ -49,6 +50,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer_group:
                 $ref: ../components/schemas/customer_group.yaml
@@ -80,6 +82,7 @@ delete:
     content:
       application/json:
         schema:
+          type: object
           required:
             - customer_ids
           properties:
@@ -115,6 +118,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer_group:
                 $ref: ../components/schemas/customer_group.yaml

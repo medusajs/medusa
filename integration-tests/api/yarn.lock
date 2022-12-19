@@ -1775,15 +1775,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"@medusajs/medusa-cli@npm:^1.3.3":
-  version: 1.3.3
-  resolution: "@medusajs/medusa-cli@npm:1.3.3"
-=======
-"@medusajs/medusa-cli@npm:1.3.5-dev-1669708431707":
-  version: 1.3.5-dev-1669708431707
-  resolution: "@medusajs/medusa-cli@npm:1.3.5-dev-1669708431707"
->>>>>>> origin/develop
+"@medusajs/medusa-cli@npm:^1.3.5":
+  version: 1.3.5
+  resolution: "@medusajs/medusa-cli@npm:1.3.5"
   dependencies:
     "@babel/polyfill": ^7.8.7
     "@babel/runtime": ^7.9.6
@@ -1799,13 +1793,8 @@ __metadata:
     inquirer: ^8.0.0
     is-valid-path: ^0.1.1
     meant: ^1.0.1
-<<<<<<< HEAD
     medusa-core-utils: ^1.1.31
-    medusa-telemetry: 0.0.13
-=======
-    medusa-core-utils: 1.1.35-dev-1669708431707
-    medusa-telemetry: 0.0.15-dev-1669708431707
->>>>>>> origin/develop
+    medusa-telemetry: 0.0.15
     netrc-parser: ^3.1.6
     open: ^8.0.6
     ora: ^5.4.1
@@ -1820,27 +1809,15 @@ __metadata:
     yargs: ^15.3.1
   bin:
     medusa: cli.js
-<<<<<<< HEAD
-  checksum: 59b173f01627a88b0db03d2bc302a0293e1df37574a4e1f503801651b1eadde4d151f892150b62f3e2572d6e3e725c209af21c70286acb207b4769f936322379
+  checksum: 8f7370e4512f0bd21bbb583ecf9589d721117c83e7f24f34cb144346c63c2bf64027d867cd5f360943ee63df3532e2608e52b53c4bc52b527a5b4972cfcb7c38
   languageName: node
   linkType: hard
 
-"@medusajs/medusa@npm:1.5.0-dev-1666255947825":
-  version: 1.5.0-dev-1666255947825
-  resolution: "@medusajs/medusa@npm:1.5.0-dev-1666255947825"
+"@medusajs/medusa@npm:*":
+  version: 1.7.0
+  resolution: "@medusajs/medusa@npm:1.7.0"
   dependencies:
-    "@medusajs/medusa-cli": ^1.3.3
-=======
-  checksum: 779d98b21775542534466272d8fe415620024846aba435b45ae9956eab3fc7c627f85540ac0ac7a5282a0ab15d2c04c2dd99e72ca071b46f55da20f34effb69a
-  languageName: node
-  linkType: hard
-
-"@medusajs/medusa@npm:1.6.5-dev-1669708431707":
-  version: 1.6.5-dev-1669708431707
-  resolution: "@medusajs/medusa@npm:1.6.5-dev-1669708431707"
-  dependencies:
-    "@medusajs/medusa-cli": 1.3.5-dev-1669708431707
->>>>>>> origin/develop
+    "@medusajs/medusa-cli": ^1.3.5
     "@types/ioredis": ^4.28.10
     "@types/lodash": ^4.14.168
     awilix: ^8.0.0
@@ -1862,13 +1839,8 @@ __metadata:
     ioredis-mock: ^5.6.0
     iso8601-duration: ^1.3.0
     jsonwebtoken: ^8.5.1
-<<<<<<< HEAD
-    medusa-core-utils: ^1.1.32
+    medusa-core-utils: ^1.1.36
     medusa-test-utils: ^1.1.37
-=======
-    medusa-core-utils: 1.1.35-dev-1669708431707
-    medusa-test-utils: 1.1.37-dev-1669708431707
->>>>>>> origin/develop
     morgan: ^1.9.1
     multer: ^1.4.2
     node-schedule: ^2.1.0
@@ -1893,11 +1865,7 @@ __metadata:
     typeorm: 0.2.x
   bin:
     medusa: cli.js
-<<<<<<< HEAD
-  checksum: fd126e56f76bc6d912388089341095c19ff3debf0c5850d361a51f9c5f2a701679ee37dde461b54dad85f538fe5acb28c8d88eb318fda459933a5bb6e0d36516
-=======
-  checksum: 7a7ec5ba7971112e74652791cff5eb8bfde640158618b300289d67bd753859c8312256fb2aa93f3523d2a4399f6d8b6c106e03e253f9a9518405b1224043299d
->>>>>>> origin/develop
+  checksum: c4f6d926b5883dec241338627fd68a108bf97ff984f35f4417184ab55c85c7723fc34e80782a9deddcfed557646f4d9658821b3cfea45809a3b3995a6576f5cb
   languageName: node
   linkType: hard
 
@@ -2471,30 +2439,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"api@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "api@workspace:."
-  dependencies:
-    "@babel/cli": ^7.12.10
-    "@babel/core": ^7.12.10
-    "@babel/node": ^7.12.10
-<<<<<<< HEAD
-    "@medusajs/medusa": 1.5.0-dev-1666255947825
-    babel-preset-medusa-package: 1.1.19-dev-1666255947825
-    faker: ^5.5.3
-    jest: ^26.6.3
-    medusa-interfaces: 1.3.3-dev-1666255947825
-=======
-    "@medusajs/medusa": 1.6.5-dev-1669708431707
-    babel-preset-medusa-package: 1.1.19-dev-1669708431707
-    faker: ^5.5.3
-    jest: ^26.6.3
-    medusa-interfaces: 1.3.3-dev-1669708431707
->>>>>>> origin/develop
-    typeorm: ^0.2.31
-  languageName: unknown
-  linkType: soft
-
 "app-root-path@npm:^3.0.0":
   version: 3.0.0
   resolution: "app-root-path@npm:3.0.0"
@@ -2797,15 +2741,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
-"babel-preset-medusa-package@npm:1.1.19-dev-1666255947825":
-  version: 1.1.19-dev-1666255947825
-  resolution: "babel-preset-medusa-package@npm:1.1.19-dev-1666255947825"
-=======
-"babel-preset-medusa-package@npm:1.1.19-dev-1669708431707":
-  version: 1.1.19-dev-1669708431707
-  resolution: "babel-preset-medusa-package@npm:1.1.19-dev-1669708431707"
->>>>>>> origin/develop
+"babel-preset-medusa-package@npm:*":
+  version: 1.1.20
+  resolution: "babel-preset-medusa-package@npm:1.1.20"
   dependencies:
     "@babel/plugin-proposal-class-properties": ^7.12.1
     "@babel/plugin-proposal-decorators": ^7.12.1
@@ -2819,11 +2757,7 @@ __metadata:
     core-js: ^3.7.0
   peerDependencies:
     "@babel/core": ^7.11.6
-<<<<<<< HEAD
-  checksum: d1ac12246a707d31418f4b0ffed63f9a44b11d5b9aab96ab5d6d4f975298aa72f1d4ebf264d4a97091bfad16317b505d6c9a4bba49b3b3c3c1661eb42e6a9fd4
-=======
-  checksum: 2b01b0754da0a4bec26abcb6c94d91d7c2fd06bf9d58c23dac9266dc8c7cb470a6a8874d1564af84b068684d34028fb0288c7eae5f271a16cd1570ccaf1aa413
->>>>>>> origin/develop
+  checksum: 597a3aa1aac8460af95c72819702e770a4a023ec7554f55ef938dcca433dd3f26e3e149b3fd33df4b8249300dc29014a5b0382e88a11ece373b8669561783e52
   languageName: node
   linkType: hard
 
@@ -5390,6 +5324,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"integration-tests-api@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "integration-tests-api@workspace:."
+  dependencies:
+    "@babel/cli": ^7.12.10
+    "@babel/core": ^7.12.10
+    "@babel/node": ^7.12.10
+    "@medusajs/medusa": "*"
+    babel-preset-medusa-package: "*"
+    faker: ^5.5.3
+    jest: ^26.6.3
+    medusa-interfaces: "*"
+    typeorm: ^0.2.31
+  languageName: unknown
+  linkType: soft
+
 "internal-slot@npm:^1.0.3":
   version: 1.0.3
   resolution: "internal-slot@npm:1.0.3"
@@ -6969,7 +6919,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< HEAD
 "medusa-core-utils@npm:^1.1.31, medusa-core-utils@npm:^1.1.32":
   version: 1.1.33
   resolution: "medusa-core-utils@npm:1.1.33"
@@ -6980,44 +6929,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-interfaces@npm:1.3.3-dev-1666255947825":
-  version: 1.3.3-dev-1666255947825
-  resolution: "medusa-interfaces@npm:1.3.3-dev-1666255947825"
-  peerDependencies:
-    medusa-core-utils: ^1.1.31
-    typeorm: 0.x
-  checksum: bc5fccae779c44c76884df82f2e51e9e45aa10a9b9b4e3f37feefc8b86b133224f37697d3296aa1b0f2d840c2c1b3acf80126ed5e1fc411235321d02a07e6064
-  languageName: node
-  linkType: hard
-
-"medusa-telemetry@npm:0.0.13":
-  version: 0.0.13
-  resolution: "medusa-telemetry@npm:0.0.13"
-=======
-"medusa-core-utils@npm:1.1.35-dev-1669708431707":
-  version: 1.1.35-dev-1669708431707
-  resolution: "medusa-core-utils@npm:1.1.35-dev-1669708431707"
+"medusa-core-utils@npm:^1.1.36":
+  version: 1.1.36
+  resolution: "medusa-core-utils@npm:1.1.36"
   dependencies:
     joi: ^17.3.0
     joi-objectid: ^3.0.1
-  checksum: ac797ee8b9a165a6e90e11fbe9312bcfcaaa4271a9ef79b2cb659b053697cbee80580b3aae9bead7e2b738a864df30f150b01d9598fceb8262d6d11496a68ab4
+  checksum: 2bfa6e9779f3e4d3776342f0237c584afb206050183c437f1e755cce3abc3b3ed19c9059b72e0629330f8d5d8cb4628aa2b6929676d3a4fbd23066edab3bdb94
   languageName: node
   linkType: hard
 
-"medusa-interfaces@npm:1.3.3-dev-1669708431707":
-  version: 1.3.3-dev-1669708431707
-  resolution: "medusa-interfaces@npm:1.3.3-dev-1669708431707"
+"medusa-interfaces@npm:*":
+  version: 1.3.3
+  resolution: "medusa-interfaces@npm:1.3.3"
   peerDependencies:
     medusa-core-utils: ^1.1.31
     typeorm: 0.x
-  checksum: edad068df3783072f178cac3adfa646e8886a55bf07409addec4ab18eab8f8e09e9d5ac34c1e06c65cd111330f003325c72f9dc8585348d20382a1dacf3d3536
+  checksum: 35e028ec3486d31d84e574f16db28c8d5d8458a80b86d39afed96dd9cb4107208d3a8fd87f778b07fef3bd2d97f5d521b262869208d6443adae0044a6b5270f6
   languageName: node
   linkType: hard
 
-"medusa-telemetry@npm:0.0.15-dev-1669708431707":
-  version: 0.0.15-dev-1669708431707
-  resolution: "medusa-telemetry@npm:0.0.15-dev-1669708431707"
->>>>>>> origin/develop
+"medusa-telemetry@npm:0.0.15":
+  version: 0.0.15
+  resolution: "medusa-telemetry@npm:0.0.15"
   dependencies:
     axios: ^0.21.1
     axios-retry: ^3.1.9
@@ -7028,8 +6962,7 @@ __metadata:
     is-docker: ^2.2.1
     remove-trailing-slash: ^0.1.1
     uuid: ^8.3.2
-<<<<<<< HEAD
-  checksum: 971d9e4dcf00d783422244bd45eab9283e80e12c1906eaad7a8531e2c90f8f420fd79cb0c51086d6a1a12dd58f9e100de98e6aa794d201d16001dcb6b3fad61e
+  checksum: 53da14a9e240b455a46c1092833fe03f1c81898ebe2c9e7006d466bb274f68a6321249a3ae19cd7690178868852d5365103b99b6e8e59d6d8259764e05c210eb
   languageName: node
   linkType: hard
 
@@ -7041,20 +6974,6 @@ __metadata:
     medusa-core-utils: ^1.1.32
     randomatic: ^3.1.1
   checksum: 613799b6bef71e857878b4b87efc6d19120cffc15171cebe116ec7b77050a3a5bfc2c53e35281d8177267281c3b10f55a0f4f5321bc098b897a3c21e978cdb4c
-=======
-  checksum: 0116c6d4d70811290ba423868cbd5fc8600cf66c81942c0fb69eab41910e783f6f90b8d401e95f2847e4aa0fc74dbcd5115e30cd9758be2f01b4577d934fcb2c
-  languageName: node
-  linkType: hard
-
-"medusa-test-utils@npm:1.1.37-dev-1669708431707":
-  version: 1.1.37-dev-1669708431707
-  resolution: "medusa-test-utils@npm:1.1.37-dev-1669708431707"
-  dependencies:
-    "@babel/plugin-transform-classes": ^7.9.5
-    medusa-core-utils: 1.1.35-dev-1669708431707
-    randomatic: ^3.1.1
-  checksum: b89c99be68369aae6f72c395eaec11f06c64415ff6b1e9a8616fd2e14e68a1f3cfb58e7722f48057c0da7da5d1dcb260ecaa49bd89c241a55d38767b2307600b
->>>>>>> origin/develop
   languageName: node
   linkType: hard
 

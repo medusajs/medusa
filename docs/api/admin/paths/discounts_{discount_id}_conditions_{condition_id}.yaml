@@ -48,6 +48,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -127,6 +128,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               discount_condition:
                 $ref: ../components/schemas/discount_condition.yaml
@@ -181,6 +183,7 @@ post:
     content:
       application/json:
         schema:
+          type: object
           properties:
             products:
               type: array
@@ -237,6 +240,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               discount:
                 $ref: ../components/schemas/discount.yaml

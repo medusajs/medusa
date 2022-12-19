@@ -7,19 +7,8 @@
 - [AdminPostSalesChannelsChannelProductsBatchReq](../classes/internal-25.AdminPostSalesChannelsChannelProductsBatchReq.md)
 - [AdminPostSalesChannelsReq](../classes/internal-25.AdminPostSalesChannelsReq.md)
 - [AdminPostSalesChannelsSalesChannelReq](../classes/internal-25.AdminPostSalesChannelsSalesChannelReq.md)
-- [ProductBatchSalesChannel](../classes/internal-25.ProductBatchSalesChannel.md)
 
 ## Type Aliases
-
-### AdminSalesChannelsListRes
-
-Ƭ **AdminSalesChannelsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `sales_channels`: [`SalesChannel`](../classes/internal.SalesChannel.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/sales-channels/index.d.ts:10
-
-___
 
 ### AdminSalesChannelsRes
 
@@ -43,4 +32,4 @@ medusa/dist/api/routes/admin/sales-channels/index.d.ts:6
 
 #### Defined in
 
-medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:141
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:142

@@ -7,6 +7,7 @@ description: >-
   get promoted to Payments to indicate that they are authorized for
   capture/refunds/etc.
 x-resourceId: payment_session
+type: object
 required:
   - cart_id
   - provider_id

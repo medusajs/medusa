@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/regions/add-payment-provider.d.ts:71
+medusa/dist/api/routes/admin/regions/add-payment-provider.d.ts:73

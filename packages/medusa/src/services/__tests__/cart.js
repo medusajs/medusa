@@ -1,12 +1,12 @@
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { FlagRouter } from "../../utils/flag-router"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { FlagRouter } from "../../utils/flag-router"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -1100,7 +1100,7 @@ describe("CartService", () => {
         last_name: "James",
         address_1: "24 Dunks Drive",
         city: "Los Angeles",
-        country_code: "US",
+        country_code: "us",
         province: "CA",
         postal_code: "93011",
         phone: "+1 (222) 333 4444",
@@ -2281,6 +2281,10 @@ describe("CartService", () => {
       await cartService.update(IdMap.getId("with-d"), {
         discounts: [],
       })
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.createAdjustments).toHaveBeenCalledTimes(1)
+
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
         "cart.updated",
@@ -2329,6 +2333,7 @@ describe("CartService", () => {
               },
             },
           ],
+          items: [],
           region_id: IdMap.getId("good"),
         })
       },
@@ -2339,6 +2344,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       taxProviderService: taxProviderServiceMock,
       newTotalsService: newTotalsServiceMock,
       featureFlagRouter: new FlagRouter({}),
@@ -2351,6 +2357,9 @@ describe("CartService", () => {
     it("successfully removes discount", async () => {
       await cartService.removeDiscount(IdMap.getId("fr-cart"), "1234")
 
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.createAdjustments).toHaveBeenCalledTimes(1)
+
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
         "cart.updated",
@@ -2361,6 +2370,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("cart"),
         region_id: IdMap.getId("good"),
+        items: [],
         discounts: [
           {
             code: "FS1234",

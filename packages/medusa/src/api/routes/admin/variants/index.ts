@@ -17,7 +17,6 @@ export default (app) => {
     transformQuery(AdminGetVariantsParams, {
       defaultRelations: defaultAdminVariantRelations,
       defaultFields: defaultAdminVariantFields,
-      allowedFields: allowedAdminVariantFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-variants").default)

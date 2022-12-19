@@ -36,7 +36,7 @@ a medusa sales channel
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:116](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/sales-channels.ts#L116)
+[medusa-js/src/resources/admin/sales-channels.ts:116](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L116)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:34](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/sales-channels.ts#L34)
+[medusa-js/src/resources/admin/sales-channels.ts:34](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L34)
 
 ___
 
@@ -88,13 +88,13 @@ an deletion result
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:85](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/sales-channels.ts#L85)
+[medusa-js/src/resources/admin/sales-channels.ts:85](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L85)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-25.md#adminsaleschannelslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-21.md#adminsaleschannelslistres)\>
 
 Retrieve a list of sales channels
  This feature is under development and may change in the future.
@@ -113,13 +113,13 @@ Retrieve a list of sales channels
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-25.md#adminsaleschannelslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-21.md#adminsaleschannelslistres)\>
 
 the list of sales channel as well as the pagination properties
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:64](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/sales-channels.ts#L64)
+[medusa-js/src/resources/admin/sales-channels.ts:64](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L64)
 
 ___
 
@@ -151,7 +151,7 @@ a medusa sales channel
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:100](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/sales-channels.ts#L100)
+[medusa-js/src/resources/admin/sales-channels.ts:100](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L100)
 
 ___
 
@@ -182,7 +182,7 @@ a medusa sales channel
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:22](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/sales-channels.ts#L22)
+[medusa-js/src/resources/admin/sales-channels.ts:22](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L22)
 
 ___
 
@@ -214,4 +214,4 @@ the updated medusa sales channel
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/sales-channels.ts#L48)
+[medusa-js/src/resources/admin/sales-channels.ts:48](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L48)

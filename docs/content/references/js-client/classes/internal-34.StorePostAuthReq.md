@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/auth/create-session.d.ts:58
+medusa/dist/api/routes/store/auth/create-session.d.ts:59
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/auth/create-session.d.ts:59
+medusa/dist/api/routes/store/auth/create-session.d.ts:60

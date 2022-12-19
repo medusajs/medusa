@@ -76,6 +76,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               regions:
                 type: array

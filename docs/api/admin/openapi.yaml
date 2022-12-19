@@ -202,12 +202,12 @@ tags:
 servers:
   - url: https://api.medusa-commerce.com/admin
 paths:
-  /apps/authorizations:
-    $ref: paths/apps_authorizations.yaml
-  /apps:
-    $ref: paths/apps.yaml
   /auth:
     $ref: paths/auth.yaml
+  /currencies:
+    $ref: paths/currencies.yaml
+  /currencies/{code}:
+    $ref: paths/currencies_{code}.yaml
   /batch-jobs/{id}/cancel:
     $ref: paths/batch-jobs_{id}_cancel.yaml
   /batch-jobs/{id}/confirm:
@@ -222,10 +222,6 @@ paths:
     $ref: paths/collections.yaml
   /collections/{id}:
     $ref: paths/collections_{id}.yaml
-  /currencies:
-    $ref: paths/currencies.yaml
-  /currencies/{code}:
-    $ref: paths/currencies_{code}.yaml
   /customer-groups/{id}/customers/batch:
     $ref: paths/customer-groups_{id}_customers_batch.yaml
   /customer-groups:
@@ -234,10 +230,26 @@ paths:
     $ref: paths/customer-groups_{id}.yaml
   /customer-groups/{id}/customers:
     $ref: paths/customer-groups_{id}_customers.yaml
+  /apps/authorizations:
+    $ref: paths/apps_authorizations.yaml
+  /apps:
+    $ref: paths/apps.yaml
   /customers:
     $ref: paths/customers.yaml
   /customers/{id}:
     $ref: paths/customers_{id}.yaml
+  /draft-orders:
+    $ref: paths/draft-orders.yaml
+  /draft-orders/{id}/line-items:
+    $ref: paths/draft-orders_{id}_line-items.yaml
+  /draft-orders/{id}:
+    $ref: paths/draft-orders_{id}.yaml
+  /draft-orders/{id}/line-items/{line_id}:
+    $ref: paths/draft-orders_{id}_line-items_{line_id}.yaml
+  /draft-orders/{id}/pay:
+    $ref: paths/draft-orders_{id}_pay.yaml
+  /admin/draft-orders/{id}:
+    $ref: paths/admin_draft-orders_{id}.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
   /discounts/{discount_id}/conditions/{condition_id}/batch:
@@ -256,18 +268,6 @@ paths:
     $ref: paths/discounts_{id}_dynamic-codes_{code}.yaml
   /discounts/code/{code}:
     $ref: paths/discounts_code_{code}.yaml
-  /draft-orders:
-    $ref: paths/draft-orders.yaml
-  /draft-orders/{id}/line-items:
-    $ref: paths/draft-orders_{id}_line-items.yaml
-  /draft-orders/{id}:
-    $ref: paths/draft-orders_{id}.yaml
-  /draft-orders/{id}/line-items/{line_id}:
-    $ref: paths/draft-orders_{id}_line-items_{line_id}.yaml
-  /draft-orders/{id}/pay:
-    $ref: paths/draft-orders_{id}_pay.yaml
-  /admin/draft-orders/{id}:
-    $ref: paths/admin_draft-orders_{id}.yaml
   /gift-cards:
     $ref: paths/gift-cards.yaml
   /gift-cards/{id}:
@@ -288,22 +288,6 @@ paths:
     $ref: paths/notifications.yaml
   /notifications/{id}/resend:
     $ref: paths/notifications_{id}_resend.yaml
-  /order-edits/{id}/items:
-    $ref: paths/order-edits_{id}_items.yaml
-  /order-edits/{id}/cancel:
-    $ref: paths/order-edits_{id}_cancel.yaml
-  /order-edits/{id}/confirm:
-    $ref: paths/order-edits_{id}_confirm.yaml
-  /order-edits:
-    $ref: paths/order-edits.yaml
-  /order-edits/{id}/items/{item_id}:
-    $ref: paths/order-edits_{id}_items_{item_id}.yaml
-  /order-edits/{id}/changes/{change_id}:
-    $ref: paths/order-edits_{id}_changes_{change_id}.yaml
-  /order-edits/{id}:
-    $ref: paths/order-edits_{id}.yaml
-  /order-edits/{id}/request:
-    $ref: paths/order-edits_{id}_request.yaml
   /orders/{id}/shipping-methods:
     $ref: paths/orders_{id}_shipping-methods.yaml
   /orders/{id}/archive:
@@ -354,6 +338,32 @@ paths:
     $ref: paths/orders_{id}_return.yaml
   /order/{id}/claims/{claim_id}:
     $ref: paths/order_{id}_claims_{claim_id}.yaml
+  /order-edits/{id}/items:
+    $ref: paths/order-edits_{id}_items.yaml
+  /order-edits/{id}/cancel:
+    $ref: paths/order-edits_{id}_cancel.yaml
+  /order-edits/{id}/confirm:
+    $ref: paths/order-edits_{id}_confirm.yaml
+  /order-edits:
+    $ref: paths/order-edits.yaml
+  /order-edits/{id}/items/{item_id}:
+    $ref: paths/order-edits_{id}_items_{item_id}.yaml
+  /order-edits/{id}/changes/{change_id}:
+    $ref: paths/order-edits_{id}_changes_{change_id}.yaml
+  /order-edits/{id}:
+    $ref: paths/order-edits_{id}.yaml
+  /order-edits/{id}/request:
+    $ref: paths/order-edits_{id}_request.yaml
+  /payment-collections/{id}:
+    $ref: paths/payment-collections_{id}.yaml
+  /payment-collections/{id}/authorize:
+    $ref: paths/payment-collections_{id}_authorize.yaml
+  /payments/{id}/capture:
+    $ref: paths/payments_{id}_capture.yaml
+  /payments/{id}:
+    $ref: paths/payments_{id}.yaml
+  /payments/{id}/refund:
+    $ref: paths/payments_{id}_refund.yaml
   /price-lists/{id}/prices/batch:
     $ref: paths/price-lists_{id}_prices_batch.yaml
   /price-lists:
@@ -388,6 +398,18 @@ paths:
     $ref: paths/products_types.yaml
   /products/{id}/metadata:
     $ref: paths/products_{id}_metadata.yaml
+  /publishable-api-keys/{id}/sales-channels/batch:
+    $ref: paths/publishable-api-keys_{id}_sales-channels_batch.yaml
+  /publishable-api-keys:
+    $ref: paths/publishable-api-keys.yaml
+  /publishable-api-keys/{id}:
+    $ref: paths/publishable-api-keys_{id}.yaml
+  /publishable-api-keys/{id}/sales-channels:
+    $ref: paths/publishable-api-keys_{id}_sales-channels.yaml
+  /publishable-api-keys/{id}/revoke:
+    $ref: paths/publishable-api-keys_{id}_revoke.yaml
+  /publishable-api-key/{id}:
+    $ref: paths/publishable-api-key_{id}.yaml
   /regions/{id}/countries:
     $ref: paths/regions_{id}_countries.yaml
   /regions/{id}/fulfillment-providers:
@@ -410,18 +432,18 @@ paths:
     $ref: paths/return-reasons.yaml
   /return-reasons/{id}:
     $ref: paths/return-reasons_{id}.yaml
-  /returns/{id}/cancel:
-    $ref: paths/returns_{id}_cancel.yaml
-  /returns:
-    $ref: paths/returns.yaml
-  /returns/{id}/receive:
-    $ref: paths/returns_{id}_receive.yaml
   /sales-channels/{id}/products/batch:
     $ref: paths/sales-channels_{id}_products_batch.yaml
   /sales-channels:
     $ref: paths/sales-channels.yaml
   /sales-channels/{id}:
     $ref: paths/sales-channels_{id}.yaml
+  /returns/{id}/cancel:
+    $ref: paths/returns_{id}_cancel.yaml
+  /returns:
+    $ref: paths/returns.yaml
+  /returns/{id}/receive:
+    $ref: paths/returns_{id}_receive.yaml
   /shipping-options:
     $ref: paths/shipping-options.yaml
   /shipping-options/{id}:

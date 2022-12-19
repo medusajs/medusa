@@ -7,5 +7,6 @@ curl --location --request POST 'https://medusa-url.com/admin/discounts' \
        "type": "fixed",
        "value": 10,
        "allocation": "item"
-    }
+    },
+    "regions": ['reg_XXXXXXXX']
 }'

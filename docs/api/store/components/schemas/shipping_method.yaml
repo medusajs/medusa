@@ -5,6 +5,7 @@ description: >-
   details, that can be necessary for the Fulfillment Provider to handle the
   shipment.
 x-resourceId: shipping_method
+type: object
 required:
   - shipping_option_id
   - price
