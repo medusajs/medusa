@@ -57,7 +57,7 @@ The service taking care of background jobs was renamed in v1.7.1. If you are run
 
 :::
 
-This file should export a function that accepts a `container` and `options` parameters. `container` is the dependency container that you can use to resolve services, such as the [ScheduledJobService](../../../references/services/classes/ScheduledJobService.md). `options` are the plugin’s options if this cron job is created in a plugin.
+This file should export a function that accepts a `container` and `options` parameters. `container` is the dependency container that you can use to resolve services, such as the ScheduledJobService. `options` are the plugin’s options if this cron job is created in a plugin.
 
 You then resolve the `ScheduledJobService` and use the `scheduledJobService.createCronJob` method to create the cron job. This method accepts four parameters:
 
