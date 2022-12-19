@@ -15,7 +15,7 @@ import {
   CreateShippingProfile,
   UpdateShippingProfile,
 } from "../types/shipping-profile"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import ProductService from "./product"
 import ShippingOptionService from "./shipping-option"
@@ -136,6 +136,13 @@ class ShippingProfileService extends TransactionBaseService {
     profileId: string,
     options: FindConfig<ShippingProfile> = {}
   ): Promise<ShippingProfile> {
+    if (!isDefined(profileId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"profileId" must be defined`
+      )
+    }
+
     const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )

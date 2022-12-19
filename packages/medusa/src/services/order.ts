@@ -336,6 +336,13 @@ class OrderService extends TransactionBaseService {
     orderId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
+    if (!isDefined(orderId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"orderId" must be defined`
+      )
+    }
+
     const { totalsToSelect } = this.transformQueryForTotals(config)
 
     if (totalsToSelect?.length) {
@@ -701,7 +708,7 @@ class OrderService extends TransactionBaseService {
               ),
             ]
           }),
-          cart.shipping_methods.map((method) => {
+          cart.shipping_methods.map(async (method) => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?

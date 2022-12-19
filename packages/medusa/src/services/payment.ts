@@ -5,7 +5,7 @@ import { MedusaError } from "medusa-core-utils"
 import { Payment, Refund } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import { EventBusService, PaymentProviderService } from "./index"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import { FindConfig } from "../types/common"
 
 type InjectedDependencies = {
@@ -62,6 +62,13 @@ export default class PaymentService extends TransactionBaseService {
     paymentId: string,
     config: FindConfig<Payment> = {}
   ): Promise<Payment> {
+    if (!isDefined(paymentId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"paymentId" must be defined`
+      )
+    }
+
     const manager = this.transactionManager_ ?? this.manager_
     const paymentRepository = manager.getCustomRepository(
       this.paymentRepository_

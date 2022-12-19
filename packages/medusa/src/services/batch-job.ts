@@ -11,7 +11,7 @@ import {
 } from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { buildQuery, isDefined } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 import { EventBusService, StrategyResolverService } from "./index"
 import { Request } from "express"
@@ -109,6 +109,13 @@ class BatchJobService extends TransactionBaseService {
     batchJobId: string,
     config: FindConfig<BatchJob> = {}
   ): Promise<BatchJob | never> {
+    if (!isDefined(batchJobId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"batchJobId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const batchJobRepo = manager.getCustomRepository(this.batchJobRepository_)
 
