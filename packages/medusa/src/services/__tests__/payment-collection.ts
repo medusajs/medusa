@@ -1,21 +1,8 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import {
-  CustomerService,
-  EventBusService,
-  PaymentCollectionService,
-  PaymentProviderService,
-  PaymentService,
-} from "../index"
-import {
-  PaymentCollectionStatus,
-  PaymentCollectionType,
-  PaymentCollection,
-} from "../../models"
+import { CustomerService, EventBusService, PaymentCollectionService, PaymentProviderService, } from "../index"
+import { PaymentCollection, PaymentCollectionStatus, PaymentCollectionType, } from "../../models"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import {
-  DefaultProviderMock,
-  PaymentProviderServiceMock,
-} from "../__mocks__/payment-provider"
+import { DefaultProviderMock, PaymentProviderServiceMock, } from "../__mocks__/payment-provider"
 import { CustomerServiceMock } from "../__mocks__/customer"
 import { PaymentCollectionsSessionsBatchInput } from "../../types/payment-collection"
 
@@ -395,7 +382,7 @@ describe("PaymentCollectionService", () => {
           `Cannot set payment sessions for a payment collection with status ${PaymentCollectionStatus.AUTHORIZED}`
         )
       )
-      expect(PaymentProviderServiceMock.createSessionNew).toBeCalledTimes(0)
+      expect(PaymentProviderServiceMock.createSession).toBeCalledTimes(0)
     })
 
     it("should ignore session if provider doesn't belong to the region", async () => {
@@ -408,7 +395,7 @@ describe("PaymentCollectionService", () => {
       )
 
       expect(multiRet).rejects.toThrow(`Payment provider not found`)
-      expect(PaymentProviderServiceMock.createSessionNew).toBeCalledTimes(0)
+      expect(PaymentProviderServiceMock.createSession).toBeCalledTimes(0)
     })
 
     it("should add a new session", async () => {
@@ -420,7 +407,7 @@ describe("PaymentCollectionService", () => {
         "lebron"
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(
         1
       )
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
@@ -436,10 +423,10 @@ describe("PaymentCollectionService", () => {
         "lebron"
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(
         0
       )
-      expect(PaymentProviderServiceMock.updateSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(
         1
       )
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
@@ -459,13 +446,13 @@ describe("PaymentCollectionService", () => {
         IdMap.getId("lebron")
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(
         1
       )
-      expect(PaymentProviderServiceMock.updateSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(
         0
       )
-      expect(paymentCollectionRepository.deleteMultiple).toHaveBeenCalledTimes(
+      expect(paymentCollectionRepository.delete).toHaveBeenCalledTimes(
         1
       )
 
@@ -497,7 +484,7 @@ describe("PaymentCollectionService", () => {
         )
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toBeCalledTimes(0)
+      expect(PaymentProviderServiceMock.createSession).toBeCalledTimes(0)
     })
 
     it("should throw error if amount is different than requested", async () => {
@@ -514,7 +501,7 @@ describe("PaymentCollectionService", () => {
         "customer1"
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(
         0
       )
       expect(ret).rejects.toThrow(
@@ -537,7 +524,7 @@ describe("PaymentCollectionService", () => {
         "customer1"
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(
         0
       )
       expect(multiRet).rejects.toThrow(
@@ -565,7 +552,7 @@ describe("PaymentCollectionService", () => {
       expect(multiRet).rejects.toThrow(
         `The sum of sessions is not equal to 100 on Payment Collection`
       )
-      expect(PaymentProviderServiceMock.createSessionNew).toBeCalledTimes(0)
+      expect(PaymentProviderServiceMock.createSession).toBeCalledTimes(0)
     })
 
     it("should add a new session and update existing one", async () => {
@@ -586,10 +573,10 @@ describe("PaymentCollectionService", () => {
         "lebron"
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(
         1
       )
-      expect(PaymentProviderServiceMock.updateSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(
         1
       )
       expect(CustomerServiceMock.retrieve).toHaveBeenCalledTimes(1)
@@ -609,13 +596,13 @@ describe("PaymentCollectionService", () => {
         IdMap.getId("lebron")
       )
 
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(
         1
       )
-      expect(PaymentProviderServiceMock.updateSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.updateSession).toHaveBeenCalledTimes(
         0
       )
-      expect(paymentCollectionRepository.deleteMultiple).toHaveBeenCalledTimes(
+      expect(paymentCollectionRepository.delete).toHaveBeenCalledTimes(
         1
       )
 
@@ -630,10 +617,10 @@ describe("PaymentCollectionService", () => {
       )
 
       expect(
-        PaymentProviderServiceMock.refreshSessionNew
+        PaymentProviderServiceMock.refreshSession
       ).toHaveBeenCalledTimes(1)
       expect(DefaultProviderMock.deletePayment).toHaveBeenCalledTimes(1)
-      expect(PaymentProviderServiceMock.createSessionNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createSession).toHaveBeenCalledTimes(
         1
       )
     })
@@ -650,9 +637,9 @@ describe("PaymentCollectionService", () => {
           "payCol_session-not-found"
         )} was not found`
       )
-      expect(PaymentProviderServiceMock.refreshSessionNew).toBeCalledTimes(0)
+      expect(PaymentProviderServiceMock.refreshSession).toBeCalledTimes(0)
       expect(DefaultProviderMock.deletePayment).toBeCalledTimes(0)
-      expect(PaymentProviderServiceMock.createSessionNew).toBeCalledTimes(0)
+      expect(PaymentProviderServiceMock.createSession).toBeCalledTimes(0)
     })
   })
 
@@ -695,7 +682,7 @@ describe("PaymentCollectionService", () => {
       expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
         2
       )
-      expect(PaymentProviderServiceMock.createPaymentNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createPayment).toHaveBeenCalledTimes(
         2
       )
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
@@ -710,7 +697,7 @@ describe("PaymentCollectionService", () => {
       expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
         1
       )
-      expect(PaymentProviderServiceMock.createPaymentNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createPayment).toHaveBeenCalledTimes(
         1
       )
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
@@ -725,7 +712,7 @@ describe("PaymentCollectionService", () => {
       expect(PaymentProviderServiceMock.authorizePayment).toHaveBeenCalledTimes(
         0
       )
-      expect(PaymentProviderServiceMock.createPaymentNew).toHaveBeenCalledTimes(
+      expect(PaymentProviderServiceMock.createPayment).toHaveBeenCalledTimes(
         0
       )
       expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(0)

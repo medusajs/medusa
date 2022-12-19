@@ -8,8 +8,6 @@ packages/*
 # List of packages to Lint
 !packages/medusa
 
-integration-tests/*
-#!integration-tests/api
 
 
 **/models/*
@@ -18,6 +16,5 @@ integration-tests/*
 **/node_modules/*
 **/migrations/*
 **/__mocks__/*
-**/__tests__/*
 
 .eslintrc.js

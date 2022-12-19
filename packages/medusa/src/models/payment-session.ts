@@ -1,12 +1,4 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  Unique,
-} from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, Unique, } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
 import { Cart } from "./cart"
@@ -24,12 +16,13 @@ export enum PaymentSessionStatus {
 }
 
 @Unique("OneSelected", ["cart_id", "is_selected"])
+// TODO: This uniq constraint should be updated once the order edit flag is dropped and should add a where clause on cart_id is not null
 @Unique("UniqPaymentSessionCartIdProviderId", ["cart_id", "provider_id"])
 @Entity()
 export class PaymentSession extends BaseEntity {
   @Index()
   @Column({ nullable: true })
-  cart_id: string
+  cart_id: string | null
 
   @ManyToOne(() => Cart, (cart) => cart.payment_sessions)
   @JoinColumn({ name: "cart_id" })
