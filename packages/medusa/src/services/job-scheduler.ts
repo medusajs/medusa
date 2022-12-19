@@ -13,7 +13,7 @@ type ScheduledJobHandler<T = unknown> = (
   eventName: string
 ) => Promise<void>
 
-export default class ScheduledJobService {
+export default class JobSchedulerService {
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
   protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]>
