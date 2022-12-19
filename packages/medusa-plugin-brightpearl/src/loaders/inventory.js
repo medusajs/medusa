@@ -6,11 +6,8 @@ const inventorySync = async (container, options) => {
     const scheduledJobService = container.resolve("scheduledJobService")
     try {
       const pattern = options.inventory_sync_cron
-      scheduledJobService.createScheduledJob(
-        "inventory-sync",
-        {},
-        pattern,
-        () => brightpearlService.syncInventory()
+      scheduledJobService.create("inventory-sync", {}, pattern, () =>
+        brightpearlService.syncInventory()
       )
     } catch (err) {
       if (err.name === "not_allowed") {

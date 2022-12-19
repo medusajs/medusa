@@ -3,4 +3,4 @@
 "@medusajs/medusa": patch
 ---
 
-feat(medusa): Extract background job (previously cron job) logic from the EventBusService to its own service ScheduledJobService
+feat(medusa): Extract cron jobs logic from the EventBusService to its own service ScheduledJobService

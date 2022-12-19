@@ -1,12 +1,10 @@
 import Bull from "bull"
 import Redis from "ioredis"
-import { EntityManager } from "typeorm"
 import { ConfigModule, Logger } from "../types/global"
 
 type InjectedDependencies = {
   logger: Logger
   redisClient: Redis.Redis
-  redisSubscriber: Redis.Redis
 }
 
 type ScheduledJobHandler<T = unknown> = (
@@ -19,12 +17,10 @@ export default class ScheduledJobService {
   protected readonly logger_: Logger
   protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]>
   protected readonly redisClient_: Redis.Redis
-  protected readonly redisSubscriber_: Redis.Redis
   protected readonly queue_: Bull
-  protected transactionManager_: EntityManager | undefined
 
   constructor(
-    { logger, redisClient, redisSubscriber }: InjectedDependencies,
+    { logger, redisClient }: InjectedDependencies,
     config: ConfigModule,
     singleton = true
   ) {
@@ -37,8 +33,6 @@ export default class ScheduledJobService {
           switch (type) {
             case "client":
               return redisClient
-            case "subscriber":
-              return redisSubscriber
             default:
               if (config.projectConfig.redis_url) {
                 return new Redis(config.projectConfig.redis_url)
@@ -50,7 +44,6 @@ export default class ScheduledJobService {
 
       this.handlers_ = new Map()
       this.redisClient_ = redisClient
-      this.redisSubscriber_ = redisSubscriber
       this.queue_ = new Bull(`scheduled-jobs:queue`, opts)
       // Register scheduled job worker
       this.queue_.process(this.scheduledJobsWorker)
@@ -64,7 +57,7 @@ export default class ScheduledJobService {
    * happens. Subscribers must return a Promise.
    * @return this
    */
-  protected registerHandler_(
+  protected registerHandler(
     event: string | symbol,
     handler: ScheduledJobHandler
   ): this {
@@ -110,14 +103,14 @@ export default class ScheduledJobService {
    * @param handler - the handler to call on the job
    * @return void
    */
-  createScheduledJob<T>(
+  create<T>(
     eventName: string,
     data: T,
     schedule: string,
     handler: ScheduledJobHandler
   ): void {
     this.logger_.info(`Registering ${eventName}`)
-    this.registerHandler_(eventName, handler)
+    this.registerHandler(eventName, handler)
 
     return this.queue_.add(
       {

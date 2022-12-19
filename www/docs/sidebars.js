@@ -336,7 +336,7 @@ module.exports = {
         {
           type: "doc",
           id: "advanced/backend/scheduled-jobs/create",
-          label: "Create a Cron Job"
+          label: "Create a Scheduled Job"
         },
         {
           type: "doc",

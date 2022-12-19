@@ -1,4 +1,4 @@
-# How to Create a Cron Job
+# How to Create a Scheduled Job
 
 In this document, you’ll learn how to create a scheduled job in Medusa.
 
