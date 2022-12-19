@@ -75,6 +75,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
     paymentCollectionId: string,
     config: FindConfig<PaymentCollection> = {}
   ): Promise<PaymentCollection> {
+    if (!isDefined(paymentCollectionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"paymentCollectionId" must be defined`
+      )
+    }
+
     const manager = this.transactionManager_ ?? this.manager_
     const paymentCollectionRepository = manager.getCustomRepository(
       this.paymentCollectionRepository_

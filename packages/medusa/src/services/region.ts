@@ -13,7 +13,7 @@ import { RegionRepository } from "../repositories/region"
 import { TaxProviderRepository } from "../repositories/tax-provider"
 import { FindConfig, Selector } from "../types/common"
 import { CreateRegionInput, UpdateRegionInput } from "../types/region"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isDefined, setMetadata } from "../utils"
 import { countries } from "../utils/countries"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
@@ -495,6 +495,13 @@ class RegionService extends TransactionBaseService {
     regionId: string,
     config: FindConfig<Region> = {}
   ): Promise<Region | never> {
+    if (!isDefined(regionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"regionId" must be defined`
+      )
+    }
+
     const regionRepository = this.manager_.getCustomRepository(
       this.regionRepository_
     )

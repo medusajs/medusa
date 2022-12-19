@@ -182,6 +182,13 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<Product> {
+    if (!isDefined(productId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ id: productId }, config)
   }
 
@@ -196,6 +203,13 @@ class ProductService extends TransactionBaseService {
     productHandle: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
+    if (!isDefined(productHandle)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productHandle" must be defined`
+      )
+    }
+
     return await this.retrieve_({ handle: productHandle }, config)
   }
 
@@ -210,6 +224,13 @@ class ProductService extends TransactionBaseService {
     externalId: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
+    if (!isDefined(externalId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"externalId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ external_id: externalId }, config)
   }
 
