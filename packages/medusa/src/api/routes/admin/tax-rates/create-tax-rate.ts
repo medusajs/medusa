@@ -1,14 +1,14 @@
-import { IsArray, IsOptional, IsString } from "class-validator"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
 import { EntityManager } from "typeorm"
-import { IsType } from "../../../../utils/validators/is-type"
 import { MedusaError } from "medusa-core-utils"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
 import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
 import { isDefined } from "../../../../utils"
+import { IsNullable } from "../../../../utils/validators/is-nullable"
 
 /**
  * @oas [post] /tax-rates
@@ -184,7 +184,8 @@ export class AdminPostTaxRatesReq {
   region_id: string
 
   @IsOptional()
-  @IsType([Number, null])
+  @IsNullable()
+  @IsNumber()
   rate?: number | null
 
   @IsOptional()
