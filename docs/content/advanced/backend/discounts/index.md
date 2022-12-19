@@ -24,8 +24,6 @@ Discounts can be used in many use cases including:
 2. Creating a sale within a specific period of time (for example, a summer sale).
 3. Give your customers free shipping for a limited time.
 
-![Discounts Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1669900544/Medusa%20Docs/Diagrams/discounts_cdxec1.jpg)
-
 ---
 
 ## Discount Entity Overview
@@ -95,6 +93,8 @@ Based on the value of `type`, one of the following relations can be used to retr
 - `product_collections` is an array of product types that this condition applies to if the condition’s `type` is `product_collections`. Each item of the array would be a [`DiscountConditionProductCollection`](../../../references/entities/classes/DiscountConditionProductCollection.md).
 - `product_tags` is an array of product types that this condition applies to if the condition’s `type` is `product_tags`. Each item of the array would be a [`DiscountConditionProductTag`](../../../references/entities/classes/DiscountConditionProductTag.md).
 - `customer_groups` is an array of product types that this condition applies to if the condition’s `type` is `customer_groups`. Each item of the array would be a [`DiscountConditionCustomerGroup`](../../../references/entities/classes/DiscountConditionCustomerGroup.md).
+
+![Discounts Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1669900544/Medusa%20Docs/Diagrams/discounts_cdxec1.jpg)
 
 ---
 
