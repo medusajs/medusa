@@ -154,11 +154,7 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<Data>} Stripe payment intent
    */
   async retrievePayment(data) {
-    try {
-      return await this.stripe_.paymentIntents.retrieve(data.id)
-    } catch (error) {
-      throw error
-    }
+    return await this.stripe_.paymentIntents.retrieve(data.id)
   }
 
   /**
@@ -167,11 +163,7 @@ class StripeBase extends AbstractPaymentService {
    * @return {Promise<PaymentData>} Stripe payment intent
    */
   async getPaymentData(paymentSession) {
-    try {
-      return await this.stripe_.paymentIntents.retrieve(paymentSession.data.id)
-    } catch (error) {
-      throw error
-    }
+    return await this.stripe_.paymentIntents.retrieve(paymentSession.data.id)
   }
 
   /**
@@ -183,21 +175,13 @@ class StripeBase extends AbstractPaymentService {
    */
   async authorizePayment(paymentSession, context = {}) {
     const stat = await this.getStatus(paymentSession.data)
-    try {
-      return { data: paymentSession.data, status: stat }
-    } catch (error) {
-      throw error
-    }
+    return { data: paymentSession.data, status: stat }
   }
 
   async updatePaymentData(sessionData, update) {
-    try {
-      return await this.stripe_.paymentIntents.update(sessionData.id, {
-        ...update.data,
-      })
-    } catch (error) {
-      throw error
-    }
+    return await this.stripe_.paymentIntents.update(sessionData.id, {
+      ...update.data,
+    })
   }
 
   /**
@@ -208,40 +192,32 @@ class StripeBase extends AbstractPaymentService {
    */
   async updatePayment(paymentSessionData, context) {
     const { amount, customer } = context
-    try {
-      const stripeId = customer?.metadata?.stripe_id || undefined
+    const stripeId = customer?.metadata?.stripe_id || undefined
 
-      if (stripeId !== paymentSessionData.customer) {
-        return await this.createPayment(context)
-      } else {
-        if (
-          amount &&
-          paymentSessionData.amount === Math.round(amount)
-        ) {
-          return paymentSessionData
-        }
-
-        return await this.stripe_.paymentIntents.update(paymentSessionData.id, {
-          amount: Math.round(amount),
-        })
+    if (stripeId !== paymentSessionData.customer) {
+      return await this.createPayment(context)
+    } else {
+      if (
+        amount &&
+        paymentSessionData.amount === Math.round(amount)
+      ) {
+        return paymentSessionData
       }
-    } catch (error) {
-      throw error
+
+      return await this.stripe_.paymentIntents.update(paymentSessionData.id, {
+        amount: Math.round(amount),
+      })
     }
   }
 
   async deletePayment(payment) {
-    try {
-      const { id } = payment.data
-      return this.stripe_.paymentIntents.cancel(id).catch((err) => {
-        if (err.statusCode === 400) {
-          return
-        }
-        throw err
-      })
-    } catch (error) {
-      throw error
-    }
+    const { id } = payment.data
+    return this.stripe_.paymentIntents.cancel(id).catch((err) => {
+      if (err.statusCode === 400) {
+        return
+      }
+      throw err
+    })
   }
 
   /**
@@ -251,13 +227,9 @@ class StripeBase extends AbstractPaymentService {
    * @return {object} Stripe payment intent
    */
   async updatePaymentIntentCustomer(paymentIntentId, customerId) {
-    try {
-      return await this.stripe_.paymentIntents.update(paymentIntentId, {
-        customer: customerId,
-      })
-    } catch (error) {
-      throw error
-    }
+    return await this.stripe_.paymentIntents.update(paymentIntentId, {
+      customer: customerId,
+    })
   }
 
   /**
@@ -288,16 +260,12 @@ class StripeBase extends AbstractPaymentService {
    */
   async refundPayment(payment, amountToRefund) {
     const { id } = payment.data
-    try {
-      await this.stripe_.refunds.create({
-        amount: Math.round(amountToRefund),
-        payment_intent: id,
-      })
+    await this.stripe_.refunds.create({
+      amount: Math.round(amountToRefund),
+      payment_intent: id,
+    })
 
-      return payment.data
-    } catch (error) {
-      throw error
-    }
+    return payment.data
   }
 
   /**
