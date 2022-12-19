@@ -22,7 +22,7 @@ import {
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
-import { FindConfig, QuerySelector, Selector, WithRequiredProperty } from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
   FulFillmentItemType,
@@ -703,14 +703,19 @@ class OrderService extends TransactionBaseService {
       await Promise.all(
         [
           cart.items.map((lineItem) => {
-            return [
-              (lineItem.is_giftcard) ? this.createGiftCardsFromLineItem_(order, lineItem, manager) : null,
+            const lineItemPromises: unknown[] = [
               lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
               inventoryServiceTx.adjustInventory(
                 lineItem.variant_id,
                 -lineItem.quantity
               ),
             ]
+
+            if (lineItem.is_giftcard) {
+              lineItemPromises.push(this.createGiftCardsFromLineItem_(order, lineItem, manager))
+            }
+
+            return lineItemPromises
           }),
           cart.shipping_methods.map(async (method) => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.

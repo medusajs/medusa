@@ -983,8 +983,8 @@ class TotalsService extends TransactionBaseService {
       giftCardable,
       {
         region: cartOrOrder.region,
-        giftCards: cartOrOrder.gift_cards,
-        giftCardTransactions: cartOrOrder['gift_card_transactions']
+        giftCards: cartOrOrder.gift_cards || [],
+        giftCardTransactions: cartOrOrder['gift_card_transactions'] || []
       }
     )
   }

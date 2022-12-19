@@ -11,7 +11,7 @@ const {
   simpleCartFactory,
   simpleCustomerFactory,
   simpleGiftCardFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 
 jest.setTimeout(30000)
 
@@ -21,7 +21,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
   let customerData
 
   beforeEach(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, "..", "..", "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
