@@ -499,6 +499,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       )
 
       expect(response.status).toBe(200)
+      expect(response.data.sales_channels.length).toEqual(2)
       expect(response.data.sales_channels).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -508,6 +509,29 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
             description: "test description",
             is_disabled: false,
           }),
+          expect.objectContaining({
+            id: salesChannel2.id,
+            deleted_at: null,
+            name: "test name 2",
+            description: "test description 2",
+            is_disabled: false,
+          }),
+        ])
+      )
+    })
+
+    it("list sales channels from the publishable api key with free text search filter", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/publishable-api-keys/${pubKeyId}/sales-channels?q=2`,
+        adminHeaders
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data.sales_channels.length).toEqual(1)
+      expect(response.data.sales_channels).toEqual(
+        expect.arrayContaining([
           expect.objectContaining({
             id: salesChannel2.id,
             deleted_at: null,

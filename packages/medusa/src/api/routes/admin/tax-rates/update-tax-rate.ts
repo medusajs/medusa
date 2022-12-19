@@ -2,11 +2,11 @@ import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
 import { EntityManager } from "typeorm"
+import { isDefined } from "medusa-core-utils"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
 import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
 import { IsNullable } from "../../../../utils/validators/is-nullable"
 
 /**

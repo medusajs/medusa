@@ -23893,6 +23893,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -23920,6 +23921,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.32
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -23947,6 +23949,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
@@ -23971,6 +23974,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
   peerDependencies:
     medusa-interfaces: 1.3.3
   languageName: unknown
@@ -23996,6 +24000,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
   peerDependencies:
     medusa-interfaces: 1.x
   languageName: unknown
@@ -24049,6 +24054,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24077,6 +24083,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.32
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -24100,6 +24107,7 @@ __metadata:
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
     jest: ^25.5.2
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24156,6 +24164,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.36
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
@@ -24242,6 +24251,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     redis: ^3.0.2
   peerDependencies:
@@ -24269,6 +24279,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.34
+    medusa-interfaces: ^1.3.3
     randomatic: ^3.1.1
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24296,6 +24307,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
@@ -24318,6 +24330,7 @@ __metadata:
     axios: ^0.20.0
     cross-env: ^5.2.1
     jest: ^25.5.2
+    medusa-interfaces: ^1.3.3
   peerDependencies:
     medusa-interfaces: 1.x
   languageName: unknown
@@ -24345,6 +24358,7 @@ __metadata:
     jest: ^25.5.2
     mailchimp-api-v3: ^1.14.0
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24370,6 +24384,7 @@ __metadata:
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     meilisearch: 0.27.0
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -24391,6 +24406,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.36
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     pg: ^8.5.1
     ulid: ^2.3.0
@@ -24422,6 +24438,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24449,6 +24466,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24476,6 +24494,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
@@ -24501,6 +24520,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     twilio: ^3.49.1
   peerDependencies:
@@ -24528,6 +24548,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24539,6 +24560,7 @@ __metadata:
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
     "@babel/core": ^7.16.0
+    "@medusajs/medusa": ^1.7.0
     "@medusajs/medusa-js": ^1.3.3
     "@size-limit/preset-small-lib": ^6.0.4
     "@storybook/addon-contexts": ^5.3.21

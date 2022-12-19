@@ -107,7 +107,7 @@ export default async (req, res) => {
     await orderService.withTransaction(manager).capturePayment(result.id)
   })
 
-  const order = await orderService.retrieve(result.id, {
+  const order = await orderService.retrieveWithTotals(result.id, {
     relations: defaultOrderRelations,
     select: defaultOrderFields,
   })
