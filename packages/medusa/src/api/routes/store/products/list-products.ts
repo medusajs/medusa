@@ -133,6 +133,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *   - (query) limit=100 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) order {string} the field used to order the products.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

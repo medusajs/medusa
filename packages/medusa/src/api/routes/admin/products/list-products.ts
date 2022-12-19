@@ -157,6 +157,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ *   - (query) order {string} the field used to order the products.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -258,4 +259,8 @@ export class AdminGetProductsParams extends FilterableProductProps {
   @IsString()
   @IsOptional()
   fields?: string
+
+  @IsString()
+  @IsOptional()
+  order?: string
 }
