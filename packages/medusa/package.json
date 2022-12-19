@@ -15,10 +15,10 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.0",
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/preset-typescript": "^7.13.0",
-    "@readme/openapi-parser": "^2.3.0",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.5.0",
     "@types/jsonwebtoken": "^8.5.5",
