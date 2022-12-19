@@ -1,5 +1,3 @@
-import { IsInt, IsNotEmpty, IsString } from "class-validator"
-
 import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
@@ -52,7 +50,7 @@ import { PaymentCollectionService } from "../../../../services"
  *           type: object
  *           properties:
  *             payment_session:
- *               $ref: "#/components/schemas/payment_session"
+ *               $ref: "#/components/schemas/PaymentSession"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

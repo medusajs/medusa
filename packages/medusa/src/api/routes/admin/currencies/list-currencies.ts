@@ -47,7 +47,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *             currencies:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/currency"
+ *                 $ref: "#/components/schemas/Currency"
  *             count:
  *               type: integer
  *               description: The total number of items available
