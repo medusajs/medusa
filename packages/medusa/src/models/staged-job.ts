@@ -21,10 +21,9 @@ export class StagedJob {
 }
 
 /**
- * @schema staged_job
+ * @schema StagedJob
  * title: "Staged Job"
  * description: "A staged job resource"
- * x-resourceId: staged_job
  * type: object
  * required:
  *   - event_name

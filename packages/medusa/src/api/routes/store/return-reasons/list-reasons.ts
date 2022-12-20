@@ -36,7 +36,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  *             return_reasons:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/return_reason"
+ *                 $ref: "#/components/schemas/ReturnReason"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

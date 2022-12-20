@@ -136,10 +136,9 @@ export class DiscountCondition extends SoftDeletableEntity {
 }
 
 /**
- * @schema discount_condition
+ * @schema DiscountCondition
  * title: "Discount Condition"
  * description: "Holds rule conditions for when a discount is applicable"
- * x-resourceId: discount_condition
  * type: object
  * required:
  *   - type
@@ -171,7 +170,7 @@ export class DiscountCondition extends SoftDeletableEntity {
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   discount_rule:
  *     description: Available if the relation `discount_rule` is expanded.
- *     $ref: "#/components/schemas/discount_rule"
+ *     $ref: "#/components/schemas/DiscountRule"
  *   products:
  *     description: products associated with this condition if type = products. Available if the relation `products` is expanded.
  *     type: array

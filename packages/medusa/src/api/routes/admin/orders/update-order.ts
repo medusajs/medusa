@@ -36,16 +36,16 @@ import { validator } from "../../../../utils/validator"
  *           billing_address:
  *             description: Billing address
  *             anyOf:
- *               - $ref: "#/components/schemas/address_fields"
+ *               - $ref: "#/components/schemas/AddressFields"
  *           shipping_address:
  *             description: Shipping address
  *             anyOf:
- *               - $ref: "#/components/schemas/address_fields"
+ *               - $ref: "#/components/schemas/AddressFields"
  *           items:
  *             description: The Line Items for the order
  *             type: array
  *             items:
- *               $ref: "#/components/schemas/line_item"
+ *               $ref: "#/components/schemas/LineItem"
  *           region:
  *             description: ID of the region where the order belongs
  *             type: string
@@ -53,7 +53,7 @@ import { validator } from "../../../../utils/validator"
  *             description: Discounts applied to the order
  *             type: array
  *             items:
- *               $ref: "#/components/schemas/discount"
+ *               $ref: "#/components/schemas/Discount"
  *           customer_id:
  *             description: ID of the customer
  *             type: string
@@ -86,7 +86,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 type: array
  *                 items:
- *                   $ref: "#/components/schemas/line_item"
+ *                   $ref: "#/components/schemas/LineItem"
  *                 description: Items to ship
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the updated order.
@@ -127,7 +127,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/order"
+ *               $ref: "#/components/schemas/Order"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

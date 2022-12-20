@@ -152,7 +152,7 @@ import { FindParams } from "../../../../types/common"
  *           value: 10,
  *           allocation: AllocationType.ITEM
  *         },
- *         regions: ['reg_XXXXXXXX'],
+ *         regions: ["reg_XXXXXXXX"],
  *         is_dynamic: false,
  *         is_disabled: false
  *       })
@@ -172,7 +172,7 @@ import { FindParams } from "../../../../types/common"
  *              "value": 10,
  *              "allocation": "item"
  *           },
- *           "regions": ['reg_XXXXXXXX']
+ *           "regions": ["reg_XXXXXXXX"]
  *       }'
  * security:
  *   - api_token: []
@@ -188,7 +188,7 @@ import { FindParams } from "../../../../types/common"
  *           type: object
  *           properties:
  *             discount:
- *               $ref: "#/components/schemas/discount"
+ *               $ref: "#/components/schemas/Discount"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

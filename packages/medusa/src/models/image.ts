@@ -19,10 +19,9 @@ export class Image extends SoftDeletableEntity {
 }
 
 /**
- * @schema image
+ * @schema Image
  * title: "Image"
  * description: "Images holds a reference to a URL at which the image file can be found."
- * x-resourceId: image
  * type: object
  * required:
  *   - url

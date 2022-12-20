@@ -46,10 +46,9 @@ export class CustomShippingOption extends SoftDeletableEntity {
 }
 
 /**
- * @schema custom_shipping_option
+ * @schema CustomShippingOption
  * title: "Custom Shipping Option"
  * description: "Custom Shipping Options are 'overriden' Shipping Options. Store managers can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option"
- * x-resourceId: custom_shipping_option
  * type: object
  * required:
  *   - price

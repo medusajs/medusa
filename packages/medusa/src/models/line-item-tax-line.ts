@@ -30,10 +30,9 @@ export class LineItemTaxLine extends TaxLine {
 }
 
 /**
- * @schema line_item_tax_line
+ * @schema LineItemTaxLine
  * title: "Line Item Tax Line"
- * description: "Represents an Line Item Tax Line"
- * x-resourceId: line_item_tax_line
+ * description: "Represents a Line Item Tax Line"
  * type: object
  * required:
  *   - item_id
@@ -50,7 +49,7 @@ export class LineItemTaxLine extends TaxLine {
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   item:
  *     description: Available if the relation `item` is expanded.
- *     $ref: "#/components/schemas/line_item"
+ *     $ref: "#/components/schemas/LineItem"
  *   code:
  *     description: "A code to identify the tax type by"
  *     type: string
