@@ -47,14 +47,14 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *               - $ref: "#/components/schemas/Address"
  *                 description: A full billing address object.
  *               - type: string
  *                 description: The billing address ID
  *           shipping_address:
  *             description: "The Address to be used for shipping."
  *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *               - $ref: "#/components/schemas/Address"
  *                 description: A full shipping address object.
  *               - type: string
  *                 description: The shipping address ID
@@ -118,7 +118,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           type: object
  *           properties:
  *             cart:
- *               $ref: "#/components/schemas/cart"
+ *               $ref: "#/components/schemas/Cart"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

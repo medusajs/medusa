@@ -116,7 +116,7 @@ import { Type } from "class-transformer"
  *            collections:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/product_collection"
+ *                 $ref: "#/components/schemas/ProductCollection"
  *            count:
  *               type: integer
  *               description: The total number of items available

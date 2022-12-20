@@ -46,7 +46,7 @@ import { EntityManager } from "typeorm"
  *           type: object
  *           properties:
  *             cart:
- *               $ref: "#/components/schemas/cart"
+ *               $ref: "#/components/schemas/Cart"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

@@ -90,10 +90,9 @@ export class ClaimItem extends SoftDeletableEntity {
 }
 
 /**
- * @schema claim_item
+ * @schema ClaimItem
  * title: "Claim Item"
  * description: "Represents a claimed item along with information about the reasons for the claim."
- * x-resourceId: claim_item
  * type: object
  * required:
  *   - claim_order_id
@@ -110,7 +109,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     type: array
  *     description: Available if the relation `images` is expanded.
  *     items:
- *       $ref: "#/components/schemas/claim_image"
+ *       $ref: "#/components/schemas/ClaimImage"
  *   claim_order_id:
  *     description: The ID of the claim this item is associated with.
  *     type: string
@@ -123,7 +122,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     example: item_01G8ZM25TN49YV9EQBE2NC27KC
  *   item:
  *     description: Available if the relation `item` is expanded.
- *     $ref: "#/components/schemas/line_item"
+ *     $ref: "#/components/schemas/LineItem"
  *   variant_id:
  *     description: "The ID of the product variant that is claimed."
  *     type: string
@@ -151,7 +150,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     description: "User defined tags for easy filtering and grouping. Available if the relation 'tags' is expanded."
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/claim_tag"
+ *       $ref: "#/components/schemas/ClaimTag"
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

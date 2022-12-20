@@ -48,7 +48,7 @@ import { isDefined } from "medusa-core-utils"
  *             gift_cards:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/gift_card"
+ *                 $ref: "#/components/schemas/GiftCard"
  *             count:
  *               type: integer
  *               description: The total number of items available

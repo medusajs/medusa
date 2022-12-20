@@ -122,7 +122,7 @@ import { Type } from "class-transformer"
  *             sales_channels:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/sales_channel"
+ *                 $ref: "#/components/schemas/SalesChannel"
  *             count:
  *               type: integer
  *               description: The total number of items available

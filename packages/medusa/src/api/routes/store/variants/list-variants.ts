@@ -79,8 +79,8 @@ import { IsType } from "../../../../utils/validators/is-type"
  *               type: array
  *               items:
  *                 allOf:
- *                   - $ref: "#/components/schemas/product_variant"
- *                   - $ref: "#/components/schemas/product_variant_prices_fields"
+ *                   - $ref: "#/components/schemas/ProductVariant"
+ *                   - $ref: "#/components/schemas/ProductVariantPricesFields"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
