@@ -13,7 +13,6 @@ import "reflect-metadata"
 import requestIp from "request-ip"
 import { Connection, getManager } from "typeorm"
 import { v4 } from "uuid"
-import { IEventBusService } from "../interfaces/services/event-bus"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
@@ -85,21 +84,6 @@ export default async ({
     }
 
     next()
-  })
-
-  expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    const cacheKey = req.request_context.cache_key
-    const eventBusService: IEventBusService =
-      req.scope.resolve("eventBusService")
-
-    res.on("finish", () => {
-      // Upon finishing the request, we process the cached events
-      // If they are already busted (due to an error), the processing
-      // will return early.
-
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      eventBusService.processCachedEvents(cacheKey)
-    })
   })
 
   const featureFlagRouter = featureFlagsLoader(configModule, Logger)

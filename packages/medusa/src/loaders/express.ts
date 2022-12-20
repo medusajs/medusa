@@ -1,9 +1,11 @@
+import createStore from "connect-redis"
+import cookieParser from "cookie-parser"
 import { Express } from "express"
 import session from "express-session"
-import cookieParser from "cookie-parser"
 import morgan from "morgan"
-import redis, { RedisConfig } from "redis"
-import createStore from "connect-redis"
+import redis from "redis"
+import invalidateCachedEvents from "../api/middlewares/invalidate-cached-events"
+import processCachedEvents from "../api/middlewares/process-cached-events"
 import { ConfigModule } from "../types/global"
 
 type Options = {
@@ -55,6 +57,11 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
   app.get("/health", (req, res) => {
     res.status(200).send("OK")
   })
+
+  // Events caching middleware should be applied globally
+  // to ensure custom endpoints are covered
+  app.use(invalidateCachedEvents())
+  app.use(processCachedEvents())
 
   return app
 }
