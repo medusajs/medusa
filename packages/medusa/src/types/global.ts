@@ -61,6 +61,7 @@ export type ConfigModule = {
     database_url?: string
     database_type: string
     database_database?: string
+    database_schema?: string
     database_logging: LoggerOptions
 
     database_extra?: Record<string, unknown> & {
