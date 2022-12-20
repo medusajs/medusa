@@ -2,12 +2,11 @@ import Bull from "bull"
 import Redis from "ioredis"
 import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { ICacheService } from "../interfaces"
 import { IEventBusService } from "../interfaces/services/event-bus"
-import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
 import { sleep } from "../utils/sleep"
-import CacheService from "./cache"
 import JobSchedulerService from "./job-scheduler"
 
 type InjectedDependencies = {
@@ -17,7 +16,7 @@ type InjectedDependencies = {
   jobSchedulerService: JobSchedulerService
   redisClient: Redis.Redis
   redisSubscriber: Redis.Redis
-  cacheService: CacheService
+  cacheService: ICacheService
 }
 
 export type EventData<T = unknown> = {
@@ -50,7 +49,7 @@ export default class EventBusService implements IEventBusService {
   protected readonly observers_: Map<string | symbol, Subscriber[]>
   protected readonly redisClient_: Redis.Redis
   protected readonly redisSubscriber_: Redis.Redis
-  protected readonly cacheService_: CacheService
+  protected readonly cacheService_: ICacheService
   protected queue_: Bull
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
@@ -168,7 +167,7 @@ export default class EventBusService implements IEventBusService {
   }
 
   /**
-   * Handles incoming jobs.
+   * Processes jobs in the queue.
    * @param job The job object
    * @return resolves to the results of the subscriber calls.
    */
@@ -239,7 +238,7 @@ export default class EventBusService implements IEventBusService {
   }
 
   /**
-   * Calls all subscribers when an event occurs.
+   * Immediately add job to the queue or store in cache for later processing.
    * @param {string} eventName - the name of the event to be process.
    * @param data - the data to send to the subscriber.
    * @param options - options to add the job with
@@ -249,7 +248,7 @@ export default class EventBusService implements IEventBusService {
     eventName: string,
     data: T,
     options: EmitOptions & { uniqueCacheKey?: string } = {}
-  ): Promise<StagedJob | void> {
+  ): Promise<void> {
     // construct options for the job
     const opts: { removeOnComplete: boolean } & EmitOptions = {
       removeOnComplete: true,

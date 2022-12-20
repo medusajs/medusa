@@ -29,14 +29,14 @@ export abstract class AbstractEventBusService implements IEventBusService {
     eventName: string,
     data: T,
     options?: Record<string, unknown>
-  ): Promise<void | unknown>
+  ): Promise<void>
 
-  abstract subscribe<T>(
-    eventName: string,
-    handler: EventHandler
-  ): this | Promise<void | unknown>
+  abstract subscribe(eventName: string, handler: EventHandler): this
 
-  abstract processCachedEvents<T>(uniqueId: string, options: unknown): void
+  abstract processCachedEvents<T>(
+    uniqueId: string,
+    options: unknown
+  ): Promise<void>
 
-  abstract destroyCachedEvents(cacheId: string): void
+  abstract destroyCachedEvents(cacheId: string): Promise<void>
 }
