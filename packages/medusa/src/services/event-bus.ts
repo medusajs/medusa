@@ -194,7 +194,7 @@ export default class EventBusService implements IEventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions & { uniqueCacheKey?: string } = {}
+    options: EmitOptions & { cacheKey?: string } = {}
   ): Promise<void> {
     // construct options for the job
     const opts: { removeOnComplete: boolean } & EmitOptions = {
@@ -214,15 +214,14 @@ export default class EventBusService implements IEventBusService {
     // instead of processing it immediately. As a consumer, you should
     // process the events when appropriate e.g. when a transaction has
     // committed. Use method `processCachedEvents`.
-    if (options?.uniqueCacheKey) {
+    if (options?.cacheKey) {
       const cachedEvents =
-        (await this.cacheService_.get<EventData[]>(options.uniqueCacheKey)) ||
-        []
+        (await this.cacheService_.get<EventData[]>(options.cacheKey)) || []
 
       const job = { eventName, data, options: opts }
       const updateEvents = [...cachedEvents, job]
 
-      await this.cacheService_.set(options.uniqueCacheKey, updateEvents)
+      await this.cacheService_.set(options.cacheKey, updateEvents)
     } else {
       this.queue_.add({ eventName, data }, opts)
     }
@@ -231,7 +230,7 @@ export default class EventBusService implements IEventBusService {
   async processCachedEvents<T>(uniqueId: string, options: EmitOptions = {}) {
     const events = await this.cacheService_.get<EventData[]>(uniqueId)
 
-    if (!events) {
+    if (!events?.length) {
       return
     }
 
@@ -245,8 +244,8 @@ export default class EventBusService implements IEventBusService {
     )
   }
 
-  async destroyCachedEvents(uniqueCacheKey: string): Promise<void> {
-    await this.cacheService_.invalidate(uniqueCacheKey)
+  async destroyCachedEvents(cacheKey: string): Promise<void> {
+    await this.cacheService_.invalidate(cacheKey)
   }
 
   /**

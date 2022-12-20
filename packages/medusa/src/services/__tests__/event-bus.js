@@ -2,6 +2,7 @@ import Bull from "bull"
 import { MockManager, MockRepository } from "medusa-test-utils"
 import config from "../../loaders/config"
 import EventBusService from "../event-bus"
+import CacheServiceMock from "../__mocks__/cache"
 
 jest.genMockFromModule("bull")
 jest.mock("bull")
@@ -20,19 +21,11 @@ describe("EventBusService", () => {
     let eventBus
     beforeAll(() => {
       jest.resetAllMocks()
-      const stagedJobRepository = MockRepository({
-        find: () => Promise.resolve([]),
-      })
 
       eventBus = new EventBusService({
         manager: MockManager,
-        stagedJobRepository,
         logger: loggerMock,
       })
-    })
-
-    afterAll(async () => {
-      await eventBus.stopEnqueuer()
     })
 
     it("creates bull queue", () => {
@@ -48,17 +41,14 @@ describe("EventBusService", () => {
     describe("successfully adds subscriber", () => {
       beforeAll(() => {
         jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
         eventBus = new EventBusService({
           manager: MockManager,
-          stagedJobRepository,
           logger: loggerMock,
         })
         eventBus.subscribe("eventName", () => "test")
       })
+
       afterAll(async () => {
         await eventBus.stopEnqueuer()
       })
@@ -72,18 +62,11 @@ describe("EventBusService", () => {
       let eventBus
       beforeAll(() => {
         jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
         eventBus = new EventBusService({
           manager: MockManager,
-          stagedJobRepository,
           logger: loggerMock,
         })
-      })
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
       })
 
       it("rejects subscriber with error", () => {
@@ -102,26 +85,100 @@ describe("EventBusService", () => {
     describe("successfully adds job to queue", () => {
       beforeAll(() => {
         jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
         eventBus = new EventBusService({
           logger: loggerMock,
           manager: MockManager,
-          stagedJobRepository,
         })
 
         eventBus.queue_.add.mockImplementationOnce(() => "hi")
 
         job = eventBus.emit("eventName", { hi: "1234" })
       })
+
+      it("calls queue.add", () => {
+        expect(eventBus.queue_.add).toHaveBeenCalled()
+      })
+    })
+
+    describe("successfully adds job to cache if cache key is provided", () => {
+      const cacheService = new CacheServiceMock()
+      beforeAll(() => {
+        jest.resetAllMocks()
+
+        eventBus = new EventBusService({
+          logger: loggerMock,
+          manager: MockManager,
+          cacheService,
+        })
+
+        job = eventBus.emit("eventName", { hi: "1234" }, { cacheKey: "test" })
+      })
       afterAll(async () => {
         await eventBus.stopEnqueuer()
       })
 
-      it("calls queue.add", () => {
-        expect(eventBus.queue_.add).toHaveBeenCalled()
+      it("calls cacheservice", () => {
+        expect(cacheService.get).toHaveBeenCalledTimes(1)
+        expect(cacheService.set).toHaveBeenCalledTimes(1)
+      })
+
+      it("does not add to queue", () => {
+        expect(eventBus.queue_.add).toHaveBeenCalledTimes(0)
+      })
+    })
+  })
+
+  describe("processCachedEvents", () => {
+    let eventBus
+    let job
+
+    const cacheService = {
+      get: (cacheKey) => {
+        if (cacheKey === "test") {
+          return [
+            { eventName: "event1", data: { hi: "1234" } },
+            { eventName: "event2", data: { hi: "5678" } },
+          ]
+        }
+
+        return []
+      },
+    }
+
+    describe("successfully adds job to queue", () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+
+        eventBus = new EventBusService({
+          logger: loggerMock,
+          manager: MockManager,
+          cacheService,
+        })
+
+        eventBus.processCachedEvents("test")
+      })
+
+      it("processes two jobs from cache", () => {
+        expect(eventBus.queue_.add).toHaveBeenCalledTimes(2)
+      })
+    })
+
+    describe("returns early if no cache exists", () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+
+        eventBus = new EventBusService({
+          logger: loggerMock,
+          manager: MockManager,
+          cacheService,
+        })
+
+        eventBus.processCachedEvents("42")
+      })
+
+      it("dont not add to queue", () => {
+        expect(eventBus.queue_.add).toHaveBeenCalledTimes(0)
       })
     })
   })
@@ -169,15 +226,12 @@ describe("EventBusService", () => {
       let eventBus
       beforeAll(async () => {
         jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
         eventBus = new EventBusService({
           manager: MockManager,
-          stagedJobRepository,
           logger: loggerMock,
         })
+
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
         eventBus.subscribe("eventName", () => Promise.resolve("hi2"))
         eventBus.subscribe("eventName", () => Promise.resolve("hi3"))
@@ -190,9 +244,6 @@ describe("EventBusService", () => {
         })
       })
 
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
-      })
       it("calls logger warn on rejections", () => {
         expect(loggerMock.warn).toHaveBeenCalledTimes(3)
         expect(loggerMock.warn).toHaveBeenCalledWith(
