@@ -1,11 +1,10 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
+import { AbstractPaymentService, TransactionBaseService } from "../interfaces"
 import {
-  AbstractPaymentService,
-  PaymentContext,
-  PaymentSessionResponse,
-  TransactionBaseService,
-} from "../interfaces"
+  PaymentProcessorContext,
+  PaymentProcessorSessionResponse,
+} from "../types/payment-processor"
 import { EntityManager } from "typeorm"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { PaymentRepository } from "../repositories/payment"
@@ -193,7 +192,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       ) as Cart | PaymentSessionInput
 
       const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
-      const context = this.buildPaymentContext(data)
+      const context = this.buildPaymentProcessorContext(data)
 
       if (!isDefined(context.currency_code) || !isDefined(context.amount)) {
         throw new MedusaError(
@@ -279,7 +278,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await this.atomicPhase_(async (transactionManager) => {
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
-      const context = this.buildPaymentContext(sessionInput)
+      const context = this.buildPaymentProcessorContext(sessionInput)
 
       const sessionData = await provider
         .withTransaction(transactionManager)
@@ -640,15 +639,15 @@ export default class PaymentProviderService extends TransactionBaseService {
    * @param cartOrData
    * @protected
    */
-  protected buildPaymentContext(
+  protected buildPaymentProcessorContext(
     cartOrData: Cart | PaymentSessionInput
-  ): Cart & PaymentContext {
+  ): Cart & PaymentProcessorContext {
     const cart =
       "object" in cartOrData && cartOrData.object === "cart"
         ? cartOrData
         : ((cartOrData as PaymentSessionInput).cart as Cart)
 
-    const context = {} as Cart & PaymentContext
+    const context = {} as Cart & PaymentProcessorContext
 
     // TODO: only to support legacy API. Once we are ready to break the API, the cartOrData will only support PaymentSessionInput
     if ("object" in cartOrData && cartOrData.object === "cart") {
@@ -735,9 +734,10 @@ export default class PaymentProviderService extends TransactionBaseService {
    */
   protected async processUpdateRequestsData(
     data: { customer?: { id?: string } } = {},
-    paymentResponse: PaymentSessionResponse | Record<string, unknown>
+    paymentResponse: PaymentProcessorSessionResponse | Record<string, unknown>
   ): Promise<void> {
-    const { update_requests } = paymentResponse as PaymentSessionResponse
+    const { update_requests } =
+      paymentResponse as PaymentProcessorSessionResponse
 
     if (!update_requests) {
       return
