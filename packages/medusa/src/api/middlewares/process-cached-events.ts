@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express"
+import { isDefined } from "medusa-core-utils"
 import { IEventBusService } from "../../interfaces/services/event-bus"
 
 export default (): ((
@@ -16,8 +17,10 @@ export default (): ((
       // If they are already busted (due to an error), the processing
       // will return early.
 
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      eventBusService.processCachedEvents(cacheKey)
+      if (isDefined(cacheKey)) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        eventBusService.processCachedEvents(cacheKey)
+      }
     })
   }
 }
