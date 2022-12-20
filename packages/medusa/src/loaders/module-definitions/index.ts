@@ -29,7 +29,7 @@ export default ({ modules }: ConfigModule) => {
     // If user added a module and it's overridable, we resolve that instead
     if (
       definition.canOverride &&
-      ((typeof mod === "object" && mod.resolve) || typeof mod === "string")
+      (typeof mod === "string" || (typeof mod === "object" && mod.resolve))
     ) {
       resolutionPath = resolveCwd(
         typeof mod === "string" ? mod : (mod.resolve as string)
