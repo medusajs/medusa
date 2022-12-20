@@ -31,6 +31,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             cart:
  *               $ref: "#/components/schemas/cart"

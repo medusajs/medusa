@@ -9,7 +9,7 @@ export default (app) => {
 
   route.get(
     "/",
-    middlewares.authenticate(),
+    middlewares.requireCustomerAuthentication(),
     middlewares.wrap(require("./get-session").default)
   )
   route.get("/:email", middlewares.wrap(require("./exists").default))

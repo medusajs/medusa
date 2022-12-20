@@ -164,6 +164,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               products:
                 type: array

@@ -1,3 +1,4 @@
+import jwt, { JwtPayload } from "jsonwebtoken"
 import { MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -45,6 +46,8 @@ import ShippingOptionService from "./shipping-option"
 import ShippingProfileService from "./shipping-profile"
 import TotalsService from "./totals"
 import { NewTotalsService, TaxProviderService } from "./index"
+import { ConfigModule } from "../types/global"
+import logger from "../loaders/logger"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -94,6 +97,7 @@ class OrderService extends TransactionBaseService {
     UPDATED: "order.updated",
     CANCELED: "order.canceled",
     COMPLETED: "order.completed",
+    ORDERS_CLAIMED: "order.orders_claimed",
   }
 
   protected manager_: EntityManager
@@ -1457,6 +1461,8 @@ class OrderService extends TransactionBaseService {
     const { no_notification } = config
 
     return await this.atomicPhase_(async (manager) => {
+      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+
       const order = await this.retrieve(orderId, {
         select: ["refundable_amount", "total", "refunded_total"],
         relations: ["payments"],
@@ -1480,7 +1486,22 @@ class OrderService extends TransactionBaseService {
         .withTransaction(manager)
         .refundPayment(order.payments, refundAmount, reason, note)
 
-      const result = await this.retrieve(orderId)
+      let result = await this.retrieveWithTotals(orderId, {
+        relations: ["payments"],
+      })
+
+      if (result.refunded_total > 0 && result.refundable_amount > 0) {
+        result.payment_status = PaymentStatus.PARTIALLY_REFUNDED
+        result = await orderRepo.save(result)
+      }
+
+      if (
+        result.paid_total > 0 &&
+        result.refunded_total === result.paid_total
+      ) {
+        result.payment_status = PaymentStatus.REFUNDED
+        result = await orderRepo.save(result)
+      }
 
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
@@ -1498,6 +1519,27 @@ class OrderService extends TransactionBaseService {
     order: Order,
     totalsFields: string[] = []
   ): Promise<Order> {
+    if (totalsFields.some((field) => ["subtotal", "total"].includes(field))) {
+      const calculationContext =
+        await this.totalsService_.getCalculationContext(order, {
+          exclude_shipping: true,
+        })
+      order.items = await Promise.all(
+        (order.items || []).map(async (item) => {
+          const itemTotals = await this.totalsService_.getLineItemTotals(
+            item,
+            order,
+            {
+              include_tax: true,
+              calculation_context: calculationContext,
+            }
+          )
+
+          return Object.assign(item, itemTotals)
+        })
+      )
+    }
+
     for (const totalField of totalsFields) {
       switch (totalField) {
         case "shipping_total": {
@@ -1603,9 +1645,9 @@ class OrderService extends TransactionBaseService {
   }
 
   /**
+   * Calculate and attach the different total fields on the object
    * @param order
    * @param totalsFieldsOrConfig
-   * @protected
    */
   async decorateTotals(
     order: Order,

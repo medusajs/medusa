@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/orders/list-orders.d.ts:208
+medusa/dist/api/routes/admin/orders/list-orders.d.ts:209
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/orders/list-orders.d.ts:209
+medusa/dist/api/routes/admin/orders/list-orders.d.ts:210
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/orders/list-orders.d.ts:207
+medusa/dist/api/routes/admin/orders/list-orders.d.ts:208
 
 ___
 
@@ -172,7 +172,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/orders/list-orders.d.ts:206
+medusa/dist/api/routes/admin/orders/list-orders.d.ts:207
 
 ___
 

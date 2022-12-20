@@ -14,6 +14,7 @@ export class PaymentProvider {
  * title: "Payment Provider"
  * description: "Represents a Payment Provider plugin and holds its installation status."
  * x-resourceId: payment_provider
+ * type: object
  * required:
  *   - id
  * properties:

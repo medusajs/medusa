@@ -1,0 +1,68 @@
+post:
+  operationId: PostPaymentCollectionsPaymentCollectionPaymentSessionsSession
+  summary: Refresh a Payment Session
+  description: >-
+    Refreshes a Payment Session to ensure that it is in sync with the Payment
+    Collection.
+  x-authenticated: false
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The id of the PaymentCollection.
+      schema:
+        type: string
+    - in: path
+      name: session_id
+      required: true
+      description: The id of the Payment Session to be refreshed.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - provider_id
+            - customer_id
+          properties:
+            provider_id:
+              description: The Payment Provider id.
+              type: string
+            customer_id:
+              description: The Customer id.
+              type: string
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/payment-collections_{id}_sessions_{session_id}/postundefined
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/payment-collections_{id}_sessions_{session_id}/postundefined
+  tags:
+    - PaymentCollection
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              payment_session:
+                $ref: ../components/schemas/payment_session.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

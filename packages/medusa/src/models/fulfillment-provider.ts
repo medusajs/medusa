@@ -14,6 +14,7 @@ export class FulfillmentProvider {
  * title: "Fulfillment Provider"
  * description: "Represents a fulfillment provider plugin and holds its installation status."
  * x-resourceId: fulfillment_provider
+ * type: object
  * properties:
  *   id:
  *     description: "The id of the fulfillment provider as given by the plugin."

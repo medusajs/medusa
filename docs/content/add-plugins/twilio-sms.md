@@ -44,7 +44,7 @@ Make sure to replace `<YOUR_ACCOUNT_SID>`, `<YOUR_AUTH_TOKEN>`, and `<YOUR_TWILI
 
 Finally, add the plugin and its options in the `medusa-config.js` file to the `plugins` array:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   ...,
   {
@@ -72,7 +72,7 @@ For this example to work, you’ll need to install and configure Redis on your s
 
 Create the file `src/services/sms.js` in your Medusa server with the following content:
 
-```jsx
+```jsx title=src/services/sms.js
 class SmsSubscriber {
   constructor({ twilioSmsService, orderService, eventBusService }) {
     this.twilioSmsService_ = twilioSmsService;

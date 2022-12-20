@@ -36,6 +36,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               type:
                 type: string

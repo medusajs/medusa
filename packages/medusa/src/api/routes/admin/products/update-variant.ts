@@ -7,18 +7,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
   ProductVariantService,
 } from "../../../../services"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
+import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
-import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}/variants/{variant_id}
@@ -33,6 +33,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
+ *         type: object
  *         required:
  *           - prices
  *         properties:
@@ -179,6 +180,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             product:
  *               $ref: "#/components/schemas/product"
@@ -267,7 +269,7 @@ export class AdminPostProductsProductVariantsVariantReq {
 
   @IsNumber()
   @IsOptional()
-  inventory_quantity: number
+  inventory_quantity?: number
 
   @IsBoolean()
   @IsOptional()
@@ -313,11 +315,11 @@ export class AdminPostProductsProductVariantsVariantReq {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesUpdateReq)
-  prices: ProductVariantPricesUpdateReq[]
+  prices?: ProductVariantPricesUpdateReq[]
 
   @Type(() => ProductVariantOptionReq)
   @ValidateNested({ each: true })
   @IsOptional()
   @IsArray()
-  options: ProductVariantOptionReq[] = []
+  options?: ProductVariantOptionReq[] = []
 }

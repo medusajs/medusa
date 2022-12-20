@@ -28,6 +28,7 @@ export class FulfillmentItem {
  * title: "Fulfillment Item"
  * description: "Correlates a Line Item with a Fulfillment, keeping track of the quantity of the Line Item."
  * x-resourceId: fulfillment_item
+ * type: object
  * required:
  *   - fulfillment_id
  *   - item_id

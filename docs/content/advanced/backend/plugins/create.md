@@ -38,7 +38,7 @@ Update the `name` field in the `package.json` file to the name of your plugin. T
 
 A basic Medusa server installed with the `medusa new` command has dependencies similar to this:
 
-```json
+```json title=package.json
 "dependencies": {
   "@medusajs/medusa": "^1.3.1",
   "@medusajs/medusa-cli": "^1.3.0",
@@ -60,7 +60,7 @@ For a plugin, a lot of these dependencies are not necessary or should be labeled
 
 The recommended change is the following:
 
-```json
+```json title=package.json
 "peerDependencies": {
   "@medusajs/medusa": "^1.3.1",
   "medusa-interfaces": "^1.3.0",
@@ -98,7 +98,7 @@ If you don't make changes to the `build` and `watch` commands, please be aware o
 
 A basic Medusa installation comes with the following scripts:
 
-```json
+```json title=package.json
 "scripts": {
   "seed": "medusa seed -f ./data/seed.json",
   "build": "babel src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\"",
@@ -110,7 +110,7 @@ The `seed` and `start` scripts aren't necessary for plugin development so you ca
 
 It’s also recommended to add the `watch` script that automatically compiles your files if they are changed:
 
-```json
+```json title=package.json
 "watch": "babel -w src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\""
 ```
 
@@ -124,7 +124,7 @@ Testing the plugin is covered in a [later section](#test-your-plugin).
 
 Another recommended script is the `prepare` script that builds your files under a “production” environment:
 
-```json
+```json title=package.json
 "prepare": "cross-env NODE_ENV=production npm run build"
 ```
 
@@ -161,7 +161,7 @@ If files and directories aren't placed in the root of your plugin, the Medusa se
 
 An example of a plugin's directory before testing or publishing:
 
-```bash noHeader
+```bash noReport
 medusa-plugin-custom
 |
 |_ _ _ api
@@ -202,7 +202,7 @@ Plugins often allow developers that will later use them to enter their own confi
 
 To pass a plugin its configurations on a Medusa server, you have to add it to the `plugins` array in `medusa-config.js`:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   //...
   {
@@ -216,7 +216,7 @@ const plugins = [
 
 Then, you can have access to your plugin configuration in the constructor of services in your plugin:
 
-```jsx
+```jsx title=src/service/test.ts
 //In a service in your plugin
 constructor({}, options) {
   //options contains plugin configurations
@@ -226,7 +226,7 @@ constructor({}, options) {
 
 You can also have access to the configurations in endpoints in your plugin:
 
-```jsx
+```jsx title=src/api/index.ts
 //in an endpoint in your plugin
 export default (rootDirectory, options) => {
   //options contain the plugin configurations
@@ -281,7 +281,7 @@ If you’re running the `watch` command, you don’t need to run the `build` com
 
 Then, add your plugin into the array of plugins in `medusa-config.js`:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   //...
   {
@@ -364,7 +364,7 @@ So, you can ignore files and directories like `src` from the final published NPM
 
 To do that, create the file `.npmignore` with the following content:
 
-```bash
+```bash title=.npmignore
 /lib
 node_modules
 .DS_store

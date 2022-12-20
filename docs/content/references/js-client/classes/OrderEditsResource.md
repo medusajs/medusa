@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:26](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/order-edits.ts#L26)
+[medusa-js/src/resources/order-edits.ts:26](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/order-edits.ts#L26)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:17](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/order-edits.ts#L17)
+[medusa-js/src/resources/order-edits.ts:17](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/order-edits.ts#L17)
 
 ___
 
@@ -68,4 +68,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/order-edits.ts#L9)
+[medusa-js/src/resources/order-edits.ts:9](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/order-edits.ts#L9)

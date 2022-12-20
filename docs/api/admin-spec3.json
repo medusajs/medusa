@@ -202,112 +202,6 @@ tags:
 servers:
   - url: 'https://api.medusa-commerce.com/admin'
 paths:
-  /apps/authorizations:
-    post:
-      operationId: PostApps
-      summary: Generate Token for App
-      description: Generates a token for an application.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - application_name
-                - state
-                - code
-              properties:
-                application_name:
-                  type: string
-                  description: Name of the application for the token to be generated for.
-                state:
-                  type: string
-                  description: State of the application.
-                code:
-                  type: string
-                  description: The code for the generated token.
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/apps/authorizations' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "application_name": "example",
-                "state": "ready",
-                "code": "token"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - App
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  apps:
-                    $ref: '#/components/schemas/OAuth'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /apps:
-    get:
-      operationId: GetApps
-      summary: List Applications
-      description: Retrieve a list of applications.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/admin/apps' \
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - App
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  apps:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/OAuth'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /auth:
     post:
       operationId: PostAuth
@@ -362,6 +256,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
@@ -458,6 +353,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
@@ -520,6 +416,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
@@ -582,6 +479,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
@@ -607,6 +505,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - type
                 - context
@@ -685,6 +584,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
@@ -975,6 +875,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   batch_jobs:
                     type: array
@@ -1048,6 +949,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
@@ -1080,6 +982,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - product_ids
               properties:
@@ -1116,6 +1019,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
@@ -1147,6 +1051,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - product_ids
               properties:
@@ -1185,6 +1090,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -1221,6 +1127,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - title
               properties:
@@ -1279,6 +1186,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
@@ -1434,6 +1342,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   collections:
                     type: array
@@ -1507,6 +1416,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -1577,6 +1487,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
@@ -1608,6 +1519,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 title:
                   type: string
@@ -1664,6 +1576,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
@@ -1744,6 +1657,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   currencies:
                     type: array
@@ -1775,6 +1689,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 includes_tax:
                   type: boolean
@@ -1818,6 +1733,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   currency:
                     $ref: '#/components/schemas/currency'
@@ -1838,6 +1754,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - customer_ids
               properties:
@@ -1902,6 +1819,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
@@ -1933,6 +1851,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - customer_ids
               properties:
@@ -1997,6 +1916,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
@@ -2061,6 +1981,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
@@ -2246,6 +2167,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer_groups:
                     type: array
@@ -2319,6 +2241,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -2405,6 +2328,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
@@ -2436,6 +2360,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 name:
                   description: Name of the customer group
@@ -2485,6 +2410,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer_group:
                     $ref: '#/components/schemas/customer_group'
@@ -2547,6 +2473,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customers:
                     type: array
@@ -2573,6 +2500,115 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /apps/authorizations:
+    post:
+      operationId: PostApps
+      summary: Generate Token for App
+      description: Generates a token for an application.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - application_name
+                - state
+                - code
+              properties:
+                application_name:
+                  type: string
+                  description: Name of the application for the token to be generated for.
+                state:
+                  type: string
+                  description: State of the application.
+                code:
+                  type: string
+                  description: The code for the generated token.
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/apps/authorizations' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "application_name": "example",
+                "state": "ready",
+                "code": "token"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - App
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apps:
+                    $ref: '#/components/schemas/OAuth'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /apps:
+    get:
+      operationId: GetApps
+      summary: List Applications
+      description: Retrieve a list of applications.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/admin/apps' \
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - App
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apps:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OAuth'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers:
     post:
       operationId: PostCustomers
@@ -2583,6 +2619,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - email
                 - first_name
@@ -2659,6 +2696,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -2736,6 +2774,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customers:
                     type: array
@@ -2819,6 +2858,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -2860,6 +2900,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 email:
                   type: string
@@ -2935,6 +2976,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
@@ -3003,6 +3045,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -3072,6 +3115,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -3124,6 +3168,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - resources
               properties:
@@ -3181,6 +3226,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -3232,6 +3278,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - resources
               properties:
@@ -3289,6 +3336,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -3338,6 +3386,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - operator
               properties:
@@ -3424,6 +3473,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -3462,9 +3512,11 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - code
                 - rule
+                - regions
               properties:
                 code:
                   type: string
@@ -3618,6 +3670,7 @@ paths:
                 value: 10,
                 allocation: AllocationType.ITEM
               },
+              regions: ['reg_XXXXXXXX'],
               is_dynamic: false,
               is_disabled: false
             })
@@ -3641,7 +3694,8 @@ paths:
                    "type": "fixed",
                    "value": 10,
                    "allocation": "item"
-                }
+                },
+                "regions": ['reg_XXXXXXXX']
             }'
       security:
         - api_token: []
@@ -3654,6 +3708,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -3766,6 +3821,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discounts:
                     type: array
@@ -3851,6 +3907,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -3950,6 +4007,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -4042,6 +4100,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount_condition:
                     $ref: '#/components/schemas/discount_condition'
@@ -4096,6 +4155,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 products:
                   type: array
@@ -4177,6 +4237,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -4239,6 +4300,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -4319,6 +4381,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -4366,6 +4429,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 code:
                   type: string
@@ -4523,6 +4587,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -4591,6 +4656,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -4663,6 +4729,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
@@ -4688,6 +4755,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - email
                 - items
@@ -4851,6 +4919,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
@@ -4925,6 +4994,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   draft_orders:
                     type: array
@@ -4968,6 +5038,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - quantity
               properties:
@@ -5033,6 +5104,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
@@ -5095,6 +5167,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -5165,6 +5238,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
@@ -5234,6 +5308,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
@@ -5271,6 +5346,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 unit_price:
                   description: The potential custom price of the item.
@@ -5329,6 +5405,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
@@ -5391,6 +5468,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/draft-order'
@@ -5423,6 +5501,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 region_id:
                   type: string
@@ -5509,6 +5588,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
@@ -5536,6 +5616,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - region_id
               properties:
@@ -5605,6 +5686,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
@@ -5677,6 +5759,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   gift_cards:
                     type: array
@@ -5750,6 +5833,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -5820,6 +5904,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
@@ -5853,6 +5938,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 balance:
                   type: integer
@@ -5920,6 +6006,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
@@ -5944,6 +6031,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - token
                 - user
@@ -6044,6 +6132,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - user
                 - role
@@ -6155,6 +6244,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   invites:
                     type: array
@@ -6219,6 +6309,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -6313,6 +6404,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - resource_id
                 - resource_type
@@ -6373,6 +6465,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   note:
                     $ref: '#/components/schemas/note'
@@ -6443,6 +6536,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   notes:
                     type: array
@@ -6516,6 +6610,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -6586,6 +6681,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   note:
                     $ref: '#/components/schemas/note'
@@ -6617,6 +6713,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - value
               properties:
@@ -6665,6 +6762,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   note:
                     $ref: '#/components/schemas/note'
@@ -6775,6 +6873,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   notifications:
                     type: array
@@ -6811,6 +6910,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 to:
                   description: >-
@@ -6851,6 +6951,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   notification:
                     $ref: '#/components/schemas/notification'
@@ -6882,6 +6983,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - variant_id
                 - quantity
@@ -6940,6 +7042,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7001,6 +7104,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7058,6 +7162,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7078,6 +7183,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - order_id
               properties:
@@ -7126,6 +7232,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7143,8 +7250,8 @@ paths:
           $ref: '#/components/responses/500_error'
     get:
       operationId: GetOrderEdits
-      summary: List an OrderEdit
-      description: List a OrderEdit.
+      summary: List OrderEdits
+      description: List OrderEdits.
       x-authenticated: true
       parameters:
         - in: query
@@ -7212,6 +7319,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edits:
                     type: array
@@ -7289,6 +7397,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7326,6 +7435,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - quantity
               properties:
@@ -7372,6 +7482,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7441,6 +7552,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -7501,6 +7613,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -7570,6 +7683,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7601,6 +7715,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 internal_note:
                   description: An optional note to create or update for the order edit.
@@ -7646,6 +7761,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7707,6 +7823,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order_edit:
                     $ref: '#/components/schemas/order_edit'
@@ -7778,6 +7895,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -7865,6 +7983,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -7934,6 +8053,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8010,6 +8130,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8086,6 +8207,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8155,6 +8277,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8220,6 +8343,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8289,6 +8413,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8351,6 +8476,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8413,6 +8539,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8451,6 +8578,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - fulfillment_id
               properties:
@@ -8505,6 +8633,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8537,6 +8666,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - type
                 - claim_items
@@ -8710,6 +8840,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8744,6 +8875,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - items
               properties:
@@ -8823,6 +8955,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8855,6 +8988,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - fulfillment_id
               properties:
@@ -8913,6 +9047,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -8951,6 +9086,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - fulfillment_id
               properties:
@@ -9010,6 +9146,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -9044,6 +9181,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - return_items
               properties:
@@ -9174,6 +9312,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -9212,6 +9351,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 metadata:
                   description: >-
@@ -9258,6 +9398,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -9296,6 +9437,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 metadata:
                   description: >-
@@ -9342,6 +9484,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -9404,6 +9547,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -9435,6 +9579,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 email:
                   description: the email for the order
@@ -9541,6 +9686,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -9810,6 +9956,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   orders:
                     type: array
@@ -9893,6 +10040,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -9925,6 +10073,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - amount
                 - reason
@@ -9987,6 +10136,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -10021,6 +10171,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - items
               properties:
@@ -10128,6 +10279,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -10166,6 +10318,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 claim_items:
                   description: The Claim Items that the Claim will consist of.
@@ -10297,9 +10450,510 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}':
+    delete:
+      operationId: DeletePaymentCollectionsPaymentCollection
+      summary: Delete a Payment Collection
+      description: Deletes a Payment Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collection to delete.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.paymentCollections.delete(payment_collection_id)
+              .then(({ id, object, deleted }) => {
+                console.log(id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/payment-collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Payment Collection.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    format: payment_collection
+                  deleted:
+                    type: boolean
+                    description: Whether or not the Payment Collection was deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+    get:
+      operationId: GetPaymentCollectionsPaymentCollection
+      summary: Retrieve an PaymentCollection
+      description: Retrieves a PaymentCollection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PaymentCollection.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.paymentCollections.retrieve(paymentCollectionId)
+              .then(({ payment_collection }) => {
+                console.log(payment_collection.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/payment-collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/payment_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostPaymentCollectionsPaymentCollection
+      summary: Updates a PaymentCollection
+      description: Updates a PaymentCollection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PaymentCollection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  description: >-
+                    An optional description to create or update the payment
+                    collection.
+                  type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.paymentCollections.update(payment_collection_id, {
+              description: "Description of payCol"
+            })
+              .then(({ payment_collection }) => {
+                console.log(payment_collection.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/payment-collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "description": "Description of payCol"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/payment_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/authorize':
+    post:
+      operationId: PostPaymentCollectionsPaymentCollectionAuthorize
+      summary: Set the status of PaymentCollection as Authorized
+      description: Sets the status of PaymentCollection as Authorized.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PaymentCollection.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.paymentCollections.markAsAuthorized(payment_collection_id)
+              .then(({ payment_collection }) => {
+                console.log(payment_collection.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/payment-collections/{id}/authorize' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/payment_collection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payments/{id}/capture':
+    post:
+      operationId: PostPaymentsPaymentCapture
+      summary: Capture a Payment
+      description: Captures a Payment.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.payments.capturePayment(payment_id)
+
+            .then(({ payment }) => {
+              console.log(payment.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/payments/{id}/capture' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment:
+                    $ref: '#/components/schemas/payment'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payments/{id}':
+    get:
+      operationId: GetPaymentsPayment
+      summary: Get Payment details
+      description: Retrieves the Payment details
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.payments.retrieve(payment_id)
+
+            .then(({ payment }) => {
+              console.log(payment.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/payments/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment:
+                    $ref: '#/components/schemas/payment'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payments/{id}/refund':
+    post:
+      operationId: PostPaymentsPaymentRefunds
+      summary: Create a Refund
+      description: Issues a Refund.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - reason
+              properties:
+                amount:
+                  description: The amount to refund.
+                  type: integer
+                reason:
+                  description: The reason for the Refund.
+                  type: string
+                note:
+                  description: A note with additional details about the Refund.
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.payments.refundPayment(payment_id, {
+              amount: 1000,
+              reason: 'return',
+              note: 'Do not like it',
+            })
+
+            .then(({ payment }) => {
+              console.log(payment.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/payments/pay_123/refund' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "amount": 1000,
+                "reason": "return",
+                "note": "Do not like it"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refund:
+                    $ref: '#/components/schemas/refund'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -10329,6 +10983,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 prices:
                   description: The prices to update or add.
@@ -10426,6 +11081,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   price_list:
                     $ref: '#/components/schemas/price_list'
@@ -10459,6 +11115,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 price_ids:
                   description: The price id's of the Money Amounts to delete.
@@ -10511,6 +11168,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   ids:
                     type: array
@@ -10547,6 +11205,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - name
                 - description
@@ -10690,6 +11349,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   price_list:
                     $ref: '#/components/schemas/price_list'
@@ -10885,6 +11545,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   price_lists:
                     type: array
@@ -10958,6 +11619,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -11028,6 +11690,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   price_list:
                     $ref: '#/components/schemas/price_list'
@@ -11059,6 +11722,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 name:
                   description: The name of the Price List
@@ -11180,6 +11844,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   price_list:
                     $ref: '#/components/schemas/price_list'
@@ -11252,6 +11917,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   ids:
                     type: array
@@ -11335,6 +12001,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   ids:
                     type: array
@@ -11574,6 +12241,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   products:
                     type: array
@@ -11730,6 +12398,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product_tags:
                     $ref: '#/components/schemas/product_tag'
@@ -11884,6 +12553,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product_types:
                     $ref: '#/components/schemas/product_type'
@@ -11925,6 +12595,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - title
               properties:
@@ -11975,6 +12646,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
@@ -12000,6 +12672,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - title
               properties:
@@ -12281,6 +12954,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
@@ -12532,6 +13206,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   products:
                     type: array
@@ -12577,6 +13252,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - title
                 - prices
@@ -12754,6 +13430,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
@@ -12822,6 +13499,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   variants:
                     type: array
@@ -12905,6 +13583,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   option_id:
                     type: string
@@ -12953,6 +13632,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - title
               properties:
@@ -13001,6 +13681,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
@@ -13063,6 +13744,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -13133,6 +13815,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
@@ -13164,6 +13847,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 title:
                   description: The title of the Product
@@ -13425,6 +14109,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
@@ -13493,6 +14178,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   variant_id:
                     type: string
@@ -13541,6 +14227,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - prices
               properties:
@@ -13709,6 +14396,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
@@ -13764,6 +14452,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tags:
                     type: array
@@ -13831,6 +14520,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   types:
                     type: array
@@ -13865,6 +14555,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - key
                 - value
@@ -13920,9 +14611,690 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   product:
                     $ref: '#/components/schemas/product'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/publishable-api-keys/{id}/sales-channels/batch':
+    post:
+      operationId: PostPublishableApiKeySalesChannelsChannelsBatch
+      summary: Add sales channel to a publishable api key scope
+      description: Assign a batch of sales channels to a publishable api key.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Publishable Api Key.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - sales_channel_ids
+              properties:
+                sales_channel_ids:
+                  description: >-
+                    The IDs of the sales channels to add to the publishable api
+                    key
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: string
+                        description: The ID of the sales channel
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKeys.addSalesChannels(publishableApiKeyId,
+            {
+              sales_channel_ids: [
+                {
+                  id: channel_id
+                }
+              ]
+            })
+
+            .then(({ publishable_api_key }) => {
+              console.log(publishable_api_key.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/publishable-api-keys/afasf/batch' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "sales_channel_ids": [
+                  {
+                    "id": "{sales_channel_id}"
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  publishable_api_key:
+                    $ref: '#/components/schemas/publishable_api_key'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeletePublishableApiKeySalesChannelsChannelsBatch
+      summary: Remove sales channel from a publishable api key scope
+      description: Remove a batch of sales channels from a publishable api key.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Publishable Api Key.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - sales_channel_ids
+              properties:
+                sales_channel_ids:
+                  description: >-
+                    The IDs of the sales channels to delete from the publishable
+                    api key
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - id
+                    properties:
+                      id:
+                        type: string
+                        description: The ID of the sales channel
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKeys.removeSalesChannels(publishableApiKeyId,
+            {
+              sales_channel_ids: [
+                {
+                  id: channel_id
+                }
+              ]
+            })
+
+            .then(({ publishable_api_key }) => {
+              console.log(publishable_api_key.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/publishable-api-keys/afasf/batch' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "sales_channel_ids": [
+                  {
+                    "id": "{sales_channel_id}"
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  publishable_api_key:
+                    $ref: '#/components/schemas/publishable_api_key'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /publishable-api-keys:
+    post:
+      operationId: PostPublishableApiKeys
+      summary: Create a PublishableApiKey
+      description: Creates a PublishableApiKey.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  description: A title for the publishable api key
+                  type: string
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKey.create()
+              .then(({ publishable_api_key }) => {
+                console.log(publishable_api_key.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/publishable-api-keys' \
+
+            --header 'Authorization: Bearer {api_token}'
+
+            -d '{ "created_by": "user_123" }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publishable_api_key:
+                    $ref: '#/components/schemas/publishable_api_key'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetPublishableApiKeys
+      summary: List PublishableApiKeys
+      description: List PublishableApiKeys.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching publishable api keys by title.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: The number of items in the response
+          schema:
+            type: number
+            default: '20'
+        - in: query
+          name: offset
+          description: The offset of items in response
+          schema:
+            type: number
+            default: '0'
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKeys.list()
+              .then(({ publishable_api_keys }) => {
+                console.log(publishable_api_keys)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/publishable-api-keys' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publishable_api_keys:
+                    type: array
+                    $ref: '#/components/schemas/publishable_api_key'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/publishable-api-keys/{id}':
+    delete:
+      operationId: DeletePublishableApiKeysPublishableApiKey
+      summary: Delete a PublishableApiKey
+      description: Deletes a PublishableApiKeys
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PublishableApiKeys to delete.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKey.delete(key_id)
+              .then(({ id, object, deleted }) => {
+                console.log(id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/publishable-api-key/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted PublishableApiKey.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    format: publishable_api_key
+                  deleted:
+                    type: boolean
+                    description: Whether the PublishableApiKeys was deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+    get:
+      operationId: GetPublishableApiKeysPublishableApiKey
+      summary: Get a Publishable API Key
+      description: Retrieve the Publishable Api Key.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PublishableApiKey.
+          schema:
+            type: string
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKey.retrieve(pubKeyId)
+              .then(({ publishable_api_key }) => {
+                console.log(publishable_api_key.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/publishable-api-keys/pubkey_123' \
+
+            --header 'Authorization: Bearer {api_token}'
+
+            -d '{ "created_by": "user_123" }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publishable_api_key:
+                    $ref: '#/components/schemas/publishable_api_key'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/publishable-api-keys/{id}/sales-channels':
+    get:
+      operationId: GetPublishableApiKeySalesChannels
+      summary: List PublishableApiKey's SalesChannels
+      description: List PublishableApiKey's SalesChannels
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Publishable Api Key.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKeys.listSalesChannels()
+              .then(({ sales_channels, limit, offset, count }) => {
+                console.log(sales_channels)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/publishable-api-keys/pk_123/sales-channels'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  sales_channels:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/sales_channel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/publishable-api-keys/{id}/revoke':
+    post:
+      operationId: PostPublishableApiKeysPublishableApiKeyRevoke
+      summary: Revoke a PublishableApiKey
+      description: Revokes a PublishableApiKey.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PublishableApiKey.
+          schema:
+            type: string
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKey.revoke()
+              .then(({ publishable_api_key }) => {
+                console.log(publishable_api_key.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/publishable-api-keys/pubkey_123/revoke'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+
+            -d '{ "created_by": "user_123", "revoked_by": "user_123" }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publishable_api_key:
+                    $ref: '#/components/schemas/publishable_api_key'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/publishable-api-key/{id}':
+    post:
+      operationId: PostPublishableApiKysPublishableApiKey
+      summary: Updates a PublishableApiKey
+      description: Updates a PublishableApiKey.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PublishableApiKey.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  description: A title to update for the key.
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.publishableApiKey.update(publishable_key_id, {
+              title: "new title"
+            })
+              .then(({ publishable_api_key }) => {
+                console.log(publishable_api_key.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/publishable-api-key/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "title": "updated title"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PublishableApiKey
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publishable_api_key:
+                    $ref: '#/components/schemas/publishable_api_key'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -13952,6 +15324,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - country_code
               properties:
@@ -14004,6 +15377,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14036,6 +15410,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - provider_id
               properties:
@@ -14084,6 +15459,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14116,6 +15492,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - provider_id
               properties:
@@ -14164,6 +15541,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14189,6 +15567,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - name
                 - currency_code
@@ -14302,6 +15681,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14395,6 +15775,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   regions:
                     type: array
@@ -14468,6 +15849,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -14538,6 +15920,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14569,6 +15952,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 name:
                   description: The name of the Region
@@ -14667,6 +16051,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14729,6 +16114,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   fulfillment_options:
                     type: array
@@ -14812,6 +16198,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14881,6 +16268,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14950,6 +16338,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   region:
                     $ref: '#/components/schemas/region'
@@ -14975,6 +16364,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - label
                 - value
@@ -15042,6 +16432,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   return_reason:
                     $ref: '#/components/schemas/return_reason'
@@ -15096,6 +16487,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   return_reasons:
                     type: array
@@ -15160,6 +16552,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -15230,6 +16623,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   return_reason:
                     $ref: '#/components/schemas/return_reason'
@@ -15261,6 +16655,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 label:
                   description: The label to display to the Customer.
@@ -15320,6 +16715,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   return_reason:
                     $ref: '#/components/schemas/return_reason'
@@ -15381,6 +16777,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
@@ -15448,6 +16845,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   returns:
                     type: array
@@ -15492,6 +16890,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - items
               properties:
@@ -15564,6 +16963,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
@@ -15596,6 +16996,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - product_ids
               properties:
@@ -15660,6 +17061,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
@@ -15691,6 +17093,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - product_ids
               properties:
@@ -15755,6 +17158,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
@@ -15780,6 +17184,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - name
               properties:
@@ -15835,6 +17240,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
@@ -16007,6 +17413,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   sales_channels:
                     type: array
@@ -16080,6 +17487,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -16150,6 +17558,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
@@ -16181,6 +17590,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 name:
                   type: string
@@ -16233,9 +17643,758 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/sales_channel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /shipping-profiles:
+    post:
+      operationId: PostShippingProfiles
+      summary: Create a Shipping Profile
+      description: Creates a Shipping Profile
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  description: The name of the Shipping Profile
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.create({
+              name: 'Large Products'
+            })
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/shipping-profiles' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "Large Products"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_profile:
+                    $ref: '#/components/schemas/shipping_profile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetShippingProfiles
+      summary: List Shipping Profiles
+      description: Retrieves a list of Shipping Profile.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.list()
+
+            .then(({ shipping_profiles }) => {
+              console.log(shipping_profiles.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/shipping-profiles' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_profiles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/shipping_profile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/shipping-profiles/{id}':
+    delete:
+      operationId: DeleteShippingProfilesProfile
+      summary: Delete a Shipping Profile
+      description: Deletes a Shipping Profile.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Profile.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.delete(profile_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/shipping-profiles/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Shipping Profile.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: shipping_profile
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetShippingProfilesProfile
+      summary: Get a Shipping Profile
+      description: Retrieves a Shipping Profile.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Profile.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.retrieve(profile_id)
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/shipping-profiles/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_profile:
+                    $ref: '#/components/schemas/shipping_profile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostShippingProfilesProfile
+      summary: Update a Shipping Profile
+      description: Updates a Shipping Profile
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Profile.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: The name of the Shipping Profile
+                  type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.update(shipping_profile_id, {
+              name: 'Large Products'
+            })
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/shipping-profiles/{id} \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "Large Products"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_profile:
+                    $ref: '#/components/schemas/shipping_profile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/store/currencies/{code}':
+    post:
+      operationId: PostStoreCurrenciesCode
+      summary: Add a Currency Code
+      description: Adds a Currency Code to the available currencies.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The 3 character ISO currency code.
+          schema:
+            type: string
+            externalDocs:
+              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+              description: See a list of codes.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.store.addCurrency('eur')
+
+            .then(({ store }) => {
+              console.log(store.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/store/currencies/eur' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteStoreCurrenciesCode
+      summary: Delete a Currency Code
+      description: Removes a Currency Code from the available currencies.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The 3 character ISO currency code.
+          schema:
+            type: string
+            externalDocs:
+              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+              description: See a list of codes.
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.store.deleteCurrency('eur')
+
+            .then(({ store }) => {
+              console.log(store.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/store/currencies/eur' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /store:
+    get:
+      operationId: GetStore
+      summary: Get Store details
+      description: Retrieves the Store details
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.store.retrieve()
+
+            .then(({ store }) => {
+              console.log(store.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/admin/store' \
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostStore
+      summary: Update Store Details
+      description: Updates the Store details
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: The name of the Store
+                  type: string
+                swap_link_template:
+                  description: >-
+                    A template for Swap links - use `{{cart_id}}` to insert the
+                    Swap Cart id
+                  type: string
+                payment_link_template:
+                  description: >-
+                    A template for payment links links - use `{{cart_id}}` to
+                    insert the Cart id
+                  type: string
+                invite_link_template:
+                  description: >-
+                    A template for invite links - use `{{invite_token}}` to
+                    insert the invite token
+                  type: string
+                default_currency_code:
+                  description: The default currency code for the Store.
+                  type: string
+                  externalDocs:
+                    url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
+                    description: See a list of codes.
+                currencies:
+                  description: Array of currencies in 2 character ISO code format.
+                  type: array
+                  items:
+                    type: string
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs with additional
+                    information.
+                  type: object
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.store.update({
+              name: 'Medusa Store'
+            })
+
+            .then(({ store }) => {
+              console.log(store.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST 'https://medusa-url.com/admin/store'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "Medusa Store"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  store:
+                    $ref: '#/components/schemas/store'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /store/payment-providers:
+    get:
+      operationId: GetStorePaymentProviders
+      summary: List Payment Providers
+      description: Retrieves the configured Payment Providers
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.store.listPaymentProviders()
+
+            .then(({ payment_providers }) => {
+              console.log(payment_providers.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/store/payment-providers' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_providers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/payment_provider'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /store/tax-providers:
+    get:
+      operationId: GetStoreTaxProviders
+      summary: List Tax Providers
+      description: Retrieves the configured Tax Providers
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.store.listTaxProviders()
+
+            .then(({ tax_providers }) => {
+              console.log(tax_providers.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/store/tax-providers' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Store
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tax_providers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/tax_provider'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -16258,6 +18417,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - name
                 - region_id
@@ -16383,6 +18543,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/shipping_option'
@@ -16453,6 +18614,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   shipping_options:
                     type: array
@@ -16520,6 +18682,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -16590,6 +18753,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/shipping_option'
@@ -16621,6 +18785,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - requirements
               properties:
@@ -16717,743 +18882,10 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/shipping_option'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /shipping-profiles:
-    post:
-      operationId: PostShippingProfiles
-      summary: Create a Shipping Profile
-      description: Creates a Shipping Profile
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - name
-              properties:
-                name:
-                  description: The name of the Shipping Profile
-                  type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.create({
-              name: 'Large Products'
-            })
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/shipping-profiles' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "Large Products"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/shipping_profile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetShippingProfiles
-      summary: List Shipping Profiles
-      description: Retrieves a list of Shipping Profile.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.list()
-
-            .then(({ shipping_profiles }) => {
-              console.log(shipping_profiles.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/shipping-profiles' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_profiles:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_profile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/shipping-profiles/{id}':
-    delete:
-      operationId: DeleteShippingProfilesProfile
-      summary: Delete a Shipping Profile
-      description: Deletes a Shipping Profile.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.delete(profile_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/shipping-profiles/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Shipping Profile.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: shipping_profile
-                  deleted:
-                    type: boolean
-                    description: Whether or not the items were deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetShippingProfilesProfile
-      summary: Get a Shipping Profile
-      description: Retrieves a Shipping Profile.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.retrieve(profile_id)
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/shipping-profiles/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/shipping_profile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostShippingProfilesProfile
-      summary: Update a Shipping Profile
-      description: Updates a Shipping Profile
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                name:
-                  description: The name of the Shipping Profile
-                  type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.update(shipping_profile_id, {
-              name: 'Large Products'
-            })
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/shipping-profiles/{id} \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "Large Products"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/shipping_profile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/store/currencies/{code}':
-    post:
-      operationId: PostStoreCurrenciesCode
-      summary: Add a Currency Code
-      description: Adds a Currency Code to the available currencies.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The 3 character ISO currency code.
-          schema:
-            type: string
-            externalDocs:
-              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
-              description: See a list of codes.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.store.addCurrency('eur')
-
-            .then(({ store }) => {
-              console.log(store.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/store/currencies/eur' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    delete:
-      operationId: DeleteStoreCurrenciesCode
-      summary: Delete a Currency Code
-      description: Removes a Currency Code from the available currencies.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The 3 character ISO currency code.
-          schema:
-            type: string
-            externalDocs:
-              url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
-              description: See a list of codes.
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.store.deleteCurrency('eur')
-
-            .then(({ store }) => {
-              console.log(store.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/store/currencies/eur' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /store:
-    get:
-      operationId: GetStore
-      summary: Get Store details
-      description: Retrieves the Store details
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.store.retrieve()
-
-            .then(({ store }) => {
-              console.log(store.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/admin/store' \
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostStore
-      summary: Update Store Details
-      description: Updates the Store details
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                name:
-                  description: The name of the Store
-                  type: string
-                swap_link_template:
-                  description: >-
-                    A template for Swap links - use `{{cart_id}}` to insert the
-                    Swap Cart id
-                  type: string
-                payment_link_template:
-                  description: >-
-                    A template for payment links links - use `{{cart_id}}` to
-                    insert the Cart id
-                  type: string
-                invite_link_template:
-                  description: >-
-                    A template for invite links - use `{{invite_token}}` to
-                    insert the invite token
-                  type: string
-                default_currency_code:
-                  description: The default currency code for the Store.
-                  type: string
-                  externalDocs:
-                    url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
-                    description: See a list of codes.
-                currencies:
-                  description: Array of currencies in 2 character ISO code format.
-                  type: array
-                  items:
-                    type: string
-                metadata:
-                  description: >-
-                    An optional set of key-value pairs with additional
-                    information.
-                  type: object
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.store.update({
-              name: 'Medusa Store'
-            })
-
-            .then(({ store }) => {
-              console.log(store.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST 'https://medusa-url.com/admin/store'
-            \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "Medusa Store"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  store:
-                    $ref: '#/components/schemas/store'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /store/payment-providers:
-    get:
-      operationId: GetStorePaymentProviders
-      summary: List Payment Providers
-      description: Retrieves the configured Payment Providers
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.store.listPaymentProviders()
-
-            .then(({ payment_providers }) => {
-              console.log(payment_providers.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/store/payment-providers' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  payment_providers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/payment_provider'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /store/tax-providers:
-    get:
-      operationId: GetStoreTaxProviders
-      summary: List Tax Providers
-      description: Retrieves the configured Tax Providers
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.store.listTaxProviders()
-
-            .then(({ tax_providers }) => {
-              console.log(tax_providers.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/store/tax-providers' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Store
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  tax_providers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/tax_provider'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -17513,6 +18945,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   swap:
                     $ref: '#/components/schemas/swap'
@@ -17579,6 +19012,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   swaps:
                     type: array
@@ -17640,6 +19074,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - product_types
               properties:
@@ -17696,6 +19131,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -17745,6 +19181,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - product_types
               properties:
@@ -17801,6 +19238,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -17851,6 +19289,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - products
               properties:
@@ -17905,6 +19344,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -17954,6 +19394,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - products
               properties:
@@ -18010,6 +19451,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -18060,6 +19502,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - shipping_options
               properties:
@@ -18117,6 +19560,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -18166,6 +19610,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - shipping_options
               properties:
@@ -18223,6 +19668,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -18267,6 +19713,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - code
                 - name
@@ -18349,6 +19796,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -18477,6 +19925,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rates:
                     type: array
@@ -18550,6 +19999,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -18638,6 +20088,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -18687,6 +20138,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 code:
                   type: string
@@ -18761,6 +20213,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   tax_rate:
                     $ref: '#/components/schemas/tax_rate'
@@ -18833,6 +20286,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   uploads:
                     type: array
@@ -18912,6 +20366,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   uploads:
                     type: array
@@ -18944,6 +20399,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - email
                 - password
@@ -19013,6 +20469,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
@@ -19065,6 +20522,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   users:
                     type: array
@@ -19129,6 +20587,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   id:
                     type: string
@@ -19199,6 +20658,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
@@ -19230,6 +20690,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               properties:
                 first_name:
                   description: The name of the User.
@@ -19294,6 +20755,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
@@ -19319,6 +20781,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - email
               properties:
@@ -19391,6 +20854,7 @@ paths:
         content:
           application/json:
             schema:
+              type: object
               required:
                 - token
                 - password
@@ -19450,6 +20914,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
@@ -19597,6 +21062,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   variants:
                     type: array
@@ -19901,6 +21367,7 @@ components:
       title: Address Fields
       description: Address fields used when creating/updating an address.
       x-resourceId: address
+      type: object
       properties:
         company:
           type: string
@@ -19955,6 +21422,7 @@ components:
       title: Address
       description: An address.
       x-resourceId: address
+      type: object
       properties:
         id:
           type: string
@@ -20038,6 +21506,7 @@ components:
       title: Batch Job
       description: A Batch Job.
       x-resourceId: batch_job
+      type: object
       required:
         - type
       properties:
@@ -20180,6 +21649,7 @@ components:
       title: Cart
       description: Represents a user cart
       x-resourceId: cart
+      type: object
       properties:
         id:
           type: string
@@ -20357,6 +21827,7 @@ components:
       title: Claim Image
       description: Represents photo documentation of a claim.
       x-resourceId: claim_image
+      type: object
       required:
         - claim_item_id
         - url
@@ -20400,6 +21871,7 @@ components:
         Represents a claimed item along with information about the reasons for
         the claim.
       x-resourceId: claim_item
+      type: object
       required:
         - claim_order_id
         - item_id
@@ -20487,6 +21959,7 @@ components:
         order consists of a subset of items associated with an original order,
         and can contain additional information about fulfillments and returns.
       x-resourceId: claim_order
+      type: object
       required:
         - type
         - order_id
@@ -20608,6 +22081,7 @@ components:
         Claim Tags are user defined tags that can be assigned to claim items for
         easy filtering and grouping.
       x-resourceId: claim_tag
+      type: object
       required:
         - value
       properties:
@@ -20640,6 +22114,7 @@ components:
       title: Country
       description: Country details
       x-resourceId: country
+      type: object
       required:
         - iso_2
         - iso_3
@@ -20694,6 +22169,7 @@ components:
       title: Currency
       description: Currency
       x-resourceId: currency
+      type: object
       required:
         - code
         - symbol
@@ -20729,6 +22205,7 @@ components:
         can attach a Custom Shipping Option to a cart in order to set a custom
         price for a particular Shipping Option
       x-resourceId: custom_shipping_option
+      type: object
       required:
         - price
         - shipping_option_id
@@ -20787,6 +22264,7 @@ components:
       title: Customer Group
       description: Represents a customer group
       x-resourceId: customer_group
+      type: object
       required:
         - name
       properties:
@@ -20834,6 +22312,7 @@ components:
       title: Customer
       description: Represents a customer
       x-resourceId: customer
+      type: object
       required:
         - email
       properties:
@@ -20851,7 +22330,7 @@ components:
           example: Arno
         last_name:
           type: string
-          description: The customer's first name
+          description: The customer's last name
           example: Willms
         billing_address_id:
           type: string
@@ -20907,6 +22386,7 @@ components:
       title: Product Tag Discount Condition
       description: Associates a discount condition with a customer group
       x-resourceId: discount_condition_customer_group
+      type: object
       required:
         - customer_group_id
         - condition_id
@@ -20942,6 +22422,7 @@ components:
       title: Product Collection Discount Condition
       description: Associates a discount condition with a product collection
       x-resourceId: discount_condition_product_collection
+      type: object
       required:
         - product_collection_id
         - condition_id
@@ -20977,6 +22458,7 @@ components:
       title: Product Tag Discount Condition
       description: Associates a discount condition with a product tag
       x-resourceId: discount_condition_product_tag
+      type: object
       required:
         - product_tag_id
         - condition_id
@@ -21012,6 +22494,7 @@ components:
       title: Product Type Discount Condition
       description: Associates a discount condition with a product type
       x-resourceId: discount_condition_product
+      type: object
       required:
         - product_type_id
         - condition_id
@@ -21047,6 +22530,7 @@ components:
       title: Product Discount Condition
       description: Associates a discount condition with a product
       x-resourceId: discount_condition_product
+      type: object
       required:
         - product_id
         - condition_id
@@ -21082,6 +22566,7 @@ components:
       title: Discount Condition
       description: Holds rule conditions for when a discount is applicable
       x-resourceId: discount_condition
+      type: object
       required:
         - type
         - operator
@@ -21179,6 +22664,7 @@ components:
         Holds the rules that governs how a Discount is calculated when applied
         to a Cart.
       x-resourceId: discount_rule
+      type: object
       required:
         - type
         - value
@@ -21246,6 +22732,7 @@ components:
         Represents a discount that can be applied to a cart for promotional
         purposes.
       x-resourceId: discount
+      type: object
       required:
         - code
         - is_dynamic
@@ -21338,6 +22825,7 @@ components:
       title: DraftOrder
       description: Represents a draft order
       x-resourceId: draft-order
+      type: object
       properties:
         id:
           type: string
@@ -21412,6 +22900,7 @@ components:
         Correlates a Line Item with a Fulfillment, keeping track of the quantity
         of the Line Item.
       x-resourceId: fulfillment_item
+      type: object
       required:
         - fulfillment_id
         - item_id
@@ -21443,6 +22932,7 @@ components:
         Represents a fulfillment provider plugin and holds its installation
         status.
       x-resourceId: fulfillment_provider
+      type: object
       properties:
         id:
           description: The id of the fulfillment provider as given by the plugin.
@@ -21466,6 +22956,7 @@ components:
         these providers through webhooks in order to automatically update and
         synchronize the state of Fulfillments.
       x-resourceId: fulfillment
+      type: object
       required:
         - provider_id
       properties:
@@ -21581,6 +23072,7 @@ components:
         Gift Card Transactions are created once a Customer uses a Gift Card to
         pay for their Order
       x-resourceId: gift_card_transaction
+      type: object
       required:
         - gift_card_id
         - amount
@@ -21627,6 +23119,7 @@ components:
         Gift Cards are redeemable and represent a value that can be used towards
         the payment of an Order.
       x-resourceId: gift_card
+      type: object
       required:
         - code
         - value
@@ -21698,6 +23191,7 @@ components:
         Idempotency Key is used to continue a process in case of any failure
         that might occur.
       x-resourceId: idempotency_key
+      type: object
       required:
         - idempotency_key
       properties:
@@ -21752,6 +23246,7 @@ components:
       title: Image
       description: Images holds a reference to a URL at which the image file can be found.
       x-resourceId: image
+      type: object
       required:
         - url
       properties:
@@ -21784,6 +23279,7 @@ components:
       title: Invite
       description: Represents an invite
       x-resourceId: invite
+      type: object
       required:
         - user_email
       properties:
@@ -21835,6 +23331,7 @@ components:
       title: Line Item Adjustment
       description: Represents an Line Item Adjustment
       x-resourceId: line_item_adjustment
+      type: object
       required:
         - item_id
         - description
@@ -21875,6 +23372,7 @@ components:
       title: Line Item Tax Line
       description: Represents an Line Item Tax Line
       x-resourceId: line_item_tax_line
+      type: object
       required:
         - item_id
         - rate
@@ -21925,6 +23423,7 @@ components:
         Returns. Line Items may also be created when processing Swaps and
         Claims.
       x-resourceId: line_item
+      type: object
       required:
         - title
         - unit_price
@@ -22119,6 +23618,7 @@ components:
         region-based pricing is used the amount will be in the currency defined
         for the Reigon.
       x-resourceId: money_amount
+      type: object
       required:
         - currency_code
         - amount
@@ -22202,6 +23702,7 @@ components:
         resources to allow users to describe additional information in relation
         to these.
       x-resourceId: note
+      type: object
       required:
         - value
         - resource_type
@@ -22253,6 +23754,7 @@ components:
         Represents a notification provider plugin and holds its installation
         status.
       x-resourceId: notification_provider
+      type: object
       required:
         - id
       properties:
@@ -22275,6 +23777,7 @@ components:
         used to show a chronological timeline for communications sent to a
         Customer regarding an Order, and enables resends.
       x-resourceId: notification
+      type: object
       required:
         - resource_type
         - resource_id
@@ -22342,6 +23845,7 @@ components:
       title: Notification Resend
       description: A resend of a Notification.
       x-resourceId: notification_resend
+      type: object
       properties:
         id:
           description: The notification resend's ID
@@ -22405,6 +23909,7 @@ components:
       title: OAuth
       description: Represent an OAuth app
       x-resourceId: OAuth
+      type: object
       required:
         - id
         - display_name
@@ -22438,6 +23943,7 @@ components:
       title: Order Edit
       description: Order edit keeps track of order items changes.
       x-resourceId: order_edit
+      type: object
       required:
         - order_id
         - order
@@ -22566,6 +24072,7 @@ components:
       title: Order Item Change
       description: Represents an order edit item change
       x-resourceId: order_item_change
+      type: object
       required:
         - type
         - order_edit_id
@@ -22623,6 +24130,7 @@ components:
       title: Order
       description: Represents an order
       x-resourceId: order
+      type: object
       required:
         - customer_id
         - email
@@ -22901,6 +24409,7 @@ components:
       title: Payment Collection
       description: Payment Collection
       x-resourceId: payment_collection
+      type: object
       required:
         - type
         - status
@@ -22926,12 +24435,7 @@ components:
             - awaiting
             - authorized
             - partially_authorized
-            - captured
-            - partially_captured
-            - refunded
-            - partially_refunded
             - canceled
-            - requires_action
         description:
           type: string
           description: Description of the payment collection
@@ -22941,12 +24445,6 @@ components:
         authorized_amount:
           type: number
           description: Authorized amount of the payment collection.
-        captured_amount:
-          type: number
-          description: Captured amount of the payment collection.
-        refunded_amount:
-          type: number
-          description: Refunded amount of the payment collection.
         region_id:
           type: string
           description: The region's ID
@@ -22998,6 +24496,7 @@ components:
       title: Payment Provider
       description: Represents a Payment Provider plugin and holds its installation status.
       x-resourceId: payment_provider
+      type: object
       required:
         - id
       properties:
@@ -23022,6 +24521,7 @@ components:
         Sessions will eventually get promoted to Payments to indicate that they
         are authorized for capture/refunds/etc.
       x-resourceId: payment_session
+      type: object
       required:
         - cart_id
         - provider_id
@@ -23095,6 +24595,7 @@ components:
         Payments represent an amount authorized with a given payment method,
         Payments can be captured, canceled or refunded.
       x-resourceId: payment
+      type: object
       required:
         - amount
         - currency_code
@@ -23192,6 +24693,7 @@ components:
         Price Lists represents a set of prices that overrides the default price
         for one or more product variants.
       x-resourceId: price_list
+      type: object
       required:
         - name
         - description
@@ -23268,6 +24770,7 @@ components:
       title: Product Collection
       description: Product Collections represents a group of Products that are related.
       x-resourceId: product_collection
+      type: object
       required:
         - title
       properties:
@@ -23317,6 +24820,7 @@ components:
         Product Option Value for each of the Product Options defined on the
         Product.
       x-resourceId: product_option_value
+      type: object
       required:
         - value
         - option_id
@@ -23375,6 +24879,7 @@ components:
         variants of a Product. Common Product Options are "Size" and "Color",
         but Medusa doesn't limit what Product Options that can be defined.
       x-resourceId: product_option
+      type: object
       required:
         - title
         - product_id
@@ -23422,6 +24927,7 @@ components:
       title: Product Tag
       description: Product Tags can be added to Products for easy filtering and grouping.
       x-resourceId: product_tag
+      type: object
       required:
         - value
       properties:
@@ -23456,6 +24962,7 @@ components:
         Associates a tax rate with a product to indicate that the product is
         taxed in a certain way
       x-resourceId: product_tax_rate
+      type: object
       required:
         - product_id
         - rate_id
@@ -23493,6 +25000,7 @@ components:
         Associates a tax rate with a product type to indicate that the product
         type is taxed in a certain way
       x-resourceId: product_type_tax_rate
+      type: object
       required:
         - product_type_id
         - rate_id
@@ -23530,6 +25038,7 @@ components:
         Product Type can be added to Products for filtering and reporting
         purposes.
       x-resourceId: product_type
+      type: object
       required:
         - value
       properties:
@@ -23566,6 +25075,7 @@ components:
         Product can have is given by the number of available Product Option
         combinations.
       x-resourceId: product_variant
+      type: object
       required:
         - title
         - product_id
@@ -23719,6 +25229,7 @@ components:
       title: Product Variant Prices Fields
       description: Product Variants Prices Fields that are only available in some requests.
       x-resourceId: product_variant_prices_fields
+      type: object
       properties:
         original_price:
           type: number
@@ -23762,6 +25273,7 @@ components:
         such as images and descriptions. Products can have multiple options
         which define the properties that Product Variants differ by.
       x-resourceId: product
+      type: object
       required:
         - title
         - profile_id
@@ -23952,6 +25464,62 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
+    publishable_api_key_sales_channel:
+      title: Publishable API key sales channel
+      description: Holds mapping between Publishable API keys and Sales Channels
+      x-resourceId: publishable_api_key_sales_channel
+      type: object
+      properties:
+        sales_channel_id:
+          type: string
+          description: The sales channel's ID
+          example: sc_01G1G5V21KADXNGH29BJMAJ4B4
+        publishable_key_id:
+          type: string
+          description: The publishable API key's ID
+          example: pak_01G1G5V21KADXNGH29BJMAJ4B4
+    publishable_api_key:
+      title: Publishable API key
+      description: >-
+        Publishable API key defines scopes (i.e. resources) that are available
+        within a request.
+      x-resourceId: publishable_api_key
+      type: object
+      properties:
+        id:
+          type: string
+          description: The key's ID
+          example: pk_01G1G5V27GYX4QXNARRQCW1N8T
+        created_by:
+          type: string
+          description: The unique identifier of the user that created the key.
+          example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
+        created_by_user:
+          description: >-
+            A user object. Available if the relation `created_by_user` is
+            expanded.
+          type: object
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        revoked_by:
+          type: string
+          description: The unique identifier of the user that revoked the key.
+          example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
+        revoked_by_user:
+          description: >-
+            A user object. Available if the relation `revoked_by_user` is
+            expanded.
+          type: object
+        revoked_at:
+          type: string
+          description: The date with timezone at which the key was revoked.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
     refund:
       title: Refund
       description: >-
@@ -23959,6 +25527,7 @@ components:
         a given reason. Refunds may occur in relation to Returns, Swaps and
         Claims, but can also be initiated by a store operator.
       x-resourceId: refund
+      type: object
       required:
         - order_id
         - amount
@@ -24025,6 +25594,7 @@ components:
         Region can consist of multiple countries to accomodate common shopping
         settings across countries.
       x-resourceId: region
+      type: object
       required:
         - name
         - currency_code
@@ -24129,6 +25699,7 @@ components:
         Correlates a Line Item with a Return, keeping track of the quantity of
         the Line Item that will be returned.
       x-resourceId: return_item
+      type: object
       required:
         - return_id
         - item_id
@@ -24187,6 +25758,7 @@ components:
         A Reason for why a given product is returned. A Return Reason can be
         used on Return Items in order to indicate why a Line Item was returned.
       x-resourceId: return_reason
+      type: object
       required:
         - value
         - label
@@ -24241,6 +25813,7 @@ components:
         to send back, along with how the items will be returned. Returns can be
         used as part of a Swap.
       x-resourceId: return
+      type: object
       required:
         - refund_amount
       properties:
@@ -24341,6 +25914,7 @@ components:
       title: Sales Channel
       description: A Sales Channel
       x-resourceId: sales_channel
+      type: object
       required:
         - name
       properties:
@@ -24376,6 +25950,7 @@ components:
       title: Shipping Method Tax Line
       description: Shipping Method Tax Line
       x-resourceId: shipping_method_tax_line
+      type: object
       required:
         - shipping_method_id
         - rate
@@ -24425,6 +26000,7 @@ components:
         contain additional details, that can be necessary for the Fulfillment
         Provider to handle the shipment.
       x-resourceId: shipping_method
+      type: object
       required:
         - shipping_option_id
         - price
@@ -24509,6 +26085,7 @@ components:
         A requirement that a Cart must satisfy for the Shipping Option to be
         available to the Cart.
       x-resourceId: shipping_option_requirement
+      type: object
       required:
         - shipping_option_id
         - type
@@ -24557,6 +26134,7 @@ components:
         Shipping Methods. This distinction makes it possible to customize
         individual Shipping Methods with additional information.
       x-resourceId: shipping_option
+      type: object
       required:
         - name
         - region_id
@@ -24663,6 +26241,7 @@ components:
         Shipping Profiles have a set of defined Shipping Options that can be
         used to fulfill a given set of Products.
       x-resourceId: shipping_profile
+      type: object
       required:
         - name
         - type
@@ -24726,6 +26305,7 @@ components:
         Associates a tax rate with a shipping option to indicate that the
         shipping option is taxed in a certain way
       x-resourceId: shipping_tax_rate
+      type: object
       required:
         - shipping_option_id
         - rate_id
@@ -24761,6 +26341,7 @@ components:
       title: Staged Job
       description: A staged job resource
       x-resourceId: staged_job
+      type: object
       required:
         - event_name
       properties:
@@ -24780,6 +26361,7 @@ components:
       title: Store
       description: 'Holds settings for the Store, such as name, currencies, etc.'
       x-resourceId: store
+      type: object
       properties:
         id:
           type: string
@@ -24847,6 +26429,7 @@ components:
         Products being returned exceed the amount to be paid for the new
         Products, a Refund will be issued for the difference.
       x-resourceId: swap
+      type: object
       required:
         - fulfillment_status
         - payment_status
@@ -24994,6 +26577,7 @@ components:
       title: Tax Line
       description: Line item that specifies an amount of tax to add to a line item.
       x-resourceId: tax_line
+      type: object
       required:
         - rate
         - name
@@ -25031,6 +26615,7 @@ components:
       title: Tax Provider
       description: The tax service used to calculate taxes
       x-resourceId: tax_provider
+      type: object
       properties:
         id:
           description: The id of the tax provider as given by the plugin.
@@ -25049,6 +26634,7 @@ components:
         A Tax Rate can be used to associate a certain rate to charge on products
         within a given Region
       x-resourceId: line_item
+      type: object
       required:
         - name
         - region_id
@@ -25132,6 +26718,7 @@ components:
         Fulfillment. Tracking Links can optionally contain a URL that can be
         visited to see the status of the shipment.
       x-resourceId: tracking_link
+      type: object
       required:
         - tracking_number
         - fulfillment_id
@@ -25185,6 +26772,7 @@ components:
       title: User
       description: Represents a User who can manage store settings.
       x-resourceId: user
+      type: object
       required:
         - email
       properties:
@@ -25228,6 +26816,7 @@ components:
     multiple_errors:
       title: Multiple Errors
       x-resourceId: multiple_errors
+      type: object
       properties:
         errors:
           type: array
@@ -25242,6 +26831,7 @@ components:
     error:
       title: Response Error
       x-resourceId: error
+      type: object
       properties:
         code:
           type: string

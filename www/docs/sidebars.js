@@ -194,6 +194,16 @@ module.exports = {
               id: "advanced/backend/upgrade-guides/1-6-1",
               label: "v1.6.1"
             },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-7-0",
+              label: "v1.7.0"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/admin/admin-vite",
+              label: "Medusa Admin: Vite"
+            },
           ]
         },
         {
@@ -212,8 +222,23 @@ module.exports = {
           items: [
             {
               type: "doc",
+              id: "advanced/storefront/use-regions",
+              label: "Use Regions"
+            },
+            {
+              type: "doc",
               id: "guides/carts-in-medusa",
               label: "Implement Cart"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-discounts-in-checkout",
+              label: "Use Discounts in Checkout"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/taxes/manual-calculation",
+              label: "Calculate Taxes Manually"
             },
             {
               type: "doc",
@@ -222,8 +247,8 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "advanced/backend/taxes/manual-calculation",
-              label: "Calculate Taxes Manually"
+              id: "advanced/storefront/implement-claim-order",
+              label: "Implement Claim Order"
             },
             {
               type: "doc",
@@ -236,6 +261,11 @@ module.exports = {
           type: "category",
           label: "Admin",
           items: [
+            {
+              type: "doc",
+              id: "advanced/admin/manage-regions",
+              label: "Manage Regions"
+            },
             {
               type: "doc",
               id: "advanced/admin/import-products",
@@ -260,6 +290,11 @@ module.exports = {
               type: "doc",
               id: "advanced/admin/use-customergroups-api",
               label: "Use CustomerGroup APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-discounts",
+              label: "Use Discount APIs"
             },
           ]
         },
@@ -332,6 +367,11 @@ module.exports = {
           id: "advanced/backend/price-selection-strategy/override",
           label: "Override Price Selection"
         },
+        {
+          type: "doc",
+          id: "advanced/ecommerce/handle-order-claim-event",
+          label: "Handle Order Claim Event"
+        },
       ]
     },
     {
@@ -370,6 +410,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/discounts/index"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/plugins/overview",
           label: "Plugins"
         },
@@ -382,6 +426,11 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/batch-jobs/index",
           label: "Batch Jobs"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/regions/overview",
+          label: "Regions"
         },
         {
           type: "doc",

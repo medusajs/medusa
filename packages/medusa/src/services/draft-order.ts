@@ -259,8 +259,13 @@ class DraftOrderService extends TransactionBaseService {
           )
         }
 
-        const { shipping_methods, no_notification_order, items, ...rawCart } =
-          data
+        const {
+          shipping_methods,
+          no_notification_order,
+          items,
+          idempotency_key,
+          ...rawCart
+        } = data
 
         const cartServiceTx =
           this.cartService_.withTransaction(transactionManager)
@@ -285,6 +290,7 @@ class DraftOrderService extends TransactionBaseService {
         const draftOrder = draftOrderRepo.create({
           cart_id: createdCart.id,
           no_notification_order,
+          idempotency_key,
         })
         const result = await draftOrderRepo.save(draftOrder)
 

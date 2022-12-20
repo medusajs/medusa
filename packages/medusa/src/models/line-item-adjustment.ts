@@ -58,6 +58,7 @@ export class LineItemAdjustment {
  * title: "Line Item Adjustment"
  * description: "Represents an Line Item Adjustment"
  * x-resourceId: line_item_adjustment
+ * type: object
  * required:
  *   - item_id
  *   - description
