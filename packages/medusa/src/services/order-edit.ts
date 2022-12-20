@@ -1,8 +1,8 @@
 import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { FindConfig, Selector } from "../types/common"
-import { buildQuery, isDefined, isString } from "../utils"
+import { buildQuery, isString } from "../utils"
 import { OrderEditRepository } from "../repositories/order-edit"
 import {
   Cart,

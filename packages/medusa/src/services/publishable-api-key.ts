@@ -1,12 +1,12 @@
 import { EntityManager, ILike } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
 import { FindConfig, Selector } from "../types/common"
 import { PublishableApiKey, SalesChannel } from "../models"
 import { TransactionBaseService } from "../interfaces"
 import EventBusService from "./event-bus"
-import { buildQuery, isDefined, isString } from "../utils"
+import { buildQuery, isString } from "../utils"
 import {
   CreatePublishableApiKeyInput,
   UpdatePublishableApiKeyInput,

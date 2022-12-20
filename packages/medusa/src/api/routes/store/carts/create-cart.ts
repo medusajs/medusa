@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { Type } from "class-transformer"
 import {
@@ -22,7 +22,6 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { FlagRouter } from "../../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { CartCreateProps } from "../../../../types/cart"
-import { isDefined } from "../../../../utils"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**

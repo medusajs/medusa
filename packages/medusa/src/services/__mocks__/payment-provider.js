@@ -1,3 +1,5 @@
+import { isString } from "../../utils";
+
 export const DefaultProviderMock = {
   getStatus: jest.fn().mockImplementation((data) => {
     if (data.money_id === "success") {
@@ -29,12 +31,6 @@ export const PaymentProviderServiceMock = {
   },
   updateSession: jest.fn().mockImplementation((session, cart) => {
     return Promise.resolve({
-      ...session.data,
-      id: `${session.data.id}_updated`,
-    })
-  }),
-  updateSessionNew: jest.fn().mockImplementation((session, sessionInput) => {
-    return Promise.resolve({
       ...session,
       id: `${session.id}_updated`,
     })
@@ -45,16 +41,17 @@ export const PaymentProviderServiceMock = {
   registerInstalledProviders: jest.fn().mockImplementation(() => {
     return Promise.resolve()
   }),
-  createSession: jest.fn().mockImplementation((providerId, cart) => {
-    return Promise.resolve({
-      id: `${providerId}_session`,
-      cartId: cart._id,
-    })
-  }),
-  createSessionNew: jest.fn().mockImplementation((sessionInput) => {
-    return Promise.resolve({
-      id: `${sessionInput.providerId}_session`,
-    })
+  createSession: jest.fn().mockImplementation((providerIdOrSessionInput, cart) => {
+    if (isString(providerIdOrSessionInput)) {
+      return Promise.resolve({
+        id: `${providerIdOrSessionInput}_session`,
+        cartId: cart._id,
+      })
+    } else {
+      return Promise.resolve({
+        id: `${providerIdOrSessionInput.providerId}_session`,
+      })
+    }
   }),
   retrieveProvider: jest.fn().mockImplementation((providerId) => {
     if (providerId === "default_provider") {
@@ -62,9 +59,9 @@ export const PaymentProviderServiceMock = {
     }
     throw new Error("Provider Not Found")
   }),
-  refreshSessionNew: jest.fn().mockImplementation((session, inputData) => {
+  refreshSession: jest.fn().mockImplementation((session, inputData) => {
     DefaultProviderMock.deletePayment()
-    PaymentProviderServiceMock.createSessionNew(inputData)
+    PaymentProviderServiceMock.createSession(inputData)
     return Promise.resolve({
       ...session,
       id: `${session.id}_refreshed`,
@@ -73,7 +70,7 @@ export const PaymentProviderServiceMock = {
   authorizePayment: jest
     .fn()
     .mockReturnValue(Promise.resolve({ status: "authorized" })),
-  createPaymentNew: jest.fn().mockImplementation((session, inputData) => {
+  createPayment: jest.fn().mockImplementation((session, inputData) => {
     Promise.resolve(inputData)
   }),
 }
