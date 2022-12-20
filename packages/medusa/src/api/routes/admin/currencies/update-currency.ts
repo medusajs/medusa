@@ -55,7 +55,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *           type: object
  *           properties:
  *             currency:
- *                 $ref: "#/components/schemas/currency"
+ *                 $ref: "#/components/schemas/Currency"
  */
 export default async (req: ExtendedRequest<Currency>, res) => {
   const code = req.params.code as string

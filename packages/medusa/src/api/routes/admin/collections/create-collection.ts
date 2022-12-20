@@ -62,7 +62,7 @@ import { EntityManager } from "typeorm"
  *          type: object
  *          properties:
  *            collection:
- *              $ref: "#/components/schemas/product_collection"
+ *              $ref: "#/components/schemas/ProductCollection"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

@@ -4,8 +4,7 @@ import {
 } from "."
 
 import { EntityManager } from "typeorm"
-import { IsOptional } from "class-validator"
-import { IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { Notification } from "../../../../models"
 import { NotificationService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -57,7 +56,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             notification:
- *               $ref: "#/components/schemas/notification"
+ *               $ref: "#/components/schemas/Notification"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -68,10 +68,9 @@ export class Refund extends BaseEntity {
 }
 
 /**
- * @schema refund
+ * @schema Refund
  * title: "Refund"
  * description: "Refund represent an amount of money transfered back to the Customer for a given reason. Refunds may occur in relation to Returns, Swaps and Claims, but can also be initiated by a store operator."
- * x-resourceId: refund
  * type: object
  * required:
  *   - order_id

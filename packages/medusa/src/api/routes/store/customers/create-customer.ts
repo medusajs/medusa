@@ -77,7 +77,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             customer:
- *               $ref: "#/components/schemas/customer"
+ *               $ref: "#/components/schemas/Customer"
  *   422:
  *     description: A customer with the same email exists
  *     content:

@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import randomize from "randomatic"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
@@ -17,7 +17,7 @@ import {
   CreateGiftCardTransactionInput,
   UpdateGiftCardInput,
 } from "../types/gift-card"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import RegionService from "./region"
 
 type InjectedDependencies = {
@@ -218,6 +218,13 @@ class GiftCardService extends TransactionBaseService {
     giftCardId: string,
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
+    if (!isDefined(giftCardId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"giftCardId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ id: giftCardId }, config)
   }
 
@@ -225,6 +232,13 @@ class GiftCardService extends TransactionBaseService {
     code: string,
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
+    if (!isDefined(code)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"code" must be defined`
+      )
+    }
+
     return await this.retrieve_({ code }, config)
   }
 

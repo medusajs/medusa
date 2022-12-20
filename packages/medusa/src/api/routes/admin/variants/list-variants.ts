@@ -96,7 +96,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *             variants:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/product_variant"
+ *                 $ref: "#/components/schemas/ProductVariant"
  *             count:
  *               type: integer
  *               description: The total number of items available

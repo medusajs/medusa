@@ -10,6 +10,7 @@ import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
 import { extendedFindParamsMixin } from "../../../../types/common"
 import { Request, Response } from "express"
 import { DiscountService } from "../../../../services"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /discounts
@@ -70,7 +71,7 @@ import { DiscountService } from "../../../../services"
  *             discounts:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/discount"
+ *                 $ref: "#/components/schemas/Discount"
  *             count:
  *               type: integer
  *               description: The total number of items available
@@ -127,11 +128,11 @@ export class AdminGetDiscountsParams extends extendedFindParamsMixin({
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_dynamic?: boolean
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_disabled?: boolean
 }

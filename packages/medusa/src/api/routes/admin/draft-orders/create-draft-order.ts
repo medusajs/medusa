@@ -11,6 +11,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,
 } from "."
@@ -18,11 +20,12 @@ import {
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { DraftOrder } from "../../../.."
-import { DraftOrderService } from "../../../../services"
+import { CartService, DraftOrderService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { DraftOrderCreateProps } from "../../../../types/draft-orders"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+
 /**
  * @oas [post] /draft-orders
  * operationId: "PostDraftOrders"
@@ -51,12 +54,12 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
- *               - $ref: "#/components/schemas/address_fields"
+ *               - $ref: "#/components/schemas/AddressFields"
  *               - type: string
  *           shipping_address:
  *             description: "The Address to be used for shipping."
  *             anyOf:
- *               - $ref: "#/components/schemas/address_fields"
+ *               - $ref: "#/components/schemas/AddressFields"
  *               - type: string
  *           items:
  *             description: The Line Items that have been received.
@@ -179,7 +182,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           type: object
  *           properties:
  *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *               $ref: "#/components/schemas/DraftOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -229,6 +232,15 @@ export default async (req, res) => {
     relations: defaultAdminDraftOrdersRelations,
     select: defaultAdminDraftOrdersFields,
   })
+
+  const cartService: CartService = req.scope.resolve("cartService")
+
+  draftOrder.cart = await cartService
+    .withTransaction(manager)
+    .retrieveWithTotals(draftOrder.cart_id, {
+      relations: defaultAdminDraftOrdersCartRelations,
+      select: defaultAdminDraftOrdersCartFields,
+    })
 
   res.status(200).json({ draft_order: draftOrder })
 }

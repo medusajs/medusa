@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
@@ -89,6 +89,13 @@ class PriceListService extends TransactionBaseService {
     priceListId: string,
     config: FindConfig<PriceList> = {}
   ): Promise<PriceList> {
+    if (!isDefined(priceListId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"priceListId" must be defined`
+      )
+    }
+
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
 
     const query = buildQuery({ id: priceListId }, config)

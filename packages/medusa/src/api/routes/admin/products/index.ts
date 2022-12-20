@@ -73,7 +73,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(FindParams, {
       defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
-      allowedFields: allowedAdminProductFields,
       isList: false,
     }),
     middlewares.wrap(require("./get-product").default)
@@ -84,7 +83,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(AdminGetProductsParams, {
       defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
-      allowedFields: allowedAdminProductFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-products").default)
@@ -133,45 +131,6 @@ export const defaultAdminProductFields: (keyof Product)[] = [
 ]
 
 export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
-
-export const allowedAdminProductFields = [
-  "id",
-  "title",
-  "subtitle",
-  "status",
-  "external_id",
-  "description",
-  "handle",
-  "is_giftcard",
-  "discountable",
-  "thumbnail",
-  "profile_id",
-  "collection_id",
-  "type_id",
-  "weight",
-  "length",
-  "height",
-  "width",
-  "hs_code",
-  "origin_country",
-  "mid_code",
-  "material",
-  "created_at",
-  "updated_at",
-  "deleted_at",
-  "metadata",
-]
-
-export const allowedAdminProductRelations = [
-  "variants",
-  "variants.prices",
-  "images",
-  "options",
-  "tags",
-  "type",
-  "collection",
-  "sales_channels",
-]
 
 export type AdminProductsDeleteOptionRes = {
   option_id: string

@@ -38,10 +38,9 @@ export class ProductTypeTaxRate {
 }
 
 /**
- * @schema product_type_tax_rate
+ * @schema ProductTypeTaxRate
  * title: "Product Type Tax Rate"
  * description: "Associates a tax rate with a product type to indicate that the product type is taxed in a certain way"
- * x-resourceId: product_type_tax_rate
  * type: object
  * required:
  *   - product_type_id
@@ -53,14 +52,14 @@ export class ProductTypeTaxRate {
  *     example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   product_type:
  *     description: Available if the relation `product_type` is expanded.
- *     $ref: "#/components/schemas/product_type"
+ *     $ref: "#/components/schemas/ProductType"
  *   rate_id:
  *     description: "The id of the Tax Rate"
  *     type: string
  *     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
  *   tax_rate:
  *     description: Available if the relation `tax_rate` is expanded.
- *     $ref: "#/components/schemas/tax_rate"
+ *     $ref: "#/components/schemas/TaxRate"
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."
