@@ -86,7 +86,6 @@ export default async (req, res) => {
 
 /**
  * @schema AdminPostCustomersReq
- * title: "Customer"
  * type: object
  * required:
  *   - email
