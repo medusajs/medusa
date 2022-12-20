@@ -1,4 +1,4 @@
-import { PaymentSessionStatus } from "../models"
+import { Customer, PaymentSessionStatus } from "../models"
 import { MedusaContainer } from "../types/global"
 import {
   PaymentProcessorContext,
@@ -102,11 +102,11 @@ export interface PaymentProcessor {
    *
    * @example
    * getSavedMethods(
-   *   collectedDate: Record<string, unknown>
+   *   customer: Customer
    * ): Promise<Record<string, unknown>[]> {
-   *  if (collectedDate?.stripe_id) {
+   *  if (customer.metadata?.stripe_id) {
    *    const methods = await this.stripe_.paymentMethods.list({
-   *      customer: collectedDate.stripe_id
+   *      customer: customer.metadata.stripe_id
    *      type: "card",
    *    })
    *
@@ -116,11 +116,9 @@ export interface PaymentProcessor {
    *  return []
    * }
    *
-   * @param collectedDate
+   * @param customer
    */
-  getSavedMethods(
-    collectedDate: Record<string, unknown>
-  ): Promise<Record<string, unknown>[]>
+  getSavedMethods(customer: Customer): Promise<Record<string, unknown>[]>
 }
 
 /**
@@ -169,7 +167,7 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   ): Promise<PaymentProcessorError | void>
 
   abstract getSavedMethods(
-    collectedDate: Record<string, unknown>
+    customer: Customer
   ): Promise<Record<string, unknown>[]>
 
   abstract getPaymentStatus(sessionId: string): Promise<PaymentSessionStatus>
