@@ -3,26 +3,8 @@ import StripeBase from "../helpers/stripe-base"
 class GiropayProviderService extends StripeBase {
   static identifier = "stripe-giropay"
 
-  constructor(
-    {
-      stripeProviderService,
-      customerService,
-      totalsService,
-      regionService,
-      manager,
-    },
-    options
-  ) {
-    super(
-      {
-        stripeProviderService,
-        customerService,
-        totalsService,
-        regionService,
-        manager,
-      },
-      options
-    )
+  constructor(_, options) {
+    super(_, options)
   }
 
   get paymentIntentOptions() {

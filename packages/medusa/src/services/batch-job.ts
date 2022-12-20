@@ -11,8 +11,8 @@ import {
 } from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, isDefined } from "../utils"
-import { MedusaError } from "medusa-core-utils"
+import { buildQuery } from "../utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EventBusService, StrategyResolverService } from "./index"
 import { Request } from "express"
 

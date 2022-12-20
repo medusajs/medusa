@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { Oauth as OAuthModel } from "../models"
@@ -6,7 +6,7 @@ import { OauthRepository } from "../repositories/oauth"
 import { Selector } from "../types/common"
 import { MedusaContainer } from "../types/global"
 import { CreateOauthInput, UpdateOauthInput } from "../types/oauth"
-import { buildQuery, isDefined } from "../utils"
+import { buildQuery } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = MedusaContainer & {
