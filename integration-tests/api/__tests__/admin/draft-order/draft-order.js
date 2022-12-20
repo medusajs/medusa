@@ -381,6 +381,30 @@ describe("/admin/draft-orders", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("creates a draft order without a single item", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api.post(
+        "/admin/draft-orders",
+        payload,
+        adminReqConfig
+      )
+      expect(response.data.draft_order.cart.items).toEqual([])
+      expect(response.status).toEqual(200)
+    })
+
     it("creates a draft order with product variant with custom price and custom item price set to 0", async () => {
       const api = useApi()
 
