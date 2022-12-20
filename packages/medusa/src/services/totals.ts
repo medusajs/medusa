@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   ITaxCalculationStrategy,
   TaxCalculationContext,
@@ -28,7 +28,7 @@ import {
 import TaxProviderService from "./tax-provider"
 import { EntityManager } from "typeorm"
 
-import { calculatePriceTaxAmount, isDefined } from "../utils"
+import { calculatePriceTaxAmount } from "../utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
 

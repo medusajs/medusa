@@ -5,7 +5,7 @@ import { aliasTo, asFunction } from "awilix"
 import formatRegistrationName from "../utils/format-registration-name"
 import { isBatchJobStrategy } from "../interfaces"
 import { MedusaContainer } from "../types/global"
-import { isDefined } from "../utils"
+import { isDefined } from "medusa-core-utils"
 
 type LoaderOptions = {
   container: MedusaContainer

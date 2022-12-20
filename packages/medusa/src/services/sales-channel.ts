@@ -6,7 +6,7 @@ import { FindConfig, QuerySelector, Selector } from "../types/common"
 
 import { EntityManager } from "typeorm"
 import EventBusService from "./event-bus"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
 import StoreService from "./store"
@@ -100,6 +100,13 @@ class SalesChannelService extends TransactionBaseService {
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | never> {
+    if (!isDefined(salesChannelId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"salesChannelId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ id: salesChannelId }, config)
   }
 
@@ -114,6 +121,13 @@ class SalesChannelService extends TransactionBaseService {
     name: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | unknown> {
+    if (!isDefined(name)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"name" must be defined`
+      )
+    }
+
     return await this.retrieve_({ name }, config)
   }
 

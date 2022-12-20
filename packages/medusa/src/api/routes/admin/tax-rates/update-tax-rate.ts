@@ -7,7 +7,7 @@ import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
 import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [post] /tax-rates/{id}
@@ -104,7 +104,7 @@ import { isDefined } from "../../../../utils"
  *           type: object
  *           properties:
  *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *               $ref: "#/components/schemas/TaxRate"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

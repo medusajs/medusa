@@ -42,8 +42,8 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.addLineItem(order_edit_id, {
- *         variant_id, 
- *         quantity 
+ *         variant_id,
+ *         quantity
  *       })
  *       .then(({ order_edit }) => {
  *          console.log(order_edit.id)
@@ -69,7 +69,7 @@ import {
  *           type: object
  *           properties:
  *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *               $ref: "#/components/schemas/OrderEdit"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

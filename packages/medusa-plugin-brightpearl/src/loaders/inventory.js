@@ -3,10 +3,10 @@ const inventorySync = async (container, options) => {
     return
   } else {
     const brightpearlService = container.resolve("brightpearlService")
-    const eventBus = container.resolve("eventBusService")
+    const jobSchedulerService = container.resolve("jobSchedulerService")
     try {
       const pattern = options.inventory_sync_cron
-      eventBus.createCronJob("inventory-sync", {}, pattern, () =>
+      jobSchedulerService.create("inventory-sync", {}, pattern, () =>
         brightpearlService.syncInventory()
       )
     } catch (err) {
