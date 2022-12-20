@@ -75,6 +75,7 @@ describe("OrderService", () => {
       },
     }
     const giftCardService = {
+      create: jest.fn(),
       update: jest.fn(),
       createTransaction: jest.fn(),
       withTransaction: function () {
@@ -128,6 +129,7 @@ describe("OrderService", () => {
           total: 100,
         })
       }),
+      update: jest.fn(() => Promise.resolve()),
       withTransaction: function () {
         return this
       },
@@ -191,10 +193,7 @@ describe("OrderService", () => {
         discount_total: 0,
       }
 
-      orderService.cartService_.retrieveWithTotals = jest.fn(() =>
-        Promise.resolve(cart)
-      )
-      orderService.cartService_.update = jest.fn(() => Promise.resolve())
+      orderService.cartService_.retrieveWithTotals = jest.fn(() => Promise.resolve(cart))
 
       await orderService.createFromCart("cart_id")
       const order = {
@@ -214,7 +213,7 @@ describe("OrderService", () => {
 
       expect(cartService.retrieveWithTotals).toHaveBeenCalledTimes(1)
       expect(cartService.retrieveWithTotals).toHaveBeenCalledWith("cart_id", {
-        relations: ["region", "payment"],
+        relations: ["region", "payment", "items"],
       })
 
       expect(paymentProviderService.updatePayment).toHaveBeenCalledTimes(1)
@@ -248,6 +247,85 @@ describe("OrderService", () => {
       expect(orderRepo.save).toHaveBeenCalledWith(order)
     })
 
+    describe("gift card creation", () => {
+      const taxLineRateOne = 20
+      const taxLineRateTwo = 10
+      const giftCardValue = 100
+      const totalGiftCardsPurchased = 2
+      const expectedGiftCardTaxRate = taxLineRateOne + taxLineRateTwo
+      const lineItemWithGiftCard = {
+        id: "item_1",
+        variant_id: "variant-1",
+        quantity: 2,
+        is_giftcard: true,
+        subtotal: giftCardValue * totalGiftCardsPurchased,
+        quantity: totalGiftCardsPurchased,
+        metadata: {},
+        tax_lines: [{
+          rate: taxLineRateOne
+        }, {
+          rate: taxLineRateTwo
+        }]
+      }
+
+      const lineItemWithoutGiftCard = {
+        ...lineItemWithGiftCard,
+        is_giftcard: false
+      }
+
+      const cartWithGiftcard = {
+        id: "id",
+        email: "test@test.com",
+        customer_id: "cus_1234",
+        payment: {},
+        region_id: "test",
+        region: {
+          id: "test",
+          currency_code: "eur",
+          name: "test",
+          tax_rate: 25,
+        },
+        shipping_address_id: "1234",
+        billing_address_id: "1234",
+        gift_cards: [],
+        discounts: [],
+        shipping_methods: [{ id: "method_1" }],
+        items: [lineItemWithGiftCard],
+        total: 100,
+        subtotal: 100,
+        discount_total: 0,
+      }
+
+      const cartWithoutGiftcard = {
+        ...cartWithGiftcard,
+        items: [lineItemWithoutGiftCard],
+      }
+
+      it("creates gift cards when a lineItem contains a gift card variant", async () => {
+        orderService.cartService_.retrieveWithTotals = jest.fn(() => Promise.resolve(cartWithGiftcard))
+
+        await orderService.createFromCart("id")
+
+        expect(giftCardService.create).toHaveBeenCalledTimes(totalGiftCardsPurchased)
+        expect(giftCardService.create).toHaveBeenCalledWith({
+          order_id: "id",
+          region_id: "test",
+          value: giftCardValue,
+          balance: giftCardValue,
+          metadata: {},
+          tax_rate: expectedGiftCardTaxRate
+        })
+      })
+
+      it("does not create gift cards when a lineItem doesn't contains a gift card variant", async () => {
+        orderService.cartService_.retrieveWithTotals = jest.fn(() => Promise.resolve(cartWithoutGiftcard))
+
+        await orderService.createFromCart("id")
+
+        expect(giftCardService.create).not.toHaveBeenCalled()
+      })
+    })
+
     it("creates gift card transactions", async () => {
       const cart = {
         id: "cart_id",
@@ -273,6 +351,7 @@ describe("OrderService", () => {
             id: "gid",
             code: "GC",
             balance: 80,
+            tax_rate: 25,
           },
         ],
         discounts: [],
@@ -289,7 +368,6 @@ describe("OrderService", () => {
       orderService.cartService_.retrieveWithTotals = () => {
         return Promise.resolve(cart)
       }
-      orderService.cartService_.update = () => Promise.resolve()
 
       await orderService.createFromCart("cart_id")
       const order = {
@@ -308,6 +386,7 @@ describe("OrderService", () => {
             id: "gid",
             code: "GC",
             balance: 80,
+            tax_rate: 25,
           },
         ],
         metadata: {},
@@ -438,7 +517,6 @@ describe("OrderService", () => {
         total: 100,
       }
       orderService.cartService_.retrieveWithTotals = () => Promise.resolve(cart)
-      orderService.cartService_.update = () => Promise.resolve()
       const res = orderService.createFromCart(cart)
       await expect(res).rejects.toThrow(
         "Variant with id: variant-1 does not have the required inventory"

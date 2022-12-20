@@ -3,7 +3,7 @@ import randomize from "randomatic"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
 import { TransactionBaseService } from "../interfaces"
-import { GiftCard } from "../models"
+import { GiftCard, Region } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { GiftCardTransactionRepository } from "../repositories/gift-card-transaction"
 import {
@@ -160,11 +160,12 @@ class GiftCardService extends TransactionBaseService {
         .retrieve(giftCard.region_id)
 
       const code = GiftCardService.generateCode()
-
+      const taxRate = GiftCardService.resolveTaxRate(giftCard.tax_rate || null, region)
       const toCreate = {
         code,
         ...giftCard,
         region_id: region.id,
+        tax_rate: taxRate,
       }
 
       const created = giftCardRepo.create(toCreate)
@@ -178,6 +179,30 @@ class GiftCardService extends TransactionBaseService {
 
       return result
     })
+  }
+
+   /**
+   * The tax_rate of the giftcard can depend on whether regions tax gift cards, an input
+   * provided by the user or the tax rate. Based on these conditions, tax_rate changes.
+   * @return the tax rate for the gift card
+   */
+  protected static resolveTaxRate(
+    giftCardTaxRate: number | null,
+    region: Region
+  ): number | null {
+    // A gift card is always associated with a region. If the region doesn't tax gift cards,
+    // return null
+    if (!region.gift_cards_taxable) return null
+
+    // If a tax rate has been provided as an input from an external input, use that
+    // This would handle cases where gift cards are created as a part of an order where taxes better defined
+    // or to handle usecases outside of the opinions of the core.
+    if (giftCardTaxRate) {
+      return giftCardTaxRate
+    }
+
+    // Outside the context of the taxRate input, it picks up the tax rate directly from the region
+    return region.tax_rate || null
   }
 
   protected async retrieve_(

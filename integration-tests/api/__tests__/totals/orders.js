@@ -139,6 +139,7 @@ describe("Order Totals", () => {
         region_id: region.id,
         value: 160000,
         balance: 160000,
+        tax_rate: 25,
       })
 
       // Add variant 1 to cart
