@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { IEventBusService } from "../../interfaces/services/event-bus"
 
 export default () => {
@@ -13,8 +13,10 @@ export default () => {
     const eventBusService: IEventBusService =
       req.scope.resolve("eventBusService")
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    eventBusService.destroyCachedEvents(cacheKey)
+    if (isDefined(cacheKey)) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      eventBusService.destroyCachedEvents(cacheKey)
+    }
 
     next(err)
   }
