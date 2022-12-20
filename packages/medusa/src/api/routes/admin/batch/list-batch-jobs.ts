@@ -242,7 +242,7 @@ import { isDefined } from "medusa-core-utils"
  *            batch_jobs:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/batch_job"
+ *                 $ref: "#/components/schemas/BatchJob"
  *            count:
  *               type: integer
  *               description: The total number of items available

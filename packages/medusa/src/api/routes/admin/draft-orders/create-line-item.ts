@@ -82,7 +82,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *               $ref: "#/components/schemas/DraftOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

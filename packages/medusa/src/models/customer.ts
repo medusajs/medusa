@@ -80,10 +80,9 @@ export class Customer extends SoftDeletableEntity {
 }
 
 /**
- * @schema customer
+ * @schema Customer
  * title: "Customer"
  * description: "Represents a customer"
- * x-resourceId: customer
  * type: object
  * required:
  *   - email
@@ -110,12 +109,12 @@ export class Customer extends SoftDeletableEntity {
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
  *     description: Available if the relation `billing_address` is expanded.
- *     $ref: "#/components/schemas/address"
+ *     $ref: "#/components/schemas/Address"
  *   shipping_addresses:
  *     description: Available if the relation `shipping_addresses` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/address"
+ *       $ref: "#/components/schemas/Address"
  *   phone:
  *     type: string
  *     description: The customer's phone number
@@ -134,7 +133,7 @@ export class Customer extends SoftDeletableEntity {
  *     description: The customer groups the customer belongs to. Available if the relation `groups` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/customer_group"
+ *       $ref: "#/components/schemas/CustomerGroup"
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

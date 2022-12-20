@@ -161,15 +161,15 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *               type: array
  *               items:
  *                 allOf:
- *                   - $ref: "#/components/schemas/product"
+ *                   - $ref: "#/components/schemas/Product"
  *                   - type: object
  *                     properties:
  *                       variants:
  *                         type: array
  *                         items:
  *                           allOf:
- *                             - $ref: "#/components/schemas/product_variant"
- *                             - $ref: "#/components/schemas/product_variant_prices_fields"
+ *                             - $ref: "#/components/schemas/ProductVariant"
+ *                             - $ref: "#/components/schemas/ProductVariantPricesFields"
  *             count:
  *               type: integer
  *               description: The total number of items available

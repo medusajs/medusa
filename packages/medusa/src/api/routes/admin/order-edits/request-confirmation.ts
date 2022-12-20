@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { IsOptional, IsString, IsObject } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import {
   OrderEditService,
   OrderService,
@@ -49,7 +49,7 @@ import { PaymentCollectionType } from "../../../../models"
  *           type: object
  *           properties:
  *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *               $ref: "#/components/schemas/OrderEdit"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

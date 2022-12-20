@@ -10,10 +10,9 @@ export class PaymentProvider {
 }
 
 /**
- * @schema payment_provider
+ * @schema PaymentProvider
  * title: "Payment Provider"
  * description: "Represents a Payment Provider plugin and holds its installation status."
- * x-resourceId: payment_provider
  * type: object
  * required:
  *   - id

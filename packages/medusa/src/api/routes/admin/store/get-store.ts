@@ -45,7 +45,7 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *           type: object
  *           properties:
  *             store:
- *               $ref: "#/components/schemas/store"
+ *               $ref: "#/components/schemas/Store"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
