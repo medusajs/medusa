@@ -2,21 +2,12 @@ import dotenv from "dotenv"
 import { createConnection, IsNull } from "typeorm"
 import Logger from "../loaders/logger"
 import { GiftCard } from "../models/gift-card"
+import { typeormConfig } from "./db-config"
 
 dotenv.config()
 
 const BATCH_SIZE = 1000
 const migrationName = 'gift-card-tax-rate-migration'
-const typeormConfig = {
-  type: process.env.TYPEORM_CONNECTION,
-  url: process.env.TYPEORM_URL,
-  username: process.env.TYPEORM_USERNAME,
-  password: process.env.TYPEORM_PASSWORD,
-  database: process.env.TYPEORM_DATABASE,
-  migrations: [process.env.TYPEORM_MIGRATIONS as string],
-  entities: [process.env.TYPEORM_ENTITIES],
-  logging: true,
-}
 
 Logger.info(`typeormConfig: ${JSON.stringify(typeormConfig)}`)
 

@@ -160,7 +160,7 @@ class GiftCardService extends TransactionBaseService {
         .retrieve(giftCard.region_id)
 
       const code = GiftCardService.generateCode()
-      const taxRate = GiftCardService.fetchTaxRate(giftCard.tax_rate || null, region)
+      const taxRate = GiftCardService.resolveTaxRate(giftCard.tax_rate || null, region)
       const toCreate = {
         code,
         ...giftCard,
@@ -186,7 +186,7 @@ class GiftCardService extends TransactionBaseService {
    * provided by the user or the tax rate. Based on these conditions, tax_rate changes.
    * @return the tax rate for the gift card
    */
-  protected static fetchTaxRate(
+  protected static resolveTaxRate(
     giftCardTaxRate: number | null,
     region: Region
   ): number | null {
