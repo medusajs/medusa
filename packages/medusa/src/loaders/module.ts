@@ -20,22 +20,36 @@ export default async ({
 
   for (const resolution of Object.values(moduleResolutions)) {
     try {
+      if (!resolution.resolutionPath) {
+        container.register({
+          [resolution.definition.registrationName]: asFunction(
+            () => false
+          ).singleton(),
+        })
+
+        continue
+      }
+
       const loadedModule = await import(resolution.resolutionPath!)
+
+      const moduleService = loadedModule?.service || null
+
+      if (!moduleService) {
+        throw new Error(
+          "No service found in module. Make sure that your module exports a service."
+        )
+      }
 
       const moduleLoaders = loadedModule?.loaders || []
       for (const loader of moduleLoaders) {
         await loader({ container, configModule, logger })
       }
 
-      const moduleServices = loadedModule?.services || []
-
-      for (const service of moduleServices) {
-        container.register({
-          [resolution.definition.registrationName]: asFunction(
-            (cradle) => new service(cradle, configModule)
-          ).singleton(),
-        })
-      }
+      container.register({
+        [resolution.definition.registrationName]: asFunction(
+          (cradle) => new moduleService(cradle, resolution.options)
+        ).singleton(),
+      })
 
       const installation = {
         module: resolution.definition.key,
@@ -50,11 +64,18 @@ export default async ({
         )
       }
 
-      logger.warn(`Couldn not resolve module: ${resolution.definition.label}`)
+      logger.warn(`Couldn not resolve module: ${resolution.definition.label}.`)
     }
   }
 
-  moduleHelper.setModules(moduleResolutions)
+  moduleHelper.setModules(
+    Object.entries(moduleResolutions).reduce((acc, [k, v]) => {
+      if (v.resolutionPath) {
+        acc[k] = v
+      }
+      return acc
+    }, {})
+  )
 
   container.register({
     modulesHelper: asValue(moduleHelper),

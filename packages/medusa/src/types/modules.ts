@@ -1,4 +1,4 @@
 export type ModulesResponse = {
   module: string
-  resolution: string
+  resolution?: string
 }[]
