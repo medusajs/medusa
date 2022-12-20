@@ -10,16 +10,13 @@ export interface IEventBusService {
     eventName: string,
     data: T,
     options?: Record<string, unknown>
-  ): Promise<void | unknown>
+  ): Promise<void>
 
-  subscribe<T>(
-    eventName: string,
-    handler: EventHandler
-  ): this | Promise<void | unknown>
+  subscribe(eventName: string, handler: EventHandler): this
 
-  processCachedEvents<T>(uniqueId: string, options?: unknown): void
+  processCachedEvents(uniqueId: string, options?: unknown): Promise<void>
 
-  destroyCachedEvents(cacheId: string): void
+  destroyCachedEvents(cacheId: string): Promise<void>
 }
 
 export abstract class AbstractEventBusService implements IEventBusService {
@@ -33,7 +30,7 @@ export abstract class AbstractEventBusService implements IEventBusService {
 
   abstract subscribe(eventName: string, handler: EventHandler): this
 
-  abstract processCachedEvents<T>(
+  abstract processCachedEvents(
     uniqueId: string,
     options: unknown
   ): Promise<void>

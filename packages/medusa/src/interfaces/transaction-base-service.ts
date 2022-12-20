@@ -76,6 +76,10 @@ export abstract class TransactionBaseService {
       dontFail = !!maybeErrorHandlerOrDontFail
     }
 
+    // If no transaction id is provided, we generate uuid to use
+    const txId = options?.transactionId ?? this.transactionId_ ?? v4()
+    this.transactionId_ = txId
+
     // If the transaction manager is already set, we are in an ongoing
     // transaction and therefore we should use that manager for subsequent work.
     if (this.transactionManager_) {
@@ -83,13 +87,10 @@ export abstract class TransactionBaseService {
         this.manager_ = m
         this.transactionManager_ = m
 
-        // If no transaction id is provided, we generate uuid to use
-        const txId = options.transactionId ?? this.transactionId_ ?? v4()
-        this.transactionId_ = txId
-
         try {
           const result = await work(m, txId)
           // After the transaction is complete, we process cached events
+          // eslint-disable-next-line
           this.eventBusService_.processCachedEvents(txId)
           return result
         } catch (error) {
@@ -103,6 +104,7 @@ export abstract class TransactionBaseService {
           }
 
           // If the transaction fails, we destroy cached events
+          // eslint-disable-next-line
           this.eventBusService_.destroyCachedEvents(txId)
           throw error
         }
@@ -115,13 +117,19 @@ export abstract class TransactionBaseService {
         this.manager_ = m
         this.transactionManager_ = m
         try {
-          const result = await work(m)
+          const result = await work(m, txId)
           this.manager_ = temp
           this.transactionManager_ = undefined
+          // After the transaction is complete, we process cached events
+          // eslint-disable-next-line
+          this.eventBusService_.processCachedEvents(txId)
           return result
         } catch (error) {
           this.manager_ = temp
           this.transactionManager_ = undefined
+          // After the transaction is complete, we process cached events
+          // eslint-disable-next-line
+          this.eventBusService_.destroyCachedEvents(txId)
           throw error
         }
       }
