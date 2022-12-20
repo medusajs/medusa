@@ -17,6 +17,7 @@ import {
   Return,
   Swap,
   TrackingLink,
+  GiftCard,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
@@ -302,6 +303,7 @@ class OrderService extends TransactionBaseService {
       relationSet.add("discounts.rule")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
+      relationSet.add("gift_card_transactions.gift_card")
       relationSet.add("refunds")
       relationSet.add("shipping_methods")
       relationSet.add("shipping_methods.tax_lines")
@@ -552,7 +554,7 @@ class OrderService extends TransactionBaseService {
 
       const cart = isString(cartOrId)
         ? await cartServiceTx.retrieveWithTotals(cartOrId, {
-            relations: ["region", "payment"],
+            relations: ["region", "payment", "items"],
           })
         : cartOrId
 
@@ -566,10 +568,10 @@ class OrderService extends TransactionBaseService {
       const { payment, region, total } = cart
 
       await Promise.all(
-        cart.items.map(async (item) => {
+        cart.items.map(async (lineItem) => {
           return await inventoryServiceTx.confirmInventory(
-            item.variant_id,
-            item.quantity
+            lineItem.variant_id,
+            lineItem.quantity
           )
         })
       ).catch(async (err) => {
@@ -663,31 +665,32 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      let gcBalance =
+      const giftCardableAmount =
         (cart.region?.gift_cards_taxable
           ? cart.subtotal! - cart.discount_total!
-          : cart.total! + cart.gift_card_total!) || 0
-      const gcService = this.giftCardService_.withTransaction(manager)
+          : cart.total! + cart.gift_card_total!) || 0 // we re add the gift card total to compensate the fact that the decorate total already removed this amount from the total
 
-      for (const g of cart.gift_cards) {
-        const newBalance = Math.max(0, g.balance - gcBalance)
-        const usage = g.balance - newBalance
-        await gcService.update(g.id, {
-          balance: newBalance,
-          is_disabled: newBalance === 0,
+      let giftCardableAmountBalance = giftCardableAmount
+      const giftCardService = this.giftCardService_.withTransaction(manager)
+
+      for (const giftCard of cart.gift_cards) {
+        const newGiftCardBalance = Math.max(0, giftCard.balance - giftCardableAmountBalance)
+        const giftCardBalanceUsed = giftCard.balance - newGiftCardBalance
+
+        await giftCardService.update(giftCard.id, {
+          balance: newGiftCardBalance,
+          is_disabled: newGiftCardBalance === 0,
         })
 
-        await gcService.createTransaction({
-          gift_card_id: g.id,
+        await giftCardService.createTransaction({
+          gift_card_id: giftCard.id,
           order_id: order.id,
-          amount: usage,
-          is_taxable: cart.region.gift_cards_taxable,
-          tax_rate: cart.region.gift_cards_taxable
-            ? cart.region.tax_rate
-            : null,
+          amount: giftCardBalanceUsed,
+          is_taxable: !!giftCard.tax_rate,
+          tax_rate: giftCard.tax_rate
         })
 
-        gcBalance = gcBalance - usage
+        giftCardableAmountBalance = giftCardableAmountBalance - giftCardBalanceUsed
       }
 
       const shippingOptionServiceTx =
@@ -696,14 +699,20 @@ class OrderService extends TransactionBaseService {
 
       await Promise.all(
         [
-          cart.items.map((item) => {
-            return [
-              lineItemServiceTx.update(item.id, { order_id: order.id }),
+          cart.items.map((lineItem) => {
+            const lineItemPromises: unknown[] = [
+              lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
               inventoryServiceTx.adjustInventory(
-                item.variant_id,
-                -item.quantity
+                lineItem.variant_id,
+                -lineItem.quantity
               ),
             ]
+
+            if (lineItem.is_giftcard) {
+              lineItemPromises.push(this.createGiftCardsFromLineItem_(order, lineItem, manager))
+            }
+
+            return lineItemPromises
           }),
           cart.shipping_methods.map(async (method) => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
@@ -728,6 +737,46 @@ class OrderService extends TransactionBaseService {
 
       return order
     })
+  }
+
+  protected createGiftCardsFromLineItem_(
+    order: Order,
+    lineItem: LineItem,
+    manager: EntityManager
+  ): Promise<GiftCard>[] {
+    const createGiftCardPromises: Promise<GiftCard>[] = []
+
+    // LineItem type doesn't promise either the subtotal or quantity. Adding a check here provides
+    // additional type safety/strictness
+    if (!lineItem.subtotal || !lineItem.quantity) return createGiftCardPromises
+
+    // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
+    // We divide here by quantity to get the value of the product/variant as a lineItem
+    // contains quantity. The subtotal is multiplicative of pure price per product and quantity
+    const taxExclusivePrice = lineItem.subtotal / lineItem.quantity
+    // The tax_lines contains all the taxes that is applicable on the purchase of the gift card
+    // On utilizing the gift card, the same set of taxRate will apply to gift card
+    // We calculate the summation of all taxes and add that as a snapshot in the giftcard.tax_rate column
+    const giftCardTaxRate = lineItem.tax_lines.reduce(
+      (sum, taxLine) => sum + taxLine.rate, 0
+    )
+
+    const giftCardTxnService = this.giftCardService_.withTransaction(manager)
+
+    for (let qty = 0; qty < lineItem.quantity; qty++) {
+      const createGiftCardPromise = giftCardTxnService.create({
+        region_id: order.region_id,
+        order_id: order.id,
+        value: taxExclusivePrice,
+        balance: taxExclusivePrice,
+        metadata: lineItem.metadata,
+        tax_rate: giftCardTaxRate || null
+      })
+
+      createGiftCardPromises.push(createGiftCardPromise)
+    }
+
+    return createGiftCardPromises
   }
 
   /**

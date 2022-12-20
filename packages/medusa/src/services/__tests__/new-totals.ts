@@ -2,6 +2,7 @@ import { asClass, asValue, createContainer } from "awilix"
 import {
   defaultContainerMock,
   giftCards,
+  giftCardsWithTaxRate,
   lineItems,
   shippingMethods,
 } from "../__fixtures__/new-totals"
@@ -528,14 +529,17 @@ describe("New totals service", () => {
         )
       })
 
-      it("should compute the gift cards totals amount in a taxable region", async () => {
+      it("should compute the gift cards totals amount using the gift card tax rate", async () => {
         const maxAmount = 1000
 
-        const testGiftCard = giftCards[0]
+        const testGiftCard = giftCardsWithTaxRate[0]
 
         const region = {
+          // These values aren't involved in calculating tax rates for a gift card
+          // GiftCard.tax_rate will be the source of truth for tax calculations
+          // This is needed for giftCardTransactions backwards compatability reasons
           gift_cards_taxable: true,
-          tax_rate: 20,
+          tax_rate: 0,
         } as Region
 
         const gitCardTotals = await newTotalsService.getGiftCardTotals(
@@ -556,12 +560,13 @@ describe("New totals service", () => {
 
       it("should compute the gift cards totals amount in non taxable region using gift card transactions", async () => {
         const maxAmount = 1000
-
+        const testGiftCard = giftCards[0]
         const giftCardTransactions = [
           {
             tax_rate: 20,
             is_taxable: false,
             amount: 1000,
+            gift_card: testGiftCard
           },
         ]
 
@@ -572,7 +577,7 @@ describe("New totals service", () => {
         const gitCardTotals = await newTotalsService.getGiftCardTotals(
           maxAmount,
           {
-            giftCardTransactions: giftCardTransactions,
+            giftCardTransactions,
             region,
           }
         )
@@ -587,12 +592,13 @@ describe("New totals service", () => {
 
       it("should compute the gift cards totals amount in a taxable region using gift card transactions", async () => {
         const maxAmount = 1000
-
+        const testGiftCard = giftCards[0]
         const giftCardTransactions = [
           {
             tax_rate: 20,
             is_taxable: null,
             amount: 1000,
+            gift_card: testGiftCard
           },
         ]
 
@@ -613,6 +619,42 @@ describe("New totals service", () => {
           expect.objectContaining({
             total: 1000,
             tax_total: 300,
+          })
+        )
+      })
+
+      it("should compute the gift cards totals amount using gift card transactions for gift card with tax_rate", async () => {
+        const maxAmount = 1000
+        const testGiftCard = giftCardsWithTaxRate[0]
+        const giftCardTransactions = [
+          {
+            tax_rate: 20,
+            is_taxable: null,
+            amount: 1000,
+            gift_card: testGiftCard
+          },
+        ]
+
+        const region = {
+          // These values aren't involved in calculating tax rates for a gift card
+          // GiftCard.tax_rate will be the source of truth for tax calculations
+          // This is needed for giftCardTransactions backwards compatability reasons
+          gift_cards_taxable: false,
+          tax_rate: 99,
+        } as Region
+
+        const gitCardTotals = await newTotalsService.getGiftCardTotals(
+          maxAmount,
+          {
+            giftCardTransactions: giftCardTransactions,
+            region,
+          }
+        )
+
+        expect(gitCardTotals).toEqual(
+          expect.objectContaining({
+            total: 1000,
+            tax_total: 200,
           })
         )
       })
