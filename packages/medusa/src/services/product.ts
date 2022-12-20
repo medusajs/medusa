@@ -609,14 +609,12 @@ class ProductService extends TransactionBaseService {
 
       const result = await productRepo.save(product)
 
-      await this.eventBus_.withTransaction(manager).emit(
-        ProductService.Events.UPDATED,
-        {
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, {
           id: result.id,
           fields: Object.keys(update),
-        },
-        { uniqueCacheKey: transactionId }
-      )
+        })
       return result
     })
   }
