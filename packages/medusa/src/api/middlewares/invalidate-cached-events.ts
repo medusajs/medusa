@@ -2,14 +2,6 @@ import { NextFunction, Request, Response } from "express"
 import { MedusaError } from "medusa-core-utils"
 import { IEventBusService } from "../../interfaces/services/event-bus"
 
-const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
-const TRANSACTION_STARTED = "TransactionAlreadyStartedError"
-const TRANSACTION_NOT_STARTED = "TransactionNotStartedError"
-
-const API_ERROR = "api_error"
-const INVALID_REQUEST_ERROR = "invalid_request_error"
-const INVALID_STATE_ERROR = "invalid_state_error"
-
 export default () => {
   return (
     err: MedusaError,
