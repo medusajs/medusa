@@ -63,7 +63,7 @@ import { EntityManager } from "typeorm"
  *           type: object
  *           properties:
  *             sales_channel:
- *               $ref: "#/components/schemas/sales_channel"
+ *               $ref: "#/components/schemas/SalesChannel"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

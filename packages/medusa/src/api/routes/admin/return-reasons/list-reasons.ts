@@ -4,7 +4,7 @@ import {
 } from "."
 import { ReturnReason } from "../../../../models"
 import { ReturnReasonService } from "../../../../services"
-import { FindConfig, Selector } from "../../../../types/common"
+import { Selector } from "../../../../types/common"
 
 /**
  * @oas [get] /return-reasons
@@ -44,7 +44,7 @@ import { FindConfig, Selector } from "../../../../types/common"
  *             return_reasons:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/return_reason"
+ *                 $ref: "#/components/schemas/ReturnReason"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

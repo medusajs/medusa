@@ -32,6 +32,7 @@ export default async ({
     url: configModule.projectConfig.database_url,
     database: configModule.projectConfig.database_database,
     extra: configModule.projectConfig.database_extra || {},
+    schema: configModule.projectConfig.database_schema,
     entities,
     namingStrategy: new ShortenedNamingStrategy(),
     logging: configModule.projectConfig.database_logging || false,

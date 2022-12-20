@@ -17,7 +17,7 @@ export class addAnalyticsConfig1666173221888 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_379ca70338ce9991f3affdeedf"`
+      `DROP INDEX "IDX_379ca70338ce9991f3affdeedf"`
     )
     await queryRunner.query(`DROP TABLE "analytics_config"`)
   }

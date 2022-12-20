@@ -72,7 +72,7 @@ import { EntityManager } from "typeorm"
  *           type: object
  *           properties:
  *             gift_card:
- *               $ref: "#/components/schemas/gift_card"
+ *               $ref: "#/components/schemas/GiftCard"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
