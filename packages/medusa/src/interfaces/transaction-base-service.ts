@@ -46,10 +46,7 @@ export abstract class TransactionBaseService {
    * @return the result of the transactional work
    */
   protected async atomicPhase_<TResult, TError>(
-    work: (
-      transactionManager: EntityManager,
-      transactionId?: string
-    ) => Promise<TResult | never>,
+    work: (transactionManager: EntityManager) => Promise<TResult | never>,
     isolationOrErrorHandler?:
       | IsolationLevel
       | ((error: TError) => Promise<never | TResult | void>),
@@ -78,9 +75,7 @@ export abstract class TransactionBaseService {
         this.transactionManager_ = m
 
         try {
-          const result = await work(m)
-
-          return result
+          return await work(m)
         } catch (error) {
           if (errorHandler) {
             const queryRunner = this.transactionManager_.queryRunner
