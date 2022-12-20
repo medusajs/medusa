@@ -17,6 +17,10 @@ declare global {
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
       errors: string[]
+      request_context: {
+        ip_address: string
+        cache_key: string
+      }
     }
   }
 }
