@@ -168,7 +168,6 @@ enum Status {
  * type: object
  * required:
  *   - email
- *   - items
  *   - region_id
  *   - shipping_methods
  * properties:
@@ -274,7 +273,8 @@ export class AdminPostDraftOrdersReq {
   @Type(() => Item)
   @IsNotEmpty()
   @ValidateNested({ each: true })
-  items: Item[]
+  @IsOptional()
+  items?: Item[]
 
   @IsString()
   region_id: string
