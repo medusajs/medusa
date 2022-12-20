@@ -449,7 +449,7 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.FAILED)
   })
 
-  it("Should complete a transaction if a failing step has the flag 'continueOnPermanenteFailure' set to true", async () => {
+  it("Should complete a transaction if a failing step has the flag 'continueOnPermanentFailure' set to true", async () => {
     const mocks = {
       one: jest.fn().mockImplementation((payload) => {
         return
@@ -486,7 +486,7 @@ describe("Transaction Orchestrator", () => {
         next: {
           action: "secondMethod",
           maxRetries: 1,
-          continueOnPermanenteFailure: true,
+          continueOnPermanentFailure: true,
         },
       },
     }

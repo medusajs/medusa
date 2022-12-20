@@ -7,7 +7,7 @@ export enum TransactionHandlerType {
 
 export type TransactionStepsDefinition = {
   action?: string
-  continueOnPermanenteFailure?: boolean
+  continueOnPermanentFailure?: boolean
   noCompensation?: boolean
   maxRetries?: number
   retryInterval?: number
@@ -421,7 +421,7 @@ export class TransactionOrchestrator extends EventEmitter {
         } else if (curState.state === TransactionState.REVERTED) {
           hasReverted = true
         } else if (curState.state === TransactionState.FAILED) {
-          if (stepDef.definition.continueOnPermanenteFailure) {
+          if (stepDef.definition.continueOnPermanentFailure) {
             hasIgnoredFailure = true
           } else {
             hasFailed = true
@@ -526,7 +526,7 @@ export class TransactionOrchestrator extends EventEmitter {
 
       if (!step.isCompensating()) {
         const flow = transaction.getFlow()
-        if (step.definition.continueOnPermanenteFailure) {
+        if (step.definition.continueOnPermanentFailure) {
           for (const childStep of step.next) {
             const child = flow.steps[childStep]
             child.changeState(TransactionState.SKIPPED)
