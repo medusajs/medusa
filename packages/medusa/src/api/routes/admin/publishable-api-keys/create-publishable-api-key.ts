@@ -52,7 +52,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *           type: object
  *           properties:
  *             publishable_api_key:
- *               $ref: "#/components/schemas/publishable_api_key"
+ *               $ref: "#/components/schemas/PublishableApiKey"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

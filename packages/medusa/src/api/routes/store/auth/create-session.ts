@@ -46,7 +46,7 @@ import { validator } from "../../../../utils/validator"
  *          type: object
  *          properties:
  *            customer:
- *              $ref: "#/components/schemas/customer"
+ *              $ref: "#/components/schemas/Customer"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

@@ -39,7 +39,7 @@ import { EntityManager } from "typeorm"
  *          type: object
  *          properties:
  *            batch_job:
- *              $ref: "#/components/schemas/batch_job"
+ *              $ref: "#/components/schemas/BatchJob"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

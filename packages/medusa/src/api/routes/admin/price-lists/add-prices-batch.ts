@@ -105,7 +105,7 @@ import { EntityManager } from "typeorm"
  *           type: object
  *           properties:
  *             price_list:
- *               $ref: "#/components/schemas/price_list"
+ *               $ref: "#/components/schemas/PriceList"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -28,7 +28,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
- *               - $ref: "#/components/schemas/address_fields"
+ *               - $ref: "#/components/schemas/AddressFields"
  *                 description: The full billing address object
  *               - type: string
  *                 description: The ID of an existing billing address
@@ -79,7 +79,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           type: object
  *           properties:
  *             customer:
- *               $ref: "#/components/schemas/customer"
+ *               $ref: "#/components/schemas/Customer"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

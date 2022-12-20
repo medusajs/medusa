@@ -71,7 +71,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *             discounts:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/discount"
+ *                 $ref: "#/components/schemas/Discount"
  *             count:
  *               type: integer
  *               description: The total number of items available

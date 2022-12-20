@@ -46,10 +46,9 @@ export class ProductOptionValue extends SoftDeletableEntity {
 }
 
 /**
- * @schema product_option_value
+ * @schema ProductOptionValue
  * title: "Product Option Value"
  * description: "A value given to a Product Variant's option set. Product Variant have a Product Option Value for each of the Product Options defined on the Product."
- * x-resourceId: product_option_value
  * type: object
  * required:
  *   - value
@@ -70,14 +69,14 @@ export class ProductOptionValue extends SoftDeletableEntity {
  *     example: opt_01F0YESHQBZVKCEXJ24BS6PCX3
  *   option:
  *     description: Available if the relation `option` is expanded.
- *     $ref: "#/components/schemas/product_option"
+ *     $ref: "#/components/schemas/ProductOption"
  *   variant_id:
  *     description: "The ID of the Product Variant that the Product Option Value is defined for."
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
  *     description: Available if the relation `variant` is expanded.
- *     $ref: "#/components/schemas/product_variant"
+ *     $ref: "#/components/schemas/ProductVariant"
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

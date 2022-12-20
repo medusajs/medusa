@@ -20,10 +20,9 @@ export class ClaimTag extends SoftDeletableEntity {
 }
 
 /**
- * @schema claim_tag
+ * @schema ClaimTag
  * title: "Claim Tag"
  * description: "Claim Tags are user defined tags that can be assigned to claim items for easy filtering and grouping."
- * x-resourceId: claim_tag
  * type: object
  * required:
  *   - value
