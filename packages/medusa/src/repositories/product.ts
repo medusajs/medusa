@@ -33,12 +33,13 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
   private mergeEntitiesWithRelations(
-    entitiesAndRelations: Array<Partial<Product>>
+    entitiesAndRelations: Array<Partial<Product>>,
+    sortIds: string[]
   ): Product[] {
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, (entityAndRelations) =>
-      merge({}, ...entityAndRelations)
-    )
+    return sortIds
+      .filter((id) => !!entitiesAndRelationsById[id])
+      .map((id) => merge({}, ...entitiesAndRelationsById[id]))
   }
 
   private async queryProducts(
@@ -255,8 +256,10 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
+    const entitiesToReturn = this.mergeEntitiesWithRelations(
+      entitiesAndRelations,
+      entitiesIds
+    )
 
     return [entitiesToReturn, count]
   }
@@ -302,8 +305,10 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
+    const entitiesToReturn = this.mergeEntitiesWithRelations(
+      entitiesAndRelations,
+      entitiesIds
+    )
 
     return entitiesToReturn
   }
