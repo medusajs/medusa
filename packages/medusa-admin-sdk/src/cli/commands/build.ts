@@ -1,62 +1,61 @@
 import react from "@vitejs/plugin-react"
 import { existsSync } from "fs"
-import inquirer from "inquirer"
 import { dirname, resolve } from "path"
 import { build } from "vite"
 import { Logger } from "../../logger"
-import { AdminPluginOptions } from "../../types"
-import { loadConfig } from "../../utils"
 
-type BuildCommandOptions = {
-  ext?: boolean
-  outDir?: string
-  force?: boolean
-}
+type ExternalBuildCommandOptions =
+  | {
+      outDir?: string
+      force?: boolean
+      base?: string
+      backendUrl?: string
+    }
+  | undefined
 
 const logger = new Logger("Build")
 
-export default async function buildUi({
-  ext = false,
-  outDir,
-  force = false,
-}: BuildCommandOptions) {
-  const config = loadConfig()
+export async function buildUi(buildOptions?: ExternalBuildCommandOptions) {
+  // const config = loadConfig()
   const adminDir = resolveAdminDir()
 
-  let destinationPath: string
-
-  if (ext && !outDir) {
-    logger.error(
-      `Output directory is required when building for external backend using the --ext flag. To build for external backend,
-       use the --ext flag and specify an output directory using the --outDir flag.`
-    )
+  if (!adminDir) {
+    logger.error("Could not find @medusajs/admin-ui")
     return
   }
 
-  if (ext && !config.backend_url) {
-    logger.error(
-      `The plugin option 'backend_url' is required when building for external use with an external backend using the --ext flag.`
-    )
-    return
-  }
+  let destinationPath: string = resolve(adminDir, "build")
+  let apiUrl: string = "/"
+  let baseOption: string | undefined = undefined
 
-  if (outDir) {
-    const valid = validateOutDir(outDir)
+  if (buildOptions) {
+    const { outDir, force, base, backendUrl } = buildOptions
 
-    if (!valid && !force) {
-      logger.error("Build directory already exists")
-      return
+    if (outDir) {
+      const valid = validateOutDir(outDir)
+
+      if (!valid && !force) {
+        logger.error("Build directory already exists")
+        return
+      }
+
+      destinationPath = outDir
     }
 
-    destinationPath = outDir
-  } else {
-    destinationPath = resolve(adminDir, "build")
+    if (base) {
+      baseOption = base
+    }
+
+    if (backendUrl) {
+      apiUrl = backendUrl
+    }
   }
 
   await build({
     root: adminDir,
     plugins: [react()],
-    define: defineEnv(config),
+    define: defineEnv(apiUrl),
+    base: baseOption,
     build: {
       outDir: destinationPath,
       emptyOutDir: true,
@@ -86,32 +85,8 @@ function validateOutDir(destinationPath: string) {
   return true
 }
 
-function defineEnv({
-  serve,
-  backend_url,
-}: Pick<AdminPluginOptions, "serve" | "backend_url">) {
-  let url = "/"
-
-  if (!serve) {
-    url = backend_url
-  }
-
+function defineEnv(url: string) {
   return {
     __MEDUSA_BACKEND_URL__: JSON.stringify(url),
   }
-}
-
-export function questionary() {
-  return inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "backend_url",
-        message: "Please enter the backend url",
-        validate: (input: string) => {},
-      },
-    ])
-    .then(async (answers) => {
-      console.log(answers)
-    })
 }

@@ -8,7 +8,7 @@ export function loadBuild() {
   let pkg: string | undefined
 
   try {
-    pkg = require.resolve("@medusajs/admin-ui")
+    pkg = require.resolve("@medusajs/admin-ui/build")
   } catch (_err) {
     pkg = undefined
   }
@@ -20,17 +20,16 @@ export function loadBuild() {
     return
   }
 
-  const path = resolve(pkg, "build")
-  const htmlPath = resolve(path, "index.html")
+  const path = resolve(pkg, "..")
 
-  if (!existsSync(htmlPath)) {
+  if (!existsSync(pkg)) {
     logger.error(
       "Could not find index.html. Make sure to run `medusa-admin-cli build` first."
     )
     return
   }
 
-  const html = readFileSync(htmlPath, "utf8")
+  const html = readFileSync(pkg, "utf8")
 
   return { html, path }
 }

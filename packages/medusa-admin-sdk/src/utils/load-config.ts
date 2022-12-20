@@ -28,7 +28,7 @@ export function loadConfig(rootDir?: string) {
   const config = getConfigFile(root, "medusa-config") as ReturnGetConfigFile
 
   if (getConfigFailed(config)) {
-    console.log(config.error)
+    logger.error(config.error.message)
     return
   }
 
@@ -37,8 +37,7 @@ export function loadConfig(rootDir?: string) {
   let options: AdminPluginOptions = {
     serve: true,
     serve_dev: true,
-    base: "/app/",
-    backend_url: undefined,
+    path: "/app/",
   }
 
   const plugin = configModule.plugins.find(

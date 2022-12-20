@@ -1,11 +1,11 @@
 import colors from "picocolors"
 
-type LoggerConstructorParams = {
-  context: string
-  options?: {
-    clearScreen?: boolean
-  }
-}
+// type LoggerConstructorParams = {
+//   context: string
+//   options?: {
+//     clearScreen?: boolean
+//   }
+// }
 
 export class Logger {
   private readonly _prefix = "medusa-admin-cli"
