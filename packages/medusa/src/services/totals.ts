@@ -25,7 +25,10 @@ import {
   LineDiscountAmount,
   SubtotalOptions,
 } from "../types/totals"
-import TaxProviderService from "./tax-provider"
+import {
+  TaxProviderService,
+  NewTotalsService,
+} from "./index"
 import { EntityManager } from "typeorm"
 
 import { calculatePriceTaxAmount } from "../utils"
@@ -74,6 +77,7 @@ type GetLineItemTotalOptions = {
 
 type TotalsServiceProps = {
   taxProviderService: TaxProviderService
+  newTotalsService: NewTotalsService
   taxCalculationStrategy: ITaxCalculationStrategy
   manager: EntityManager
   featureFlagRouter: FlagRouter
@@ -105,12 +109,14 @@ class TotalsService extends TransactionBaseService {
   protected transactionManager_: EntityManager
 
   protected readonly taxProviderService_: TaxProviderService
+  protected readonly newTotalsService_: NewTotalsService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
     taxProviderService,
+    newTotalsService,
     taxCalculationStrategy,
     featureFlagRouter,
   }: TotalsServiceProps) {
@@ -118,6 +124,7 @@ class TotalsService extends TransactionBaseService {
 
     this.manager_ = manager
     this.taxProviderService_ = taxProviderService
+    this.newTotalsService_ = newTotalsService
     this.taxCalculationStrategy_ = taxCalculationStrategy
 
     this.manager_ = manager
@@ -962,73 +969,24 @@ class TotalsService extends TransactionBaseService {
     tax_total: number
   }> {
     let giftCardable: number
+
     if (typeof opts.gift_cardable !== "undefined") {
       giftCardable = opts.gift_cardable
     } else {
       const subtotal = await this.getSubtotal(cartOrOrder)
       const discountTotal = await this.getDiscountTotal(cartOrOrder)
+
       giftCardable = subtotal - discountTotal
     }
 
-    if ("gift_card_transactions" in cartOrOrder) {
-      // gift_card_transactions only exist on orders so we can
-      // safely calculate the total based on the gift card transactions
-
-      return cartOrOrder.gift_card_transactions.reduce(
-        (acc, next) => {
-          let taxMultiplier = (next.tax_rate || 0) / 100
-
-          // Previously we did not record whether a gift card was taxable or not.
-          // All gift cards where is_taxable === null are from the old system,
-          // where we defaulted to taxable gift cards.
-          //
-          // This is a backwards compatability fix for orders that were created
-          // before we added the gift card tax rate.
-          if (
-            next.is_taxable === null &&
-            cartOrOrder.region?.gift_cards_taxable
-          ) {
-            taxMultiplier = cartOrOrder.region.tax_rate / 100
-          }
-
-          return {
-            total: acc.total + next.amount,
-            tax_total: acc.tax_total + next.amount * taxMultiplier,
-          }
-        },
-        {
-          total: 0,
-          tax_total: 0,
-        }
-      )
-    }
-
-    if (!cartOrOrder.gift_cards || !cartOrOrder.gift_cards.length) {
-      return {
-        total: 0,
-        tax_total: 0,
+    return await this.newTotalsService_.getGiftCardTotals(
+      giftCardable,
+      {
+        region: cartOrOrder.region,
+        giftCards: cartOrOrder.gift_cards || [],
+        giftCardTransactions: cartOrOrder['gift_card_transactions'] || []
       }
-    }
-
-    const toReturn = cartOrOrder.gift_cards.reduce(
-      (acc, next) => acc + next.balance,
-      0
     )
-    const orderGiftCardAmount = Math.min(giftCardable, toReturn)
-
-    if (cartOrOrder.region?.gift_cards_taxable) {
-      return {
-        total: orderGiftCardAmount,
-        tax_total: Math.round(
-          (orderGiftCardAmount * cartOrOrder.region.tax_rate) / 100
-        ),
-      }
-    }
-
-    return {
-      total: orderGiftCardAmount,
-      tax_total: 0,
-    }
   }
 
   /**
