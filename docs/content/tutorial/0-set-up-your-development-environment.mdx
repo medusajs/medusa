@@ -62,9 +62,9 @@ brew install node
 ```bash
 curl \
  "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- \
-  https://nodejs.org/dist/latest/ | sed -nE \ 
+  https://nodejs.org/dist/latest/ | sed -nE \
   's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" \
-  > "$HOME/Downloads/node-latest.pkg" && 
+  > "$HOME/Downloads/node-latest.pkg" &&
   sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
 ```
 
@@ -125,6 +125,12 @@ You can install Medusa’s CLI with the following command:
 
 ```bash npm2yarn
 npm install @medusajs/medusa-cli -g
+```
+
+You can check which version of Medusa you have by running the following command:
+
+```bash noReport
+medusa -v
 ```
 
 :::note
