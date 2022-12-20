@@ -1,5 +1,6 @@
 import Bull from "bull"
 import Redis from "ioredis"
+import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { IEventBusService } from "../interfaces/services/event-bus"
 import { StagedJob } from "../models"
@@ -52,7 +53,6 @@ export default class EventBusService implements IEventBusService {
   protected readonly cacheService_: CacheService
   protected queue_: Bull
   protected shouldEnqueuerRun: boolean
-  protected transactionManager_: EntityManager | undefined
   protected enqueue_: Promise<void>
 
   constructor(
@@ -122,14 +122,9 @@ export default class EventBusService implements IEventBusService {
       false
     )
 
-    cloned.transactionManager_ = transactionManager
     cloned.queue_ = this.queue_
 
     return cloned
-  }
-
-  async tempEventsCache(uniqueId: string) {
-    const cache = await this.cacheService_.get(uniqueId)
   }
 
   startEnqueuer(): void {
@@ -253,7 +248,7 @@ export default class EventBusService implements IEventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions & { uniqId?: string } = {}
+    options: EmitOptions & { uniqueCacheKey?: string } = {}
   ): Promise<StagedJob | void> {
     // construct options for the job
     const opts: { removeOnComplete: boolean } & EmitOptions = {
@@ -261,7 +256,7 @@ export default class EventBusService implements IEventBusService {
     }
     if (typeof options.attempts === "number") {
       opts.attempts = options.attempts
-      if (typeof options.backoff !== "undefined") {
+      if (isDefined(options.backoff)) {
         opts.backoff = options.backoff
       }
     }
@@ -269,23 +264,19 @@ export default class EventBusService implements IEventBusService {
       opts.delay = options.delay
     }
 
-    // If we have a transaction manager, we are in an ongoing transaction so
-    // instead of adding the job the queue for immediate processing, we will
-    // keep track of it until the transaction is committed. Only then, will
-    // we add the jobs to the queue. This is to ensure that jobs from a
-    // transaction are not processed if the transaction fails.
-    if (options?.uniqId) {
-      const cache = await this.cacheService_.get<EventData[]>(options.uniqId)
+    // If a unique id is passed to the method, we cache the event data
+    // instead of processing it immediately. As a consumer, you should
+    // process the events when appropriate e.g. when a transaction has
+    // committed. Use method `processCachedEvents`.
+    if (options?.uniqueCacheKey) {
+      const cachedEvents =
+        (await this.cacheService_.get<EventData[]>(options.uniqueCacheKey)) ||
+        []
 
       const job = { eventName, data, options: opts }
+      const updateEvents = [...cachedEvents, job]
 
-      if (cache) {
-        const updateEvents = [...cache, job]
-
-        await this.cacheService_.set(options.uniqId, updateEvents)
-      } else {
-        await this.cacheService_.set(options.uniqId, [job])
-      }
+      await this.cacheService_.set(options.uniqueCacheKey, updateEvents)
     } else {
       this.queue_.add({ eventName, data }, opts)
     }
@@ -308,8 +299,8 @@ export default class EventBusService implements IEventBusService {
     )
   }
 
-  async destroyCachedEvents(cacheId: string): Promise<void> {
-    await this.cacheService_.invalidate(cacheId)
+  async destroyCachedEvents(uniqueCacheKey: string): Promise<void> {
+    await this.cacheService_.invalidate(uniqueCacheKey)
   }
 
   /**

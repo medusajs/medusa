@@ -615,7 +615,7 @@ class ProductService extends TransactionBaseService {
           id: result.id,
           fields: Object.keys(update),
         },
-        { uniqId: transactionId }
+        { uniqueCacheKey: transactionId }
       )
       return result
     })
