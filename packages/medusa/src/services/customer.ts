@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import { DeepPartial, EntityManager } from "typeorm"
 import { EventBusService } from "."
@@ -10,7 +10,7 @@ import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
 import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -196,6 +196,13 @@ class CustomerService extends TransactionBaseService {
     email: string,
     config: FindConfig<Customer> = {}
   ): Promise<Customer | never> {
+    if (!isDefined(email)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"email" must be defined`
+      )
+    }
+
     return await this.retrieve_({ email: email.toLowerCase() }, config)
   }
 
@@ -247,6 +254,13 @@ class CustomerService extends TransactionBaseService {
     customerId: string,
     config: FindConfig<Customer> = {}
   ): Promise<Customer> {
+    if (!isDefined(customerId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"customerId" must be defined`
+      )
+    }
+
     return this.retrieve_({ id: customerId }, config)
   }
 

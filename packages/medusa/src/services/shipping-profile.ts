@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -136,6 +136,13 @@ class ShippingProfileService extends TransactionBaseService {
     profileId: string,
     options: FindConfig<ShippingProfile> = {}
   ): Promise<ShippingProfile> {
+    if (!isDefined(profileId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"profileId" must be defined`
+      )
+    }
+
     const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )

@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import {
   IPriceSelectionStrategy,
@@ -29,7 +29,7 @@ import {
   ProductVariantPrice,
   UpdateProductVariantInput,
 } from "../types/product-variant"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
