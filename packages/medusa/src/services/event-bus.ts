@@ -4,15 +4,12 @@ import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ICacheService } from "../interfaces"
 import { IEventBusService } from "../interfaces/services/event-bus"
-import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
-import { sleep } from "../utils/sleep"
 import JobSchedulerService from "./job-scheduler"
 
 type InjectedDependencies = {
   manager: EntityManager
   logger: Logger
-  stagedJobRepository: typeof StagedJobRepository
   jobSchedulerService: JobSchedulerService
   redisClient: Redis.Redis
   redisSubscriber: Redis.Redis
@@ -44,21 +41,17 @@ export default class EventBusService implements IEventBusService {
   protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager
   protected readonly logger_: Logger
-  protected readonly stagedJobRepository_: typeof StagedJobRepository
   protected readonly jobSchedulerService_: JobSchedulerService
   protected readonly observers_: Map<string | symbol, Subscriber[]>
   protected readonly redisClient_: Redis.Redis
   protected readonly redisSubscriber_: Redis.Redis
   protected readonly cacheService_: ICacheService
   protected queue_: Bull
-  protected shouldEnqueuerRun: boolean
-  protected enqueue_: Promise<void>
 
   constructor(
     {
       manager,
       logger,
-      stagedJobRepository,
       redisClient,
       redisSubscriber,
       cacheService,
@@ -69,7 +62,6 @@ export default class EventBusService implements IEventBusService {
     this.config_ = config
     this.manager_ = manager
     this.logger_ = logger
-    this.stagedJobRepository_ = stagedJobRepository
     this.cacheService_ = cacheService
 
     if (singleton) {
@@ -95,10 +87,6 @@ export default class EventBusService implements IEventBusService {
       this.redisSubscriber_ = redisSubscriber
       // Register our worker to handle emit calls
       this.queue_.process(this.worker_)
-
-      if (process.env.NODE_ENV !== "test") {
-        this.startEnqueuer()
-      }
     }
   }
 
@@ -110,7 +98,6 @@ export default class EventBusService implements IEventBusService {
     const cloned = new EventBusService(
       {
         manager: transactionManager,
-        stagedJobRepository: this.stagedJobRepository_,
         jobSchedulerService: this.jobSchedulerService_,
         logger: this.logger_,
         redisClient: this.redisClient_,
@@ -124,46 +111,6 @@ export default class EventBusService implements IEventBusService {
     cloned.queue_ = this.queue_
 
     return cloned
-  }
-
-  startEnqueuer(): void {
-    this.shouldEnqueuerRun = true
-    this.enqueue_ = this.enqueuer_()
-  }
-
-  async stopEnqueuer(): Promise<void> {
-    this.shouldEnqueuerRun = false
-    await this.enqueue_
-  }
-
-  async enqueuer_(): Promise<void> {
-    while (this.shouldEnqueuerRun) {
-      const listConfig = {
-        relations: [],
-        skip: 0,
-        take: 1000,
-      }
-
-      const stagedJobRepo = this.manager_.getCustomRepository(
-        this.stagedJobRepository_
-      )
-      const jobs = await stagedJobRepo.find(listConfig)
-
-      await Promise.all(
-        jobs.map((job) => {
-          this.queue_
-            .add(
-              { eventName: job.event_name, data: job.data },
-              { removeOnComplete: true }
-            )
-            .then(async () => {
-              await stagedJobRepo.remove(job)
-            })
-        })
-      )
-
-      await sleep(3000)
-    }
   }
 
   /**
