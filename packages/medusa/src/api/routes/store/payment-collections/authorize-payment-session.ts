@@ -39,7 +39,7 @@ import { PaymentCollectionService } from "../../../../services"
  *         schema:
  *           properties:
  *             payment_session:
- *               $ref: "#/components/schemas/payment_session"
+ *               $ref: "#/components/schemas/PaymentSession"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

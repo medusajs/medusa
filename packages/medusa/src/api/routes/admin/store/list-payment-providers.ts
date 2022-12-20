@@ -1,4 +1,5 @@
 import { PaymentProviderService } from "../../../../services"
+
 /**
  * @oas [get] /store/payment-providers
  * operationId: "GetStorePaymentProviders"
@@ -37,7 +38,7 @@ import { PaymentProviderService } from "../../../../services"
  *             payment_providers:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/payment_provider"
+ *                 $ref: "#/components/schemas/PaymentProvider"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

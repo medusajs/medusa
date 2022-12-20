@@ -127,7 +127,7 @@ export abstract class TransactionBaseService {
         } catch (error) {
           this.manager_ = temp
           this.transactionManager_ = undefined
-          // After the transaction is complete, we process cached events
+          // If the transaction fails, we destroy cached events
           // eslint-disable-next-line
           this.eventBusService_.destroyCachedEvents(txId)
           throw error

@@ -105,7 +105,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             return:
- *               $ref: "#/components/schemas/return"
+ *               $ref: "#/components/schemas/Return"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

@@ -44,6 +44,7 @@ const t = async function ({ directory, migrate, seedFile }) {
     const connection = await createConnection({
       type: configModule.projectConfig.database_type,
       database: configModule.projectConfig.database_database,
+      schema: configModule.projectConfig.database_schema,
       url: configModule.projectConfig.database_url,
       extra: configModule.projectConfig.database_extra || {},
       migrations: migrationDirs,

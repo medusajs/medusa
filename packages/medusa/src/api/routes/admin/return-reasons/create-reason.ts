@@ -76,7 +76,7 @@ import { EntityManager } from "typeorm"
  *           type: object
  *           properties:
  *             return_reason:
- *               $ref: "#/components/schemas/return_reason"
+ *               $ref: "#/components/schemas/ReturnReason"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
