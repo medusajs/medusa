@@ -24,49 +24,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - name
- *           - currency_code
- *           - tax_rate
- *           - payment_providers
- *           - fulfillment_providers
- *           - countries
- *         properties:
- *           name:
- *             description: "The name of the Region"
- *             type: string
- *           currency_code:
- *             description: "The 3 character ISO currency code to use for the Region."
- *             type: string
- *             externalDocs:
- *               url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
- *               description: See a list of codes.
- *           tax_code:
- *             description: "An optional tax code the Region."
- *             type: string
- *           tax_rate:
- *             description: "The tax rate to use on Orders in the Region."
- *             type: number
- *           payment_providers:
- *             description: "A list of Payment Provider IDs that should be enabled for the Region"
- *             type: array
- *             items:
- *               type: string
- *           fulfillment_providers:
- *             description: "A list of Fulfillment Provider IDs that should be enabled for the Region"
- *             type: array
- *             items:
- *               type: string
- *           countries:
- *             description: "A list of countries' 2 ISO Characters that should be included in the Region."
- *             example: ["US"]
- *             type: array
- *             items:
- *               type: string
- *           includes_tax:
- *             description: "[EXPERIMENTAL] Tax included in prices of region"
- *             type: boolean
+ *         $ref: "#/components/schemas/AdminPostRegionsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -160,6 +118,52 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
+/**
+ * @schema AdminPostRegionsReq
+ * type: object
+ * required:
+ *   - name
+ *   - currency_code
+ *   - tax_rate
+ *   - payment_providers
+ *   - fulfillment_providers
+ *   - countries
+ * properties:
+ *   name:
+ *     description: "The name of the Region"
+ *     type: string
+ *   currency_code:
+ *     description: "The 3 character ISO currency code to use for the Region."
+ *     type: string
+ *     externalDocs:
+ *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *       description: See a list of codes.
+ *   tax_code:
+ *     description: "An optional tax code the Region."
+ *     type: string
+ *   tax_rate:
+ *     description: "The tax rate to use on Orders in the Region."
+ *     type: number
+ *   payment_providers:
+ *     description: "A list of Payment Provider IDs that should be enabled for the Region"
+ *     type: array
+ *     items:
+ *       type: string
+ *   fulfillment_providers:
+ *     description: "A list of Fulfillment Provider IDs that should be enabled for the Region"
+ *     type: array
+ *     items:
+ *       type: string
+ *   countries:
+ *     description: "A list of countries' 2 ISO Characters that should be included in the Region."
+ *     example: ["US"]
+ *     type: array
+ *     items:
+ *       type: string
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Tax included in prices of region"
+ *     type: boolean
+ */
 export class AdminPostRegionsReq {
   @IsString()
   name: string

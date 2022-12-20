@@ -21,20 +21,7 @@ import { PaymentService } from "../../../../services"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - amount
- *           - reason
- *         properties:
- *           amount:
- *             description: The amount to refund.
- *             type: integer
- *           reason:
- *             description: The reason for the Refund.
- *             type: string
- *           note:
- *             description: A note with additional details about the Refund.
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostPaymentRefundsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -106,6 +93,23 @@ export default async (req, res) => {
   res.status(200).json({ refund })
 }
 
+/**
+ * @schema AdminPostPaymentRefundsReq
+ * type: object
+ * required:
+ *   - amount
+ *   - reason
+ * properties:
+ *   amount:
+ *     description: The amount to refund.
+ *     type: integer
+ *   reason:
+ *     description: The reason for the Refund.
+ *     type: string
+ *   note:
+ *     description: A note with additional details about the Refund.
+ *     type: string
+ */
 export class AdminPostPaymentRefundsReq {
   @IsInt()
   @IsNotEmpty()

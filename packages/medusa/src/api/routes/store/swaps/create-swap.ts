@@ -27,52 +27,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - order_id
- *           - return_items
- *           - additional_items
- *         properties:
- *           order_id:
- *             type: string
- *             description: The ID of the Order to create the Swap for.
- *           return_items:
- *             description: "The items to include in the Return."
- *             type: array
- *             items:
- *               required:
- *                 - item_id
- *                 - quantity
- *               properties:
- *                 item_id:
- *                   description: The ID of the Line Item from the Order.
- *                   type: string
- *                 quantity:
- *                   description: The quantity to swap.
- *                   type: integer
- *                 reason_id:
- *                   description: The ID of the reason of this return.
- *                   type: string
- *                 note:
- *                   description: The note to add to the item being swapped.
- *                   type: string
- *           return_shipping_option:
- *             type: string
- *             description: The ID of the Shipping Option to create the Shipping Method from.
- *           additional_items:
- *             description: "The items to exchange the returned items to."
- *             type: array
- *             items:
- *               required:
- *                 - variant_id
- *                 - quantity
- *               properties:
- *                 variant_id:
- *                   description: The ID of the Product Variant to send.
- *                   type: string
- *                 quantity:
- *                   description: The quantity to send of the variant.
- *                   type: integer
+ *         $ref: "#/components/schemas/StorePostSwapsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -327,6 +282,55 @@ class AdditionalItem {
   quantity: number
 }
 
+/**
+ * @schema StorePostSwapsReq
+ * type: object
+ * required:
+ *   - order_id
+ *   - return_items
+ *   - additional_items
+ * properties:
+ *   order_id:
+ *     type: string
+ *     description: The ID of the Order to create the Swap for.
+ *   return_items:
+ *     description: "The items to include in the Return."
+ *     type: array
+ *     items:
+ *       required:
+ *         - item_id
+ *         - quantity
+ *       properties:
+ *         item_id:
+ *           description: The ID of the Line Item from the Order.
+ *           type: string
+ *         quantity:
+ *           description: The quantity to swap.
+ *           type: integer
+ *         reason_id:
+ *           description: The ID of the reason of this return.
+ *           type: string
+ *         note:
+ *           description: The note to add to the item being swapped.
+ *           type: string
+ *   return_shipping_option:
+ *     type: string
+ *     description: The ID of the Shipping Option to create the Shipping Method from.
+ *   additional_items:
+ *     description: "The items to exchange the returned items to."
+ *     type: array
+ *     items:
+ *       required:
+ *         - variant_id
+ *         - quantity
+ *       properties:
+ *         variant_id:
+ *           description: The ID of the Product Variant to send.
+ *           type: string
+ *         quantity:
+ *           description: The quantity to send of the variant.
+ *           type: integer
+ */
 export class StorePostSwapsReq {
   @IsString()
   @IsNotEmpty()
