@@ -2,7 +2,7 @@ import { flatten, groupBy, map, merge } from "lodash"
 import { EntityMetadata, Repository, SelectQueryBuilder } from "typeorm"
 import { FindWithoutRelationsOptions } from "../repositories/customer-group"
 
-// TODO: All the utilities expect (applyOrdering) needs to be re worked depending on the outcome of the product repository
+// TODO: All the utilities except applyOrdering needs to be re worked depending on the outcome of the product repository
 
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
