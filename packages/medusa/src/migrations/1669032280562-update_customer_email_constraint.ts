@@ -5,7 +5,7 @@ export class updateCustomerEmailConstraint_1669032280562
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_fdb2f3ad8115da4c7718109a6e"`
+      `DROP INDEX "IDX_fdb2f3ad8115da4c7718109a6e"`
     )
 
     await queryRunner.query(
