@@ -24,7 +24,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/index.d.ts:12
+medusa/dist/api/routes/store/products/index.d.ts:13
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/index.d.ts:16
+medusa/dist/api/routes/store/products/index.d.ts:17
 
 ___
 
@@ -50,4 +50,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/products/index.d.ts:9
+medusa/dist/api/routes/store/products/index.d.ts:10

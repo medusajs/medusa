@@ -5,6 +5,7 @@ description: >-
   chronological timeline for communications sent to a Customer regarding an
   Order, and enables resends.
 x-resourceId: notification
+type: object
 required:
   - resource_type
   - resource_id

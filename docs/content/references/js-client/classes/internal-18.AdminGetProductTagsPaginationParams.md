@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:132
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:133
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:133
+medusa/dist/api/routes/admin/product-tags/list-product-tags.d.ts:134

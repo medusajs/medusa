@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/reset-password-token.d.ts:61
+medusa/dist/api/routes/store/customers/reset-password-token.d.ts:62

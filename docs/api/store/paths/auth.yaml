@@ -22,6 +22,7 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml
@@ -105,6 +106,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer:
                 $ref: ../components/schemas/customer.yaml

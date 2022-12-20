@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
@@ -21,7 +21,7 @@ import {
   UpdateShippingOptionInput,
   ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
@@ -183,6 +183,13 @@ class ShippingOptionService extends TransactionBaseService {
     optionId,
     options: { select?: (keyof ShippingOption)[]; relations?: string[] } = {}
   ): Promise<ShippingOption> {
+    if (!isDefined(optionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"optionId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const soRepo: ShippingOptionRepository = manager.getCustomRepository(
       this.optionRepository_

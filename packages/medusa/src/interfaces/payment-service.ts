@@ -1,17 +1,37 @@
 import { TransactionBaseService } from "./transaction-base-service"
 import {
+  Address,
   Cart,
   Customer,
   Payment,
   PaymentSession,
   PaymentSessionStatus,
+  ShippingMethod,
 } from "../models"
 import { PaymentService } from "medusa-interfaces"
-import { PaymentProviderDataInput } from "../types/payment-collection"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
 export type PaymentSessionData = Data
+
+export type PaymentContext = {
+  cart: {
+    context: Record<string, unknown>
+    id: string
+    email: string
+    shipping_address: Address | null
+    shipping_methods: ShippingMethod[]
+  }
+  currency_code: string
+  amount: number
+  resource_id?: string
+  customer?: Customer
+}
+
+export type PaymentSessionResponse = {
+  update_requests: { customer_metadata: Record<string, unknown> }
+  session_data: Record<string, unknown>
+}
 
 export interface PaymentService extends TransactionBaseService {
   getIdentifier(): string
@@ -23,6 +43,16 @@ export interface PaymentService extends TransactionBaseService {
     data: Data
   ): Promise<PaymentSessionData>
 
+  /**
+   * @param context The type of this argument is meant to be temporary and once the previous method signature
+   * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
+   */
+  createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>
+
+  /**
+   * @deprecated use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * @param cart
+   */
   createPayment(cart: Cart): Promise<PaymentSessionData>
 
   retrievePayment(paymentData: PaymentData): Promise<Data>
@@ -76,21 +106,40 @@ export abstract class AbstractPaymentService
     data: Data
   ): Promise<PaymentSessionData>
 
+  /**
+   * @param context The type of this argument is meant to be temporary and once the previous method signature
+   * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
+   */
+  public abstract createPayment(
+    context: Cart & PaymentContext
+  ): Promise<PaymentSessionResponse>
+
+  /**
+   * @deprecated use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * @param cart
+   */
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
-  public abstract createPaymentNew(
-    paymentInput: PaymentProviderDataInput
-  ): Promise<PaymentSessionData>
 
   public abstract retrievePayment(paymentData: PaymentData): Promise<Data>
 
+  /**
+   * @param paymentSessionData
+   * @param context The type of this argument is meant to be temporary and once the previous method signature
+   * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
+   */
+  public abstract updatePayment(
+    paymentSessionData: PaymentSessionData,
+    context: Cart & PaymentContext
+  ): Promise<PaymentSessionResponse>
+
+  /**
+   * @deprecated use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * @param paymentSessionData
+   * @param cart
+   */
   public abstract updatePayment(
     paymentSessionData: PaymentSessionData,
     cart: Cart
-  ): Promise<PaymentSessionData>
-
-  public abstract updatePaymentNew(
-    paymentSessionData: PaymentSessionData,
-    paymentInput: PaymentProviderDataInput
   ): Promise<PaymentSessionData>
 
   public abstract authorizePayment(

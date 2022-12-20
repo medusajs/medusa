@@ -27,7 +27,7 @@ Creates a customer
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customers.ts:18](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/customers.ts#L18)
+[medusa-js/src/resources/admin/customers.ts:18](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L18)
 
 ___
 
@@ -50,7 +50,7 @@ Lists customers
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customers.ts:59](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/customers.ts#L59)
+[medusa-js/src/resources/admin/customers.ts:59](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L59)
 
 ___
 
@@ -73,7 +73,7 @@ Retrieves a customer
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customers.ts:46](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/customers.ts#L46)
+[medusa-js/src/resources/admin/customers.ts:46](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L46)
 
 ___
 
@@ -97,4 +97,4 @@ Updates a customer
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customers.ts:32](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/customers.ts#L32)
+[medusa-js/src/resources/admin/customers.ts:32](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L32)

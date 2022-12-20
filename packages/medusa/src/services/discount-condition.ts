@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
 import {
@@ -50,6 +50,13 @@ class DiscountConditionService extends TransactionBaseService {
     conditionId: string,
     config?: FindConfig<DiscountCondition>
   ): Promise<DiscountCondition | never> {
+    if (!isDefined(conditionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"conditionId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const conditionRepo = manager.getCustomRepository(
       this.discountConditionRepository_
@@ -108,7 +115,7 @@ class DiscountConditionService extends TransactionBaseService {
 
   async upsertCondition(
     data: DiscountConditionInput,
-    overrideExisting: boolean = true
+    overrideExisting = true
   ): Promise<
     (
       | DiscountConditionProduct

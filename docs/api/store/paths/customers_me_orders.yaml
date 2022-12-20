@@ -187,6 +187,7 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               orders:
                 type: array

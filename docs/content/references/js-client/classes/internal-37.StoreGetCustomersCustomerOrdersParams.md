@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:200
+medusa/dist/api/routes/store/customers/list-orders.d.ts:201
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:193
+medusa/dist/api/routes/store/customers/list-orders.d.ts:194
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:198
+medusa/dist/api/routes/store/customers/list-orders.d.ts:199
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:196
+medusa/dist/api/routes/store/customers/list-orders.d.ts:197
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:192
+medusa/dist/api/routes/store/customers/list-orders.d.ts:193
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:194
+medusa/dist/api/routes/store/customers/list-orders.d.ts:195
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:184
+medusa/dist/api/routes/store/customers/list-orders.d.ts:185
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:183
+medusa/dist/api/routes/store/customers/list-orders.d.ts:184
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:190
+medusa/dist/api/routes/store/customers/list-orders.d.ts:191
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:187
+medusa/dist/api/routes/store/customers/list-orders.d.ts:188
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:181
+medusa/dist/api/routes/store/customers/list-orders.d.ts:182
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:182
+medusa/dist/api/routes/store/customers/list-orders.d.ts:183
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:191
+medusa/dist/api/routes/store/customers/list-orders.d.ts:192
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:188
+medusa/dist/api/routes/store/customers/list-orders.d.ts:189
 
 ___
 
@@ -172,7 +172,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:195
+medusa/dist/api/routes/store/customers/list-orders.d.ts:196
 
 ___
 
@@ -182,7 +182,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:189
+medusa/dist/api/routes/store/customers/list-orders.d.ts:190
 
 ___
 
@@ -192,7 +192,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:197
+medusa/dist/api/routes/store/customers/list-orders.d.ts:198
 
 ___
 
@@ -202,4 +202,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:199
+medusa/dist/api/routes/store/customers/list-orders.d.ts:200

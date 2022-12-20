@@ -24,6 +24,12 @@ npm install gatsby-cli -g
 
 ## Installation
 
+:::tip
+
+It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for the installation process as it's much faster than using NPM.
+
+:::
+
 1\. Create a new Gatsby project using the [Medusa starter template](https://github.com/medusajs/gatsby-starter-medusa):
 
 ```bash

@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:184
+medusa/dist/api/routes/store/customers/list-orders.d.ts:185
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:183
+medusa/dist/api/routes/store/customers/list-orders.d.ts:184
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:181
+medusa/dist/api/routes/store/customers/list-orders.d.ts:182
 
 ___
 
@@ -46,4 +46,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/list-orders.d.ts:182
+medusa/dist/api/routes/store/customers/list-orders.d.ts:183
