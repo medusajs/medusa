@@ -103,10 +103,10 @@ This will create a new user that you can use to log into your admin panel.
 
 ## Changing the Default Port
 
-The default port is set in `package.json` in the `develop` script:
+The default port is set in `package.json` in the `dev` script:
 
 ```json
-"develop": "gatsby develop -p 7000",
+"dev": "vite --port 7000",
 ```
 
 If you wish to change the port you can simply change the `7000` to your desired port.
