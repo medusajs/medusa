@@ -46,15 +46,15 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
-      handler
-    )
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
 
-    const transaction = await strategy.beginTransaction("idempotency_key_123", {
-      prop: 123,
-    })
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
+      handler,
+      {
+        prop: 123,
+      }
+    )
 
     await strategy.resume(transaction)
 
@@ -125,13 +125,12 @@ describe("Transaction Orchestrator", () => {
       ],
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
       handler
     )
-
-    const transaction = await strategy.beginTransaction("idempotency_key_123")
 
     await strategy.resume(transaction)
     expect(actionOrder).toEqual(["one", "two", "three", "four", "five", "six"])
@@ -177,13 +176,12 @@ describe("Transaction Orchestrator", () => {
       ],
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
       handler
     )
-
-    const transaction = await strategy.beginTransaction("idempotency_key_123")
 
     await strategy.resume(transaction)
     expect(actionOrder).toEqual(["one", "two", "three"])
@@ -242,15 +240,15 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
-      handler
-    )
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
 
-    const transaction = await strategy.beginTransaction("idempotency_key_123", {
-      prop: 123,
-    })
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
+      handler,
+      {
+        prop: 123,
+      }
+    )
 
     await strategy.resume(transaction)
 
@@ -302,13 +300,12 @@ describe("Transaction Orchestrator", () => {
       ],
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
       handler
     )
-
-    const transaction = await strategy.beginTransaction("idempotency_key_123")
 
     strategy.resume(transaction)
 
@@ -371,13 +368,12 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
       handler
     )
-
-    const transaction = await strategy.beginTransaction("idempotency_key_123")
 
     await strategy.resume(transaction)
 
@@ -435,13 +431,12 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
       handler
     )
-
-    const transaction = await strategy.beginTransaction("idempotency_key_123")
 
     await strategy.resume(transaction)
 
@@ -491,13 +486,12 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
       handler
     )
-
-    const transaction = await strategy.beginTransaction("idempotency_key_123")
 
     await strategy.resume(transaction)
 
@@ -549,13 +543,12 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
       handler
     )
-
-    const transaction = await strategy.beginTransaction("idempotency_key_123")
 
     await strategy.resume(transaction)
 
@@ -568,7 +561,11 @@ describe("Transaction Orchestrator", () => {
       "firstMethod",
       TransactionHandlerType.INVOKE
     )
-    await strategy.registerStepSuccess(mockIdempotencyKey, transaction)
+    await strategy.registerStepSuccess(
+      mockIdempotencyKey,
+      undefined,
+      transaction
+    )
 
     expect(transaction.getState()).toBe(TransactionState.DONE)
   })
@@ -620,13 +617,12 @@ describe("Transaction Orchestrator", () => {
       },
     }
 
-    const strategy = new TransactionOrchestrator(
-      "transaction-name",
-      flow,
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "idempotency_key_123",
       handler
     )
-
-    const transaction = await strategy.beginTransaction("idempotency_key_123")
 
     const mockIdempotencyKey = TransactionOrchestrator.getKeyName(
       transaction.idempotencyKey,
@@ -635,7 +631,7 @@ describe("Transaction Orchestrator", () => {
     )
 
     const registerBeforeAllowed = await strategy
-      .registerStepFailure(mockIdempotencyKey)
+      .registerStepFailure(mockIdempotencyKey, handler)
       .catch((e) => e.message)
 
     await strategy.resume(transaction)
@@ -649,7 +645,8 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
 
     const resumedTransaction = await strategy.registerStepFailure(
-      mockIdempotencyKey
+      mockIdempotencyKey,
+      handler
     )
 
     expect(resumedTransaction.getState()).toBe(TransactionState.COMPENSATING)
@@ -662,6 +659,7 @@ describe("Transaction Orchestrator", () => {
     )
     await strategy.registerStepSuccess(
       mockIdempotencyKeyCompensate,
+      undefined,
       resumedTransaction
     )
 
