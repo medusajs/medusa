@@ -14,33 +14,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - email
- *           - first_name
- *           - last_name
- *           - password
- *         properties:
- *           email:
- *             type: string
- *             description: The customer's email.
- *             format: email
- *           first_name:
- *             type: string
- *             description: The customer's first name.
- *           last_name:
- *             type: string
- *             description: The customer's last name.
- *           password:
- *             type: string
- *             description: The customer's password.
- *             format: password
- *           phone:
- *             type: string
- *             description: The customer's phone number.
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostCustomersReq"
  * tags:
  *   - Customer
  * x-codeSamples:
@@ -110,6 +84,36 @@ export default async (req, res) => {
   res.status(201).json({ customer })
 }
 
+/**
+ * @schema AdminPostCustomersReq
+ * type: object
+ * required:
+ *   - email
+ *   - first_name
+ *   - last_name
+ *   - password
+ * properties:
+ *   email:
+ *     type: string
+ *     description: The customer's email.
+ *     format: email
+ *   first_name:
+ *     type: string
+ *     description: The customer's first name.
+ *   last_name:
+ *     type: string
+ *     description: The customer's last name.
+ *   password:
+ *     type: string
+ *     description: The customer's password.
+ *     format: password
+ *   phone:
+ *     type: string
+ *     description: The customer's phone number.
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostCustomersReq {
   @IsEmail()
   email: string

@@ -18,13 +18,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - provider_id
- *         properties:
- *           provider_id:
- *             description: "The ID of the Fulfillment Provider to add."
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostRegionsRegionFulfillmentProvidersReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -97,6 +91,16 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
+/**
+ * @schema AdminPostRegionsRegionFulfillmentProvidersReq
+ * type: object
+ * required:
+ *   - provider_id
+ * properties:
+ *   provider_id:
+ *     description: "The ID of the Fulfillment Provider to add."
+ *     type: string
+ */
 export class AdminPostRegionsRegionFulfillmentProvidersReq {
   @IsString()
   provider_id: string

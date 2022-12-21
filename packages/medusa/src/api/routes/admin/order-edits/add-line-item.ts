@@ -19,20 +19,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - variant_id
- *           - quantity
- *         properties:
- *           variant_id:
- *             description: The ID of the variant ID to add
- *             type: string
- *           quantity:
- *             description: The quantity to add
- *             type: number
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostOrderEditsEditLineItemsReq"
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
@@ -112,6 +99,23 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * @schema AdminPostOrderEditsEditLineItemsReq
+ * type: object
+ * required:
+ *   - variant_id
+ *   - quantity
+ * properties:
+ *   variant_id:
+ *     description: The ID of the variant ID to add
+ *     type: string
+ *   quantity:
+ *     description: The quantity to add
+ *     type: number
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostOrderEditsEditLineItemsReq {
   @IsString()
   variant_id: string

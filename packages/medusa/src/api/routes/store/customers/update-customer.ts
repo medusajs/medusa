@@ -17,33 +17,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           first_name:
- *             description: "The Customer's first name."
- *             type: string
- *           last_name:
- *             description: "The Customer's last name."
- *             type: string
- *           billing_address:
- *             description: "The Address to be used for billing purposes."
- *             anyOf:
- *               - $ref: "#/components/schemas/AddressFields"
- *                 description: The full billing address object
- *               - type: string
- *                 description: The ID of an existing billing address
- *           password:
- *             description: "The Customer's password."
- *             type: string
- *           phone:
- *             description: "The Customer's phone number."
- *             type: string
- *           email:
- *             description: "The email of the customer."
- *             type: string
- *           metadata:
- *             description: "Metadata about the customer."
- *             type: object
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -114,6 +88,36 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersCustomerReq
+ * type: object
+ * properties:
+ *   first_name:
+ *     description: "The Customer's first name."
+ *     type: string
+ *   last_name:
+ *     description: "The Customer's last name."
+ *     type: string
+ *   billing_address:
+ *     description: "The Address to be used for billing purposes."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *         description: The full billing address object
+ *       - type: string
+ *         description: The ID of an existing billing address
+ *   password:
+ *     description: "The Customer's password."
+ *     type: string
+ *   phone:
+ *     description: "The Customer's phone number."
+ *     type: string
+ *   email:
+ *     description: "The email of the customer."
+ *     type: string
+ *   metadata:
+ *     description: "Metadata about the customer."
+ *     type: object
+ */
 export class StorePostCustomersCustomerReq {
   @IsOptional()
   @IsType([AddressPayload, String])

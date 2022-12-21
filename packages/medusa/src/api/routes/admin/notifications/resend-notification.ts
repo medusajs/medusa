@@ -21,11 +21,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           to:
- *             description: "A new address or user identifier that the Notification should be sent to"
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostNotificationsNotificationResendReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -103,6 +99,14 @@ export default async (req, res) => {
   res.json({ notification })
 }
 
+/**
+ * @schema AdminPostNotificationsNotificationResendReq
+ * type: object
+ * properties:
+ *   to:
+ *     description: "A new address or user identifier that the Notification should be sent to"
+ *     type: string
+ */
 export class AdminPostNotificationsNotificationResendReq {
   @IsOptional()
   @IsString()

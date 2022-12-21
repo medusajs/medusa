@@ -24,21 +24,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - fulfillment_id
- *         properties:
- *           fulfillment_id:
- *             description: The ID of the Fulfillment.
- *             type: string
- *           tracking_numbers:
- *             description: The tracking numbers for the shipment.
- *             type: array
- *             items:
- *               type: string
- *           no_notification:
- *             description: If set to true no notification will be sent related to this Claim.
- *             type: boolean
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderSwapsSwapShipmentsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -118,6 +104,24 @@ export default async (req, res) => {
   res.json({ order })
 }
 
+/**
+ * @schema AdminPostOrdersOrderSwapsSwapShipmentsReq
+ * type: object
+ * required:
+ *   - fulfillment_id
+ * properties:
+ *   fulfillment_id:
+ *     description: The ID of the Fulfillment.
+ *     type: string
+ *   tracking_numbers:
+ *     description: The tracking numbers for the shipment.
+ *     type: array
+ *     items:
+ *       type: string
+ *   no_notification:
+ *     description: If set to true no notification will be sent related to this Claim.
+ *     type: boolean
+ */
 export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
   @IsString()
   @IsNotEmpty()
