@@ -19,20 +19,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - customer_ids
- *         properties:
- *           customer_ids:
- *             description: "The ids of the customers to remove"
- *             type: array
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: ID of the customer
- *                   type: string
+ *         $ref: "#/components/schemas/AdminDeleteCustomerGroupsGroupCustomerBatchReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -118,6 +105,23 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ customer_group })
 }
 
+/**
+ * @schema AdminDeleteCustomerGroupsGroupCustomerBatchReq
+ * type: object
+ * required:
+ *   - customer_ids
+ * properties:
+ *   customer_ids:
+ *     description: "The ids of the customers to remove"
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: ID of the customer
+ *           type: string
+ */
 export class AdminDeleteCustomerGroupsGroupCustomerBatchReq {
   @ValidateNested({ each: true })
   @Type(() => CustomerGroupsBatchCustomer)

@@ -15,38 +15,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *    application/json:
  *      schema:
- *        type: object
- *        required:
- *          - type
- *          - context
- *        properties:
- *          type:
- *            type: string
- *            description: The type of batch job to start.
- *            example: product-export
- *          context:
- *            type: object
- *            description: Additional infomration regarding the batch to be used for processing.
- *            example:
- *              shape:
- *                prices:
- *                  - region: null
- *                    currency_code: "eur"
- *                dynamicImageColumnCount: 4
- *                dynamicOptionColumnCount: 2
- *              list_config:
- *                skip: 0
- *                take: 50
- *                order:
- *                  created_at: "DESC"
- *                relations:
- *                  - variants
- *                  - variant.prices
- *                  - images
- *          dry_run:
- *            type: boolean
- *            description: Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
- *            default: false
+ *        $ref: "#/components/schemas/AdminPostBatchesReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -120,6 +89,41 @@ export default async (req, res) => {
   res.status(201).json({ batch_job })
 }
 
+/**
+ * @schema AdminPostBatchesReq
+ * type: object
+ * required:
+ *   - type
+ *   - context
+ * properties:
+ *   type:
+ *     type: string
+ *     description: The type of batch job to start.
+ *     example: product-export
+ *   context:
+ *     type: object
+ *     description: Additional infomration regarding the batch to be used for processing.
+ *     example:
+ *       shape:
+ *         prices:
+ *           - region: null
+ *             currency_code: "eur"
+ *         dynamicImageColumnCount: 4
+ *         dynamicOptionColumnCount: 2
+ *       list_config:
+ *         skip: 0
+ *         take: 50
+ *         order:
+ *           created_at: "DESC"
+ *         relations:
+ *           - variants
+ *           - variant.prices
+ *           - images
+ *   dry_run:
+ *     type: boolean
+ *     description: Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
+ *     default: false
+ */
 export class AdminPostBatchesReq {
   @IsString()
   type: string

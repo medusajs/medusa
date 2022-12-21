@@ -27,45 +27,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - requirements
- *         properties:
- *           name:
- *             description: "The name of the Shipping Option"
- *             type: string
- *           amount:
- *             description: "The amount to charge for the Shipping Option."
- *             type: integer
- *           admin_only:
- *             description: "If true, the option can be used for draft orders"
- *             type: boolean
- *           metadata:
- *             description: "An optional set of key-value pairs with additional information."
- *             type: object
- *           requirements:
- *             description: "The requirements that must be satisfied for the Shipping Option to be available."
- *             type: array
- *             items:
- *               required:
- *                 - type
- *                 - amount
- *               properties:
- *                 id:
- *                   description: The ID of the requirement
- *                   type: string
- *                 type:
- *                   description: The type of the requirement
- *                   type: string
- *                   enum:
- *                     - max_subtotal
- *                     - min_subtotal
- *                 amount:
- *                   description: The amount to compare with.
- *                   type: integer
- *           includes_tax:
- *             description: "[EXPERIMENTAL] Tax included in prices of shipping option"
- *             type: boolean
+ *         $ref: "#/components/schemas/AdminPostShippingOptionsOptionReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -160,6 +122,48 @@ class OptionRequirement {
   amount: number
 }
 
+/**
+ * @schema AdminPostShippingOptionsOptionReq
+ * type: object
+ * required:
+ *   - requirements
+ * properties:
+ *   name:
+ *     description: "The name of the Shipping Option"
+ *     type: string
+ *   amount:
+ *     description: "The amount to charge for the Shipping Option."
+ *     type: integer
+ *   admin_only:
+ *     description: "If true, the option can be used for draft orders"
+ *     type: boolean
+ *   metadata:
+ *     description: "An optional set of key-value pairs with additional information."
+ *     type: object
+ *   requirements:
+ *     description: "The requirements that must be satisfied for the Shipping Option to be available."
+ *     type: array
+ *     items:
+ *       required:
+ *         - type
+ *         - amount
+ *       properties:
+ *         id:
+ *           description: The ID of the requirement
+ *           type: string
+ *         type:
+ *           description: The type of the requirement
+ *           type: string
+ *           enum:
+ *             - max_subtotal
+ *             - min_subtotal
+ *         amount:
+ *           description: The amount to compare with.
+ *           type: integer
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Tax included in prices of shipping option"
+ *     type: boolean
+ */
 export class AdminPostShippingOptionsOptionReq {
   @IsString()
   @IsOptional()
