@@ -60,11 +60,11 @@ export default async ({
     } catch (err) {
       if (resolution.definition.isRequired) {
         throw new Error(
-          `Could not resolve required module: ${resolution.definition.label}`
+          `Could not resolve required module: ${resolution.definition.label}.`
         )
       }
 
-      logger.warn(`Couldn not resolve module: ${resolution.definition.label}.`)
+      logger.warn(`Could not resolve module: ${resolution.definition.label}.`)
     }
   }
 
