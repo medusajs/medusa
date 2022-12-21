@@ -241,7 +241,7 @@ const flow: TransactionStepsDefinition = {
 }
 
 const createVariantStrategy = new TransactionOrchestrator(
-  "transaction-name",
+  "create-variant",
   flow
 )
 
