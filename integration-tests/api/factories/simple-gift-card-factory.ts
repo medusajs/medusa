@@ -8,6 +8,7 @@ export type GiftCardFactoryData = {
   region_id: string
   value: number
   balance: number
+  tax_rate?: number
 }
 
 export const simpleGiftCardFactory = async (
@@ -27,6 +28,7 @@ export const simpleGiftCardFactory = async (
     region_id: data.region_id,
     value: data.value,
     balance: data.balance,
+    tax_rate: data.tax_rate,
   })
 
   return await manager.save(toSave)

@@ -70,3 +70,13 @@ export const giftCards = [
     balance: 10000,
   },
 ] as GiftCard[]
+
+export const giftCardsWithTaxRate = [
+  {
+    id: IdMap.getId("gift_card_1"),
+    code: "CODE",
+    value: 10000,
+    balance: 10000,
+    tax_rate: 20,
+  },
+] as GiftCard[]
