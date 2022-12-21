@@ -37,6 +37,11 @@ export interface PaymentProcessor {
   getIdentifier(): string
 
   /**
+   * Used to initialise anything like an SDK or similar
+   */
+  init(): Promise<void>
+
+  /**
    * Initiate a payment session with the external provider
    */
   initiatePayment(
@@ -157,6 +162,8 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
 
     return ctr.identifier
   }
+
+  abstract init(): Promise<void>
 
   abstract capturePayment(
     paymentId: string,
