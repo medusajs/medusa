@@ -135,5 +135,6 @@ You can learn more about Medusa admin and its features in the [User Guide](../us
 
 ## What’s Next
 
+- Learn how to [Customize Medusa Admin](./development.md)
 - Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefront starters.
 - [Learn how you can use `create-medusa-app` to install all of Medusa’s 3 components.](../usage/create-medusa-app.mdx)
