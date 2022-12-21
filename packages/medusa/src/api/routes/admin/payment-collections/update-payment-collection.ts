@@ -15,14 +15,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           description:
- *             description: An optional description to create or update the payment collection.
- *             type: string
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminUpdatePaymentCollectionsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -93,6 +86,17 @@ export default async (req, res) => {
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
+/**
+ * @schema AdminUpdatePaymentCollectionsReq
+ * type: object
+ * properties:
+ *   description:
+ *     description: An optional description to create or update the payment collection.
+ *     type: string
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminUpdatePaymentCollectionsReq {
   @IsString()
   @IsOptional()

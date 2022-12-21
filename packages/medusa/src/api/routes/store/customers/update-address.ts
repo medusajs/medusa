@@ -17,8 +17,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         anyOf:
- *           - $ref: "#/components/schemas/AddressFields"
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerAddressesAddressReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -97,5 +96,10 @@ export default async (req, res) => {
   res.json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersCustomerAddressesAddressReq
+ * anyOf:
+ *   - $ref: "#/components/schemas/AddressFields"
+ */
 // eslint-disable-next-line max-len
 export class StorePostCustomersCustomerAddressesAddressReq extends AddressPayload {}

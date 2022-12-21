@@ -17,11 +17,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           includes_tax:
- *             type: boolean
- *             description: "[EXPERIMENTAL] Tax included in prices of currency."
+ *         $ref: "#/components/schemas/AdminPostCurrenciesCurrencyReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -67,6 +63,14 @@ export default async (req: ExtendedRequest<Currency>, res) => {
   res.json({ currency })
 }
 
+/**
+ * @schema AdminPostCurrenciesCurrencyReq
+ * type: object
+ * properties:
+ *   includes_tax:
+ *     type: boolean
+ *     description: "[EXPERIMENTAL] Tax included in prices of currency."
+ */
 export class AdminPostCurrenciesCurrencyReq {
   @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
     IsOptional(),

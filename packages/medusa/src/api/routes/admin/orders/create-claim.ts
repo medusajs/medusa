@@ -31,102 +31,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - type
- *           - claim_items
- *         properties:
- *           type:
- *             description: "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items."
- *             type: string
- *             enum:
- *               - replace
- *               - refund
- *           claim_items:
- *             description: The Claim Items that the Claim will consist of.
- *             type: array
- *             items:
- *               required:
- *                 - item_id
- *                 - quantity
- *               properties:
- *                 item_id:
- *                   description: The ID of the Line Item that will be claimed.
- *                   type: string
- *                 quantity:
- *                   description: The number of items that will be returned
- *                   type: integer
- *                 note:
- *                   description: Short text describing the Claim Item in further detail.
- *                   type: string
- *                 reason:
- *                   description: The reason for the Claim
- *                   type: string
- *                   enum:
- *                     - missing_item
- *                     - wrong_item
- *                     - production_failure
- *                     - other
- *                 tags:
- *                   description: A list o tags to add to the Claim Item
- *                   type: array
- *                   items:
- *                     type: string
- *                 images:
- *                   description: A list of image URL's that will be associated with the Claim
- *                   items:
- *                     type: string
- *           return_shipping:
- *              description: Optional details for the Return Shipping Method, if the items are to be sent back.
- *              type: object
- *              properties:
- *                option_id:
- *                  type: string
- *                  description: The ID of the Shipping Option to create the Shipping Method from.
- *                price:
- *                  type: integer
- *                  description: The price to charge for the Shipping Method.
- *           additional_items:
- *              description: The new items to send to the Customer when the Claim type is Replace.
- *              type: array
- *              items:
- *                required:
- *                  - variant_id
- *                  - quantity
- *                properties:
- *                  variant_id:
- *                    description: The ID of the Product Variant to ship.
- *                    type: string
- *                  quantity:
- *                    description: The quantity of the Product Variant to ship.
- *                    type: integer
- *           shipping_methods:
- *              description: The Shipping Methods to send the additional Line Items with.
- *              type: array
- *              items:
- *                 properties:
- *                   id:
- *                     description: The ID of an existing Shipping Method
- *                     type: string
- *                   option_id:
- *                     description: The ID of the Shipping Option to create a Shipping Method from
- *                     type: string
- *                   price:
- *                     description: The price to charge for the Shipping Method
- *                     type: integer
- *           shipping_address:
- *              type: object
- *              description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
- *              $ref: "#/components/schemas/Address"
- *           refund_amount:
- *              description: The amount to refund the Customer when the Claim type is `refund`.
- *              type: integer
- *           no_notification:
- *              description: If set to true no notification will be send related to this Claim.
- *              type: boolean
- *           metadata:
- *              description: An optional set of key-value pairs to hold additional information.
- *              type: object
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -394,6 +299,105 @@ export default async (req, res) => {
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
+/**
+ * @schema AdminPostOrdersOrderClaimsReq
+ * type: object
+ * required:
+ *   - type
+ *   - claim_items
+ * properties:
+ *   type:
+ *     description: "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items."
+ *     type: string
+ *     enum:
+ *       - replace
+ *       - refund
+ *   claim_items:
+ *     description: The Claim Items that the Claim will consist of.
+ *     type: array
+ *     items:
+ *       required:
+ *         - item_id
+ *         - quantity
+ *       properties:
+ *         item_id:
+ *           description: The ID of the Line Item that will be claimed.
+ *           type: string
+ *         quantity:
+ *           description: The number of items that will be returned
+ *           type: integer
+ *         note:
+ *           description: Short text describing the Claim Item in further detail.
+ *           type: string
+ *         reason:
+ *           description: The reason for the Claim
+ *           type: string
+ *           enum:
+ *             - missing_item
+ *             - wrong_item
+ *             - production_failure
+ *             - other
+ *         tags:
+ *           description: A list o tags to add to the Claim Item
+ *           type: array
+ *           items:
+ *             type: string
+ *         images:
+ *           description: A list of image URL's that will be associated with the Claim
+ *           items:
+ *             type: string
+ *   return_shipping:
+ *      description: Optional details for the Return Shipping Method, if the items are to be sent back.
+ *      type: object
+ *      properties:
+ *        option_id:
+ *          type: string
+ *          description: The ID of the Shipping Option to create the Shipping Method from.
+ *        price:
+ *          type: integer
+ *          description: The price to charge for the Shipping Method.
+ *   additional_items:
+ *      description: The new items to send to the Customer when the Claim type is Replace.
+ *      type: array
+ *      items:
+ *        required:
+ *          - variant_id
+ *          - quantity
+ *        properties:
+ *          variant_id:
+ *            description: The ID of the Product Variant to ship.
+ *            type: string
+ *          quantity:
+ *            description: The quantity of the Product Variant to ship.
+ *            type: integer
+ *   shipping_methods:
+ *      description: The Shipping Methods to send the additional Line Items with.
+ *      type: array
+ *      items:
+ *         properties:
+ *           id:
+ *             description: The ID of an existing Shipping Method
+ *             type: string
+ *           option_id:
+ *             description: The ID of the Shipping Option to create a Shipping Method from
+ *             type: string
+ *           price:
+ *             description: The price to charge for the Shipping Method
+ *             type: integer
+ *   shipping_address:
+ *      type: object
+ *      description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
+ *      $ref: "#/components/schemas/Address"
+ *   refund_amount:
+ *      description: The amount to refund the Customer when the Claim type is `refund`.
+ *      type: integer
+ *   no_notification:
+ *      description: If set to true no notification will be send related to this Claim.
+ *      type: boolean
+ *   metadata:
+ *      description: An optional set of key-value pairs to hold additional information.
+ *      type: object
+ */
 export class AdminPostOrdersOrderClaimsReq {
   @IsEnum(ClaimType)
   @IsNotEmpty()

@@ -25,20 +25,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           unit_price:
- *             description: The potential custom price of the item.
- *             type: integer
- *           title:
- *             description: The potential custom title of the item.
- *             type: string
- *           quantity:
- *             description: The quantity of the Line Item.
- *             type: integer
- *           metadata:
- *             description: The optional key-value map with additional details about the Line Item.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostDraftOrdersDraftOrderLineItemsItemReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -157,6 +144,23 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * @schema AdminPostDraftOrdersDraftOrderLineItemsItemReq
+ * type: object
+ * properties:
+ *   unit_price:
+ *     description: The potential custom price of the item.
+ *     type: integer
+ *   title:
+ *     description: The potential custom title of the item.
+ *     type: string
+ *   quantity:
+ *     description: The quantity of the Line Item.
+ *     type: integer
+ *   metadata:
+ *     description: The optional key-value map with additional details about the Line Item.
+ *     type: object
+ */
 export class AdminPostDraftOrdersDraftOrderLineItemsItemReq {
   @IsString()
   @IsOptional()

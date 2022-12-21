@@ -18,14 +18,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
- *           no_notification:
- *             description: If set to true no notification will be send related to this Claim.
- *             type: boolean
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimFulfillmentsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -97,6 +90,17 @@ export default async (req, res) => {
   res.status(200).json({ order })
 }
 
+/**
+ * @schema AdminPostOrdersOrderClaimsClaimFulfillmentsReq
+ * type: object
+ * properties:
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ *   no_notification:
+ *     description: If set to true no notification will be send related to this Claim.
+ *     type: boolean
+ */
 export class AdminPostOrdersOrderClaimsClaimFulfillmentsReq {
   @IsObject()
   @IsOptional()
