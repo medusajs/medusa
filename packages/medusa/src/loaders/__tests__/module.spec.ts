@@ -163,7 +163,7 @@ describe("modules loader", () => {
     await registerModules({ container, configModule, logger })
 
     expect(logger.warn).toHaveBeenCalledWith(
-      "Could not resolve module: TestService."
+      "Could not resolve module: TestService. Error: Loaders for module TestService failed: loader"
     )
   })
 
@@ -190,9 +190,10 @@ describe("modules loader", () => {
     await registerModules({ container, configModule, logger })
 
     expect(logger.warn).toHaveBeenCalledWith(
-      "Could not resolve module: TestService."
+      "Could not resolve module: TestService. Error: No service found in module. Make sure that your module exports a service."
     )
   })
+
   it("throws error if no service is defined and module is required", async () => {
     expect.assertions(1)
     const moduleResolutions: Record<string, ModuleResolution> = {
@@ -215,7 +216,7 @@ describe("modules loader", () => {
       await registerModules({ container, configModule, logger: Logger })
     } catch (err) {
       expect(err.message).toEqual(
-        "Could not resolve required module: TestService."
+        "No service found in module. Make sure that your module exports a service."
       )
     }
   })

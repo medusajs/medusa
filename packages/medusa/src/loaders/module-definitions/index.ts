@@ -18,7 +18,6 @@ export default ({ modules }: ConfigModule) => {
       }
       if (!module) {
         moduleResolutions[definition.key] = {
-          resolutionPath: undefined,
           definition,
           options: {},
         }

@@ -11,6 +11,65 @@ type Options = {
 
 export const moduleHelper = new ModulesHelper()
 
+const registerModule = async (
+  container,
+  resolution,
+  configModule,
+  logger
+): Promise<{ error?: Error } | void> => {
+  if (!resolution.resolutionPath) {
+    container.register({
+      [resolution.definition.registrationName]: asValue(false),
+    })
+
+    return
+  }
+
+  let loadedModule
+  try {
+    loadedModule = await import(resolution.resolutionPath!)
+  } catch (error) {
+    return { error }
+  }
+
+  const moduleService = loadedModule?.service || null
+
+  if (!moduleService) {
+    return {
+      error: new Error(
+        "No service found in module. Make sure that your module exports a service."
+      ),
+    }
+  }
+
+  const moduleLoaders = loadedModule?.loaders || []
+  try {
+    for (const loader of moduleLoaders) {
+      await loader({ container, configModule, logger })
+    }
+  } catch (err) {
+    return {
+      error: new Error(
+        `Loaders for module ${resolution.definition.label} failed: ${err.message}`
+      ),
+    }
+  }
+
+  container.register({
+    [resolution.definition.registrationName]: asFunction(
+      (cradle) => new moduleService(cradle, resolution.options)
+    ).singleton(),
+  })
+
+  trackInstallation(
+    {
+      module: resolution.definition.key,
+      resolution: resolution.resolutionPath,
+    },
+    "module"
+  )
+}
+
 export default async ({
   container,
   configModule,
@@ -19,52 +78,24 @@ export default async ({
   const moduleResolutions = configModule?.moduleResolutions ?? {}
 
   for (const resolution of Object.values(moduleResolutions)) {
-    try {
-      if (!resolution.resolutionPath) {
-        container.register({
-          [resolution.definition.registrationName]: asFunction(
-            () => false
-          ).singleton(),
-        })
-
-        continue
-      }
-
-      const loadedModule = await import(resolution.resolutionPath!)
-
-      const moduleService = loadedModule?.service || null
-
-      if (!moduleService) {
-        throw new Error(
-          "No service found in module. Make sure that your module exports a service."
-        )
-      }
-
-      const moduleLoaders = loadedModule?.loaders || []
-      for (const loader of moduleLoaders) {
-        await loader({ container, configModule, logger })
-      }
-
-      container.register({
-        [resolution.definition.registrationName]: asFunction(
-          (cradle) => new moduleService(cradle, resolution.options)
-        ).singleton(),
-      })
-
-      const installation = {
-        module: resolution.definition.key,
-        resolution: resolution.resolutionPath,
-      }
-
-      trackInstallation(installation, "module")
-    } catch (err) {
+    const registrationResult = await registerModule(
+      container,
+      resolution,
+      configModule,
+      logger
+    )
+    if (registrationResult?.error) {
+      const { error } = registrationResult
       if (resolution.definition.isRequired) {
-        throw new Error(
-          `Could not resolve required module: ${resolution.definition.label}.`
+        logger.warn(
+          `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}`
         )
+        throw error
       }
 
-      logger.warn(`Could not resolve module: ${resolution.definition.label}.`)
+      logger.warn(
+        `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}`
+      )
     }
   }
 

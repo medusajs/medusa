@@ -77,7 +77,7 @@ export type ConfigModule = {
     admin_cors?: string
   }
   featureFlags: Record<string, boolean | string>
-  modules?: Record<string, boolean | string | ConfigurableModuleDeclaration>
+  modules?: Record<string, false | string | ConfigurableModuleDeclaration>
   moduleResolutions?: Record<string, ModuleResolution>
   plugins: (
     | {
