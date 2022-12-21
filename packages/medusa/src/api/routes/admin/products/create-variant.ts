@@ -1,4 +1,3 @@
-import { EntityManager } from "typeorm"
 import {
   IsArray,
   IsBoolean,
@@ -9,12 +8,13 @@ import {
   ValidateNested,
 } from "class-validator"
 import { Type } from "class-transformer"
-
 import {
   ProductService,
   ProductVariantService,
   ProductVariantInventoryService,
 } from "../../../../services"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
 import { IInventoryService } from "../../../../interfaces"
 import {
   CreateProductVariantInput,
@@ -22,7 +22,16 @@ import {
 } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  TransactionHandlerType,
+  TransactionOrchestrator,
+  TransactionPayload,
+  TransactionState,
+  TransactionStepsDefinition,
+} from "../../../../utils/transaction"
+
+import { ulid } from "ulid"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /products/{id}/variants
@@ -195,7 +204,7 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
  *           type: object
  *           properties:
  *             product:
- *               $ref: "#/components/schemas/product"
+ *               $ref: "#/components/schemas/Product"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -209,6 +218,33 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
+
+enum actions {
+  createVariant = "createVariant",
+  createInventoryItem = "createInventoryItem",
+  attachInventoryItem = "attachInventoryItem",
+}
+
+const flow: TransactionStepsDefinition = {
+  next: {
+    action: actions.createVariant,
+    forwardResponse: true,
+    next: {
+      action: actions.createInventoryItem,
+      forwardResponse: true,
+      next: {
+        action: actions.attachInventoryItem,
+        noCompensation: true,
+      },
+    },
+  },
+}
+
+const createVariantStrategy = new TransactionOrchestrator(
+  "transaction-name",
+  flow
+)
+
 export default async (req, res) => {
   const { id } = req.params
 
@@ -226,16 +262,33 @@ export default async (req, res) => {
   )
   const productService: ProductService = req.scope.resolve("productService")
 
-  // TODO: This would be a place to implement a distributed transaction
+  const createdId: Record<string, string | null> = {
+    variant: null,
+    inventoryItem: null,
+  }
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  const variant = await manager.transaction(async (transactionManager) => {
-    return await productVariantService
-      .withTransaction(transactionManager)
-      .create(id, validated as CreateProductVariantInput)
-  })
+  async function createVariant() {
+    const variant = await productVariantService.create(
+      id,
+      validated as CreateProductVariantInput
+    )
 
-  if (validated.manage_inventory) {
+    createdId.variant = variant.id
+
+    return { variant }
+  }
+
+  async function removeVariant() {
+    if (createdId.variant) {
+      await productVariantService.delete(createdId.variant)
+    }
+  }
+
+  async function createInventoryItem(variant) {
+    if (!validated.manage_inventory) {
+      return
+    }
+
     const inventoryItem = await inventoryService.createInventoryItem({
       sku: validated.sku,
       origin_country: validated.origin_country,
@@ -248,10 +301,73 @@ export default async (req, res) => {
       width: validated.width,
     })
 
+    createdId.inventoryItem = inventoryItem.id
+
+    return { variant, inventoryItem }
+  }
+
+  async function removeInventoryItem() {
+    if (createdId.inventoryItem) {
+      await inventoryService.deleteInventoryItem(createdId.inventoryItem)
+    }
+  }
+
+  async function attachInventoryItem(variant, inventoryItem) {
+    if (!validated.manage_inventory) {
+      return
+    }
+
     await productVariantInventoryService.attachInventoryItem(
       variant.id,
       inventoryItem.id,
       1
+    )
+  }
+
+  async function transactionHandler(
+    actionId: string,
+    type: TransactionHandlerType,
+    payload: TransactionPayload
+  ) {
+    const command = {
+      [actions.createVariant]: {
+        [TransactionHandlerType.INVOKE]: async () => {
+          return await createVariant()
+        },
+        [TransactionHandlerType.COMPENSATE]: async () => {
+          await removeVariant()
+        },
+      },
+      [actions.createInventoryItem]: {
+        [TransactionHandlerType.INVOKE]: async (data) => {
+          const { variant } = data._response
+          return await createInventoryItem(variant)
+        },
+        [TransactionHandlerType.COMPENSATE]: async () => {
+          await removeInventoryItem()
+        },
+      },
+      [actions.attachInventoryItem]: {
+        [TransactionHandlerType.INVOKE]: async (data) => {
+          const { variant, inventoryItem } = data._response
+          return await attachInventoryItem(variant, inventoryItem)
+        },
+      },
+    }
+    return command[actionId][type](payload.data)
+  }
+
+  const transaction = await createVariantStrategy.beginTransaction(
+    ulid(),
+    transactionHandler,
+    validated
+  )
+  await createVariantStrategy.resume(transaction)
+
+  if (transaction.getState() !== TransactionState.DONE) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      transaction.errors.map((err) => err.error?.message).join("\n")
     )
   }
 
