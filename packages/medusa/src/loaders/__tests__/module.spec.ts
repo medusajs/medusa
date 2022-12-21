@@ -108,7 +108,7 @@ describe("modules loader", () => {
   it("registers service ", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: "@modules/test",
+        resolutionPath: "@modules/default",
         definition: {
           registrationName: "testService",
           key: "testService",
