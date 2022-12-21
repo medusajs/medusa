@@ -17,13 +17,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - title
- *         properties:
- *           title:
- *             description: "The title the Product Option will be identified by i.e. \"Size\""
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostProductsProductOptionsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -102,6 +96,16 @@ export default async (req, res) => {
   res.json({ product })
 }
 
+/**
+ * @schema AdminPostProductsProductOptionsReq
+ * type: object
+ * required:
+ *   - title
+ * properties:
+ *   title:
+ *     description: "The title the Product Option will be identified by i.e. \"Size\""
+ *     type: string
+ */
 export class AdminPostProductsProductOptionsReq {
   @IsString()
   title: string

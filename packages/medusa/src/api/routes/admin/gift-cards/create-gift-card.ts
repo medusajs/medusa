@@ -15,26 +15,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - region_id
- *         properties:
- *           value:
- *             type: integer
- *             description: The value (excluding VAT) that the Gift Card should represent.
- *           is_disabled:
- *             type: boolean
- *             description: Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers.
- *           ends_at:
- *             type: string
- *             format: date-time
- *             description: The time at which the Gift Card should no longer be available.
- *           region_id:
- *             description: The ID of the Region in which the Gift Card can be used.
- *             type: string
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostGiftCardsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -103,6 +84,29 @@ export default async (req, res) => {
   res.status(200).json({ gift_card: giftCard })
 }
 
+/**
+ * @schema AdminPostGiftCardsReq
+ * type: object
+ * required:
+ *   - region_id
+ * properties:
+ *   value:
+ *     type: integer
+ *     description: The value (excluding VAT) that the Gift Card should represent.
+ *   is_disabled:
+ *     type: boolean
+ *     description: Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers.
+ *   ends_at:
+ *     type: string
+ *     format: date-time
+ *     description: The time at which the Gift Card should no longer be available.
+ *   region_id:
+ *     description: The ID of the Region in which the Gift Card can be used.
+ *     type: string
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostGiftCardsReq {
   @IsOptional()
   @IsInt()

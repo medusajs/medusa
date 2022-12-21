@@ -23,27 +23,7 @@ import { isDefined } from "medusa-core-utils"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - items
- *         properties:
- *           items:
- *             description: The Line Items that have been received.
- *             type: array
- *             items:
- *               required:
- *                 - item_id
- *                 - quantity
- *               properties:
- *                 item_id:
- *                   description: The ID of the Line Item.
- *                   type: string
- *                 quantity:
- *                   description: The quantity of the Line Item.
- *                   type: integer
- *           refund:
- *             description: The amount to refund.
- *             type: number
+ *         $ref: "#/components/schemas/AdminPostReturnsReturnReceiveReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -156,6 +136,30 @@ class Item {
   quantity: number
 }
 
+/**
+ * @schema AdminPostReturnsReturnReceiveReq
+ * type: object
+ * required:
+ *   - items
+ * properties:
+ *   items:
+ *     description: The Line Items that have been received.
+ *     type: array
+ *     items:
+ *       required:
+ *         - item_id
+ *         - quantity
+ *       properties:
+ *         item_id:
+ *           description: The ID of the Line Item.
+ *           type: string
+ *         quantity:
+ *           description: The quantity of the Line Item.
+ *           type: integer
+ *   refund:
+ *     description: The amount to refund.
+ *     type: number
+ */
 export class AdminPostReturnsReturnReceiveReq {
   @IsArray()
   @ValidateNested({ each: true })

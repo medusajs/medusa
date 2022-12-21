@@ -18,20 +18,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - sales_channel_ids
- *         properties:
- *           sales_channel_ids:
- *             description: The IDs of the sales channels to delete from the publishable api key
- *             type: array
- *             items:
- *               type: object
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   type: string
- *                   description: The ID of the sales channel
+ *         $ref: "#/components/schemas/AdminDeletePublishableApiKeySalesChannelsBatchReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -116,6 +103,24 @@ export default async (req: Request, res: Response): Promise<void> => {
   res.status(200).json({ publishable_api_key: publishableApiKey })
 }
 
+/**
+ * @schema AdminDeletePublishableApiKeySalesChannelsBatchReq
+ * type: object
+ * required:
+ *   - sales_channel_ids
+ * properties:
+ *   sales_channel_ids:
+ *     description: The IDs of the sales channels to delete from the publishable api key
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The ID of the sales channel
+ */
 export class AdminDeletePublishableApiKeySalesChannelsBatchReq {
   @IsArray()
   @ValidateNested({ each: true })
