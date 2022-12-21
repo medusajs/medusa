@@ -10,13 +10,13 @@ export default ({ modules }: ConfigModule) => {
   for (const definition of MODULE_DEFINITIONS) {
     let resolutionPath = definition.defaultPackage
 
-    const mod = projectModules[definition.key]
+    const module = projectModules[definition.key]
 
-    if (typeof mod === "boolean") {
-      if (!mod && definition.isRequired) {
+    if (typeof module === "boolean") {
+      if (!module && definition.isRequired) {
         throw new Error(`Module: ${definition.label} is required`)
       }
-      if (!mod) {
+      if (!module) {
         moduleResolutions[definition.key] = {
           resolutionPath: undefined,
           definition,
@@ -29,17 +29,18 @@ export default ({ modules }: ConfigModule) => {
     // If user added a module and it's overridable, we resolve that instead
     if (
       definition.canOverride &&
-      (typeof mod === "string" || (typeof mod === "object" && mod.resolve))
+      (typeof module === "string" ||
+        (typeof module === "object" && module.resolve))
     ) {
       resolutionPath = resolveCwd(
-        typeof mod === "string" ? mod : (mod.resolve as string)
+        typeof module === "string" ? module : (module.resolve as string)
       )
     }
 
     moduleResolutions[definition.key] = {
       resolutionPath,
       definition,
-      options: typeof mod === "object" ? mod.options ?? {} : {},
+      options: typeof module === "object" ? module.options ?? {} : {},
     }
   }
 
