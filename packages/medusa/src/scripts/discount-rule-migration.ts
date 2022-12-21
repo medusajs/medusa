@@ -11,18 +11,9 @@ import {
 import { DiscountConditionProduct } from "../models/discount-condition-product"
 import { DiscountRule } from "../models/discount-rule"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
-dotenv.config()
+import { typeormConfig } from "./db-config"
 
-const typeormConfig = {
-  type: process.env.TYPEORM_CONNECTION,
-  url: process.env.TYPEORM_URL,
-  username: process.env.TYPEORM_USERNAME,
-  password: process.env.TYPEORM_PASSWORD,
-  database: process.env.TYPEORM_DATABASE,
-  migrations: [process.env.TYPEORM_MIGRATIONS as string],
-  entities: [process.env.TYPEORM_ENTITIES],
-  logging: true,
-}
+dotenv.config()
 
 const migrate = async function ({ typeormConfig }): Promise<void> {
   const connection = await createConnection(typeormConfig)
