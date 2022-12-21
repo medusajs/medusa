@@ -21,9 +21,7 @@ describe("module definitions loader", () => {
     jest.clearAllMocks()
 
     // Clear module definitions
-    while (MODULE_DEFINITIONS.length) {
-      MODULE_DEFINITIONS.pop()
-    }
+    MODULE_DEFINITIONS.splice(0, MODULE_DEFINITIONS.length)
   })
 
   it("Resolves module with default definition given empty config", () => {
