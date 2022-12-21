@@ -1,20 +1,30 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
-    "module": "CommonJS",
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "target": "ES2019",
+    "lib": ["ES2019"],
     "moduleResolution": "node",
-    "target": "es2017",
-    "sourceMap": true,
-    "skipLibCheck": true
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedParameters": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "resolveJsonModule": false,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "rootDir": "./src"
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "**/__tests__"],
-  "ts-node": {
-    "esm": true
-  }
+  "include": ["./src/**/*.ts"]
 }

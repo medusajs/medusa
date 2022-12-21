@@ -1,8 +1,6 @@
 import { existsSync, readFileSync } from "fs-extra"
 import { resolve } from "path"
-import { Logger } from "../logger"
-
-const logger = new Logger("Load HTML")
+import { reporter } from "../reporter"
 
 export function loadBuild() {
   let pkg: string | undefined
@@ -14,7 +12,7 @@ export function loadBuild() {
   }
 
   if (!pkg) {
-    logger.error(
+    reporter.error(
       "Could not find @medusajs/admin-ui. Make sure it is installed."
     )
     return
@@ -23,7 +21,7 @@ export function loadBuild() {
   const path = resolve(pkg, "..")
 
   if (!existsSync(pkg)) {
-    logger.error(
+    reporter.error(
       "Could not find index.html. Make sure to run `medusa-admin-cli build` first."
     )
     return

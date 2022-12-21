@@ -2,7 +2,7 @@ import react from "@vitejs/plugin-react"
 import { existsSync } from "fs"
 import { dirname, resolve } from "path"
 import { build } from "vite"
-import { Logger } from "../../logger"
+import { reporter } from "../../reporter"
 
 type ExternalBuildCommandOptions =
   | {
@@ -13,14 +13,12 @@ type ExternalBuildCommandOptions =
     }
   | undefined
 
-const logger = new Logger("Build")
-
 export async function buildUi(buildOptions?: ExternalBuildCommandOptions) {
   // const config = loadConfig()
   const adminDir = resolveAdminDir()
 
   if (!adminDir) {
-    logger.error("Could not find @medusajs/admin-ui")
+    reporter.error("Could not find @medusajs/admin-ui")
     return
   }
 
@@ -35,7 +33,7 @@ export async function buildUi(buildOptions?: ExternalBuildCommandOptions) {
       const valid = validateOutDir(outDir)
 
       if (!valid && !force) {
-        logger.error("Build directory already exists")
+        reporter.error("Build directory already exists")
         return
       }
 
@@ -61,7 +59,7 @@ export async function buildUi(buildOptions?: ExternalBuildCommandOptions) {
       emptyOutDir: true,
     },
   }).then(() => {
-    logger.success("Build complete")
+    reporter.success("Build complete")
   })
 }
 

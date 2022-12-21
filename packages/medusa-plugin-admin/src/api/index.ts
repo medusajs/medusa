@@ -1,38 +1,48 @@
-import { loadBuild } from "@medusajs/admin-sdk"
+import { AdminPluginOptions, loadBuild } from "@medusajs/admin-sdk"
+
 import express, { Request, Response, Router } from "express"
 import { ServerResponse } from "http"
-
-import type { AdminPluginOptions } from "@medusajs/admin-sdk"
 
 export default function (_rootDirectory: string, options: AdminPluginOptions) {
   const app = Router()
 
-  const { serve, serve_dev, base } = options
+  const { serve = true, serve_dev = true, path = "/app" } = options
 
   const serveAdmin =
     serve || (serve_dev && process.env.NODE_ENV === "development")
 
   if (serveAdmin) {
-    const { html, path } = loadBuild()
+    try {
+      const { html, path: staticPath } = loadBuild()
+      console.warn("PATH")
 
-    const sendHtml = (_req: Request, res: Response) => {
-      res.setHeader("Cache-Control", "no-cache")
-      res.setHeader("Vary", "Origin, Cache-Control")
-      res.send(html)
+      const sendHtml = (_req: Request, res: Response) => {
+        res.setHeader("Cache-Control", "no-cache")
+        res.setHeader("Vary", "Origin, Cache-Control")
+        res.send(html)
+      }
+
+      const setStaticHeaders = (res: ServerResponse) => {
+        res.setHeader("Cache-Control", "max-age=31536000, immutable")
+        res.setHeader("Vary", "Origin, Cache-Control")
+      }
+
+      app.get(path, sendHtml)
+      app.use(
+        path,
+        express.static(staticPath, {
+          setHeaders: setStaticHeaders,
+        })
+      )
+      app.get(`${path}/*`, sendHtml)
+    } catch (error) {
+      console.error(error)
+      throw new Error("Could not load admin build")
     }
-
-    const setStaticHeaders = (res: ServerResponse) => {
-      res.setHeader("Cache-Control", "max-age=31536000, immutable")
-      res.setHeader("Vary", "Origin, Cache-Control")
-    }
-
-    app.get("/app", sendHtml)
-    app.use(
-      express.static(path, {
-        setHeaders: setStaticHeaders,
-      })
-    )
-    app.get("/app/*", sendHtml)
+  } else {
+    app.get(path, (_req, res) => {
+      res.send("Admin not enabled")
+    })
   }
 
   return app

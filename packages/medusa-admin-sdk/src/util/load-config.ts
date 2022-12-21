@@ -1,5 +1,5 @@
 import { getConfigFile } from "medusa-core-utils"
-import { Logger } from "../logger"
+import { reporter } from "../reporter"
 import { AdminPluginOptions } from "../types"
 
 type PluginObject = {
@@ -20,15 +20,13 @@ type ReturnGetConfigFile =
       error: Error
     }
 
-const logger = new Logger("Load plugin config")
-
 export function loadConfig(rootDir?: string) {
   const root = rootDir || process.cwd()
 
   const config = getConfigFile(root, "medusa-config") as ReturnGetConfigFile
 
   if (getConfigFailed(config)) {
-    logger.error(config.error.message)
+    reporter.error(config.error.message)
     return
   }
 
@@ -54,7 +52,7 @@ export function loadConfig(rootDir?: string) {
     const valid = validateOptions(plugin.options)
 
     if (!valid) {
-      logger.error("Invalid options in medusa-config")
+      reporter.error("Invalid options in medusa-config")
       return null
     }
 

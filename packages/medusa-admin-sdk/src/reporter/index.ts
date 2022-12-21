@@ -1,13 +1,6 @@
 import colors from "picocolors"
 
-// type LoggerConstructorParams = {
-//   context: string
-//   options?: {
-//     clearScreen?: boolean
-//   }
-// }
-
-export class Logger {
+class Reporter {
   private readonly _prefix = "medusa-admin-cli"
   private readonly _context: string
 
@@ -15,7 +8,12 @@ export class Logger {
     this._context = context
   }
 
-  public info(message: string) {}
+  public info(message: string) {
+    console.log(`
+    [${this._prefix}]: Executing the command - ${colors.bold(this._context)}
+    ${colors.cyan("ℹ")} ${message}
+    `)
+  }
 
   public success(message: string) {
     console.log(`
@@ -60,3 +58,5 @@ export class Logger {
     `)
   }
 }
+
+export const reporter = new Reporter("Build")

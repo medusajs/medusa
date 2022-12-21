@@ -1,2 +1,2 @@
-export * from "./types"
-export * from "./utils"
+export type { AdminPluginOptions } from "./types"
+export { loadBuild, loadConfig } from "./util"
