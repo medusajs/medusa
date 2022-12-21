@@ -1,4 +1,3 @@
-import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
 import { IEventBusService } from "./services/event-bus"
@@ -6,7 +5,6 @@ import { IEventBusService } from "./services/event-bus"
 export abstract class TransactionBaseService {
   protected abstract manager_: EntityManager
   protected abstract transactionManager_: EntityManager | undefined
-  protected transactionId_: string | undefined
   protected eventBusService_: IEventBusService | undefined
 
   protected constructor(
@@ -82,11 +80,6 @@ export abstract class TransactionBaseService {
         try {
           const result = await work(m)
 
-          if (isDefined(this.transactionId_)) {
-            // eslint-disable-next-line @typescript-eslint/no-floating-promises
-            this.eventBusService_?.processCachedEvents(this.transactionId_)
-          }
-
           return result
         } catch (error) {
           if (errorHandler) {
@@ -96,11 +89,6 @@ export abstract class TransactionBaseService {
             }
 
             await errorHandler(error)
-          }
-
-          if (isDefined(this.transactionId_)) {
-            // eslint-disable-next-line @typescript-eslint/no-floating-promises
-            this.eventBusService_?.destroyCachedEvents(this.transactionId_)
           }
 
           throw error
@@ -118,20 +106,10 @@ export abstract class TransactionBaseService {
           this.manager_ = temp
           this.transactionManager_ = undefined
 
-          if (isDefined(this.transactionId_)) {
-            // eslint-disable-next-line @typescript-eslint/no-floating-promises
-            this.eventBusService_?.processCachedEvents(this.transactionId_)
-          }
-
           return result
         } catch (error) {
           this.manager_ = temp
           this.transactionManager_ = undefined
-
-          if (isDefined(this.transactionId_)) {
-            // eslint-disable-next-line @typescript-eslint/no-floating-promises
-            this.eventBusService_?.destroyCachedEvents(this.transactionId_)
-          }
 
           throw error
         }

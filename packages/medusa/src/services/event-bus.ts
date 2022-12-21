@@ -85,12 +85,13 @@ export default class EventBusService implements IEventBusService {
       this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
       this.redisClient_ = redisClient
       this.redisSubscriber_ = redisSubscriber
-      // Register our worker to handle emit calls
+      // Register our worker to handle jobs
       this.queue_.process(this.worker_)
     }
   }
 
   /**
+   * TODO: Add in version
    * @deprecated In v1.X.X, transaction management was removed from the event bus service
    *   as part of replacing staged jobs with events caching. Method kept for backward compatibility.
    */
@@ -116,11 +117,11 @@ export default class EventBusService implements IEventBusService {
       `Processing ${eventName} which has ${eventObservers.length} subscribers`
     )
 
-    const uniqueId = "some_id"
+    const cacheKey = "some_id"
 
     return await Promise.all(
       observers.map(async (subscriber) => {
-        return subscriber(data, eventName, { cache_key: uniqueId }).catch(
+        return subscriber(data, eventName, { cache_key: cacheKey }).catch(
           (err) => {
             this.logger_.warn(
               `An error occurred while processing ${eventName}: ${err}`
@@ -218,8 +219,6 @@ export default class EventBusService implements IEventBusService {
 
   async processCachedEvents<T>(cacheKey: string, options: EmitOptions = {}) {
     const events = await this.cacheService_.get<EventData[]>(cacheKey)
-    console.log("Events: ", events)
-    console.log("Key: ", cacheKey)
 
     if (!events?.length) {
       return
