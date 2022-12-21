@@ -13,6 +13,12 @@ describe("/store/products", () => {
   let medusaProcess
   let dbConnection
 
+  const giftCardId = "giftCart"
+  const testProductId = "test-product"
+  const testProductId1 = "test-product-1"
+  const testProductFilteringId1 = "test-product_filtering_1"
+  const testProductFilteringId2 = "test-product_filtering_2"
+
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
@@ -45,19 +51,19 @@ describe("/store/products", () => {
       expect(response.data.products).toHaveLength(5)
       expect(response.data.products).toEqual([
         expect.objectContaining({
-          id: "giftcard",
+          id: giftCardId,
         }),
         expect.objectContaining({
-          id: "test-product",
+          id: testProductId,
         }),
         expect.objectContaining({
-          id: "test-product1",
+          id: testProductId1,
         }),
         expect.objectContaining({
-          id: "test-product_filtering_1",
+          id: testProductFilteringId1,
         }),
         expect.objectContaining({
-          id: "test-product_filtering_2",
+          id: testProductFilteringId2,
         }),
       ])
     })
@@ -71,19 +77,19 @@ describe("/store/products", () => {
       expect(response.data.products).toHaveLength(5)
       expect(response.data.products).toEqual([
         expect.objectContaining({
-          id: "test-product_filtering_2",
+          id: testProductFilteringId2,
         }),
         expect.objectContaining({
-          id: "test-product_filtering_1",
+          id: testProductFilteringId1,
         }),
         expect.objectContaining({
-          id: "test-product1",
+          id: testProductId1,
         }),
         expect.objectContaining({
-          id: "test-product",
+          id: testProductId,
         }),
         expect.objectContaining({
-          id: "giftcard",
+          id: giftCardId,
         }),
       ])
     })
@@ -97,10 +103,10 @@ describe("/store/products", () => {
       expect(response.data.products).toHaveLength(5)
 
       const testProductIndex = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product")
+        response.data.products.find((p) => p.id === testProductId)
       )
       const testProduct1Index = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product1")
+        response.data.products.find((p) => p.id === testProductId1)
       )
 
       expect(testProductIndex).toBe(3)
@@ -116,10 +122,10 @@ describe("/store/products", () => {
       expect(response.data.products).toHaveLength(5)
 
       const testProductIndex = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product")
+        response.data.products.find((p) => p.id === testProductId)
       )
       const testProduct1Index = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product1")
+        response.data.products.find((p) => p.id === testProductId1)
       )
 
       expect(testProductIndex).toBe(0)
@@ -153,10 +159,10 @@ describe("/store/products", () => {
       expect(response.data.products).toHaveLength(6)
 
       const testProductIndex = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product")
+        response.data.products.find((p) => p.id === testProductId)
       )
       const testProduct1Index = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product1")
+        response.data.products.find((p) => p.id === testProductId1)
       )
       const testProduct2Index = response.data.products.indexOf(
         response.data.products.find((p) => p.id === "test-product2")
@@ -194,10 +200,10 @@ describe("/store/products", () => {
       expect(response.data.products).toHaveLength(6)
 
       const testProductIndex = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product")
+        response.data.products.find((p) => p.id === testProductId)
       )
       const testProduct1Index = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product1")
+        response.data.products.find((p) => p.id === testProductId1)
       )
       const testProduct2Index = response.data.products.indexOf(
         response.data.products.find((p) => p.id === "test-product2")
@@ -206,6 +212,42 @@ describe("/store/products", () => {
       expect(testProductIndex).toBe(0) // 100
       expect(testProduct1Index).toBe(1) // 100
       expect(testProduct2Index).toBe(2) // 200
+    })
+
+    it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?q=filtering&order=id")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(2)
+
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: testProductFilteringId1,
+        }),
+        expect.objectContaining({
+          id: testProductFilteringId2,
+        }),
+      ])
+    })
+
+    it("returns a list of ordered products by id DESC and filtered with free text search", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?q=filtering&order=-id")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(2)
+
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: testProductFilteringId2,
+        }),
+        expect.objectContaining({
+          id: testProductFilteringId1,
+        }),
+      ])
     })
 
     it("returns a list of products in collection", async () => {
@@ -227,7 +269,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product_filtering_2",
+            id: testProductFilteringId2,
             collection_id: "test-collection2",
           }),
         ])
@@ -256,7 +298,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product_filtering_1",
+            id: testProductFilteringId1,
             collection_id: "test-collection1",
           }),
         ])
@@ -283,7 +325,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "giftcard",
+            id: giftCardId,
             is_giftcard: true,
           }),
         ])
@@ -324,7 +366,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product_filtering_1",
+            id: testProductFilteringId1,
             collection_id: "test-collection1",
           }),
         ])
@@ -341,7 +383,7 @@ describe("/store/products", () => {
       const api = useApi()
 
       const notExpected = [
-        expect.objectContaining({ handle: "test-product_filtering_1" }),
+        expect.objectContaining({ handle: testProductFilteringId1 }),
       ]
 
       const response = await api
@@ -355,8 +397,8 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product_filtering_2",
-            handle: "test-product_filtering_2",
+            id: testProductFilteringId2,
+            handle: testProductFilteringId2,
           }),
         ])
       )
@@ -404,23 +446,23 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product1",
+            id: testProductId1,
             collection_id: "test-collection",
           }),
           expect.objectContaining({
-            id: "test-product",
+            id: testProductId,
             collection_id: "test-collection",
           }),
           expect.objectContaining({
-            id: "test-product_filtering_2",
+            id: testProductFilteringId2,
             collection_id: "test-collection2",
           }),
           expect.objectContaining({
-            id: "test-product_filtering_1",
+            id: testProductFilteringId1,
             collection_id: "test-collection1",
           }),
           expect.objectContaining({
-            id: "giftcard",
+            id: giftCardId,
           }),
         ])
       )
@@ -457,11 +499,11 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product1",
+            id: testProductId1,
             collection_id: "test-collection",
           }),
           expect.objectContaining({
-            id: "test-product",
+            id: testProductId,
             collection_id: "test-collection",
             variants: [
               expect.objectContaining({
@@ -515,15 +557,15 @@ describe("/store/products", () => {
             ],
           }),
           expect.objectContaining({
-            id: "test-product_filtering_2",
+            id: testProductFilteringId2,
             collection_id: "test-collection2",
           }),
           expect.objectContaining({
-            id: "test-product_filtering_1",
+            id: testProductFilteringId1,
             collection_id: "test-collection1",
           }),
           expect.objectContaining({
-            id: "giftcard",
+            id: giftCardId,
           }),
         ])
       )
@@ -614,7 +656,7 @@ describe("/store/products", () => {
       expect(response.data).toEqual(
         expect.objectContaining({
           product: expect.objectContaining({
-            id: "test-product",
+            id: testProductId,
             variants: expect.arrayContaining([
               expect.objectContaining({
                 id: "test-variant",
@@ -635,7 +677,7 @@ describe("/store/products", () => {
                 calculated_price: null,
                 original_price: null,
                 barcode: "test-barcode",
-                product_id: "test-product",
+                product_id: testProductId,
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
                 options: expect.arrayContaining([
@@ -696,7 +738,7 @@ describe("/store/products", () => {
                 barcode: null,
                 calculated_price: null,
                 original_price: null,
-                product_id: "test-product",
+                product_id: testProductId,
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
                 options: expect.arrayContaining([
@@ -755,7 +797,7 @@ describe("/store/products", () => {
                 calculated_price: null,
                 original_price: null,
                 barcode: "test-barcode 1",
-                product_id: "test-product",
+                product_id: testProductId,
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
                 options: expect.arrayContaining([
@@ -805,7 +847,7 @@ describe("/store/products", () => {
                 updated_at: expect.any(String),
               }),
             ]),
-            handle: "test-product",
+            handle: testProductId,
             title: "Test product",
             profile_id: expect.stringMatching(/^sp_*/),
             description: "test-product-description",
@@ -919,7 +961,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product",
+            id: testProductId,
             status: "published",
           }),
         ])

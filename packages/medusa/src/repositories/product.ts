@@ -79,7 +79,6 @@ export class ProductRepository extends Repository<Product> {
       )
     }
 
-    const arePricesJoined = !!price_lists
     if (price_lists) {
       qb.leftJoin(`${productAlias}.variants`, "variants")
         .leftJoin("variants.prices", "prices")
@@ -106,13 +105,13 @@ export class ProductRepository extends Repository<Product> {
       )
     }
 
+    const joinedWithPriceLists = !!price_lists
     applyOrdering({
       repository: this,
       order: optionsWithoutRelations.order ?? {},
       qb,
       alias: productAlias,
-      shouldJoin: (relation) =>
-        relation !== "prices" || (relation === "prices" && !arePricesJoined),
+      shouldJoin: (relation) => relation !== "prices" || !joinedWithPriceLists,
     })
 
     if (optionsWithoutRelations.withDeleted) {
@@ -300,10 +299,7 @@ export class ProductRepository extends Repository<Product> {
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
       groupedRelations,
-      withDeleted,
-      Array.isArray(idsOrOptionsWithoutRelations)
-        ? {}
-        : (idsOrOptionsWithoutRelations as any)?.order
+      withDeleted
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
@@ -358,6 +354,12 @@ export class ProductRepository extends Repository<Product> {
     options: FindWithoutRelationsOptions = { where: {} },
     relations: string[] = []
   ): Promise<[Product[], number]> {
+    const productAlias = "product"
+    const pricesAlias = "prices"
+    const variantsAlias = "variants"
+    const collectionAlias = "collection"
+    const tagsAlias = "tags"
+
     const tags = options.where.tags
     delete options.where.tags
 
@@ -372,18 +374,18 @@ export class ProductRepository extends Repository<Product> {
 
     const cleanedOptions = this._cleanOptions(options)
 
-    let qb = this.createQueryBuilder("product")
-      .leftJoinAndSelect("product.variants", "variant")
-      .leftJoinAndSelect("product.collection", "collection")
-      .select(["product.id"])
+    let qb = this.createQueryBuilder(`${productAlias}`)
+      .leftJoinAndSelect(`${productAlias}.variants`, variantsAlias)
+      .leftJoinAndSelect(`${productAlias}.collection`, `${collectionAlias}`)
+      .select([`${productAlias}.id`])
       .where(cleanedOptions.where)
       .andWhere(
         new Brackets((qb) => {
-          qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
+          qb.where(`${productAlias}.description ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`${productAlias}.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`${variantsAlias}.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`${variantsAlias}.sku ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`${collectionAlias}.title ILIKE :q`, { q: `%${q}%` })
         })
       )
       .skip(cleanedOptions.skip)
@@ -393,47 +395,72 @@ export class ProductRepository extends Repository<Product> {
       qb.innerJoin(
         "discount_condition_product",
         "dc_product",
-        `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
+        `dc_product.product_id = ${productAlias}.id AND dc_product.condition_id = :dcId`,
         { dcId: discount_condition_id }
       )
     }
 
     if (tags) {
-      qb.leftJoin("product.tags", "tags").andWhere(`tags.id IN (:...tag_ids)`, {
-        tag_ids: tags.value,
-      })
+      qb.leftJoin(`${productAlias}.tags`, tagsAlias).andWhere(
+        `${tagsAlias}.id IN (:...tag_ids)`,
+        {
+          tag_ids: tags.value,
+        }
+      )
     }
 
     if (price_lists) {
-      qb.leftJoin("product.variants", "variants")
-        .leftJoin("variants.prices", "ma")
-        .andWhere("ma.price_list_id IN (:...price_list_ids)", {
+      const variantPricesAlias = `${variantsAlias}_prices`
+      qb.leftJoin(`${productAlias}.variants`, variantPricesAlias)
+        .leftJoin(variantPricesAlias, pricesAlias)
+        .andWhere(`${pricesAlias}.price_list_id IN (:...price_list_ids)`, {
           price_list_ids: price_lists.value,
         })
     }
 
     if (sales_channels) {
       qb.innerJoin(
-        "product.sales_channels",
+        `${productAlias}.sales_channels`,
         "sales_channels",
         "sales_channels.id IN (:...sales_channels_ids)",
         { sales_channels_ids: sales_channels.value }
       )
     }
 
+    const joinedWithTags = !!tags
+    const joinedWithPriceLists = !!price_lists
+    applyOrdering({
+      repository: this,
+      order: options.order ?? {},
+      qb,
+      alias: productAlias,
+      shouldJoin: (relation) =>
+        relation !== variantsAlias &&
+        (relation !== pricesAlias || !joinedWithPriceLists) &&
+        (relation !== tagsAlias || !joinedWithTags),
+    })
+
     if (cleanedOptions.withDeleted) {
       qb = qb.withDeleted()
     }
 
     const [results, count] = await qb.getManyAndCount()
+    const orderedResultsSet = new Set(results.map((p) => p.id))
 
     const products = await this.findWithRelations(
       relations,
-      results.map((r) => r.id),
+      [...orderedResultsSet],
       cleanedOptions.withDeleted
     )
+    const productsMap = new Map(products.map((p) => [p.id, p]))
 
-    return [products, count]
+    // Looping through the orderedResultsSet in order to maintain the original order and assign the data returned by findWithRelations
+    const orderedProducts: Product[] = []
+    orderedResultsSet.forEach((id) => {
+      orderedProducts.push(productsMap.get(id)!)
+    })
+
+    return [orderedProducts, count]
   }
 
   public async isProductInSalesChannels(
