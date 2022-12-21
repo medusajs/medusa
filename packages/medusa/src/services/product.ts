@@ -472,7 +472,7 @@ class ProductService extends TransactionBaseService {
     productId: string,
     update: UpdateProductInput
   ): Promise<Product> {
-    return await this.atomicPhase_(async (manager, transactionId) => {
+    return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productVariantRepo = manager.getCustomRepository(
         this.productVariantRepository_

@@ -19,7 +19,7 @@ declare global {
       errors: string[]
       request_context: {
         ip_address: string
-        cache_key: string
+        events_cache_key: string
       }
     }
   }
@@ -27,9 +27,7 @@ declare global {
 
 export type ExtendedRequest<TEntity> = Request & { resource: TEntity }
 
-export type ClassConstructor<T> = {
-  new (...args: unknown[]): T
-}
+export type ClassConstructor<T> = new (...args: any[]) => T
 
 export type MedusaContainer = AwilixContainer & {
   registerAdd: <T>(name: string, registration: T) => MedusaContainer
@@ -58,14 +56,12 @@ export type ModuleDefinition = {
 export type LoaderOptions = {
   container: MedusaContainer
   configModule: ConfigModule
-  logger?: Logger
+  logger: Logger
 }
-
-export type Constructor<T> = new (...args: any[]) => T
 
 export type ModuleExports = {
   loaders: ((options: LoaderOptions) => Promise<void>)[]
-  services: Constructor<any>[]
+  services: ClassConstructor<any>[]
 }
 
 export type ConfigModule = {

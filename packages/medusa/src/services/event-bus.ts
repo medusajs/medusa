@@ -1,6 +1,6 @@
 import Bull from "bull"
 import Redis from "ioredis"
-import { isDefined } from "medusa-core-utils"
+import { isDefined, isValidNumber } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ICacheService } from "../interfaces"
 import { IEventBusService } from "../interfaces/services/event-bus"
@@ -8,7 +8,6 @@ import { ConfigModule, Logger } from "../types/global"
 import JobSchedulerService from "./job-scheduler"
 
 type InjectedDependencies = {
-  manager: EntityManager
   logger: Logger
   jobSchedulerService: JobSchedulerService
   redisClient: Redis.Redis
@@ -22,7 +21,11 @@ export type EventData<T = unknown> = {
   options?: EmitOptions
 }
 
-type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
+type Subscriber<T = unknown> = (
+  data: T,
+  eventName: string,
+  context?: Record<string, unknown>
+) => Promise<void>
 
 type EmitOptions = {
   delay?: number
@@ -39,7 +42,6 @@ type EmitOptions = {
  */
 export default class EventBusService implements IEventBusService {
   protected readonly config_: ConfigModule
-  protected readonly manager_: EntityManager
   protected readonly logger_: Logger
   protected readonly jobSchedulerService_: JobSchedulerService
   protected readonly observers_: Map<string | symbol, Subscriber[]>
@@ -50,7 +52,6 @@ export default class EventBusService implements IEventBusService {
 
   constructor(
     {
-      manager,
       logger,
       redisClient,
       redisSubscriber,
@@ -60,7 +61,6 @@ export default class EventBusService implements IEventBusService {
     singleton = true
   ) {
     this.config_ = config
-    this.manager_ = manager
     this.logger_ = logger
     this.cacheService_ = cacheService
 
@@ -90,27 +90,12 @@ export default class EventBusService implements IEventBusService {
     }
   }
 
-  withTransaction(transactionManager): this | EventBusService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new EventBusService(
-      {
-        manager: transactionManager,
-        jobSchedulerService: this.jobSchedulerService_,
-        logger: this.logger_,
-        redisClient: this.redisClient_,
-        redisSubscriber: this.redisSubscriber_,
-        cacheService: this.cacheService_,
-      },
-      this.config_,
-      false
-    )
-
-    cloned.queue_ = this.queue_
-
-    return cloned
+  /**
+   * @deprecated In v1.X.X, transaction management was removed from the event bus service
+   *   as part of replacing staged jobs with events caching. Method kept for backward compatibility.
+   */
+  withTransaction(transactionManager: EntityManager): this | EventBusService {
+    return this
   }
 
   /**
@@ -131,15 +116,19 @@ export default class EventBusService implements IEventBusService {
       `Processing ${eventName} which has ${eventObservers.length} subscribers`
     )
 
+    const uniqueId = "some_id"
+
     return await Promise.all(
       observers.map(async (subscriber) => {
-        return subscriber(data, eventName).catch((err) => {
-          this.logger_.warn(
-            `An error occurred while processing ${eventName}: ${err}`
-          )
-          console.error(err)
-          return err
-        })
+        return subscriber(data, eventName, { cache_key: uniqueId }).catch(
+          (err) => {
+            this.logger_.warn(
+              `An error occurred while processing ${eventName}: ${err}`
+            )
+            console.error(err)
+            return err
+          }
+        )
       })
     )
   }
@@ -194,19 +183,18 @@ export default class EventBusService implements IEventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions & { cacheKey?: string } = {}
+    options: EmitOptions & { events_cache_key?: string } = {}
   ): Promise<void> {
-    // construct options for the job
     const opts: { removeOnComplete: boolean } & EmitOptions = {
       removeOnComplete: true,
     }
-    if (typeof options.attempts === "number") {
+    if (isValidNumber(options.attempts)) {
       opts.attempts = options.attempts
       if (isDefined(options.backoff)) {
         opts.backoff = options.backoff
       }
     }
-    if (typeof options.delay === "number") {
+    if (isValidNumber(options.delay)) {
       opts.delay = options.delay
     }
 
@@ -214,34 +202,35 @@ export default class EventBusService implements IEventBusService {
     // instead of processing it immediately. As a consumer, you should
     // process the events when appropriate e.g. when a transaction has
     // committed. Use method `processCachedEvents`.
-    if (options?.cacheKey) {
+    if (options.events_cache_key) {
       const cachedEvents =
-        (await this.cacheService_.get<EventData[]>(options.cacheKey)) || []
+        (await this.cacheService_.get<EventData[]>(options.events_cache_key)) ||
+        []
 
       const job = { eventName, data, options: opts }
-      const updateEvents = [...cachedEvents, job]
+      const updatedEvents = [...cachedEvents, job]
 
-      await this.cacheService_.set(options.cacheKey, updateEvents)
+      await this.cacheService_.set(options.events_cache_key, updatedEvents)
     } else {
       this.queue_.add({ eventName, data }, opts)
     }
   }
 
-  async processCachedEvents<T>(uniqueId: string, options: EmitOptions = {}) {
-    const events = await this.cacheService_.get<EventData[]>(uniqueId)
+  async processCachedEvents<T>(cacheKey: string, options: EmitOptions = {}) {
+    const events = await this.cacheService_.get<EventData[]>(cacheKey)
+    console.log("Events: ", events)
+    console.log("Key: ", cacheKey)
 
     if (!events?.length) {
       return
     }
 
-    await Promise.all(
-      events.map((job) => {
-        this.queue_.add(
-          { eventName: job.eventName, data: job.data },
-          job.options ?? options
-        )
-      })
-    )
+    events.forEach((job) => {
+      this.queue_.add(
+        { eventName: job.eventName, data: job.data },
+        job.options ?? options
+      )
+    })
   }
 
   async destroyCachedEvents(cacheKey: string): Promise<void> {

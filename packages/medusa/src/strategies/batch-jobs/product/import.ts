@@ -1,9 +1,10 @@
 /* eslint-disable valid-jsdoc */
-import { EntityManager } from "typeorm"
 import { computerizeAmount, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
-import CsvParser from "../../../services/csv-parser"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
+import { BatchJob, SalesChannel } from "../../../models"
 import {
   BatchJobService,
   ProductCollectionService,
@@ -13,15 +14,13 @@ import {
   SalesChannelService,
   ShippingProfileService,
 } from "../../../services"
+import CsvParser from "../../../services/csv-parser"
 import { CreateProductInput } from "../../../types/product"
 import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
 } from "../../../types/product-variant"
-import { BatchJob, SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
-import { transformProductData, transformVariantData } from "./utils"
-import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import {
   OperationType,
   ProductImportBatchJob,
@@ -34,6 +33,7 @@ import {
   productImportColumnsDefinition,
   productImportSalesChannelsColumnsDefinition,
 } from "./types/columns-definition"
+import { transformProductData, transformVariantData } from "./utils"
 
 /**
  * Process this many variant rows before reporting progress.

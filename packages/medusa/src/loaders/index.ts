@@ -80,7 +80,7 @@ export default async ({
     const ipAddress = requestIp.getClientIp(req) as string
     req.request_context = {
       ip_address: ipAddress,
-      cache_key: v4(),
+      events_cache_key: req.get("x-events-cache-key") ?? v4(),
     }
 
     next()

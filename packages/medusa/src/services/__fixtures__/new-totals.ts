@@ -1,15 +1,15 @@
 import { asClass, asValue, createContainer } from "awilix"
 import { IdMap, MockManager } from "medusa-test-utils"
-import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import { FlagRouter } from "../../utils/flag-router"
 import {
   GiftCard,
   LineItem,
   LineItemTaxLine,
   ShippingMethod,
-  ShippingMethodTaxLine,
+  ShippingMethodTaxLine
 } from "../../models"
 import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import { FlagRouter } from "../../utils/flag-router"
+import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 
 export const defaultContainerMock = createContainer()
 defaultContainerMock.register("manager", asValue(MockManager))

@@ -4,7 +4,7 @@ import { Express } from "express"
 import session from "express-session"
 import morgan from "morgan"
 import redis from "redis"
-import invalidateCachedEvents from "../api/middlewares/invalidate-cached-events"
+import invalidateCachedEventsOnError from "../api/middlewares/invalidate-cached-events"
 import processCachedEvents from "../api/middlewares/process-cached-events"
 import { ConfigModule } from "../types/global"
 
@@ -60,8 +60,8 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
 
   // Events caching middleware should be applied globally
   // to ensure custom endpoints are covered
-  app.use(invalidateCachedEvents())
-  app.use(processCachedEvents())
+  app.use(invalidateCachedEventsOnError)
+  app.use(processCachedEvents)
 
   return app
 }
