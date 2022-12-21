@@ -1,26 +1,40 @@
 import { TransactionBaseService } from "./transaction-base-service"
 import {
+  Address,
   Cart,
   Customer,
   Payment,
   PaymentSession,
   PaymentSessionStatus,
+  ShippingMethod,
 } from "../models"
 import { PaymentService } from "medusa-interfaces"
-import {
-  PaymentProcessorContext,
-  PaymentProcessorSessionResponse,
-} from "../types/payment-processor"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
 export type PaymentSessionData = Data
 
-/** ***************     Old Plugin API     *************** **/
+export type PaymentContext = {
+  cart: {
+    context: Record<string, unknown>
+    id: string
+    email: string
+    shipping_address: Address | null
+    shipping_methods: ShippingMethod[]
+  }
+  currency_code: string
+  amount: number
+  resource_id?: string
+  customer?: Customer
+}
+
+export type PaymentSessionResponse = {
+  update_requests: { customer_metadata: Record<string, unknown> }
+  session_data: Record<string, unknown>
+}
 
 /**
- * @deprecated use the new PaymentServicePlugin interface instead
- * The old payment service plugin interface
+ * @deprecated use the new PaymentProcessor interface instead
  */
 export interface PaymentService extends TransactionBaseService {
   getIdentifier(): string
@@ -42,13 +56,11 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentServicePlugin.createPayment instead
+   * @deprecated use PaymentServicePlugin.initiatePayment instead
    * @param context The type of this argument is meant to be temporary and once the previous method signature
    * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
    */
-  createPayment(
-    context: Cart & PaymentProcessorContext
-  ): Promise<PaymentProcessorSessionResponse>
+  createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>
 
   /**
    * @deprecated use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
@@ -160,8 +172,8 @@ export abstract class AbstractPaymentService
    * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
    */
   public abstract createPayment(
-    context: Cart & PaymentProcessorContext
-  ): Promise<PaymentProcessorSessionResponse>
+    context: Cart & PaymentContext
+  ): Promise<PaymentSessionResponse>
 
   /**
    * @deprecated use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
@@ -181,8 +193,8 @@ export abstract class AbstractPaymentService
    */
   public abstract updatePayment(
     paymentSessionData: PaymentSessionData,
-    context: Cart & PaymentProcessorContext
-  ): Promise<PaymentProcessorSessionResponse>
+    context: Cart & PaymentContext
+  ): Promise<PaymentSessionResponse>
 
   /**
    * @deprecated use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead

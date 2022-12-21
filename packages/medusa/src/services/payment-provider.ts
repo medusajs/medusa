@@ -1,10 +1,11 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
-import { AbstractPaymentService, TransactionBaseService } from "../interfaces"
 import {
-  PaymentProcessorContext,
-  PaymentProcessorSessionResponse,
-} from "../types/payment-processor"
+  AbstractPaymentService,
+  PaymentContext,
+  PaymentSessionResponse,
+  TransactionBaseService,
+} from "../interfaces"
 import { EntityManager } from "typeorm"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { PaymentRepository } from "../repositories/payment"
@@ -641,13 +642,13 @@ export default class PaymentProviderService extends TransactionBaseService {
    */
   protected buildPaymentProcessorContext(
     cartOrData: Cart | PaymentSessionInput
-  ): Cart & PaymentProcessorContext {
+  ): Cart & PaymentContext {
     const cart =
       "object" in cartOrData && cartOrData.object === "cart"
         ? cartOrData
         : ((cartOrData as PaymentSessionInput).cart as Cart)
 
-    const context = {} as Cart & PaymentProcessorContext
+    const context = {} as Cart & PaymentContext
 
     // TODO: only to support legacy API. Once we are ready to break the API, the cartOrData will only support PaymentSessionInput
     if ("object" in cartOrData && cartOrData.object === "cart") {
@@ -734,10 +735,9 @@ export default class PaymentProviderService extends TransactionBaseService {
    */
   protected async processUpdateRequestsData(
     data: { customer?: { id?: string } } = {},
-    paymentResponse: PaymentProcessorSessionResponse | Record<string, unknown>
+    paymentResponse: PaymentSessionResponse | Record<string, unknown>
   ): Promise<void> {
-    const { update_requests } =
-      paymentResponse as PaymentProcessorSessionResponse
+    const { update_requests } = paymentResponse as PaymentSessionResponse
 
     if (!update_requests) {
       return

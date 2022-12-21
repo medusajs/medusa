@@ -1,10 +1,31 @@
-import { Customer, PaymentSessionStatus } from "../models"
-import { MedusaContainer } from "../types/global"
 import {
-  PaymentProcessorContext,
-  PaymentProcessorError,
-  PaymentProcessorSessionResponse,
-} from "../types/payment-processor"
+  Address,
+  Customer,
+  PaymentSessionStatus,
+  ShippingMethod,
+} from "../models"
+import { MedusaContainer } from "../types/global"
+
+export type PaymentProcessorContext = {
+  shipping_address?: Address | null
+  shipping_methods?: ShippingMethod[]
+  email: string
+  currency_code: string
+  amount: number
+  resource_id?: string
+  customer?: Customer
+}
+
+export type PaymentProcessorSessionResponse = {
+  update_requests: { customer_metadata: Record<string, unknown> }
+  session_data: Record<string, unknown>
+}
+
+export interface PaymentProcessorError {
+  error: string
+  code: number
+  details: any
+}
 
 /**
  * The new payment service plugin interface
@@ -16,84 +37,79 @@ export interface PaymentProcessor {
   getIdentifier(): string
 
   /**
-   * This method will be called once when the plugin will be registered
-   */
-  init(): Promise<void>
-
-  /**
    * Initiate a payment session with the external provider
    */
-  createPayment(
+  initiatePayment(
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse>
 
   /**
    * Update an existing payment session
-   * @param sessionId
+   * @param paymentId
    * @param context
    */
   updatePayment(
-    sessionId: string,
+    paymentId: string,
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 
   /**
    * Refund an existing session
-   * @param sessionId
+   * @param paymentId
    * @param context
    */
   refundPayment(
-    sessionId: string,
+    paymentId: string,
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 
   /**
    * Authorize an existing session if it is not already authorized
-   * @param sessionId
+   * @param paymentId
    * @param context
    */
   authorizePayment(
-    sessionId: string,
+    paymentId: string,
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 
   /**
    * Capture an existing session
-   * @param sessionId
+   * @param paymentId
    * @param context
    */
   capturePayment(
-    sessionId: string,
+    paymentId: string,
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 
   /**
    * Delete an existing session
-   * @param sessionId
+   * @param paymentId
    */
-  deletePayment(sessionId: string): Promise<PaymentProcessorError | void>
+  deletePayment(paymentId: string): Promise<PaymentProcessorError | void>
 
   /**
    * Retrieve an existing session
-   * @param sessionId
+   * @param paymentId
    */
   retrievePayment(
-    sessionId: string
+    paymentId: string
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >
 
   /**
    * Cancel an existing session
-   * @param sessionId
+   * @param paymentId
    */
-  cancelPayment(sessionId: string): Promise<PaymentProcessorError | void>
+  cancelPayment(paymentId: string): Promise<PaymentProcessorError | void>
 
   /**
    * Return the status of the session
-   * @param sessionId
+   * @param paymentId
    */
-  getPaymentStatus(sessionId: string): Promise<PaymentSessionStatus>
+  getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus>
 
   /**
    * An optional method to implement in order to retrieve the methods saved for a customer in case the provider
@@ -142,49 +158,47 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
     return ctr.identifier
   }
 
-  abstract init(): Promise<void>
-
   abstract capturePayment(
-    sessionId: string,
+    paymentId: string,
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 
   abstract authorizePayment(
-    sessionId: string,
+    paymentId: string,
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 
   abstract cancelPayment(
-    sessionId: string
+    paymentId: string
   ): Promise<PaymentProcessorError | void>
 
-  abstract createPayment(
+  abstract initiatePayment(
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse>
 
   abstract deletePayment(
-    sessionId: string
+    paymentId: string
   ): Promise<PaymentProcessorError | void>
 
   abstract getSavedMethods(
     customer: Customer
   ): Promise<Record<string, unknown>[]>
 
-  abstract getPaymentStatus(sessionId: string): Promise<PaymentSessionStatus>
+  abstract getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus>
 
   abstract refundPayment(
-    sessionId: string,
+    paymentId: string,
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 
   abstract retrievePayment(
-    sessionId: string
+    paymentId: string
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >
 
   abstract updatePayment(
-    sessionId: string,
+    paymentId: string,
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 }
