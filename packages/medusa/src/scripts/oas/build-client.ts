@@ -54,7 +54,7 @@ const generateClientSDK = async (
     exportServices: true,
     exportModels: true,
     exportHooks: true,
-    exportSchemas: true,
+    exportSchemas: false,
     indent: Indent.SPACE_2,
     postfixServices: "Service",
     postfixModels: "",

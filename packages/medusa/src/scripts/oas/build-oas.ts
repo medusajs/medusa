@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "fs/promises"
 import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@apidevtools/swagger-parser"
 import { defaultMetadataStorage } from "class-transformer/cjs/storage"
+import { getMetadataStorage } from "class-validator"
 import { IOptions } from "class-validator-jsonschema/build/options"
 import { validationMetadatasToSchemas } from "class-validator-jsonschema"
 import { IsTypeJSONSchemaConverter } from "../../utils/validators/is-type"
@@ -98,7 +99,15 @@ const augmentOASWithSchemas = (
   const jsdocKeys = Object.keys(oas.components.schemas)
   const classKeys = Object.keys(schemas)
 
-  Object.assign(oas.components.schemas, schemas)
+  const keysToOverwrite = jsdocKeys.filter((jsdocKey) =>
+    classKeys.includes(jsdocKey)
+  )
+  const schemasToMerge = {}
+  for (const key of keysToOverwrite) {
+    schemasToMerge[key] = schemas[key]
+  }
+
+  Object.assign(oas.components.schemas, schemasToMerge)
 
   if (isVerbose) {
     // List all schemas and their declaration origin.
@@ -106,7 +115,7 @@ const augmentOASWithSchemas = (
       debug(
         `${jsdocKeys.includes(key) ? 1 : 0}, ${
           classKeys.includes(key) ? 1 : 0
-        }, ${key}`
+        }, ${keysToOverwrite.includes(key) ? 1 : 0}, ${key}`
       )
     }
   }
@@ -145,6 +154,7 @@ const exportOASToJSON = async (
 
 const getJSONSchemaOptions = (): Partial<IOptions> => ({
   classTransformerMetadataStorage: defaultMetadataStorage,
+  classValidatorMetadataStorage: getMetadataStorage(),
   refPointerPrefix: "#/components/schemas/",
   additionalConverters: {
     IsNullable: IsNullableJSONSchemaConverter,
