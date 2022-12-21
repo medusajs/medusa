@@ -22,39 +22,7 @@ import { FindParams } from "../../../../types/common"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - operator
- *         properties:
- *           operator:
- *              description: Operator of the condition
- *              type: string
- *              enum: [in, not_in]
- *           products:
- *              type: array
- *              description: list of product IDs if the condition is applied on products.
- *              items:
- *                type: string
- *           product_types:
- *              type: array
- *              description: list of product type IDs if the condition is applied on product types.
- *              items:
- *                type: string
- *           product_collections:
- *              type: array
- *              description: list of product collection IDs if the condition is applied on product collections.
- *              items:
- *                type: string
- *           product_tags:
- *              type: array
- *              description: list of product tag IDs if the condition is applied on product tags.
- *              items:
- *                type: string
- *           customer_groups:
- *              type: array
- *              description: list of customer group IDs if the condition is applied on customer groups.
- *              items:
- *                type: string
+ *         $ref: "#/components/schemas/AdminPostDiscountsDiscountConditions"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -130,6 +98,42 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+/**
+ * @schema AdminPostDiscountsDiscountConditions
+ * type: object
+ * required:
+ *   - operator
+ * properties:
+ *   operator:
+ *      description: Operator of the condition
+ *      type: string
+ *      enum: [in, not_in]
+ *   products:
+ *      type: array
+ *      description: list of product IDs if the condition is applied on products.
+ *      items:
+ *        type: string
+ *   product_types:
+ *      type: array
+ *      description: list of product type IDs if the condition is applied on product types.
+ *      items:
+ *        type: string
+ *   product_collections:
+ *      type: array
+ *      description: list of product collection IDs if the condition is applied on product collections.
+ *      items:
+ *        type: string
+ *   product_tags:
+ *      type: array
+ *      description: list of product tag IDs if the condition is applied on product tags.
+ *      items:
+ *        type: string
+ *   customer_groups:
+ *      type: array
+ *      description: list of customer group IDs if the condition is applied on customer groups.
+ *      items:
+ *        type: string
+ */
 // eslint-disable-next-line max-len
 export class AdminPostDiscountsDiscountConditions extends AdminUpsertConditionsReq {
   @IsString()

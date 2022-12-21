@@ -18,16 +18,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - country_code
- *         properties:
- *           country_code:
- *             description: "The 2 character ISO code for the Country."
- *             type: string
- *             externalDocs:
- *               url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
- *               description: See a list of codes.
+ *         $ref: "#/components/schemas/AdminPostRegionsRegionCountriesReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -101,6 +92,19 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
+/**
+ * @schema AdminPostRegionsRegionCountriesReq
+ * type: object
+ * required:
+ *   - country_code
+ * properties:
+ *   country_code:
+ *     description: "The 2 character ISO code for the Country."
+ *     type: string
+ *     externalDocs:
+ *       url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *       description: See a list of codes.
+ */
 export class AdminPostRegionsRegionCountriesReq {
   @IsString()
   country_code: string

@@ -28,30 +28,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - items
- *         properties:
- *           items:
- *             description: The Line Items to include in the Fulfillment.
- *             type: array
- *             items:
- *               required:
- *                 - item_id
- *                 - quantity
- *               properties:
- *                 item_id:
- *                   description: The ID of Line Item to fulfill.
- *                   type: string
- *                 quantity:
- *                   description: The quantity of the Line Item to fulfill.
- *                   type: integer
- *           no_notification:
- *             description: If set to true no notification will be send related to this Swap.
- *             type: boolean
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderFulfillmentsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -140,6 +117,33 @@ export default async (req, res) => {
   res.json({ order })
 }
 
+/**
+ * @schema AdminPostOrdersOrderFulfillmentsReq
+ * type: object
+ * required:
+ *   - items
+ * properties:
+ *   items:
+ *     description: The Line Items to include in the Fulfillment.
+ *     type: array
+ *     items:
+ *       required:
+ *         - item_id
+ *         - quantity
+ *       properties:
+ *         item_id:
+ *           description: The ID of Line Item to fulfill.
+ *           type: string
+ *         quantity:
+ *           description: The quantity of the Line Item to fulfill.
+ *           type: integer
+ *   no_notification:
+ *     description: If set to true no notification will be send related to this Swap.
+ *     type: boolean
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostOrdersOrderFulfillmentsReq {
   @IsArray()
   @ValidateNested({ each: true })

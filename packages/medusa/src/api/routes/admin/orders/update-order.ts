@@ -28,69 +28,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           email:
- *             description: the email for the order
- *             type: string
- *           billing_address:
- *             description: Billing address
- *             anyOf:
- *               - $ref: "#/components/schemas/AddressFields"
- *           shipping_address:
- *             description: Shipping address
- *             anyOf:
- *               - $ref: "#/components/schemas/AddressFields"
- *           items:
- *             description: The Line Items for the order
- *             type: array
- *             items:
- *               $ref: "#/components/schemas/LineItem"
- *           region:
- *             description: ID of the region where the order belongs
- *             type: string
- *           discounts:
- *             description: Discounts applied to the order
- *             type: array
- *             items:
- *               $ref: "#/components/schemas/Discount"
- *           customer_id:
- *             description: ID of the customer
- *             type: string
- *           payment_method:
- *             description: payment method chosen for the order
- *             type: object
- *             properties:
- *               provider_id:
- *                 type: string
- *                 description: ID of the payment provider
- *               data:
- *                 description: Data relevant for the given payment method
- *                 type: object
- *           shipping_method:
- *             description: The Shipping Method used for shipping the order.
- *             type: object
- *             properties:
- *               provider_id:
- *                 type: string
- *                 description: The ID of the shipping provider.
- *               profile_id:
- *                 type: string
- *                 description: The ID of the shipping profile.
- *               price:
- *                 type: integer
- *                 description: The price of the shipping.
- *               data:
- *                 type: object
- *                 description: Data relevant to the specific shipping method.
- *               items:
- *                 type: array
- *                 items:
- *                   $ref: "#/components/schemas/LineItem"
- *                 description: Items to ship
- *           no_notification:
- *             description: A flag to indicate if no notifications should be emitted related to the updated order.
- *             type: boolean
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -164,6 +102,72 @@ export default async (req, res) => {
   res.status(200).json({ order })
 }
 
+/**
+ * @schema AdminPostOrdersOrderReq
+ * type: object
+ * properties:
+ *   email:
+ *     description: the email for the order
+ *     type: string
+ *   billing_address:
+ *     description: Billing address
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *   shipping_address:
+ *     description: Shipping address
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *   items:
+ *     description: The Line Items for the order
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/LineItem"
+ *   region:
+ *     description: ID of the region where the order belongs
+ *     type: string
+ *   discounts:
+ *     description: Discounts applied to the order
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Discount"
+ *   customer_id:
+ *     description: ID of the customer
+ *     type: string
+ *   payment_method:
+ *     description: payment method chosen for the order
+ *     type: object
+ *     properties:
+ *       provider_id:
+ *         type: string
+ *         description: ID of the payment provider
+ *       data:
+ *         description: Data relevant for the given payment method
+ *         type: object
+ *   shipping_method:
+ *     description: The Shipping Method used for shipping the order.
+ *     type: object
+ *     properties:
+ *       provider_id:
+ *         type: string
+ *         description: The ID of the shipping provider.
+ *       profile_id:
+ *         type: string
+ *         description: The ID of the shipping profile.
+ *       price:
+ *         type: integer
+ *         description: The price of the shipping.
+ *       data:
+ *         type: object
+ *         description: Data relevant to the specific shipping method.
+ *       items:
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/LineItem"
+ *         description: Items to ship
+ *   no_notification:
+ *     description: A flag to indicate if no notifications should be emitted related to the updated order.
+ *     type: boolean
+ */
 export class AdminPostOrdersOrderReq {
   @IsEmail()
   @IsOptional()

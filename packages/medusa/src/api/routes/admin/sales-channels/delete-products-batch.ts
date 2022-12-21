@@ -18,21 +18,7 @@ import { Type } from "class-transformer"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - product_ids
- *         properties:
- *           product_ids:
- *             description: The IDs of the products to delete from the Sales Channel.
- *             type: array
- *             items:
- *               type: object
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The ID of a product
- *                   type: string
+ *         $ref: "#/components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -114,6 +100,24 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ sales_channel: salesChannel })
 }
 
+/**
+ * @schema AdminDeleteSalesChannelsChannelProductsBatchReq
+ * type: object
+ * required:
+ *   - product_ids
+ * properties:
+ *   product_ids:
+ *     description: The IDs of the products to delete from the Sales Channel.
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a product
+ *           type: string
+ */
 export class AdminDeleteSalesChannelsChannelProductsBatchReq {
   @IsArray()
   @ValidateNested({ each: true })

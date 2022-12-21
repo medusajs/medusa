@@ -14,34 +14,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           name:
- *             description: "The name of the Store"
- *             type: string
- *           swap_link_template:
- *             description: "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart id"
- *             type: string
- *           payment_link_template:
- *             description: "A template for payment links links - use `{{cart_id}}` to insert the Cart id"
- *             type: string
- *           invite_link_template:
- *             description: "A template for invite links - use `{{invite_token}}` to insert the invite token"
- *             type: string
- *           default_currency_code:
- *             description: "The default currency code for the Store."
- *             type: string
- *             externalDocs:
- *               url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
- *               description: See a list of codes.
- *           currencies:
- *             description: "Array of currencies in 2 character ISO code format."
- *             type: array
- *             items:
- *               type: string
- *           metadata:
- *             description: "An optional set of key-value pairs with additional information."
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostStoreReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -107,6 +80,37 @@ export default async (req, res) => {
   res.status(200).json({ store })
 }
 
+/**
+ * @schema AdminPostStoreReq
+ * type: object
+ * properties:
+ *   name:
+ *     description: "The name of the Store"
+ *     type: string
+ *   swap_link_template:
+ *     description: "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart id"
+ *     type: string
+ *   payment_link_template:
+ *     description: "A template for payment links links - use `{{cart_id}}` to insert the Cart id"
+ *     type: string
+ *   invite_link_template:
+ *     description: "A template for invite links - use `{{invite_token}}` to insert the invite token"
+ *     type: string
+ *   default_currency_code:
+ *     description: "The default currency code for the Store."
+ *     type: string
+ *     externalDocs:
+ *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *       description: See a list of codes.
+ *   currencies:
+ *     description: "Array of currencies in 2 character ISO code format."
+ *     type: array
+ *     items:
+ *       type: string
+ *   metadata:
+ *     description: "An optional set of key-value pairs with additional information."
+ *     type: object
+ */
 export class AdminPostStoreReq {
   @IsOptional()
   @IsString()

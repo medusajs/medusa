@@ -16,16 +16,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - product_ids
- *         properties:
- *           product_ids:
- *             description: "An array of Product IDs to add to the Product Collection."
- *             type: array
- *             items:
- *               description: "The ID of a Product to add to the Product Collection."
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostProductsToCollectionReq"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -86,6 +77,19 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ collection })
 }
 
+/**
+ * @schema AdminPostProductsToCollectionReq
+ * type: object
+ * required:
+ *   - product_ids
+ * properties:
+ *   product_ids:
+ *     description: "An array of Product IDs to add to the Product Collection."
+ *     type: array
+ *     items:
+ *       description: "The ID of a Product to add to the Product Collection."
+ *       type: string
+ */
 export class AdminPostProductsToCollectionReq {
   @ArrayNotEmpty()
   @IsString({ each: true })

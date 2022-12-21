@@ -18,18 +18,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - fulfillment_id
- *         properties:
- *           fulfillment_id:
- *             description: The ID of the Fulfillment.
- *             type: string
- *           tracking_numbers:
- *             description: The tracking numbers for the shipment.
- *             type: array
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimShipmentsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -110,6 +99,21 @@ export default async (req, res) => {
   res.json({ order })
 }
 
+/**
+ * @schema AdminPostOrdersOrderClaimsClaimShipmentsReq
+ * type: object
+ * required:
+ *   - fulfillment_id
+ * properties:
+ *   fulfillment_id:
+ *     description: The ID of the Fulfillment.
+ *     type: string
+ *   tracking_numbers:
+ *     description: The tracking numbers for the shipment.
+ *     type: array
+ *     items:
+ *       type: string
+ */
 export class AdminPostOrdersOrderClaimsClaimShipmentsReq {
   @IsString()
   @IsNotEmpty()
