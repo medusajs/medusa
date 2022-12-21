@@ -9,6 +9,7 @@ import {
   Fulfillment,
   FulfillmentItem,
   FulfillmentStatus,
+  GiftCard,
   LineItem,
   Order,
   OrderStatus,
@@ -17,7 +18,6 @@ import {
   Return,
   Swap,
   TrackingLink,
-  GiftCard,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
@@ -674,7 +674,10 @@ class OrderService extends TransactionBaseService {
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
       for (const giftCard of cart.gift_cards) {
-        const newGiftCardBalance = Math.max(0, giftCard.balance - giftCardableAmountBalance)
+        const newGiftCardBalance = Math.max(
+          0,
+          giftCard.balance - giftCardableAmountBalance
+        )
         const giftCardBalanceUsed = giftCard.balance - newGiftCardBalance
 
         await giftCardService.update(giftCard.id, {
@@ -687,10 +690,11 @@ class OrderService extends TransactionBaseService {
           order_id: order.id,
           amount: giftCardBalanceUsed,
           is_taxable: !!giftCard.tax_rate,
-          tax_rate: giftCard.tax_rate
+          tax_rate: giftCard.tax_rate,
         })
 
-        giftCardableAmountBalance = giftCardableAmountBalance - giftCardBalanceUsed
+        giftCardableAmountBalance =
+          giftCardableAmountBalance - giftCardBalanceUsed
       }
 
       const shippingOptionServiceTx =
@@ -709,7 +713,9 @@ class OrderService extends TransactionBaseService {
             ]
 
             if (lineItem.is_giftcard) {
-              lineItemPromises.push(this.createGiftCardsFromLineItem_(order, lineItem, manager))
+              lineItemPromises.push(
+                this.createGiftCardsFromLineItem_(order, lineItem, manager)
+              )
             }
 
             return lineItemPromises
@@ -748,7 +754,9 @@ class OrderService extends TransactionBaseService {
 
     // LineItem type doesn't promise either the subtotal or quantity. Adding a check here provides
     // additional type safety/strictness
-    if (!lineItem.subtotal || !lineItem.quantity) return createGiftCardPromises
+    if (!lineItem.subtotal || !lineItem.quantity) {
+      return createGiftCardPromises
+    }
 
     // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
     // We divide here by quantity to get the value of the product/variant as a lineItem
@@ -758,7 +766,8 @@ class OrderService extends TransactionBaseService {
     // On utilizing the gift card, the same set of taxRate will apply to gift card
     // We calculate the summation of all taxes and add that as a snapshot in the giftcard.tax_rate column
     const giftCardTaxRate = lineItem.tax_lines.reduce(
-      (sum, taxLine) => sum + taxLine.rate, 0
+      (sum, taxLine) => sum + taxLine.rate,
+      0
     )
 
     const giftCardTxnService = this.giftCardService_.withTransaction(manager)
@@ -770,7 +779,7 @@ class OrderService extends TransactionBaseService {
         value: taxExclusivePrice,
         balance: taxExclusivePrice,
         metadata: lineItem.metadata,
-        tax_rate: giftCardTaxRate || null
+        tax_rate: giftCardTaxRate || null,
       })
 
       createGiftCardPromises.push(createGiftCardPromise)
@@ -1933,6 +1942,7 @@ class OrderService extends TransactionBaseService {
     relationSet.add("items")
     relationSet.add("items.tax_lines")
     relationSet.add("items.adjustments")
+    relationSet.add("items.variant")
     relationSet.add("swaps")
     relationSet.add("swaps.additional_items")
     relationSet.add("swaps.additional_items.tax_lines")
