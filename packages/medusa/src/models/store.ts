@@ -46,22 +46,22 @@ export class Store extends BaseEntity {
   currencies: Currency[]
 
   @Column({ nullable: true })
-  swap_link_template: string | null
+  swap_link_template: string
 
   @Column({ nullable: true })
-  payment_link_template: string | null
+  payment_link_template: string
 
   @Column({ nullable: true })
-  invite_link_template: string | null
+  invite_link_template: string
 
   @Column({ nullable: true })
   default_location_id: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown> | null
+  metadata: Record<string, unknown>
 
   @FeatureFlagColumn("sales_channels", { nullable: true })
-  default_sales_channel_id: string | null
+  default_sales_channel_id: string
 
   @FeatureFlagDecorators("sales_channels", [
     OneToOne(() => SalesChannel),
