@@ -13,9 +13,9 @@ describe("/store/products", () => {
   let medusaProcess
   let dbConnection
 
-  const giftCardId = "giftCart"
+  const giftCardId = "giftcard"
   const testProductId = "test-product"
-  const testProductId1 = "test-product-1"
+  const testProductId1 = "test-product1"
   const testProductFilteringId1 = "test-product_filtering_1"
   const testProductFilteringId2 = "test-product_filtering_2"
 
@@ -49,23 +49,11 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(5)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: giftCardId,
-        }),
-        expect.objectContaining({
-          id: testProductId,
-        }),
-        expect.objectContaining({
-          id: testProductId1,
-        }),
-        expect.objectContaining({
-          id: testProductFilteringId1,
-        }),
-        expect.objectContaining({
-          id: testProductFilteringId2,
-        }),
-      ])
+      expect(response.data.products[0].id).toEqual(giftCardId)
+      expect(response.data.products[1].id).toEqual(testProductId)
+      expect(response.data.products[2].id).toEqual(testProductId1)
+      expect(response.data.products[3].id).toEqual(testProductFilteringId1)
+      expect(response.data.products[4].id).toEqual(testProductFilteringId2)
     })
 
     it("returns a list of ordered products by id DESC", async () => {
@@ -75,23 +63,11 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(5)
-      expect(response.data.products).toEqual([
-        expect.objectContaining({
-          id: testProductFilteringId2,
-        }),
-        expect.objectContaining({
-          id: testProductFilteringId1,
-        }),
-        expect.objectContaining({
-          id: testProductId1,
-        }),
-        expect.objectContaining({
-          id: testProductId,
-        }),
-        expect.objectContaining({
-          id: giftCardId,
-        }),
-      ])
+      expect(response.data.products[0].id).toEqual(testProductFilteringId2)
+      expect(response.data.products[1].id).toEqual(testProductFilteringId1)
+      expect(response.data.products[2].id).toEqual(testProductId1)
+      expect(response.data.products[3].id).toEqual(testProductId)
+      expect(response.data.products[4].id).toEqual(giftCardId)
     })
 
     it("returns a list of ordered products by variants title DESC", async () => {
