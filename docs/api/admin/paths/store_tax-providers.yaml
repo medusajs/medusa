@@ -28,7 +28,7 @@ get:
               tax_providers:
                 type: array
                 items:
-                  $ref: ../components/schemas/tax_provider.yaml
+                  $ref: ../components/schemas/TaxProvider.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

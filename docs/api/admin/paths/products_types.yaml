@@ -29,7 +29,7 @@ get:
               types:
                 type: array
                 items:
-                  $ref: ../components/schemas/product_type.yaml
+                  $ref: ../components/schemas/ProductType.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

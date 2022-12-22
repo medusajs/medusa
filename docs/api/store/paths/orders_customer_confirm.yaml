@@ -8,12 +8,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - token
-          properties:
-            token:
-              description: The invite token provided by the admin.
-              type: string
+          $ref: ../components/schemas/StorePostCustomersCustomerAcceptClaimReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

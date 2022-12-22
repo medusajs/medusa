@@ -33,7 +33,7 @@ get:
             type: object
             properties:
               batch_job:
-                $ref: ../components/schemas/batch_job.yaml
+                $ref: ../components/schemas/BatchJob.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

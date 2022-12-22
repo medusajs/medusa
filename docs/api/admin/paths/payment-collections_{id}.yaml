@@ -92,7 +92,7 @@ get:
             type: object
             properties:
               payment_collection:
-                $ref: ../components/schemas/payment_collection.yaml
+                $ref: ../components/schemas/PaymentCollection.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -121,18 +121,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            description:
-              description: >-
-                An optional description to create or update the payment
-                collection.
-              type: string
-            metadata:
-              description: >-
-                An optional set of key-value pairs to hold additional
-                information.
-              type: object
+          $ref: ../components/schemas/AdminUpdatePaymentCollectionsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -156,7 +145,7 @@ post:
             type: object
             properties:
               payment_collection:
-                $ref: ../components/schemas/payment_collection.yaml
+                $ref: ../components/schemas/PaymentCollection.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

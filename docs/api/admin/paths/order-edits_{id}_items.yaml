@@ -13,22 +13,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - variant_id
-            - quantity
-          properties:
-            variant_id:
-              description: The ID of the variant ID to add
-              type: string
-            quantity:
-              description: The quantity to add
-              type: number
-            metadata:
-              description: >-
-                An optional set of key-value pairs to hold additional
-                information.
-              type: object
+          $ref: ../components/schemas/AdminPostOrderEditsEditLineItemsReq.yaml
   x-authenticated: true
   x-codeSamples:
     - lang: JavaScript
@@ -53,7 +38,7 @@ post:
             type: object
             properties:
               order_edit:
-                $ref: ../components/schemas/order_edit.yaml
+                $ref: ../components/schemas/OrderEdit.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

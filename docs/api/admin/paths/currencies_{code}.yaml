@@ -14,11 +14,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            includes_tax:
-              type: boolean
-              description: '[EXPERIMENTAL] Tax included in prices of currency.'
+          $ref: ../components/schemas/AdminPostCurrenciesCurrencyReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -39,4 +35,4 @@ post:
             type: object
             properties:
               currency:
-                $ref: ../components/schemas/currency.yaml
+                $ref: ../components/schemas/Currency.yaml

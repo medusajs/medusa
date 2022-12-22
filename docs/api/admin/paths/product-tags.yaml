@@ -116,7 +116,7 @@ get:
             type: object
             properties:
               product_tags:
-                $ref: ../components/schemas/product_tag.yaml
+                $ref: ../components/schemas/ProductTag.yaml
               count:
                 type: integer
                 description: The total number of items available

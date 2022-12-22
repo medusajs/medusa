@@ -40,7 +40,7 @@ post:
           schema:
             properties:
               payment_session:
-                $ref: ../components/schemas/payment_session.yaml
+                $ref: ../components/schemas/PaymentSession.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -14,12 +14,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - provider_id
-          properties:
-            provider_id:
-              type: string
-              description: The ID of the Payment Provider.
+          $ref: ../components/schemas/StorePaymentCollectionSessionsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -43,7 +38,7 @@ post:
           schema:
             properties:
               payment_collection:
-                $ref: ../components/schemas/payment_collection.yaml
+                $ref: ../components/schemas/PaymentCollection.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
