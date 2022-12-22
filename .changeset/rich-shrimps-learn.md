@@ -1,5 +1,5 @@
 ---
-"@medusajs/medusa": minor
+"@medusajs/medusa": patch
 ---
 fix: Gift cart tax claculation wrongly calculated
 
