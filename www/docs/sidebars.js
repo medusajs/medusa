@@ -176,23 +176,8 @@ module.exports = {
           items: [
             {
               type: "doc",
-              id: "advanced/backend/upgrade-guides/1-3-0",
-              label: "v1.3.0"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/upgrade-guides/1-3-6",
-              label: "v1.3.6"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/upgrade-guides/1-3-8",
-              label: "v1.3.8"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/upgrade-guides/1-6-1",
-              label: "v1.6.1"
+              id: "advanced/backend/upgrade-guides/1-7-1",
+              label: "v1.7.1"
             },
             {
               type: "doc",
@@ -201,8 +186,23 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "advanced/backend/upgrade-guides/1-7-1",
-              label: "v1.7.1"
+              id: "advanced/backend/upgrade-guides/1-6-1",
+              label: "v1.6.1"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-3-8",
+              label: "v1.3.8"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-3-6",
+              label: "v1.3.6"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-3-0",
+              label: "v1.3.0"
             },
             {
               type: "doc",
