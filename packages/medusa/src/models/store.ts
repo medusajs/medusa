@@ -55,7 +55,7 @@ export class Store extends BaseEntity {
   invite_link_template: string
 
   @Column({ nullable: true })
-  default_location_id: string | null
+  default_location_id: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
