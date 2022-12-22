@@ -1,3 +1,7 @@
 vite.config.ts
 tsconfig.*
 .gitignore
+./.storybook
+./src/**/*.stories.tsx
+.prettierrc
+.eslintrc.js

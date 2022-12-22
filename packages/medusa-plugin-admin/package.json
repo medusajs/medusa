@@ -8,8 +8,8 @@
     "medusa-admin-cli": "./bin/medusa-admin-cli.js"
   },
   "dependencies": {
-    "@medusajs/admin-sdk": "0.0.1",
-    "@medusajs/admin-ui": "0.0.1",
+    "@medusajs/admin-sdk": "*",
+    "@medusajs/admin-ui": "*",
     "express": "^4.18.2",
     "fs-extra": "^11.1.0"
   },

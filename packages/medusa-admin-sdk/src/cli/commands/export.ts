@@ -32,6 +32,15 @@ export async function exportUi() {
       name: "base",
       message: "Do you want to set a base path?",
     },
+    {
+      type: "list",
+      name: "platform",
+      message: "Which platform do you want to build for?",
+      choices: [
+        { title: "Netlify", value: "netlify" },
+        { title: "Other", value: "other" },
+      ],
+    },
   ])
 
   const { outDir, backendUrl, base } = results
