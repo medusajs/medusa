@@ -16,6 +16,7 @@ import {
   LineItemService,
   OrderService,
   PaymentProviderService,
+  ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
   TotalsService,
@@ -48,7 +49,7 @@ type InjectedProps = {
   totalsService: TotalsService
   eventBusService: EventBusService
   lineItemService: LineItemService
-  inventoryService: InventoryService
+  productVariantInventoryService: ProductVariantInventoryService
   fulfillmentService: FulfillmentService
   shippingOptionService: ShippingOptionService
   paymentProviderService: PaymentProviderService
@@ -83,12 +84,14 @@ class SwapService extends TransactionBaseService {
   protected readonly returnService_: ReturnService
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
-  protected readonly inventoryService_: InventoryService
+  // protected readonly inventoryService_: InventoryService
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly customShippingOptionService_: CustomShippingOptionService
+  // eslint-disable-next-line max-len
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
     manager,
@@ -102,7 +105,7 @@ class SwapService extends TransactionBaseService {
     shippingOptionService,
     fulfillmentService,
     orderService,
-    inventoryService,
+    productVariantInventoryService,
     customShippingOptionService,
     lineItemAdjustmentService,
   }: InjectedProps) {
@@ -120,7 +123,7 @@ class SwapService extends TransactionBaseService {
     this.fulfillmentService_ = fulfillmentService
     this.orderService_ = orderService
     this.shippingOptionService_ = shippingOptionService
-    this.inventoryService_ = inventoryService
+    this.productVariantInventoryService_ = productVariantInventoryService
     this.eventBus_ = eventBusService
     this.customShippingOptionService_ = customShippingOptionService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
@@ -357,6 +360,12 @@ class SwapService extends TransactionBaseService {
       if (additionalItems) {
         newItems = await Promise.all(
           additionalItems.map(async ({ variant_id, quantity }) => {
+            if (variant_id === null) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                "You must include a variant when creating additional items on a swap"
+              )
+            }
             return this.lineItemService_
               .withTransaction(manager)
               .generate(variant_id, order.region_id, quantity)
@@ -734,29 +743,6 @@ class SwapService extends TransactionBaseService {
 
       const items = cart.items
 
-      if (!swap.allow_backorder) {
-        const inventoryServiceTx =
-          this.inventoryService_.withTransaction(manager)
-        const paymentProviderServiceTx =
-          this.paymentProviderService_.withTransaction(manager)
-        const cartServiceTx = this.cartService_.withTransaction(manager)
-
-        for (const item of items) {
-          try {
-            await inventoryServiceTx.confirmInventory(
-              item.variant_id,
-              item.quantity
-            )
-          } catch (err) {
-            if (payment) {
-              await paymentProviderServiceTx.cancelPayment(payment)
-            }
-            await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-            throw err
-          }
-        }
-      }
-
       const total = cart.total!
 
       if (total > 0) {
@@ -790,15 +776,20 @@ class SwapService extends TransactionBaseService {
             order_id: swap.order_id,
           })
 
-        const inventoryServiceTx =
-          this.inventoryService_.withTransaction(manager)
-
-        for (const item of items) {
-          await inventoryServiceTx.adjustInventory(
-            item.variant_id,
-            -item.quantity
-          )
-        }
+        await Promise.all(
+          items.map(async (item) => {
+            if (item.variant_id) {
+              await this.productVariantInventoryService_.reserveQuantity(
+                item.variant_id,
+                item.quantity,
+                {
+                  line_item_id: item.id,
+                  sales_channel_id: cart.sales_channel_id,
+                }
+              )
+            }
+          })
+        )
       }
 
       swap.difference_due = total
