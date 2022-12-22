@@ -1,6 +1,6 @@
 const path = require("path")
 const fs = require("fs/promises")
-import { sep, resolve } from "path"
+import { resolve, sep } from "path"
 
 const setupServer = require("../../../../helpers/setup-server")
 const { useApi } = require("../../../../helpers/use-api")
@@ -31,7 +31,6 @@ describe("Batchjob with type order-export", () => {
       cwd,
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
     })
   })
 
@@ -47,14 +46,9 @@ describe("Batchjob with type order-export", () => {
   })
 
   beforeEach(async () => {
-    try {
-      await adminSeeder(dbConnection)
-      await userSeeder(dbConnection)
-      await orderSeeder(dbConnection)
-    } catch (e) {
-      console.log(e)
-      throw e
-    }
+    await adminSeeder(dbConnection)
+    await userSeeder(dbConnection)
+    await orderSeeder(dbConnection)
   })
 
   afterEach(async () => {

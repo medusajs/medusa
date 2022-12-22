@@ -1,18 +1,19 @@
 # Change Log
 
+## 0.0.7
+
+### Patch Changes
+
+- [#2069](https://github.com/medusajs/medusa/pull/2069) [`ad717b953`](https://github.com/medusajs/medusa/commit/ad717b9533a0500e20c4e312d1ee48b35ea9d5e1) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Remove deprecated dependency `@hapi/joi`
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [0.0.6](https://github.com/medusajs/medusa/compare/create-medusa-app@0.0.5...create-medusa-app@0.0.6) (2022-01-11)
 
-
 ### Features
 
-* **create-medusa-app:** add medusa.express ([#981](https://github.com/medusajs/medusa/issues/981)) ([bbc16d6](https://github.com/medusajs/medusa/commit/bbc16d6b115fb389ee0fe58d909e74a162686163))
-
-
-
-
+- **create-medusa-app:** add medusa.express ([#981](https://github.com/medusajs/medusa/issues/981)) ([bbc16d6](https://github.com/medusajs/medusa/commit/bbc16d6b115fb389ee0fe58d909e74a162686163))
 
 ## [0.0.5](https://github.com/medusajs/medusa/compare/create-medusa-app@0.0.3...create-medusa-app@0.0.5) (2021-10-18)
 

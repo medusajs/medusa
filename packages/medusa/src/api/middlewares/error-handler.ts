@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { MedusaError } from "medusa-core-utils"
 import { Logger } from "../../types/global"
+import { formatException } from "../../utils"
 
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
 const TRANSACTION_STARTED = "TransactionAlreadyStartedError"
@@ -18,6 +19,9 @@ export default () => {
     next: NextFunction
   ) => {
     const logger: Logger = req.scope.resolve("logger")
+
+    err = formatException(err)
+
     logger.error(err)
 
     const errorType = err.type || err.name
@@ -33,10 +37,17 @@ export default () => {
       case QUERY_RUNNER_RELEASED:
       case TRANSACTION_STARTED:
       case TRANSACTION_NOT_STARTED:
+      case MedusaError.Types.CONFLICT:
         statusCode = 409
         errObj.code = INVALID_STATE_ERROR
         errObj.message =
           "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
+        break
+      case MedusaError.Types.UNAUTHORIZED:
+        statusCode = 401
+        break
+      case MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR:
+        statusCode = 422
         break
       case MedusaError.Types.DUPLICATE_ERROR:
         statusCode = 422
@@ -66,3 +77,19 @@ export default () => {
     res.status(statusCode).json(errObj)
   }
 }
+
+/**
+ * @schema Error
+ * title: "Response Error"
+ * type: object
+ * properties:
+ *  code:
+ *    type: string
+ *    description: A slug code to indicate the type of the error.
+ *  message:
+ *    type: string
+ *    description: Description of the error that occurred.
+ *  type:
+ *    type: string
+ *    description: A slug indicating the type of the error.
+ */

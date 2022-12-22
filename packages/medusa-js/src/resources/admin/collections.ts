@@ -5,6 +5,8 @@ import {
   AdminCollectionsDeleteRes,
   AdminCollectionsListRes,
   AdminGetCollectionsParams,
+  AdminPostProductsToCollectionReq,
+  AdminDeleteProductsFromCollectionReq,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -47,9 +49,12 @@ class AdminCollectionsResource extends BaseResource {
    * @param customHeaders
    * @returns Deleted response
    */
-  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCollectionsDeleteRes> {
+  delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCollectionsDeleteRes> {
     const path = `/admin/collections/${id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -58,9 +63,12 @@ class AdminCollectionsResource extends BaseResource {
    * @param customHeaders
    * @returns the collection with the given id
    */
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCollectionsRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -80,7 +88,37 @@ class AdminCollectionsResource extends BaseResource {
       path = `/admin/collections?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
+  }
+
+  /**
+   * @description Updates products associated with a Product Collection
+   * @param id the id of the Collection
+   * @param payload - an object which contains an array of Product IDs to add to the Product Collection
+   * @param customHeaders
+   */
+  addProducts(
+    id: string,
+    payload: AdminPostProductsToCollectionReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCollectionsRes> {
+    const path = `/admin/collections/${id}/products/batch`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Removes products associated with a Product Collection
+   * @param id - the id of the Collection
+   * @param payload - an object which contains an array of Product IDs to add to the Product Collection
+   * @param customHeaders
+   */
+  removeProducts(
+    id: string,
+    payload: AdminDeleteProductsFromCollectionReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCollectionsDeleteRes> {
+    const path = `/admin/collections/${id}/products/batch`
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 }
 

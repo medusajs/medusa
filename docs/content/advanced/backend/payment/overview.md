@@ -20,11 +20,11 @@ A Payment Provider in Medusa is a method to handle payments in selected regions.
 
 Payment Providers can be integrated with third-party services that handle payment operations such as capturing a payment. An example of a Payment Provider is Stripe.
 
-Payment Providers can also be related to a custom way of handling payment operations. An example of that is cash on delivery (COD) payment methods or Medusa’s [manual payment provider plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) which provides a minimal implementation of a payment provider and allows store operators to manually handle order payments.
+Payment Providers can also be related to a custom way of handling payment operations. An example of that is Cash on Delivery (COD) payment methods or Medusa’s [manual payment provider plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) which provides a minimal implementation of a payment provider and allows store operators to manually handle order payments.
 
 ### How Payment Provider is Created
 
-A Payment Provider is essentially a Medusa [service](../services/create-service.md) with a unique identifier, and it extends the `PaymentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a service file in your Medusa server.
+A Payment Provider is essentially a Medusa [service](../services/create-service.md) with a unique identifier, and it extends the ``AbstractPaymentService` from the core Medusa package `@medusajs/medusa`. It can be created as part of a [plugin](../plugins/overview.md), or it can be created just as a service file in your Medusa server.
 
 As a developer, you will mainly work with the Payment Provider when integrating a payment method in Medusa.
 
@@ -40,7 +40,7 @@ It’s important to choose a payment provider in the list of payment providers i
 
 ### PaymentProvider Entity Overview
 
-The `PaymentProvider` entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
+The [`PaymentProvider`](../../../references/entities/classes/PaymentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
 
 ## Payment Session
 
@@ -62,7 +62,7 @@ Among the Payment Sessions available only one will be selected based on the cust
 
 ### PaymentSession Entity Overview
 
-The `PaymentSession` entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
+The [`PaymentSession`](../../../references/entities/classes/PaymentSession.md) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
 
 The `PaymentSession` also belongs to a `PaymentProvider`. This is the Payment Provider that was used to create the Payment Session and that controls it for further actions like authorizing the payment.
 
@@ -94,7 +94,7 @@ When the store operator then chooses to capture the order from the Medusa Admin,
 
 ### Payment Entity Overview
 
-The `Payment` entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment provider that the customer chose on checkout.
+The [`Payment`](../../../references/entities/classes/Payment.md) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment provider that the customer chose on checkout.
 
 In case a `Swap` is created for an order, `Payment` will be associated with that swap to handle payment operations related to it.
 
@@ -118,7 +118,7 @@ If then the request is interrupted for any reason or the payment fails, the clie
 
 This prevents any payment issues from occurring with the customers and allows for secure retries of failed payments or interrupted connections.
 
-## What’s Next 🚀
+## What’s Next
 
 - [Check out how the checkout flow is implemented on the frontend.](./../../storefront/how-to-implement-checkout-flow.mdx)
 - Check out payment plugins like [Stripe](../../../add-plugins/stripe.md), [Paypal](/add-plugins/paypal), and [Klarna](../../../add-plugins/klarna.md).

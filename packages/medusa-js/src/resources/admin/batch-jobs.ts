@@ -29,7 +29,7 @@ class AdminBatchJobsResource extends BaseResource {
       path = `/admin/batch-jobs?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   cancel(
@@ -37,7 +37,7 @@ class AdminBatchJobsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminBatchJobRes> {
     const path = `/admin/batch-jobs/${batchJobId}/cancel`
-    return this.client.request("POST", path, {}, {}, customHeaders)
+    return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
   confirm(
@@ -45,7 +45,7 @@ class AdminBatchJobsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminBatchJobRes> {
     const path = `/admin/batch-jobs/${batchJobId}/confirm`
-    return this.client.request("POST", path, {}, {}, customHeaders)
+    return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
   retrieve(
@@ -53,7 +53,7 @@ class AdminBatchJobsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminBatchJobRes> {
     const path = `/admin/batch-jobs/${batchJobId}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

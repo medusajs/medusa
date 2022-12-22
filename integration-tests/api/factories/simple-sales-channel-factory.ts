@@ -8,6 +8,7 @@ export type SalesChannelFactoryData = {
   is_disabled?: boolean
   id?: string
   products?: Product[],
+  is_default?: boolean
 }
 
 export const simpleSalesChannelFactory = async (
@@ -36,11 +37,18 @@ export const simpleSalesChannelFactory = async (
     for (const product of data.products) {
       promises.push(
         manager.query(`
-          INSERT INTO product_sales_channel (product_id, sales_channel_id) VALUES ('${product.id}', '${salesChannel.id}');
+            INSERT INTO product_sales_channel (product_id, sales_channel_id)
+            VALUES ('${product.id}', '${salesChannel.id}');
         `)
       )
     }
     await Promise.all(promises)
+  }
+
+  if (data.is_default) {
+    await manager.query(
+      `UPDATE store SET default_sales_channel_id = '${salesChannel.id}'`
+    )
   }
 
   return salesChannel

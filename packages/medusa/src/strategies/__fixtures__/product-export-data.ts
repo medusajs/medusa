@@ -11,6 +11,13 @@ const variantIds = [
 ]
 export const productsToExport = [
   {
+    sales_channels: [
+      {
+        id: IdMap.getId("sc_1"),
+        name: "SC 1",
+        description: "SC 1\nSC 1 second line\nSC 1 third line\nSC 1 forth line",
+      },
+    ],
     collection: {
       created_at: "randomString",
       deleted_at: null,
@@ -23,7 +30,8 @@ export const productsToExport = [
     collection_id: IdMap.getId("product-export-collection_1"),
     created_at: "randomString",
     deleted_at: null,
-    description: "test-product-description-1",
+    description:
+      "test-product-description-1\ntest-product-description-1 second line\ntest-product-description-1 third line\nforth line",
     discountable: true,
     external_id: null,
     handle: "test-product-product-1",
@@ -202,6 +210,10 @@ export const productsToExport = [
     width: null,
   },
   {
+    sales_channels: [
+      { id: IdMap.getId("sc_1"), name: "SC 1", description: "SC 1" },
+      { id: IdMap.getId("sc_2"), name: "SC 2", description: "SC 2" },
+    ],
     collection: {
       created_at: "randomString",
       deleted_at: null,

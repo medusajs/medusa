@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-medusa",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Gatsby source plugin for building websites using Medusa Commerce as a data source",
   "scripts": {
     "test": "jest --passWithNoTests",

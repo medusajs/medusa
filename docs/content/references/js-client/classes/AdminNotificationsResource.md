@@ -10,41 +10,41 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsListRes`](../modules/internal.md#adminnotificationslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsListRes`](../modules/internal-12.md#adminnotificationslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetNotificationsParams`](internal.AdminGetNotificationsParams.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `query?` | [`AdminGetNotificationsParams`](internal-12.AdminGetNotificationsParams.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsListRes`](../modules/internal.md#adminnotificationslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsListRes`](../modules/internal-12.md#adminnotificationslistres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notifications.ts:12](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/notifications.ts#L12)
+[medusa-js/src/resources/admin/notifications.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notifications.ts#L12)
 
 ___
 
 ### resend
 
-▸ **resend**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsRes`](../modules/internal.md#adminnotificationsres)\>
+▸ **resend**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsRes`](../modules/internal-12.md#adminnotificationsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostNotificationsNotificationResendReq`](internal.AdminPostNotificationsNotificationResendReq.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `payload` | [`AdminPostNotificationsNotificationResendReq`](internal-12.AdminPostNotificationsNotificationResendReq.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsRes`](../modules/internal.md#adminnotificationsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsRes`](../modules/internal-12.md#adminnotificationsres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notifications.ts:25](https://github.com/medusajs/medusa/blob/2eb2126f/packages/medusa-js/src/resources/admin/notifications.ts#L25)
+[medusa-js/src/resources/admin/notifications.ts:26](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notifications.ts#L26)

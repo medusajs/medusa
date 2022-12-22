@@ -3,20 +3,44 @@ import { OauthService } from "../../../../services"
 /**
  * @oas [get] /apps
  * operationId: "GetApps"
- * summary: "List applications"
+ * summary: "List Applications"
  * description: "Retrieve a list of applications."
  * x-authenticated: true
+ * x-codeSamples:
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/admin/apps' \
+ *       --header 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
- *   - Apps
+ *   - App
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
- *            collection:
- *              $ref: "#/components/schemas/OAuth"
+ *            apps:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/OAuth"
+ *  "400":
+ *    $ref: "#/components/responses/400_error"
+ *  "401":
+ *    $ref: "#/components/responses/unauthorized"
+ *  "404":
+ *    $ref: "#/components/responses/not_found_error"
+ *  "409":
+ *    $ref: "#/components/responses/invalid_state_error"
+ *  "422":
+ *    $ref: "#/components/responses/invalid_request_error"
+ *  "500":
+ *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const oauthService: OauthService = req.scope.resolve("oauthService")

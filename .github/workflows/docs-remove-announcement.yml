@@ -1,0 +1,46 @@
+# Checks if the announcement bar info was last edited more than 6 days ago, and if so removes it
+name: Remove Docs Release Announcement Bar
+on: 
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  remove-announcement:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.REFERENCE_PAT }}
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: docs-remove-announcement
+
+      - name: Remove Announcement Bar
+        run: yarn generate:announcement --expire
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: 'chore(docs): Removed Docs Announcement Bar (automated)'
+          base: 'master'
+          title: 'chore(docs): Removed Docs Announcement Bar (automated)'
+          labels: 'type: chore'
+          add-paths: www/docs/**
+          branch: 'chore/remove-announcement'
+          branch-suffix: 'timestamp'

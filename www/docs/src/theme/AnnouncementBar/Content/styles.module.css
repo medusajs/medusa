@@ -1,0 +1,10 @@
+.contentWrapper {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ifm-announcement-bar-text-color);
+}
+
+.contentTitle {
+  font-weight: 600;
+  color: var( --ifm-announcement-bar-title-color);
+}

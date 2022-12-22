@@ -6,22 +6,22 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).PriceListStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### ACTIVE
 
-• **ACTIVE** = `"active"`
+• **ACTIVE** = ``"active"``
 
 #### Defined in
 
-packages/medusa/dist/types/price-list.d.ts:8
+medusa/dist/types/price-list.d.ts:8
 
 ___
 
 ### DRAFT
 
-• **DRAFT** = `"draft"`
+• **DRAFT** = ``"draft"``
 
 #### Defined in
 
-packages/medusa/dist/types/price-list.d.ts:9
+medusa/dist/types/price-list.d.ts:9

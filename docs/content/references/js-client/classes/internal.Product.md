@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).Product
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
@@ -20,7 +22,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:44
+medusa/dist/models/product.d.ts:46
 
 ___
 
@@ -30,7 +32,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:37
+medusa/dist/models/product.d.ts:38
 
 ___
 
@@ -40,13 +42,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:36
+medusa/dist/models/product.d.ts:37
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -54,13 +56,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+• **deleted\_at**: ``null`` \| `Date`
 
 #### Inherited from
 
@@ -68,17 +70,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
 ### description
 
-• **description**: `string`
+• **description**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:18
+medusa/dist/models/product.d.ts:19
 
 ___
 
@@ -88,47 +90,47 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:41
+medusa/dist/models/product.d.ts:42
 
 ___
 
 ### external\_id
 
-• **external\_id**: `string`
+• **external\_id**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:42
+medusa/dist/models/product.d.ts:43
 
 ___
 
 ### handle
 
-• **handle**: `string`
+• **handle**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:19
+medusa/dist/models/product.d.ts:20
 
 ___
 
 ### height
 
-• **height**: `number`
+• **height**: ``null`` \| `number`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:30
+medusa/dist/models/product.d.ts:31
 
 ___
 
 ### hs\_code
 
-• **hs\_code**: `string`
+• **hs\_code**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:32
+medusa/dist/models/product.d.ts:33
 
 ___
 
@@ -142,7 +144,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -152,7 +154,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:22
+medusa/dist/models/product.d.ts:23
 
 ___
 
@@ -162,47 +164,47 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:20
+medusa/dist/models/product.d.ts:21
 
 ___
 
 ### length
 
-• **length**: `number`
+• **length**: ``null`` \| `number`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:29
+medusa/dist/models/product.d.ts:30
 
 ___
 
 ### material
 
-• **material**: `string`
+• **material**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:35
+medusa/dist/models/product.d.ts:36
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: ``null`` \| `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:43
+medusa/dist/models/product.d.ts:44
 
 ___
 
 ### mid\_code
 
-• **mid\_code**: `string`
+• **mid\_code**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:34
+medusa/dist/models/product.d.ts:35
 
 ___
 
@@ -212,17 +214,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:24
+medusa/dist/models/product.d.ts:25
 
 ___
 
 ### origin\_country
 
-• **origin\_country**: `string`
+• **origin\_country**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:33
+medusa/dist/models/product.d.ts:34
 
 ___
 
@@ -232,7 +234,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:27
+medusa/dist/models/product.d.ts:28
 
 ___
 
@@ -242,27 +244,37 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:26
+medusa/dist/models/product.d.ts:27
+
+___
+
+### sales\_channels
+
+• **sales\_channels**: [`SalesChannel`](internal.SalesChannel.md)[]
+
+#### Defined in
+
+medusa/dist/models/product.d.ts:45
 
 ___
 
 ### status
 
-• **status**: [`Status`](../enums/internal.Status.md)
+• **status**: [`ProductStatus`](../enums/internal.ProductStatus.md)
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:21
+medusa/dist/models/product.d.ts:22
 
 ___
 
 ### subtitle
 
-• **subtitle**: `string`
+• **subtitle**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:17
+medusa/dist/models/product.d.ts:18
 
 ___
 
@@ -272,17 +284,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:40
+medusa/dist/models/product.d.ts:41
 
 ___
 
 ### thumbnail
 
-• **thumbnail**: `string`
+• **thumbnail**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:23
+medusa/dist/models/product.d.ts:24
 
 ___
 
@@ -292,7 +304,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:16
+medusa/dist/models/product.d.ts:17
 
 ___
 
@@ -302,23 +314,23 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:39
+medusa/dist/models/product.d.ts:40
 
 ___
 
 ### type\_id
 
-• **type\_id**: `string`
+• **type\_id**: ``null`` \| `string`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:38
+medusa/dist/models/product.d.ts:39
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -326,7 +338,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7
 
 ___
 
@@ -336,24 +348,24 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:25
+medusa/dist/models/product.d.ts:26
 
 ___
 
 ### weight
 
-• **weight**: `number`
+• **weight**: ``null`` \| `number`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:28
+medusa/dist/models/product.d.ts:29
 
 ___
 
 ### width
 
-• **width**: `number`
+• **width**: ``null`` \| `number`
 
 #### Defined in
 
-packages/medusa/dist/models/product.d.ts:31
+medusa/dist/models/product.d.ts:32

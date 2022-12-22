@@ -4,19 +4,20 @@ import {
   EntityTarget,
   In,
   Not,
-  Repository
+  Repository,
 } from "typeorm"
 import { Discount } from "../models"
 import {
   DiscountCondition,
   DiscountConditionOperator,
-  DiscountConditionType
+  DiscountConditionType,
 } from "../models/discount-condition"
 import { DiscountConditionCustomerGroup } from "../models/discount-condition-customer-group"
 import { DiscountConditionProduct } from "../models/discount-condition-product"
 import { DiscountConditionProductCollection } from "../models/discount-condition-product-collection"
 import { DiscountConditionProductTag } from "../models/discount-condition-product-tag"
 import { DiscountConditionProductType } from "../models/discount-condition-product-type"
+import { isString } from "../utils"
 
 export enum DiscountConditionJoinTableForeignKey {
   PRODUCT_ID = "product_id",
@@ -132,7 +133,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
   async removeConditionResources(
     id: string,
     type: DiscountConditionType,
-    resourceIds: string[]
+    resourceIds: (string | { id: string })[]
   ): Promise<DeleteResult | void> {
     const { conditionTable, joinTableForeignKey } =
       this.getJoinTableResourceIdentifiers(type)
@@ -141,16 +142,19 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       return Promise.resolve()
     }
 
+    const idsToDelete = resourceIds.map((rId): string => {
+      return isString(rId) ? rId : rId.id
+    })
     return await this.createQueryBuilder()
       .delete()
       .from(conditionTable)
-      .where({ condition_id: id, [joinTableForeignKey]: In(resourceIds) })
+      .where({ condition_id: id, [joinTableForeignKey]: In(idsToDelete) })
       .execute()
   }
 
   async addConditionResources(
     conditionId: string,
-    resourceIds: string[],
+    resourceIds: (string | { id: string })[],
     type: DiscountConditionType,
     overrideExisting = false
   ): Promise<
@@ -171,7 +175,10 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       return Promise.resolve([])
     }
 
-    toInsert = resourceIds.map((rId) => ({
+    const idsToInsert = resourceIds.map((rId): string => {
+      return isString(rId) ? rId : rId.id
+    })
+    toInsert = idsToInsert.map((rId) => ({
       condition_id: conditionId,
       [joinTableForeignKey]: rId,
     }))
@@ -189,7 +196,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         .from(conditionTable)
         .where({
           condition_id: conditionId,
-          [joinTableForeignKey]: Not(In(resourceIds)),
+          [joinTableForeignKey]: Not(In(idsToInsert)),
         })
         .execute()
     }
@@ -282,7 +289,9 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       .where("discon.discount_rule_id = :discountRuleId", {
         discountRuleId,
       })
-      .andWhere("discon.type = :type", { type: DiscountConditionType.CUSTOMER_GROUPS })
+      .andWhere("discon.type = :type", {
+        type: DiscountConditionType.CUSTOMER_GROUPS,
+      })
       .getMany()
 
     // in case of no discount conditions, we assume that the discount

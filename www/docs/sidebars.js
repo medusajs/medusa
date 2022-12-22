@@ -10,45 +10,53 @@
  */
 
 module.exports = {
-  tutorialSidebar: [
+  docsSidebar: [
     {
-      type: "doc",
-      id: "homepage",
-      label: "Overview",
-    },
-    {
-      type: "doc",
-      id: "introduction",
-      label: "Introduction",
-    },
-    {
-      type: "doc",
-      id: "quickstart/quick-start",
-      label: "Quickstart Guide",
-    },
-    {
-      type: "doc",
-      id: "usage",
+      type: "category",
+      label: "Getting Started",
+      items: [
+        {
+          type: "doc",
+          id: "homepage",
+          label: "Overview",
+        },
+        {
+          type: "doc",
+          id: "introduction",
+          label: "Introduction",
+        },
+        {
+          type: "doc",
+          id: "quickstart/quick-start",
+          label: "Quickstart Guide",
+        },
+        {
+          type:"doc",
+          id: "quickstart/quick-start-docker",
+        },
+        {
+          type: "doc",
+          id: "usage",
+        },
+      ]
     },
     {
       type: "category",
-      collapsed: false,
-      label: "Usage Guides",
+      label: "Setup & Deployment",
       items: [
         {
           type: "doc",
           id: "tutorial/set-up-your-development-environment",
-          label: "Set Up your Development Environment"
+          label: "Set Up Dev Environment"
         },
         {
           type: "doc",
           id: "usage/configurations",
-          label: "Configure your Server"
+          label: "Configure Server"
         },
         {
           type: "category",
-          collapsed: true,
-          label: "Storefront Quickstart",
+          label: "Storefronts",
           items: [
             {
               type: "doc",
@@ -87,7 +95,7 @@ module.exports = {
                   id: "deployments/server/deploying-on-heroku",
                   label: "Deploy on Heroku",
                   customProps: {
-                    image: 'https://i.imgur.com/xNvxSkf.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739927/Medusa%20Docs/Other/xNvxSkf_l230wq.png'
                   }
                 },
                 {
@@ -95,7 +103,7 @@ module.exports = {
                   id: "deployments/server/deploying-on-digital-ocean",
                   label: "Deploy on DigitalOcean",
                   customProps: {
-                    image: 'https://i.imgur.com/aahqJp4.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739945/Medusa%20Docs/Other/aahqJp4_lbtfdz.png'
                   }
                 },
                 {
@@ -103,7 +111,18 @@ module.exports = {
                   id: "deployments/server/deploying-on-qovery",
                   label: "Deploy on Qovery",
                   customProps: {
-                    image: 'https://i.imgur.com/qOvY2dN.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png'
+                  }
+                },
+                {
+                  type: "doc",
+                  id: "deployments/server/deploying-on-railway",
+                  label: "Deploy on Railway",
+                  customProps: {
+                    themedImage: {
+                      light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-light_fzuyeo.png',
+                      dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-dark_kkzuwh.png'
+                    }
                   }
                 }
               ]
@@ -146,172 +165,330 @@ module.exports = {
             },
           ],
         },
-      ]
-    },
-    {
-      type: "category",
-      label: "Advanced Guide",
-      collapsed: false,
-      items: [
         {
           type: "category",
-          label: "Medusa Server",
+          label: 'Upgrade Guides',
           collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'advanced/backend/upgrade-guides/index'
+          },
           items: [
             {
-              type: "category",
-              label: 'Endpoints',
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "advanced/backend/endpoints/add-storefront",
-                  label: "Create Endpoint for Storefront"
-                },
-                {
-                  type: "doc",
-                  id: "advanced/backend/endpoints/add-admin",
-                  label: "Create Endpoint for Admin"
-                },
-              ]
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-7-1",
+              label: "v1.7.1"
             },
             {
               type: "doc",
-              id: "advanced/backend/services/create-service",
-              label: "Create a Service"
-            },
-            {
-              type: "category",
-              label: 'Subscribers',
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "advanced/backend/subscribers/create-subscriber",
-                  label: "Create a Subscriber"
-                },
-                {
-                  type: "doc",
-                  id: "advanced/backend/subscribers/events-list",
-                  label: "List of Events"
-                },
-              ]
+              id: "advanced/backend/upgrade-guides/1-7-0",
+              label: "v1.7.0"
             },
             {
               type: "doc",
-              id: "advanced/backend/entities",
-              label: "Entities"
-            },
-            {
-              type: "category",
-              label: 'Shipping',
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "advanced/backend/shipping/overview",
-                  label: "Architecture Overview"
-                },
-                {
-                  type: "doc",
-                  id: "advanced/backend/shipping/add-fulfillment-provider",
-                  label: "Create a Fulfillment Provider"
-                }
-              ]
-            },
-            {
-              type: "category",
-              label: 'Payment',
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "advanced/backend/payment/overview",
-                  label: "Architecture Overview"
-                },
-                {
-                  type: "doc",
-                  id: "advanced/backend/payment/how-to-create-payment-provider",
-                  label: "Create a Payment Provider"
-                },
-              ]
-            },
-            {
-              type: "category",
-              label: "Notification",
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "advanced/backend/notification/overview"
-                },
-                {
-                  type: "doc",
-                  id: "advanced/backend/notification/how-to-create-notification-provider",
-                  label: "Create a Notification Provider"
-                }
-              ]
-            },
-            {
-              type: "category",
-              label: "Plugins",
-              collapsed: true,
-              items: [
-                {
-                  type: "doc",
-                  id: "advanced/backend/plugins/overview",
-                  label: "Overview"
-                },
-                {
-                  type: "doc",
-                  id: "advanced/backend/plugins/create",
-                }
-              ]
+              id: "advanced/backend/upgrade-guides/1-6-1",
+              label: "v1.6.1"
             },
             {
               type: "doc",
-              id: "guides/carts-in-medusa",
+              id: "advanced/backend/upgrade-guides/1-3-8",
+              label: "v1.3.8"
             },
             {
               type: "doc",
-              id: "advanced/backend/migrations",
-              label: "Migrations"
+              id: "advanced/backend/upgrade-guides/1-3-6",
+              label: "v1.3.6"
             },
             {
-              type: "category",
-              label: 'Upgrade Guides',
-              collapsed: true,
-              link: {
-                type: 'doc',
-                id: 'advanced/backend/upgrade-guides/index'
-              },
-              items: [
-                {
-                  type: "doc",
-                  id: "advanced/backend/upgrade-guides/1-3-0",
-                  label: "v1.3.0"
-                },
-              ]
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-3-0",
+              label: "v1.3.0"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/admin/admin-vite",
+              label: "Medusa Admin: Vite"
             },
           ]
         },
         {
           type: "category",
-          label: "Storefront",
-          collapsed: true,
+          label: 'Local Development',
           items: [
             {
               type: "doc",
-              id: "advanced/storefront/how-to-implement-checkout-flow",
+              id: "usage/local-development",
+              label: "Server and Monorepo"
             },
+            {
+              type: "doc",
+              id: "admin/development",
+              label: "Medusa Admin"
+            }
           ]
         }
       ]
     },
     {
       type: "category",
+      label: "How-to Guides",
+      items: [
+        {
+          type: "category",
+          label: "Storefront",
+          items: [
+            {
+              type: "doc",
+              id: "advanced/storefront/use-regions",
+              label: "Use Regions"
+            },
+            {
+              type: "doc",
+              id: "guides/carts-in-medusa",
+              label: "Implement Cart"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-discounts-in-checkout",
+              label: "Use Discounts in Checkout"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/taxes/manual-calculation",
+              label: "Calculate Taxes Manually"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/how-to-implement-checkout-flow",
+              label: "Implement Checkout"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/implement-claim-order",
+              label: "Implement Claim Order"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/handle-order-edits",
+              label: "Handle Order Edits"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-sales-channels",
+              label: "Use SalesChannels APIs"
+            },
+          ]
+        },
+        {
+          type: "category",
+          label: "Admin",
+          items: [
+            {
+              type: "doc",
+              id: "advanced/admin/manage-regions",
+              label: "Manage Regions"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/import-products",
+              label: "Import Products"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/import-prices",
+              label: "Import Prices"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/price-lists/use-api",
+              label: "Use PriceList APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/sales-channels/manage-admin",
+              label: "Use SalesChannel APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/use-customergroups-api",
+              label: "Use CustomerGroup APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-discounts",
+              label: "Use Discount APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/order-edit",
+              label: "Edit an Order"
+            },
+          ]
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/endpoints/add",
+          label: "Create an Endpoint"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/services/create-service",
+          label: "Create a Service"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/subscribers/create-subscriber",
+          label: "Create a Subscriber"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/entities/index",
+          label: "Create an Entity"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/shipping/add-fulfillment-provider",
+          label: "Create a Fulfillment Provider"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/payment/how-to-create-payment-provider",
+          label: "Create a Payment Provider"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/notification/how-to-create-notification-provider",
+          label: "Create a Notification Provider"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/plugins/create",
+          label: "Create a Plugin"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/migrations/index",
+          label: "Create a Migration"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/feature-flags/toggle",
+          label: "Toggle Feature Flags"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/scheduled-jobs/create",
+          label: "Create a Scheduled Job"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/batch-jobs/create",
+          label: "Create Batch Job Strategy"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/batch-jobs/customize-import",
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/override",
+          label: "Override Price Selection"
+        },
+        {
+          type: "doc",
+          id: "advanced/ecommerce/handle-order-claim-event",
+          label: "Handle Order Claim Event"
+        },
+      ]
+    },
+    {
+      type: "category",
+      label: "Conceptual Guides",
+      items: [
+        {
+          type: "doc",
+          id: "advanced/backend/entities/overview",
+          label: "Entities"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/services/overview",
+          label: "Services"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/subscribers/overview",
+          label: "Subscribers"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/shipping/overview",
+          label: "Shipping Architecture"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/payment/overview",
+          label: "Payment Architecture"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/notification/overview",
+          label: "Notification Architecture"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/discounts/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/plugins/overview",
+          label: "Plugins"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/migrations/overview",
+          label: "Migrations"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/batch-jobs/index",
+          label: "Batch Jobs"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/regions/overview",
+          label: "Regions"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/taxes/inclusive-pricing",
+          label: "Tax Inclusive Pricing"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-lists/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/sales-channels/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/customer-groups/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/dependency-container/index"
+        },
+      ]
+    },
+    {
+      type: "category",
       label: "Integrations",
-      collapsed: false,
       items: [
         {
           type: "category",
@@ -339,7 +516,7 @@ module.exports = {
                 {
                   type: "doc",
                   id: "add-plugins/contentful/customize-contentful",
-                  label: "Customize Contentful Integration",
+                  label: "Customize Integration",
                 },
               ]
             },
@@ -442,6 +619,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "troubleshooting/cli-installation-errors",
+          label: "Errors Installing CLI",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/cors-issues",
           label: "CORS issues",
         },
@@ -453,7 +635,7 @@ module.exports = {
         {
           type: "doc",
           id: "troubleshooting/missing-payment-providers",
-          label: "Payment provider (Stripe) not showing in checkout",
+          label: "Payment provider missing",
         },
         {
           type: "doc",
@@ -467,21 +649,58 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "troubleshooting/s3-acl-error",
+          label: "S3 Plugin ACL Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/documentation-error",
           label: "Documentation Error",
         },
       ],
     },
     {
-      type: "doc",
-      id: "cli/reference",
-      label: "CLI Reference",
+      type: "category",
+      label: "References",
+      items: [
+        {
+          type: "doc",
+          id: "cli/reference",
+          label: "CLI Reference",
+        },
+        {
+          type: "ref",
+          id: "references/entities/classes/Address",
+          label: "Entities Reference",
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/subscribers/events-list",
+          label: "Events Reference"
+        },
+        {
+          type: "ref",
+          id: "js-client/overview",
+          label: "JS Client Reference",
+        },
+        {
+          type: "ref",
+          id: "references/services/classes/AuthService",
+          label: "Services Reference",
+        },
+      ]
     },
     {
       type: "doc",
       id: "contribution-guidelines",
       label: "Contribution Guidelines",
     },
+  ],
+  userGuideSidebar: [
+    {
+      type: 'autogenerated',
+      dirName: 'user-guide', // '.' means the current docs folder
+    }
   ],
   servicesSidebar: [
     {
@@ -516,8 +735,18 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminBatchJobsResource",
+              label: "batchJobs",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminCollectionsResource",
               label: "collections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCurrenciesResource",
+              label: "currencies",
             },
             {
               type: "doc",
@@ -566,6 +795,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminOrderEditsResource",
+              label: "orderEdits",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminPriceListResource",
               label: "priceLists",
             },
@@ -598,6 +832,11 @@ module.exports = {
               type: "doc",
               id: "references/js-client/classes/AdminReturnsResource",
               label: "returns",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminSalesChannelsResource",
+              label: "salesChannels",
             },
             {
               type: "doc",
@@ -700,6 +939,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "references/js-client/classes/OrderEditsResource",
+          label: "orderEdits",
+        },
+        {
+          type: "doc",
           id: "references/js-client/classes/PaymentMethodsResource",
           label: "paymentMethods",
         },
@@ -727,7 +971,7 @@ module.exports = {
         {
           type: "doc",
           id: "references/js-client/classes/ReturnReasonsResource",
-          label: "returnReason",
+          label: "returnReasons",
         },
         {
           type: "doc",
@@ -746,5 +990,11 @@ module.exports = {
         },
       ]
     }
-  ]
+  ],
+  entitiesSidebar: [
+    {
+      type: 'autogenerated',
+      dirName: 'references/entities/classes', // generate sidebar from the docs folder (or versioned_docs/<version>)
+    },
+  ],
 }

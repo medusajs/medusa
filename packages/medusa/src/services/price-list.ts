@@ -1,5 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager, FindOperator } from "typeorm"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -15,7 +15,6 @@ import {
   PriceListPriceUpdateInput,
   UpdatePriceListInput,
 } from "../types/price-list"
-import { formatException } from "../utils/exception-formatter"
 import ProductService from "./product"
 import RegionService from "./region"
 import { TransactionBaseService } from "../interfaces"
@@ -24,6 +23,8 @@ import { FilterableProductProps } from "../types/product"
 import ProductVariantService from "./product-variant"
 import { FilterableProductVariantProps } from "../types/product-variant"
 import { ProductVariantRepository } from "../repositories/product-variant"
+import { FlagRouter } from "../utils/flag-router"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -34,13 +35,13 @@ type PriceListConstructorProps = {
   priceListRepository: typeof PriceListRepository
   moneyAmountRepository: typeof MoneyAmountRepository
   productVariantRepository: typeof ProductVariantRepository
+  featureFlagRouter: FlagRouter
 }
 
 /**
  * Provides layer to manipulate product tags.
- * @extends BaseService
  */
-class PriceListService extends TransactionBaseService<PriceListService> {
+class PriceListService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -51,6 +52,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
   protected readonly priceListRepo_: typeof PriceListRepository
   protected readonly moneyAmountRepo_: typeof MoneyAmountRepository
   protected readonly productVariantRepo_: typeof ProductVariantRepository
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
@@ -61,6 +63,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     priceListRepository,
     moneyAmountRepository,
     productVariantRepository,
+    featureFlagRouter,
   }: PriceListConstructorProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -73,6 +76,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     this.priceListRepo_ = priceListRepository
     this.moneyAmountRepo_ = moneyAmountRepository
     this.productVariantRepo_ = productVariantRepository
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -85,6 +89,13 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     priceListId: string,
     config: FindConfig<PriceList> = {}
   ): Promise<PriceList> {
+    if (!isDefined(priceListId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"priceListId" must be defined`
+      )
+    }
+
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
 
     const query = buildQuery({ id: priceListId }, config)
@@ -102,37 +113,48 @@ class PriceListService extends TransactionBaseService<PriceListService> {
 
   /**
    * Creates a Price List
-   * @param {CreatePriceListInput} priceListObject - the Price List to create
-   * @return {Promise<PriceList>} created Price List
+   * @param priceListObject - the Price List to create
+   * @return created Price List
    */
-  async create(priceListObject: CreatePriceListInput): Promise<PriceList> {
+  async create(
+    priceListObject: CreatePriceListInput
+  ): Promise<PriceList | never> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
       const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
-      const { prices, customer_groups, ...rest } = priceListObject
+      const { prices, customer_groups, includes_tax, ...rest } = priceListObject
 
-      try {
-        const entity = priceListRepo.create(rest)
-
-        const priceList = await priceListRepo.save(entity)
-
-        if (prices) {
-          await moneyAmountRepo.addPriceListPrices(priceList.id, prices)
-        }
-
-        if (customer_groups) {
-          await this.upsertCustomerGroups_(priceList.id, customer_groups)
-        }
-
-        const result = await this.retrieve(priceList.id, {
-          relations: ["prices", "customer_groups"],
-        })
-
-        return result
-      } catch (error) {
-        throw formatException(error)
+      const rawPriceList: DeepPartial<PriceList> = {
+        ...rest,
       }
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof includes_tax !== "undefined") {
+          rawPriceList.includes_tax = includes_tax
+        }
+      }
+
+      const entity = priceListRepo.create(rawPriceList)
+
+      const priceList = await priceListRepo.save(entity)
+
+      if (prices) {
+        const prices_ = await this.addCurrencyFromRegion(prices)
+        await moneyAmountRepo.addPriceListPrices(priceList.id, prices_)
+      }
+
+      if (customer_groups) {
+        await this.upsertCustomerGroups_(priceList.id, customer_groups)
+      }
+
+      return await this.retrieve(priceList.id, {
+        relations: ["prices", "customer_groups"],
+      })
     })
   }
 
@@ -149,7 +171,17 @@ class PriceListService extends TransactionBaseService<PriceListService> {
 
       const priceList = await this.retrieve(id, { select: ["id"] })
 
-      const { prices, customer_groups, ...rest } = update
+      const { prices, customer_groups, includes_tax, ...rest } = update
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof includes_tax !== "undefined") {
+          priceList.includes_tax = includes_tax
+        }
+      }
 
       if (prices) {
         const prices_ = await this.addCurrencyFromRegion(prices)
@@ -215,6 +247,19 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       const priceList = await this.retrieve(id, { select: ["id"] })
 
       await moneyAmountRepo.deletePriceListPrices(priceList.id, priceIds)
+    })
+  }
+
+  /**
+   * Removes all prices from a price list and deletes the removed prices in bulk
+   * @param id - id of the price list
+   * @returns {Promise<void>} updated Price List
+   */
+  async clearPrices(id: string): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const priceList = await this.retrieve(id, { select: ["id"] })
+      await moneyAmountRepo.delete({ price_list_id: priceList.id })
     })
   }
 
@@ -476,11 +521,12 @@ class PriceListService extends TransactionBaseService<PriceListService> {
   >(prices: T[]): Promise<T[]> {
     const prices_: typeof prices = []
 
-    for (const p of prices) {
+    const regionServiceTx = this.regionService_.withTransaction(this.manager_)
+    for (const price of prices) {
+      const p = { ...price }
+
       if (p.region_id) {
-        const region = await this.regionService_
-          .withTransaction(this.manager_)
-          .retrieve(p.region_id)
+        const region = await regionServiceTx.retrieve(p.region_id)
 
         p.currency_code = region.currency_code
       }

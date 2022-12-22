@@ -1,13 +1,28 @@
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 
 /**
  * @oas [get] /orders/cart/{cart_id}
  * operationId: GetOrdersOrderCartId
- * summary: Retrieves Order by Cart id
+ * summary: Get by Cart ID
  * description: "Retrieves an Order by the id of the Cart that was used to create the Order."
  * parameters:
- *   - (path) cart_id=* {string} The id of Cart.
+ *   - (path) cart_id=* {string} The ID of Cart.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.orders.retrieveByCartId(cart_id)
+ *       .then(({ order }) => {
+ *         console.log(order.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/orders/cart/{id}'
  * tags:
  *   - Order
  * responses:
@@ -16,9 +31,20 @@ import { OrderService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/order"
+ *               $ref: "#/components/schemas/Order"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { cart_id } = req.params

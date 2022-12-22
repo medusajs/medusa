@@ -1,8 +1,10 @@
 # Class: StoreService
 
+Provides layer to manipulate store settings.
+
 ## Hierarchy
 
-- `TransactionBaseService`<[`StoreService`](StoreService.md)\>
+- `TransactionBaseService`
 
   ↳ **`StoreService`**
 
@@ -20,31 +22,39 @@
 
 #### Overrides
 
-TransactionBaseService&lt;StoreService\&gt;.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[services/store.ts:33](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L33)
+[packages/medusa/src/services/store.ts:31](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L31)
 
 ## Properties
 
-### configModule
+### \_\_configModule\_\_
 
-• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
 
 #### Inherited from
 
-TransactionBaseService.configModule
+TransactionBaseService.\_\_configModule\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
-### container
+### \_\_container\_\_
 
-• `Protected` `Readonly` **container**: `unknown`
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
 
 #### Inherited from
 
-TransactionBaseService.container
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -54,7 +64,7 @@ ___
 
 #### Defined in
 
-[services/store.ts:30](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L30)
+[packages/medusa/src/services/store.ts:28](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L28)
 
 ___
 
@@ -64,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/store.ts:31](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L31)
+[packages/medusa/src/services/store.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L29)
 
 ___
 
@@ -78,7 +88,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/store.ts:26](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L26)
+[packages/medusa/src/services/store.ts:24](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L24)
 
 ___
 
@@ -88,7 +98,7 @@ ___
 
 #### Defined in
 
-[services/store.ts:29](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L29)
+[packages/medusa/src/services/store.ts:27](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L27)
 
 ___
 
@@ -102,7 +112,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/store.ts:27](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L27)
+[packages/medusa/src/services/store.ts:25](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L25)
 
 ## Methods
 
@@ -110,25 +120,33 @@ TransactionBaseService.transactionManager\_
 
 ▸ **addCurrency**(`code`): `Promise`<`Store`\>
 
+Add a currency to the store
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `code` | `string` |  |
+| `code` | `string` | 3 character ISO currency code |
 
 #### Returns
 
 `Promise`<`Store`\>
 
+result after update
+
 #### Defined in
 
-[services/store.ts:219](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L219)
+[packages/medusa/src/services/store.ts:204](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L204)
 
 ___
 
 ### atomicPhase\_
 
 ▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
 
 #### Type parameters
 
@@ -141,13 +159,15 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
-| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
 
 `Promise`<`TResult`\>
+
+the result of the transactional work
 
 #### Inherited from
 
@@ -155,7 +175,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
@@ -163,13 +183,17 @@ ___
 
 ▸ **create**(): `Promise`<`Store`\>
 
+Creates a store if it doesn't already exist.
+
 #### Returns
 
 `Promise`<`Store`\>
 
+The store.
+
 #### Defined in
 
-[services/store.ts:56](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L56)
+[packages/medusa/src/services/store.ts:49](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L49)
 
 ___
 
@@ -189,7 +213,7 @@ ___
 
 #### Defined in
 
-[services/store.ts:113](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L113)
+[packages/medusa/src/services/store.ts:98](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L98)
 
 ___
 
@@ -197,19 +221,23 @@ ___
 
 ▸ **removeCurrency**(`code`): `Promise`<`any`\>
 
+Removes a currency from the store
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `code` | `string` |  |
+| `code` | `string` | 3 character ISO currency code |
 
 #### Returns
 
 `Promise`<`any`\>
 
+result after update
+
 #### Defined in
 
-[services/store.ts:263](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L263)
+[packages/medusa/src/services/store.ts:248](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L248)
 
 ___
 
@@ -217,19 +245,23 @@ ___
 
 ▸ **retrieve**(`config?`): `Promise`<`Store`\>
 
+Retrieve the store settings. There is always a maximum of one store.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `config` | `FindConfig`<`Store`\> |  |
+| `config` | `FindConfig`<`Store`\> | The config object from which the query will be built |
 
 #### Returns
 
 `Promise`<`Store`\>
 
+the store
+
 #### Defined in
 
-[services/store.ts:92](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L92)
+[packages/medusa/src/services/store.ts:85](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L85)
 
 ___
 
@@ -253,7 +285,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -261,19 +293,23 @@ ___
 
 ▸ **update**(`data`): `Promise`<`Store`\>
 
+Updates a store
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | `UpdateStoreInput` |  |
+| `data` | `UpdateStoreInput` | an object with the update values. |
 
 #### Returns
 
 `Promise`<`Store`\>
 
+resolves to the update result.
+
 #### Defined in
 
-[services/store.ts:129](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/store.ts#L129)
+[packages/medusa/src/services/store.ts:114](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/store.ts#L114)
 
 ___
 
@@ -297,4 +333,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

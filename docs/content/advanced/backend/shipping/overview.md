@@ -1,12 +1,12 @@
 # Shipping Architecture Overview
 
-This document gives an overview of the shipping architecture and its 4 most important components.
+This document gives an overview of the shipping architecture and its four most important components.
 
 ## Introduction
 
 In Medusa, the Shipping architecture relies on 4 components: **Fulfillment Provider**, **Shipping Profiles**, **Shipping Options**, and **Shipping Methods**.
 
-The distinction between the 4 is important. It has been carefully planned and put together to support all the different ecommerce use cases and shipping providers that can be integrated.
+The distinction between the four is important. It has been carefully planned and put together to support all the different ecommerce use cases and shipping providers that can be integrated.
 
 It’s also constructed to support multiple regions, provide different shipment configurations and options for different product types, provide promotional shipments for your customers, and much more.
 
@@ -17,7 +17,7 @@ It’s also constructed to support multiple regions, provide different shipment 
 - **Shipping Options:** created by the admin and belong to a shipping profile. They are specific to certain regions and can have cart conditions. They use an underlying fulfillment provider. Once a customer checks out, they can choose the shipping option that’s available and most relevant to them.
 - **Shipping Method:** created when the customer chooses a shipping option on checkout. The shipping method is basically a copy of the shipping option, but with values specific to the customer and the cart it’s associated with. When the order is placed, the shipping method will then be associated with the order and fulfilled based on the integration with the fulfillment provider.
 
-![Shipping Architecture](https://i.imgur.com/QII2Hvn.png)
+![Shipping Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001762/Medusa%20Docs/Diagrams/QII2Hvn_vjkrdy.png)
 
 ## Fulfillment Provider
 
@@ -41,7 +41,7 @@ Once the Fulfillment Provider is added to the server, the store operator will be
 
 ### FulfillmentProvider Entity Overview
 
-The `FulfillmentProvider` entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
+The [`FulfillmentProvider`](../../../references/entities/classes/FulfillmentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
 
 ## Shipping Profile
 
@@ -63,7 +63,7 @@ For example, shipping heavy items might be more expensive than others, which wou
 
 ### ShippingProfile Entity Overview
 
-The `ShippingProfile` entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
+The [`ShippingProfile`](../../../references/entities/classes/ShippingProfile.md) entity can have a set of `Product` instances. These would be the products the shipping profile is providing shipping options for.
 
 The `ShippingProfile` has a `type` attribute that can be `default`, `gift_card`, or `custom`.
 
@@ -89,7 +89,7 @@ Think of a shipping option as a template defined by the admin that indicates wha
 
 ### ShippingOption Entity Overview
 
-The `ShippingOption` entity belongs to the `ShippingProfile` entity.
+The [`ShippingOption`](../../../references/entities/classes/ShippingOption.md) entity belongs to the `ShippingProfile` entity.
 
 The `ShippingOption` entity also belongs to a `FulfillmentProvider`. This can be either a custom third-party provider or one of Medusa’s default fulfillment providers.
 
@@ -121,11 +121,11 @@ When handling the order and fulfilling it, you, as a developer, will be mostly i
 
 This separation allows for developers to implement the custom integration with third-party fulfillment providers as necessary while also ensuring that the admin has full control of their store.
 
-## ShippingMethod Entity Overview
+### ShippingMethod Entity Overview
 
 A lot of the shipping method’s attributes are similar to the shipping option’s attribute.
 
-The `ShippingMethod` entity belongs to a `ShippingOption`.
+The [`ShippingMethod`](../../../references/entities/classes/ShippingMethod.md) entity belongs to a `ShippingOption`.
 
 Similar to the `data` attribute explained for the `ShippingOption` entity, a `ShippingMethod` has a similar `data` attribute that includes all the data to be sent to the fulfillment provider when fulfilling the order.
 
@@ -135,7 +135,7 @@ The `ShippingMethod` also belongs to the `Order` entity. This association is
 
 The `ShippingMethod` instance holds a `price` attribute, which will either be the flat rate price or the calculated price.
 
-## What’s Next :rocket:
+## What’s Next
 
 - [Learn how to Create a Fulfillment Provider.](./add-fulfillment-provider.md)
 - Check out [available shipping plugins](https://github.com/medusajs/medusa/tree/master/packages).

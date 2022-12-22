@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 ## Hierarchy
 
-- [`Omit`](../modules/internal.md#omit)<[`AxiosRequestConfig`](internal.AxiosRequestConfig.md)<`D`\>, ``"headers"``\>
+- `Omit`<[`AxiosRequestConfig`](internal.AxiosRequestConfig.md)<`D`\>, ``"headers"``\>
 
   ↳ **`AxiosDefaults`**
 
@@ -30,7 +30,7 @@ Omit.adapter
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:75
+medusa-js/node_modules/axios/index.d.ts:75
 
 ___
 
@@ -44,7 +44,7 @@ Omit.auth
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:76
+medusa-js/node_modules/axios/index.d.ts:76
 
 ___
 
@@ -58,7 +58,7 @@ Omit.baseURL
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:65
+medusa-js/node_modules/axios/index.d.ts:65
 
 ___
 
@@ -72,7 +72,7 @@ Omit.cancelToken
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:90
+medusa-js/node_modules/axios/index.d.ts:90
 
 ___
 
@@ -86,7 +86,7 @@ Omit.data
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:71
+medusa-js/node_modules/axios/index.d.ts:71
 
 ___
 
@@ -100,7 +100,7 @@ Omit.decompress
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:91
+medusa-js/node_modules/axios/index.d.ts:91
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:112
+medusa-js/node_modules/axios/index.d.ts:112
 
 ___
 
@@ -124,7 +124,7 @@ Omit.httpAgent
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:87
+medusa-js/node_modules/axios/index.d.ts:87
 
 ___
 
@@ -138,7 +138,7 @@ Omit.httpsAgent
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:88
+medusa-js/node_modules/axios/index.d.ts:88
 
 ___
 
@@ -152,7 +152,7 @@ Omit.insecureHTTPParser
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:94
+medusa-js/node_modules/axios/index.d.ts:94
 
 ___
 
@@ -166,7 +166,7 @@ Omit.maxBodyLength
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:84
+medusa-js/node_modules/axios/index.d.ts:84
 
 ___
 
@@ -180,7 +180,7 @@ Omit.maxContentLength
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:82
+medusa-js/node_modules/axios/index.d.ts:82
 
 ___
 
@@ -194,7 +194,7 @@ Omit.maxRedirects
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:85
+medusa-js/node_modules/axios/index.d.ts:85
 
 ___
 
@@ -208,7 +208,63 @@ Omit.method
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:64
+medusa-js/node_modules/axios/index.d.ts:64
+
+___
+
+### onDownloadProgress
+
+• `Optional` **onDownloadProgress**: (`progressEvent`: `any`) => `void`
+
+#### Type declaration
+
+▸ (`progressEvent`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `progressEvent` | `any` |
+
+##### Returns
+
+`void`
+
+#### Inherited from
+
+Omit.onDownloadProgress
+
+#### Defined in
+
+medusa-js/node_modules/axios/index.d.ts:81
+
+___
+
+### onUploadProgress
+
+• `Optional` **onUploadProgress**: (`progressEvent`: `any`) => `void`
+
+#### Type declaration
+
+▸ (`progressEvent`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `progressEvent` | `any` |
+
+##### Returns
+
+`void`
+
+#### Inherited from
+
+Omit.onUploadProgress
+
+#### Defined in
+
+medusa-js/node_modules/axios/index.d.ts:80
 
 ___
 
@@ -222,7 +278,35 @@ Omit.params
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:69
+medusa-js/node_modules/axios/index.d.ts:69
+
+___
+
+### paramsSerializer
+
+• `Optional` **paramsSerializer**: (`params`: `any`) => `string`
+
+#### Type declaration
+
+▸ (`params`): `string`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
+
+##### Returns
+
+`string`
+
+#### Inherited from
+
+Omit.paramsSerializer
+
+#### Defined in
+
+medusa-js/node_modules/axios/index.d.ts:70
 
 ___
 
@@ -236,7 +320,7 @@ Omit.proxy
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:89
+medusa-js/node_modules/axios/index.d.ts:89
 
 ___
 
@@ -250,7 +334,7 @@ Omit.raxConfig
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:89
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:89
 
 ___
 
@@ -264,13 +348,13 @@ Omit.responseType
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:77
+medusa-js/node_modules/axios/index.d.ts:77
 
 ___
 
 ### signal
 
-• `Optional` **signal**: [`AbortSignal`](../modules/internal.md#abortsignal)
+• `Optional` **signal**: `AbortSignal`
 
 #### Inherited from
 
@@ -278,7 +362,7 @@ Omit.signal
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:93
+medusa-js/node_modules/axios/index.d.ts:93
 
 ___
 
@@ -292,7 +376,7 @@ Omit.socketPath
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:86
+medusa-js/node_modules/axios/index.d.ts:86
 
 ___
 
@@ -306,7 +390,7 @@ Omit.timeout
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:72
+medusa-js/node_modules/axios/index.d.ts:72
 
 ___
 
@@ -320,7 +404,7 @@ Omit.timeoutErrorMessage
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:73
+medusa-js/node_modules/axios/index.d.ts:73
 
 ___
 
@@ -334,7 +418,7 @@ Omit.transformRequest
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:66
+medusa-js/node_modules/axios/index.d.ts:66
 
 ___
 
@@ -348,7 +432,7 @@ Omit.transformResponse
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:67
+medusa-js/node_modules/axios/index.d.ts:67
 
 ___
 
@@ -362,7 +446,7 @@ Omit.transitional
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:92
+medusa-js/node_modules/axios/index.d.ts:92
 
 ___
 
@@ -376,7 +460,7 @@ Omit.url
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:63
+medusa-js/node_modules/axios/index.d.ts:63
 
 ___
 
@@ -390,7 +474,7 @@ Omit.validateStatus
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:83
+medusa-js/node_modules/axios/index.d.ts:83
 
 ___
 
@@ -404,7 +488,7 @@ Omit.withCredentials
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:74
+medusa-js/node_modules/axios/index.d.ts:74
 
 ___
 
@@ -418,7 +502,7 @@ Omit.xsrfCookieName
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:78
+medusa-js/node_modules/axios/index.d.ts:78
 
 ___
 
@@ -432,76 +516,4 @@ Omit.xsrfHeaderName
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:79
-
-## Methods
-
-### onDownloadProgress
-
-▸ `Optional` **onDownloadProgress**(`progressEvent`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `progressEvent` | `any` |
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-Omit.onDownloadProgress
-
-#### Defined in
-
-packages/medusa-js/node_modules/axios/index.d.ts:81
-
-___
-
-### onUploadProgress
-
-▸ `Optional` **onUploadProgress**(`progressEvent`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `progressEvent` | `any` |
-
-#### Returns
-
-`void`
-
-#### Inherited from
-
-Omit.onUploadProgress
-
-#### Defined in
-
-packages/medusa-js/node_modules/axios/index.d.ts:80
-
-___
-
-### paramsSerializer
-
-▸ `Optional` **paramsSerializer**(`params`): `string`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `params` | `any` |
-
-#### Returns
-
-`string`
-
-#### Inherited from
-
-Omit.paramsSerializer
-
-#### Defined in
-
-packages/medusa-js/node_modules/axios/index.d.ts:70
+medusa-js/node_modules/axios/index.d.ts:79

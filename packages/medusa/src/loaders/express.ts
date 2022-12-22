@@ -1,4 +1,4 @@
-import { Express } from 'express'
+import { Express } from "express"
 import session from "express-session"
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
@@ -7,7 +7,7 @@ import createStore from "connect-redis"
 import { ConfigModule } from "../types/global"
 
 type Options = {
-  app: Express;
+  app: Express
   configModule: ConfigModule
 }
 
@@ -23,7 +23,7 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
   }
 
   const { cookie_secret } = configModule.projectConfig
-  let sessionOpts = {
+  const sessionOpts = {
     resave: true,
     saveUninitialized: true,
     cookieName: "session",
@@ -34,7 +34,7 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
       secure,
       maxAge: 10 * 60 * 60 * 1000,
     },
-    store: null
+    store: null,
   }
 
   if (configModule?.projectConfig?.redis_url) {

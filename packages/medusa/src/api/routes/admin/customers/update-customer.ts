@@ -6,12 +6,14 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+
 import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
-import { defaultAdminCustomersRelations } from "."
-import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import { defaultAdminCustomersRelations } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/{id}
@@ -20,40 +22,39 @@ import { FindParams } from "../../../../types/common"
  * description: "Updates a Customer."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer.
+ *   - (path) id=* {string} The ID of the Customer.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
+ *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each customer.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           email:
- *             type: string
- *             description: The Customer's email. Only providable if user not registered.
- *           first_name:
- *             type: string
- *             description:  The Customer's first name.
- *           last_name:
- *             type: string
- *             description:  The Customer's last name.
- *           phone:
- *             type: string
- *             description: The Customer's phone number.
- *           password:
- *             type: string
- *             description: The Customer's password.
- *           groups:
- *             type: array
- *             description: A list of customer groups to which the customer belongs.
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The id of a customer group
- *                   type: string
- *           metadata:
- *             type: object
- *             description: Metadata for the customer.
+ *         $ref: "#/components/schemas/AdminPostCustomersCustomerReq"
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.customers.update(customer_id, {
+ *         first_name: 'Dolly'
+ *       })
+ *       .then(({ customer }) => {
+ *         console.log(customer.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/customers/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "first_name": "Dolly"
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:
@@ -62,9 +63,22 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             customer:
- *               $ref: "#/components/schemas/customer"
+ *               $ref: "#/components/schemas/Customer"
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "401":
+ *     $ref: "#/components/responses/unauthorized"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const { id } = req.params
@@ -83,7 +97,12 @@ export default async (req, res) => {
     )
   }
 
-  await customerService.update(id, validatedBody)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .update(id, validatedBody)
+  })
 
   let expandFields: string[] = []
   if (validatedQuery.expand) {
@@ -106,6 +125,41 @@ class Group {
   id: string
 }
 
+/**
+ * @schema AdminPostCustomersCustomerReq
+ * type: object
+ * properties:
+ *   email:
+ *     type: string
+ *     description: The Customer's email.
+ *     format: email
+ *   first_name:
+ *     type: string
+ *     description:  The Customer's first name.
+ *   last_name:
+ *     type: string
+ *     description:  The Customer's last name.
+ *   phone:
+ *     type: string
+ *     description: The Customer's phone number.
+ *   password:
+ *     type: string
+ *     description: The Customer's password.
+ *     format: password
+ *   groups:
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a customer group
+ *           type: string
+ *     description: A list of customer groups to which the customer belongs.
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostCustomersCustomerReq {
   @IsEmail()
   @IsOptional()

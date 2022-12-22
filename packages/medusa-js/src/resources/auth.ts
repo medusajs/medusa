@@ -22,6 +22,15 @@ class AuthResource extends BaseResource {
   }
 
   /**
+   * @description Removes authentication session
+   * @return {ResponsePromise<void>}
+   */
+   deleteSession(customHeaders: Record<string, any> = {}): ResponsePromise<void> {
+    const path = `/store/auth`
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
+  }
+
+  /**
    * @description Retrieves an authenticated session
    * Usually used to check if authenticated session is alive.
    * @param customHeaders
@@ -31,7 +40,7 @@ class AuthResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreAuthRes> {
     const path = `/store/auth`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -45,7 +54,7 @@ class AuthResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreGetAuthEmailRes> {
     const path = `/store/auth/${email}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**

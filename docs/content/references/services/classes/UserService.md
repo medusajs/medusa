@@ -1,8 +1,10 @@
 # Class: UserService
 
+Provides layer to manipulate users.
+
 ## Hierarchy
 
-- `TransactionBaseService`<[`UserService`](UserService.md)\>
+- `TransactionBaseService`
 
   ↳ **`UserService`**
 
@@ -20,31 +22,49 @@
 
 #### Overrides
 
-TransactionBaseService&lt;UserService\&gt;.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[services/user.ts:37](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L37)
+[packages/medusa/src/services/user.ts:47](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L47)
 
 ## Properties
 
-### configModule
+### \_\_configModule\_\_
 
-• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
 
 #### Inherited from
 
-TransactionBaseService.configModule
+TransactionBaseService.\_\_configModule\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
-### container
+### \_\_container\_\_
 
-• `Protected` `Readonly` **container**: `unknown`
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
 
 #### Inherited from
 
-TransactionBaseService.container
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### analyticsConfigService\_
+
+• `Protected` `Readonly` **analyticsConfigService\_**: [`AnalyticsConfigService`](AnalyticsConfigService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/user.ts:42](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L42)
 
 ___
 
@@ -54,7 +74,17 @@ ___
 
 #### Defined in
 
-[services/user.ts:35](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L35)
+[packages/medusa/src/services/user.ts:44](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L44)
+
+___
+
+### featureFlagRouter\_
+
+• `Protected` `Readonly` **featureFlagRouter\_**: `FlagRouter`
+
+#### Defined in
+
+[packages/medusa/src/services/user.ts:45](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L45)
 
 ___
 
@@ -68,7 +98,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/user.ts:32](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L32)
+[packages/medusa/src/services/user.ts:40](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L40)
 
 ___
 
@@ -82,7 +112,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/user.ts:33](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L33)
+[packages/medusa/src/services/user.ts:41](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L41)
 
 ___
 
@@ -92,7 +122,7 @@ ___
 
 #### Defined in
 
-[services/user.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L34)
+[packages/medusa/src/services/user.ts:43](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L43)
 
 ___
 
@@ -104,17 +134,24 @@ ___
 
 | Name | Type |
 | :------ | :------ |
+| `CREATED` | `string` |
+| `DELETED` | `string` |
 | `PASSWORD_RESET` | `string` |
+| `UPDATED` | `string` |
 
 #### Defined in
 
-[services/user.ts:28](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L28)
+[packages/medusa/src/services/user.ts:33](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L33)
 
 ## Methods
 
 ### atomicPhase\_
 
 ▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
 
 #### Type parameters
 
@@ -127,13 +164,15 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
-| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
 
 `Promise`<`TResult`\>
+
+the result of the transactional work
 
 #### Inherited from
 
@@ -141,7 +180,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
@@ -149,20 +188,25 @@ ___
 
 ▸ **create**(`user`, `password`): `Promise`<`User`\>
 
+Creates a user with username being validated.
+Fails if email is not a valid format.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `user` | `CreateUserInput` |  |
-| `password` | `string` |  |
+| `user` | `CreateUserInput` | the user to create |
+| `password` | `string` | user's password to hash |
 
 #### Returns
 
 `Promise`<`User`\>
 
+the result of create
+
 #### Defined in
 
-[services/user.ts:183](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L183)
+[packages/medusa/src/services/user.ts:172](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L172)
 
 ___
 
@@ -170,19 +214,23 @@ ___
 
 ▸ **delete**(`userId`): `Promise`<`void`\>
 
+Deletes a user from a given user id.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `userId` | `string` |  |
+| `userId` | `string` | the id of the user to delete. Must be   castable as an ObjectId |
 
 #### Returns
 
 `Promise`<`void`\>
 
+the result of the delete operation.
+
 #### Defined in
 
-[services/user.ts:251](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L251)
+[packages/medusa/src/services/user.ts:252](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L252)
 
 ___
 
@@ -190,19 +238,27 @@ ___
 
 ▸ **generateResetPasswordToken**(`userId`): `Promise`<`string`\>
 
+Generate a JSON Web token, that will be sent to a user, that wishes to
+reset password.
+The token will be signed with the users current password hash as a secret
+a long side a payload with userId and the expiry time for the token, which
+is always 15 minutes.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `userId` | `string` |  |
+| `userId` | `string` | the id of the user to reset password for |
 
 #### Returns
 
 `Promise`<`string`\>
 
+the generated JSON web token
+
 #### Defined in
 
-[services/user.ts:305](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L305)
+[packages/medusa/src/services/user.ts:314](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L314)
 
 ___
 
@@ -210,19 +266,23 @@ ___
 
 ▸ **hashPassword_**(`password`): `Promise`<`string`\>
 
+Hashes a password
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `password` | `string` |  |
+| `password` | `string` | the value to hash |
 
 #### Returns
 
 `Promise`<`string`\>
 
+hashed password
+
 #### Defined in
 
-[services/user.ts:171](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L171)
+[packages/medusa/src/services/user.ts:160](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L160)
 
 ___
 
@@ -234,16 +294,18 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `FilterableUserProps` |  |
-| `config` | `Object` |  |
+| `selector` | `FilterableUserProps` | the query object for find |
+| `config` | `Object` | the configuration object for the query |
 
 #### Returns
 
 `Promise`<`User`[]\>
 
+the result of the find operation
+
 #### Defined in
 
-[services/user.ts:68](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L68)
+[packages/medusa/src/services/user.ts:69](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L69)
 
 ___
 
@@ -251,20 +313,25 @@ ___
 
 ▸ **retrieve**(`userId`, `config?`): `Promise`<`User`\>
 
+Gets a user by id.
+Throws in case of DB Error and if user was not found.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `userId` | `string` |  |
-| `config` | `FindConfig`<`User`\> |  |
+| `userId` | `string` | the id of the user to get. |
+| `config` | `FindConfig`<`User`\> | query configs |
 
 #### Returns
 
 `Promise`<`User`\>
 
+the user document.
+
 #### Defined in
 
-[services/user.ts:84](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L84)
+[packages/medusa/src/services/user.ts:82](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L82)
 
 ___
 
@@ -272,20 +339,25 @@ ___
 
 ▸ **retrieveByApiToken**(`apiToken`, `relations?`): `Promise`<`User`\>
 
+Gets a user by api token.
+Throws in case of DB Error and if user was not found.
+
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `apiToken` | `string` | `undefined` |  |
-| `relations` | `string`[] | `[]` |  |
+| `apiToken` | `string` | `undefined` | the token of the user to get. |
+| `relations` | `string`[] | `[]` | relations to include with the user |
 
 #### Returns
 
 `Promise`<`User`\>
 
+the user document.
+
 #### Defined in
 
-[services/user.ts:111](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L111)
+[packages/medusa/src/services/user.ts:106](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L106)
 
 ___
 
@@ -293,20 +365,25 @@ ___
 
 ▸ **retrieveByEmail**(`email`, `config?`): `Promise`<`User`\>
 
+Gets a user by email.
+Throws in case of DB Error and if user was not found.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `email` | `string` |  |
-| `config` | `FindConfig`<`User`\> |  |
+| `email` | `string` | the email of the user to get. |
+| `config` | `FindConfig`<`User`\> | query config |
 
 #### Returns
 
 `Promise`<`User`\>
 
+the user document.
+
 #### Defined in
 
-[services/user.ts:143](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L143)
+[packages/medusa/src/services/user.ts:135](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L135)
 
 ___
 
@@ -314,20 +391,26 @@ ___
 
 ▸ **setPassword_**(`userId`, `password`): `Promise`<`User`\>
 
+Sets a password for a user
+Fails if no user exists with userId and if the hashing of the new
+password does not work.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `userId` | `string` |  |
-| `password` | `string` |  |
+| `userId` | `string` | the userId to set password for |
+| `password` | `string` | the old password to set |
 
 #### Returns
 
 `Promise`<`User`\>
 
+the result of the update operation
+
 #### Defined in
 
-[services/user.ts:276](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L276)
+[packages/medusa/src/services/user.ts:285](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L285)
 
 ___
 
@@ -351,7 +434,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -359,40 +442,24 @@ ___
 
 ▸ **update**(`userId`, `update`): `Promise`<`User`\>
 
+Updates a user.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `userId` | `string` |  |
-| `update` | `UpdateUserInput` |  |
+| `userId` | `string` | id of the user to update |
+| `update` | `UpdateUserInput` | the values to be updated on the user |
 
 #### Returns
 
 `Promise`<`User`\>
 
-#### Defined in
-
-[services/user.ts:211](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L211)
-
-___
-
-### validateEmail\_
-
-▸ **validateEmail_**(`email`): `string`
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `email` | `string` |  |
-
-#### Returns
-
-`string`
+the result of create
 
 #### Defined in
 
-[services/user.ts:50](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/user.ts#L50)
+[packages/medusa/src/services/user.ts:206](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/user.ts#L206)
 
 ___
 
@@ -416,4 +483,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

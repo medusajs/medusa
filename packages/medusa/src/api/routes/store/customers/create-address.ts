@@ -1,5 +1,6 @@
 import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
+import { EntityManager } from "typeorm"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { AddressCreatePayload } from "../../../../types/common"
@@ -14,14 +15,51 @@ import { validator } from "../../../../utils/validator"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - address
  *       schema:
- *         properties:
- *           address:
- *             description: "The Address to add to the Customer."
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerAddressesReq"
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged
+ *       medusa.customers.addresses.addAddress({
+ *         address: {
+ *           first_name: 'Celia',
+ *           last_name: 'Schumm',
+ *           address_1: '225 Bednar Curve',
+ *           city: 'Danielville',
+ *           country_code: 'US',
+ *           postal_code: '85137',
+ *           phone: '981-596-6748 x90188',
+ *           company: 'Wyman LLC',
+ *           address_2: '',
+ *           province: 'Georgia',
+ *           metadata: {}
+ *         }
+ *       })
+ *       .then(({ customer }) => {
+ *         console.log(customer.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/store/customers/me/addresses' \
+ *       --header 'Cookie: connect.sid={sid}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "address": {
+ *             "first_name": "Celia",
+ *             "last_name": "Schumm",
+ *             "address_1": "225 Bednar Curve",
+ *             "city": "Danielville",
+ *             "country_code": "US",
+ *             "postal_code": "85137"
+ *           }
+ *       }'
+ * security:
+ *   - cookie_auth: []
  * tags:
  *   - Customer
  * responses:
@@ -30,9 +68,22 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            customer:
- *              $ref: "#/components/schemas/customer"
+ *              $ref: "#/components/schemas/Customer"
+ *  "400":
+ *    $ref: "#/components/responses/400_error"
+ *  "401":
+ *    $ref: "#/components/responses/unauthorized"
+ *  "404":
+ *    $ref: "#/components/responses/not_found_error"
+ *  "409":
+ *    $ref: "#/components/responses/invalid_state_error"
+ *  "422":
+ *    $ref: "#/components/responses/invalid_request_error"
+ *  "500":
+ *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const id = req.user.customer_id
@@ -44,8 +95,14 @@ export default async (req, res) => {
 
   const customerService: CustomerService = req.scope.resolve("customerService")
 
-  let customer = await customerService.addAddress(id, validated.address)
-  customer = await customerService.retrieve(id, {
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .addAddress(id, validated.address)
+  })
+
+  const customer = await customerService.retrieve(id, {
     relations: defaultStoreCustomersRelations,
     select: defaultStoreCustomersFields,
   })
@@ -53,6 +110,25 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersCustomerAddressesReq
+ * type: object
+ * required:
+ *   - address
+ * properties:
+ *   address:
+ *     description: "The Address to add to the Customer."
+ *     allOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *       - type: object
+ *         required:
+ *           - first_name
+ *           - last_name
+ *           - address_1
+ *           - city
+ *           - country_code
+ *           - postal_code
+ */
 export class StorePostCustomersCustomerAddressesReq {
   @ValidateNested()
   @Type(() => AddressCreatePayload)

@@ -21,7 +21,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:120
+medusa-js/node_modules/axios/index.d.ts:120
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:116
+medusa-js/node_modules/axios/index.d.ts:116
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:119
+medusa-js/node_modules/axios/index.d.ts:119
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:121
+medusa-js/node_modules/axios/index.d.ts:121
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:117
+medusa-js/node_modules/axios/index.d.ts:117
 
 ___
 
@@ -71,4 +71,4 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:118
+medusa-js/node_modules/axios/index.d.ts:118

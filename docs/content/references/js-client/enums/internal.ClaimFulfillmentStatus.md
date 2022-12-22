@@ -6,92 +6,92 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ClaimFulfillmentStatus
 
-## Enumeration members
+## Enumeration Members
 
 ### CANCELED
 
-• **CANCELED** = `"canceled"`
+• **CANCELED** = ``"canceled"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:26
+medusa/dist/models/claim-order.d.ts:26
 
 ___
 
 ### FULFILLED
 
-• **FULFILLED** = `"fulfilled"`
+• **FULFILLED** = ``"fulfilled"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:21
+medusa/dist/models/claim-order.d.ts:21
 
 ___
 
 ### NOT\_FULFILLED
 
-• **NOT\_FULFILLED** = `"not_fulfilled"`
+• **NOT\_FULFILLED** = ``"not_fulfilled"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:19
+medusa/dist/models/claim-order.d.ts:19
 
 ___
 
 ### PARTIALLY\_FULFILLED
 
-• **PARTIALLY\_FULFILLED** = `"partially_fulfilled"`
+• **PARTIALLY\_FULFILLED** = ``"partially_fulfilled"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:20
+medusa/dist/models/claim-order.d.ts:20
 
 ___
 
 ### PARTIALLY\_RETURNED
 
-• **PARTIALLY\_RETURNED** = `"partially_returned"`
+• **PARTIALLY\_RETURNED** = ``"partially_returned"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:24
+medusa/dist/models/claim-order.d.ts:24
 
 ___
 
 ### PARTIALLY\_SHIPPED
 
-• **PARTIALLY\_SHIPPED** = `"partially_shipped"`
+• **PARTIALLY\_SHIPPED** = ``"partially_shipped"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:22
+medusa/dist/models/claim-order.d.ts:22
 
 ___
 
 ### REQUIRES\_ACTION
 
-• **REQUIRES\_ACTION** = `"requires_action"`
+• **REQUIRES\_ACTION** = ``"requires_action"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:27
+medusa/dist/models/claim-order.d.ts:27
 
 ___
 
 ### RETURNED
 
-• **RETURNED** = `"returned"`
+• **RETURNED** = ``"returned"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:25
+medusa/dist/models/claim-order.d.ts:25
 
 ___
 
 ### SHIPPED
 
-• **SHIPPED** = `"shipped"`
+• **SHIPPED** = ``"shipped"``
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:23
+medusa/dist/models/claim-order.d.ts:23

@@ -6,22 +6,22 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ShippingOptionPriceType
 
-## Enumeration members
+## Enumeration Members
 
 ### CALCULATED
 
-• **CALCULATED** = `"calculated"`
+• **CALCULATED** = ``"calculated"``
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option.d.ts:8
+medusa/dist/models/shipping-option.d.ts:8
 
 ___
 
 ### FLAT\_RATE
 
-• **FLAT\_RATE** = `"flat_rate"`
+• **FLAT\_RATE** = ``"flat_rate"``
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-option.d.ts:7
+medusa/dist/models/shipping-option.d.ts:7

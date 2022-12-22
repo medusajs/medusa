@@ -1,6 +1,7 @@
-import { MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
   Cart,
   Order,
@@ -15,23 +16,38 @@ import { ShippingOptionRequirementRepository } from "../repositories/shipping-op
 import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
+  CreateShippingOptionInput,
   ShippingMethodUpdate,
   UpdateShippingOptionInput,
-  CreateShippingOptionInput,
+  ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
 import { buildQuery, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
+
+type InjectedDependencies = {
+  manager: EntityManager
+  fulfillmentProviderService: FulfillmentProviderService
+  regionService: RegionService
+  // eslint-disable-next-line max-len
+  shippingOptionRequirementRepository: typeof ShippingOptionRequirementRepository
+  shippingOptionRepository: typeof ShippingOptionRepository
+  shippingMethodRepository: typeof ShippingMethodRepository
+  featureFlagRouter: FlagRouter
+}
 
 /**
  * Provides layer to manipulate profiles.
  */
-class ShippingOptionService extends TransactionBaseService<ShippingOptionService> {
+class ShippingOptionService extends TransactionBaseService {
   protected readonly providerService_: FulfillmentProviderService
   protected readonly regionService_: RegionService
+  // eslint-disable-next-line max-len
   protected readonly requirementRepository_: typeof ShippingOptionRequirementRepository
   protected readonly optionRepository_: typeof ShippingOptionRepository
   protected readonly methodRepository_: typeof ShippingMethodRepository
+  protected readonly featureFlagRouter_: FlagRouter
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -43,7 +59,8 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     shippingMethodRepository,
     fulfillmentProviderService,
     regionService,
-  }) {
+    featureFlagRouter,
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
@@ -53,6 +70,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     this.requirementRepository_ = shippingOptionRequirementRepository
     this.providerService_ = fulfillmentProviderService
     this.regionService_ = regionService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -165,6 +183,13 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     optionId,
     options: { select?: (keyof ShippingOption)[]; relations?: string[] } = {}
   ): Promise<ShippingOption> {
+    if (!isDefined(optionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"optionId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const soRepo: ShippingOptionRepository = manager.getCustomRepository(
       this.optionRepository_
@@ -252,7 +277,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    */
   async createShippingMethod(
     optionId: string,
-    data: object,
+    data: Record<string, unknown>,
     config: CreateShippingMethodDto
   ): Promise<ShippingMethod> {
     return await this.atomicPhase_(async (manager) => {
@@ -262,7 +287,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
 
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
 
-      if (typeof config.cart !== "undefined") {
+      if (isDefined(config.cart)) {
         await this.validateCartOption(option, config.cart)
       }
 
@@ -283,6 +308,16 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         shipping_option_id: option.id,
         data: validatedData,
         price: methodPrice,
+      }
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof option.includes_tax !== "undefined") {
+          toCreate.includes_tax = option.includes_tax
+        }
       }
 
       if (config.order) {
@@ -309,14 +344,14 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         toCreate.claim_order_id = config.claim_order_id
       }
 
-      const method = await methodRepo.create(toCreate)
+      const method = methodRepo.create(toCreate)
 
       const created = await methodRepo.save(method)
 
-      return methodRepo.findOne({
+      return (await methodRepo.findOne({
         where: { id: created.id },
         relations: ["shipping_option"],
-      }) as unknown as ShippingMethod
+      })) as ShippingMethod
     })
   }
 
@@ -343,22 +378,22 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
       )
     }
 
-    const subtotal = cart.subtotal as number
+    const amount = option.includes_tax ? cart.total! : cart.subtotal!
 
     const requirementResults: boolean[] = option.requirements.map(
       (requirement) => {
         switch (requirement.type) {
           case "max_subtotal":
-            return requirement.amount > subtotal
+            return requirement.amount > amount
           case "min_subtotal":
-            return requirement.amount <= subtotal
+            return requirement.amount <= amount
           default:
             return true
         }
       }
     )
 
-    if (!requirementResults.every(Boolean)) {
+    if (requirementResults.some((requirement) => !requirement)) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "The Cart does not satisfy the shipping option's requirements"
@@ -370,6 +405,42 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     return option
   }
 
+  private async validateAndMutatePrice(
+    option: ShippingOption | CreateShippingOptionInput,
+    priceInput: ValidatePriceTypeAndAmountInput
+  ): Promise<Omit<ShippingOption, "beforeInsert"> | CreateShippingOptionInput> {
+    const option_:
+      | Omit<ShippingOption, "beforeInsert">
+      | CreateShippingOptionInput = { ...option }
+
+    if (isDefined(priceInput.amount)) {
+      option_.amount = priceInput.amount
+    }
+
+    if (isDefined(priceInput.price_type)) {
+      option_.price_type = await this.validatePriceType_(
+        priceInput.price_type,
+        option_ as ShippingOption
+      )
+
+      if (priceInput.price_type === ShippingOptionPriceType.CALCULATED) {
+        option_.amount = null
+      }
+    }
+
+    if (
+      option_.price_type === ShippingOptionPriceType.FLAT_RATE &&
+      (option_.amount == null || option_.amount < 0)
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Shipping options of type `flat_rate` must have an `amount`"
+      )
+    }
+
+    return option_
+  }
+
   /**
    * Creates a new shipping option. Used both for outbound and inbound shipping
    * options. The difference is registered by the `is_return` field which
@@ -379,10 +450,12 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    */
   async create(data: CreateShippingOptionInput): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
+      const optionWithValidatedPrice = await this.validateAndMutatePrice(data, {
+        price_type: data.price_type,
+      })
+
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      const option = await optionRepo.create(
-        data as DeepPartial<ShippingOption>
-      )
+      const option = optionRepo.create(optionWithValidatedPrice)
 
       const region = await this.regionService_
         .withTransaction(manager)
@@ -401,11 +474,19 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         )
       }
 
-      option.price_type = await this.validatePriceType_(data.price_type, option)
-      option.amount =
-        data.price_type === "calculated" ? null : data.amount ?? null
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof data.includes_tax !== "undefined") {
+          option.includes_tax = data.includes_tax
+        }
+      }
 
-      const isValid = await this.providerService_.validateOption(option)
+      const isValid = await this.providerService_.validateOption(
+        option as ShippingOption
+      )
 
       if (!isValid) {
         throw new MedusaError(
@@ -414,7 +495,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         )
       }
 
-      if (typeof data.requirements !== "undefined") {
+      if (isDefined(data.requirements)) {
         const acc: ShippingOptionRequirement[] = []
         for (const r of data.requirements) {
           const validated = await this.validateRequirement_(r)
@@ -461,7 +542,8 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
   ): Promise<ShippingOptionPriceType> {
     if (
       !priceType ||
-      (priceType !== "flat_rate" && priceType !== "calculated")
+      (priceType !== ShippingOptionPriceType.FLAT_RATE &&
+        priceType !== ShippingOptionPriceType.CALCULATED)
     ) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -469,8 +551,11 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
       )
     }
 
-    if (priceType === "calculated") {
-      const canCalculate = await this.providerService_.canCalculate(option)
+    if (priceType === ShippingOptionPriceType.CALCULATED) {
+      const canCalculate = await this.providerService_.canCalculate({
+        provider_id: option.provider_id,
+        data: option.data,
+      })
       if (!canCalculate) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -500,8 +585,8 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         relations: ["requirements"],
       })
 
-      if (typeof update.metadata !== "undefined") {
-        option.metadata = await setMetadata(option, update.metadata)
+      if (isDefined(update.metadata)) {
+        option.metadata = setMetadata(option, update.metadata)
       }
 
       if (update.region_id || update.provider_id || update.data) {
@@ -511,14 +596,14 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         )
       }
 
-      if (typeof update.is_return !== "undefined") {
+      if (isDefined(update.is_return)) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "is_return cannot be changed after creation"
         )
       }
 
-      if (typeof update.requirements !== "undefined") {
+      if (isDefined(update.requirements)) {
         const acc: ShippingOptionRequirement[] = []
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
@@ -562,33 +647,34 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         option.requirements = acc
       }
 
-      if (typeof update.price_type !== "undefined") {
-        option.price_type = await this.validatePriceType_(
-          update.price_type,
-          option
-        )
-        if (update.price_type === "calculated") {
-          option.amount = null
+      const optionWithValidatedPrice = await this.validateAndMutatePrice(
+        option,
+        {
+          price_type: update.price_type,
+          amount: update.amount,
         }
+      )
+
+      if (isDefined(update.name)) {
+        optionWithValidatedPrice.name = update.name
+      }
+
+      if (isDefined(update.admin_only)) {
+        optionWithValidatedPrice.admin_only = update.admin_only
       }
 
       if (
-        typeof update.amount !== "undefined" &&
-        option.price_type !== "calculated"
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
       ) {
-        option.amount = update.amount
-      }
-
-      if (typeof update.name !== "undefined") {
-        option.name = update.name
-      }
-
-      if (typeof update.admin_only !== "undefined") {
-        option.admin_only = update.admin_only
+        if (typeof update.includes_tax !== "undefined") {
+          optionWithValidatedPrice.includes_tax = update.includes_tax
+        }
       }
 
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
-      return await optionRepo.save(option)
+      return await optionRepo.save(optionWithValidatedPrice)
     })
   }
 
@@ -681,7 +767,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    */
   async getPrice_(
     option: ShippingOption,
-    data: object,
+    data: Record<string, unknown>,
     cart: Cart | Order | undefined
   ): Promise<number> {
     if (option.price_type === "calculated") {

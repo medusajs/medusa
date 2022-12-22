@@ -1,11 +1,10 @@
 import { TransactionBaseService } from "./transaction-base-service"
 import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
-import { ProductExportBatchJob } from "../strategies/batch-jobs/product"
+import { ProductExportBatchJob } from "../strategies/batch-jobs/product/types"
 import { BatchJobService } from "../services"
 import { BatchJob } from "../models"
 
-export interface IBatchJobStrategy<T extends TransactionBaseService<never>>
-  extends TransactionBaseService<T> {
+export interface IBatchJobStrategy extends TransactionBaseService {
   /**
    * Method for preparing a batch job for processing
    */
@@ -30,12 +29,9 @@ export interface IBatchJobStrategy<T extends TransactionBaseService<never>>
   buildTemplate(): Promise<string>
 }
 
-export abstract class AbstractBatchJobStrategy<
-    T extends TransactionBaseService<never, TContainer>,
-    TContainer = unknown
-  >
-  extends TransactionBaseService<T, TContainer>
-  implements IBatchJobStrategy<T>
+export abstract class AbstractBatchJobStrategy
+  extends TransactionBaseService
+  implements IBatchJobStrategy
 {
   static identifier: string
   static batchType: string
@@ -73,6 +69,7 @@ export abstract class AbstractBatchJobStrategy<
     err: unknown,
     result: T
   ): Promise<void> {
+    // TODO just throw to be handled by the subscriber
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = (await this.batchJobService_
         .withTransaction(transactionManager)
@@ -99,7 +96,7 @@ export abstract class AbstractBatchJobStrategy<
             },
             result: {
               ...result,
-              errors: [...existingErrors, resultError],
+              errors: [...existingErrors, resultError.message],
             },
           })
       } else {
@@ -113,6 +110,6 @@ export abstract class AbstractBatchJobStrategy<
 
 export function isBatchJobStrategy(
   object: unknown
-): object is IBatchJobStrategy<never> {
+): object is IBatchJobStrategy {
   return object instanceof AbstractBatchJobStrategy
 }

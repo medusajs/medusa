@@ -9,7 +9,7 @@ describe("AuthService", () => {
   const authService = new AuthService({
     manager: managerMock,
     userService: UserServiceMock,
-    customerService: CustomerServiceMock
+    customerService: CustomerServiceMock,
   })
 
   describe("authenticate", () => {

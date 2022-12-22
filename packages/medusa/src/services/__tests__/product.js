@@ -1,9 +1,10 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ProductService from "../product"
+import { FlagRouter } from "../../utils/flag-router"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -51,6 +52,7 @@ describe("ProductService", () => {
     const productService = new ProductService({
       manager: MockManager,
       productRepository: productRepo,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(async () => {
@@ -108,7 +110,7 @@ describe("ProductService", () => {
     productTypeRepository.upsertType = mockUpsertType
 
     const productCollectionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: (id) =>
@@ -122,6 +124,7 @@ describe("ProductService", () => {
       productCollectionService,
       productTagRepository,
       productTypeRepository,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -247,7 +250,7 @@ describe("ProductService", () => {
     const productVariantRepository = MockRepository()
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       update: (variant, update) => {
@@ -299,6 +302,7 @@ describe("ProductService", () => {
       eventBusService,
       cartRepository,
       priceSelectionStrategy,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -455,7 +459,7 @@ describe("ProductService", () => {
       manager: MockManager,
       eventBusService,
       productRepository,
-      eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -487,15 +491,14 @@ describe("ProductService", () => {
     })
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       addOptionValue: jest.fn(),
     }
 
     const productOptionRepository = MockRepository({
-      create: () =>
-        Promise.resolve({ id: IdMap.getId("Material"), title: "Material" }),
+      create: () => ({ id: IdMap.getId("Material"), title: "Material" }),
     })
 
     const productService = new ProductService({
@@ -504,6 +507,7 @@ describe("ProductService", () => {
       productOptionRepository,
       productVariantService,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -562,6 +566,7 @@ describe("ProductService", () => {
       manager: MockManager,
       productRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -629,6 +634,7 @@ describe("ProductService", () => {
       productRepository,
       productOptionRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -736,6 +742,7 @@ describe("ProductService", () => {
       productRepository,
       productOptionRepository,
       eventBusService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {

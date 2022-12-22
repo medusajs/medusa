@@ -6,22 +6,22 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).AllocationType
 
-## Enumeration members
+## Enumeration Members
 
 ### ITEM
 
-• **ITEM** = `"item"`
+• **ITEM** = ``"item"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-rule.d.ts:10
+medusa/dist/models/discount-rule.d.ts:10
 
 ___
 
 ### TOTAL
 
-• **TOTAL** = `"total"`
+• **TOTAL** = ``"total"``
 
 #### Defined in
 
-packages/medusa/dist/models/discount-rule.d.ts:9
+medusa/dist/models/discount-rule.d.ts:9

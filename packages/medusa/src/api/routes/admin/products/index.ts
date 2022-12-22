@@ -1,24 +1,32 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { PricedProduct } from "../../../../types/pricing"
 import { Product, ProductTag, ProductType } from "../../../.."
-import { EmptyQueryParams, PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformQuery } from "../../../middlewares"
-import { AdminGetProductsParams } from "./list-products"
+import { FindParams, PaginatedResponse } from "../../../../types/common"
+import { PricedProduct } from "../../../../types/pricing"
 import { FlagRouter } from "../../../../utils/flag-router"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
+import { AdminGetProductsParams } from "./list-products"
 
 const route = Router()
 
 export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/products", route)
 
-  const relations = [...defaultAdminProductRelations]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
-    relations.push("sales_channels")
+    defaultAdminProductRelations.push("sales_channels")
   }
 
-  route.post("/", middlewares.wrap(require("./create-product").default))
-  route.post("/:id", middlewares.wrap(require("./update-product").default))
+  route.post(
+    "/",
+    validateSalesChannelsExist((req) => req.body?.sales_channels),
+    middlewares.wrap(require("./create-product").default)
+  )
+  route.post(
+    "/:id",
+    validateSalesChannelsExist((req) => req.body?.sales_channels),
+    middlewares.wrap(require("./update-product").default)
+  )
   route.get("/types", middlewares.wrap(require("./list-types").default))
   route.get(
     "/tag-usage",
@@ -62,10 +70,9 @@ export default (app, featureFlagRouter: FlagRouter) => {
   )
   route.get(
     "/:id",
-    transformQuery(EmptyQueryParams, {
-      defaultRelations: relations,
+    transformQuery(FindParams, {
+      defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
-      allowedFields: allowedAdminProductFields,
       isList: false,
     }),
     middlewares.wrap(require("./get-product").default)
@@ -76,7 +83,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(AdminGetProductsParams, {
       defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
-      allowedFields: allowedAdminProductFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-products").default)
@@ -126,45 +132,6 @@ export const defaultAdminProductFields: (keyof Product)[] = [
 
 export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 
-export const allowedAdminProductFields = [
-  "id",
-  "title",
-  "subtitle",
-  "status",
-  "external_id",
-  "description",
-  "handle",
-  "is_giftcard",
-  "discountable",
-  "thumbnail",
-  "profile_id",
-  "collection_id",
-  "type_id",
-  "weight",
-  "length",
-  "height",
-  "width",
-  "hs_code",
-  "origin_country",
-  "mid_code",
-  "material",
-  "created_at",
-  "updated_at",
-  "deleted_at",
-  "metadata",
-]
-
-export const allowedAdminProductRelations = [
-  "variants",
-  "variants.prices",
-  "images",
-  "options",
-  "tags",
-  "type",
-  "collection",
-  "sales_channels",
-]
-
 export type AdminProductsDeleteOptionRes = {
   option_id: string
   object: "option"
@@ -208,10 +175,10 @@ export * from "./delete-option"
 export * from "./delete-product"
 export * from "./delete-variant"
 export * from "./get-product"
-export * from "./list-variants"
 export * from "./list-products"
 export * from "./list-tag-usage-count"
 export * from "./list-types"
+export * from "./list-variants"
 export * from "./set-metadata"
 export * from "./update-option"
 export * from "./update-product"

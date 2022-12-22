@@ -16,6 +16,12 @@ To install the CLI tool, run the following command in your terminal:
 npm install @medusajs/medusa-cli -g
 ```
 
+:::note
+
+If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../troubleshooting/cli-installation-errors.mdx).
+
+:::
+
 The CLI tool is then available under the `medusa` command. You can see all commands and options with the following command:
 
 ```bash
@@ -152,7 +158,7 @@ medusa migrations <action>
 
 | Name | Description | Default |
 | --- | --- | --- |
-| `action` | The action to perform. Values can be run or show. run is used to run the migrations, and show is used to only show what migrations are available to run. | This argument is required and does not have a default value. |
+| `action` | The action to perform. Values can be `run`, `show`, or `revert`. `run` is used to run the migrations; `show` is used to only show what migrations are available to run; and `revert` is to undo the last migration. | This argument is required and does not have a default value. |
 
 ### seed
 
@@ -200,7 +206,7 @@ medusa telemetry
 | `--enable` | Enable telemetry (default) |
 | `--disable` | Disable telemetry |
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about [anonymous usage data collection](../usage.md).
 - Learn how to [configure your Medusa server](../usage/configurations.md).

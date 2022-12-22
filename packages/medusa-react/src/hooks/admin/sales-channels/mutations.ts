@@ -11,6 +11,7 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminProductKeys } from "../products"
 import { adminSalesChannelsKeys } from "./queries"
 
 /**
@@ -114,7 +115,11 @@ export const useAdminDeleteProductsFromSalesChannel = (
     },
     buildOptions(
       queryClient,
-      [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
+      [
+        adminSalesChannelsKeys.lists(),
+        adminSalesChannelsKeys.detail(id),
+        adminProductKeys.list({ sales_channel_id: [id] }),
+      ],
       options
     )
   )
@@ -144,7 +149,11 @@ export const useAdminAddProductsToSalesChannel = (
     },
     buildOptions(
       queryClient,
-      [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
+      [
+        adminSalesChannelsKeys.lists(),
+        adminSalesChannelsKeys.detail(id),
+        adminProductKeys.list({ sales_channel_id: [id] }),
+      ],
       options
     )
   )

@@ -1,17 +1,18 @@
 import { Router } from "express"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import "reflect-metadata"
-import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { SalesChannel } from "../../../../models"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
-import { AdminPostSalesChannelsReq } from "./create-sales-channel"
-import { AdminGetSalesChannelsParams } from "./list-sales-channels"
-import { AdminDeleteSalesChannelsChannelProductsBatchReq } from "./delete-products-batch"
+import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
+import { validateProductsExist } from "../../../middlewares/validators/product-existence"
 import { AdminPostSalesChannelsChannelProductsBatchReq } from "./add-product-batch"
+import { AdminPostSalesChannelsReq } from "./create-sales-channel"
+import { AdminDeleteSalesChannelsChannelProductsBatchReq } from "./delete-products-batch"
+import { AdminGetSalesChannelsParams } from "./list-sales-channels"
+import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 
 const route = Router()
 
@@ -33,11 +34,6 @@ export default (app) => {
     "/",
     middlewares.wrap(require("./get-sales-channel").default)
   )
-  salesChannelRouter.post(
-    "/",
-    transformBody(AdminPostSalesChannelsSalesChannelReq),
-    middlewares.wrap(require("./update-sales-channel").default)
-  )
   salesChannelRouter.delete(
     "/",
     middlewares.wrap(require("./delete-sales-channel").default)
@@ -55,6 +51,7 @@ export default (app) => {
   salesChannelRouter.post(
     "/products/batch",
     transformBody(AdminPostSalesChannelsChannelProductsBatchReq),
+    validateProductsExist((req) => req.body.product_ids),
     middlewares.wrap(require("./add-product-batch").default)
   )
 
@@ -77,10 +74,10 @@ export type AdminSalesChannelsListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]
 }
 
-export * from "./get-sales-channel"
+export * from "./add-product-batch"
 export * from "./create-sales-channel"
+export * from "./delete-products-batch"
+export * from "./delete-sales-channel"
+export * from "./get-sales-channel"
 export * from "./list-sales-channels"
 export * from "./update-sales-channel"
-export * from "./delete-sales-channel"
-export * from "./delete-products-batch"
-export * from "./add-product-batch"

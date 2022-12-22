@@ -5,6 +5,7 @@ import {
   StorePostCustomersCustomerPasswordTokenReq,
   StorePostCustomersCustomerReq,
   StorePostCustomersReq,
+  StorePostCustomersResetPasswordReq,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../typings"
@@ -39,7 +40,7 @@ class CustomerResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/me`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -73,7 +74,7 @@ class CustomerResource extends BaseResource {
         path += `?${query}`
       }
     }
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -83,7 +84,7 @@ class CustomerResource extends BaseResource {
    * @return {ResponsePromise<StoreCustomersRes>}
    */
   resetPassword(
-    payload: StorePostCustomersCustomerPasswordTokenReq,
+    payload: StorePostCustomersResetPasswordReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/password-reset`

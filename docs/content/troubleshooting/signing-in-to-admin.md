@@ -2,7 +2,7 @@
 
 If you've created a new Medusa server with the `--seed` option or used the `seed` script or command, the default credentials are:
 
-```bash
+```bash noReport
 email: admin@medusa-test.com
 password: supersecret
 ```
@@ -15,4 +15,4 @@ medusa user -e some@email.com -p somepassword
 
 ## Additional Resources
 
-Learn more about our CLI tool in the [CLI reference](../cli/reference.md).
+Learn more about Medusa's CLI tool in the [CLI reference](../cli/reference.md).

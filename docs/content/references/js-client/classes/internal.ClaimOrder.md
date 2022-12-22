@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ClaimOrder
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
@@ -20,7 +22,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:33
+medusa/dist/models/claim-order.d.ts:33
 
 ___
 
@@ -30,17 +32,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:50
+medusa/dist/models/claim-order.d.ts:50
 
 ___
 
 ### canceled\_at
 
-• **canceled\_at**: [`Date`](../modules/internal.md#date)
+• **canceled\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:43
+medusa/dist/models/claim-order.d.ts:43
 
 ___
 
@@ -50,13 +52,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:32
+medusa/dist/models/claim-order.d.ts:32
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Overrides
 
@@ -64,13 +66,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:44
+medusa/dist/models/claim-order.d.ts:44
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: [`Date`](../modules/internal.md#date)
+• **deleted\_at**: `Date`
 
 #### Overrides
 
@@ -78,7 +80,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:46
+medusa/dist/models/claim-order.d.ts:46
 
 ___
 
@@ -88,7 +90,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:31
+medusa/dist/models/claim-order.d.ts:31
 
 ___
 
@@ -98,7 +100,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:41
+medusa/dist/models/claim-order.d.ts:41
 
 ___
 
@@ -112,7 +114,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -122,17 +124,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:49
+medusa/dist/models/claim-order.d.ts:49
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:48
+medusa/dist/models/claim-order.d.ts:48
 
 ___
 
@@ -142,7 +144,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:47
+medusa/dist/models/claim-order.d.ts:47
 
 ___
 
@@ -152,7 +154,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:36
+medusa/dist/models/claim-order.d.ts:36
 
 ___
 
@@ -162,7 +164,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:35
+medusa/dist/models/claim-order.d.ts:35
 
 ___
 
@@ -172,7 +174,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:30
+medusa/dist/models/claim-order.d.ts:30
 
 ___
 
@@ -182,7 +184,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:42
+medusa/dist/models/claim-order.d.ts:42
 
 ___
 
@@ -192,7 +194,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:37
+medusa/dist/models/claim-order.d.ts:37
 
 ___
 
@@ -202,7 +204,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:39
+medusa/dist/models/claim-order.d.ts:39
 
 ___
 
@@ -212,7 +214,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:38
+medusa/dist/models/claim-order.d.ts:38
 
 ___
 
@@ -222,7 +224,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:40
+medusa/dist/models/claim-order.d.ts:40
 
 ___
 
@@ -232,13 +234,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:34
+medusa/dist/models/claim-order.d.ts:34
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Overrides
 
@@ -246,4 +248,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/claim-order.d.ts:45
+medusa/dist/models/claim-order.d.ts:45

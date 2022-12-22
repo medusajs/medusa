@@ -83,7 +83,7 @@ Object {
     "cart": Object {
       "billing_address_id": "test-billing-address",
       "completed_at": null,
-      "context": null,
+      "context": Object {},
       "created_at": Any<String>,
       "customer_id": "test-customer",
       "deleted_at": null,
@@ -259,7 +259,7 @@ Object {
     "cart": Object {
       "billing_address_id": "test-billing-address",
       "completed_at": null,
-      "context": null,
+      "context": Object {},
       "created_at": Any<String>,
       "customer_id": "test-customer",
       "deleted_at": null,

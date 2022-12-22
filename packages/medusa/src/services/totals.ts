@@ -1,28 +1,45 @@
-import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
-import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
-import { Cart } from "../models/cart"
-import { Discount } from "../models/discount"
-import { DiscountRuleType } from "../models/discount-rule"
-import { LineItem } from "../models/line-item"
-import { LineItemTaxLine } from "../models/line-item-tax-line"
-import { Order } from "../models/order"
-import { ShippingMethod } from "../models/shipping-method"
-import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import {
+  ITaxCalculationStrategy,
+  TaxCalculationContext,
+  TransactionBaseService,
+} from "../interfaces"
+import {
+  Cart,
+  ClaimOrder,
+  Discount,
+  DiscountRuleType,
+  LineItem,
+  LineItemTaxLine,
+  Order,
+  ShippingMethod,
+  ShippingMethodTaxLine,
+  Swap,
+} from "../models"
 import { isCart } from "../types/cart"
 import { isOrder } from "../types/orders"
 import {
+  CalculationContextData,
   LineAllocationsMap,
   LineDiscount,
   LineDiscountAmount,
   SubtotalOptions,
 } from "../types/totals"
-import TaxProviderService from "./tax-provider"
+import {
+  TaxProviderService,
+  NewTotalsService,
+} from "./index"
+import { EntityManager } from "typeorm"
+
+import { calculatePriceTaxAmount } from "../utils"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { FlagRouter } from "../utils/flag-router"
 
 type ShippingMethodTotals = {
   price: number
   tax_total: number
   total: number
+  subtotal: number
   original_total: number
   original_tax_total: number
   tax_lines: ShippingMethodTaxLine[]
@@ -31,6 +48,7 @@ type ShippingMethodTotals = {
 type GetShippingMethodTotalsOptions = {
   include_tax?: boolean
   use_tax_lines?: boolean
+  calculation_context?: TaxCalculationContext
 }
 
 type LineItemTotals = {
@@ -43,23 +61,26 @@ type LineItemTotals = {
   original_tax_total: number
   tax_lines: LineItemTaxLine[]
   discount_total: number
-  gift_card_total: number
 }
 
 type LineItemTotalsOptions = {
   include_tax?: boolean
   use_tax_lines?: boolean
+  exclude_gift_cards?: boolean
+  calculation_context?: TaxCalculationContext
 }
 
 type GetLineItemTotalOptions = {
   include_tax?: boolean
-  exclude_gift_cards?: boolean
   exclude_discounts?: boolean
 }
 
 type TotalsServiceProps = {
   taxProviderService: TaxProviderService
+  newTotalsService: NewTotalsService
   taxCalculationStrategy: ITaxCalculationStrategy
+  manager: EntityManager
+  featureFlagRouter: FlagRouter
 }
 
 type GetTotalsOptions = {
@@ -83,18 +104,31 @@ type CalculationContextOptions = {
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements {BaseService}
  */
-class TotalsService extends BaseService {
-  private taxProviderService_: TaxProviderService
-  private taxCalculationStrategy_: ITaxCalculationStrategy
+class TotalsService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
+
+  protected readonly taxProviderService_: TaxProviderService
+  protected readonly newTotalsService_: NewTotalsService
+  protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
+    manager,
     taxProviderService,
+    newTotalsService,
     taxCalculationStrategy,
+    featureFlagRouter,
   }: TotalsServiceProps) {
-    super()
+    super(arguments[0])
 
+    this.manager_ = manager
     this.taxProviderService_ = taxProviderService
+    this.newTotalsService_ = newTotalsService
     this.taxCalculationStrategy_ = taxCalculationStrategy
+
+    this.manager_ = manager
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -107,14 +141,14 @@ class TotalsService extends BaseService {
     cartOrOrder: Cart | Order,
     options: GetTotalsOptions = {}
   ): Promise<number> {
-    const subtotal = this.getSubtotal(cartOrOrder)
+    const subtotal = await this.getSubtotal(cartOrOrder)
     const taxTotal =
       (await this.getTaxTotal(cartOrOrder, options.force_taxes)) || 0
-    const discountTotal = this.getDiscountTotal(cartOrOrder)
+    const discountTotal = await this.getDiscountTotal(cartOrOrder)
     const giftCardTotal = options.exclude_gift_cards
       ? { total: 0 }
-      : this.getGiftCardTotal(cartOrOrder)
-    const shippingTotal = this.getShippingTotal(cartOrOrder)
+      : await this.getGiftCardTotal(cartOrOrder)
+    const shippingTotal = await this.getShippingTotal(cartOrOrder)
 
     return (
       subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal.total
@@ -165,56 +199,57 @@ class TotalsService extends BaseService {
     cartOrOrder: Cart | Order,
     opts: GetShippingMethodTotalsOptions = {}
   ): Promise<ShippingMethodTotals> {
-    const calculationContext = this.getCalculationContext(cartOrOrder, {
-      exclude_shipping: true,
-    })
+    const calculationContext =
+      opts.calculation_context ||
+      (await this.getCalculationContext(cartOrOrder, {
+        exclude_shipping: true,
+      }))
     calculationContext.shipping_methods = [shippingMethod]
 
     const totals = {
       price: shippingMethod.price,
       original_total: shippingMethod.price,
       total: shippingMethod.price,
+      subtotal: shippingMethod.price,
       original_tax_total: 0,
       tax_total: 0,
       tax_lines: shippingMethod.tax_lines || [],
     }
 
     if (opts.include_tax) {
-      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate != null) {
         totals.original_tax_total = Math.round(
-          totals.original_tax_total * (cartOrOrder.tax_rate / 100)
+          totals.price * (cartOrOrder.tax_rate / 100)
         )
         totals.tax_total = Math.round(
-          totals.original_tax_total * (cartOrOrder.tax_rate / 100)
+          totals.price * (cartOrOrder.tax_rate / 100)
         )
-      } else {
-        let taxLines: ShippingMethodTaxLine[]
-        if (opts.use_tax_lines || isOrder(cartOrOrder)) {
-          if (typeof shippingMethod.tax_lines === "undefined") {
-            throw new MedusaError(
-              MedusaError.Types.UNEXPECTED_STATE,
-              "Tax Lines must be joined on shipping method to calculate taxes"
-            )
+      } else if (totals.tax_lines.length === 0) {
+        const orderLines = await this.taxProviderService_
+          .withTransaction(this.manager_)
+          .getTaxLines(cartOrOrder.items, calculationContext)
+
+        totals.tax_lines = orderLines.filter((ol) => {
+          if ("shipping_method_id" in ol) {
+            return ol.shipping_method_id === shippingMethod.id
           }
+          return false
+        }) as ShippingMethodTaxLine[]
 
-          taxLines = shippingMethod.tax_lines
-        } else {
-          const orderLines = await this.taxProviderService_.getTaxLines(
-            cartOrOrder.items,
-            calculationContext
+        if (totals.tax_lines.length === 0 && isOrder(cartOrOrder)) {
+          throw new MedusaError(
+            MedusaError.Types.UNEXPECTED_STATE,
+            "Tax Lines must be joined on shipping method to calculate taxes"
           )
-
-          taxLines = orderLines.filter((ol) => {
-            if ("shipping_method_id" in ol) {
-              return ol.shipping_method_id === shippingMethod.id
-            }
-            return false
-          }) as ShippingMethodTaxLine[]
         }
-        totals.tax_lines = taxLines
       }
 
       if (totals.tax_lines.length > 0) {
+        const includesTax =
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) && shippingMethod.includes_tax
+
         totals.original_tax_total =
           await this.taxCalculationStrategy_.calculate(
             [],
@@ -223,16 +258,23 @@ class TotalsService extends BaseService {
           )
         totals.tax_total = totals.original_tax_total
 
-        totals.original_total += totals.original_tax_total
-        totals.total += totals.tax_total
+        if (includesTax) {
+          totals.subtotal -= totals.tax_total
+        } else {
+          totals.original_total += totals.original_tax_total
+          totals.total += totals.tax_total
+        }
       }
     }
 
-    if (cartOrOrder.discounts) {
-      if (cartOrOrder.discounts.some((d) => d.rule.type === "free_shipping")) {
-        totals.total = 0
-        totals.tax_total = 0
-      }
+    const hasFreeShipping = cartOrOrder.discounts?.some(
+      (d) => d.rule.type === DiscountRuleType.FREE_SHIPPING
+    )
+
+    if (hasFreeShipping) {
+      totals.total = 0
+      totals.subtotal = 0
+      totals.tax_total = 0
     }
 
     return totals
@@ -244,21 +286,33 @@ class TotalsService extends BaseService {
    * @param opts - options
    * @return the calculated subtotal
    */
-  getSubtotal(cartOrOrder: Cart | Order, opts: SubtotalOptions = {}): number {
+  async getSubtotal(
+    cartOrOrder: Cart | Order,
+    opts: SubtotalOptions = {}
+  ): Promise<number> {
     let subtotal = 0
     if (!cartOrOrder.items) {
       return subtotal
     }
 
-    cartOrOrder.items.map((item) => {
+    const getLineItemSubtotal = async (item: LineItem): Promise<number> => {
+      const totals = await this.getLineItemTotals(item, cartOrOrder, {
+        include_tax: true,
+        exclude_gift_cards: true,
+      })
+      return totals.subtotal
+    }
+
+    for (const item of cartOrOrder.items) {
       if (opts.excludeNonDiscounts) {
         if (item.allow_discounts) {
-          subtotal += item.unit_price * item.quantity
+          subtotal += await getLineItemSubtotal(item)
         }
-      } else {
-        subtotal += item.unit_price * item.quantity
+        continue
       }
-    })
+
+      subtotal += await getLineItemSubtotal(item)
+    }
 
     return this.rounded(subtotal)
   }
@@ -268,11 +322,23 @@ class TotalsService extends BaseService {
    * @param cartOrOrder - cart or order to calculate subtotal for
    * @return shipping total
    */
-  getShippingTotal(cartOrOrder: Cart | Order): number {
+  async getShippingTotal(cartOrOrder: Cart | Order): Promise<number> {
     const { shipping_methods } = cartOrOrder
-    return shipping_methods.reduce((acc, next) => {
-      return acc + next.price
-    }, 0)
+
+    let total = 0
+    for (const shippingMethod of shipping_methods) {
+      const totals = await this.getShippingMethodTotals(
+        shippingMethod,
+        cartOrOrder,
+        {
+          include_tax: true,
+        }
+      )
+
+      total += totals.subtotal
+    }
+
+    return total
   }
 
   /**
@@ -295,13 +361,13 @@ class TotalsService extends BaseService {
       return null
     }
 
-    const calculationContext = this.getCalculationContext(cartOrOrder)
-    const giftCardTotal = this.getGiftCardTotal(cartOrOrder)
+    const calculationContext = await this.getCalculationContext(cartOrOrder)
+    const giftCardTotal = await this.getGiftCardTotal(cartOrOrder)
 
     let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     if (isOrder(cartOrOrder)) {
-      const taxLinesJoined = cartOrOrder.items.every(
-        (i) => typeof i.tax_lines !== "undefined"
+      const taxLinesJoined = cartOrOrder.items.every((i) =>
+        isDefined(i.tax_lines)
       )
       if (!taxLinesJoined) {
         throw new MedusaError(
@@ -319,19 +385,18 @@ class TotalsService extends BaseService {
 
         taxLines = taxLines.concat(shippingTaxLines)
       } else {
-        const subtotal = this.getSubtotal(cartOrOrder)
-        const shippingTotal = this.getShippingTotal(cartOrOrder)
-        const discountTotal = this.getDiscountTotal(cartOrOrder)
+        const subtotal = await this.getSubtotal(cartOrOrder)
+        const shippingTotal = await this.getShippingTotal(cartOrOrder)
+        const discountTotal = await this.getDiscountTotal(cartOrOrder)
         return this.rounded(
           (subtotal - discountTotal - giftCardTotal.total + shippingTotal) *
             (cartOrOrder.tax_rate / 100)
         )
       }
     } else {
-      taxLines = await this.taxProviderService_.getTaxLines(
-        cartOrOrder.items,
-        calculationContext
-      )
+      taxLines = await this.taxProviderService_
+        .withTransaction(this.manager_)
+        .getTaxLines(cartOrOrder.items, calculationContext)
 
       if (cartOrOrder.type === "swap") {
         const returnTaxLines = cartOrOrder.items.flatMap((i) => {
@@ -373,17 +438,22 @@ class TotalsService extends BaseService {
    * @param options - controls what should be included in allocation map
    * @return the allocation map for the line items in the cart or order.
    */
-  getAllocationMap(
-    orderOrCart: Cart | Order,
+  async getAllocationMap(
+    orderOrCart: {
+      discounts?: Discount[]
+      items: LineItem[]
+      swaps?: Swap[]
+      claims?: ClaimOrder[]
+    },
     options: AllocationMapOptions = {}
-  ): LineAllocationsMap {
+  ): Promise<LineAllocationsMap> {
     const allocationMap: LineAllocationsMap = {}
 
     if (!options.exclude_discounts) {
       let lineDiscounts: LineDiscountAmount[] = []
 
-      const discount = orderOrCart.discounts.find(
-        ({ rule }) => rule.type !== "free_shipping"
+      const discount = orderOrCart.discounts?.find(
+        ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
       )
       if (discount) {
         lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
@@ -400,42 +470,6 @@ class TotalsService extends BaseService {
             discount: {
               amount: ld.amount,
               unit_amount: Math.round(ld.amount / ld.item.quantity),
-            },
-          }
-        }
-      }
-    }
-
-    if (!options.exclude_gift_cards) {
-      let lineGiftCards: LineDiscountAmount[] = []
-      if (orderOrCart.gift_cards && orderOrCart.gift_cards.length) {
-        const subtotal = this.getSubtotal(orderOrCart)
-        const giftCardTotal = this.getGiftCardTotal(orderOrCart)
-
-        // If the fixed discount exceeds the subtotal we should
-        // calculate a 100% discount
-        const nominator = Math.min(giftCardTotal.total, subtotal)
-        const percentage = nominator / subtotal
-
-        lineGiftCards = orderOrCart.items.map((l) => {
-          return {
-            item: l,
-            amount: Math.round(l.unit_price * l.quantity * percentage),
-          }
-        })
-      }
-
-      for (const lgc of lineGiftCards) {
-        if (allocationMap[lgc.item.id]) {
-          allocationMap[lgc.item.id].gift_card = {
-            amount: lgc.amount,
-            unit_amount: Math.round(lgc.amount / lgc.item.quantity),
-          }
-        } else {
-          allocationMap[lgc.item.id] = {
-            gift_card: {
-              amount: lgc.amount,
-              unit_amount: Math.round(lgc.amount / lgc.item.quantity),
             },
           }
         }
@@ -465,20 +499,38 @@ class TotalsService extends BaseService {
    * @param lineItem - the line item to calculate the refund amount for.
    * @return the line item refund amount.
    */
-  getLineItemRefund(order: Order, lineItem: LineItem): number {
-    const allocationMap = this.getAllocationMap(order)
+  async getLineItemRefund(order: Order, lineItem: LineItem): Promise<number> {
+    const allocationMap = await this.getAllocationMap(order)
+
+    const includesTax =
+      this.featureFlagRouter_.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      ) && lineItem.includes_tax
 
     const discountAmount =
       (allocationMap[lineItem.id]?.discount?.unit_amount || 0) *
       lineItem.quantity
 
-    const lineSubtotal =
-      lineItem.unit_price * lineItem.quantity - discountAmount
+    let lineSubtotal = lineItem.unit_price * lineItem.quantity - discountAmount
 
     /*
      * Used for backcompat with old tax system
      */
     if (order.tax_rate !== null) {
+      const taxAmountIncludedInPrice = !includesTax
+        ? 0
+        : Math.round(
+            calculatePriceTaxAmount({
+              price: lineItem.unit_price,
+              taxRate: order.tax_rate / 100,
+              includesTax,
+            })
+          )
+
+      lineSubtotal =
+        (lineItem.unit_price - taxAmountIncludedInPrice) * lineItem.quantity -
+        discountAmount
+
       const taxRate = order.tax_rate / 100
       return this.rounded(lineSubtotal * (1 + taxRate))
     }
@@ -492,6 +544,23 @@ class TotalsService extends BaseService {
         "Tax calculation did not receive tax_lines"
       )
     }
+
+    const taxRate = lineItem.tax_lines.reduce((acc, next) => {
+      return acc + next.rate / 100
+    }, 0)
+    const taxAmountIncludedInPrice = !includesTax
+      ? 0
+      : Math.round(
+          calculatePriceTaxAmount({
+            price: lineItem.unit_price,
+            taxRate,
+            includesTax,
+          })
+        )
+
+    lineSubtotal =
+      (lineItem.unit_price - taxAmountIncludedInPrice) * lineItem.quantity -
+      discountAmount
 
     const taxTotal = lineItem.tax_lines.reduce((acc, next) => {
       const taxRate = next.rate / 100
@@ -509,7 +578,7 @@ class TotalsService extends BaseService {
    * @param lineItems - the line items to calculate refund total for
    * @return the calculated subtotal
    */
-  getRefundTotal(order: Order, lineItems: LineItem[]): number {
+  async getRefundTotal(order: Order, lineItems: LineItem[]): Promise<number> {
     let itemIds = order.items.map((i) => i.id)
 
     // in case we swap a swap, we need to include swap items
@@ -527,16 +596,18 @@ class TotalsService extends BaseService {
       }
     }
 
-    const refunds = lineItems.map((i) => {
-      if (!itemIds.includes(i.id)) {
+    const refunds: number[] = []
+    for (const item of lineItems) {
+      if (!itemIds.includes(item.id)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Line item does not exist on order"
         )
       }
 
-      return this.getLineItemRefund(order, i)
-    })
+      const refund = await this.getLineItemRefund(order, item)
+      refunds.push(refund)
+    }
 
     return this.rounded(refunds.reduce((acc, next) => acc + next, 0))
   }
@@ -609,7 +680,7 @@ class TotalsService extends BaseService {
     lineItem: LineItem,
     discount: Discount
   ): number {
-    const matchingDiscount = lineItem.adjustments.find(
+    const matchingDiscount = lineItem.adjustments?.find(
       (adjustment) => adjustment.discount_id === discount.id
     )
 
@@ -644,19 +715,23 @@ class TotalsService extends BaseService {
    *   order
    */
   getLineDiscounts(
-    cartOrOrder: Cart | Order,
+    cartOrOrder: {
+      items: LineItem[]
+      swaps?: Swap[]
+      claims?: ClaimOrder[]
+    },
     discount: Discount
   ): LineDiscountAmount[] {
-    let merged: LineItem[] = [...cartOrOrder.items]
+    let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
 
     // merge items from order with items from order swaps
-    if ("swaps" in cartOrOrder && cartOrOrder.swaps.length) {
+    if ("swaps" in cartOrOrder && cartOrOrder.swaps?.length) {
       for (const s of cartOrOrder.swaps) {
         merged = [...merged, ...s.additional_items]
       }
     }
 
-    if ("claims" in cartOrOrder && cartOrOrder.claims.length) {
+    if ("claims" in cartOrOrder && cartOrOrder.claims?.length) {
       for (const c of cartOrOrder.claims) {
         merged = [...merged, ...c.additional_items]
       }
@@ -694,14 +769,26 @@ class TotalsService extends BaseService {
     cartOrOrder: Cart | Order,
     options: LineItemTotalsOptions = {}
   ): Promise<LineItemTotals> {
-    const calculationContext = this.getCalculationContext(cartOrOrder, {
-      exclude_shipping: true,
-    })
+    const calculationContext =
+      options.calculation_context ||
+      (await this.getCalculationContext(cartOrOrder, {
+        exclude_shipping: true,
+        exclude_gift_cards: options.exclude_gift_cards,
+      }))
     const lineItemAllocation =
       calculationContext.allocation_map[lineItem.id] || {}
 
-    const subtotal = lineItem.unit_price * lineItem.quantity
-    const gift_card_total = lineItemAllocation.gift_card?.amount || 0
+    let subtotal = lineItem.unit_price * lineItem.quantity
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      ) &&
+      lineItem.includes_tax &&
+      options.include_tax
+    ) {
+      subtotal = 0 // in that case we need to know the tax rate to compute it later
+    }
+
     const discount_total =
       (lineItemAllocation.discount?.unit_amount || 0) * lineItem.quantity
 
@@ -709,7 +796,6 @@ class TotalsService extends BaseService {
       unit_price: lineItem.unit_price,
       quantity: lineItem.quantity,
       subtotal,
-      gift_card_total,
       discount_total,
       total: subtotal - discount_total,
       original_total: subtotal,
@@ -720,14 +806,32 @@ class TotalsService extends BaseService {
 
     // Tax Information
     if (options.include_tax) {
-      // When we have an order with a null'ed tax rate we know that it is an
+      // When we have an order with a nulled or undefined tax rate we know that it is an
       // order from the old tax system. The following is a backward compat
       // calculation.
-      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
-        lineItemTotals.original_tax_total =
-          subtotal * (cartOrOrder.tax_rate / 100)
+      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate != null) {
+        const taxRate = cartOrOrder.tax_rate / 100
+
+        const includesTax =
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) && lineItem.includes_tax
+        const taxIncludedInPrice = !lineItem.includes_tax
+          ? 0
+          : Math.round(
+              calculatePriceTaxAmount({
+                price: lineItem.unit_price,
+                taxRate: taxRate,
+                includesTax,
+              })
+            )
+        lineItemTotals.subtotal =
+          (lineItem.unit_price - taxIncludedInPrice) * lineItem.quantity
+        lineItemTotals.total = lineItemTotals.subtotal
+
+        lineItemTotals.original_tax_total = lineItemTotals.subtotal * taxRate
         lineItemTotals.tax_total =
-          (subtotal - discount_total) * (cartOrOrder.tax_rate / 100)
+          (lineItemTotals.subtotal - discount_total) * taxRate
 
         lineItemTotals.total += lineItemTotals.tax_total
         lineItemTotals.original_total += lineItemTotals.original_tax_total
@@ -757,17 +861,9 @@ class TotalsService extends BaseService {
             }
             taxLines = lineItem.tax_lines
           } else {
-            const orderLines = await this.taxProviderService_.getTaxLines(
-              cartOrOrder.items,
-              calculationContext
-            )
-
-            taxLines = orderLines.filter((ol) => {
-              if ("item_id" in ol) {
-                return ol.item_id === lineItem.id
-              }
-              return false
-            }) as LineItemTaxLine[]
+            taxLines = (await this.taxProviderService_
+              .withTransaction(this.manager_)
+              .getTaxLines([lineItem], calculationContext)) as LineItemTaxLine[]
           }
         }
 
@@ -781,15 +877,32 @@ class TotalsService extends BaseService {
         lineItemTotals.tax_lines,
         calculationContext
       )
-      lineItemTotals.total += lineItemTotals.tax_total
+      const noDiscountContext = {
+        ...calculationContext,
+        allocation_map: {}, // Don't account for discounts
+      }
 
-      calculationContext.allocation_map = {} // Don't account for discounts
       lineItemTotals.original_tax_total =
         await this.taxCalculationStrategy_.calculate(
           [lineItem],
           lineItemTotals.tax_lines,
-          calculationContext
+          noDiscountContext
         )
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) &&
+        lineItem.includes_tax
+      ) {
+        lineItemTotals.subtotal +=
+          lineItem.unit_price * lineItem.quantity -
+          lineItemTotals.original_tax_total
+        lineItemTotals.total += lineItemTotals.subtotal
+        lineItemTotals.original_total += lineItemTotals.subtotal
+      }
+
+      lineItemTotals.total += lineItemTotals.tax_total
       lineItemTotals.original_total += lineItemTotals.original_tax_total
     }
 
@@ -818,10 +931,6 @@ class TotalsService extends BaseService {
       toReturn += lineItemTotals.discount_total
     }
 
-    if (!options.exclude_gift_cards) {
-      toReturn += lineItemTotals.gift_card_total
-    }
-
     if (options.include_tax) {
       toReturn += lineItemTotals.tax_total
     }
@@ -837,7 +946,9 @@ class TotalsService extends BaseService {
    */
   async getGiftCardableAmount(cartOrOrder: Cart | Order): Promise<number> {
     if (cartOrOrder.region?.gift_cards_taxable) {
-      return this.getSubtotal(cartOrOrder) - this.getDiscountTotal(cartOrOrder)
+      const subtotal = await this.getSubtotal(cartOrOrder)
+      const discountTotal = await this.getDiscountTotal(cartOrOrder)
+      return subtotal - discountTotal
     }
 
     return await this.getTotal(cartOrOrder, {
@@ -850,70 +961,32 @@ class TotalsService extends BaseService {
    * @param cartOrOrder - the cart or order to get gift card amount for
    * @return the gift card amount applied to the cart or order
    */
-  getGiftCardTotal(cartOrOrder: Cart | Order): {
+  async getGiftCardTotal(
+    cartOrOrder: Cart | Order,
+    opts: { gift_cardable?: number } = {}
+  ): Promise<{
     total: number
     tax_total: number
-  } {
-    const giftCardable =
-      this.getSubtotal(cartOrOrder) - this.getDiscountTotal(cartOrOrder)
+  }> {
+    let giftCardable: number
 
-    if ("gift_card_transactions" in cartOrOrder) {
-      // gift_card_transactions only exist on orders so we can
-      // safely calculate the total based on the gift card transactions
+    if (typeof opts.gift_cardable !== "undefined") {
+      giftCardable = opts.gift_cardable
+    } else {
+      const subtotal = await this.getSubtotal(cartOrOrder)
+      const discountTotal = await this.getDiscountTotal(cartOrOrder)
 
-      return cartOrOrder.gift_card_transactions.reduce(
-        (acc, next) => {
-          let taxMultiplier = (next.tax_rate || 0) / 100
-
-          // Previously we did not record whether a gift card was taxable or not.
-          // All gift cards where is_taxable === null are from the old system,
-          // where we defaulted to taxable gift cards.
-          //
-          // This is a backwards compatability fix for orders that were created
-          // before we added the gift card tax rate.
-          if (
-            next.is_taxable === null &&
-            cartOrOrder.region?.gift_cards_taxable
-          ) {
-            taxMultiplier = cartOrOrder.region.tax_rate / 100
-          }
-
-          return {
-            total: acc.total + next.amount,
-            tax_total: acc.tax_total + next.amount * taxMultiplier,
-          }
-        },
-        {
-          total: 0,
-          tax_total: 0,
-        }
-      )
+      giftCardable = subtotal - discountTotal
     }
 
-    if (!cartOrOrder.gift_cards || !cartOrOrder.gift_cards.length) {
-      return {
-        total: 0,
-        tax_total: 0,
+    return await this.newTotalsService_.getGiftCardTotals(
+      giftCardable,
+      {
+        region: cartOrOrder.region,
+        giftCards: cartOrOrder.gift_cards || [],
+        giftCardTransactions: cartOrOrder['gift_card_transactions'] || []
       }
-    }
-
-    const toReturn = cartOrOrder.gift_cards.reduce(
-      (acc, next) => acc + next.balance,
-      0
     )
-    const orderGiftCardAmount = Math.min(giftCardable, toReturn)
-
-    if (cartOrOrder.region?.gift_cards_taxable) {
-      return {
-        total: orderGiftCardAmount,
-        tax_total: (orderGiftCardAmount * cartOrOrder.region.tax_rate) / 100,
-      }
-    }
-
-    return {
-      total: orderGiftCardAmount,
-      tax_total: 0,
-    }
   }
 
   /**
@@ -922,19 +995,15 @@ class TotalsService extends BaseService {
    * @param cartOrOrder - the cart or order to calculate discounts for
    * @return the total discounts amount
    */
-  getDiscountTotal(cartOrOrder: Cart | Order): number {
-    const subtotal = this.getSubtotal(cartOrOrder, {
+  async getDiscountTotal(cartOrOrder: Cart | Order): Promise<number> {
+    const subtotal = await this.getSubtotal(cartOrOrder, {
       excludeNonDiscounts: true,
     })
 
-    if (!cartOrOrder.discounts || !cartOrOrder.discounts.length) {
-      return 0
-    }
-
     // we only support having free shipping and one other discount, so first
     // find the discount, which is not free shipping.
-    const discount = cartOrOrder.discounts.find(
-      ({ rule }) => rule.type !== "free_shipping"
+    const discount = cartOrOrder.discounts?.find(
+      ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
     )
 
     if (!discount) {
@@ -952,15 +1021,15 @@ class TotalsService extends BaseService {
 
   /**
    * Prepares the calculation context for a tax total calculation.
-   * @param cartOrOrder - the cart or order to get the calculation context for
+   * @param calculationContextData - the calculationContextData to get the calculation context for
    * @param options - options to gather context by
    * @return the tax calculation context
    */
-  getCalculationContext(
-    cartOrOrder: Cart | Order,
+  async getCalculationContext(
+    calculationContextData: CalculationContextData,
     options: CalculationContextOptions = {}
-  ): TaxCalculationContext {
-    const allocationMap = this.getAllocationMap(cartOrOrder, {
+  ): Promise<TaxCalculationContext> {
+    const allocationMap = await this.getAllocationMap(calculationContextData, {
       exclude_gift_cards: options.exclude_gift_cards,
       exclude_discounts: options.exclude_discounts,
     })
@@ -968,14 +1037,14 @@ class TotalsService extends BaseService {
     let shippingMethods: ShippingMethod[] = []
     // Default to include shipping methods
     if (!options.exclude_shipping) {
-      shippingMethods = cartOrOrder.shipping_methods || []
+      shippingMethods = calculationContextData.shipping_methods || []
     }
 
     return {
-      shipping_address: cartOrOrder.shipping_address,
+      shipping_address: calculationContextData.shipping_address,
       shipping_methods: shippingMethods,
-      customer: cartOrOrder.customer,
-      region: cartOrOrder.region,
+      customer: calculationContextData.customer,
+      region: calculationContextData.region,
       is_return: options.is_return ?? false,
       allocation_map: allocationMap,
     }

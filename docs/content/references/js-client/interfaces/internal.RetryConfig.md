@@ -18,7 +18,7 @@ Backoff Type; 'linear', 'static' or 'exponential'.
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:47
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:47
 
 ___
 
@@ -30,7 +30,7 @@ Whether to check for 'Retry-After' header in response and use value as delay. De
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:51
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:51
 
 ___
 
@@ -42,7 +42,7 @@ The number of retries already attempted.
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:13
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:13
 
 ___
 
@@ -55,7 +55,7 @@ Defaults to ['GET','PUT','HEAD','OPTIONS','DELETE']
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:26
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:26
 
 ___
 
@@ -67,7 +67,7 @@ The instance of the axios object to which the interceptor is attached.
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:21
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:21
 
 ___
 
@@ -79,7 +79,7 @@ Max permitted Retry-After value (in ms) - rejects if greater. Defaults to 5 mins
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:55
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:55
 
 ___
 
@@ -91,7 +91,7 @@ Ceiling for calculated delay (in ms) - delay will not exceed this value.
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:59
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:59
 
 ___
 
@@ -103,7 +103,33 @@ When there is no response, the number of retries to attempt. Defaults to 2.
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:43
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:43
+
+___
+
+### onRetryAttempt
+
+• `Optional` **onRetryAttempt**: (`err`: [`AxiosError`](internal.AxiosError.md)<`any`, `any`\>) => `void`
+
+#### Type declaration
+
+▸ (`err`): `void`
+
+Function to invoke when a retry attempt is made.
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | [`AxiosError`](internal.AxiosError.md)<`any`, `any`\> |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:35
 
 ___
 
@@ -115,7 +141,7 @@ The number of times to retry the request.  Defaults to 3.
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:9
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:9
 
 ___
 
@@ -127,7 +153,33 @@ The amount of time to initially delay the retry.  Defaults to 100.
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:17
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:17
+
+___
+
+### shouldRetry
+
+• `Optional` **shouldRetry**: (`err`: [`AxiosError`](internal.AxiosError.md)<`any`, `any`\>) => `boolean`
+
+#### Type declaration
+
+▸ (`err`): `boolean`
+
+Function to invoke which determines if you should retry
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | [`AxiosError`](internal.AxiosError.md)<`any`, `any`\> |
+
+##### Returns
+
+`boolean`
+
+#### Defined in
+
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:39
 
 ___
 
@@ -140,48 +192,4 @@ Defaults to: [[100, 199], [429, 429], [500, 599]]
 
 #### Defined in
 
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:31
-
-## Methods
-
-### onRetryAttempt
-
-▸ `Optional` **onRetryAttempt**(`err`): `void`
-
-Function to invoke when a retry attempt is made.
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `err` | [`AxiosError`](internal.AxiosError.md)<`any`, `any`\> |
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:35
-
-___
-
-### shouldRetry
-
-▸ `Optional` **shouldRetry**(`err`): `boolean`
-
-Function to invoke which determines if you should retry
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `err` | [`AxiosError`](internal.AxiosError.md)<`any`, `any`\> |
-
-#### Returns
-
-`boolean`
-
-#### Defined in
-
-packages/medusa-js/node_modules/retry-axios/dist/src/index.d.ts:39
+medusa-js/node_modules/retry-axios/dist/src/index.d.ts:31

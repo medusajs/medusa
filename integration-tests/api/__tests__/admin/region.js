@@ -2,9 +2,18 @@ const path = require("path")
 const { Region } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
+const { simpleRegionFactory } = require("../../factories")
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 jest.setTimeout(30000)
 
@@ -27,23 +36,18 @@ describe("/admin/regions", () => {
 
   describe("Remove region from country on delete", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        const manager = dbConnection.manager
-        await manager.insert(Region, {
-          id: "test-region",
-          name: "Test Region",
-          currency_code: "usd",
-          tax_rate: 0,
-        })
+      await adminSeeder(dbConnection)
+      const manager = dbConnection.manager
+      await manager.insert(Region, {
+        id: "test-region",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
 
-        await manager.query(
-          `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await manager.query(
+        `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
+      )
     })
 
     afterEach(async () => {
@@ -162,17 +166,20 @@ describe("/admin/regions", () => {
           console.log(err)
         })
 
-      expect(response.data.regions).toEqual([
-        expect.objectContaining({
-          id: "test-region-updated-1",
-        }),
-        expect.objectContaining({
-          id: "test-region",
-        }),
-        expect.objectContaining({
-          id: "test-region-updated",
-        }),
-      ])
+      expect(response.data.regions).toHaveLength(3)
+      expect(response.data.regions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-region-updated-1",
+          }),
+          expect.objectContaining({
+            id: "test-region",
+          }),
+          expect.objectContaining({
+            id: "test-region-updated",
+          }),
+        ])
+      )
       expect(response.status).toEqual(200)
     })
 
@@ -189,37 +196,35 @@ describe("/admin/regions", () => {
           console.log(err)
         })
 
-      expect(response.data.regions).toEqual([
-        expect.objectContaining({
-          id: "test-region",
-        }),
-        expect.objectContaining({
-          id: "test-region-updated",
-        }),
-      ])
+      expect(response.data.regions).toHaveLength(2)
+      expect(response.data.regions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-region",
+          }),
+          expect.objectContaining({
+            id: "test-region-updated",
+          }),
+        ])
+      )
       expect(response.status).toEqual(200)
     })
   })
 
   describe("DELETE /admin/regions/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        const manager = dbConnection.manager
-        await manager.insert(Region, {
-          id: "test-region",
-          name: "Test Region",
-          currency_code: "usd",
-          tax_rate: 0,
-        })
+      await adminSeeder(dbConnection)
+      const manager = dbConnection.manager
+      await manager.insert(Region, {
+        id: "test-region",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
 
-        await manager.query(
-          `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
-        )
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await manager.query(
+        `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
+      )
     })
 
     afterEach(async () => {
@@ -287,6 +292,103 @@ describe("/admin/regions", () => {
           "United States already exists in region test-region"
         )
       }
+    })
+  })
+})
+
+describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/regions", () => {
+  let medusaProcess
+  let dbConnection
+
+  beforeAll(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const [process, connection] = await startServerWithEnvironment({
+      cwd,
+      env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
+    })
+    dbConnection = connection
+    medusaProcess = process
+  })
+
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+
+    medusaProcess.kill()
+  })
+
+  describe("POST /admin/regions/:id", () => {
+    const region1TaxInclusiveId = "region-1-tax-inclusive"
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await simpleRegionFactory(dbConnection, {
+          id: region1TaxInclusiveId,
+          countries: ["fr"],
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should allow to create a region that includes tax", async function () {
+      const api = useApi()
+
+      const payload = {
+        name: "region-including-taxes",
+        currency_code: "usd",
+        tax_rate: 0,
+        payment_providers: ["test-pay"],
+        fulfillment_providers: ["test-ful"],
+        countries: ["us"],
+        includes_tax: true,
+      }
+
+      let response = await api
+        .post(`/admin/regions`, payload, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.region).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          includes_tax: true,
+          name: "region-including-taxes",
+        })
+      )
+    })
+
+    it("should allow to update a region that includes tax", async function () {
+      const api = useApi()
+      let response = await api
+        .get(`/admin/regions/${region1TaxInclusiveId}`, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.region.includes_tax).toBe(false)
+
+      response = await api
+        .post(
+          `/admin/regions/${region1TaxInclusiveId}`,
+          {
+            includes_tax: true,
+          },
+          adminReqConfig
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.region.includes_tax).toBe(true)
     })
   })
 })

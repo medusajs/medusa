@@ -48,7 +48,7 @@ class AdminCustomersResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -67,7 +67,7 @@ class AdminCustomersResource extends BaseResource {
       path = `/admin/customers?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

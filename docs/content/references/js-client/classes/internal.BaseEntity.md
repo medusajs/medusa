@@ -26,6 +26,8 @@ Base abstract entity for all entities
 
   ↳ [`DraftOrder`](internal.DraftOrder.md)
 
+  ↳ [`OrderEdit`](internal.OrderEdit.md)
+
   ↳ [`LineItem`](internal.LineItem.md)
 
   ↳ [`PaymentSession`](internal.PaymentSession.md)
@@ -34,19 +36,21 @@ Base abstract entity for all entities
 
   ↳ [`TaxLine`](internal.TaxLine.md)
 
-  ↳ [`Notification`](internal.Notification.md)
+  ↳ [`Notification`](internal-12.Notification.md)
 
-  ↳ [`Store`](internal.Store.md)
+  ↳ [`PublishableApiKey`](internal-21.PublishableApiKey.md)
+
+  ↳ [`Store`](internal-28.Store.md)
 
 ## Properties
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
@@ -56,14 +60,14 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7

@@ -1,13 +1,28 @@
 const path = require("path")
 
+const { IdMap } = require("medusa-test-utils")
+
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 
 const customerSeeder = require("../../helpers/customer-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+const {
+  DiscountRuleType,
+  AllocationType,
+  DiscountConditionType,
+  DiscountConditionOperator,
+} = require("@medusajs/medusa")
+const { simpleDiscountFactory } = require("../../factories")
 
 jest.setTimeout(30000)
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 describe("/admin/customer-groups", () => {
   let medusaProcess
@@ -27,13 +42,8 @@ describe("/admin/customer-groups", () => {
 
   describe("POST /admin/customer-groups", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -48,11 +58,11 @@ describe("/admin/customer-groups", () => {
         name: "test group",
       }
 
-      const response = await api.post("/admin/customer-groups", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        "/admin/customer-groups",
+        payload,
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.customer_group).toEqual(
@@ -71,11 +81,7 @@ describe("/admin/customer-groups", () => {
       }
 
       await api
-        .post("/admin/customer-groups", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post("/admin/customer-groups", payload, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(422)
           expect(err.response.data.type).toEqual("duplicate_error")
@@ -88,13 +94,8 @@ describe("/admin/customer-groups", () => {
 
   describe("DELETE /admin/customer-groups", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -109,11 +110,10 @@ describe("/admin/customer-groups", () => {
 
       const id = "customer-group-1"
 
-      const deleteResponse = await api.delete(`/admin/customer-groups/${id}`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const deleteResponse = await api.delete(
+        `/admin/customer-groups/${id}`,
+        adminReqConfig
+      )
 
       expect(deleteResponse.data).toEqual({
         id: id,
@@ -122,11 +122,7 @@ describe("/admin/customer-groups", () => {
       })
 
       await api
-        .get(`/admin/customer-groups/${id}`, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get(`/admin/customer-groups/${id}`, adminReqConfig)
         .catch((error) => {
           expect(error.response.data.type).toEqual("not_found")
           expect(error.response.data.message).toEqual(
@@ -144,11 +140,7 @@ describe("/admin/customer-groups", () => {
 
       const customerRes_preDeletion = await api.get(
         `/admin/customers/test-customer-delete-cg?expand=groups`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(customerRes_preDeletion.data.customer).toEqual(
@@ -163,11 +155,7 @@ describe("/admin/customer-groups", () => {
       )
 
       const deleteResponse = await api
-        .delete(`/admin/customer-groups/${id}`, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete(`/admin/customer-groups/${id}`, adminReqConfig)
         .catch((err) => console.log(err))
 
       expect(deleteResponse.data).toEqual({
@@ -178,11 +166,7 @@ describe("/admin/customer-groups", () => {
 
       const customerRes = await api.get(
         `/admin/customers/test-customer-delete-cg?expand=groups`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(customerRes.data.customer).toEqual(
@@ -195,13 +179,8 @@ describe("/admin/customer-groups", () => {
 
   describe("GET /admin/customer-groups/{id}/customers", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -213,11 +192,7 @@ describe("/admin/customer-groups", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/customer-groups/test-group-5/customers", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/customer-groups/test-group-5/customers", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -242,13 +217,8 @@ describe("/admin/customer-groups", () => {
 
   describe("POST /admin/customer-groups/{id}/customers/batch", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -266,11 +236,7 @@ describe("/admin/customer-groups", () => {
       const batchAddResponse = await api.post(
         "/admin/customer-groups/customer-group-1/customers/batch",
         payload,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(batchAddResponse.status).toEqual(200)
@@ -282,9 +248,7 @@ describe("/admin/customer-groups", () => {
 
       const getCustomerResponse = await api.get(
         "/admin/customers?expand=groups",
-        {
-          headers: { Authorization: "Bearer test_token" },
-        }
+        adminReqConfig
       )
 
       expect(getCustomerResponse.data.customers).toEqual(
@@ -324,11 +288,7 @@ describe("/admin/customer-groups", () => {
         .post(
           "/admin/customer-groups/non-existing-customer-group-1/customers/batch",
           payload,
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           expect(err.response.data.type).toEqual("not_found")
@@ -352,11 +312,7 @@ describe("/admin/customer-groups", () => {
         .post(
           "/admin/customer-groups/customer-group-1/customers/batch",
           payload_1,
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => console.log(err))
 
@@ -375,11 +331,7 @@ describe("/admin/customer-groups", () => {
         .post(
           "/admin/customer-groups/customer-group-1/customers/batch",
           payload_2,
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           expect(err.response.data.type).toEqual("not_found")
@@ -391,9 +343,7 @@ describe("/admin/customer-groups", () => {
       // check that customer-1 is only added once and that customer-2 is added correctly
       const getCustomerResponse = await api.get(
         "/admin/customers?expand=groups",
-        {
-          headers: { Authorization: "Bearer test_token" },
-        }
+        adminReqConfig
       )
 
       expect(getCustomerResponse.data.customers).toEqual(
@@ -418,13 +368,8 @@ describe("/admin/customer-groups", () => {
 
   describe("POST /admin/customer-groups/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -444,11 +389,11 @@ describe("/admin/customer-groups", () => {
         },
       }
 
-      const response = await api.post(`/admin/customer-groups/${id}`, body, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.post(
+        `/admin/customer-groups/${id}`,
+        body,
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.customer_group).toEqual(
@@ -479,11 +424,11 @@ describe("/admin/customer-groups", () => {
       }
 
       const response = await api
-        .post(`/admin/customer-groups/${id}?expand=customers`, body, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          `/admin/customer-groups/${id}?expand=customers`,
+          body,
+          adminReqConfig
+        )
         .catch(console.log)
 
       expect(response.status).toEqual(200)
@@ -500,13 +445,8 @@ describe("/admin/customer-groups", () => {
 
   describe("GET /admin/customer-groups", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -520,11 +460,7 @@ describe("/admin/customer-groups", () => {
       const response = await api
         .get(
           `/admin/customer-groups?limit=5&offset=2&expand=customers&order=created_at`,
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch(console.log)
 
@@ -540,11 +476,10 @@ describe("/admin/customer-groups", () => {
     it("retreive a list of customer groups filtered by name using `q` param", async () => {
       const api = useApi()
 
-      const response = await api.get(`/admin/customer-groups?q=vip-customers`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.get(
+        `/admin/customer-groups?q=vip-customers`,
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
@@ -555,17 +490,96 @@ describe("/admin/customer-groups", () => {
       )
       expect(response.data.customer_groups[0]).not.toHaveProperty("customers")
     })
+
+    it("lists customers in group filtered by discount condition id and count", async () => {
+      const api = useApi()
+
+      const resCustomerGroup = await api.get(
+        "/admin/customer-groups",
+        adminReqConfig
+      )
+
+      const customerGroup1 = resCustomerGroup.data.customer_groups[0]
+      const customerGroup2 = resCustomerGroup.data.customer_groups[2]
+
+      const buildDiscountData = (code, conditionId, groups) => {
+        return {
+          code,
+          rule: {
+            type: DiscountRuleType.PERCENTAGE,
+            value: 10,
+            allocation: AllocationType.TOTAL,
+            conditions: [
+              {
+                id: conditionId,
+                type: DiscountConditionType.CUSTOMER_GROUPS,
+                operator: DiscountConditionOperator.IN,
+                customer_groups: groups,
+              },
+            ],
+          },
+        }
+      }
+
+      const discountConditionId = IdMap.getId(
+        "discount-condition-customer-group-1"
+      )
+      await simpleDiscountFactory(
+        dbConnection,
+        buildDiscountData("code-1", discountConditionId, [customerGroup1.id])
+      )
+
+      const discountConditionId2 = IdMap.getId(
+        "discount-condition-customer-group-2"
+      )
+      await simpleDiscountFactory(
+        dbConnection,
+        buildDiscountData("code-2", discountConditionId2, [customerGroup2.id])
+      )
+
+      let res = await api.get(
+        `/admin/customer-groups?discount_condition_id=${discountConditionId}`,
+        adminReqConfig
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.customer_groups).toHaveLength(1)
+      expect(res.data.customer_groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: customerGroup1.id }),
+        ])
+      )
+
+      res = await api.get(
+        `/admin/customer-groups?discount_condition_id=${discountConditionId2}`,
+        adminReqConfig
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.customer_groups).toHaveLength(1)
+      expect(res.data.customer_groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: customerGroup2.id }),
+        ])
+      )
+
+      res = await api.get(`/admin/customer-groups`, adminReqConfig)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.customer_groups).toHaveLength(7)
+      expect(res.data.customer_groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: customerGroup1.id }),
+          expect.objectContaining({ id: customerGroup2.id }),
+        ])
+      )
+    })
   })
 
   describe("GET /admin/customer-groups/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -578,11 +592,10 @@ describe("/admin/customer-groups", () => {
 
       const id = "customer-group-1"
 
-      const response = await api.get(`/admin/customer-groups/${id}`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.get(
+        `/admin/customer-groups/${id}`,
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.customer_group).toEqual(
@@ -601,11 +614,7 @@ describe("/admin/customer-groups", () => {
 
       const response = await api.get(
         `/admin/customer-groups/${id}?expand=customers`,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -624,11 +633,7 @@ describe("/admin/customer-groups", () => {
       const id = "test-group-000"
 
       await api
-        .get(`/admin/customer-groups/${id}`, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get(`/admin/customer-groups/${id}`, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(404)
           expect(err.response.data.type).toEqual("not_found")
@@ -641,13 +646,8 @@ describe("/admin/customer-groups", () => {
 
   describe("DELETE /admin/customer-groups/{id}/batch", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -664,9 +664,7 @@ describe("/admin/customer-groups", () => {
 
       const batchAddResponse = await api
         .delete("/admin/customer-groups/test-group-5/customers/batch", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
+          ...adminReqConfig,
           data: payload,
         })
         .catch((err) => console.log(err))
@@ -681,9 +679,7 @@ describe("/admin/customer-groups", () => {
 
       const getCustomerResponse = await api.get(
         "/admin/customers?expand=groups",
-        {
-          headers: { Authorization: "Bearer test_token" },
-        }
+        adminReqConfig
       )
 
       expect(getCustomerResponse.data.customers).toEqual(
@@ -709,9 +705,7 @@ describe("/admin/customer-groups", () => {
 
       const batchAddResponse = await api
         .delete("/admin/customer-groups/test-group-5/customers/batch", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
+          ...adminReqConfig,
           data: payload,
         })
         .catch((err) => console.log(err))
@@ -726,9 +720,7 @@ describe("/admin/customer-groups", () => {
 
       const getCustomerResponse = await api.get(
         "/admin/customers/test-customer-7?expand=groups",
-        {
-          headers: { Authorization: "Bearer test_token" },
-        }
+        adminReqConfig
       )
 
       expect(getCustomerResponse.data.customer).toEqual(
@@ -754,17 +746,13 @@ describe("/admin/customer-groups", () => {
       }
 
       await api.delete("/admin/customer-groups/test-group-5/customers/batch", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
+        ...adminReqConfig,
         data: payload,
       })
 
       // check that customer-1 is only added once and that customer-2 is added correctly
       const getCustomerResponse = await api
-        .get("/admin/customers?expand=groups", {
-          headers: { Authorization: "Bearer test_token" },
-        })
+        .get("/admin/customers?expand=groups", adminReqConfig)
         .catch((err) => console.log(err))
 
       expect(getCustomerResponse.data.customers).toEqual(
@@ -796,18 +784,14 @@ describe("/admin/customer-groups", () => {
       }
 
       await api.delete("/admin/customer-groups/test-group-5/customers/batch", {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
+        ...adminReqConfig,
         data: payload,
       })
 
       const idempotentRes = await api.delete(
         "/admin/customer-groups/test-group-5/customers/batch",
         {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
+          ...adminReqConfig,
           data: payload,
         }
       )

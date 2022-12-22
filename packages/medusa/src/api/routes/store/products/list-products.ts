@@ -7,20 +7,20 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { omit, pickBy } from "lodash"
-import { defaultStoreProductsRelations } from "."
 import {
+  CartService,
   ProductService,
   RegionService,
-  CartService,
 } from "../../../../services"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import PricingService from "../../../../services/pricing"
 import { DateComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { Product } from "../../../../models"
+import { IsType } from "../../../../utils/validators/is-type"
+import { FlagRouter } from "../../../../utils/flag-router"
+import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**
  * @oas [get] /products
@@ -28,20 +28,121 @@ import { Product } from "../../../../models"
  * summary: List Products
  * description: "Retrieves a list of Products."
  * parameters:
- *   - (query) q {string} Query used for searching products.
- *   - (query) id {string} Id of the product to search for.
- *   - (query) collection_id {string[]} Collection ids to search for.
- *   - (query) tags {string[]} Tags to search for.
- *   - (query) title {string} to search for.
- *   - (query) description {string} to search for.
- *   - (query) handle {string} to search for.
- *   - (query) is_giftcard {string} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} to search for.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting products was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting products was updated, i.e. less than, greater than etc.
- *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
- *   - (query) offset {string} How many products to skip in the result.
- *   - (query) limit {string} Limit the number of products returned.
+ *   - (query) q {string} Query used for searching products by title, description, variant's title, variant's sku, and collection's title
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: product IDs to search for.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *         - type: array
+ *           items:
+ *             type: string
+ *   - in: query
+ *     name: sales_channel_id
+ *     style: form
+ *     explode: false
+ *     description: an array of sales channel IDs to filter the retrieved products by.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: collection_id
+ *     style: form
+ *     explode: false
+ *     description: Collection IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: type_id
+ *     style: form
+ *     explode: false
+ *     description: Type IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: tags
+ *     style: form
+ *     explode: false
+ *     description: Tag IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) title {string} title to search for.
+ *   - (query) description {string} description to search for.
+ *   - (query) handle {string} handle to search for.
+ *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
+ *   - in: query
+ *     name: created_at
+ *     description: Date comparison for when resulting products were created.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Date comparison for when resulting products were updated.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - (query) offset=0 {integer} How many products to skip in the result.
+ *   - (query) limit=100 {integer} Limit the number of products returned.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) order {string} the field used to order the products.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       medusa.products.list()
+ *       .then(({ products, limit, offset, count }) => {
+ *         console.log(products.length);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request GET 'https://medusa-url.com/store/products'
  * tags:
  *   - Product
  * responses:
@@ -50,20 +151,40 @@ import { Product } from "../../../../models"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
- *             count:
- *               description: The total number of Products.
- *               type: integer
- *             offset:
- *               description: The offset for pagination.
- *               type: integer
- *             limit:
- *               description: The maxmimum number of Products to return,
- *               type: integer
  *             products:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/product"
+ *                 allOf:
+ *                   - $ref: "#/components/schemas/Product"
+ *                   - type: object
+ *                     properties:
+ *                       variants:
+ *                         type: array
+ *                         items:
+ *                           allOf:
+ *                             - $ref: "#/components/schemas/ProductVariant"
+ *                             - $ref: "#/components/schemas/ProductVariantPricesFields"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
+ *   "400":
+ *     $ref: "#/components/responses/400_error"
+ *   "404":
+ *     $ref: "#/components/responses/not_found_error"
+ *   "409":
+ *     $ref: "#/components/responses/invalid_state_error"
+ *   "422":
+ *     $ref: "#/components/responses/invalid_request_error"
+ *   "500":
+ *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
@@ -71,49 +192,34 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const validated = await validator(StoreGetProductsParams, req.query)
-
-  const filterableFields: StoreGetProductsParams = omit(validated, [
-    "fields",
-    "expand",
-    "limit",
-    "offset",
-    "cart_id",
-    "region_id",
-    "currency_code",
-  ])
+  const validated = req.validatedQuery as StoreGetProductsParams
+  let {
+    cart_id,
+    region_id: regionId,
+    currency_code: currencyCode,
+    ...filterableFields
+  } = req.filterableFields
+  const listConfig = req.listConfig
 
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
 
-  let includeFields: (keyof Product)[] = []
-  if (validated.fields) {
-    const set = new Set(validated.fields.split(",")) as Set<keyof Product>
-    set.add("id")
-    includeFields = [...set]
-  }
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    if (req.publishableApiKeyScopes?.sales_channel_id.length) {
+      filterableFields.sales_channel_id =
+        filterableFields.sales_channel_id ||
+        req.publishableApiKeyScopes.sales_channel_id
 
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
-  const listConfig = {
-    select: includeFields.length ? includeFields : undefined,
-    relations: expandFields.length
-      ? expandFields
-      : defaultStoreProductsRelations,
-    skip: validated.offset,
-    take: validated.limit,
+      listConfig.relations.push("sales_channels")
+    }
   }
 
   const [rawProducts, count] = await productService.listAndCount(
-    pickBy(filterableFields, (val) => typeof val !== "undefined"),
+    filterableFields,
     listConfig
   )
 
-  let regionId = validated.region_id
-  let currencyCode = validated.currency_code
   if (validated.cart_id) {
     const cart = await cartService.retrieve(validated.cart_id, {
       select: ["id", "region_id"],
@@ -126,7 +232,7 @@ export default async (req, res) => {
   }
 
   const products = await pricingService.setProductPrices(rawProducts, {
-    cart_id: validated.cart_id,
+    cart_id: cart_id,
     region_id: regionId,
     currency_code: currencyCode,
     customer_id: req.user?.customer_id,
@@ -159,6 +265,10 @@ export class StoreGetProductsPaginationParams extends PriceSelectionParams {
   @IsOptional()
   @Type(() => Number)
   limit?: number = 100
+
+  @IsString()
+  @IsOptional()
+  order?: string
 }
 
 export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
@@ -195,9 +305,12 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  type?: string
+  type_id?: string[]
+
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
+  sales_channel_id?: string[]
 
   @IsOptional()
   @ValidateNested()

@@ -36,13 +36,10 @@ describe("/admin/notes", () => {
   describe("GET /admin/notes/:id", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
 
-        await manager.insert(Note, note)
-      } catch (err) {
-        console.log(err)
-      }
+      await adminSeeder(dbConnection)
+
+      await manager.insert(Note, note)
     })
 
     afterEach(async () => {
@@ -73,11 +70,7 @@ describe("/admin/notes", () => {
 
   describe("POST /admin/notes", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-      }
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -121,19 +114,16 @@ describe("/admin/notes", () => {
   describe("GET /admin/notes", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
 
-        await manager.insert(Note, { ...note, id: "note1" })
-        await manager.insert(Note, { ...note, id: "note2" })
-        await manager.insert(Note, {
-          ...note,
-          id: "note3",
-          resource_id: "resource2",
-        })
-      } catch (err) {
-        console.log(err)
-      }
+      await adminSeeder(dbConnection)
+
+      await manager.insert(Note, { ...note, id: "note1" })
+      await manager.insert(Note, { ...note, id: "note2" })
+      await manager.insert(Note, {
+        ...note,
+        id: "note3",
+        resource_id: "resource2",
+      })
     })
 
     afterEach(async () => {
@@ -178,13 +168,10 @@ describe("/admin/notes", () => {
   describe("POST /admin/notes/:id", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
 
-        await manager.insert(Note, note)
-      } catch (err) {
-        console.log(err)
-      }
+      await adminSeeder(dbConnection)
+
+      await manager.insert(Note, note)
     })
 
     afterEach(async () => {
@@ -226,13 +213,10 @@ describe("/admin/notes", () => {
   describe("DELETE /admin/notes/:id", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
 
-        await manager.insert(Note, note)
-      } catch (err) {
-        console.log(err)
-      }
+      await adminSeeder(dbConnection)
+
+      await manager.insert(Note, note)
     })
 
     afterEach(async () => {

@@ -41,7 +41,7 @@ describe("MiddlewareService", () => {
     it("calls middleware", () => {
       // This doesn't reflect how middleware works but does suffice in our
       // testing situation
-      const mid = args => args
+      const mid = (args) => args
 
       middlewareService.addPostAuthentication(mid, { data: "yes" })
 
@@ -62,7 +62,7 @@ describe("MiddlewareService", () => {
     it("calls middleware", () => {
       // This doesn't reflect how middleware works but does suffice in our
       // testing situation
-      const mid = args => args
+      const mid = (args) => args
 
       middlewareService.addPreAuthentication(mid, { data: "yes" })
 

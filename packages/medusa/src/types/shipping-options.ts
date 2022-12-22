@@ -44,6 +44,7 @@ export type CreateShippingOptionInput = {
   profile_id: string
   provider_id: string
   data: Record<string, unknown>
+  includes_tax?: boolean
 
   amount?: number
   is_return?: boolean
@@ -69,5 +70,12 @@ export type UpdateShippingOptionInput = {
   requirements?: ShippingOptionRequirement[]
   region_id?: string
   provider_id?: string
+  profile_id?: string
   data?: string
+  includes_tax?: boolean
+}
+
+export type ValidatePriceTypeAndAmountInput = {
+  amount?: number
+  price_type?: ShippingOptionPriceType
 }

@@ -18,7 +18,11 @@ module.exports = {
     "typedoc-monorepo-link-types",
     "typedoc-frontmatter-plugin",
   ],
-  exclude: "packages/medusa-js/src/resources/base.ts",
+  exclude: [
+    "packages/medusa-js/src/resources/base.ts",
+    "node_modules/**",
+    "packages/**/node_modules",
+  ],
   excludeConstructors: true,
   frontmatterData: {
     displayed_sidebar: "jsClientSidebar",

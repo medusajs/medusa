@@ -1,10 +1,11 @@
 import glob from "glob"
 import path from "path"
-import { asFunction, aliasTo } from "awilix"
+import { aliasTo, asFunction } from "awilix"
 
 import formatRegistrationName from "../utils/format-registration-name"
 import { isBatchJobStrategy } from "../interfaces"
 import { MedusaContainer } from "../types/global"
+import { isDefined } from "medusa-core-utils"
 
 type LoaderOptions = {
   container: MedusaContainer
@@ -17,8 +18,7 @@ type LoaderOptions = {
  * @returns void
  */
 export default ({ container, configModule, isTest }: LoaderOptions): void => {
-  const useMock =
-    typeof isTest !== "undefined" ? isTest : process.env.NODE_ENV === "test"
+  const useMock = isDefined(isTest) ? isTest : process.env.NODE_ENV === "test"
 
   const corePath = useMock
     ? "../strategies/__mocks__/[!__]*.js"
@@ -26,13 +26,26 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
 
   const coreFull = path.join(__dirname, corePath)
 
+  const ignore = [
+    "**/__fixtures__/**",
+    "**/index.js",
+    "**/index.ts",
+    "**/utils.js",
+    "**/utils.ts",
+    "**/types.js",
+    "**/types.ts",
+    "**/types/**",
+  ]
+  if (!useMock) {
+    ignore.push("**/__tests__/**", "**/__mocks__/**")
+  }
+
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
+    ignore,
   })
 
   core.forEach((fn) => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
 

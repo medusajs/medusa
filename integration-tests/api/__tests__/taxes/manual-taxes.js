@@ -6,8 +6,6 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const {
   simpleProductTaxRateFactory,
-  simpleShippingTaxRateFactory,
-  simpleShippingOptionFactory,
   simpleCartFactory,
   simpleRegionFactory,
   simpleProductFactory,
@@ -26,12 +24,8 @@ describe("Manual Cart Taxes", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    try {
-      dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
-    } catch (error) {
-      console.log(error)
-    }
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -82,7 +76,7 @@ describe("Manual Cart Taxes", () => {
 
     const response = await api.get("/store/carts/test-cart")
     expect(response.status).toEqual(200)
-    expect(response.data.cart.tax_total).toEqual(null)
+    expect(response.data.cart.tax_total).toEqual(0)
     expect(response.data.cart.total).toEqual(100)
   })
 

@@ -28,13 +28,8 @@ describe("/admin/customers", () => {
 
   describe("GET /admin/customers", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -71,6 +66,27 @@ describe("/admin/customers", () => {
           expect.objectContaining({
             id: "test-customer-has_account",
           }),
+        ])
+      )
+    })
+
+    it("lists only registered customers", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/customers?has_account=true", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customers).toEqual(
+        expect.not.arrayContaining([
+          expect.objectContaining({ has_account: false }),
         ])
       )
     })
@@ -164,12 +180,7 @@ describe("/admin/customers", () => {
 
   describe("POST /admin/customers", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -213,13 +224,8 @@ describe("/admin/customers", () => {
 
   describe("POST /admin/customers/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -368,13 +374,8 @@ describe("/admin/customers", () => {
 
   describe("GET /admin/customers/:id", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await customerSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await customerSeeder(dbConnection)
     })
 
     afterEach(async () => {

@@ -35,7 +35,7 @@ class CartsResource extends BaseResource {
    * Payment authorization is attempted and if more work is required, we simply return the cart for further updates.
    * If payment is authorized and order is not yet created, we make sure to do so.
    * The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
-   * If not provuided, we will generate one for the request.
+   * If not provided, we will generate one for the request.
    * @param {string} cart_id is required
    * @param customHeaders
    * @return {ResponsePromise<StoreCompleteCartRes>}
@@ -45,7 +45,7 @@ class CartsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCompleteCartRes> {
     const path = `/store/carts/${cart_id}/complete`
-    return this.client.request("POST", path, {}, {}, customHeaders)
+    return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -76,7 +76,7 @@ class CartsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions`
-    return this.client.request("POST", path, {}, {}, customHeaders)
+    return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -92,7 +92,7 @@ class CartsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/discounts/${code}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -109,7 +109,7 @@ class CartsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -125,7 +125,7 @@ class CartsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}/refresh`
-    return this.client.request("POST", path, {}, {}, customHeaders)
+    return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -139,7 +139,7 @@ class CartsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**

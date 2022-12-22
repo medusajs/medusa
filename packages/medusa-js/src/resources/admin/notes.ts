@@ -11,7 +11,10 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminNotesResource extends BaseResource {
-  create(payload: AdminPostNotesReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesRes> {
+  create(
+    payload: AdminPostNotesReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminNotesRes> {
     const path = `/admin/notes`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -19,22 +22,32 @@ class AdminNotesResource extends BaseResource {
   update(
     id: string,
     payload: AdminPostNotesNoteReq,
-    customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminNotesRes> {
     const path = `/admin/notes/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesDeleteRes> {
+  delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminNotesDeleteRes> {
     const path = `/admin/notes/${id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminNotesRes> {
     const path = `/admin/notes/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
-  list(query?: AdminGetNotesParams, customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesListRes> {
+  list(
+    query?: AdminGetNotesParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminNotesListRes> {
     let path = `/admin/notes/`
 
     if (query) {
@@ -42,7 +55,7 @@ class AdminNotesResource extends BaseResource {
       path = `/admin/notes?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 

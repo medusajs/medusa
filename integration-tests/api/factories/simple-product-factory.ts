@@ -4,17 +4,17 @@ import {
   ProductTag,
   ProductType,
   ShippingProfile,
-  ShippingProfileType,
+  ShippingProfileType
 } from "@medusajs/medusa"
 import faker from "faker"
 import { Connection } from "typeorm"
 import {
   ProductVariantFactoryData,
-  simpleProductVariantFactory,
+  simpleProductVariantFactory
 } from "./simple-product-variant-factory"
 import {
   SalesChannelFactoryData,
-  simpleSalesChannelFactory,
+  simpleSalesChannelFactory
 } from "./simple-sales-channel-factory"
 
 export type ProductFactoryData = {
@@ -129,7 +129,7 @@ export const simpleProductFactory = async (
     await simpleProductVariantFactory(connection, factoryData)
   }
 
-  return manager.findOne(
+  return await manager.findOne(
     Product,
     { id: prodId },
     { relations: ["tags", "variants", "variants.prices"] }

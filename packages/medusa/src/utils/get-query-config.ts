@@ -1,7 +1,7 @@
 import { pick } from "lodash"
 import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
-import { MedusaError } from "medusa-core-utils/dist"
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { BaseEntity } from "../interfaces"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -26,14 +26,14 @@ export function getRetrieveConfig<TModel extends BaseEntity>(
   expand?: string[]
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
-  if (typeof fields !== "undefined") {
-    includeFields = Array.from(new Set([...fields, "id"])).map((field) =>
-      typeof field === "string" ? field.trim() : field
-    ) as (keyof TModel)[]
+  if (isDefined(fields)) {
+    includeFields = Array.from(new Set([...fields, "id"])).map((field) => {
+      return typeof field === "string" ? field.trim() : field
+    }) as (keyof TModel)[]
   }
 
   let expandFields: string[] = []
-  if (typeof expand !== "undefined") {
+  if (isDefined(expand)) {
     expandFields = expand.map((expandRelation) => expandRelation.trim())
   }
 
@@ -50,10 +50,10 @@ export function getListConfig<TModel extends BaseEntity>(
   expand?: string[],
   limit = 50,
   offset = 0,
-  order?: { [k: symbol]: "DESC" | "ASC" }
+  order: { [k: string | symbol]: "DESC" | "ASC" } = {}
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
-  if (typeof fields !== "undefined") {
+  if (isDefined(fields)) {
     const fieldSet = new Set(fields)
     // Ensure created_at is included, since we are sorting on this
     fieldSet.add("created_at")
@@ -62,12 +62,14 @@ export function getListConfig<TModel extends BaseEntity>(
   }
 
   let expandFields: string[] = []
-  if (typeof expand !== "undefined") {
+  if (isDefined(expand)) {
     expandFields = expand
   }
 
-  const orderBy: Record<string, "DESC" | "ASC"> = order ?? {
-    created_at: "DESC",
+  const orderBy = order
+
+  if (!Object.keys(order).length) {
+    orderBy["created_at"] = "DESC"
   }
 
   return {
@@ -95,8 +97,16 @@ export function prepareListQuery<
     expandFields = fields.split(",") as (keyof TEntity)[]
   }
 
+  if (expandFields?.length && queryConfig?.allowedFields?.length) {
+    validateFields(expandFields as string[], queryConfig.allowedFields)
+  }
+
+  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
+    validateRelations(expandRelations, queryConfig.allowedRelations)
+  }
+
   let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
-  if (typeof order !== "undefined") {
+  if (isDefined(order)) {
     let orderField = order
     if (order.startsWith("-")) {
       const [, field] = order.split("-")
@@ -144,10 +154,53 @@ export function prepareRetrieveQuery<
     expandFields = fields.split(",") as (keyof TEntity)[]
   }
 
+  if (expandFields?.length && queryConfig?.allowedFields?.length) {
+    validateFields(expandFields as string[], queryConfig.allowedFields)
+  }
+
+  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
+    validateRelations(expandRelations, queryConfig.allowedRelations)
+  }
+
   return getRetrieveConfig<TEntity>(
     queryConfig?.defaultFields as (keyof TEntity)[],
     (queryConfig?.defaultRelations ?? []) as string[],
     expandFields,
     expandRelations
   )
+}
+
+function validateRelations(
+  relations: string[],
+  allowed: string[]
+): void | never {
+  const disallowedRelationsFound: string[] = []
+  relations?.forEach((field) => {
+    if (!allowed.includes(field as string)) {
+      disallowedRelationsFound.push(field)
+    }
+  })
+
+  if (disallowedRelationsFound.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Relations [${disallowedRelationsFound.join(", ")}] are not valid`
+    )
+  }
+}
+
+function validateFields(fields: string[], allowed: string[]): void | never {
+  const disallowedFieldsFound: string[] = []
+  fields?.forEach((field) => {
+    if (!allowed.includes(field as string)) {
+      disallowedFieldsFound.push(field)
+    }
+  })
+
+  if (disallowedFieldsFound.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Fields [${disallowedFieldsFound.join(", ")}] are not valid`
+    )
+  }
 }

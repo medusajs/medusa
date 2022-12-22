@@ -6,32 +6,32 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ShippingProfileType
 
-## Enumeration members
+## Enumeration Members
 
 ### CUSTOM
 
-• **CUSTOM** = `"custom"`
+• **CUSTOM** = ``"custom"``
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-profile.d.ts:7
+medusa/dist/models/shipping-profile.d.ts:7
 
 ___
 
 ### DEFAULT
 
-• **DEFAULT** = `"default"`
+• **DEFAULT** = ``"default"``
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-profile.d.ts:5
+medusa/dist/models/shipping-profile.d.ts:5
 
 ___
 
 ### GIFT\_CARD
 
-• **GIFT\_CARD** = `"gift_card"`
+• **GIFT\_CARD** = ``"gift_card"``
 
 #### Defined in
 
-packages/medusa/dist/models/shipping-profile.d.ts:6
+medusa/dist/models/shipping-profile.d.ts:6

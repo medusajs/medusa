@@ -23,6 +23,7 @@ export type LineItemFactoryData = {
   thumbnail?: string
   should_merge?: boolean
   allow_discounts?: boolean
+  is_giftcard?: boolean
   unit_price?: number
   quantity?: number
   fulfilled_quantity?: boolean
@@ -30,6 +31,8 @@ export type LineItemFactoryData = {
   returned_quantity?: boolean
   tax_lines?: TaxLineFactoryData[]
   adjustments: LineItemAdjustmentFactoryData[]
+  includes_tax?: boolean
+  order_edit_id?: string
 }
 
 export const simpleLineItemFactory = async (
@@ -70,6 +73,9 @@ export const simpleLineItemFactory = async (
     shipped_quantity: data.shipped_quantity || null,
     returned_quantity: data.returned_quantity || null,
     adjustments: data.adjustments,
+    includes_tax: data.includes_tax,
+    order_edit_id: data.order_edit_id,
+    is_giftcard: data.is_giftcard || false
   })
 
   const line = await manager.save(toSave)

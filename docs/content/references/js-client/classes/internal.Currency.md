@@ -14,7 +14,17 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/currency.d.ts:2
+medusa/dist/models/currency.d.ts:2
+
+___
+
+### includes\_tax
+
+• `Optional` **includes\_tax**: `boolean`
+
+#### Defined in
+
+medusa/dist/models/currency.d.ts:6
 
 ___
 
@@ -24,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/currency.d.ts:5
+medusa/dist/models/currency.d.ts:5
 
 ___
 
@@ -34,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/currency.d.ts:3
+medusa/dist/models/currency.d.ts:3
 
 ___
 
@@ -44,4 +54,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/currency.d.ts:4
+medusa/dist/models/currency.d.ts:4

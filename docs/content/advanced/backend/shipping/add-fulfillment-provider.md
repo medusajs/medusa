@@ -21,9 +21,9 @@ Fulfillment providers are loaded and installed on the server startup.
 
 ## Create a Fulfillment Provider
 
-The first step is to create the file that will hold the fulfillment provider class in `src/services`:
+The first step is to create a JavaScript or TypeScript file under `src/services`. For example, create the file `src/services/my-fulfillment.ts` with the following content:
 
-```jsx
+```ts title=src/services/my-fulfillment.ts
 import { FulfillmentService } from "medusa-interfaces"
 
 class MyFulfillmentService extends FulfillmentService {
@@ -33,7 +33,7 @@ class MyFulfillmentService extends FulfillmentService {
 export default MyFulfillmentService;
 ```
 
-Fulfillment provider services should extend `FulfillmentService` imported from `medusa-interfaces`.
+Fulfillment provider services must extend the `FulfillmentService` class imported from `medusa-interfaces`.
 
 :::note
 
@@ -47,9 +47,9 @@ As mentioned in the overview, fulfillment providers should have a static `identi
 
 The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class will be used when the fulfillment provider is created in the database.
 
-The value of this property will also be used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin/region/add-fulfillment-provider) to a region.
+The value of this property will also be used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin/#tag/Region/operation/PostRegionsRegionFulfillmentProviders) to a region.
 
-```jsx
+```ts
 import { FulfillmentService } from "medusa-interfaces"
 
 class MyFulfillmentService extends FulfillmentService {
@@ -61,14 +61,17 @@ export default MyFulfillmentService;
 
 ### constructor
 
-You can use the `constructor` of your fulfillment provider to have access to different services in Medusa through dependency injection.
+You can use the `constructor` of your fulfillment provider to have access to different services in Medusa through dependency injection. You can access any services you create in Medusa in the first parameter.
 
 You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
 
-Additionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
+Additionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter.
 
-```jsx
-constructor({}, options) {
+For example:
+
+```ts
+constructor({ productService }, options) {
+  super();
   //you can access options here
 }
 ```
@@ -77,32 +80,32 @@ constructor({}, options) {
 
 When the admin is creating shipping options available for customers during checkout, they choose one of the fulfillment options provided by underlying fulfillment providers.
 
-For example, if you’re integrating UPS as a fulfillment provider, you might support 2 fulfillment options: UPS Express Shipping and UPS Access Point.
+For example, if you’re integrating UPS as a fulfillment provider, you might support two fulfillment options: UPS Express Shipping and UPS Access Point.
 
 These fulfillment options are defined in the `getFulfillmentOptions` method. This method should return an array of options.
 
 For example:
 
-```jsx
+```ts
 async getFulfillmentOptions () {
-    return [
-      {
-        id: 'my-fulfillment'
-      },
-      {
-        id: 'my-fulfillment-dynamic'
-      }
-    ];
-  }
+  return [
+    {
+      id: 'my-fulfillment'
+    },
+    {
+      id: 'my-fulfillment-dynamic'
+    }
+  ];
+}
 ```
 
 When the admin chooses one of those fulfillment options, the data of the chosen fulfillment option is stored in the `data` property of the shipping option created. This property is used to add any additional data you need to fulfill the order with the third-party provider.
 
-For that reason, the fulfillment option does not have any required structure and can be of any format that works for your integration.
+For that reason, the fulfillment option doesn't have any required structure and can be of any format that works for your integration.
 
 ### validateOption
 
-Once the admin creates the shipping option, the data will be validated first using this method in the underlying fulfillment provider of that shipping option. This method is called when a `POST` request is sent to `[/admin/shipping-options](https://docs.medusajs.com/api/admin/shipping-option/create-shipping-option)`.
+Once the admin creates the shipping option, the data will be validated first using this method in the underlying fulfillment provider of that shipping option. This method is called when a `POST` request is sent to [`/admin/shipping-options`](https://docs.medusajs.com/api/admin/#tag/Shipping-Option/operation/PostShippingOptions).
 
 This method accepts the `data` object that is sent in the body of the request. You can use this data to validate the shipping option before it is saved.
 
@@ -110,7 +113,7 @@ This method returns a boolean. If the result is false, an error is thrown and th
 
 For example, you can use this method to ensure that the `id` in the `data` object is correct:
 
-```jsx
+```ts
 async validateOption (data) {
     return data.id == 'my-fulfillment';
 }
@@ -122,9 +125,9 @@ If your fulfillment provider does not need to run any validation, you can simply
 
 When the customer chooses a shipping option on checkout, the shipping option and its data are validated before the shipping method is created.
 
-`validateFulfillmentOption` is called when a `POST` request is sent to `[/carts/:id/shipping-methods](https://docs.medusajs.com/api/store/cart/add-a-shipping-method)`.
+`validateFulfillmentOption` is called when a `POST` request is sent to [`/carts/:id/shipping-methods`](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 
-This method accepts 3 parameters:
+This method accepts three parameters:
 
 1. The shipping option data.
 2. The `data` object passed in the body of the request.
@@ -138,7 +141,7 @@ If everything is valid, this method must return a value that will be stored in t
 
 For example:
 
-```jsx
+```ts
 async validateFulfillmentData(optionData, data, cart) {
   if (data.id !== "my-fulfillment") {
     throw new Error("invalid data");
@@ -156,7 +159,7 @@ After an order is placed, it can be fulfilled either manually by the admin or us
 
 This method gives you access to the fulfillment being created as well as other details in case you need to perform any additional actions with the third-party provider.
 
-This method accepts 4 parameters:
+This method accepts four parameters:
 
 1. The data of the shipping method associated with the order.
 2. An array of items in the order to be fulfilled. The admin can choose all or some of the items to fulfill.
@@ -167,7 +170,7 @@ You can use the `data` property in the shipping method (first parameter) to acce
 
 Here is a basic implementation of `createFulfillment` for a fulfillment provider that does not interact with any third-party provider to create the fulfillment:
 
-```jsx
+```ts
 createFulfillment(
   methodData,
   fulfillmentItems,
@@ -196,11 +199,11 @@ If this method returns `true`, that means that the price should be calculated dy
 
 If the method returns `false`, an error is thrown as it means the selected shipping option can only be chosen if the price type is set to `flat_rate`.
 
-This method receives as a parameter the `data` object sent with the request that [creates the shipping option.](https://docs.medusajs.com/api/admin/shipping-option/create-shipping-option) You can use this data to determine whether the shipping option should be calculated or not. This is useful if the fulfillment provider you are integrating has both flat rate and dynamically priced fulfillment options.
+This method receives as a parameter the `data` object sent with the request that [creates the shipping option.](https://docs.medusajs.com/api/admin/#tag/Shipping-Option/operation/PostShippingOptions) You can use this data to determine whether the shipping option should be calculated or not. This is useful if the fulfillment provider you are integrating has both flat rate and dynamically priced fulfillment options.
 
 For example:
 
-```jsx
+```ts
 canCalculate(data) {
   return data.id === 'my-fulfillment-dynamic';
 }
@@ -210,15 +213,15 @@ canCalculate(data) {
 
 This method is called on checkout when the shipping method is being created if the `price_type` of the selected shipping option is `calculated`.
 
-This method receives 3 parameters:
+This method receives three parameters:
 
 1. The `data` parameter of the selected shipping option.
-2. The `data` parameter sent with [the request](https://docs.medusajs.com/api/store/cart/add-a-shipping-method).
+2. The `data` parameter sent with [the request](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 3. The customer’s cart data.
 
 If your fulfillment provider does not provide any dynamically calculated rates you can keep the function empty:
 
-```jsx
+```ts
 calculatePrice() {
 
 }
@@ -226,7 +229,7 @@ calculatePrice() {
 
 Otherwise, you can use it to calculate the price with a custom logic. For example:
 
-```jsx
+```ts
 calculatePrice (optionData, data, cart) {
   return cart.items.length * 1000;
 }
@@ -236,7 +239,7 @@ calculatePrice (optionData, data, cart) {
 
 Fulfillment providers can also be used to return products. A shipping option can be used for returns if the `is_return` property is `true` or if an admin creates a Return Shipping Option from the settings.
 
-This method is called when the admin [creates a return request](https://docs.medusajs.com/api/admin/order/request-a-return) for an order or when the customer [creates a return of their order](https://docs.medusajs.com/api/store/return/create-return).
+This method is called when the admin [creates a return request](https://docs.medusajs.com/api/admin/#tag/Order/operation/PostOrdersOrderReturns) for an order or when the customer [creates a return of their order](https://docs.medusajs.com/api/store/#tag/Return/operation/PostReturns).
 
 It gives you access to the return being created in case you need to perform any additional actions with the third-party provider.
 
@@ -244,7 +247,7 @@ It receives the return created as a parameter. The value it returns is set to th
 
 This is the basic implementation of the method for a fulfillment provider that does not contact with a third-party provider to fulfill the return:
 
-```jsx
+```ts
 createReturn(returnOrder) {
   return Promise.resolve({})
 }
@@ -260,13 +263,13 @@ This method receives the fulfillment being cancelled as a parameter.
 
 This is the basic implementation of the method for a fulfillment provider that does not interact with a third-party provider to cancel the fulfillment:
 
-```jsx
+```ts
 cancelFulfillment(fulfillment) {
   return Promise.resolve({})
 }
 ```
 
-## What’s Next 🚀
+## What’s Next
 
 - Check out the [Webshipper plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-webshipper) for an example of a fulfillment provider that interacts with a third-party providers.
-- Check out the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-payment-manual) for a basic implementation of a fulfillment provider.
+- Check out the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-manual) for a basic implementation of a fulfillment provider.

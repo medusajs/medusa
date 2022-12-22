@@ -1,21 +1,24 @@
-import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
-import { Product, ProductVariant, ShippingOption } from "../models"
-import { TaxServiceRate } from "../types/tax-service"
-import {
-  ProductVariantPricing,
-  TaxedPricing,
-  PricingContext,
-  PricedProduct,
-  PricedShippingOption,
-  PricedVariant,
-} from "../types/pricing"
 import { TransactionBaseService } from "../interfaces"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { Product, ProductVariant, Region, ShippingOption } from "../models"
+import {
+  PricedProduct,
+  PricedShippingOption,
+  PricedVariant,
+  PricingContext,
+  ProductVariantPricing,
+  TaxedPricing,
+} from "../types/pricing"
+import { TaxServiceRate } from "../types/tax-service"
+import { calculatePriceTaxAmount } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -23,19 +26,20 @@ type InjectedDependencies = {
   taxProviderService: TaxProviderService
   regionService: RegionService
   priceSelectionStrategy: IPriceSelectionStrategy
+  featureFlagRouter: FlagRouter
 }
 
 /**
  * Allows retrieval of prices.
- * @extends BaseService
  */
-class PricingService extends TransactionBaseService<PricingService> {
+class PricingService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected readonly regionService: RegionService
   protected readonly taxProviderService: TaxProviderService
   protected readonly priceSelectionStrategy: IPriceSelectionStrategy
   protected readonly productVariantService: ProductVariantService
+  protected readonly featureFlagRouter: FlagRouter
 
   constructor({
     manager,
@@ -43,6 +47,7 @@ class PricingService extends TransactionBaseService<PricingService> {
     taxProviderService,
     regionService,
     priceSelectionStrategy,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -52,6 +57,7 @@ class PricingService extends TransactionBaseService<PricingService> {
     this.taxProviderService = taxProviderService
     this.priceSelectionStrategy = priceSelectionStrategy
     this.productVariantService = productVariantService
+    this.featureFlagRouter = featureFlagRouter
   }
 
   /**
@@ -63,32 +69,31 @@ class PricingService extends TransactionBaseService<PricingService> {
   async collectPricingContext(
     context: PriceSelectionContext
   ): Promise<PricingContext> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      let automaticTaxes = false
-      let taxRate = null
-      let currencyCode = context.currency_code
+    let automaticTaxes = false
+    let taxRate: number | null = null
+    let currencyCode = context.currency_code
 
-      if (context.region_id) {
-        const region = await this.regionService
-          .withTransaction(manager)
-          .retrieve(context.region_id, {
-            select: ["id", "currency_code", "automatic_taxes", "tax_rate"],
-          })
+    let region: Region
+    if (context.region_id) {
+      region = await this.regionService
+        .withTransaction(this.manager_)
+        .retrieve(context.region_id, {
+          select: ["id", "currency_code", "automatic_taxes", "tax_rate"],
+        })
 
-        currencyCode = region.currency_code
-        automaticTaxes = region.automatic_taxes
-        taxRate = region.tax_rate
-      }
+      currencyCode = region.currency_code
+      automaticTaxes = region.automatic_taxes
+      taxRate = region.tax_rate
+    }
 
-      return {
-        price_selection: {
-          ...context,
-          currency_code: currencyCode,
-        },
-        automatic_taxes: automaticTaxes,
-        tax_rate: taxRate,
-      }
-    })
+    return {
+      price_selection: {
+        ...context,
+        currency_code: currencyCode,
+      },
+      automatic_taxes: automaticTaxes,
+      tax_rate: taxRate,
+    }
   }
 
   /**
@@ -117,17 +122,43 @@ class PricingService extends TransactionBaseService<PricingService> {
     }
 
     if (variantPricing.calculated_price !== null) {
-      const taxAmount = Math.round(variantPricing.calculated_price * rate)
-      taxedPricing.calculated_tax = taxAmount
+      const includesTax = !!(
+        this.featureFlagRouter.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) && variantPricing.calculated_price_includes_tax
+      )
+      taxedPricing.calculated_tax = Math.round(
+        calculatePriceTaxAmount({
+          price: variantPricing.calculated_price,
+          taxRate: rate,
+          includesTax,
+        })
+      )
+
       taxedPricing.calculated_price_incl_tax =
-        variantPricing.calculated_price + taxAmount
+        variantPricing.calculated_price_includes_tax
+          ? variantPricing.calculated_price
+          : variantPricing.calculated_price + taxedPricing.calculated_tax
     }
 
     if (variantPricing.original_price !== null) {
-      const taxAmount = Math.round(variantPricing.original_price * rate)
-      taxedPricing.original_tax = taxAmount
+      const includesTax = !!(
+        this.featureFlagRouter.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        ) && variantPricing.original_price_includes_tax
+      )
+      taxedPricing.original_tax = Math.round(
+        calculatePriceTaxAmount({
+          price: variantPricing.original_price,
+          taxRate: rate,
+          includesTax,
+        })
+      )
+
       taxedPricing.original_price_incl_tax =
-        variantPricing.original_price + taxAmount
+        variantPricing.original_price_includes_tax
+          ? variantPricing.original_price
+          : variantPricing.original_price + taxedPricing.original_tax
     }
 
     return taxedPricing
@@ -139,6 +170,9 @@ class PricingService extends TransactionBaseService<PricingService> {
     context: PricingContext
   ): Promise<ProductVariantPricing> {
     const transactionManager = this.transactionManager_ ?? this.manager_
+
+    context.price_selection.tax_rates = taxRates
+
     const pricing = await this.priceSelectionStrategy
       .withTransaction(transactionManager)
       .calculateVariantPrice(variantId, context.price_selection)
@@ -148,6 +182,8 @@ class PricingService extends TransactionBaseService<PricingService> {
       original_price: pricing.originalPrice,
       calculated_price: pricing.calculatedPrice,
       calculated_price_type: pricing.calculatedPriceType,
+      original_price_includes_tax: pricing.originalPriceIncludesTax,
+      calculated_price_includes_tax: pricing.calculatedPriceIncludesTax,
       original_price_incl_tax: null,
       calculated_price_incl_tax: null,
       original_tax: null,
@@ -212,6 +248,7 @@ class PricingService extends TransactionBaseService<PricingService> {
    * @param variantId - the id of the variant to get prices for
    * @param context - the price selection context to use
    * @return The product variant prices
+   * @deprecated Use {@link getProductVariantsPricing} instead.
    */
   async getProductVariantPricingById(
     variantId: string,
@@ -229,17 +266,16 @@ class PricingService extends TransactionBaseService<PricingService> {
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      const { product_id } = await this.productVariantService.retrieve(
-        variantId,
-        { select: ["id", "product_id"] }
-      )
-      productRates = await this.taxProviderService.getRegionRatesForProduct(
-        product_id,
-        {
+      const { product_id } = await this.productVariantService
+        .withTransaction(this.manager_)
+        .retrieve(variantId, { select: ["id", "product_id"] })
+
+      productRates = await this.taxProviderService
+        .withTransaction(this.manager_)
+        .getRegionRatesForProduct(product_id, {
           id: pricingContext.price_selection.region_id,
           tax_rate: pricingContext.tax_rate,
-        }
-      )
+        })
     }
 
     return await this.getProductVariantPricing_(
@@ -247,6 +283,69 @@ class PricingService extends TransactionBaseService<PricingService> {
       productRates,
       pricingContext
     )
+  }
+
+  /**
+   * Gets the prices for a collection of variants.
+   * @param variantIds - the id of the variants to get the prices for
+   * @param context - the price selection context to use
+   * @return The product variant prices
+   */
+  async getProductVariantsPricing<
+    T = string | string[],
+    TOutput = T extends string
+      ? ProductVariantPricing
+      : { [variant_id: string]: ProductVariantPricing }
+  >(
+    variantIds: T,
+    context: PriceSelectionContext | PricingContext
+  ): Promise<TOutput> {
+    let pricingContext: PricingContext
+    if ("automatic_taxes" in context) {
+      pricingContext = context
+    } else {
+      pricingContext = await this.collectPricingContext(context)
+    }
+
+    const ids = (
+      Array.isArray(variantIds) ? variantIds : [variantIds]
+    ) as string[]
+
+    const variants = await this.productVariantService
+      .withTransaction(this.manager_)
+      .list({ id: ids }, { select: ["id", "product_id"] })
+
+    const variantsMap = new Map(
+      variants.map((variant) => {
+        return [variant.id, variant]
+      })
+    )
+
+    const pricingResult: { [variant_id: string]: ProductVariantPricing } = {}
+    for (const variantId of ids) {
+      const { id, product_id } = variantsMap.get(variantId)!
+
+      let productRates: TaxServiceRate[] = []
+
+      if (pricingContext.price_selection.region_id) {
+        productRates = await this.taxProviderService
+          .withTransaction(this.manager_)
+          .getRegionRatesForProduct(product_id, {
+            id: pricingContext.price_selection.region_id,
+            tax_rate: pricingContext.tax_rate,
+          })
+      }
+
+      pricingResult[id] = await this.getProductVariantPricing_(
+        id,
+        productRates,
+        pricingContext
+      )
+    }
+
+    return (!Array.isArray(variantIds)
+      ? Object.values(pricingResult)[0]
+      : pricingResult) as unknown as TOutput
   }
 
   private async getProductPricing_(
@@ -399,7 +498,9 @@ class PricingService extends TransactionBaseService<PricingService> {
     if ("automatic_taxes" in context) {
       pricingContext = context
     } else {
-      pricingContext = await this.collectPricingContext(context)
+      pricingContext =
+        (context as PricingContext) ??
+        (await this.collectPricingContext(context))
     }
 
     let shippingOptionRates: TaxServiceRate[] = []
@@ -407,14 +508,12 @@ class PricingService extends TransactionBaseService<PricingService> {
       pricingContext.automatic_taxes &&
       pricingContext.price_selection.region_id
     ) {
-      shippingOptionRates =
-        await this.taxProviderService.getRegionRatesForShipping(
-          shippingOption.id,
-          {
-            id: pricingContext.price_selection.region_id,
-            tax_rate: pricingContext.tax_rate,
-          }
-        )
+      shippingOptionRates = await this.taxProviderService
+        .withTransaction(this.manager_)
+        .getRegionRatesForShipping(shippingOption.id, {
+          id: pricingContext.price_selection.region_id,
+          tax_rate: pricingContext.tax_rate,
+        })
     }
 
     const price = shippingOption.amount || 0
@@ -424,13 +523,26 @@ class PricingService extends TransactionBaseService<PricingService> {
       },
       0
     )
-    const tax = Math.round(price * rate)
-    const total = price + tax
+
+    const includesTax =
+      this.featureFlagRouter.isFeatureEnabled(
+        TaxInclusivePricingFeatureFlag.key
+      ) && shippingOption.includes_tax
+
+    const taxAmount = Math.round(
+      calculatePriceTaxAmount({
+        taxRate: rate,
+        price,
+        includesTax,
+      })
+    )
+    const totalInclTax = includesTax ? price : price + taxAmount
 
     return {
       ...shippingOption,
-      price_incl_tax: total,
+      price_incl_tax: totalInclTax,
       tax_rates: shippingOptionRates,
+      tax_amount: taxAmount,
     }
   }
 
@@ -462,29 +574,26 @@ class PricingService extends TransactionBaseService<PricingService> {
       })
     )
 
-    return await Promise.all(
-      shippingOptions.map(async (shippingOption) => {
-        const pricingContext = contexts.find(
-          (c) => c.region_id === shippingOption.region_id
-        )
+    const shippingOptionPricingPromises: Promise<PricedShippingOption>[] = []
 
-        if (!pricingContext) {
-          throw new MedusaError(
-            MedusaError.Types.UNEXPECTED_STATE,
-            "Could not find pricing context for shipping option"
-          )
-        }
+    shippingOptions.map(async (shippingOption) => {
+      const pricingContext = contexts.find(
+        (c) => c.region_id === shippingOption.region_id
+      )
 
-        const shippingOptionPricing = await this.getShippingOptionPricing(
-          shippingOption,
-          pricingContext.context
+      if (!pricingContext) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Could not find pricing context for shipping option"
         )
-        return {
-          ...shippingOption,
-          ...shippingOptionPricing,
-        }
-      })
-    )
+      }
+
+      shippingOptionPricingPromises.push(
+        this.getShippingOptionPricing(shippingOption, pricingContext.context)
+      )
+    })
+
+    return await Promise.all(shippingOptionPricingPromises)
   }
 }
 

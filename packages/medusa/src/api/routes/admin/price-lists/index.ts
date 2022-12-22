@@ -9,16 +9,21 @@ import middlewares, {
 import { AdminGetPriceListPaginationParams } from "./list-price-lists"
 import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
 import {
-  allowedAdminProductFields,
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
 import { AdminPostPriceListsPriceListReq } from "./create-price-list"
+import { FlagRouter } from "../../../../utils/flag-router"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
-export default (app) => {
+export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/price-lists", route)
+
+  if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
+    defaultAdminPriceListFields.push("includes_tax")
+  }
 
   route.get("/:id", middlewares.wrap(require("./get-price-list").default))
 
@@ -31,7 +36,6 @@ export default (app) => {
   route.get(
     "/:id/products",
     transformQuery(AdminGetPriceListsPriceListProductsParams, {
-      allowedFields: allowedAdminProductFields,
       defaultFields: defaultAdminProductFields,
       defaultRelations: defaultAdminProductRelations.filter(
         (r) => r !== "variants.prices"
@@ -88,8 +92,6 @@ export const defaultAdminPriceListFields = [
 ]
 
 export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
-
-export const allowedAdminPriceListFields = ["prices", "customer_groups"]
 
 export type AdminPriceListRes = {
   price_list: PriceList

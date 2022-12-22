@@ -1,16 +1,20 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
+  Entity,
   Index,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  OneToOne,
 } from "typeorm"
+
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
-
 import { Order } from "./order"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Payment } from "./payment"
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 
 export enum RefundReason {
   DISCOUNT = "discount",
@@ -23,12 +27,24 @@ export enum RefundReason {
 @Entity()
 export class Refund extends BaseEntity {
   @Index()
-  @Column()
+  @Column({ nullable: true })
   order_id: string
+
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
+    Index(),
+    Column({ nullable: true }),
+  ])
+  payment_id: string
 
   @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
   order: Order
+
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
+    OneToOne(() => Payment, { nullable: true }),
+    JoinColumn({ name: "payment_id" }),
+  ])
+  payment: Payment
 
   @Column({ type: "int" })
   amount: number
@@ -52,23 +68,30 @@ export class Refund extends BaseEntity {
 }
 
 /**
- * @schema refund
+ * @schema Refund
  * title: "Refund"
  * description: "Refund represent an amount of money transfered back to the Customer for a given reason. Refunds may occur in relation to Returns, Swaps and Claims, but can also be initiated by a store operator."
- * x-resourceId: refund
+ * type: object
+ * required:
+ *   - order_id
+ *   - amount
  * properties:
  *   id:
- *     description: "The id of the Refund. This value will be prefixed with `ref_`."
  *     type: string
+ *     description: The refund's ID
+ *     example: ref_01G1G5V27GYX4QXNARRQCW1N8T
  *   order_id:
  *     description: "The id of the Order that the Refund is related to."
  *     type: string
+ *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   amount:
  *     description: "The amount that has be refunded to the Customer."
  *     type: integer
+ *     example: 1000
  *   note:
  *     description: "An optional note explaining why the amount was refunded."
  *     type: string
+ *     example: I didn't like it
  *   reason:
  *     description: "The reason given for the Refund, will automatically be set when processed as part of a Swap, Claim or Return."
  *     type: string
@@ -78,15 +101,27 @@ export class Refund extends BaseEntity {
  *       - swap
  *       - claim
  *       - other
- *   created_at:
- *     description: "The date with timezone at which the resource was created."
+ *     example: return
+ *   idempotency_key:
  *     type: string
+ *     description: Randomly generated key used to continue the completion of the refund in case of failure.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       description: Learn more how to use the idempotency key.
+ *   created_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
- *     description: "The date with timezone at which the resource was last updated."
  *     type: string
+ *     description: "The date with timezone at which the resource was updated."
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     description: "An optional key-value map with additional information."
  *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */

@@ -30,7 +30,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:188
+medusa-js/node_modules/axios/index.d.ts:188
 
 ### AxiosInstance
 
@@ -49,7 +49,7 @@ packages/medusa-js/node_modules/axios/index.d.ts:188
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:189
+medusa-js/node_modules/axios/index.d.ts:189
 
 ## Properties
 
@@ -63,7 +63,7 @@ packages/medusa-js/node_modules/axios/index.d.ts:189
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:171
+medusa-js/node_modules/axios/index.d.ts:171
 
 ___
 
@@ -84,13 +84,13 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:172
+medusa-js/node_modules/axios/index.d.ts:172
 
 ## Methods
 
 ### delete
 
-▸ **delete**<`T`, `R`, `D`\>(`url`, `config?`): [`Promise`](../modules/internal.md#promise)<`R`\>
+▸ **delete**<`T`, `R`, `D`\>(`url`, `config?`): `Promise`<`R`\>
 
 #### Type parameters
 
@@ -109,7 +109,7 @@ packages/medusa-js/node_modules/axios/index.d.ts:172
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`R`\>
+`Promise`<`R`\>
 
 #### Inherited from
 
@@ -117,13 +117,13 @@ packages/medusa-js/node_modules/axios/index.d.ts:172
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:179
+medusa-js/node_modules/axios/index.d.ts:179
 
 ___
 
 ### get
 
-▸ **get**<`T`, `R`, `D`\>(`url`, `config?`): [`Promise`](../modules/internal.md#promise)<`R`\>
+▸ **get**<`T`, `R`, `D`\>(`url`, `config?`): `Promise`<`R`\>
 
 #### Type parameters
 
@@ -142,7 +142,7 @@ ___
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`R`\>
+`Promise`<`R`\>
 
 #### Inherited from
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:178
+medusa-js/node_modules/axios/index.d.ts:178
 
 ___
 
@@ -174,13 +174,13 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:176
+medusa-js/node_modules/axios/index.d.ts:176
 
 ___
 
 ### head
 
-▸ **head**<`T`, `R`, `D`\>(`url`, `config?`): [`Promise`](../modules/internal.md#promise)<`R`\>
+▸ **head**<`T`, `R`, `D`\>(`url`, `config?`): `Promise`<`R`\>
 
 #### Type parameters
 
@@ -199,7 +199,7 @@ ___
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`R`\>
+`Promise`<`R`\>
 
 #### Inherited from
 
@@ -207,13 +207,13 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:180
+medusa-js/node_modules/axios/index.d.ts:180
 
 ___
 
 ### options
 
-▸ **options**<`T`, `R`, `D`\>(`url`, `config?`): [`Promise`](../modules/internal.md#promise)<`R`\>
+▸ **options**<`T`, `R`, `D`\>(`url`, `config?`): `Promise`<`R`\>
 
 #### Type parameters
 
@@ -232,7 +232,7 @@ ___
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`R`\>
+`Promise`<`R`\>
 
 #### Inherited from
 
@@ -240,13 +240,13 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:181
+medusa-js/node_modules/axios/index.d.ts:181
 
 ___
 
 ### patch
 
-▸ **patch**<`T`, `R`, `D`\>(`url`, `data?`, `config?`): [`Promise`](../modules/internal.md#promise)<`R`\>
+▸ **patch**<`T`, `R`, `D`\>(`url`, `data?`, `config?`): `Promise`<`R`\>
 
 #### Type parameters
 
@@ -266,7 +266,7 @@ ___
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`R`\>
+`Promise`<`R`\>
 
 #### Inherited from
 
@@ -274,13 +274,13 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:184
+medusa-js/node_modules/axios/index.d.ts:184
 
 ___
 
 ### post
 
-▸ **post**<`T`, `R`, `D`\>(`url`, `data?`, `config?`): [`Promise`](../modules/internal.md#promise)<`R`\>
+▸ **post**<`T`, `R`, `D`\>(`url`, `data?`, `config?`): `Promise`<`R`\>
 
 #### Type parameters
 
@@ -300,7 +300,7 @@ ___
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`R`\>
+`Promise`<`R`\>
 
 #### Inherited from
 
@@ -308,13 +308,13 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:182
+medusa-js/node_modules/axios/index.d.ts:182
 
 ___
 
 ### put
 
-▸ **put**<`T`, `R`, `D`\>(`url`, `data?`, `config?`): [`Promise`](../modules/internal.md#promise)<`R`\>
+▸ **put**<`T`, `R`, `D`\>(`url`, `data?`, `config?`): `Promise`<`R`\>
 
 #### Type parameters
 
@@ -334,7 +334,7 @@ ___
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`R`\>
+`Promise`<`R`\>
 
 #### Inherited from
 
@@ -342,13 +342,13 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:183
+medusa-js/node_modules/axios/index.d.ts:183
 
 ___
 
 ### request
 
-▸ **request**<`T`, `R`, `D`\>(`config`): [`Promise`](../modules/internal.md#promise)<`R`\>
+▸ **request**<`T`, `R`, `D`\>(`config`): `Promise`<`R`\>
 
 #### Type parameters
 
@@ -366,7 +366,7 @@ ___
 
 #### Returns
 
-[`Promise`](../modules/internal.md#promise)<`R`\>
+`Promise`<`R`\>
 
 #### Inherited from
 
@@ -374,4 +374,4 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:177
+medusa-js/node_modules/axios/index.d.ts:177

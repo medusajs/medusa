@@ -1,0 +1,2 @@
+anyOf:
+  - $ref: ./AddressFields.yaml

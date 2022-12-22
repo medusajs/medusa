@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ShippingProfileService } from "."
 import { TransactionBaseService } from "../interfaces"
@@ -32,7 +32,7 @@ type InjectedDependencies = {
 /**
  * Handles Fulfillments
  */
-class FulfillmentService extends TransactionBaseService<FulfillmentService> {
+class FulfillmentService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -159,27 +159,34 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
 
   /**
    * Retrieves a fulfillment by its id.
-   * @param id - the id of the fulfillment to retrieve
+   * @param fulfillmentId - the id of the fulfillment to retrieve
    * @param config - optional values to include with fulfillmentRepository query
    * @return the fulfillment
    */
   async retrieve(
-    id: string,
+    fulfillmentId: string,
     config: FindConfig<Fulfillment> = {}
   ): Promise<Fulfillment> {
+    if (!isDefined(fulfillmentId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"fulfillmentId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const fulfillmentRepository = manager.getCustomRepository(
       this.fulfillmentRepository_
     )
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: fulfillmentId }, config)
 
     const fulfillment = await fulfillmentRepository.findOne(query)
 
     if (!fulfillment) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Fulfillment with id: ${id} was not found`
+        `Fulfillment with id: ${fulfillmentId} was not found`
       )
     }
     return fulfillment
@@ -274,12 +281,12 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
 
       fulfillment.canceled_at = new Date()
 
-      const lineItemService = this.lineItemService_.withTransaction(manager)
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
       for (const fItem of fulfillment.items) {
-        const item = await lineItemService.retrieve(fItem.item_id)
+        const item = await lineItemServiceTx.retrieve(fItem.item_id)
         const fulfilledQuantity = item.fulfilled_quantity - fItem.quantity
-        await lineItemService.update(item.id, {
+        await lineItemServiceTx.update(item.id, {
           fulfilled_quantity: fulfilledQuantity,
         })
       }
@@ -302,7 +309,7 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
    */
   async createShipment(
     fulfillmentId: string,
-    trackingLinks: { tracking_number: string }[],
+    trackingLinks?: { tracking_number: string }[],
     config: CreateShipmentConfig = {
       metadata: {},
       no_notification: undefined,
@@ -336,7 +343,7 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
         trackingLinkRepo.create(tl)
       )
 
-      if (typeof no_notification !== "undefined") {
+      if (isDefined(no_notification)) {
         fulfillment.no_notification = no_notification
       }
 

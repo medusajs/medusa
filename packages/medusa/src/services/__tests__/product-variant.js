@@ -661,6 +661,12 @@ describe("ProductVariantService", () => {
           return Promise.resolve([{ id: idOrIds, currency_code: "usd" }])
         }
       }),
+      retrieve: function () {
+        return Promise.resolve({
+          id: IdMap.getId("california"),
+          name: "California",
+        })
+      },
     }
 
     const productVariantService = new ProductVariantService({

@@ -22,7 +22,7 @@ The Contentful migrations are located in the `contentful-migrations` directory i
 
 Here’s an example of a migration created in a new file `contentful-migrations/rich-text.js`:
 
-```jsx
+```jsx title=contentful-migrations/rich-text.js
 #! /usr/bin/env node
 
 require("dotenv").config();
@@ -118,31 +118,31 @@ This runs the Contentful migration in that file and makes the necessary changes 
 
 To check if the above migration worked, in your Contentful Space dashboard go to Content Models from the navigation bar. You should see the new content model Rich Text.
 
-![Rich Text can be found among content models](https://i.imgur.com/W5WzcTG.png)
+![Rich Text can be found among content models](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001241/Medusa%20Docs/Contentful/W5WzcTG_vau6c9.png)
 
 The above migration also allows you to add Rich Text content to pages. To test this out, go to Content from the navigation bar and choose Page in the select field next to the search bar. This shows the available pages in your Contentful Space.
 
-![Filter content to only show pages by choosing Page in the Content Type select field](https://i.imgur.com/ht87z4e.png)
+![Filter content to only show pages by choosing Page in the Content Type select field](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001251/Medusa%20Docs/Contentful/ht87z4e_gmbk6c.png)
 
 Choose one of the pages. For example, the About page. Then, scroll down to the Add content button. If you click on it, you should be able to choose Rich Text under New Content.
 
-![Click on add content and choose from the dropdown Rich Text](https://i.imgur.com/pJ5yM0m.png)
+![Click on add content and choose from the dropdown Rich Text](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001261/Medusa%20Docs/Contentful/pJ5yM0m_dfb7vp.png)
 
 Click on Rich Text and a new form will open to create new Rich Text content. It has the same fields that you defined in the migration file.
 
-![The Rich Text form is filled with data](https://i.imgur.com/lAglhc9.png)
+![The Rich Text form is filled with data](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001271/Medusa%20Docs/Contentful/lAglhc9_ejfs2i.png)
 
 After adding the content you want, click on the Publish button on the right then go back to the About page editor.
 
-![Click on the Publish button at the right](https://i.imgur.com/oYpQKsc.png)
+![Click on the Publish button at the right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001281/Medusa%20Docs/Contentful/oYpQKsc_piobfk.png)
 
 Similarly, in the About page editor, click on the Publish Changes button on the right to view these changes later in the storefront.
 
-![Click on the Publish changes button at the right](https://i.imgur.com/DIMo3hd.png)
+![Click on the Publish changes button at the right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001296/Medusa%20Docs/Contentful/DIMo3hd_ylxkr3.png)
 
 Similarly, you can add Rich Text content to any product page.
 
-![A rich text content is added to a product](https://i.imgur.com/wgI8mEB.png)
+![A rich text content is added to a product](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001305/Medusa%20Docs/Contentful/wgI8mEB_wbukpd.png)
 
 ## Render New Content Models in the Storefront
 
@@ -152,7 +152,7 @@ After creating a new content model in your Contentful Space, you must add the ne
 
 To render the Rich Text content you created in the previous example, create the file `src/components/rich-text/rich-text.js` with the following content:
 
-```jsx
+```jsx title=src/components/rich-text/rich-text.js
 import React from "react"
 import { renderRichText } from "gatsby-source-contentful/rich-text"
 
@@ -180,13 +180,13 @@ Since the Rich Text model can be added to any page, you must edit `src/pages/{Co
 
 In `src/pages/{ContentfulPage.slug}.js`, import the `RichText` component at the top of the file:
 
-```jsx
+```jsx title=src/pages/{ContentfulPage.slug}.js
 import RichText from "../components/rich-text/rich-text"
 ```
 
 Then, in the returned JSX add a new case to the switch statement:
 
-```jsx
+```jsx title=src/pages/{ContentfulPage.slug}.js
 switch (cm.internal.type) {
   //...
   case "ContentfulRichText":
@@ -200,7 +200,7 @@ If the content model of a tile is Rich Text, you’ll display it with the `RichT
 
 Finally, to retrieve all necessary data of the Rich Text content, in the `query` GraphQL variable add the following after the `... on ContentfulTileSection` fragment:
 
-```jsx
+```jsx title=src/pages/{ContentfulPage.slug}.js
 export const query = graphql`
         # find the following line
         ... on ContentfulTileSection {
@@ -227,18 +227,18 @@ export const query = graphql`
 To test this out, run your Medusa server by running this command in its directory:
 
 ```bash
-npm start
+npm run start
 ```
 
 Then run the Gatsby storefront by running this command in its directory:
 
 ```bash
-npm start
+npm run start
 ```
 
 This runs the Gatsby storefront on `localhost:8000`. Go to the storefront in your browser and open the About page. You should see the Rich Text content you added.
 
-![Rich Text content you added to the about page should be visible now](https://i.imgur.com/aQAY9Vz.png)
+![Rich Text content you added to the about page should be visible now](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001320/Medusa%20Docs/Contentful/aQAY9Vz_yw4eop.png)
 
 ### Render Component in a Product Page
 
@@ -246,7 +246,7 @@ In the example migration, you also edited the product page to include a new Cont
 
 To render them on the Product Page, add the following in the GraphQL query defined in the `query` variable inside `product`:
 
-```jsx
+```jsx title=src/pages/{ContentfulPage.slug}.js
 export const query = graphql`
   query ($id: String!) {
     product: contentfulProduct(id: { eq: $id }) {
@@ -275,13 +275,13 @@ If you added other accepted Content Models to the `contentModules` field of the 
 
 Then, in `src/views/product.js` import the `RichText` component:
 
-```jsx
+```jsx title=src/views/product.js
 import RichText from "../components/rich-text/rich-text"
 ```
 
 And in the returned JSX add the following before the last `</div>`:
 
-```jsx
+```jsx title=src/views/product.js
 <div className={styles.contentModules}>
   {product.contentModules?.map((cm) => {
     switch (cm.internal.type) {
@@ -306,9 +306,9 @@ This loops over `contentModules` and if the type of the content is Rich Text, it
 
 Restart the Gatsby storefront then open a product that you added Rich Text content to. You should see the Rich Text component at the end of the page.
 
-![Rich Text content you added to the product should be visible at the end of the page](https://i.imgur.com/LGiVMxx.png)
+![Rich Text content you added to the product should be visible at the end of the page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001342/Medusa%20Docs/Contentful/LGiVMxx_rqsr2l.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn how to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
 - Learn [how to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).

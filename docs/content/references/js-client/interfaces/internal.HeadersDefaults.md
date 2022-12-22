@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:98
+medusa-js/node_modules/axios/index.d.ts:98
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:99
+medusa-js/node_modules/axios/index.d.ts:99
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:100
+medusa-js/node_modules/axios/index.d.ts:100
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:101
+medusa-js/node_modules/axios/index.d.ts:101
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:107
+medusa-js/node_modules/axios/index.d.ts:107
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:105
+medusa-js/node_modules/axios/index.d.ts:105
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:104
+medusa-js/node_modules/axios/index.d.ts:104
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:102
+medusa-js/node_modules/axios/index.d.ts:102
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:106
+medusa-js/node_modules/axios/index.d.ts:106
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:103
+medusa-js/node_modules/axios/index.d.ts:103
 
 ___
 
@@ -114,4 +114,4 @@ ___
 
 #### Defined in
 
-packages/medusa-js/node_modules/axios/index.d.ts:108
+medusa-js/node_modules/axios/index.d.ts:108

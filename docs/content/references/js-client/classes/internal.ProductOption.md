@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).ProductOption
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
@@ -20,13 +22,13 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/product-option.d.ts:10
+medusa/dist/models/product-option.d.ts:10
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -34,13 +36,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
 ### deleted\_at
 
-• **deleted\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+• **deleted\_at**: ``null`` \| `Date`
 
 #### Inherited from
 
@@ -48,7 +50,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
@@ -62,17 +64,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/product-option.d.ts:9
+medusa/dist/models/product-option.d.ts:9
 
 ___
 
@@ -82,7 +84,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product-option.d.ts:8
+medusa/dist/models/product-option.d.ts:8
 
 ___
 
@@ -92,7 +94,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product-option.d.ts:7
+medusa/dist/models/product-option.d.ts:7
 
 ___
 
@@ -102,13 +104,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product-option.d.ts:5
+medusa/dist/models/product-option.d.ts:5
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -116,7 +118,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7
 
 ___
 
@@ -126,4 +128,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/product-option.d.ts:6
+medusa/dist/models/product-option.d.ts:6

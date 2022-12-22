@@ -2,18 +2,23 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from "axios"
 import * as rax from "retry-axios"
 import { v4 as uuidv4 } from "uuid"
 
+import KeyManager from "./key-manager"
+
 const unAuthenticatedAdminEndpoints = {
   "/admin/auth": "POST",
   "/admin/users/password-token": "POST",
   "/admin/users/reset-password": "POST",
   "/admin/invites/accept": "POST",
 }
+
 export interface Config {
   baseUrl: string
   maxRetries: number
-  apiKey?: string,
-  headers?: AxiosRequestHeaders,
+  apiKey?: string
+  headers?: AxiosRequestHeaders
+  publishableApiKey?: string
 }
+
 export interface RequestOptions {
   timeout?: number
   numberOfRetries?: number
@@ -124,6 +129,13 @@ class Client {
       }
     }
 
+    const publishableApiKey =
+      this.config.publishableApiKey || KeyManager.getPublishableApiKey()
+
+    if (publishableApiKey) {
+      defaultHeaders["x-publishable-api-key"] = publishableApiKey
+    }
+
     // only add idempotency key, if we want to retry
     if (this.config.maxRetries > 0 && method === "POST") {
       defaultHeaders["Idempotency-Key"] = uuidv4()
@@ -147,7 +159,7 @@ class Client {
   createClient(config: Config): AxiosInstance {
     const client = axios.create({
       baseURL: config.baseUrl,
-      headers: config.headers
+      headers: config.headers,
     })
 
     rax.attach(client)
@@ -175,31 +187,30 @@ class Client {
 
   /**
    * Axios request
-   * @param {Types.RequestMethod} method request method
-   * @param {string} path request path
-   * @param {object} payload request payload
-   * @param {RequestOptions} options axios configuration
-   * @param {object} customHeaders custom request headers
-   * @return {object}
+   * @param method request method
+   * @param path request path
+   * @param payload request payload
+   * @param options axios configuration
+   * @param customHeaders custom request headers
+   * @return
    */
   async request(
     method: RequestMethod,
     path: string,
-    payload: Record<string, any> | null = null,
+    payload: Record<string, any> = {},
     options: RequestOptions = {},
     customHeaders: Record<string, any> = {}
   ): Promise<any> {
-    if (method === "POST" && !payload) {
-      payload = {}
-    }
-
     const reqOpts = {
       method,
       withCredentials: true,
       url: path,
-      data: payload,
       json: true,
       headers: this.setHeaders(options, method, path, customHeaders),
+    }
+
+    if (["POST", "DELETE"].includes(method)) {
+      reqOpts["data"] = payload
     }
 
     // e.g. data = { cart: { ... } }, response = { status, headers, ... }

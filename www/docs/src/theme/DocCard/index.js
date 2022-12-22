@@ -1,50 +1,50 @@
-import {findFirstCategoryLink, useDocById} from '@docusaurus/theme-common';
+import {
+  findFirstCategoryLink,
+  useDocById,
+} from '@docusaurus/theme-common/internal';
 
 import Link from '@docusaurus/Link';
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
 import React from 'react';
 import clsx from 'clsx';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import styles from './styles.module.css';
 import {translate} from '@docusaurus/Translate';
+import ThemedImage from '@theme/ThemedImage';
 
-function CardContainer({href, children}) {
-  const className = clsx(
-    'card margin-bottom--lg padding--lg',
-    styles.cardContainer,
-    href && styles.cardContainerLink,
-  );
-  return href ? (
-    <Link href={href} className={className}>
+function CardContainer({href, children, className}) {
+  return (
+    <Link
+      href={href}
+      className={clsx('card', styles.cardContainer, className)}>
       {children}
     </Link>
-  ) : (
-    <div className={className}>{children}</div>
   );
 }
-
-function CardLayout({href, icon, title, description}) {
+function CardLayout({href, icon, title, description, containerClassName}) {
   return (
-    <CardContainer href={href}>
-      <h2 className={clsx('text--truncate', styles.cardTitle)} title={title}>
-        {icon} {title}
-      </h2>
-      <div
-        className={clsx('text--truncate', styles.cardDescription)}
-        title={description}>
-        {description}
+    <CardContainer href={href} className={containerClassName}>
+      {icon}
+      <div className={clsx(styles.contentContainer)}>
+        <h2 className={clsx(styles.cardTitle)} title={title}>
+          {title}
+        </h2>
+        {description && (
+          <p
+            className={clsx(styles.cardDescription)}
+            title={description}>
+            {description}
+          </p>
+        )}
       </div>
     </CardContainer>
   );
 }
-
 function CardCategory({item}) {
   const href = findFirstCategoryLink(item);
+  // Unexpected: categories that don't have a link have been filtered upfront
+  if (!href) {
+    return null;
+  }
   return (
     <CardLayout
       href={href}
@@ -57,43 +57,56 @@ function CardCategory({item}) {
           description:
             'The default description for a category card in the generated index about how many items this category includes',
         },
-        {
-          count: item.items.length,
-        },
+        {count: item.items.length},
       )}
+      containerClassName={item.customProps?.className}
     />
   );
 }
-
 function CardLink({item}) {
   let icon;
-  if (item.customProps && item.customProps.image) {
-    icon = <img src={item.customProps.image} alt={item.label} width={24} height={24} />;
+  if (item.customProps && item.customProps.themedImage) {
+    icon = (
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
+        <ThemedImage alt={item.label} sources={{
+          light: item.customProps.themedImage.light,
+          dark: item.customProps.themedImage.dark
+        }} />
+      </div>
+    )
+  } else if (item.customProps && item.customProps.image) {
+    icon = (
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
+        <img src={item.customProps.image} alt={item.label} />
+      </div>
+    );
   } else if (item.customProps && item.customProps.icon) {
     icon = item.customProps.icon;
   } else {
-    icon = isInternalUrl(item.href) ? '📄️' : '🔗';
+    icon = (
+      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
+        {isInternalUrl(item.href) ? '📄️' : '🔗'}
+      </div>
+    );
   }
-
   const doc = useDocById(item.docId ?? undefined);
+
   return (
     <CardLayout
       href={item.href}
       icon={icon}
       title={item.label}
-      description={doc?.description}
+      description={item.customProps?.description || doc?.description}
+      containerClassName={item.customProps?.className}
     />
   );
 }
-
 export default function DocCard({item}) {
   switch (item.type) {
     case 'link':
       return <CardLink item={item} />;
-
     case 'category':
       return <CardCategory item={item} />;
-
     default:
       throw new Error(`unknown item type ${JSON.stringify(item)}`);
   }

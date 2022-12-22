@@ -3,17 +3,19 @@ import { MedusaError } from "medusa-core-utils"
 export enum PostgresError {
   DUPLICATE_ERROR = "23505",
   FOREIGN_KEY_ERROR = "23503",
+  SERIALIZATION_FAILURE = "40001",
 }
-export const formatException = (err): Error => {
+
+export const formatException = (err): MedusaError => {
   switch (err.code) {
     case PostgresError.DUPLICATE_ERROR:
       return new MedusaError(
         MedusaError.Types.DUPLICATE_ERROR,
         `${err.table.charAt(0).toUpperCase()}${err.table.slice(
           1
-        )} with ${err.detail
-          .slice(4)
-          .replace(/[()=]/g, (s) => (s === "=" ? " " : ""))}`
+        )} with ${err.detail.slice(4).replace(/[()=]/g, (s) => {
+          return s === "=" ? " " : ""
+        })}`
       )
     case PostgresError.FOREIGN_KEY_ERROR: {
       const matches =
@@ -33,6 +35,12 @@ export const formatException = (err): Error => {
         `${matches[3]?.charAt(0).toUpperCase()}${matches[3]?.slice(1)} with ${
           matches[1]
         } ${matches[2]} does not exist.`
+      )
+    }
+    case PostgresError.SERIALIZATION_FAILURE: {
+      return new MedusaError(
+        MedusaError.Types.CONFLICT,
+        err?.detail ?? err?.message
       )
     }
     default:

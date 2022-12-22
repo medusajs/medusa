@@ -12,7 +12,7 @@ import {
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EventBusService, StrategyResolverService } from "./index"
 import { Request } from "express"
 
@@ -23,7 +23,7 @@ type InjectedDependencies = {
   strategyResolverService: StrategyResolverService
 }
 
-class BatchJobService extends TransactionBaseService<BatchJobService> {
+class BatchJobService extends TransactionBaseService {
   static readonly Events = {
     CREATED: "batch.created",
     UPDATED: "batch.updated",
@@ -96,12 +96,8 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     eventBusService,
     strategyResolverService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      batchJobRepository,
-      eventBusService,
-      strategyResolverService,
-    })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
@@ -113,6 +109,13 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     batchJobId: string,
     config: FindConfig<BatchJob> = {}
   ): Promise<BatchJob | never> {
+    if (!isDefined(batchJobId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"batchJobId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const batchJobRepo = manager.getCustomRepository(this.batchJobRepository_)
 
@@ -313,6 +316,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         batchJobOrId,
         BatchJobStatus.PRE_PROCESSED
       )
+
       if (batchJob.dry_run) {
         return batchJob
       }
@@ -343,7 +347,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
   async setFailed(
     batchJobOrId: string | BatchJob,
-    error?: BatchJobResultError
+    error?: BatchJobResultError | string
   ): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob = batchJobOrId as BatchJob
@@ -371,11 +375,13 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     data: CreateBatchJobInput,
     req: Request
   ): Promise<CreateBatchJobInput | never> {
-    return await this.atomicPhase_(async () => {
+    return await this.atomicPhase_(async (transactionManager) => {
       const batchStrategy = this.strategyResolver_.resolveBatchJobByType(
         data.type
       )
-      return await batchStrategy.prepareBatchJobForProcessing(data, req)
+      return await batchStrategy
+        .withTransaction(transactionManager)
+        .prepareBatchJobForProcessing(data, req)
     })
   }
 }

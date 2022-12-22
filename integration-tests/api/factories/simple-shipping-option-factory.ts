@@ -1,20 +1,29 @@
-import { Connection } from "typeorm"
-import faker from "faker"
 import {
-  ShippingOptionPriceType,
-  ShippingProfile,
   ShippingOption,
+  ShippingOptionPriceType,
+  ShippingOptionRequirement,
+  ShippingProfile,
   ShippingProfileType,
 } from "@medusajs/medusa"
+import faker from "faker"
+import { Connection } from "typeorm"
 
 export type ShippingOptionFactoryData = {
+  id?: string
   name?: string
   region_id: string
   is_return?: boolean
   is_giftcard?: boolean
   price?: number
   price_type?: ShippingOptionPriceType
+  includes_tax?: boolean
   data?: object
+  requirements: ShippingOptionRequirementData[]
+}
+
+type ShippingOptionRequirementData = {
+  type: 'min_subtotal' | 'max_subtotal'
+  amount: number
 }
 
 export const simpleShippingOptionFactory = async (
@@ -35,8 +44,8 @@ export const simpleShippingOptionFactory = async (
     type: ShippingProfileType.GIFT_CARD,
   })
 
-  const created = manager.create(ShippingOption, {
-    id: `simple-so-${Math.random() * 1000}`,
+  const shippingOptionData = {
+    id: data.id ?? `simple-so-${Math.random() * 1000}`,
     name: data.name || "Test Method",
     is_return: data.is_return ?? false,
     region_id: data.region_id,
@@ -44,8 +53,17 @@ export const simpleShippingOptionFactory = async (
     profile_id: data.is_giftcard ? gcProfile.id : defaultProfile.id,
     price_type: data.price_type ?? ShippingOptionPriceType.FLAT_RATE,
     data: data.data ?? {},
+    requirements: (data.requirements || []) as ShippingOptionRequirement[],
     amount: typeof data.price !== "undefined" ? data.price : 500,
-  })
-  const option = await manager.save(created)
-  return option
+  }
+
+  // This is purposefully managed out of the original object for the purpose of separating the data linked to a feature flag
+  // MEDUSA_FF_TAX_INCLUSIVE_PRICING
+  const { includes_tax } = data
+  if (typeof includes_tax !== "undefined") {
+    shippingOptionData["includes_tax"] = includes_tax
+  }
+
+  const created = manager.create(ShippingOption, shippingOptionData)
+  return await manager.save(created)
 }

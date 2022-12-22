@@ -1,37 +1,39 @@
-import glob from "glob"
+import { aliasTo, asClass, asFunction, asValue } from "awilix"
 import { Express } from "express"
-import { EntitySchema } from "typeorm"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import _ from "lodash"
+import { createRequireFromPath } from "medusa-core-utils"
 import {
   BaseService as LegacyBaseService,
-  PaymentService,
-  FulfillmentService,
-  NotificationService,
   FileService,
+  FulfillmentService,
   OauthService,
-  SearchService,
 } from "medusa-interfaces"
-import { createRequireFromPath } from "medusa-core-utils"
-import _ from "lodash"
+import { trackInstallation } from "medusa-telemetry"
 import path from "path"
-import fs from "fs"
-import { asValue, asClass, asFunction, aliasTo } from "awilix"
-import { sync as existsSync } from "fs-exists-cached"
+import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
+  isBatchJobStrategy,
+  isCartCompletionStrategy,
   isFileService,
+  isNotificationService,
+  isPaymentService,
+  isPriceSelectionStrategy,
+  isSearchService,
   isTaxCalculationStrategy,
   TransactionBaseService as BaseService,
 } from "../interfaces"
-import formatRegistrationName from "../utils/format-registration-name"
+import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
   ConfigModule,
   Logger,
   MedusaContainer,
 } from "../types/global"
-import { MiddlewareService } from "../services"
-import { isBatchJobStrategy } from "../interfaces/batch-job-strategy"
-import { isPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
+import formatRegistrationName from "../utils/format-registration-name"
 import logger from "./logger"
 
 type Options = {
@@ -76,6 +78,8 @@ export default async ({
   await Promise.all(
     resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
   )
+
+  resolved.forEach((plugin) => trackInstallation(plugin.name, "plugin"))
 }
 
 function getResolvedPlugins(
@@ -179,6 +183,22 @@ export function registerStrategies(
         } else {
           logger.warn(
             `Cannot register ${file}. A tax calculation strategy is already registered`
+          )
+        }
+        break
+      }
+
+      case isCartCompletionStrategy(module.prototype): {
+        if (!("cartCompletionStrategy" in registeredServices)) {
+          container.register({
+            cartCompletionStrategy: asFunction(
+              (cradle) => new module(cradle, pluginDetails.options)
+            ).singleton(),
+          })
+          registeredServices["cartCompletionStrategy"] = file
+        } else {
+          logger.warn(
+            `Cannot register ${file}. A cart completion strategy is already registered`
           )
         }
         break
@@ -349,7 +369,7 @@ export async function registerServices(
         throw new Error(message)
       }
 
-      if (loaded.prototype instanceof PaymentService) {
+      if (isPaymentService(loaded.prototype)) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "paymentProviders",
@@ -392,7 +412,7 @@ export async function registerServices(
           ).singleton(),
           [`fp_${loaded.identifier}`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof NotificationService) {
+      } else if (isNotificationService(loaded.prototype)) {
         container.registerAdd(
           "notificationProviders",
           asFunction((cradle) => new loaded(cradle, pluginDetails.options))
@@ -418,7 +438,7 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof SearchService) {
+      } else if (isSearchService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
         container.register({
@@ -611,7 +631,7 @@ function resolvePlugin(pluginName: string): {
     // warnOnIncompatiblePeerDependency(packageJSON.name, packageJSON)
 
     return {
-      resolve: resolvedPath,
+      resolve: resolvedPath + (process.env.DEV_MODE ? "/src" : ""),
       id: createPluginId(packageJSON.name),
       name: packageJSON.name,
       options: {},

@@ -26,12 +26,8 @@ describe("/admin/tax-rates", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    try {
-      dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
-    } catch (error) {
-      console.log(error)
-    }
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {

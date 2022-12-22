@@ -1,5 +1,41 @@
 # Change Log
 
+## 1.3.5
+
+### Patch Changes
+
+- [#2808](https://github.com/medusajs/medusa/pull/2808) [`0a9c89185`](https://github.com/medusajs/medusa/commit/0a9c891853c4d16b553d38268a3408ca1daa71f0) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - chore: explicitly add devDependencies for monorepo peerDependencies
+
+- Updated dependencies [[`7cced6006`](https://github.com/medusajs/medusa/commit/7cced6006a9a6f9108009e9f3e191e9f3ba1b168)]:
+  - medusa-core-utils@1.1.37
+
+## 1.3.4
+
+### Patch Changes
+
+- [#2381](https://github.com/medusajs/medusa/pull/2381) [`a908a7716`](https://github.com/medusajs/medusa/commit/a908a7716c94222f340531a5b13db0867b511519) Thanks [@srindom](https://github.com/srindom)! - Rely on cart totals in payment providers
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81)]:
+  - medusa-core-utils@1.1.32
+
+## 1.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`c97ccd3fb`](https://github.com/medusajs/medusa/commit/c97ccd3fb5dbe796b0e4fbf37def5bb6e8201557)]:
+  - medusa-interfaces@1.3.3
+
+## 1.3.2
+
+### Patch Changes
+
+- [#1848](https://github.com/medusajs/medusa/pull/1848) [`0e5f0d8cd`](https://github.com/medusajs/medusa/commit/0e5f0d8cd60a0040b717c57dccd2056f476199d2) Thanks [@srindom](https://github.com/srindom)! - Fixes issue where shipping totals are calculated incorrectly
+
+* [#1840](https://github.com/medusajs/medusa/pull/1840) [`c20d72004`](https://github.com/medusajs/medusa/commit/c20d72004041d946feda5897920df7d66aad5228) Thanks [@srindom](https://github.com/srindom)! - Bug fixed where the free shipping tax rate was incorrect due to division by zero.
+
+* Updated dependencies [[`1dec44287`](https://github.com/medusajs/medusa/commit/1dec44287df5ac69b4c5769b59f9ebef58d3da68), [`b8ddb31f6`](https://github.com/medusajs/medusa/commit/b8ddb31f6fe296a11d2d988276ba8e991c37fa9b)]:
+  - medusa-interfaces@1.3.2
+
 ## 1.3.1
 
 ### Patch Changes

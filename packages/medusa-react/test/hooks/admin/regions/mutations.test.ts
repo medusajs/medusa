@@ -2,8 +2,6 @@ import {
   useAdminCreateRegion,
   useAdminUpdateRegion,
   useAdminDeleteRegion,
-  useAdminSetRegionMetadata,
-  useAdminDeleteRegionMetadata,
   useAdminRegionAddFulfillmentProvider,
   useAdminRegionDeleteFulfillmentProvider,
   useAdminRegionAddPaymentProvider,
@@ -86,50 +84,6 @@ describe("useAdminDeleteRegion hook", () => {
         deleted: true,
       })
     )
-  })
-})
-
-describe("useAdminSetRegionMetadata hook", () => {
-  test("updates a region's metadata", async () => {
-    const metadata = {
-      key: "some_key",
-      value: "some_value",
-    }
-    const id = fixtures.get("region").id
-
-    const { result, waitFor } = renderHook(
-      () => useAdminSetRegionMetadata(id),
-      {
-        wrapper: createWrapper(),
-      }
-    )
-
-    result.current.mutate(metadata)
-
-    await waitFor(() => result.current.isSuccess)
-
-    expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data.region).toEqual(fixtures.get("region"))
-  })
-})
-
-describe("useAdminDeleteRegionMetadata hook", () => {
-  test("deletes a region's metadata", async () => {
-    const id = fixtures.get("region").id
-
-    const { result, waitFor } = renderHook(
-      () => useAdminDeleteRegionMetadata(id),
-      {
-        wrapper: createWrapper(),
-      }
-    )
-
-    result.current.mutate("some_key")
-
-    await waitFor(() => result.current.isSuccess)
-
-    expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data.region).toEqual(fixtures.get("region"))
   })
 })
 

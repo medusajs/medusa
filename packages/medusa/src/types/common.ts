@@ -20,11 +20,10 @@ import { ClassConstructor } from "./global"
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
  */
-export type WithRequiredProperty<T, K extends keyof T> = T &
-  {
-    // -? removes 'optional' from a property
-    [Property in K]-?: T[Property]
-  }
+export type WithRequiredProperty<T, K extends keyof T> = T & {
+  // -? removes 'optional' from a property
+  [Property in K]-?: T[Property]
+}
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
@@ -33,6 +32,7 @@ export type PartialPick<T, K extends keyof T> = {
 export type Writable<T> = {
   -readonly [key in keyof T]:
     | T[key]
+    | FindOperator<T[key]>
     | FindOperator<T[key][]>
     | FindOperator<string[]>
 }
@@ -56,7 +56,7 @@ export type Selector<TEntity> = {
     | DateComparisonOperator
     | StringComparisonOperator
     | NumericalComparisonOperator
-    | FindOperator<TEntity[key][] | string[]>
+    | FindOperator<TEntity[key][] | string | string[]>
 }
 
 export type TotalField =
@@ -80,10 +80,9 @@ export interface FindConfig<Entity> {
 
 export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
   select?: FindManyOptions<TModel>["select"]
-  where?: FindManyOptions<TModel>["where"] &
-    {
-      [P in InKeys]?: TModel[P][]
-    }
+  where?: FindManyOptions<TModel>["where"] & {
+    [P in InKeys]?: TModel[P][]
+  }
   order?: OrderByCondition
   skip?: number
   take?: number
@@ -93,6 +92,7 @@ export type QueryConfig<TEntity extends BaseEntity> = {
   defaultFields?: (keyof TEntity | string)[]
   defaultRelations?: string[]
   allowedFields?: string[]
+  allowedRelations?: string[]
   defaultLimit?: number
   isList?: boolean
 }

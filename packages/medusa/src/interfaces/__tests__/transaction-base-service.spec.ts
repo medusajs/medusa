@@ -4,7 +4,7 @@ import { TransactionBaseService } from "../transaction-base-service"
 
 describe("TransactionBaseService", () => {
   it("should cloned the child class withTransaction", () => {
-    class Child extends TransactionBaseService<Child> {
+    class Child extends TransactionBaseService {
       protected manager_!: EntityManager
       protected transactionManager_!: EntityManager
 

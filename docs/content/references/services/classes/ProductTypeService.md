@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`
 
   ↳ **`ProductTypeService`**
 
@@ -20,52 +20,141 @@
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[services/product-type.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L16)
+[packages/medusa/src/services/product-type.ts:15](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/product-type.ts#L15)
 
 ## Properties
 
-### manager\_
+### \_\_configModule\_\_
 
-• `Private` **manager\_**: `EntityManager`
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[services/product-type.ts:14](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+
+___
+
+### \_\_container\_\_
+
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
+
+#### Inherited from
+
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[packages/medusa/src/services/product-type.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/product-type.ts#L10)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/services/product-type.ts:11](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/product-type.ts#L11)
 
 ___
 
 ### typeRepository\_
 
-• `Private` **typeRepository\_**: typeof `ProductTypeRepository`
+• `Protected` `Readonly` **typeRepository\_**: typeof `ProductTypeRepository`
 
 #### Defined in
 
-[services/product-type.ts:15](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L15)
+[packages/medusa/src/services/product-type.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/product-type.ts#L13)
 
 ## Methods
 
-### list
+### atomicPhase\_
 
-▸ **list**(`selector?`, `config?`): `Promise`<`ProductType`[]\>
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `FilterableProductTypeProps` |  |
-| `config` | `FindConfig`<`ProductType`\> |  |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+
+___
+
+### list
+
+▸ **list**(`selector?`, `config?`): `Promise`<`ProductType`[]\>
+
+Lists product types
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `Selector`<`ProductType`\> & { `discount_condition_id?`: `string` ; `q?`: `string`  } | the query object for find |
+| `config` | `FindConfig`<`ProductType`\> | the config to be used for find |
 
 #### Returns
 
 `Promise`<`ProductType`[]\>
 
+the result of the find operation
+
 #### Defined in
 
-[services/product-type.ts:72](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L72)
+[packages/medusa/src/services/product-type.ts:55](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/product-type.ts#L55)
 
 ___
 
@@ -73,20 +162,24 @@ ___
 
 ▸ **listAndCount**(`selector?`, `config?`): `Promise`<[`ProductType`[], `number`]\>
 
+Lists product types and adds count.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `FilterableProductTypeProps` |  |
-| `config` | `FindConfig`<`ProductType`\> |  |
+| `selector` | `Selector`<`ProductType`\> & { `discount_condition_id?`: `string` ; `q?`: `string`  } | the query object for find |
+| `config` | `FindConfig`<`ProductType`\> | the config to be used for find |
 
 #### Returns
 
 `Promise`<[`ProductType`[], `number`]\>
 
+the result of the find operation
+
 #### Defined in
 
-[services/product-type.ts:88](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L88)
+[packages/medusa/src/services/product-type.ts:72](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/product-type.ts#L72)
 
 ___
 
@@ -94,37 +187,70 @@ ___
 
 ▸ **retrieve**(`id`, `config?`): `Promise`<`ProductType`\>
 
+Gets a product type by id.
+Throws in case of DB Error and if product was not found.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `config` | `FindConfig`<`ProductType`\> |  |
+| `id` | `string` | id of the product to get. |
+| `config` | `FindConfig`<`ProductType`\> | object that defines what should be included in the   query response |
 
 #### Returns
 
 `Promise`<`ProductType`\>
 
+the result of the find one operation.
+
 #### Defined in
 
-[services/product-type.ts:47](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L47)
+[packages/medusa/src/services/product-type.ts:30](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/product-type.ts#L30)
 
 ___
 
-### withTransaction
+### shouldRetryTransaction\_
 
-▸ **withTransaction**(`transactionManager`): [`ProductTypeService`](ProductTypeService.md)
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `transactionManager` | `EntityManager` |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+
+___
+
+### withTransaction
+
+▸ **withTransaction**(`transactionManager?`): [`ProductTypeService`](ProductTypeService.md)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`ProductTypeService`](ProductTypeService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[services/product-type.ts:23](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/product-type.ts#L23)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

@@ -1,25 +1,27 @@
 import { Router } from "express"
 import { ProductTag } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
 import "reflect-metadata"
+import { AdminGetProductTagsParams } from "./list-product-tags"
 
 const route = Router()
 
 export default (app) => {
   app.use("/product-tags", route)
 
-  route.get("/", middlewares.wrap(require("./list-product-tags").default))
+  route.get(
+    "/",
+    transformQuery(AdminGetProductTagsParams, {
+      defaultFields: defaultAdminProductTagsFields,
+      defaultRelations: defaultAdminProductTagsRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-product-tags").default)
+  )
 
   return app
 }
-
-export const allowedAdminProductTagsFields = [
-  "id",
-  "value",
-  "created_at",
-  "updated_at",
-]
 
 export const defaultAdminProductTagsFields = [
   "id",

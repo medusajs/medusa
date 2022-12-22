@@ -11,9 +11,9 @@ node_modules
 
 packages/**/.yarn/*
 integration-tests/**/.yarn/*
+www/**/.yarn/*
 
 .DS_Store
-lerna-debug.log
 
 .eslintcache
 

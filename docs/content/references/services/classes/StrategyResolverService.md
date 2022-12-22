@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `TransactionBaseService`<[`StrategyResolverService`](StrategyResolverService.md), `InjectedDependencies`\>
+- `TransactionBaseService`
 
   ↳ **`StrategyResolverService`**
 
@@ -20,24 +20,39 @@
 
 #### Overrides
 
-TransactionBaseService&lt;
-  StrategyResolver,
-  InjectedDependencies
-\&gt;.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[services/strategy-resolver.ts:17](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/strategy-resolver.ts#L17)
+[packages/medusa/src/services/strategy-resolver.ts:14](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/strategy-resolver.ts#L14)
 
 ## Properties
 
-### configModule
+### \_\_configModule\_\_
 
-• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
 
 #### Inherited from
 
-TransactionBaseService.configModule
+TransactionBaseService.\_\_configModule\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+
+___
+
+### \_\_container\_\_
+
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
+
+#### Inherited from
+
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -45,9 +60,9 @@ ___
 
 • `Protected` `Readonly` **container**: `InjectedDependencies`
 
-#### Inherited from
+#### Defined in
 
-TransactionBaseService.container
+[packages/medusa/src/services/strategy-resolver.ts:14](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/strategy-resolver.ts#L14)
 
 ___
 
@@ -61,7 +76,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[services/strategy-resolver.ts:14](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/strategy-resolver.ts#L14)
+[packages/medusa/src/services/strategy-resolver.ts:11](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/strategy-resolver.ts#L11)
 
 ___
 
@@ -75,13 +90,17 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[services/strategy-resolver.ts:15](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/strategy-resolver.ts#L15)
+[packages/medusa/src/services/strategy-resolver.ts:12](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/strategy-resolver.ts#L12)
 
 ## Methods
 
 ### atomicPhase\_
 
 ▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
 
 #### Type parameters
 
@@ -94,13 +113,15 @@ TransactionBaseService.transactionManager\_
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> |  |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
-| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> |  |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
 
 `Promise`<`TResult`\>
+
+the result of the transactional work
 
 #### Inherited from
 
@@ -108,19 +129,13 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
 ### resolveBatchJobByType
 
-▸ **resolveBatchJobByType**<`T`\>(`type`): `AbstractBatchJobStrategy`<`T`, `unknown`\>
-
-#### Type parameters
-
-| Name | Type |
-| :------ | :------ |
-| `T` | extends `TransactionBaseService`<`never`, `unknown`, `T`\> |
+▸ **resolveBatchJobByType**(`type`): `AbstractBatchJobStrategy`
 
 #### Parameters
 
@@ -130,11 +145,11 @@ ___
 
 #### Returns
 
-`AbstractBatchJobStrategy`<`T`, `unknown`\>
+`AbstractBatchJobStrategy`
 
 #### Defined in
 
-[services/strategy-resolver.ts:22](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/strategy-resolver.ts#L22)
+[packages/medusa/src/services/strategy-resolver.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/strategy-resolver.ts#L19)
 
 ___
 
@@ -158,7 +173,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -182,4 +197,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

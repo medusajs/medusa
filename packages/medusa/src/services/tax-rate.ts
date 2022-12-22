@@ -1,10 +1,11 @@
-import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { ProductTaxRate } from "../models/product-tax-rate"
-import { ProductTypeTaxRate } from "../models/product-type-tax-rate"
-import { ShippingTaxRate } from "../models/shipping-tax-rate"
-import { TaxRate } from "../models/tax-rate"
+import {
+  ProductTaxRate,
+  ProductTypeTaxRate,
+  ShippingTaxRate,
+  TaxRate,
+} from "../models"
 import { TaxRateRepository } from "../repositories/tax-rate"
 import ProductService from "../services/product"
 import ProductTypeService from "../services/product-type"
@@ -16,13 +17,18 @@ import {
   TaxRateListByConfig,
   UpdateTaxRateInput,
 } from "../types/tax-rate"
+import { buildQuery, PostgresError } from "../utils"
+import { TransactionBaseService } from "../interfaces"
+import { FindConditions } from "typeorm/find-options/FindConditions"
 
-class TaxRateService extends BaseService {
-  private manager_: EntityManager
-  private productService_: ProductService
-  private productTypeService_: ProductTypeService
-  private shippingOptionService_: ShippingOptionService
-  private taxRateRepository_: typeof TaxRateRepository
+class TaxRateService extends TransactionBaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly productService_: ProductService
+  protected readonly productTypeService_: ProductTypeService
+  protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly taxRateRepository_: typeof TaxRateRepository
 
   constructor({
     manager,
@@ -31,32 +37,13 @@ class TaxRateService extends BaseService {
     shippingOptionService,
     taxRateRepository,
   }) {
-    super()
+    super(arguments[0])
 
     this.manager_ = manager
     this.taxRateRepository_ = taxRateRepository
     this.productService_ = productService
     this.productTypeService_ = productTypeService
     this.shippingOptionService_ = shippingOptionService
-  }
-
-  withTransaction(transactionManager: EntityManager): TaxRateService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new TaxRateService({
-      manager: transactionManager,
-      taxRateRepository: this.taxRateRepository_,
-      productService: this.productService_,
-      productTypeService: this.productTypeService_,
-      shippingOptionService: this.shippingOptionService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-    cloned.manager_ = transactionManager
-
-    return cloned
   }
 
   async list(
@@ -66,7 +53,7 @@ class TaxRateService extends BaseService {
     const taxRateRepo = this.manager_.getCustomRepository(
       this.taxRateRepository_
     )
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return await taxRateRepo.findWithResolution(query)
   }
 
@@ -77,23 +64,30 @@ class TaxRateService extends BaseService {
     const taxRateRepo = this.manager_.getCustomRepository(
       this.taxRateRepository_
     )
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return await taxRateRepo.findAndCountWithResolution(query)
   }
 
   async retrieve(
-    id: string,
+    taxRateId: string,
     config: FindConfig<TaxRate> = {}
   ): Promise<TaxRate> {
+    if (!isDefined(taxRateId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"taxRateId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-    const query = this.buildQuery_({ id }, config)
+    const query = buildQuery({ id: taxRateId }, config)
 
     const taxRate = await taxRateRepo.findOneWithResolution(query)
     if (!taxRate) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `TaxRate with ${id} was not found`
+        `TaxRate with ${taxRateId} was not found`
       )
     }
 
@@ -122,7 +116,7 @@ class TaxRateService extends BaseService {
       const taxRate = await this.retrieve(id)
 
       for (const [k, v] of Object.entries(data)) {
-        if (typeof v !== "undefined") {
+        if (isDefined(v)) {
           taxRate[k] = v
         }
       }
@@ -134,8 +128,8 @@ class TaxRateService extends BaseService {
   async delete(id: string | string[]): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-      const query = this.buildQuery_({ id })
-      await taxRateRepo.delete(query.where)
+      const query = buildQuery({ id })
+      await taxRateRepo.delete(query.where as FindConditions<TaxRate>)
     })
   }
 
@@ -212,14 +206,14 @@ class TaxRateService extends BaseService {
       },
       // eslint-disable-next-line
       async (err: any) => {
-        if (err.code === "23503") {
+        if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
           // will try to retrieve all of the resources and will fail when
           // something is not found.
           await Promise.all([
             this.retrieve(id, { select: ["id"] }),
-            ...ids.map((pId) =>
+            ...ids.map(async (pId) =>
               this.productService_.retrieve(pId, { select: ["id"] })
             ),
           ])
@@ -248,7 +242,7 @@ class TaxRateService extends BaseService {
       },
       // eslint-disable-next-line
       async (err: any) => {
-        if (err.code === "23503") {
+        if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
           // will try to retrieve all of the resources and will fail when
@@ -258,7 +252,7 @@ class TaxRateService extends BaseService {
               select: ["id"],
             }) as Promise<unknown>,
             ...ids.map(
-              (pId) =>
+              async (pId) =>
                 this.productTypeService_.retrieve(pId, {
                   select: ["id"],
                 }) as Promise<unknown>
@@ -273,7 +267,7 @@ class TaxRateService extends BaseService {
     id: string,
     optionIds: string | string[],
     replace = false
-  ): Promise<ShippingTaxRate> {
+  ): Promise<ShippingTaxRate[]> {
     let ids: string[]
     if (typeof optionIds === "string") {
       ids = [optionIds]
@@ -301,14 +295,14 @@ class TaxRateService extends BaseService {
       },
       // eslint-disable-next-line
       async (err: any) => {
-        if (err.code === "23503") {
+        if (err.code === PostgresError.FOREIGN_KEY_ERROR) {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
           // will try to retrieve all of the resources and will fail when
           // something is not found.
           await Promise.all([
             this.retrieve(id, { select: ["id"] }),
-            ...ids.map((sId) =>
+            ...ids.map(async (sId) =>
               this.shippingOptionService_.retrieve(sId, { select: ["id"] })
             ),
           ])

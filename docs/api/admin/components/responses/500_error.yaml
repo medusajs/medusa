@@ -1,0 +1,14 @@
+description: Server Error
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/Error.yaml
+    examples:
+      database:
+        $ref: ../examples/database_error.yaml
+      unexpected_state:
+        $ref: ../examples/unexpected_state_error.yaml
+      invalid_argument:
+        $ref: ../examples/invalid_argument_error.yaml
+      default_error:
+        $ref: ../examples/default_error.yaml

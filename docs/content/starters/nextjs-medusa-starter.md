@@ -1,14 +1,16 @@
-# Quickstart: Next.js Storefront
+# Next.js Storefront Quickstart
 
 This document guides you to install and set up the Next.js Storefront for your Medusa Server.
 
-![Next.js Storefront Demo](https://i.imgur.com/koJl8uR.gif)
+![Next.js Storefront Demo](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003177/Medusa%20Docs/Screenshots/koJl8uR_n3gvii.gif)
 
 ## Instant Deployment to Netlify
 
 Instead of manually following this guide to install then later deploy the Next.js Storefront, you can deploy the Next.js Storefront to Netlify with this button:
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/nextjs-starter-medusa)
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/nextjs-starter-medusa" class="img-url">
+  <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" class="no-zoom-img" />
+</a>
 
 ## Prerequisites
 
@@ -16,19 +18,26 @@ This document assumes you already have a Medusa server installed. If you don’t
 
 ## Installation
 
-1. Create a new Next.js project using the [Medusa starter template](https://github.com/medusajs/nextjs-starter-medusa):
+:::tip
+
+It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for the installation process as it's much faster than using NPM.
+
+:::
+
+1\. Create a new Next.js project using the [Medusa starter template](https://github.com/medusajs/nextjs-starter-medusa):
 
 ```bash
 npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
 ```
 
-1. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
+2\. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
 
 ```bash
+cd my-medusa-storefront
 mv .env.template .env.local
 ```
 
-1. Make sure the Medusa server is running, then run the local Next.js server:
+3\. Make sure the Medusa server is running, then run the local Next.js server:
 
 ```bash
 npm run dev
@@ -89,6 +98,14 @@ Make sure to replace `<MEILISEARCH_URL>` with the URL MeiliSearch is running on 
 
 Then, restart the Next.js server. You’ll be able to search through available products by clicking the search icon in the navigation bar.
 
+:::note
+
+To make sure the Next.js storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa server at least the fields `title`, `handle`, `description`, and `thumbnail`.
+
+:::
+
+![Search Result on Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003191/Medusa%20Docs/Screenshots/gQVWvH2_h1ljig.png)
+
 ### Algolia Integration
 
 Instead of using the default MeiliSearch search engine, you can switch to using Algolia. Make sure you start by installing the Algolia plugin on your Medusa server. You can do it by [following this guide](../add-plugins/algolia.md).
@@ -122,7 +139,7 @@ export const SEARCH_INDEX_NAME =
 
 Then, restart the Next.js server. You’ll be able to search through available products by clicking the search icon in the navigation bar.
 
-![Search Pop-up in Next.js Storefront](https://i.imgur.com/ZLgX5Ad.png)
+![Search Pop-up in Next.js Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003205/Medusa%20Docs/Screenshots/ZLgX5Ad_po6a4n.png)
 
 ### Stripe Payment Integration
 
@@ -138,7 +155,7 @@ Make sure to replace `<YOUR_PUBLISHABLE_KEY>` with your Stripe publishable key. 
 
 If you restart your Next.js server you should be able to pay with Stripe on checkout.
 
-![Pay with Stripe on Checkout](https://i.imgur.com/h5mWdJT.png)
+![Pay with Stripe on Checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003250/Medusa%20Docs/Screenshots/h5mWdJT_yjogcq.png)
 
 ### PayPal Payment Integration
 
@@ -154,7 +171,7 @@ Make sure to replace `<YOUR_CLIENT_ID>` with your PayPal client ID. You can retr
 
 If you restart your Next.js server you should be able to pay with PayPal on checkout.
 
-![Pay with PayPal on Checkout](https://i.imgur.com/F8OvsOJ.png)
+![Pay with PayPal on Checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003264/Medusa%20Docs/Screenshots/F8OvsOJ_mlx0le.png)
 
 ### Customization
 
@@ -193,17 +210,17 @@ You can learn more about development with Next.js through [their documentation](
 
 - View all products and manage your cart.
 
-![All Products Page](https://i.imgur.com/1vLAYbH.png)
+![All Products Page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003278/Medusa%20Docs/Screenshots/1vLAYbH_sulxrr.png)
 
 - Customer authentication and profiles.
 
-![Customer Profile](https://i.imgur.com/etW3b3L.png)
+![Customer Profile](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003287/Medusa%20Docs/Screenshots/etW3b3L_wccrez.png)
 
 - Full checkout workflow.
 
-![Checkout Page](https://i.imgur.com/VC8SYfb.png)
+![Checkout Page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003296/Medusa%20Docs/Screenshots/VC8SYfb_eowjno.png)
 
-## What’s Next 🚀
+## What’s Next
 
-- Check the [Storefront API reference](https://docs.medusajs.com/api/store/auth) for a full list of REST APIs to use on your storefront.
+- Check the [Storefront API reference](https://docs.medusajs.com/api/store) for a full list of REST APIs to use on your storefront.
 - Learn [how to install Medusa Admin](../admin/quickstart.md).

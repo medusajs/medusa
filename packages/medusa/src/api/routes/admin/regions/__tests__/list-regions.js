@@ -77,7 +77,6 @@ describe("GET /admin/regions", () => {
     })
 
     it("returns 200", () => {
-      console.log(subject)
       expect(subject.status).toEqual(200)
     })
 

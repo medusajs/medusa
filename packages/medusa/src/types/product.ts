@@ -7,17 +7,20 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { FindOperator } from "typeorm"
-import { Product, ProductOptionValue, ProductStatus } from "../models"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import {
+  PriceList,
+  Product,
+  ProductOptionValue,
+  ProductStatus,
+  SalesChannel,
+} from "../models"
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
-import {
-  DateComparisonOperator,
-  FindConfig,
-  Selector,
-  StringComparisonOperator,
-} from "./common"
+import { DateComparisonOperator, FindConfig, Selector } from "./common"
 import { PriceListLoadConfig } from "./price-list"
+import { FindOperator } from "typeorm"
 
 /**
  * API Level DTOs + Validation rules
@@ -64,13 +67,16 @@ export class FilterableProductProps {
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  @IsString()
-  @IsOptional()
-  type?: string
-
   @IsArray()
   @IsOptional()
+  type_id?: string[]
+
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
+
+  @IsString()
+  @IsOptional()
+  discount_condition_id?: string
 
   @IsOptional()
   @ValidateNested()
@@ -88,49 +94,14 @@ export class FilterableProductProps {
   deleted_at?: DateComparisonOperator
 }
 
-export class FilterableProductTagProps {
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  id?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  value?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  q?: string
-}
-
-export class FilterableProductTypeProps {
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  id?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  value?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  q?: string
-}
+export type ProductSelector =
+  | FilterableProductProps
+  | (Selector<Product> & {
+      q?: string
+      discount_condition_id?: string
+      price_list_id?: string[] | FindOperator<PriceList>
+      sales_channel_id?: string[] | FindOperator<SalesChannel>
+    })
 
 /**
  * Service Level DTOs
@@ -152,6 +123,7 @@ export type CreateProductInput = {
   tags?: CreateProductProductTagInput[]
   options?: CreateProductProductOption[]
   variants?: CreateProductProductVariantInput[]
+  sales_channels?: CreateProductProductSalesChannelInput[] | null
   weight?: number
   length?: number
   height?: number
@@ -166,6 +138,10 @@ export type CreateProductInput = {
 export type CreateProductProductTagInput = {
   id?: string
   value: string
+}
+
+export type CreateProductProductSalesChannelInput = {
+  id: string
 }
 
 export type CreateProductProductTypeInput = {
@@ -190,7 +166,7 @@ export type CreateProductProductVariantInput = {
   origin_country?: string
   mid_code?: string
   material?: string
-  metadata?: object
+  metadata?: Record<string, unknown>
   prices?: CreateProductProductVariantPriceInput[]
   options?: { value: string }[]
 }
@@ -213,7 +189,7 @@ export type UpdateProductProductVariantDTO = {
   origin_country?: string
   mid_code?: string
   material?: string
-  metadata?: object
+  metadata?: Record<string, unknown>
   prices?: CreateProductProductVariantPriceInput[]
   options?: { value: string; option_id: string }[]
 }
@@ -243,3 +219,26 @@ export type ProductOptionInput = {
 }
 
 export type FindProductConfig = FindConfig<Product> & PriceListLoadConfig
+
+export class ProductSalesChannelReq {
+  @IsString()
+  id: string
+}
+
+export class ProductTagReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  value: string
+}
+
+export class ProductTypeReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  value: string
+}

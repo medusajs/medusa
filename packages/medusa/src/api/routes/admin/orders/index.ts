@@ -3,12 +3,13 @@ import "reflect-metadata"
 import { Order } from "../../../.."
 import {
   DeleteResponse,
-  EmptyQueryParams,
+  FindParams,
   PaginatedResponse,
 } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
 import { FlagRouter } from "../../../../utils/flag-router"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 
 const route = Router()
 
@@ -16,7 +17,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/orders", route)
 
   const relations = [...defaultAdminOrdersRelations]
-  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+  if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
     relations.push("sales_channel")
   }
 
@@ -28,7 +29,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(AdminGetOrdersParams, {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
-      allowedFields: allowedAdminOrdersFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-orders").default)
@@ -39,19 +39,25 @@ export default (app, featureFlagRouter: FlagRouter) => {
    */
   route.get(
     "/:id",
-    transformQuery(EmptyQueryParams, {
+    transformQuery(FindParams, {
       defaultRelations: relations,
-      defaultFields: defaultAdminOrdersFields,
-      allowedFields: allowedAdminOrdersFields,
+      defaultFields: defaultAdminOrdersFields.filter((field) => {
+        return ![
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+        ].includes(field)
+      }),
       isList: false,
     }),
     middlewares.wrap(require("./get-order").default)
   )
-
-  /**
-   * Create a new order
-   */
-  route.post("/", middlewares.wrap(require("./create-order").default))
 
   /**
    * Update an order
@@ -225,14 +231,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     middlewares.wrap(require("./create-claim-shipment").default)
   )
 
-  /**
-   * Delete metadata key / value pair.
-   */
-  route.delete(
-    "/:id/metadata/:key",
-    middlewares.wrap(require("./delete-metadata").default)
-  )
-
   return app
 }
 
@@ -267,21 +265,27 @@ export const defaultAdminOrdersRelations = [
   "claims",
   "claims.return_order",
   "claims.return_order.shipping_method",
+  "claims.return_order.shipping_method.tax_lines",
   "claims.shipping_methods",
   "claims.shipping_address",
   "claims.additional_items",
   "claims.fulfillments",
+  "claims.fulfillments.tracking_links",
   "claims.claim_items",
   "claims.claim_items.item",
   "claims.claim_items.images",
   // "claims.claim_items.tags",
   "swaps",
   "swaps.return_order",
+  "swaps.return_order.shipping_method",
+  "swaps.return_order.shipping_method.tax_lines",
   "swaps.payment",
   "swaps.shipping_methods",
+  "swaps.shipping_methods.tax_lines",
   "swaps.shipping_address",
   "swaps.additional_items",
   "swaps.fulfillments",
+  "swaps.fulfillments.tracking_links",
 ]
 
 export const defaultAdminOrdersFields = [
@@ -314,54 +318,7 @@ export const defaultAdminOrdersFields = [
   "paid_total",
   "refundable_amount",
   "no_notification",
-]
-
-export const allowedAdminOrdersFields = [
-  "id",
-  "status",
-  "fulfillment_status",
-  "payment_status",
-  "display_id",
-  "cart_id",
-  "draft_order_id",
-  "customer_id",
-  "email",
-  "region_id",
-  "currency_code",
-  "tax_rate",
-  "canceled_at",
-  "created_at",
-  "updated_at",
-  "metadata",
-  "shipping_total",
-  "discount_total",
-  "tax_total",
-  "refunded_total",
-  "subtotal",
-  "gift_card_total",
-  "total",
-  "paid_total",
-  "refundable_amount",
-  "no_notification",
-]
-
-export const allowedAdminOrdersRelations = [
-  "customer",
-  "region",
-  "billing_address",
-  "shipping_address",
-  "discounts",
-  "discounts.rule",
-  "shipping_methods",
-  "payments",
-  "fulfillments",
-  "fulfillments.tracking_links",
-  "returns",
-  "claims",
-  "swaps",
-  "swaps.return_order",
-  "swaps.additional_items",
-]
+] as (keyof Order)[]
 
 export const filterableAdminOrdersFields = [
   "id",
@@ -393,11 +350,9 @@ export * from "./complete-order"
 export * from "./create-claim"
 export * from "./create-claim-shipment"
 export * from "./create-fulfillment"
-export * from "./create-order"
 export * from "./create-shipment"
 export * from "./create-swap"
 export * from "./create-swap-shipment"
-export * from "./delete-metadata"
 export * from "./fulfill-claim"
 export * from "./fulfill-swap"
 export * from "./get-order"

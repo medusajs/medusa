@@ -22,7 +22,7 @@ By integrating SendGrid with Medusa, you’ll be sending email notifications to 
 
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa server set up. You can follow our [Quickstart guide](../quickstart/quick-start.md).
+Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](../quickstart/quick-start.md).
 
 You also must have [Redis configured on your Medusa server](/tutorial/set-up-your-development-environment#redis). Sending emails is done through Subscribers, which uses Redis as the event queue. If you don’t set up Redis, the plugin will not send emails.
 
@@ -42,7 +42,7 @@ If you choose to give the API Key restricted access, make sure to at least give 
 
 :::
 
-Once you create the API key, the key will be shown for one time only. So, make sure to copy and save it somewhere for later usage.
+Once you create the API key, the key will be shown for one time only. Make sure to copy and save it somewhere for later usage.
 
 ### Email Templates
 
@@ -79,7 +79,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   {
     "beforeInsert": [Function],
     "billing_address": null,
@@ -306,7 +306,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   {
     "beforeInsert": [Function],
     "billing_address": null,
@@ -537,7 +537,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   {
     "date": Any<String>,
     "email": "test@testson.com",
@@ -819,7 +819,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   {
     "date": Any<String>,
     "email": "test@testson.com",
@@ -1261,7 +1261,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   {
     "date": Any<String>,
     "email": "test@testson.com",
@@ -1703,7 +1703,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   {
     "claim": Object {
       "canceled_at": null,
@@ -2000,7 +2000,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   {
     "locale": null,
     "swap": Object {
@@ -2509,7 +2509,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   Object {
     "additional_total": "16.88 USD",
     "date": Any<String>,
@@ -3089,7 +3089,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   {
     "locale": null,
     "swap": Object {
@@ -3599,7 +3599,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   Object {
     "code": Any<String>,
     "value": 4,
@@ -3766,7 +3766,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   Object {
     "id": Any<String>,
     "email": "test@testson.com",
@@ -3786,7 +3786,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   Object {
     "email": "test@testson.com",
     "token": Any<String>,
@@ -3803,7 +3803,7 @@ You don’t have to create a template for every type in the reference. You can s
 <details>
   <summary>Example Data</summary>
 
-  ```jsx
+  ```json noReport
   Object {
     "product": Object {
       "collection_id": null,
@@ -3918,7 +3918,7 @@ Where `<ORDER_PLACED_TEMPLATE_ID` is the ID of your template for order placed em
 
 Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array of plugins:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
   ...,
   {
@@ -3953,15 +3953,15 @@ To test it out, perform an action that would trigger one of the emails being sen
 
 :::tip
 
-If you don’t have a storefront installed, check out our [Gatsby](../starters/gatsby-medusa-starter.md) or [Next.js](../starters/nextjs-medusa-starter.md) starters to create a storefront in minutes.
+If you don’t have a storefront installed, check out the [Gatsby](../starters/gatsby-medusa-starter.md) or [Next.js](../starters/nextjs-medusa-starter.md) starters to create a storefront in minutes.
 
 :::
 
 You can also track analytics related to emails sent from the SendGrid dashboard.
 
-![SendGrid Analytics](https://i.imgur.com/X01LigH.png)
+![SendGrid Analytics](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000788/Medusa%20Docs/SendGrid/X01LigH_mxmtbn.png)
 
-## What’s Next 🚀
+## What’s Next
 
 - Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
 - Install the [Medusa admin](https://github.com/medusajs/admin#-setting-up-admin) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

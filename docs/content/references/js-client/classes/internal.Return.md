@@ -6,6 +6,8 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).Return
 
+Base abstract entity for all entities
+
 ## Hierarchy
 
 - [`BaseEntity`](internal.BaseEntity.md)
@@ -20,7 +22,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:29
+medusa/dist/models/return.d.ts:29
 
 ___
 
@@ -30,7 +32,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:19
+medusa/dist/models/return.d.ts:19
 
 ___
 
@@ -40,13 +42,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:18
+medusa/dist/models/return.d.ts:18
 
 ___
 
 ### created\_at
 
-• **created\_at**: [`Date`](../modules/internal.md#date)
+• **created\_at**: `Date`
 
 #### Inherited from
 
@@ -54,7 +56,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
@@ -68,7 +70,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -78,7 +80,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:28
+medusa/dist/models/return.d.ts:28
 
 ___
 
@@ -88,17 +90,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:15
+medusa/dist/models/return.d.ts:15
 
 ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:27
+medusa/dist/models/return.d.ts:27
 
 ___
 
@@ -108,7 +110,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:26
+medusa/dist/models/return.d.ts:26
 
 ___
 
@@ -118,7 +120,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:21
+medusa/dist/models/return.d.ts:21
 
 ___
 
@@ -128,17 +130,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:20
+medusa/dist/models/return.d.ts:20
 
 ___
 
 ### received\_at
 
-• **received\_at**: [`Date`](../modules/internal.md#date)
+• **received\_at**: `Date`
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:25
+medusa/dist/models/return.d.ts:25
 
 ___
 
@@ -148,17 +150,17 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:24
+medusa/dist/models/return.d.ts:24
 
 ___
 
 ### shipping\_data
 
-• **shipping\_data**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **shipping\_data**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:23
+medusa/dist/models/return.d.ts:23
 
 ___
 
@@ -168,7 +170,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:22
+medusa/dist/models/return.d.ts:22
 
 ___
 
@@ -178,7 +180,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:14
+medusa/dist/models/return.d.ts:14
 
 ___
 
@@ -188,7 +190,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:17
+medusa/dist/models/return.d.ts:17
 
 ___
 
@@ -198,13 +200,13 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/return.d.ts:16
+medusa/dist/models/return.d.ts:16
 
 ___
 
 ### updated\_at
 
-• **updated\_at**: [`Date`](../modules/internal.md#date)
+• **updated\_at**: `Date`
 
 #### Inherited from
 
@@ -212,4 +214,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/interfaces/models/base-entity.d.ts:7
+medusa/dist/interfaces/models/base-entity.d.ts:7

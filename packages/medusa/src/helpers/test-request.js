@@ -2,12 +2,13 @@ import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
 import { MockManager } from "medusa-test-utils"
+import querystring from "querystring"
 import "reflect-metadata"
 import supertest from "supertest"
-import querystring from "querystring"
 import apiLoader from "../loaders/api"
+import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
+import { moduleHelper } from "../loaders/module"
 import passportLoader from "../loaders/passport"
-import featureFlagLoader from "../loaders/feature-flags"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
 
@@ -36,9 +37,8 @@ const testApp = express()
 
 const container = createContainer()
 
-const featureFlagRouter = featureFlagLoader(config)
-
 container.register("featureFlagRouter", asValue(featureFlagRouter))
+container.register("modulesHelper", asValue(moduleHelper))
 container.register("configModule", asValue(config))
 container.register({
   logger: asValue({
@@ -60,6 +60,7 @@ testApp.use((req, res, next) => {
   next()
 })
 
+featureFlagLoader(config)
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })
@@ -77,7 +78,7 @@ export async function request(method, url, opts = {}) {
   const { payload, query, headers = {}, flags = [] } = opts
 
   flags.forEach((flag) => {
-    featureFlagRouter.setFlag(flag, true)
+    featureFlagRouter.setFlag(flag.key, true)
   })
 
   const queryParams = query && querystring.stringify(query)
@@ -86,20 +87,22 @@ export async function request(method, url, opts = {}) {
   )
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
-    if (opts.adminSession.jwt) {
-      opts.adminSession.jwt = jwt.sign(
-        opts.adminSession.jwt,
+    const adminSession = { ...opts.adminSession }
+
+    if (adminSession.jwt) {
+      adminSession.jwt = jwt.sign(
+        adminSession.jwt,
         config.projectConfig.jwt_secret,
         {
           expiresIn: "30m",
         }
       )
     }
-    headers.Cookie = JSON.stringify(opts.adminSession) || ""
+    headers.Cookie = JSON.stringify(adminSession) || ""
   }
   if (opts.clientSession) {
     if (opts.clientSession.jwt) {
-      opts.clientSession.jwt = jwt.sign(
+      opts.clientSession.jwt_store = jwt.sign(
         opts.clientSession.jwt,
         config.projectConfig.jwt_secret,
         {
@@ -112,7 +115,9 @@ export async function request(method, url, opts = {}) {
   }
 
   for (const name in headers) {
-    req.set(name, headers[name])
+    if ({}.hasOwnProperty.call(headers, name)) {
+      req.set(name, headers[name])
+    }
   }
 
   if (payload && !req.get("content-type")) {
@@ -148,6 +153,5 @@ export async function request(method, url, opts = {}) {
   //  c[clientSessionOpts.cookieName] &&
   //  sessions.util.decode(clientSessionOpts, c[clientSessionOpts.cookieName])
   //    .content
-
   return res
 }
