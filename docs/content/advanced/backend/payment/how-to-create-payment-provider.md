@@ -49,44 +49,44 @@ The first step to create a payment provider is to create a JavaScript or TypeScr
 For example, create the file `src/services/my-payment.ts` with the following content:
 
 ```ts title=src/services/my-payment.ts
-import { AbstractPaymentService, Cart, Data, Payment, PaymentSession, PaymentSessionStatus, TransactionBaseService } from "@medusajs/medusa"
+import { AbstractPaymentService, Context, Data, Payment, PaymentSession, PaymentSessionStatus, TransactionBaseService } from "@medusajs/medusa"
 import { EntityManager } from "typeorm";
 
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
   protected manager_: EntityManager;
   protected transactionManager_: EntityManager;
 
-  getPaymentData(paymentSession: PaymentSession): Promise<Data> {
+  async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
     throw new Error("Method not implemented.");
   }
-  updatePaymentData(paymentSessionData: Data, data: Data): Promise<Data> {
+  async updatePaymentData(paymentSessionData: Data, data: Data): Promise<Data> {
     throw new Error("Method not implemented.");
   }
-  createPayment(cart: Cart): Promise<Data> {
+  async createPayment(context: Context): Promise<PaymentSessionResponse> {
     throw new Error("Method not implemented.");
   }
-  retrievePayment(paymentData: Data): Promise<Data> {
+  async retrievePayment(paymentData: Data): Promise<Data> {
     throw new Error("Method not implemented.");
   }
-  updatePayment(paymentSessionData: Data, cart: Cart): Promise<Data> {
+  async updatePayment(paymentSessionData: Data, context: Context): Promise<PaymentSessionResponse> {
     throw new Error("Method not implemented.");
   }
-  authorizePayment(paymentSession: PaymentSession, context: Data): Promise<{ data: Data; status: PaymentSessionStatus; }> {
+  async authorizePayment(paymentSession: PaymentSession, context: Data): Promise<{ data: Data; status: PaymentSessionStatus; }> {
     throw new Error("Method not implemented.");
   }
-  capturePayment(payment: Payment): Promise<Data> {
+  async capturePayment(payment: Payment): Promise<Data> {
     throw new Error("Method not implemented.");
   }
-  refundPayment(payment: Payment, refundAmount: number): Promise<Data> {
+  async refundPayment(payment: Payment, refundAmount: number): Promise<Data> {
     throw new Error("Method not implemented.");
   }
-  cancelPayment(payment: Payment): Promise<Data> {
+  async cancelPayment(payment: Payment): Promise<Data> {
     throw new Error("Method not implemented.");
   }
-  deletePayment(paymentSession: PaymentSession): Promise<void> {
+  async deletePayment(paymentSession: PaymentSession): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  getStatus(data: Data): Promise<PaymentSessionStatus> {
+  async getStatus(data: Data): Promise<PaymentSessionStatus> {
     throw new Error("Method not implemented.");
   }
 
@@ -130,22 +130,53 @@ constructor({ productService }, options) {
 
 ### createPayment
 
-This method is called during checkout when [Payment Sessions are initialized](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) to present payment options to the customer. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to initialize a Payment Intent for the customer.
+This method is called during checkout when [Payment Sessions are initialized](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) to present payment options to the customer. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
 
-The method receives the cart as an object for its first parameter. It holds all the necessary information you need to know about the cart and the customer that owns this cart.
+For example, in Stripe this method is used to initialize a Payment Intent for the customer.
 
-This method must return an object that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](./overview.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
-
-An example of a minimal implementation of `createPayment` that does not interact with any third-party providers:
+The method receives a context object as a first parameter. This object is of type `PaymentContext` and has the following properties:
 
 ```ts
-import { Cart, Data } from "@medusajs/medusa"
+type PaymentContext = {
+  cart: {
+    context: Record<string, unknown>
+    id: string
+    email: string
+    shipping_address: Address | null
+    shipping_methods: ShippingMethod[]
+  }
+  currency_code: string
+  amount: number
+  resource_id?: string
+  customer?: Customer
+}
+```
+
+This method must return an object of type `PaymentSessionResponse`. It should have the following properties:
+
+```ts
+PaymentSessionResponse = {
+  update_requests: { customer_metadata: Record<string, unknown> }
+  session_data: Record<string, unknown>
+}
+```
+
+Where:
+
+- `session_data` is the data that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](./overview.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
+- `update_requests` is the updates to be made in the third-party payment provider.
+
+An example of a minimal implementation of `createPayment`:
+
+```ts
+import { PaymentContext, PaymentSessionResponse } from "@medusajs/medusa"
 //...
 
-async createPayment(cart: Cart): Promise<Data> {
+async createPayment(context: PaymentContext): Promise<PaymentSessionResponse> {
+  //prepare data
   return { 
-    id: 'test-payment',
-    status: 'pending'
+    session_data,
+    update_requests
    };
 }
 ```
@@ -212,20 +243,52 @@ A line item refers to a product in the cart.
 
 :::
 
-It accepts the `data` field of the Payment Session as the first parameter and the cart as an object for the second parameter.
+It accepts the `data` field of the Payment Session as the first parameter and a context object as a second parameter. This object is of type `PaymentContext` and has the following properties:
+
+```ts
+type PaymentContext = {
+  cart: {
+    context: Record<string, unknown>
+    id: string
+    email: string
+    shipping_address: Address | null
+    shipping_methods: ShippingMethod[]
+  }
+  currency_code: string
+  amount: number
+  resource_id?: string
+  customer?: Customer
+}
+```
 
 You can utilize this method to interact with the third-party provider and update any details regarding the payment if necessary.
 
-This method must return an object that will be stored in the `data` field of the Payment Session.
-
-An example of a minimal implementation of `updatePayment` that does not need to make any updates on the third-party provider or the `data` field of the Payment Session:
+This method must return an object of type `PaymentSessionResponse`. It should have the following properties:
 
 ```ts
-import { Cart, Data } from "@medusajs/medusa";
+PaymentSessionResponse = {
+  update_requests: { customer_metadata: Record<string, unknown> }
+  session_data: Record<string, unknown>
+}
+```
+
+Where:
+
+- `session_data` is the data that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](./overview.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
+- `update_requests` is the updates to be made in the third-party payment provider.
+
+An example of a minimal implementation of `updatePayment`:
+
+```ts
+import { PaymentContext, Data } from "@medusajs/medusa";
 //...
 
-async updatePayment(paymentSessionData: Data, cart: Cart): Promise<Data> {
-  return paymentSessionData;
+async updatePayment(paymentSessionData: Data, context: PaymentContext): Promise<PaymentSessionResponse> {
+  //prepare data
+  return {
+    session_data,
+    update_requests
+  }
 }
 ```
 
