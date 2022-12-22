@@ -1,17 +1,7 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import {
-  Brackets,
-  EntityRepository,
-  FindOperator,
-  In,
-  Repository,
-} from "typeorm"
+import { Brackets, EntityRepository, FindOperator, In, Repository, } from "typeorm"
 import { PriceList, Product, SalesChannel } from "../models"
-import {
-  ExtendedFindConfig,
-  Selector,
-  WithRequiredProperty,
-} from "../types/common"
+import { ExtendedFindConfig, Selector, WithRequiredProperty, } from "../types/common"
 import { applyOrdering } from "../utils/repository"
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
@@ -412,7 +402,7 @@ export class ProductRepository extends Repository<Product> {
     if (price_lists) {
       const variantPricesAlias = `${variantsAlias}_prices`
       qb.leftJoin(`${productAlias}.variants`, variantPricesAlias)
-        .leftJoin(variantPricesAlias, pricesAlias)
+        .leftJoin(`${variantPricesAlias}.prices`, pricesAlias)
         .andWhere(`${pricesAlias}.price_list_id IN (:...price_list_ids)`, {
           price_list_ids: price_lists.value,
         })
