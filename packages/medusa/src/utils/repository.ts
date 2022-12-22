@@ -1,6 +1,8 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import { Repository, SelectQueryBuilder } from "typeorm"
+import { EntityMetadata, Repository, SelectQueryBuilder } from "typeorm"
 import { FindWithoutRelationsOptions } from "../repositories/customer-group"
+
+// TODO: All the utilities except applyOrdering needs to be re worked depending on the outcome of the product repository
 
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
@@ -162,4 +164,81 @@ export function mergeEntitiesWithRelations<T>(
   return map(entitiesAndRelationsById, (entityAndRelations) =>
     merge({}, ...entityAndRelations)
   )
+}
+
+/**
+ * Apply the appropriate order depending on the requirements
+ * @param repository
+ * @param order The field on which to apply the order (e.g { "variants.prices.amount": "DESC" })
+ * @param qb
+ * @param alias
+ * @param shouldJoin In case a join is already applied elsewhere and therefore you want to avoid to re joining the data in that case you can return false for specific relations
+ */
+export function applyOrdering<T>({
+  repository,
+  order,
+  qb,
+  alias,
+  shouldJoin,
+}: {
+  repository: Repository<T>
+  order: Record<string, "ASC" | "DESC">
+  qb: SelectQueryBuilder<T>
+  alias: string
+  shouldJoin: (relation: string) => boolean
+}) {
+  const toSelect: string[] = []
+
+  const parsed = Object.entries(order).reduce(
+    (acc, [orderPath, orderDirection]) => {
+      // If the orderPath (e.g variants.prices.amount) includes a point it means that it is to access
+      // a child relation of an unknown depth
+      if (orderPath.includes(".")) {
+        // We are spliting the path and separating the relations from the property to order. (e.g relations ["variants", "prices"] and property "amount"
+        const relationsToJoin = orderPath.split(".")
+        const propToOrder = relationsToJoin.pop()
+
+        // For each relation we will retrieve the metadata in order to use the right property name from the relation registered in the entity.
+        // Each time we will return the child (i.e the relation) and the inverse metadata (corresponding to the child metadata from the parent point of view)
+        // In order for the next child to know its parent
+        relationsToJoin.reduce(
+          ([parent, parentMetadata], child) => {
+            // Find the relation metadata from the parent entity
+            const relationMetadata = (
+              parentMetadata as EntityMetadata
+            ).relations.find(
+              (relationMetadata) => relationMetadata.propertyName === child
+            )
+
+            // The consumer can refuse to apply a join on a relation if the join has already been applied before calling this util
+            const shouldApplyJoin = shouldJoin(child)
+            if (shouldApplyJoin) {
+              qb.leftJoin(`${parent}.${relationMetadata!.propertyPath}`, child)
+            }
+
+            // Return the child relation to be the parent for the next one, as well as the metadata corresponding the child in order
+            // to find the next relation metadata for the next child
+            return [child, relationMetadata!.inverseEntityMetadata]
+          },
+          [alias, repository.metadata]
+        )
+
+        // The key for variants.prices.amount will be "prices.amount" since we are ordering on the join added to its parent "variants" in this example
+        const key = `${
+          relationsToJoin[relationsToJoin.length - 1]
+        }.${propToOrder}`
+        acc[key] = orderDirection
+        toSelect.push(key)
+        return acc
+      }
+
+      const key = `${alias}.${orderPath}`
+      toSelect.push(key)
+      acc[key] = orderDirection
+      return acc
+    },
+    {}
+  )
+  qb.addSelect(toSelect)
+  qb.orderBy(parsed)
 }
