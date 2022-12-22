@@ -54,7 +54,7 @@ Where `database_type` is `sqlite` and `database_database` is the location you wa
 
 :::note
 
-Before getting started with configuring PostgreSQL, you should have created a PostgreSQL `database`. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
+Before getting started with configuring PostgreSQL, you should have created a PostgreSQL database. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
 
 :::
 
@@ -66,13 +66,16 @@ module.exports = {
     //...other configurations
     database_type: "postgres",
     database_url: DATABASE_URL,
+    database_schema: process.env.DATABASE_SCHEMA //optional
   },
 };
 ```
 
 Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
 
-It is recommended to set the Database URL as an environment variable:
+You can optionally set the `database_schema` option. By default, its value is `public`.
+
+It's recommended to set the Database URL as an environment variable:
 
 ```bash
 DATABASE_URL=<YOUR_DATABASE_URL>
