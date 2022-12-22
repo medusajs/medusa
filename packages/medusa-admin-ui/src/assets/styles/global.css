@@ -1,0 +1,456 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../fonts/Inter-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../fonts/Inter-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("../../fonts/RobotoMono-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("../../fonts/RobotoMono-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    @apply overflow-hidden;
+  }
+}
+
+@layer components {
+  .inter-5xlarge-regular {
+    @apply font-sans text-5xlarge leading-4xlarge font-normal;
+  }
+  .inter-5xlarge-semibold {
+    @apply font-sans text-5xlarge leading-4xlarge font-semibold;
+  }
+
+  .inter-4xlarge-regular {
+    @apply font-sans text-4xlarge leading-3xlarge font-normal;
+  }
+  .inter-4xlarge-semibold {
+    @apply font-sans text-4xlarge leading-3xlarge font-semibold;
+  }
+
+  .inter-3xlarge-regular {
+    @apply font-sans text-3xlarge leading-2xlarge font-normal;
+  }
+  .inter-3xlarge-semibold {
+    @apply font-sans text-3xlarge leading-2xlarge font-semibold;
+  }
+
+  .inter-2xlarge-regular {
+    @apply font-sans text-2xlarge leading-xlarge font-normal;
+  }
+  .inter-2xlarge-semibold {
+    @apply font-sans text-2xlarge leading-xlarge font-semibold;
+  }
+
+  .inter-xlarge-regular {
+    @apply font-sans text-xlarge leading-large font-normal;
+  }
+  .inter-xlarge-semibold {
+    @apply font-sans text-xlarge leading-large font-semibold;
+  }
+
+  .inter-large-regular {
+    @apply font-sans text-large leading-base font-normal;
+  }
+  .inter-large-semibold {
+    @apply font-sans text-large leading-base font-semibold;
+  }
+
+  .inter-base-regular {
+    @apply font-sans text-base leading-base font-normal;
+  }
+  .inter-base-semibold {
+    @apply font-sans text-base leading-base font-semibold;
+  }
+
+  .inter-small-regular {
+    @apply font-sans text-small leading-small font-normal;
+  }
+  .inter-small-semibold {
+    @apply font-sans text-small leading-small font-semibold;
+  }
+
+  .inter-xsmall-regular {
+    @apply font-sans text-xsmall leading-xsmall font-normal;
+  }
+  .inter-xsmall-semibold {
+    @apply font-sans text-xsmall leading-xsmall font-semibold;
+  }
+
+  .mono-5xlarge-regular {
+    @apply font-mono text-5xlarge leading-4xlarge font-normal;
+  }
+  .mono-5xlarge-semibold {
+    @apply font-mono text-5xlarge leading-4xlarge font-bold;
+  }
+
+  .mono-4xlarge-regular {
+    @apply font-mono text-4xlarge leading-3xlarge font-normal;
+  }
+  .mono-4xlarge-semibold {
+    @apply font-mono text-4xlarge leading-3xlarge font-bold;
+  }
+
+  .mono-3xlarge-regular {
+    @apply font-mono text-3xlarge leading-2xlarge font-normal;
+  }
+  .mono-3xlarge-semibold {
+    @apply font-mono text-3xlarge leading-2xlarge font-bold;
+  }
+
+  .mono-2xlarge-regular {
+    @apply font-mono text-2xlarge leading-xlarge font-normal;
+  }
+  .mono-2xlarge-semibold {
+    @apply font-mono text-2xlarge leading-xlarge font-bold;
+  }
+
+  .mono-xlarge-regular {
+    @apply font-mono text-xlarge leading-large font-normal;
+  }
+  .mono-xlarge-semibold {
+    @apply font-mono text-xlarge leading-large font-bold;
+  }
+
+  .mono-large-regular {
+    @apply font-mono text-large leading-base font-normal;
+  }
+  .mono-large-semibold {
+    @apply font-mono text-large leading-base font-bold;
+  }
+
+  .mono-base-regular {
+    @apply font-mono text-base leading-base font-normal;
+  }
+  .mono-base-semibold {
+    @apply font-mono text-base leading-base font-bold;
+  }
+
+  .mono-small-regular {
+    @apply font-mono text-small leading-small font-normal;
+  }
+  .mono-small-semibold {
+    @apply font-mono text-small leading-small font-bold;
+  }
+
+  .mono-xsmall-regular {
+    @apply font-mono text-xsmall leading-xsmall font-normal;
+  }
+  .mono-xsmall-semibold {
+    @apply font-mono text-xsmall leading-xsmall font-bold;
+  }
+
+  .radio-outer-ring > span.indicator[data-state="checked"] {
+    @apply rounded-circle shadow-violet-60 shadow-[0_0_0_2px];
+  }
+
+  .bold-active-item + span {
+    @apply inter-base-semibold;
+  }
+}
+
+@layer components {
+  .react-select-container {
+    @apply p-0 -mx-3 border-0 mb-1 cursor-text h-6;
+
+    .react-select__control {
+      @apply border-0 bg-inherit shadow-none;
+    }
+
+    .react-select__control,
+    .react-select__control--is-focused,
+    .react-select__control--menu-is-open {
+      @apply h-6 p-0 m-0 !important;
+    }
+
+    .react-select__value-container--is-multi,
+    .react-select__value-container--has-value {
+      @apply h-6 pl-3 p-0 m-0 !important;
+    }
+
+    .react-select__menu,
+    .react-select__menu-list {
+      @apply rounded-t-none mt-0 z-[110] !important;
+    }
+
+    .react-select__value-container {
+      @apply pl-3 pr-0;
+    }
+
+    .react-select__indicators {
+      @apply p-0 h-full items-center flex pr-3;
+
+      .react-select__indicator {
+        @apply p-0;
+      }
+    }
+
+    .react-select__input {
+      @apply w-full mt-0 min-w-[120px] pt-0 !important;
+    }
+
+    .react-select__option,
+    .react-select__option--is-focused,
+    .react-select__option--is-selected {
+      @apply bg-grey-0 hover:bg-grey-5 !important;
+    }
+
+    .react-select__multi-value,
+    .react-select__input-container {
+      @apply my-0 py-0;
+    }
+  }
+}
+
+@layer components {
+  .badge {
+    @apply w-min py-0.5 px-2 rounded-rounded inter-small-semibold;
+  }
+
+  .badge-disabled {
+    @apply bg-grey-50 bg-opacity-10 text-grey-50;
+  }
+
+  .badge-primary {
+    @apply bg-violet-60 bg-opacity-10 text-violet-60;
+  }
+
+  .badge-danger {
+    @apply bg-rose-50 bg-opacity-10 text-rose-50;
+  }
+
+  .badge-success {
+    @apply bg-teal-50 bg-opacity-10 text-teal-50;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-40 bg-opacity-20 text-yellow-60;
+  }
+
+  .badge-ghost {
+    @apply text-grey-90 border border-grey-20 whitespace-nowrap;
+  }
+
+  .badge-default {
+    @apply inter-small-regular bg-grey-10 text-grey-90 whitespace-nowrap;
+  }
+
+  .btn {
+    @apply flex items-center justify-center rounded-rounded focus:outline-none focus:shadow-cta;
+  }
+
+  .btn-large {
+    @apply inter-base-semibold px-large py-small;
+  }
+
+  .btn-medium {
+    @apply inter-base-semibold px-base py-xsmall;
+  }
+
+  .btn-small {
+    @apply inter-small-semibold px-small py-[6px];
+  }
+
+  .btn-primary {
+    @apply bg-violet-60 text-grey-0 hover:bg-violet-50 active:bg-violet-70  disabled:bg-grey-20 disabled:text-grey-40;
+  }
+
+  .btn-secondary {
+    @apply bg-grey-0 text-grey-90 border border-grey-20 hover:bg-grey-5 active:bg-grey-5 active:text-violet-60  focus:border-violet-60 disabled:bg-grey-0 disabled:text-grey-30;
+  }
+
+  .btn-danger {
+    @apply bg-grey-0 text-rose-50 border border-grey-20 hover:bg-grey-10 active:bg-grey-20 disabled:bg-grey-0 disabled:text-grey-30;
+  }
+
+  .btn-nuclear {
+    @apply bg-rose-50 text-grey-0 hover:bg-rose-40 active:bg-rose-60 disabled:bg-grey-20 disabled:text-grey-40;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-grey-90 hover:bg-grey-5 active:bg-grey-5 active:text-violet-60  focus:border-violet-60 disabled:bg-transparent disabled:text-grey-30;
+  }
+
+  .btn-primary-large {
+    @apply btn btn-large btn-primary;
+  }
+  .btn-primary-medium {
+    @apply btn btn-medium;
+  }
+  .btn-primary-small {
+    @apply btn btn-small;
+  }
+  .btn-secondary-large {
+    @apply btn btn-large btn-seconday;
+  }
+  .btn-secondary-medium {
+    @apply btn btn-medium btn-seconday;
+  }
+  .btn-secondary-small {
+    @apply btn btn-small btn-seconday;
+  }
+  .btn-ghost-large {
+    @apply btn btn-large btn-ghost;
+  }
+  .btn-ghost-medium {
+    @apply btn btn-medium btn-ghost;
+  }
+  .btn-ghost-small {
+    @apply btn btn-small btn-ghost;
+  }
+}
+
+@layer components {
+  .date-picker {
+    @apply border-0 outline-none pt-6 !important;
+
+    .react-datepicker__month-container {
+      .react-datepicker__header {
+        @apply bg-inherit border-0;
+      }
+    }
+
+    .react-datepicker__day-names {
+      @apply inter-base-semibold pt-4;
+
+      .react-datepicker__day-name {
+        @apply w-[40px] m-0;
+      }
+    }
+
+    .react-datepicker__month {
+      @apply m-0;
+    }
+    .react-datepicker__day {
+      @apply inter-base-regular;
+    }
+    .react-datepicker__day--today {
+      @apply text-grey-90 inter-base-semibold bg-grey-10 rounded !important;
+    }
+
+    .react-datepicker__day--outside-month,
+    .past {
+      @apply text-grey-40 !important;
+    }
+
+    .date {
+      @apply text-grey-90 m-[0px] w-[38px] h-[38px] align-middle relative leading-none pt-3;
+      :hover {
+        @apply cursor-pointer;
+      }
+    }
+    .chosen,
+    .react-datepicker__day--keyboard-selected {
+      @apply bg-violet-60 text-grey-0 inter-base-semibold leading-none !important;
+    }
+  }
+
+  .time-list::-webkit-scrollbar {
+    /* chrome */
+    display: none;
+  }
+
+  .time-list {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .vice-city {
+    @apply bg-gradient-to-tr from-vice-start to-vice-stop;
+  }
+
+  .hidden-actions[data-state="open"] {
+    opacity: 1;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-rounded bg-grey-30;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-grey-40;
+  }
+
+  .accordion-margin-transition {
+    @apply transition-[margin] duration-300 ease-[cubic-bezier(0.87,0,0.13,1)];
+  }
+
+  .col-tree:last-child .bottom-half-dash {
+    @apply border-none;
+  }
+}
+
+.scrolling-touch {
+  -webkit-overflow-scrolling: touch;
+}
+.scrolling-auto {
+  -webkit-overflow-scrolling: auto;
+}
+
+/* Classes to remove number spinners from inputs of type number */
+/* Chrome, Safari, Edge, Opera */
+.remove-number-spinner::-webkit-outer-spin-button,
+.remove-number-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.remove-number-spinner {
+  -moz-appearance: textfield;
+}

@@ -14,7 +14,6 @@ export default function (_rootDirectory: string, options: AdminPluginOptions) {
   if (serveAdmin) {
     try {
       const { html, path: staticPath } = loadBuild()
-      console.warn("PATH")
 
       const sendHtml = (_req: Request, res: Response) => {
         res.setHeader("Cache-Control", "no-cache")
@@ -36,7 +35,6 @@ export default function (_rootDirectory: string, options: AdminPluginOptions) {
       )
       app.get(`${path}/*`, sendHtml)
     } catch (error) {
-      console.error(error)
       throw new Error("Could not load admin build")
     }
   } else {

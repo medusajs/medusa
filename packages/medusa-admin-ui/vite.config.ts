@@ -8,19 +8,23 @@ dns.setDefaultResultOrder("verbatim")
 export default defineConfig(({ command }) => {
   const backend =
     command === "build"
-      ? "/app/"
+      ? "/"
       : env.MEDUSA_BACKEND_URL || "http://localhost:9000"
 
   const base = command === "build" ? "/app/" : undefined
 
   return {
     plugins: [react()],
-    base,
+    base: "/app/",
     define: {
-      __MEDUSA_BACKEND_URL__: JSON.stringify(backend),
+      __MEDUSA_BACKEND_URL__: JSON.stringify("http://localhost:9000"),
     },
     build: {
       outDir: "build",
+    },
+    optimizeDeps: {
+      include: ["medusa-react"],
+      exclude: ["typeorm", "medusa-interfaces"],
     },
   }
 })

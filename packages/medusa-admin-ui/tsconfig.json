@@ -16,8 +16,18 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "paths": {
+      "gatsby": ["./src/compat/gatsby-compat.tsx"],
+      "@reach/router": ["./src/compat/reach-router-compat.tsx"]
+    }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", ".storybook/**/*.ts", ".storybook/**/*.tsx"],
+  "references": [{ "path": "./tsconfig.node.json" }],
+  // ts-node overrides for Storybook.
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }
