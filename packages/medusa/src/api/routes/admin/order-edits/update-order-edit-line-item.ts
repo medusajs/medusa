@@ -20,13 +20,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - quantity
- *         properties:
- *           quantity:
- *             description: The quantity to update
- *             type: number
+ *         $ref: "#/components/schemas/AdminPostOrderEditsEditLineItemsLineItemReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -61,7 +55,7 @@ import {
  *           type: object
  *           properties:
  *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *               $ref: "#/components/schemas/OrderEdit"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -103,6 +97,16 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * @schema AdminPostOrderEditsEditLineItemsLineItemReq
+ * type: object
+ * required:
+ *   - quantity
+ * properties:
+ *   quantity:
+ *     description: The quantity to update
+ *     type: number
+ */
 export class AdminPostOrderEditsEditLineItemsLineItemReq {
   @IsNumber()
   quantity: number

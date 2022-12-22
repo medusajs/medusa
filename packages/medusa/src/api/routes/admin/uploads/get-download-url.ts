@@ -11,13 +11,7 @@ import { IsString } from "class-validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - file_key
- *         properties:
- *           file_key:
- *             description: "key of the file to obtain the download link for"
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostUploadsDownloadUrlReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -79,6 +73,16 @@ export default async (req, res) => {
   res.status(200).send({ download_url: url })
 }
 
+/**
+ * @schema AdminPostUploadsDownloadUrlReq
+ * type: object
+ * required:
+ *   - file_key
+ * properties:
+ *   file_key:
+ *     description: "key of the file to obtain the download link for"
+ *     type: string
+ */
 export class AdminPostUploadsDownloadUrlReq {
   @IsString()
   file_key: string

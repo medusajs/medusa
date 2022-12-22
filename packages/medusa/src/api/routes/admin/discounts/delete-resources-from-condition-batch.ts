@@ -23,20 +23,7 @@ import { FindParams } from "../../../../types/common"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - resources
- *         properties:
- *           resources:
- *             description: The resources to be deleted from the discount condition
- *             type: array
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The id of the item
- *                   type: string
+ *         $ref: "#/components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -73,7 +60,7 @@ import { FindParams } from "../../../../types/common"
  *           type: object
  *           properties:
  *             discount:
- *               $ref: "#/components/schemas/discount"
+ *               $ref: "#/components/schemas/Discount"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -123,8 +110,26 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+// eslint-disable-next-line max-len
 export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends FindParams {}
 
+/**
+ * @schema AdminDeleteDiscountsDiscountConditionsConditionBatchReq
+ * type: object
+ * required:
+ *   - resources
+ * properties:
+ *   resources:
+ *     description: The resources to be deleted from the discount condition
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The id of the item
+ *           type: string
+ */
 export class AdminDeleteDiscountsDiscountConditionsConditionBatchReq {
   @IsArray()
   resources: { id: string }[]

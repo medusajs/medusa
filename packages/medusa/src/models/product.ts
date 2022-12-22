@@ -174,10 +174,9 @@ export class Product extends SoftDeletableEntity {
 }
 
 /**
- * @schema product
+ * @schema Product
  * title: "Product"
  * description: "Products are a grouping of Product Variants that have common properties such as images and descriptions. Products can have multiple options which define the properties that Product Variants differ by."
- * x-resourceId: product
  * type: object
  * required:
  *   - title
@@ -219,7 +218,7 @@ export class Product extends SoftDeletableEntity {
  *     description: Images of the Product. Available if the relation `images` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/image"
+ *       $ref: "#/components/schemas/Image"
  *   thumbnail:
  *     description: "A URL to an image file that can be used to identify the Product."
  *     type: string
@@ -228,19 +227,19 @@ export class Product extends SoftDeletableEntity {
  *     description: The Product Options that are defined for the Product. Product Variants of the Product will have a unique combination of Product Option Values. Available if the relation `options` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product_option"
+ *       $ref: "#/components/schemas/ProductOption"
  *   variants:
  *     description: The Product Variants that belong to the Product. Each will have a unique combination of Product Option Values. Available if the relation `variants` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product_variant"
+ *       $ref: "#/components/schemas/ProductVariant"
  *   profile_id:
  *     description: "The ID of the Shipping Profile that the Product belongs to. Shipping Profiles have a set of defined Shipping Options that can be used to Fulfill a given set of Products."
  *     type: string
  *     example: sp_01G1G5V239ENSZ5MV4JAR737BM
  *   profile:
  *     description: Available if the relation `profile` is expanded.
- *     $ref: "#/components/schemas/shipping_profile"
+ *     $ref: "#/components/schemas/ShippingProfile"
  *   weight:
  *     description: "The weight of the Product Variant. May be used in shipping rate calculations."
  *     type: number
@@ -286,12 +285,12 @@ export class Product extends SoftDeletableEntity {
  *     example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   type:
  *     description: Available if the relation `type` is expanded.
- *     $ref: "#/components/schemas/product_type"
+ *     $ref: "#/components/schemas/ProductType"
  *   tags:
  *     description: The Product Tags assigned to the Product. Available if the relation `tags` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product_tag"
+ *       $ref: "#/components/schemas/ProductTag"
  *   discountable:
  *     description: "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`."
  *     type: boolean

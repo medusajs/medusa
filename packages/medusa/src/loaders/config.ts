@@ -20,13 +20,10 @@ export const handleConfigError = (error: Error): void => {
 }
 
 export default (rootDirectory: string): ConfigModule => {
-  const { configModule, error } = getConfigFile(
+  const { configModule, error } = getConfigFile<ConfigModule>(
     rootDirectory,
     `medusa-config`
-  ) as {
-    configModule: ConfigModule
-    error: Error | null
-  }
+  )
 
   if (error) {
     handleConfigError(error)

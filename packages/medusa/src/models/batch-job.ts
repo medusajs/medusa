@@ -37,7 +37,7 @@ export class BatchJob extends SoftDeletableEntity {
     count?: number
     advancement_count?: number
     progress?: number
-    errors?: BatchJobResultError[]
+    errors?: (BatchJobResultError | string)[]
     stat_descriptors?: BatchJobResultStatDescriptor[]
     file_key?: string
     file_size?: number
@@ -103,10 +103,9 @@ export class BatchJob extends SoftDeletableEntity {
 }
 
 /**
- * @schema batch_job
+ * @schema BatchJob
  * title: "Batch Job"
  * description: "A Batch Job."
- * x-resourceId: batch_job
  * type: object
  * required:
  *   - type

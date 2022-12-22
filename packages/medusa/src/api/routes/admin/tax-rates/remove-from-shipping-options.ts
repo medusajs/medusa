@@ -36,15 +36,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - shipping_options
- *         properties:
- *           shipping_options:
- *             type: array
- *             description: "The IDs of the shipping options to remove association with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminDeleteTaxRatesTaxRateShippingOptionsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -85,7 +77,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *               $ref: "#/components/schemas/TaxRate"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -129,6 +121,18 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminDeleteTaxRatesTaxRateShippingOptionsReq
+ * type: object
+ * required:
+ *   - shipping_options
+ * properties:
+ *   shipping_options:
+ *     type: array
+ *     description: "The IDs of the shipping options to remove association with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminDeleteTaxRatesTaxRateShippingOptionsReq {
   @IsArray()
   shipping_options: string[]

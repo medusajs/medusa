@@ -70,10 +70,9 @@ export class PriceList extends SoftDeletableEntity {
 }
 
 /**
- * @schema price_list
+ * @schema PriceList
  * title: "Price List"
  * description: "Price Lists represents a set of prices that overrides the default price for one or more product variants."
- * x-resourceId: price_list
  * type: object
  * required:
  *   - name
@@ -118,14 +117,14 @@ export class PriceList extends SoftDeletableEntity {
  *     type: array
  *     items:
  *       type: object
- *       description: A customer group object. 
+ *       description: A customer group object.
  *   prices:
  *     description: The Money Amounts that are associated with the Price List. Available if the relation `prices` is expanded.
  *     type: array
  *     items:
  *       oneOf:
- *         - $ref: "#/components/schemas/money_amount"
- *         - $ref: "#/components/schemas/customer_group"
+ *         - $ref: "#/components/schemas/MoneyAmount"
+ *         - $ref: "#/components/schemas/CustomerGroup"
  *   includes_tax:
  *     description: "[EXPERIMENTAL] Does the price list prices include tax"
  *     type: boolean

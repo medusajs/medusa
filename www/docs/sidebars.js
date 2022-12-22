@@ -212,9 +212,21 @@ module.exports = {
           ]
         },
         {
-          type: "doc",
-          id: "usage/local-development",
-        },
+          type: "category",
+          label: 'Local Development',
+          items: [
+            {
+              type: "doc",
+              id: "usage/local-development",
+              label: "Server and Monorepo"
+            },
+            {
+              type: "doc",
+              id: "admin/development",
+              label: "Medusa Admin"
+            }
+          ]
+        }
       ]
     },
     {
@@ -355,8 +367,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "advanced/backend/cron-jobs/create",
-          label: "Create a Cron Job"
+          id: "advanced/backend/scheduled-jobs/create",
+          label: "Create a Scheduled Job"
         },
         {
           type: "doc",

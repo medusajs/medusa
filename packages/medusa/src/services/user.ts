@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -80,6 +80,13 @@ class UserService extends TransactionBaseService {
    * @return {Promise<User>} the user document.
    */
   async retrieve(userId: string, config: FindConfig<User> = {}): Promise<User> {
+    if (!isDefined(userId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"userId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const userRepo = manager.getCustomRepository(this.userRepository_)
     const query = buildQuery({ id: userId }, config)
@@ -100,7 +107,7 @@ class UserService extends TransactionBaseService {
    * Gets a user by api token.
    * Throws in case of DB Error and if user was not found.
    * @param {string} apiToken - the token of the user to get.
-   * @param {string[]} relations - relations to include with the user
+   * @param {string[]} relations - relations to include with the user.
    * @return {Promise<User>} the user document.
    */
   async retrieveByApiToken(

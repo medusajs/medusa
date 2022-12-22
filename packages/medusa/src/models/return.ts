@@ -94,10 +94,9 @@ export class Return extends BaseEntity {
 }
 
 /**
- * @schema return
+ * @schema Return
  * title: "Return"
  * description: "Return orders hold information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can be used as part of a Swap."
- * x-resourceId: return
  * type: object
  * required:
  *   - refund_amount
@@ -119,7 +118,7 @@ export class Return extends BaseEntity {
  *     description: The Return Items that will be shipped back to the warehouse. Available if the relation `items` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/return_item"
+ *       $ref: "#/components/schemas/ReturnItem"
  *   swap_id:
  *     description: "The ID of the Swap that the Return is a part of."
  *     type: string
@@ -145,7 +144,7 @@ export class Return extends BaseEntity {
  *     description: The Shipping Method that will be used to send the Return back. Can be null if the Customer facilitates the return shipment themselves. Available if the relation `shipping_method` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/shipping_method"
+ *       $ref: "#/components/schemas/ShippingMethod"
  *   shipping_data:
  *     description: "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment."
  *     type: object

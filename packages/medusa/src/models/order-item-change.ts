@@ -59,10 +59,9 @@ export class OrderItemChange extends SoftDeletableEntity {
 }
 
 /**
- * @schema order_item_change
+ * @schema OrderItemChange
  * title: "Order Item Change"
  * description: "Represents an order edit item change"
- * x-resourceId: order_item_change
  * type: object
  * required:
  *   - type
@@ -85,21 +84,21 @@ export class OrderItemChange extends SoftDeletableEntity {
  *     example: oe_01G2SG30J8C85S4A5CHM2S1NS2
  *   order_edit:
  *     description: Available if the relation `order_edit` is expanded.
- *     $ref: "#/components/schemas/order_edit"
+ *     $ref: "#/components/schemas/OrderEdit"
  *   original_line_item_id:
  *      type: string
  *      description: The ID of the original line item in the order
  *      example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   original_line_item:
  *      description: Available if the relation `original_line_item` is expanded.
- *      $ref: "#/components/schemas/line_item"
+ *      $ref: "#/components/schemas/LineItem"
  *   line_item_id:
  *      type: string
  *      description: The ID of the cloned line item.
  *      example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   line_item:
  *      description: Available if the relation `line_item` is expanded.
- *      $ref: "#/components/schemas/line_item"
+ *      $ref: "#/components/schemas/LineItem"
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

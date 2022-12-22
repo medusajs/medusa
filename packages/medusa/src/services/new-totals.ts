@@ -18,8 +18,8 @@ import { TaxProviderService } from "./index"
 import { LineAllocationsMap } from "../types/totals"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { FlagRouter } from "../utils/flag-router"
-import { calculatePriceTaxAmount, isDefined } from "../utils"
-import { MedusaError } from "medusa-core-utils"
+import { calculatePriceTaxAmount } from "../utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 type LineItemTotals = {
   unit_price: number
@@ -31,6 +31,13 @@ type LineItemTotals = {
   original_tax_total: number
   tax_lines: LineItemTaxLine[]
   discount_total: number
+}
+
+type GiftCardTransaction = {
+  tax_rate: number | null
+  is_taxable: boolean | null
+  amount: number
+  gift_card: GiftCard
 }
 
 type ShippingMethodTotals = {
@@ -64,6 +71,7 @@ export default class NewTotalsService extends TransactionBaseService {
     featureFlagRouter,
     taxCalculationStrategy,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -214,6 +222,7 @@ export default class NewTotalsService extends TransactionBaseService {
         totals.tax_lines,
         calculationContext
       )
+
       const noDiscountContext = {
         ...calculationContext,
         allocation_map: {}, // Don't account for discounts
@@ -451,11 +460,7 @@ export default class NewTotalsService extends TransactionBaseService {
       giftCards,
     }: {
       region: Region
-      giftCardTransactions?: {
-        tax_rate: number | null
-        is_taxable: boolean | null
-        amount: number
-      }[]
+      giftCardTransactions?: GiftCardTransaction[]
       giftCards?: GiftCard[]
     }
   ): Promise<{
@@ -469,7 +474,7 @@ export default class NewTotalsService extends TransactionBaseService {
       )
     }
 
-    if (giftCardTransactions) {
+    if (giftCardTransactions?.length) {
       return this.getGiftCardTransactionsTotals({
         giftCardTransactions,
         region,
@@ -485,13 +490,38 @@ export default class NewTotalsService extends TransactionBaseService {
       return result
     }
 
-    const giftAmount = giftCards.reduce((acc, next) => acc + next.balance, 0)
-    result.total = Math.min(giftCardableAmount, giftAmount)
+    // If a gift card is not taxable, the tax_rate for the giftcard will be null
+    const { totalGiftCardBalance, totalTaxFromGiftCards } = giftCards.reduce(
+      (acc, giftCard) => {
+        let taxableAmount = 0
 
-    if (region?.gift_cards_taxable) {
-      result.tax_total = Math.round(result.total * (region.tax_rate / 100))
-      return result
-    }
+        acc.totalGiftCardBalance += giftCard.balance
+
+        taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
+        // skip tax, if the taxable amount is not a positive number or tax rate is not set
+        if (taxableAmount <= 0 || !giftCard.tax_rate) {
+          return acc
+        }
+
+        const taxAmountFromGiftCard = Math.round(
+          taxableAmount * (giftCard.tax_rate / 100)
+        )
+
+        acc.totalTaxFromGiftCards += taxAmountFromGiftCard
+        // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
+        acc.giftCardableBalance -= taxableAmount
+
+        return acc
+      },
+      {
+        totalGiftCardBalance: 0,
+        totalTaxFromGiftCards: 0,
+        giftCardableBalance: giftCardableAmount,
+      }
+    )
+
+    result.tax_total = Math.round(totalTaxFromGiftCards)
+    result.total = Math.min(giftCardableAmount, totalGiftCardBalance)
 
     return result
   }
@@ -505,11 +535,7 @@ export default class NewTotalsService extends TransactionBaseService {
     giftCardTransactions,
     region,
   }: {
-    giftCardTransactions: {
-      tax_rate: number | null
-      is_taxable: boolean | null
-      amount: number
-    }[]
+    giftCardTransactions: GiftCardTransaction[]
     region: { gift_cards_taxable: boolean; tax_rate: number }
   }): { total: number; tax_total: number } {
     return giftCardTransactions.reduce(
@@ -522,13 +548,18 @@ export default class NewTotalsService extends TransactionBaseService {
         //
         // This is a backwards compatability fix for orders that were created
         // before we added the gift card tax rate.
-        if (next.is_taxable === null && region?.gift_cards_taxable) {
-          taxMultiplier = region.tax_rate / 100
+        // We prioritize the giftCard.tax_rate as we create a snapshot of the tax
+        // on order creation to create gift cards on the gift card itself.
+        // If its created outside of the order, we refer to the region tax
+        if (next.is_taxable === null) {
+          if (region?.gift_cards_taxable || next.gift_card?.tax_rate) {
+            taxMultiplier = (next.gift_card?.tax_rate ?? region.tax_rate) / 100
+          }
         }
 
         return {
           total: acc.total + next.amount,
-          tax_total: acc.tax_total + next.amount * taxMultiplier,
+          tax_total: Math.round(acc.tax_total + next.amount * taxMultiplier),
         }
       },
       {

@@ -2,13 +2,14 @@ import { RequestHandler, Router } from "express"
 import "reflect-metadata"
 
 import { Product } from "../../../.."
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
 import { FlagRouter } from "../../../../utils/flag-router"
 import { PaginatedResponse } from "../../../../types/common"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { StoreGetProductsParams } from "./list-products"
 
 const route = Router()
 
@@ -24,7 +25,14 @@ export default (app, featureFlagRouter: FlagRouter) => {
     route.use("/:id", validateProductSalesChannelAssociation)
   }
 
-  route.get("/", middlewares.wrap(require("./list-products").default))
+  route.get(
+    "/",
+    transformQuery(StoreGetProductsParams, {
+      defaultRelations: defaultStoreProductsRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-products").default)
+  )
   route.get("/:id", middlewares.wrap(require("./get-product").default))
   route.post("/search", middlewares.wrap(require("./search").default))
 

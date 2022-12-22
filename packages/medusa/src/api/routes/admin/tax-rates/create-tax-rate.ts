@@ -3,12 +3,11 @@ import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
 import { EntityManager } from "typeorm"
 import { IsType } from "../../../../utils/validators/is-type"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
 import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
 
 /**
  * @oas [post] /tax-rates
@@ -39,39 +38,7 @@ import { isDefined } from "../../../../utils"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - code
- *           - name
- *           - region_id
- *         properties:
- *           code:
- *             type: string
- *             description: "A code to identify the tax type by"
- *           name:
- *             type: string
- *             description: "A human friendly name for the tax"
- *           region_id:
- *             type: string
- *             description: "The ID of the Region that the rate belongs to"
- *           rate:
- *             type: number
- *             description: "The numeric rate to charge"
- *           products:
- *             type: array
- *             description: "The IDs of the products associated with this tax rate"
- *             items:
- *               type: string
- *           shipping_options:
- *             type: array
- *             description: "The IDs of the shipping options associated with this tax rate"
- *             items:
- *               type: string
- *           product_types:
- *             type: array
- *             description: "The IDs of the types of products associated with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostTaxRatesReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -112,7 +79,7 @@ import { isDefined } from "../../../../utils"
  *           type: object
  *           properties:
  *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *               $ref: "#/components/schemas/TaxRate"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -173,6 +140,42 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminPostTaxRatesReq
+ * type: object
+ * required:
+ *   - code
+ *   - name
+ *   - region_id
+ * properties:
+ *   code:
+ *     type: string
+ *     description: "A code to identify the tax type by"
+ *   name:
+ *     type: string
+ *     description: "A human friendly name for the tax"
+ *   region_id:
+ *     type: string
+ *     description: "The ID of the Region that the rate belongs to"
+ *   rate:
+ *     type: number
+ *     description: "The numeric rate to charge"
+ *   products:
+ *     type: array
+ *     description: "The IDs of the products associated with this tax rate"
+ *     items:
+ *       type: string
+ *   shipping_options:
+ *     type: array
+ *     description: "The IDs of the shipping options associated with this tax rate"
+ *     items:
+ *       type: string
+ *   product_types:
+ *     type: array
+ *     description: "The IDs of the types of products associated with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminPostTaxRatesReq {
   @IsString()
   code: string

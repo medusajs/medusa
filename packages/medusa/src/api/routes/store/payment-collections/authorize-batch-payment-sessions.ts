@@ -13,12 +13,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           session_ids:
- *             description: "List of Payment Session IDs to authorize."
- *             type: array
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/StorePostPaymentCollectionsBatchSessionsAuthorizeReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -47,7 +42,7 @@ import { PaymentCollectionService } from "../../../../services"
  *         schema:
  *           properties:
  *             payment_collection:
- *               $ref: "#/components/schemas/payment_collection"
+ *               $ref: "#/components/schemas/PaymentCollection"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -80,6 +75,18 @@ export default async (req, res) => {
   res.status(207).json({ payment_collection })
 }
 
+/**
+ * @schema StorePostPaymentCollectionsBatchSessionsAuthorizeReq
+ * type: object
+ * required:
+ *   - session_ids
+ * properties:
+ *   session_ids:
+ *     description: "List of Payment Session IDs to authorize."
+ *     type: array
+ *     items:
+ *       type: string
+ */
 export class StorePostPaymentCollectionsBatchSessionsAuthorizeReq {
   @IsArray()
   @IsString({ each: true })

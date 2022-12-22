@@ -11,6 +11,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import {
+  defaultAdminDraftOrdersCartFields,
+  defaultAdminDraftOrdersCartRelations,
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,
 } from "."
@@ -18,11 +20,12 @@ import {
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { DraftOrder } from "../../../.."
-import { DraftOrderService } from "../../../../services"
+import { CartService, DraftOrderService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { DraftOrderCreateProps } from "../../../../types/draft-orders"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+
 /**
  * @oas [post] /draft-orders
  * operationId: "PostDraftOrders"
@@ -33,94 +36,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - email
- *           - items
- *           - region_id
- *           - shipping_methods
- *         properties:
- *           status:
- *             description: "The status of the draft order"
- *             type: string
- *             enum: [open, completed]
- *           email:
- *             description: "The email of the customer of the draft order"
- *             type: string
- *             format: email
- *           billing_address:
- *             description: "The Address to be used for billing purposes."
- *             anyOf:
- *               - $ref: "#/components/schemas/address_fields"
- *               - type: string
- *           shipping_address:
- *             description: "The Address to be used for shipping."
- *             anyOf:
- *               - $ref: "#/components/schemas/address_fields"
- *               - type: string
- *           items:
- *             description: The Line Items that have been received.
- *             type: array
- *             items:
- *               type: object
- *               required:
- *                 - quantity
- *               properties:
- *                 variant_id:
- *                   description: The ID of the Product Variant to generate the Line Item from.
- *                   type: string
- *                 unit_price:
- *                   description: The potential custom price of the item.
- *                   type: integer
- *                 title:
- *                   description: The potential custom title of the item.
- *                   type: string
- *                 quantity:
- *                   description: The quantity of the Line Item.
- *                   type: integer
- *                 metadata:
- *                   description: The optional key-value map with additional details about the Line Item.
- *                   type: object
- *           region_id:
- *             description: The ID of the region for the draft order
- *             type: string
- *           discounts:
- *             description: The discounts to add on the draft order
- *             type: array
- *             items:
- *               type: object
- *               required:
- *                 - code
- *               properties:
- *                 code:
- *                   description: The code of the discount to apply
- *                   type: string
- *           customer_id:
- *             description: The ID of the customer to add on the draft order
- *             type: string
- *           no_notification_order:
- *             description: An optional flag passed to the resulting order to determine use of notifications.
- *             type: boolean
- *           shipping_methods:
- *             description: The shipping methods for the draft order
- *             type: array
- *             items:
- *               type: object
- *               required:
- *                  - option_id
- *               properties:
- *                 option_id:
- *                   description: The ID of the shipping option in use
- *                   type: string
- *                 data:
- *                   description: The optional additional data needed for the shipping method
- *                   type: object
- *                 price:
- *                   description: The potential custom price of the shipping
- *                   type: integer
- *           metadata:
- *             description: The optional key-value map with additional details about the Draft Order.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostDraftOrdersReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -179,7 +95,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *           type: object
  *           properties:
  *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *               $ref: "#/components/schemas/DraftOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -230,6 +146,15 @@ export default async (req, res) => {
     select: defaultAdminDraftOrdersFields,
   })
 
+  const cartService: CartService = req.scope.resolve("cartService")
+
+  draftOrder.cart = await cartService
+    .withTransaction(manager)
+    .retrieveWithTotals(draftOrder.cart_id, {
+      relations: defaultAdminDraftOrdersCartRelations,
+      select: defaultAdminDraftOrdersCartFields,
+    })
+
   res.status(200).json({ draft_order: draftOrder })
 }
 
@@ -238,6 +163,96 @@ enum Status {
   completed = "completed",
 }
 
+/**
+ * @schema AdminPostDraftOrdersReq
+ * type: object
+ * required:
+ *   - email
+ *   - region_id
+ *   - shipping_methods
+ * properties:
+ *   status:
+ *     description: "The status of the draft order"
+ *     type: string
+ *     enum: [open, completed]
+ *   email:
+ *     description: "The email of the customer of the draft order"
+ *     type: string
+ *     format: email
+ *   billing_address:
+ *     description: "The Address to be used for billing purposes."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *       - type: string
+ *   shipping_address:
+ *     description: "The Address to be used for shipping."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *       - type: string
+ *   items:
+ *     description: The Line Items that have been received.
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - quantity
+ *       properties:
+ *         variant_id:
+ *           description: The ID of the Product Variant to generate the Line Item from.
+ *           type: string
+ *         unit_price:
+ *           description: The potential custom price of the item.
+ *           type: integer
+ *         title:
+ *           description: The potential custom title of the item.
+ *           type: string
+ *         quantity:
+ *           description: The quantity of the Line Item.
+ *           type: integer
+ *         metadata:
+ *           description: The optional key-value map with additional details about the Line Item.
+ *           type: object
+ *   region_id:
+ *     description: The ID of the region for the draft order
+ *     type: string
+ *   discounts:
+ *     description: The discounts to add on the draft order
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - code
+ *       properties:
+ *         code:
+ *           description: The code of the discount to apply
+ *           type: string
+ *   customer_id:
+ *     description: The ID of the customer to add on the draft order
+ *     type: string
+ *   no_notification_order:
+ *     description: An optional flag passed to the resulting order to determine use of notifications.
+ *     type: boolean
+ *   shipping_methods:
+ *     description: The shipping methods for the draft order
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *          - option_id
+ *       properties:
+ *         option_id:
+ *           description: The ID of the shipping option in use
+ *           type: string
+ *         data:
+ *           description: The optional additional data needed for the shipping method
+ *           type: object
+ *         price:
+ *           description: The potential custom price of the shipping
+ *           type: integer
+ *   metadata:
+ *     description: The optional key-value map with additional details about the Draft Order.
+ *     type: object
+ */
 export class AdminPostDraftOrdersReq {
   @IsEnum(Status)
   @IsOptional()
@@ -258,7 +273,8 @@ export class AdminPostDraftOrdersReq {
   @Type(() => Item)
   @IsNotEmpty()
   @ValidateNested({ each: true })
-  items: Item[]
+  @IsOptional()
+  items?: Item[]
 
   @IsString()
   region_id: string

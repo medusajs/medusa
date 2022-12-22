@@ -17,14 +17,7 @@ import { TokenEvents } from "../../../../types/token"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - order_ids
- *         properties:
- *           order_ids:
- *             description: "The ids of the orders to claim"
- *             type: array
- *             items:
- *              type: string
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerOrderClaimReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -125,6 +118,18 @@ export default async (req, res) => {
   res.sendStatus(200)
 }
 
+/**
+ * @schema StorePostCustomersCustomerOrderClaimReq
+ * type: object
+ * required:
+ *   - order_ids
+ * properties:
+ *   order_ids:
+ *     description: "The ids of the orders to claim"
+ *     type: array
+ *     items:
+ *      type: string
+ */
 export class StorePostCustomersCustomerOrderClaimReq {
   @IsNotEmpty({ each: true })
   @IsString({ each: true })
