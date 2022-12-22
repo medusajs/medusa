@@ -3,12 +3,28 @@
   to = "/api/store"
 
 [[redirects]]
-  from = "/api/store/*"
-  to = "/api/store"
+  from = "/api/store/auth/*"
+  to = "/api/store/#tag/Auth"
 
 [[redirects]]
-  from = "/api/admin/*"
-  to = "/api/admin"
+  from = "/api/store/cart/*"
+  to = "/api/store/#tag/Cart"
+
+[[redirects]]
+  from = "/api/store/collection/*"
+  to = "/api/store/#tag/Collection"
+
+[[redirects]]
+  from = "/api/store/product/*"
+  to = "/api/store/#tag/Product"
+
+[[redirects]]
+  from = "/api/admin/auth/*"
+  to = "/api/admin/#tag/Auth"
+
+[[redirects]]
+  from = "/api/admin/users/*"
+  to = "/api/admin/#tag/User"
 
 [[redirects]]
   from = "/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa"
