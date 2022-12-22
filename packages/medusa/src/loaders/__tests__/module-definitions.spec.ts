@@ -45,7 +45,7 @@ describe("module definitions loader", () => {
       } as ConfigModule)
 
       expect(res[defaultDefinition.key]).toEqual({
-        resolutionPath: undefined,
+        resolutionPath: false,
         definition: defaultDefinition,
         options: {},
       })
@@ -64,6 +64,25 @@ describe("module definitions loader", () => {
           `Module: ${defaultDefinition.label} is required`
         )
       }
+    })
+
+    it("Resolves module with no resolution path when not given custom resolution path as false as default package", () => {
+      const definition = {
+        ...defaultDefinition,
+        defaultPackage: false as false,
+      }
+
+      MODULE_DEFINITIONS.push(definition)
+
+      const res = ModuleDefinitionLoader({
+        modules: {},
+      } as ConfigModule)
+
+      expect(res[defaultDefinition.key]).toEqual({
+        resolutionPath: false,
+        definition: definition,
+        options: {},
+      })
     })
   })
 

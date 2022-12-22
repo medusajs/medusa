@@ -38,7 +38,7 @@ export type Logger = _Logger & {
 }
 
 export type ModuleResolution = {
-  resolutionPath?: string
+  resolutionPath: string | false
   definition: ModuleDefinition
   options?: Record<string, unknown>
 }
@@ -46,7 +46,7 @@ export type ModuleResolution = {
 export type ModuleDefinition = {
   key: string
   registrationName: string
-  defaultPackage: string
+  defaultPackage: string | false
   label: string
   canOverride?: boolean
   isRequired?: boolean

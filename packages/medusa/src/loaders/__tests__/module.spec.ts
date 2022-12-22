@@ -84,7 +84,7 @@ describe("modules loader", () => {
   it("registers service as false in container when no resolution path is given", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
-        resolutionPath: undefined,
+        resolutionPath: false,
         definition: {
           registrationName: "testService",
           key: "testService",
