@@ -38,8 +38,9 @@ export type Logger = _Logger & {
 }
 
 export type ModuleResolution = {
-  resolutionPath: string
+  resolutionPath?: string
   definition: ModuleDefinition
+  options?: Record<string, unknown>
 }
 
 export type ModuleDefinition = {
@@ -49,6 +50,11 @@ export type ModuleDefinition = {
   label: string
   canOverride?: boolean
   isRequired?: boolean
+}
+
+export type ConfigurableModuleDeclaration = {
+  resolve?: string
+  options?: Record<string, unknown>
 }
 
 export type ConfigModule = {
@@ -71,7 +77,7 @@ export type ConfigModule = {
     admin_cors?: string
   }
   featureFlags: Record<string, boolean | string>
-  modules?: Record<string, string>
+  modules?: Record<string, false | string | ConfigurableModuleDeclaration>
   moduleResolutions?: Record<string, ModuleResolution>
   plugins: (
     | {
