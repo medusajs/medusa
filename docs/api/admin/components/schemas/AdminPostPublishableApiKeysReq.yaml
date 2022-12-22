@@ -1,0 +1,7 @@
+type: object
+required:
+  - title
+properties:
+  title:
+    description: A title for the publishable api key
+    type: string

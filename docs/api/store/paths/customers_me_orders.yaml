@@ -192,7 +192,7 @@ get:
               orders:
                 type: array
                 items:
-                  $ref: ../components/schemas/order.yaml
+                  $ref: ../components/schemas/Order.yaml
               count:
                 type: integer
                 description: The total number of items available

@@ -14,21 +14,8 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - product_ids
-          properties:
-            product_ids:
-              description: The IDs of the products to add to the Sales Channel
-              type: array
-              items:
-                type: object
-                required:
-                  - id
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the product
+          $ref: >-
+            ../components/schemas/AdminPostSalesChannelsChannelProductsBatchReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -53,7 +40,7 @@ post:
             type: object
             properties:
               sales_channel:
-                $ref: ../components/schemas/sales_channel.yaml
+                $ref: ../components/schemas/SalesChannel.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -82,21 +69,8 @@ delete:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - product_ids
-          properties:
-            product_ids:
-              description: The IDs of the products to delete from the Sales Channel.
-              type: array
-              items:
-                type: object
-                required:
-                  - id
-                properties:
-                  id:
-                    description: The ID of a product
-                    type: string
+          $ref: >-
+            ../components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -122,7 +96,7 @@ delete:
             type: object
             properties:
               sales_channel:
-                $ref: ../components/schemas/sales_channel.yaml
+                $ref: ../components/schemas/SalesChannel.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

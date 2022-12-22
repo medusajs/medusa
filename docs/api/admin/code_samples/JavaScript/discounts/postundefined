@@ -9,7 +9,7 @@ medusa.admin.discounts.create({
     value: 10,
     allocation: AllocationType.ITEM
   },
-  regions: ['reg_XXXXXXXX'],
+  regions: ["reg_XXXXXXXX"],
   is_dynamic: false,
   is_disabled: false
 })

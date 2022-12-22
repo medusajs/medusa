@@ -34,7 +34,7 @@ post:
             type: object
             properties:
               publishable_api_key:
-                $ref: ../components/schemas/publishable_api_key.yaml
+                $ref: ../components/schemas/PublishableApiKey.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

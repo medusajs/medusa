@@ -10,6 +10,11 @@ get:
       description: The ID of the Publishable Api Key.
       schema:
         type: string
+    - in: query
+      name: q
+      description: Query used for searching sales channels' names and descriptions.
+      schema:
+        type: string
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -36,7 +41,7 @@ get:
               sales_channels:
                 type: array
                 items:
-                  $ref: ../components/schemas/sales_channel.yaml
+                  $ref: ../components/schemas/SalesChannel.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

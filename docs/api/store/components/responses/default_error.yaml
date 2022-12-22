@@ -2,7 +2,7 @@ description: Default Error
 content:
   application/json:
     schema:
-      $ref: ../schemas/error.yaml
+      $ref: ../schemas/Error.yaml
     example:
       code: unknown_error
       message: An unknown error occurred.

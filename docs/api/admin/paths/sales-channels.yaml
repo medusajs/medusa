@@ -7,19 +7,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - name
-          properties:
-            name:
-              description: The name of the Sales Channel
-              type: string
-            description:
-              description: The description of the Sales Channel
-              type: string
-            is_disabled:
-              description: Whether the Sales Channel is disabled or not.
-              type: boolean
+          $ref: ../components/schemas/AdminPostSalesChannelsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -43,7 +31,7 @@ post:
             type: object
             properties:
               sales_channel:
-                $ref: ../components/schemas/sales_channel.yaml
+                $ref: ../components/schemas/SalesChannel.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -204,7 +192,7 @@ get:
               sales_channels:
                 type: array
                 items:
-                  $ref: ../components/schemas/sales_channel.yaml
+                  $ref: ../components/schemas/SalesChannel.yaml
               count:
                 type: integer
                 description: The total number of items available
