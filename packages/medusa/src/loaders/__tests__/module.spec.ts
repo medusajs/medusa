@@ -153,9 +153,10 @@ describe("modules loader", () => {
       },
     }
 
-    const logger: Logger = {
+    const logger: typeof Logger = {
       warn: jest.fn(),
     }
+
     const configModule = buildConfigModule({
       moduleResolutions,
     })
@@ -180,9 +181,10 @@ describe("modules loader", () => {
       },
     }
 
-    const logger: Logger = {
+    const logger: typeof Logger = {
       warn: jest.fn(),
     }
+
     const configModule = buildConfigModule({
       moduleResolutions,
     })

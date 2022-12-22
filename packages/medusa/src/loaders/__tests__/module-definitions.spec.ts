@@ -37,20 +37,6 @@ describe("module definitions loader", () => {
   })
 
   describe("boolean config", () => {
-    it("Resolves module with default definition given config with boolean true", () => {
-      MODULE_DEFINITIONS.push({ ...defaultDefinition })
-
-      const res = ModuleDefinitionLoader({
-        modules: { [defaultDefinition.key]: true },
-      } as ConfigModule)
-
-      expect(res[defaultDefinition.key]).toEqual({
-        resolutionPath: defaultDefinition.defaultPackage,
-        definition: defaultDefinition,
-        options: {},
-      })
-    })
-
     it("Resolves module with no resolution path when given false", () => {
       MODULE_DEFINITIONS.push({ ...defaultDefinition })
 
