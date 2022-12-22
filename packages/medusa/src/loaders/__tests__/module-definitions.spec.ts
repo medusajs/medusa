@@ -84,21 +84,6 @@ describe("module definitions loader", () => {
         options: {},
       })
     })
-
-    it("Fails to resolve module with no resolution path when given false for a required module", () => {
-      expect.assertions(1)
-      MODULE_DEFINITIONS.push({ ...defaultDefinition, isRequired: true })
-
-      try {
-        ModuleDefinitionLoader({
-          modules: { [defaultDefinition.key]: false },
-        } as ConfigModule)
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Module: ${defaultDefinition.label} is required`
-        )
-      }
-    })
   })
 
   describe("string config", () => {
