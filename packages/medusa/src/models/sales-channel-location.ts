@@ -3,9 +3,7 @@ import { BeforeInsert, Index, Column } from "typeorm"
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { BaseEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
-import MultiWarehouseFeatureFlag from "../loaders/feature-flags/multi-warehouse"
 
-@FeatureFlagEntity(MultiWarehouseFeatureFlag.key)
 export class SalesChannelLocation extends BaseEntity {
   @Index()
   @Column({ type: "text" })

@@ -1,7 +1,4 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import MultiWarehouseFeatureFlag from "../loaders/feature-flags/multi-warehouse"
-
-export const featureFlag = MultiWarehouseFeatureFlag.key
 
 export class multiLocation1671711415179 implements MigrationInterface {
   name = "multiLocation1666251508718"
