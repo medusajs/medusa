@@ -164,7 +164,7 @@ PaymentSessionResponse = {
 Where:
 
 - `session_data` is the data that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](./overview.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
-- `update_requests` is an object that can be used to request from the Medusa core to update internal resources. Currently, it only has one attribute `customer_metadata` which allows updating the `metadata` field of the customer.
+- `update_requests` is an object that can be used to pass data from the payment provider plugin to the core to update internal resources. Currently, it only has one attribute `customer_metadata` which allows updating the `metadata` field of the customer.
 
 An example of a minimal implementation of `createPayment`:
 
