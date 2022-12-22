@@ -269,6 +269,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/storefront/handle-order-edits",
+              label: "Handle Order Edits"
+            },
+            {
+              type: "doc",
               id: "advanced/storefront/use-sales-channels",
               label: "Use SalesChannels APIs"
             },
@@ -312,6 +317,11 @@ module.exports = {
               type: "doc",
               id: "advanced/admin/manage-discounts",
               label: "Use Discount APIs"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/order-edit",
+              label: "Edit an Order"
             },
           ]
         },
