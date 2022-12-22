@@ -45,7 +45,12 @@ const registerModule = async (
   const moduleLoaders = loadedModule?.loaders || []
   try {
     for (const loader of moduleLoaders) {
-      await loader({ container, configModule, logger })
+      await loader({
+        container,
+        configModule,
+        logger,
+        options: resolution.options,
+      })
     }
   } catch (err) {
     return {
