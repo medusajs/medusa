@@ -80,6 +80,14 @@ DATABASE_URL=<YOUR_DATABASE_URL>
 
 Where `<YOUR_DATABASE_URL>` is the URL of your PostgreSQL database.
 
+### Changing Database Type
+
+Remember to run migrations after you change your database type to `postgres` from another type:
+
+```bash
+medusa migrations run
+```
+
 ### Common Configuration
 
 As Medusa internally uses [Typeorm](https://typeorm.io/) to connect to the database, the following configurations are also available:

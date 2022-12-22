@@ -1,4 +1,4 @@
-# Local Development
+# Local Development of Medusa Server and Monorepo
 
 In this document, you’ll learn how to customize Medusa’s core and run tests.
 

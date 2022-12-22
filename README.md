@@ -55,24 +55,7 @@ You can learn about all of the ecommerce features that Medusa provides [in our d
 
 ## Roadmap
 
-Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) before starting the implementation process.
-
-### **2022**
-
-- [x]  Admin revamp
-- [x]  Tax API
-- [x]  Tax Calculation Strategy
-- [x]  Cart Calculation Strategy
-- [x]  Customer Groups API
-- [x]  Promotions API
-- [x]  Price Lists API
-- [x]  Price Selection Strategy
-- [x]  Import / Export API
-- [x]  Sales Channel API
-- [ ]  Extended Order API (managing placed orders)
-- [ ]  PaymentCollection API (collecting payments separate from carts and draft orders)
-- [ ]  Multi-warehouse API
-- [ ]  Extended Product API (custom fields, publishing control, and more)
+You can view our roadmap with features that are planned, started, and completed on the [Roadmap discussion](https://github.com/medusajs/medusa/discussions/categories/roadmap) category.
 
 ## Plugins
 
