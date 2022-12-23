@@ -1,3 +1,5 @@
+import Feedback from '@site/src/components/Feedback';
+
 # Quickstart
 
 This document will guide you through setting up your Medusa server in a few minutes.
@@ -45,6 +47,13 @@ If you run into any errors while installing the CLI tool, check out the [trouble
    medusa develop
    ```
 
+<Feedback 
+   event="survey_server_quickstart"
+   question="Did you set up the server successfully?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="Please describe the issue you faced."
+/>
+
 ### Test Your Server
 
 After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
@@ -87,7 +96,7 @@ To upload product images to your Medusa server, you must install and configure o
 
 ## What's Next
 
-- Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts to set up your ecommerce storefront.
-- Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
+- Install the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts to set up your ecommerce storefront.
+- Install the [Medusa Admin](../admin/quickstart.mdx) to supercharge your ecommerce experience with easy access to configurations and features.
 - Check out the [API reference](https://docs.medusajs.com/api/store) to learn more about available endpoints available on your Medusa server.
 - Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, Notifications, among other features.

@@ -21,7 +21,7 @@ This documentation helps you learn how to create a batch job strategy. The batch
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
 
 ### Redis
 

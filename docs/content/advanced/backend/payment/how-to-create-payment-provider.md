@@ -428,7 +428,7 @@ This method returns an array of saved payment methods retrieved from the third-p
 
 :::note
 
-If you’re using Medusa’s [Next.js](../../../starters/nextjs-medusa-starter.md) or [Gatsby](../../../starters/gatsby-medusa-starter.md) storefront starters, note that the presentation of this method is not implemented. You’ll need to implement the UI and pages for this method based on your implementation and the provider you are using.
+If you’re using Medusa’s [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefront starters, note that the presentation of this method is not implemented. You’ll need to implement the UI and pages for this method based on your implementation and the provider you are using.
 
 :::
 

@@ -37,7 +37,7 @@ As a developer, you will mainly work with the Fulfillment Provider when integrat
 
 When you run your Medusa server, the Fulfillment Provider will be registered on your server if it hasn’t been already.
 
-Once the Fulfillment Provider is added to the server, the store operator will be able to associate on the [Medusa Admin](../../../quickstart/quick-start.md) the Fulfillment Provider with shipping options.
+Once the Fulfillment Provider is added to the server, the store operator will be able to associate on the [Medusa Admin](../../../quickstart/quick-start.mdx) the Fulfillment Provider with shipping options.
 
 ### FulfillmentProvider Entity Overview
 

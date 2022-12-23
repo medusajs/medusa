@@ -12,7 +12,7 @@ Although this documentation specifically targets import strategies, you can use 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
 
 ### Redis
 

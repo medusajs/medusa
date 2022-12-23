@@ -4,7 +4,7 @@ In this document, you’ll learn what configurations you can add to your Medusa 
 
 ## Prerequisites
 
-This document assumes you already followed along with the [“Set up your development environment” documentation](../tutorial/0-set-up-your-development-environment.mdx) and have [installed a Medusa server](../quickstart/quick-start.md#create-a-medusa-server).
+This document assumes you already followed along with the [“Set up your development environment” documentation](../tutorial/0-set-up-your-development-environment.mdx) and have [installed a Medusa server](../quickstart/quick-start.mdx#create-a-medusa-server).
 
 ## Medusa Configurations File
 
@@ -332,6 +332,6 @@ It is recommended to use environment variables to store values of options instea
 
 ## What’s Next
 
-- Check out the [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) starter storefronts.
-- Install the [Medusa admin](../admin/quickstart.md).
+- Check out the [Next.js](../starters/nextjs-medusa-starter.mdx) and [Gatsby](../starters/gatsby-medusa-starter.mdx) starter storefronts.
+- Install the [Medusa admin](../admin/quickstart.mdx).
 - Learn about [deploying the Medusa server](../deployments/server/index.mdx).

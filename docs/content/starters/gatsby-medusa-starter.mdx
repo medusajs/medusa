@@ -1,3 +1,5 @@
+import Feedback from '@site/src/components/Feedback';
+
 # Gatsby Storefront Quickstart
 
 This document guides you to install and set up the Gatsby Storefront for your Medusa Server.
@@ -14,7 +16,7 @@ Instead of manually following this guide to install then later deploy the Gatsby
 
 ## Prerequisites
 
-This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.md) to learn how to do it.
+This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.mdx) to learn how to do it.
 
 You should also have the Gatsby CLI installed:
 
@@ -50,6 +52,13 @@ npm run start
 ```
 
 Your Gatsby storefront is now running at `localhost:8000`!
+
+<Feedback 
+   event="survey_gatsby_quickstart"
+   question="Did you set up the storefront successfully?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="Please describe the issue you faced."
+/>
 
 ## Development Notes
 

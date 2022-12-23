@@ -14,7 +14,7 @@ Through Medusa's flexible plugin system, it is possible to add a search engine t
 
 ### Medusa Components
 
-It is required to have a Medusa server installed before starting with this documentation. If not, please follow along with the [quickstart guide](../quickstart/quick-start.md) to get started in minutes.
+It is required to have a Medusa server installed before starting with this documentation. If not, please follow along with the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
 
 Furthermore, it’s highly recommended to ensure your Medusa server is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa server are updated. You can follow [this documentation to install Redis](../tutorial/0-set-up-your-development-environment.mdx#redis) and then [configure it on your Medusa server](../usage/configurations.md#redis).
 
@@ -107,7 +107,7 @@ This feature is only available if you have Redis installed and configured with y
 
 ## Add Search to your Storefront
 
-In this section, you’ll learn how to add the UI on your storefront to allow searching with MeiliSearch. This section has instructions for Medusa’s [Next.js](../starters/nextjs-medusa-starter.md) storefront as well as React-based frameworks such as the [Gatsby storefront](../starters/gatsby-medusa-starter.md).
+In this section, you’ll learn how to add the UI on your storefront to allow searching with MeiliSearch. This section has instructions for Medusa’s [Next.js](../starters/nextjs-medusa-starter.mdx) storefront as well as React-based frameworks such as the [Gatsby storefront](../starters/gatsby-medusa-starter.mdx).
 
 ### Storefront Prerequisites
 
@@ -115,7 +115,7 @@ It is assumed you already have a storefront set up and working with the Medusa s
 
 :::tip
 
-If you don’t have a storefront set up, you can use the [Gatsby](../starters/gatsby-medusa-starter.md) or [Next.js](../starters/nextjs-medusa-starter.md) storefronts Medusa provides.
+If you don’t have a storefront set up, you can use the [Gatsby](../starters/gatsby-medusa-starter.mdx) or [Next.js](../starters/nextjs-medusa-starter.mdx) storefronts Medusa provides.
 
 :::
 

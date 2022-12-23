@@ -1,3 +1,5 @@
+import Feedback from '@site/src/components/Feedback';
+
 # Next.js Storefront Quickstart
 
 This document guides you to install and set up the Next.js Storefront for your Medusa Server.
@@ -14,7 +16,7 @@ Instead of manually following this guide to install then later deploy the Next.j
 
 ## Prerequisites
 
-This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.md) to learn how to do it.
+This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.mdx) to learn how to do it.
 
 ## Installation
 
@@ -24,13 +26,13 @@ It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for
 
 :::
 
-1\. Create a new Next.js project using the [Medusa starter template](https://github.com/medusajs/nextjs-starter-medusa):
+1\. Create a new Next.js project using the [Medusa starter template](https://github.com/medusajs/nextjs-starter-medusa):
 
 ```bash
 npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
 ```
 
-2\. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
+2\. Change to the newly created directory `my-medusa-storefront` and rename the template environment variable file to use environment variables in development:
 
 ```bash
 cd my-medusa-storefront
@@ -43,7 +45,14 @@ mv .env.template .env.local
 npm run dev
 ```
 
-Your Next.js storefront is now running at `localhost:8000`!
+Your Next.js storefront is now running at `localhost:8000`!
+
+<Feedback 
+   event="survey_nextjs_quickstart"
+   question="Did you set up the storefront successfully?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="Please describe the issue you faced."
+/>
 
 ## Development Notes
 
@@ -183,9 +192,9 @@ To customize the styles of the storefront, you can customize the `src/styles` di
 
 ### Change Port
 
-By default, the Next.js storefront runs on port `8000`.
+By default, the Next.js storefront runs on port `8000`.
 
-To change the port, change the `develop` command in `package.json` to the following:
+To change the port, change the `develop` command in `package.json` to the following:
 
 ```json
 "scripts": {
@@ -194,9 +203,9 @@ To change the port, change the `develop` command in `package.json` to the fo
 }
 ```
 
-Make sure to replace `<PORT>` with the port number you want the storefront to run on. For example, `3000`.
+Make sure to replace `<PORT>` with the port number you want the storefront to run on. For example, `3000`.
 
-Then, on your server, update the environment variable `STORE_CORS` to the URL with the new port:
+Then, on your server, update the environment variable `STORE_CORS` to the URL with the new port:
 
 ```bash
 STORE_CORS=http://localhost:<PORT>
@@ -222,5 +231,5 @@ You can learn more about development with Next.js through [their documentation](
 
 ## What’s Next
 
-- Check the [Storefront API reference](https://docs.medusajs.com/api/store) for a full list of REST APIs to use on your storefront.
-- Learn [how to install Medusa Admin](../admin/quickstart.md).
+- Check the [Storefront API reference](https://docs.medusajs.com/api/store) for a full list of REST APIs to use on your storefront.
+- Learn [how to install Medusa Admin](../admin/quickstart.mdx).

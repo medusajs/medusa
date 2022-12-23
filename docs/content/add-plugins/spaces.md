@@ -18,7 +18,7 @@ Medusa provides three different options to handle your file storage. This docume
 
 ### Medusa Server
 
-A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.md) to get started in minutes.
+A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
 
 ### Required Accounts
 
@@ -125,7 +125,7 @@ Run your Medusa server with the following command:
 npm run start
 ```
 
-Then, you can either test the plugin using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Medusa Admin](../admin/quickstart.md).
+Then, you can either test the plugin using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Medusa Admin](../admin/quickstart.mdx).
 
 On the Medusa Admin, create a new product and, in the Images section, upload an image then click Save. If the integration was successful, the product image will be uploaded successfully.
 
@@ -137,7 +137,7 @@ You can also check that the image was uploaded on the Space’s page.
 
 ## Next.js Storefront Configuration
 
-If you’re using a [Next.js](../starters/nextjs-medusa-starter.md) storefront, you need to add an additional configuration that adds the Space’s domain name into the configured images’ domain names. This is because all URLs of product images will be from the Space.
+If you’re using a [Next.js](../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the Space’s domain name into the configured images’ domain names. This is because all URLs of product images will be from the Space.
 
 If this configuration is not added, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
 
@@ -165,4 +165,4 @@ Where `<YOUR_SPACE_DOMAIN>` is the domain name for your Space which can be retri
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
 - Learn how to [deploy the Medusa server on DigitalOcean](../deployments/server/deploying-on-digital-ocean.md).
-- Learn about the [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
+- Learn about the [Next.js](../starters/nextjs-medusa-starter.mdx) and [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts.

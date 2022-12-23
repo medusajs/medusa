@@ -1,3 +1,5 @@
+import Feedback from '@site/src/components/Feedback';
+
 # Medusa Admin Quickstart
 
 This document will guide you through setting up the Medusa admin in minutes, as well as some of its features.
@@ -52,6 +54,13 @@ Then, install the dependencies:
 ```bash npm2yarn
 npm install
 ```
+
+<Feedback 
+   event="survey_admin_quickstart"
+   question="Did you set up the admin successfully?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="Please describe the issue you faced."
+/>
 
 ## Test it Out
 
@@ -136,5 +145,5 @@ You can learn more about Medusa admin and its features in the [User Guide](../us
 ## What’s Next
 
 - Learn how to [Customize Medusa Admin](./development.md)
-- Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefront starters.
+- Install the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefront starters.
 - [Learn how you can use `create-medusa-app` to install all of Medusa’s 3 components.](../usage/create-medusa-app.mdx)

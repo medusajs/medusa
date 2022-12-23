@@ -20,7 +20,7 @@ Webhooks are used in scenarios where the customer might leave the page during th
 
 Additionally, you need a Medusa server installed and set up. If not, you can follow the [quickstart guide](https://docs.medusajs.com/quickstart/quick-start) to get started.
 
-You also need [Medusa Admin](../admin/quickstart.md) installed to enable PayPal as a payment provider. You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin).
+You also need [Medusa Admin](../admin/quickstart.mdx) installed to enable PayPal as a payment provider. You can alternatively use the [REST APIs](https://docs.medusajs.com/api/admin).
 
 ## Medusa Server
 
@@ -76,7 +76,7 @@ This step is required for you to be able to use PayPal as a payment provider in 
 
 ### Admin Prerequisites
 
-If you don’t have a Medusa admin installed, make sure to follow along with [the guide on how to install it](../admin/quickstart.md) before continuing with this section.
+If you don’t have a Medusa admin installed, make sure to follow along with [the guide on how to install it](../admin/quickstart.mdx) before continuing with this section.
 
 ### Add PayPal to Regions
 
@@ -115,7 +115,7 @@ In Medusa, by default, payments are authorized during checkout, but the payment 
 
 ### Add to Next.js Storefront
 
-Medusa has a Next.js storefront that you can easily use with your Medusa server. If you don’t have the storefront installed, you can follow [this quickstart guide](../starters/nextjs-medusa-starter.md).
+Medusa has a Next.js storefront that you can easily use with your Medusa server. If you don’t have the storefront installed, you can follow [this quickstart guide](../starters/nextjs-medusa-starter.mdx).
 
 In your `.env.local` file (or the file you’re using for your environment variables), add the following variable:
 
@@ -133,7 +133,7 @@ You can test out the payment with PayPal using your sandbox account.
 
 ### Add to Gatsby Storefront
 
-Medusa also has a Gatsby storefront that you can use as your ecommerce storefront. If you don’t have the storefront installed, you can follow [this quickstart guide](../starters/gatsby-medusa-starter.md).
+Medusa also has a Gatsby storefront that you can use as your ecommerce storefront. If you don’t have the storefront installed, you can follow [this quickstart guide](../starters/gatsby-medusa-starter.mdx).
 
 In your `.env.development` file (or the file you’re using for your environment variables) add the following variable with its value set to the Client ID:
 

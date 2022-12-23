@@ -10,7 +10,7 @@ If you’re unfamiliar with the Notification architecture in Medusa, it is recom
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to install a [Medusa server](../../../quickstart/quick-start.md).
+Before you start creating a Notification Provider, you need to install a [Medusa server](../../../quickstart/quick-start.mdx).
 
 You also need to [setup Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with the Medusa server](../../../usage/configurations.md#redis).
 
@@ -249,7 +249,7 @@ Then, place an order either using the [REST APIs](https://docs.medusajs.com/api/
 
 :::tip
 
-If you don’t have a storefront installed you can get started with either the [Next.js](../../../starters/nextjs-medusa-starter.md) or [Gatsby](../../../starters/gatsby-medusa-starter.md) starter storefronts in minutes.
+If you don’t have a storefront installed you can get started with either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) starter storefronts in minutes.
 
 :::
 

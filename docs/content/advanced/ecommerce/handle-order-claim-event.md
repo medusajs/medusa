@@ -18,7 +18,7 @@ In this document, you’ll learn how to handle the `order-update-token.created` 
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
 ### Redis
 

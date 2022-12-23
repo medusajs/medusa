@@ -16,7 +16,7 @@ Alternatively, you can use this button to deploy the Medusa Admin to Netlify dir
 
 ### Medusa Components
 
-Before proceeding with this documentation, it is assumed you already have a Medusa Admin installed locally. If not, please go through the [quickstart guide](../../admin/quickstart.md) first.
+Before proceeding with this documentation, it is assumed you already have a Medusa Admin installed locally. If not, please go through the [quickstart guide](../../admin/quickstart.mdx) first.
 
 Additionally, this documentation does not cover how to deploy the Medusa server. If you want to deploy the Medusa server, check out one of the [deployment documentation related to the Medusa server](../server/index.mdx).
 

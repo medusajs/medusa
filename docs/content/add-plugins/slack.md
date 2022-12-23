@@ -25,7 +25,7 @@ To follow along with this guide, you need to have a Slack account with a connect
 
 ### Medusa Server
 
-This tutorial assumes you already have a Medusa server installed. If you don’t, please follow along with the [quickstart guide](../quickstart/quick-start.md).
+This tutorial assumes you already have a Medusa server installed. If you don’t, please follow along with the [quickstart guide](../quickstart/quick-start.mdx).
 
 ### Redis
 

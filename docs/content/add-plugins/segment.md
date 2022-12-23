@@ -40,7 +40,7 @@ Check out the [Event Reference](../advanced/backend/subscribers/events-list.md) 
 
 ### Medusa Server
 
-It is assumed you already have a Medusa server installed. If not, please follow the [Quickstart guide](../quickstart/quick-start.md) to get started in minutes.
+It is assumed you already have a Medusa server installed. If not, please follow the [Quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
 
 In addition, make sure to have Redis installed and configured with your Medusa server. If not, follow [this documentation](../tutorial/0-set-up-your-development-environment.mdx#redis) to install Redis and then [configure it](../usage/configurations.md#redis).
 
@@ -122,7 +122,7 @@ Run your server with the following command:
 npm run start
 ```
 
-Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
+Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts.
 
 After you place an order, on the Segment source that you created, click on the Debugger tab. You should see at least one event triggered for each order you place. If you click on the event, you can see the order details are passed to the event.
 

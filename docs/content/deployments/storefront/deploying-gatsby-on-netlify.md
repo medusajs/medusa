@@ -16,7 +16,7 @@ Alternatively, you can use this button to deploy the Gatsby Storefront to Netlif
 
 ### Medusa Components
 
-Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally. If not, please go through the [quickstart guide](../../starters/gatsby-medusa-starter.md) first.
+Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally. If not, please go through the [quickstart guide](../../starters/gatsby-medusa-starter.mdx) first.
 
 Additionally, this documentation does not cover how to deploy the Medusa server. If you want to deploy the Medusa server, [check out one of the deployment documentation related to the Medusa server](../server/index.mdx).
 
