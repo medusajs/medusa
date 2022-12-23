@@ -18,7 +18,7 @@ Medusa provides three different options to handle your file storage. This docume
 
 ### Medusa Server
 
-A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.md) to get started in minutes.
+A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
 
 ### Required Accounts
 
@@ -165,4 +165,4 @@ Where `<YOUR_SPACE_DOMAIN>` is the domain name for your Space which can be retri
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
 - Learn how to [deploy the Medusa server on DigitalOcean](../deployments/server/deploying-on-digital-ocean.md).
-- Learn about the [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
+- Learn about the [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts.

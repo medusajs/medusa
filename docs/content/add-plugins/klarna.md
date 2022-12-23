@@ -12,7 +12,7 @@ You can integrate Klarna into Medusa using the [official plugin](https://github.
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../quickstart/quick-start.md).
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../quickstart/quick-start.mdx).
 
 In addition, you’ll need to use the [Medusa Admin](../admin/quickstart.md) to enable the payment provider in later steps. You can alternatively use the [REST APIs](/api/admin/#tag/Region/operation/PostRegionsRegionPaymentProviders).
 

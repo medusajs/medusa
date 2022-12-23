@@ -12,7 +12,7 @@ This guide explains how to create a scheduled job on your Medusa server. The sch
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
 
 ### Redis
 

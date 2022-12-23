@@ -10,7 +10,7 @@ Medusa provides three different options to handle your file storage. This docume
 
 ## Prerequisites
 
-A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.md) to get started in minutes.
+A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
 
 ## Set up MinIO
 
