@@ -192,7 +192,9 @@ const config = {
       },
     ],
     reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml',
-    footerFeedbackEvent: 'survey'
+    footerFeedback: {
+      event: 'survey'
+    }
   },
   presets: [
     [

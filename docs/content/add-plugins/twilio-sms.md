@@ -110,7 +110,7 @@ If you create an order now on your storefront, you should receive a message from
 
 :::tip
 
-If you don’t have a storefront set up yet, you can install one of the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts.
+If you don’t have a storefront set up yet, you can install one of the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts.
 
 :::
 
@@ -125,4 +125,4 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 ## What’s Next
 
 - Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
-- Install the [Medusa admin](../admin/quickstart.md) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.
+- Install the [Medusa admin](../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

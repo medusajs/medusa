@@ -30,7 +30,7 @@ As a developer, you will mainly work with the Payment Provider when integrating 
 
 When you run your Medusa server, the Payment Provider will be registered on your server if it hasn’t been already.
 
-Once the Payment Provider is added to the server, the store operator will be able to choose on the [Medusa Admin](../../../admin/quickstart.md) the payment providers available in a region. These payment providers are shown to the customer at checkout to choose from and use.
+Once the Payment Provider is added to the server, the store operator will be able to choose on the [Medusa Admin](../../../admin/quickstart.mdx) the payment providers available in a region. These payment providers are shown to the customer at checkout to choose from and use.
 
 :::caution
 

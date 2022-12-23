@@ -6,13 +6,15 @@ import {useThemeConfig} from '@docusaurus/theme-common';
 
 export default function FooterWrapper(props) {
   const { metadata } = useDoc()
-  const { footerFeedbackEvent = '' } = useThemeConfig();
+  const { footerFeedback = { event: '' } } = useThemeConfig();
+
+  console.log(footerFeedback)
 
   return (
     <>
       {!metadata.frontMatter?.hide_footer && (
         <div className='docusaurus-mt-lg doc-footer'>
-          <Feedback event={footerFeedbackEvent} />
+          <Feedback {...footerFeedback} />
           <Footer {...props} />
         </div>
       )}
