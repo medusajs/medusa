@@ -59,6 +59,16 @@ medusa-dev --set-path-to-repo `pwd`
 
 In this section, you’ll learn how to run tests in the Medusa repository. This is helpful after you customize any of Medusa’s packages and want to make sure everything is still working as expected.
 
+### Set System Environment Variables
+
+Before you can run the tests, make sure you set the following system environment variables:
+
+```bash
+DB_HOST=<YOUR_DB_HOST>
+DB_USERNAME=<YOUR_DB_USERNAME>
+DB_PASSWORD=<YOUR_PASSWORD>
+```
+
 ### Run Unit Tests
 
 To run unit tests in all packages in the Medusa repository, run the following command in the root directory of the repository:
