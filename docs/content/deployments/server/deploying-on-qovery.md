@@ -42,6 +42,8 @@ If you want to use another [Git Provider supported by Qovery](https://hub.qovery
 - Terraform’s CLI tool. You can follow [this guide to install it based on your operating system](https://www.terraform.io/downloads).
 - Qovery’s CLI tool. You can follow [this guide to install it based on your operating system](https://hub.qovery.com/docs/using-qovery/interface/cli/#install).
 
+---
+
 ## Create GitHub Repository
 
 Before you can deploy your Medusa server you need to create a GitHub repository and push the code base to it.
@@ -80,6 +82,8 @@ git push origin master
 ```
 
 After pushing the changes, you can find the files in your GitHub repository.
+
+---
 
 ## Deploy to Qovery
 
@@ -473,6 +477,8 @@ If you run into any errors while running this command, you can just re-run it af
 
 :::
 
+---
+
 ## Test your Server
 
 Once the command finishes and the deployment is successful, you can access your server in the [Qovery Console](https://console.qovery.com/). Go to the project, environment, then the app that you created using Terraform and Qovery. In the app, click the Open button at the top right to open your website in a new tab.
@@ -480,6 +486,8 @@ Once the command finishes and the deployment is successful, you can access your 
 ![open button at the top right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002245/Medusa%20Docs/Qovery/Ji59ZSJ_nrkpvb.png)
 
 You can access any of the endpoints on your server using the server URL. For example, you can get the list of products using the endpoint `/store/products`.
+
+---
 
 ## Run Commands on Your Server
 
@@ -498,6 +506,8 @@ npm install @medusajs/medusa-cli -g
 medusa user --email <EMAIL> --password <PASSWORD>
 ```
 
+---
+
 ## Add Environment Variables
 
 You’ll likely need to add environment variables later such as Admin Cross-Origin Resource Sharing (CORS) and Store CORS variables.
@@ -506,7 +516,9 @@ To add environment variables, in your [Qovery Console](https://console.qovery.co
 
 ![Environment Variables in the sidebar](https://res.cloudinary.com/dza7lstvk/image/upload/v1668002258/Medusa%20Docs/Qovery/aQl7zdz_tjs0eb.png)
 
-## What’s Next
+---
 
-- Learn how to [deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md).
-- Learn how to [deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md).
+## See Also
+
+- [Deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md)
+- [Deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md)

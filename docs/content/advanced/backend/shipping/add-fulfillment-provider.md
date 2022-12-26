@@ -19,6 +19,8 @@ Also, the fulfillment provider class should have a static property `identifier`.
 
 Fulfillment providers are loaded and installed on the server startup.
 
+---
+
 ## Create a Fulfillment Provider
 
 The first step is to create a JavaScript or TypeScript file under `src/services`. For example, create the file `src/services/my-fulfillment.ts` with the following content:
@@ -269,7 +271,8 @@ cancelFulfillment(fulfillment) {
 }
 ```
 
-## What’s Next
+---
 
-- Check out the [Webshipper plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-webshipper) for an example of a fulfillment provider that interacts with a third-party providers.
-- Check out the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-manual) for a basic implementation of a fulfillment provider.
+## See Also
+
+- Example Implementations: [Webshipper plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-webshipper) and the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-manual)

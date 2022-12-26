@@ -52,8 +52,10 @@ npm run seed
 
 :::
 
-## Additional Resources
+---
 
-- Learn how to [set up your development environment](../tutorial/0-set-up-your-development-environment.mdx).
-- Learn how to [configure your server](../usage/configurations.md).
-- Learn more about [the Medusa CLI tool](../cli/reference.md).
+## See Also
+
+- [Set up your development environment](../tutorial/0-set-up-your-development-environment.mdx)
+- [Configure your server](../usage/configurations.md)
+- [Medusa CLI tool reference](../cli/reference.md)

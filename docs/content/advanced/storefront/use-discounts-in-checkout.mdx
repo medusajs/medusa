@@ -17,9 +17,11 @@ Customers can use discounts during checkout to benefit from promotions that the 
 
 In this document, you’ll learn how to add a discount to a cart, how to display details related to the discount, and how to remove a discount from a cart.
 
-## Scenario
+### Scenario
 
 You want to implement discount functionality in your store to allow customers to apply discount codes to their cart and remove them from the cart. You also want to display the discount details for the customer.
+
+---
 
 ## Prerequisites
 
@@ -40,6 +42,8 @@ If you follow the JS Client code blocks, it’s assumed you already have [Medusa
 This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
 
 You can learn how to implement the cart flow using [this documentation](../../guides/carts-in-medusa.mdx).
+
+---
 
 ## Add Discount to Cart
 
@@ -109,6 +113,8 @@ Customers can add more than one discount to their cart.
 If the discount is applied successfully, the entire cart object will be returned. You can access the discounts applied on the cart in the `cart.discounts` array.
 
 In case the customer enters an invalid discount or the discount cannot be applied to the cart because it doesn’t meet its conditions, the request will return an error. You can handle the error in the `catch` method.
+
+---
 
 ## Display Discount Details
 
@@ -201,6 +207,8 @@ The returned `cart` object has the following properties that can be used to disp
 - The `shipping_total` property is the total shipping amount. If a Free Shipping discount is applied to the cart, `shipping_total` and `discount_total` will be 0.
 - The `total` property is the total amount of the cart after applying the discount.
 
+---
+
 ## Remove Discount from Cart
 
 The customer can choose to remove a discount from their cart.
@@ -238,7 +246,9 @@ This request accepts the cart ID and the code of the discount to remove. If the 
 
 The totals of the cart and its items will be updated as well.
 
-## What’s Next
+---
 
-- Learn [how to implement the checkout flow](./how-to-implement-checkout-flow.mdx).
-- Learn [how to create discounts using the admin APIs](/api/admin/#tag/Discount/operation/PostDiscounts).
+## See Also
+
+- [Implement the checkout flow in a storefront](./how-to-implement-checkout-flow.mdx).
+- [Manage discounts using the admin APIs](../admin/manage-discounts.mdx).

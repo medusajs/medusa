@@ -11,6 +11,8 @@ In your storefront, you can filter products by sales channels. You can also asso
 
 This guide explains how to perform these operations using the Storefront APIs.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -24,6 +26,8 @@ It is also assumed you already have a storefront set up. It can be a custom stor
 This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+---
 
 ## Filter Products by Sales Channel
 
@@ -60,6 +64,8 @@ fetch(`<SERVER_URL>/store/products?sales_channel_id[0]=${salesChannelId}`)
 The `sales_channel_id` query parameter is an array of sales channel IDs. You can pass more than one sales channel.
 
 The request returns an array of products. These are the products that are available in the sales channel.
+
+---
 
 ## Associate a Cart with a Sales Channel
 
@@ -142,7 +148,9 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
 
 The request returns the updated cart.
 
-## What’s Next 🚀
+---
 
-- Learn how to [Implement the Cart functionality in a storefront](../../guides/carts-in-medusa.mdx).
-- Learn how to [Implement the Checkout functionality in a storefront](./how-to-implement-checkout-flow.mdx).
+## See Also
+
+- [Implement the Cart functionality in a storefront](../../guides/carts-in-medusa.mdx)
+- [Implement the Checkout functionality in a storefront](./how-to-implement-checkout-flow.mdx)

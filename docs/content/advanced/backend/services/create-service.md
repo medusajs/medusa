@@ -23,6 +23,8 @@ class HelloService extends TransactionBaseService {
 export default HelloService
 ```
 
+---
+
 ## Service Constructor
 
 As the service extends the `TransactionBaseService` class, all services in Medusa’s core, as well as all your custom services, will be available in your service’s constructor using dependency injection.
@@ -45,6 +47,8 @@ async getProductCount() {
   return await this.productService.count();
 }
 ```
+
+---
 
 ## Use a Service
 
@@ -93,7 +97,9 @@ constructor({ helloService, eventBusService }) {
 }
 ```
 
-## What’s Next
+---
 
-- Check out the [Services Reference](/references/services/classes/AuthService) to see a list of all services in Medusa.
-- [Learn How to Create an Endpoint.](../endpoints/add.md)
+## See Also
+
+- [Services Reference](/references/services/classes/AuthService)
+- [Create an Endpoint](../endpoints/add.md)

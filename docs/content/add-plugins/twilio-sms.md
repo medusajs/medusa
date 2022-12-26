@@ -14,15 +14,21 @@ This plugin only gives you access to the Twilio SMS API but does not implement s
 
 :::
 
+---
+
 ## Prerequisites
 
 Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](../quickstart/quick-start.mdx) if you don’t.
 
 You also must have a [Twilio account created](https://www.twilio.com/sms) so if you don’t already please go ahead and create one.
 
+---
+
 ## Retrieve Credentials
 
 For the [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms), you need three credentials from your Twilio account: Account SID, Auth Token, and a Twilio phone number to send from. You can find these three from your [Twilio Console’s homepage](https://console.twilio.com).
+
+---
 
 ## Install Plugin
 
@@ -57,6 +63,8 @@ const plugins = [
   }
 ];
 ```
+
+---
 
 ## Example Usage of the Plugin
 
@@ -122,7 +130,9 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 
 ![Twilio Dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001219/Medusa%20Docs/Stripe/MXtQMiL_kb7kxe.png)
 
-## What’s Next
+---
 
-- Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
+## See Also
+
+- [Notifications Overview](../advanced/backend/notification/overview.md).
 - Install the [Medusa admin](../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

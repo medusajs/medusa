@@ -14,6 +14,8 @@ In Medusa, there are 3 main components in the payment architecture: Payment Prov
 
 An important part in the Payment architecture to understand is the **Idempotency Key**. It’s a unique value that’s generated for a cart and is used to retry payments during checkout if they fail.
 
+---
+
 ## Payment Provider
 
 A Payment Provider in Medusa is a method to handle payments in selected regions. It is not associated with a cart, customer, or order in particular. It provides the necessary implementation to create Payment Sessions and Payments, as well as authorize and capture payments, among other functionalities.
@@ -41,6 +43,8 @@ It’s important to choose a payment provider in the list of payment providers i
 ### PaymentProvider Entity Overview
 
 The [`PaymentProvider`](../../../references/entities/classes/PaymentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the payment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Payment Provider service.
+
+---
 
 ## Payment Session
 
@@ -80,6 +84,8 @@ The `status` attributes indicates the current status of the Payment Session. It 
 
 These statuses are important in the checkout flow to determine the current step the customer is at and which action should come next. For example, if there is an attempt to place the order but the status of the Payment Session is not `authorized`, an error will be thrown.
 
+---
+
 ## Payment
 
 A Payment is used to represent the amount authorized for a customer’s purchase. It is associated with the order placed by the customer and will be used after that for all operations related to the order’s payment such as capturing or refunding the payment.
@@ -104,6 +110,8 @@ Similar to `PaymentSession`,  `Payment` has a `data` attribute which is an objec
 
 Additionally, `Payment` has the `captured_at` date-time attribute which is filled when the payment has been captured, and a `canceled_at` date-time attribute which is filled when the order has been canceled.
 
+---
+
 ## Idempotency Key
 
 An Idempotency Key is a unique key associated with a cart. It is generated at the last step of checkout before authorization of the payment is attempted.
@@ -118,7 +126,9 @@ If then the request is interrupted for any reason or the payment fails, the clie
 
 This prevents any payment issues from occurring with the customers and allows for secure retries of failed payments or interrupted connections.
 
-## What’s Next
+---
 
-- [Check out how the checkout flow is implemented on the frontend.](./../../storefront/how-to-implement-checkout-flow.mdx)
-- Check out payment plugins like [Stripe](../../../add-plugins/stripe.md), [Paypal](/add-plugins/paypal), and [Klarna](../../../add-plugins/klarna.md).
+## See Also
+
+- [Create a Payment Provider](./how-to-create-payment-provider.md)
+- [Implement the checkout flow in the storefront](./../../storefront/how-to-implement-checkout-flow.mdx)

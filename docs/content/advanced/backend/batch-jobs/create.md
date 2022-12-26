@@ -17,6 +17,8 @@ Batch jobs can be used to perform long tasks in the background of your Medusa se
 
 This documentation helps you learn how to create a batch job strategy. The batch job strategy used in this example changes the status of all draft products to `published`.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -31,11 +33,15 @@ Redis is required for batch jobs to work. Make sure you [install Redis](../../.
 
 If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../../../tutorial/0-set-up-your-development-environment.mdx#postgresql) and [configure it with your Medusa server](../../../usage/configurations.md#postgresql-configurations).
 
+---
+
 ## 1. Create a File
 
 A batch job strategy is essentially a class defined in a TypeScript or JavaScript file. You should create this file in `src/strategies`.
 
 Following the example used in this documentation, create the file `src/strategies/publish.ts`.
+
+---
 
 ## 2. Create Class
 
@@ -63,6 +69,8 @@ class PublishStrategy extends AbstractBatchJobStrategy {
 export default PublishStrategy
 ```
 
+---
+
 ## 3. Define Required Properties
 
 A batch job strategy class must have two static properties: the `identifier` and `batchType` properties. The `identifier` must be a unique string associated with your batch job strategy, and `batchType` must be the batch job's type.
@@ -79,6 +87,8 @@ class PublishStrategy extends AbstractBatchJobStrategy {
   //...
 }
 ```
+
+---
 
 ## 4. Define Methods
 
@@ -222,6 +232,8 @@ protected async handleProcessingError<T>(batchJobId: string, err: unknown, resul
 }
 ```
 
+---
+
 ## 5. Run Build Command
 
 After you create the batch job and before testing it out, you must run the build command in the directory of your Medusa server:
@@ -229,6 +241,8 @@ After you create the batch job and before testing it out, you must run the build
 ```bash
 npm run build
 ```
+
+---
 
 ## Test your Batch Job Strategy
 
@@ -410,7 +424,9 @@ The batch job will start processing afterward. Based on the batch job strategy i
 
 You can [retrieve the batch job](#optional-retrieve-batch-job) at any given point to check its status.
 
-## What’s Next
+---
 
-- Learn more about [batch jobs](./index.md).
-- Learn how to [import products using the Admin API](../../admin/import-products.mdx).
+## See Also
+
+- [Batch Jobs Overview](./index.md).
+- [Import products using the Admin API](../../admin/import-products.mdx).

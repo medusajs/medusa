@@ -60,7 +60,7 @@ The context that is passed to the `calculateVariantPrice` method is an object th
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn [how to override the price selection strategy](./override.md).
-- Learn more about [price lists](./../price-lists/index.md).
+- [Override the Price Selection Strategy](./override.md)
+- [Price Lists Overview](./../price-lists/index.md)

@@ -8,6 +8,8 @@ Medusa's event system works by pushing data to a Queue that each handler then ge
 
 You can learn how to [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with Medusa](../../../usage/configurations.md#redis) before you get started.
 
+---
+
 ## Implementation
 
 A subscriber is a TypeScript or JavaScript file that is created under `src/subscribers`. Its file name, by convension, should be the class name of the subscriber without the word `Subscriber`. For example, if the subscriber is `HelloSubscriber`, the file name should be `hello.ts`.
@@ -40,6 +42,8 @@ The `data` object won't contain other order data. Only the ID of the order. You 
 
 :::
 
+---
+
 ## Using Services in Subscribers
 
 You can access any service through the dependencies injected to your subscriber’s constructor.
@@ -69,7 +73,9 @@ When using attributes defined in the subscriber, such as the `productService` in
 
 :::
 
-## What’s Next
+---
 
-- [View the list of all events](events-list.md)
-- [Learn how to create a service.](/advanced/backend/services/create-service)
+## See Also
+
+- [Events reference](events-list.md)
+- [Create a Service](../services/create-service)
