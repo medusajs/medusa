@@ -624,6 +624,16 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "troubleshooting/common-installation-errors",
+          label: "Installation Errors",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/database-error",
+          label: "Database SASL Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/cors-issues",
           label: "CORS issues",
         },
