@@ -1,7 +1,7 @@
 get:
   operationId: GetPaymentCollectionsPaymentCollection
-  summary: Retrieve an PaymentCollection
-  description: Retrieves a PaymentCollection.
+  summary: Get a PaymentCollection
+  description: Get a Payment Collection
   x-authenticated: false
   parameters:
     - in: path

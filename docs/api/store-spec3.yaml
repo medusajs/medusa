@@ -343,6 +343,175 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/collections/{id}':
+    get:
+      operationId: GetCollectionsCollection
+      summary: Get a Collection
+      description: Retrieves a Product Collection.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.collections.retrieve(collection_id)
+
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/collections/{id}'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/ProductCollection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.collections.list()
+
+            .then(({ collections, limit, offset, count }) => {
+              console.log(collections.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/collections'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductCollection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -1260,175 +1429,6 @@ paths:
                 provider_id:
                   type: string
                   description: The ID of the Payment Provider.
-  '/collections/{id}':
-    get:
-      operationId: GetCollectionsCollection
-      summary: Get a Collection
-      description: Retrieves a Product Collection.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.collections.retrieve(collection_id)
-
-            .then(({ collection }) => {
-              console.log(collection.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/collections/{id}'
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/ProductCollection'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.collections.list()
-
-            .then(({ collections, limit, offset, count }) => {
-              console.log(collections.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/collections'
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ProductCollection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -2507,7 +2507,7 @@ paths:
   /orders/customer/confirm:
     post:
       operationId: PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept
-      summary: Verify a claim to orders
+      summary: Verify an Order Claim
       description: >-
         Verifies the claim order token provided to the customer upon request of
         order ownership
@@ -2553,7 +2553,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Invite
+        - Order
       responses:
         '200':
           description: OK
@@ -2756,7 +2756,7 @@ paths:
   /orders/batch/customer/token:
     post:
       operationId: PostOrdersCustomerOrderClaim
-      summary: Claim orders for signed in account
+      summary: Claim an Order
       description: >-
         Sends an email to emails registered to orders provided with link to
         transfer order ownership
@@ -2821,7 +2821,7 @@ paths:
   '/payment-collections/{id}/sessions/batch/authorize':
     post:
       operationId: PostPaymentCollectionsSessionsBatchAuthorize
-      summary: Authorize Payment Sessions of a Payment Collection
+      summary: Authorize PaymentSessions
       description: Authorizes Payment Sessions of a Payment Collection.
       x-authenticated: false
       parameters:
@@ -2862,7 +2862,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Payment
+        - PaymentCollection
       responses:
         '200':
           description: OK
@@ -2887,7 +2887,7 @@ paths:
   '/payment-collections/{id}/sessions/{session_id}/authorize':
     post:
       operationId: PostPaymentCollectionsSessionsSessionAuthorize
-      summary: Authorize a Payment Session of a Payment Collection
+      summary: Authorize Payment Session
       description: Authorizes a Payment Session of a Payment Collection.
       x-authenticated: false
       parameters:
@@ -2928,7 +2928,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Payment
+        - PaymentCollection
       responses:
         '200':
           description: OK
@@ -2953,8 +2953,8 @@ paths:
   '/payment-collections/{id}':
     get:
       operationId: GetPaymentCollectionsPaymentCollection
-      summary: Retrieve an PaymentCollection
-      description: Retrieves a PaymentCollection.
+      summary: Get a PaymentCollection
+      description: Get a Payment Collection
       x-authenticated: false
       parameters:
         - in: path
@@ -3023,7 +3023,7 @@ paths:
   '/payment-collections/{id}/sessions/batch':
     post:
       operationId: PostPaymentCollectionsPaymentCollectionSessionsBatch
-      summary: Manage Multiple Payment Sessions from Payment Collections
+      summary: Manage Payment Sessions
       description: Manages Multiple Payment Sessions from Payment Collections.
       x-authenticated: false
       parameters:
@@ -3090,7 +3090,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Payment
+        - PaymentCollection
       responses:
         '200':
           description: OK
@@ -3115,7 +3115,7 @@ paths:
   '/payment-collections/{id}/sessions':
     post:
       operationId: PostPaymentCollectionsSessions
-      summary: Manage Payment Sessions from Payment Collections
+      summary: Manage a Payment Session
       description: Manages Payment Sessions from Payment Collections.
       x-authenticated: false
       parameters:
@@ -3160,7 +3160,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Payment
+        - PaymentCollection
       responses:
         '200':
           description: OK

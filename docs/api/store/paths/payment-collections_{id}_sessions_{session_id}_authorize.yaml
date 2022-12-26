@@ -1,6 +1,6 @@
 post:
   operationId: PostPaymentCollectionsSessionsSessionAuthorize
-  summary: Authorize a Payment Session of a Payment Collection
+  summary: Authorize Payment Session
   description: Authorizes a Payment Session of a Payment Collection.
   x-authenticated: false
   parameters:
@@ -31,7 +31,7 @@ post:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Payment
+    - PaymentCollection
   responses:
     '200':
       description: OK

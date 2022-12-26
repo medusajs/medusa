@@ -1429,6 +1429,59 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Get Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.giftCards.retrieve(code)
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/gift-cards/{code}'
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/GiftCard'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -2291,59 +2344,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/gift-cards/{code}':
-    get:
-      operationId: GetGiftCardsCode
-      summary: Get Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.giftCards.retrieve(code)
-
-            .then(({ gift_card }) => {
-              console.log(gift_card.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/store/gift-cards/{code}'
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/GiftCard'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   '/order-edits/{id}/complete':
     post:
       operationId: PostOrderEditsOrderEditComplete
@@ -2507,7 +2507,7 @@ paths:
   /orders/customer/confirm:
     post:
       operationId: PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept
-      summary: Verify a claim to orders
+      summary: Verify an Order Claim
       description: >-
         Verifies the claim order token provided to the customer upon request of
         order ownership
@@ -2553,7 +2553,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Invite
+        - Order
       responses:
         '200':
           description: OK
@@ -2756,7 +2756,7 @@ paths:
   /orders/batch/customer/token:
     post:
       operationId: PostOrdersCustomerOrderClaim
-      summary: Claim orders for signed in account
+      summary: Claim an Order
       description: >-
         Sends an email to emails registered to orders provided with link to
         transfer order ownership
@@ -2821,7 +2821,7 @@ paths:
   '/payment-collections/{id}/sessions/batch/authorize':
     post:
       operationId: PostPaymentCollectionsSessionsBatchAuthorize
-      summary: Authorize Payment Sessions of a Payment Collection
+      summary: Authorize PaymentSessions
       description: Authorizes Payment Sessions of a Payment Collection.
       x-authenticated: false
       parameters:
@@ -2862,7 +2862,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Payment
+        - PaymentCollection
       responses:
         '200':
           description: OK
@@ -2887,7 +2887,7 @@ paths:
   '/payment-collections/{id}/sessions/{session_id}/authorize':
     post:
       operationId: PostPaymentCollectionsSessionsSessionAuthorize
-      summary: Authorize a Payment Session of a Payment Collection
+      summary: Authorize Payment Session
       description: Authorizes a Payment Session of a Payment Collection.
       x-authenticated: false
       parameters:
@@ -2928,7 +2928,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Payment
+        - PaymentCollection
       responses:
         '200':
           description: OK
@@ -2953,8 +2953,8 @@ paths:
   '/payment-collections/{id}':
     get:
       operationId: GetPaymentCollectionsPaymentCollection
-      summary: Retrieve an PaymentCollection
-      description: Retrieves a PaymentCollection.
+      summary: Get a PaymentCollection
+      description: Get a Payment Collection
       x-authenticated: false
       parameters:
         - in: path
@@ -3023,7 +3023,7 @@ paths:
   '/payment-collections/{id}/sessions/batch':
     post:
       operationId: PostPaymentCollectionsPaymentCollectionSessionsBatch
-      summary: Manage Multiple Payment Sessions from Payment Collections
+      summary: Manage Payment Sessions
       description: Manages Multiple Payment Sessions from Payment Collections.
       x-authenticated: false
       parameters:
@@ -3090,7 +3090,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Payment
+        - PaymentCollection
       responses:
         '200':
           description: OK
@@ -3115,7 +3115,7 @@ paths:
   '/payment-collections/{id}/sessions':
     post:
       operationId: PostPaymentCollectionsSessions
-      summary: Manage Payment Sessions from Payment Collections
+      summary: Manage a Payment Session
       description: Manages Payment Sessions from Payment Collections.
       x-authenticated: false
       parameters:
@@ -3160,7 +3160,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Payment
+        - PaymentCollection
       responses:
         '200':
           description: OK

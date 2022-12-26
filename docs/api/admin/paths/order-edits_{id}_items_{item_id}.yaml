@@ -1,6 +1,6 @@
 delete:
   operationId: DeleteOrderEditsOrderEditLineItemsLineItem
-  summary: Delete line items from an order edit and create change item
+  summary: Delete a Line Item
   description: Delete line items from an order edit and create change item
   x-authenticated: true
   parameters:
@@ -55,7 +55,7 @@ delete:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostOrderEditsEditLineItemsLineItem
-  summary: Create or update the order edit change holding the line item changes
+  summary: Upsert Line Item Change
   description: Create or update the order edit change holding the line item changes
   x-authenticated: true
   parameters:

@@ -1,6 +1,6 @@
 post:
   operationId: PostPublishableApiKeySalesChannelsChannelsBatch
-  summary: Add sales channel to a publishable api key scope
+  summary: Add SalesChannels
   description: Assign a batch of sales channels to a publishable api key.
   x-authenticated: true
   parameters:
@@ -55,7 +55,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeletePublishableApiKeySalesChannelsChannelsBatch
-  summary: Remove sales channel from a publishable api key scope
+  summary: Delete SalesChannels
   description: Remove a batch of sales channels from a publishable api key.
   x-authenticated: true
   parameters:
