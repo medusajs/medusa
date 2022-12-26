@@ -14,6 +14,8 @@ When the customer requests to claim the order, the event `order-update-token.cre
 
 In this document, you’ll learn how to handle the `order-update-token.created` event on the server to send the customer a confirmation email.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -29,6 +31,8 @@ Redis is required for batch jobs to work. Make sure you [install Redis](../../t
 To send an email or another type of notification method, you must have a notification provider installed or configured.
 
 This document has an example using the [SendGrid](../../add-plugins/sendgrid.mdx) plugin.
+
+---
 
 ## Step 1: Create a Subscriber
 
@@ -65,6 +69,8 @@ If you want to add any other dependencies, you can add them to the `InjectedDepe
 You can learn more about dependency injection in [this documentation](../backend/dependency-container/index.md).
 
 :::
+
+---
 
 ## Step 2: Subscribe to the Event
 
@@ -105,6 +111,8 @@ In this method, you should typically send an email to the customer’s old email
 
 The page would then send a request to the server to verify that the `token` is valid and associate the order with the customer. You can read more about how to implement this in your storefront in [this documentation](../storefront/implement-claim-order.mdx).
 
+---
+
 ## Example: Using SendGrid
 
 For example, you can implement this subscriber to send emails using SendGrid:
@@ -144,6 +152,8 @@ export default ClaimOrderSubscriber;
 
 Notice how the `token` is passed to the storefront link as a parameter.
 
+---
+
 ## See Also
 
-- Learn [how to implement claim-order flow in your storefront](../storefront/implement-claim-order.mdx).
+- [Implement claim-order flow in your storefront](../storefront/implement-claim-order.mdx)

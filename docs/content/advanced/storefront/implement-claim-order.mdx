@@ -32,6 +32,8 @@ In this document, you’ll learn how to implement two parts of this flow:
 1. Allow customers to claim their orders.
 2. Verify a claim to an order.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -57,6 +59,8 @@ You can learn how to implement this flow in [this documentation](../ecommerce/ha
 It is assumed you already have an order placed by a guest customer. You can refer to the [Cart](../../guides/carts-in-medusa.mdx) and [Checkout](./how-to-implement-checkout-flow.mdx) implementation documentation to learn how to implement them in your storefront.
 
 In addition, it is assumed you already have a logged-in customer before performing the steps in this document. You can refer to the [API reference](/api/store/#tag/Auth/operation/PostAuth) for more details on that.
+
+---
 
 ## Request to Claim an Order
 
@@ -114,6 +118,8 @@ If the customer’s request has been processed successfully, the request returns
 
 The customer at this point will receive an email with a link to verify their claim on the order.
 
+---
+
 ## Manually Verify a Claim to an Order
 
 The link in the email that the customer receives should be a page in your storefront that accepts a `token` query parameter.
@@ -164,6 +170,8 @@ This request accepts as a body parameter the string `token`. This would be the t
 
 If the verification is successful, the order will now be associated with the customer and the customer will be able to see it among their orders.
 
+---
+
 ## See Also
 
-- Learn [how to send a confirmation email to claim an order](../ecommerce/handle-order-claim-event.md).
+- [Send a confirmation email to claim an order](../ecommerce/handle-order-claim-event.md)

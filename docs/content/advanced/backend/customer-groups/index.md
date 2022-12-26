@@ -24,7 +24,7 @@ A customer group is stored in the database as a [CustomerGroup](../../../refere
 
 Similar to all entities in Medusa, you can use the `metadata` object attribute to store any custom data you want. For example, you can add some flag or tag to the customer group for a custom use case:
 
-```jsx noReport
+```js noReport
 metadata: {
 	is_seller: true
 }
@@ -54,7 +54,7 @@ The relation between the `PriceList` and `CustomerGroup` entities is available o
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn [how to manage customer groups using the Admin APIs](../../admin/use-customergroups-api.mdx).
-- Learn more about [Price Lists and how they work](../price-lists/index.md).
+- [Manage customer groups using the Admin APIs](../../admin/use-customergroups-api.mdx).
+- [Price Lists Overview](../price-lists/index.md).

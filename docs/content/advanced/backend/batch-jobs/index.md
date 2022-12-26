@@ -26,6 +26,8 @@ A batch job is stored in the database as a [BatchJob](https://docs.medusajs.com/
   - `count`: A number that includes the total count of records related to the operation. For example, in the case of product exports, it is used to indicate the total number of products exported.
   - `advancement_count`: A number that indicates the number of records processed so far. Can be helpful when retrying a batch job.
 
+---
+
 ## What are Batch Job Strategies
 
 Batch jobs are handled by batch job strategies. A batch job strategy is a class that extends the `AbstractBatchJobStrategy` abstract class and implements the methods defined in that class to handle the different states of a batch job.
@@ -33,6 +35,8 @@ Batch jobs are handled by batch job strategies. A batch job strategy is a class 
 A batch job strategy must implement the necessary methods to handle the preparation of a batch job before it is created, the preparation of the processing of the batch job after it is created, and the processing of the batch job once it is confirmed.
 
 When you create a batch job strategy, the `batchType` class property indicates the batch job types this strategy handles. Then, when you create a new batch job, you set the batch job’s type to the value of `batchType` in your strategy.
+
+---
 
 ## How Batch Jobs Work
 
@@ -56,6 +60,8 @@ If the batch job fails at any point in this flow, its status is changed to `fail
 
 ![Flowchart summarizing the batch job's flow from creation to completion](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001632/Medusa%20Docs/Diagrams/Qja0kAz_ns4vm8.png)
 
+---
+
 ## What’s Next
 
-- Learn about the [Batch Job’s events](../subscribers/events-list.md#batch-jobs-events).
+- [Batch Job’s Events Reference](../subscribers/events-list.md#batch-jobs-events).

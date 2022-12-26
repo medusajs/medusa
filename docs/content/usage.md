@@ -9,6 +9,8 @@ This document gives an overview of Medusa’s optional collected usage informati
 
 At Medusa, we strive to provide the best experience for developers using our platform. For that reason, Medusa collects anonymous and non-sensitive data that provides a global understanding of how users are using Medusa.
 
+---
+
 ## Purpose
 
 As an open source solution, we work closely and constantly interact with our community to ensure that we provide the best experience for everyone using Medusa. 
@@ -24,6 +26,8 @@ Collecting this data allows us to understand certain details such as:
 - What parts of the Medusa Admin are generally undiscovered by our users?
 - How much data do users manage through our Medusa Admin? Is it being used for large number of products, orders, and other types of data?
 - What Node version is globally used? Should we focus our efforts on providing support for versions that we don’t currently support?
+
+---
 
 ## Server Analytics
 
@@ -57,6 +61,8 @@ Or, you can run the following command in the root of your Medusa server project 
 ```bash
 medusa telemetry --disable
 ```
+
+---
 
 ## Admin Analytics
 

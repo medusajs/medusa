@@ -2,6 +2,8 @@
 
 In this document, you’ll learn how to install the [Algolia plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-algolia) and use it on both your Medusa Server and your storefront.
 
+---
+
 ## Overview
 
 [Algolia](https://www.algolia.com/) is a search engine service that allows developers to integrate advanced search functionalities into their websites including typo tolerance, recommended results, and quick responses.
@@ -9,6 +11,8 @@ In this document, you’ll learn how to install the [Algolia plugin](https://gi
 Algolia can be used for a wide range of use cases, including ecommerce websites. By integrating Algolia into your ecommerce website, you can provide your customers with a better user experience and help them find what they’re looking for swifltly.
 
 Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa server and storefront using Algolia with just a few steps.
+
+---
 
 ## Prerequisites
 
@@ -27,6 +31,8 @@ If you don’t install and configure Redis on your Medusa server, the Algolia in
 ### Algolia Account
 
 You need to [create an Algolia account](https://www.algolia.com/users/sign_up) before you follow this documentation. Algolia offers a free plan to get started quickly.
+
+---
 
 ## Create an Algolia App
 
@@ -50,6 +56,8 @@ In the last step, you’ll see a summary of your order. If all looks good, check
 
 ![Summary of your application's order with the terms and agreement checkboxes checked](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000019/Medusa%20Docs/Algolia/PTI2Swq_a1qbi5.png)
 
+---
+
 ## Retrieve API Keys
 
 To retrieve the API keys that you’ll use in the next sections, go to Settings, then choose API Keys in the Team and Access section.
@@ -65,6 +73,8 @@ If you have more than one application in your Algolia account, make sure you’r
 :::
 
 ![Application ID, Search-Only API Key, and Admin API Key can be found in the API Keys page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000037/Medusa%20Docs/Algolia/i50Irki_jmtyk6.png)
+
+---
 
 ## Install the Algolia Plugin
 
@@ -118,6 +128,8 @@ const plugins = [
 
 The `searchableAttributes` are the attributes in a product that are searchable, and `attributesToRetrieve` are the attributes to retrieve for each product result. You’re free to make changes to these attributes as you see fit, but these are the recommended attributes.
 
+---
+
 ## Test the Algolia Plugin
 
 Run your Medusa server with the following command:
@@ -149,6 +161,8 @@ If you add or update products on your Medusa server, the addition or update will
 This feature is only available if you have Redis installed and configured with your Medusa server as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa server to see the change in the Algolia indices.
 
 :::
+
+---
 
 ## Add Search to your Storefront
 
@@ -212,6 +226,8 @@ To make sure the Next.js storefront properly displays the products in the search
 :::
 
 ![Search pop up in the Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000082/Medusa%20Docs/Algolia/1f9qqK6_c0z8zi.png)
+
+---
 
 ## Add to Gatsby and React-Based Storefronts
 
@@ -327,7 +343,9 @@ If you run your Gatsby storefront while the Medusa server is running, you should
 
 ![Search bar in the Gatsby storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000097/Medusa%20Docs/Algolia/INtlcIo_jlh16x.png)
 
-## What’s Next
+---
 
-- Learn how to [deploy your Medusa server](../deployments/server/index.mdx).
-- Learn how to [deploy your Gatsby storefront](../deployments/storefront/deploying-gatsby-on-netlify.md).
+## See Also
+
+- [Deploy your Medusa server](../deployments/server/index.mdx)
+- [Deploy your Gatsby storefront](../deployments/storefront/deploying-gatsby-on-netlify.md)

@@ -14,6 +14,8 @@ Before you start creating a Notification Provider, you need to install a [Medusa
 
 You also need to [setup Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with the Medusa server](../../../usage/configurations.md#redis).
 
+---
+
 ## Create a Notification Provider
 
 Creating a Notification Provider is as simple as creating a TypeScript or JavaScript file in `src/services`. The name of the file is the name of the provider (for example, `sendgrid.ts`). A Notification Provider is essentially a Service that extends the `AbstractNotificationService` from `@medusajs/medusa`.
@@ -205,6 +207,8 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 :::
 
+---
+
 ## Create a Subscriber
 
 After creating your Notification Provider Service, you must create a Subscriber that registers this Service as a notification handler of events.
@@ -235,6 +239,8 @@ Notice that the value of the `identifier` static property defined in the `EmailS
 
 :::
 
+---
+
 ## Test Sending Notifications with your Notification Provider
 
 Make sure you've configured Redis with your Medusa server as explained in the Prerequisites section and that the Redis service is running.
@@ -255,6 +261,8 @@ If you don’t have a storefront installed you can get started with either the [
 
 After placing an order, you can see in your console the message “Notification Sent”. If you added your own notification sending logic, you should receive an email or alternatively the type of notification you’ve set up.
 
+---
+
 ## Test Resending Notifications with your Notification Provider
 
 To test resending a notification, first, retrieve the ID of the notification you just sent using the [List Notifications admin endpoint](https://docs.medusajs.com/api/admin/#tag/Notification/operation/GetNotifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
@@ -273,9 +281,12 @@ Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/
 
 This request returns the same notification object as the List Notifications endpoint, but it now has a new object in the `resends` array. This is the resent notification. If you supplied a `to` parameter in the request body, you should see its value in the `to` property of the resent notification object.
 
-## What’s Next
+---
 
-- Check out the [list of events](../subscribers/events-list.md) you can listen to.
-- Check out the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin for easy integration of email notifications.
-- Learn how to [create your own plugin](../plugins/create.md).
-- Learn more about [Subscribers](../subscribers/create-subscriber.md) and [Services](../services/create-service.md).
+## See Also
+
+- [Events reference](../subscribers/events-list.md)
+- [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
+- [Create a Subscriber](../subscribers/create-subscriber.md)
+- [Create a Service](../services/create-service.md).
+- [Create a Plugin](../plugins/create.md).

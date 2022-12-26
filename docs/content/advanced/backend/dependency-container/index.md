@@ -26,6 +26,8 @@ When you run the Medusa server, a container of the type `MedusaContainer` is cre
 
 The server then registers all important resources in the container, which makes them accessible in classes and endpoints.
 
+---
+
 ## Registered Resources
 
 The Medusa server scans the core Medusa package, plugins, and your files in the `dist` directory and registers the following resources:
@@ -550,6 +552,8 @@ Its camel-case name.
 </tbody>
 </table>
 
+---
+
 ## Loading Resources
 
 This section covers how to load resources that the Medusa server registers when it starts running.
@@ -560,7 +564,7 @@ To load resources, such as services, in endpoints, use the `req.scope.resolve` f
 
 For example:
 
-```typescript
+```ts
 const logger = req.scope.resolve('logger');
 ```
 
@@ -572,7 +576,7 @@ In classes such as services, strategies, or subscribers, you can load resources 
 
 For example:
 
-```typescript
+```ts
 import { OrderService } from '@medusajs/medusa';
 
 class OrderSubscriber {
@@ -584,7 +588,9 @@ class OrderSubscriber {
 }
 ```
 
-## What’s Next
+---
 
-- Learn [how to create services](../services/create-service.md).
-- Learn [how to create subscribers](../subscribers/create-subscriber.md).
+## See Also
+
+- [Create services](../services/create-service.md).
+- [Create subscribers](../subscribers/create-subscriber.md).

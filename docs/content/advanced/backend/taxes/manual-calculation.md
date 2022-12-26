@@ -8,6 +8,8 @@ By default, taxes are automatically calculated by Medusa during checkout. This b
 
 If you disable this behavior, you must manually trigger taxes calculation. When taxes are calculated, this means that requests will be sent to the tax provider to retrieve the tax rates.
 
+---
+
 ## How to Manually Calculate Taxes in Checkout
 
 This section explores different ways you can calculate taxes based on your purpose.
@@ -80,7 +82,9 @@ You can learn how to [retrieve and use services](../services/create-service.md#u
 
 :::
 
-## What’s Next
+---
 
-- Learn about [tax-inclusive pricing](inclusive-pricing.md).
-- Learn about available methods in [CartsService](../../../references/services/classes/CartService.md) and [TotalsService](../../../references/services/classes/TotalsService.md).
+## See Also
+
+- [Tax-Inclusive Pricing Overview](inclusive-pricing.md)
+- [CartsService](../../../references/services/classes/CartService.md) and [TotalsService](../../../references/services/classes/TotalsService.md)

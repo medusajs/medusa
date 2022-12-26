@@ -27,7 +27,9 @@ However, to also show them as part of your checkout flow you need to add them to
 
 In the Medusa Admin go to Settings > Regions and for each region scroll down to the Payment Provider input and choose the payment provider you want to use in that region.
 
-## Additional Resources
+---
 
-- Learn how to install [Stripe](../add-plugins/stripe.md) as a payment provider.
-- Learn more about the [Payment architecture](../advanced/backend/payment/overview.md).
+## See Also
+
+- [Install Stripe](../add-plugins/stripe.md)
+- [Payment Architecture Overview](../advanced/backend/payment/overview.md)

@@ -16,6 +16,8 @@ You can learn more about enabling it in the [feature flags](../backend/feature-f
 
 :::
 
+---
+
 ## Overview
 
 A merchant can request to edit an order to make changes to its items. The change can include removing an item, adding a new item, and changing the quantity of an item in the original order.
@@ -44,6 +46,8 @@ You can perform other functionalities related to order editing. To learn more, c
 
 :::
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -61,6 +65,8 @@ If you follow the JS Client code blocks, it’s assumed you already have [Medusa
 ### Previous Steps
 
 You must have an existing order edit in the “request” state.
+
+---
 
 ## Retrieve an Order Edit
 
@@ -141,6 +147,8 @@ Here’s an example of how you can use this data to show the customer the reques
   ))}
 </ul>
 ```
+
+---
 
 ## Handle Payment
 
@@ -232,6 +240,8 @@ fetch(`<SERVER_URL>/store/payment-collection/${paymentCollectionId}/sessions/${p
 
 After performing the above steps, you can [complete the Order Edit](#complete-the-order-edit).
 
+---
+
 ## Complete the Order Edit
 
 To confirm and complete the order edit, send a request to the [Complete Order Edit](/api/store/#tag/OrderEdit/operation/PostOrderEditsOrderEditComplete) endpoint:
@@ -274,6 +284,8 @@ After completing the order edit, the changes proposed in the Order Edit are refl
 If the payment isn’t authorized first, the order edit completion will fail.
 
 :::
+
+---
 
 ## Decline an Order Edit
 
@@ -320,7 +332,9 @@ In the request body parameters, you can optionally pass the `decline_reason` par
 
 If the Order Edit is declined, the changes requested in the Order Edit aren't reflected on the original order and no refund or additional payments are required.
 
-## What’s Next
+---
 
-- Learn [how to edit an order using Admin APIs](../admin/order-edit.mdx)
-- Learn more about [order edit endpoints in the API reference](/api/store/#tag/OrderEdit)
+## See Also
+
+- [Order Edit API reference](/api/store/#tag/OrderEdit)
+- [Edit an order using Admin APIs](../admin/order-edit.mdx)

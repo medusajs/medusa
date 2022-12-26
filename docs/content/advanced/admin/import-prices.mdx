@@ -15,6 +15,8 @@ Importing prices into a price list removes all existing prices in the price list
 
 :::
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -53,6 +55,8 @@ You can learn more about [authenticating as an admin user in the API reference](
 Before importing the prices, you must have a price list to import them to.
 
 You can use the [Create Price List](https://docs.medusajs.com/api/admin/#tag/Price-List/operation/PostPriceListsPriceList) endpoint, or follow the [how-to guide to learn how to create and manage price lists using the Admin API](../backend/price-lists/use-api.mdx).
+
+---
 
 ## 1. Upload CSV File
 
@@ -105,6 +109,8 @@ curl -L -X POST '<YOUR_SERVER>/admin/uploads' \
 </Tabs>
 
 This request returns an array of uploads. Each item in the array is an object that includes the properties `url` and `key`. You’ll need the `key` to import the prices next.
+
+---
 
 ## 2. Create a Batch Job for Prices Import
 
@@ -192,6 +198,8 @@ If you don’t set `dry_run` or you set it to `false`, you don’t need to follo
 
 :::
 
+---
+
 ## (Optional) Retrieve Batch Job
 
 After creating the batch job, it will be pre-processed. At this point, the CSV file will be validated, and the number of prices to add are counted.
@@ -253,6 +261,8 @@ Here’s an example of the `result` property:
 },
 ```
 
+---
+
 ## 3. Confirm Batch Job
 
 A batch job can be confirmed only once the batch job has the status `pre_processed`. Once you confirm a batch job, the price import will start which will add prices to the price list
@@ -305,7 +315,9 @@ After confirming the batch job, you can check the status while it is processing 
 - If the status is `failed`, it means an error has occurred during the import. You can check the error in `result.errors`.
 - If the status is `completed`, it means the import has finished successfully.
 
-## What’s Next 🚀
+---
 
-- Learn more about [Batch Jobs and how they work](../backend/batch-jobs/index.md).
-- Check out the [Batch Jobs API Reference](https://docs.medusajs.com/api/admin/#tag/Batch-Job).
+## See Also
+
+- [Batch Jobs Overview](../backend/batch-jobs/index.md)
+- [Batch Jobs API Reference](https://docs.medusajs.com/api/admin/#tag/Batch-Job)
