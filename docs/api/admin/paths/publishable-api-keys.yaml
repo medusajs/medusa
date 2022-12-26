@@ -1,6 +1,6 @@
 post:
   operationId: PostPublishableApiKeys
-  summary: Create a PublishableApiKey
+  summary: Create PublishableApiKey
   description: Creates a PublishableApiKey.
   requestBody:
     content:

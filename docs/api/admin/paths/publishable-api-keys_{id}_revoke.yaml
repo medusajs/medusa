@@ -1,6 +1,6 @@
 post:
   operationId: PostPublishableApiKeysPublishableApiKeyRevoke
-  summary: Revoke a PublishableApiKey
+  summary: Revoke PublishableApiKey
   description: Revokes a PublishableApiKey.
   parameters:
     - in: path

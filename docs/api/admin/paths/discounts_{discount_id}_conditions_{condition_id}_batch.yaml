@@ -1,6 +1,6 @@
 post:
   operationId: PostDiscountsDiscountConditionsConditionBatch
-  summary: Add a batch of resources to a discount condition
+  summary: Add Batch Resources
   description: Add a batch of resources to a discount condition.
   x-authenticated: true
   parameters:
@@ -76,7 +76,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteDiscountsDiscountConditionsConditionBatch
-  summary: Delete a batch of resources from a discount condition
+  summary: Delete Batch Resources
   description: Delete a batch of resources from a discount condition.
   x-authenticated: true
   parameters:

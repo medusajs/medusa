@@ -1,6 +1,6 @@
 post:
   operationId: PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept
-  summary: Verify a claim to orders
+  summary: Verify an Order Claim
   description: >-
     Verifies the claim order token provided to the customer upon request of
     order ownership
@@ -22,7 +22,7 @@ post:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Invite
+    - Order
   responses:
     '200':
       description: OK
