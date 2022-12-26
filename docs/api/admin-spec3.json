@@ -2910,7 +2910,7 @@ paths:
   '/discounts/{discount_id}/conditions/{condition_id}/batch':
     post:
       operationId: PostDiscountsDiscountConditionsConditionBatch
-      summary: Add a batch of resources to a discount condition
+      summary: Add Batch Resources
       description: Add a batch of resources to a discount condition.
       x-authenticated: true
       parameters:
@@ -3008,7 +3008,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteDiscountsDiscountConditionsConditionBatch
-      summary: Delete a batch of resources from a discount condition
+      summary: Delete Batch Resources
       description: Delete a batch of resources from a discount condition.
       x-authenticated: true
       parameters:
@@ -6097,7 +6097,7 @@ paths:
   '/order-edits/{id}/items':
     post:
       operationId: PostOrderEditsEditLineItems
-      summary: Add an line item to an order (edit)
+      summary: Add a Line Item
       description: Create an OrderEdit LineItem.
       parameters:
         - in: path
@@ -6451,7 +6451,7 @@ paths:
   '/order-edits/{id}/items/{item_id}':
     delete:
       operationId: DeleteOrderEditsOrderEditLineItemsLineItem
-      summary: Delete line items from an order edit and create change item
+      summary: Delete a Line Item
       description: Delete line items from an order edit and create change item
       x-authenticated: true
       parameters:
@@ -6518,7 +6518,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostOrderEditsEditLineItemsLineItem
-      summary: Create or update the order edit change holding the line item changes
+      summary: Upsert Line Item Change
       description: Create or update the order edit change holding the line item changes
       x-authenticated: true
       parameters:
@@ -6668,7 +6668,7 @@ paths:
     delete:
       operationId: DeleteOrderEditsOrderEdit
       summary: Delete an Order Edit
-      description: Deletes an Order Edit
+      description: Delete an Order Edit
       x-authenticated: true
       parameters:
         - in: path
@@ -6727,7 +6727,7 @@ paths:
           $ref: '#/components/responses/400_error'
     get:
       operationId: GetOrderEditsOrderEdit
-      summary: Retrieve an OrderEdit
+      summary: Get an OrderEdit
       description: Retrieves a OrderEdit.
       x-authenticated: true
       parameters:
@@ -6798,7 +6798,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostOrderEditsOrderEdit
-      summary: Updates an OrderEdit
+      summary: Update an OrderEdit
       description: Updates a OrderEdit.
       x-authenticated: true
       parameters:
@@ -6873,7 +6873,7 @@ paths:
   '/order-edits/{id}/request':
     post:
       operationId: PostOrderEditsOrderEditRequest
-      summary: Request order edit confirmation
+      summary: Request Confirmation
       description: Request customer confirmation of an Order Edit
       x-authenticated: true
       parameters:
@@ -9050,7 +9050,7 @@ paths:
   '/payment-collections/{id}':
     delete:
       operationId: DeletePaymentCollectionsPaymentCollection
-      summary: Delete a Payment Collection
+      summary: Del a PaymentCollection
       description: Deletes a Payment Collection
       x-authenticated: true
       parameters:
@@ -9112,7 +9112,7 @@ paths:
           $ref: '#/components/responses/unauthorized'
     get:
       operationId: GetPaymentCollectionsPaymentCollection
-      summary: Retrieve an PaymentCollection
+      summary: Get a PaymentCollection
       description: Retrieves a PaymentCollection.
       x-authenticated: true
       parameters:
@@ -9183,7 +9183,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostPaymentCollectionsPaymentCollection
-      summary: Updates a PaymentCollection
+      summary: Update PaymentCollection
       description: Updates a PaymentCollection.
       x-authenticated: true
       parameters:
@@ -9258,7 +9258,7 @@ paths:
   '/payment-collections/{id}/authorize':
     post:
       operationId: PostPaymentCollectionsPaymentCollectionAuthorize
-      summary: Set the status of PaymentCollection as Authorized
+      summary: Mark Authorized
       description: Sets the status of PaymentCollection as Authorized.
       x-authenticated: true
       parameters:
@@ -12287,7 +12287,7 @@ paths:
   '/publishable-api-keys/{id}/sales-channels/batch':
     post:
       operationId: PostPublishableApiKeySalesChannelsChannelsBatch
-      summary: Add sales channel to a publishable api key scope
+      summary: Add SalesChannels
       description: Assign a batch of sales channels to a publishable api key.
       x-authenticated: true
       parameters:
@@ -12371,7 +12371,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeletePublishableApiKeySalesChannelsChannelsBatch
-      summary: Remove sales channel from a publishable api key scope
+      summary: Delete SalesChannels
       description: Remove a batch of sales channels from a publishable api key.
       x-authenticated: true
       parameters:
@@ -12456,7 +12456,7 @@ paths:
   /publishable-api-keys:
     post:
       operationId: PostPublishableApiKeys
-      summary: Create a PublishableApiKey
+      summary: Create PublishableApiKey
       description: Creates a PublishableApiKey.
       requestBody:
         content:
@@ -12601,7 +12601,7 @@ paths:
   '/publishable-api-keys/{id}':
     delete:
       operationId: DeletePublishableApiKeysPublishableApiKey
-      summary: Delete a PublishableApiKey
+      summary: Delete PublishableApiKey
       description: Deletes a PublishableApiKeys
       x-authenticated: true
       parameters:
@@ -12661,7 +12661,7 @@ paths:
           $ref: '#/components/responses/400_error'
     get:
       operationId: GetPublishableApiKeysPublishableApiKey
-      summary: Get a Publishable API Key
+      summary: Get a PublishableApiKey
       description: Retrieve the Publishable Api Key.
       parameters:
         - in: path
@@ -12725,7 +12725,7 @@ paths:
   '/publishable-api-keys/{id}/sales-channels':
     get:
       operationId: GetPublishableApiKeySalesChannels
-      summary: List PublishableApiKey's SalesChannels
+      summary: List SalesChannels
       description: List PublishableApiKey's SalesChannels
       x-authenticated: true
       parameters:
@@ -12794,7 +12794,7 @@ paths:
   '/publishable-api-keys/{id}/revoke':
     post:
       operationId: PostPublishableApiKeysPublishableApiKeyRevoke
-      summary: Revoke a PublishableApiKey
+      summary: Revoke PublishableApiKey
       description: Revokes a PublishableApiKey.
       parameters:
         - in: path
@@ -12859,7 +12859,7 @@ paths:
   '/publishable-api-key/{id}':
     post:
       operationId: PostPublishableApiKysPublishableApiKey
-      summary: Updates a PublishableApiKey
+      summary: Update PublishableApiKey
       description: Updates a PublishableApiKey.
       x-authenticated: true
       parameters:
@@ -14418,6 +14418,381 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /shipping-options:
+    post:
+      operationId: PostShippingOptions
+      summary: Create Shipping Option
+      description: Creates a Shipping Option
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostShippingOptionsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.create({
+              name: 'PostFake',
+              region_id: "saasf",
+              provider_id: "manual",
+              data: {
+              },
+              price_type: 'flat_rate'
+            })
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/shipping-options' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "PostFake",
+                "region_id": "afasf",
+                "provider_id": "manual",
+                "data": {},
+                "price_type": "flat_rate"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/ShippingOption'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetShippingOptions
+      summary: List Shipping Options
+      description: Retrieves a list of Shipping Options.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: region_id
+          schema:
+            type: string
+          description: Region ID to fetch options from
+        - in: query
+          name: is_return
+          schema:
+            type: boolean
+          description: Flag for fetching return options only
+        - in: query
+          name: admin_only
+          schema:
+            type: boolean
+          description: Flag for fetching admin specific options
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.list()
+
+            .then(({ shipping_options, count }) => {
+              console.log(shipping_options.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/shipping-options' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_options:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShippingOption'
+                  count:
+                    type: integer
+                    description: The total number of items available
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/shipping-options/{id}':
+    delete:
+      operationId: DeleteShippingOptionsOption
+      summary: Delete a Shipping Option
+      description: Deletes a Shipping Option.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Option.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.delete(option_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/shipping-options/{option_id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Shipping Option.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: shipping-option
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetShippingOptionsOption
+      summary: Get a Shipping Option
+      description: Retrieves a Shipping Option.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Option.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.retrieve(option_id)
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/shipping-options/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/ShippingOption'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostShippingOptionsOption
+      summary: Update Shipping Option
+      description: Updates a Shipping Option
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Option.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostShippingOptionsOptionReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingOptions.update(option_id, {
+              name: 'PostFake',
+              requirements: [
+                {
+                  id,
+                  type: 'max_subtotal',
+                  amount: 1000
+                }
+              ]
+            })
+
+            .then(({ shipping_option }) => {
+              console.log(shipping_option.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/shipping-options/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "requirements": [
+                  {
+                    "type": "max_subtotal",
+                    "amount": 1000
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Option
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_option:
+                    $ref: '#/components/schemas/ShippingOption'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/sales-channels/{id}/products/batch':
     post:
       operationId: PostSalesChannelsChannelProductsBatch
@@ -15038,381 +15413,6 @@ paths:
                 properties:
                   sales_channel:
                     $ref: '#/components/schemas/SalesChannel'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /shipping-options:
-    post:
-      operationId: PostShippingOptions
-      summary: Create Shipping Option
-      description: Creates a Shipping Option
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostShippingOptionsReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingOptions.create({
-              name: 'PostFake',
-              region_id: "saasf",
-              provider_id: "manual",
-              data: {
-              },
-              price_type: 'flat_rate'
-            })
-
-            .then(({ shipping_option }) => {
-              console.log(shipping_option.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/shipping-options' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "PostFake",
-                "region_id": "afasf",
-                "provider_id": "manual",
-                "data": {},
-                "price_type": "flat_rate"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_option:
-                    $ref: '#/components/schemas/ShippingOption'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetShippingOptions
-      summary: List Shipping Options
-      description: Retrieves a list of Shipping Options.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: region_id
-          schema:
-            type: string
-          description: Region ID to fetch options from
-        - in: query
-          name: is_return
-          schema:
-            type: boolean
-          description: Flag for fetching return options only
-        - in: query
-          name: admin_only
-          schema:
-            type: boolean
-          description: Flag for fetching admin specific options
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingOptions.list()
-
-            .then(({ shipping_options, count }) => {
-              console.log(shipping_options.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/shipping-options' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_options:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ShippingOption'
-                  count:
-                    type: integer
-                    description: The total number of items available
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/shipping-options/{id}':
-    delete:
-      operationId: DeleteShippingOptionsOption
-      summary: Delete a Shipping Option
-      description: Deletes a Shipping Option.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Option.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingOptions.delete(option_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/shipping-options/{option_id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Shipping Option.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: shipping-option
-                  deleted:
-                    type: boolean
-                    description: Whether or not the items were deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetShippingOptionsOption
-      summary: Get a Shipping Option
-      description: Retrieves a Shipping Option.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Option.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingOptions.retrieve(option_id)
-
-            .then(({ shipping_option }) => {
-              console.log(shipping_option.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/shipping-options/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_option:
-                    $ref: '#/components/schemas/ShippingOption'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostShippingOptionsOption
-      summary: Update Shipping Option
-      description: Updates a Shipping Option
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Option.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostShippingOptionsOptionReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingOptions.update(option_id, {
-              name: 'PostFake',
-              requirements: [
-                {
-                  id,
-                  type: 'max_subtotal',
-                  amount: 1000
-                }
-              ]
-            })
-
-            .then(({ shipping_option }) => {
-              console.log(shipping_option.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/shipping-options/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "requirements": [
-                  {
-                    "type": "max_subtotal",
-                    "amount": 1000
-                  }
-                ]
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Option
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_option:
-                    $ref: '#/components/schemas/ShippingOption'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -17337,10 +17337,10 @@ paths:
   /uploads/protected:
     post:
       operationId: PostUploadsProtected
-      summary: Upload files with acl or in a non-public bucket
+      summary: Protected File Upload
       description: >-
-        Uploads at least one file to the specific fileservice that is installed
-        in Medusa.
+        Uploads at least one file with ACL or a non-public bucket to the
+        specific fileservice that is installed in Medusa.
       x-authenticated: true
       requestBody:
         content:
@@ -26364,64 +26364,6 @@ components:
         refund:
           description: The amount to refund.
           type: number
-    AdminPostSalesChannelsChannelProductsBatchReq:
-      type: object
-      required:
-        - product_ids
-      properties:
-        product_ids:
-          description: The IDs of the products to add to the Sales Channel
-          type: array
-          items:
-            type: object
-            required:
-              - id
-            properties:
-              id:
-                type: string
-                description: The ID of the product
-    AdminPostSalesChannelsReq:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          description: The name of the Sales Channel
-          type: string
-        description:
-          description: The description of the Sales Channel
-          type: string
-        is_disabled:
-          description: Whether the Sales Channel is disabled or not.
-          type: boolean
-    AdminDeleteSalesChannelsChannelProductsBatchReq:
-      type: object
-      required:
-        - product_ids
-      properties:
-        product_ids:
-          description: The IDs of the products to delete from the Sales Channel.
-          type: array
-          items:
-            type: object
-            required:
-              - id
-            properties:
-              id:
-                description: The ID of a product
-                type: string
-    AdminPostSalesChannelsSalesChannelReq:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the sales channel.
-        description:
-          type: string
-          description: Sales Channel description.
-        is_disabled:
-          type: boolean
-          description: Indication of if the sales channel is active.
     AdminPostShippingOptionsReq:
       type: object
       required:
@@ -26532,6 +26474,64 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Tax included in prices of shipping option'
           type: boolean
+    AdminPostSalesChannelsChannelProductsBatchReq:
+      type: object
+      required:
+        - product_ids
+      properties:
+        product_ids:
+          description: The IDs of the products to add to the Sales Channel
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                description: The ID of the product
+    AdminPostSalesChannelsReq:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: The name of the Sales Channel
+          type: string
+        description:
+          description: The description of the Sales Channel
+          type: string
+        is_disabled:
+          description: Whether the Sales Channel is disabled or not.
+          type: boolean
+    AdminDeleteSalesChannelsChannelProductsBatchReq:
+      type: object
+      required:
+        - product_ids
+      properties:
+        product_ids:
+          description: The IDs of the products to delete from the Sales Channel.
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                description: The ID of a product
+                type: string
+    AdminPostSalesChannelsSalesChannelReq:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the sales channel.
+        description:
+          type: string
+          description: Sales Channel description.
+        is_disabled:
+          type: boolean
+          description: Indication of if the sales channel is active.
     AdminPostShippingProfilesReq:
       type: object
       required:

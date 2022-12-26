@@ -2910,7 +2910,7 @@ paths:
   '/discounts/{discount_id}/conditions/{condition_id}/batch':
     post:
       operationId: PostDiscountsDiscountConditionsConditionBatch
-      summary: Add a batch of resources to a discount condition
+      summary: Add Batch Resources
       description: Add a batch of resources to a discount condition.
       x-authenticated: true
       parameters:
@@ -3008,7 +3008,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeleteDiscountsDiscountConditionsConditionBatch
-      summary: Delete a batch of resources from a discount condition
+      summary: Delete Batch Resources
       description: Delete a batch of resources from a discount condition.
       x-authenticated: true
       parameters:
@@ -6097,7 +6097,7 @@ paths:
   '/order-edits/{id}/items':
     post:
       operationId: PostOrderEditsEditLineItems
-      summary: Add an line item to an order (edit)
+      summary: Add a Line Item
       description: Create an OrderEdit LineItem.
       parameters:
         - in: path
@@ -6451,7 +6451,7 @@ paths:
   '/order-edits/{id}/items/{item_id}':
     delete:
       operationId: DeleteOrderEditsOrderEditLineItemsLineItem
-      summary: Delete line items from an order edit and create change item
+      summary: Delete a Line Item
       description: Delete line items from an order edit and create change item
       x-authenticated: true
       parameters:
@@ -6518,7 +6518,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostOrderEditsEditLineItemsLineItem
-      summary: Create or update the order edit change holding the line item changes
+      summary: Upsert Line Item Change
       description: Create or update the order edit change holding the line item changes
       x-authenticated: true
       parameters:
@@ -6668,7 +6668,7 @@ paths:
     delete:
       operationId: DeleteOrderEditsOrderEdit
       summary: Delete an Order Edit
-      description: Deletes an Order Edit
+      description: Delete an Order Edit
       x-authenticated: true
       parameters:
         - in: path
@@ -6727,7 +6727,7 @@ paths:
           $ref: '#/components/responses/400_error'
     get:
       operationId: GetOrderEditsOrderEdit
-      summary: Retrieve an OrderEdit
+      summary: Get an OrderEdit
       description: Retrieves a OrderEdit.
       x-authenticated: true
       parameters:
@@ -6798,7 +6798,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostOrderEditsOrderEdit
-      summary: Updates an OrderEdit
+      summary: Update an OrderEdit
       description: Updates a OrderEdit.
       x-authenticated: true
       parameters:
@@ -6873,7 +6873,7 @@ paths:
   '/order-edits/{id}/request':
     post:
       operationId: PostOrderEditsOrderEditRequest
-      summary: Request order edit confirmation
+      summary: Request Confirmation
       description: Request customer confirmation of an Order Edit
       x-authenticated: true
       parameters:
@@ -9050,7 +9050,7 @@ paths:
   '/payment-collections/{id}':
     delete:
       operationId: DeletePaymentCollectionsPaymentCollection
-      summary: Delete a Payment Collection
+      summary: Del a PaymentCollection
       description: Deletes a Payment Collection
       x-authenticated: true
       parameters:
@@ -9112,7 +9112,7 @@ paths:
           $ref: '#/components/responses/unauthorized'
     get:
       operationId: GetPaymentCollectionsPaymentCollection
-      summary: Retrieve an PaymentCollection
+      summary: Get a PaymentCollection
       description: Retrieves a PaymentCollection.
       x-authenticated: true
       parameters:
@@ -9183,7 +9183,7 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostPaymentCollectionsPaymentCollection
-      summary: Updates a PaymentCollection
+      summary: Update PaymentCollection
       description: Updates a PaymentCollection.
       x-authenticated: true
       parameters:
@@ -9258,7 +9258,7 @@ paths:
   '/payment-collections/{id}/authorize':
     post:
       operationId: PostPaymentCollectionsPaymentCollectionAuthorize
-      summary: Set the status of PaymentCollection as Authorized
+      summary: Mark Authorized
       description: Sets the status of PaymentCollection as Authorized.
       x-authenticated: true
       parameters:
@@ -12287,7 +12287,7 @@ paths:
   '/publishable-api-keys/{id}/sales-channels/batch':
     post:
       operationId: PostPublishableApiKeySalesChannelsChannelsBatch
-      summary: Add sales channel to a publishable api key scope
+      summary: Add SalesChannels
       description: Assign a batch of sales channels to a publishable api key.
       x-authenticated: true
       parameters:
@@ -12371,7 +12371,7 @@ paths:
           $ref: '#/components/responses/500_error'
     delete:
       operationId: DeletePublishableApiKeySalesChannelsChannelsBatch
-      summary: Remove sales channel from a publishable api key scope
+      summary: Delete SalesChannels
       description: Remove a batch of sales channels from a publishable api key.
       x-authenticated: true
       parameters:
@@ -12456,7 +12456,7 @@ paths:
   /publishable-api-keys:
     post:
       operationId: PostPublishableApiKeys
-      summary: Create a PublishableApiKey
+      summary: Create PublishableApiKey
       description: Creates a PublishableApiKey.
       requestBody:
         content:
@@ -12601,7 +12601,7 @@ paths:
   '/publishable-api-keys/{id}':
     delete:
       operationId: DeletePublishableApiKeysPublishableApiKey
-      summary: Delete a PublishableApiKey
+      summary: Delete PublishableApiKey
       description: Deletes a PublishableApiKeys
       x-authenticated: true
       parameters:
@@ -12661,7 +12661,7 @@ paths:
           $ref: '#/components/responses/400_error'
     get:
       operationId: GetPublishableApiKeysPublishableApiKey
-      summary: Get a Publishable API Key
+      summary: Get a PublishableApiKey
       description: Retrieve the Publishable Api Key.
       parameters:
         - in: path
@@ -12725,7 +12725,7 @@ paths:
   '/publishable-api-keys/{id}/sales-channels':
     get:
       operationId: GetPublishableApiKeySalesChannels
-      summary: List PublishableApiKey's SalesChannels
+      summary: List SalesChannels
       description: List PublishableApiKey's SalesChannels
       x-authenticated: true
       parameters:
@@ -12794,7 +12794,7 @@ paths:
   '/publishable-api-keys/{id}/revoke':
     post:
       operationId: PostPublishableApiKeysPublishableApiKeyRevoke
-      summary: Revoke a PublishableApiKey
+      summary: Revoke PublishableApiKey
       description: Revokes a PublishableApiKey.
       parameters:
         - in: path
@@ -12859,7 +12859,7 @@ paths:
   '/publishable-api-key/{id}':
     post:
       operationId: PostPublishableApiKysPublishableApiKey
-      summary: Updates a PublishableApiKey
+      summary: Update PublishableApiKey
       description: Updates a PublishableApiKey.
       x-authenticated: true
       parameters:
@@ -17337,10 +17337,10 @@ paths:
   /uploads/protected:
     post:
       operationId: PostUploadsProtected
-      summary: Upload files with acl or in a non-public bucket
+      summary: Protected File Upload
       description: >-
-        Uploads at least one file to the specific fileservice that is installed
-        in Medusa.
+        Uploads at least one file with ACL or a non-public bucket to the
+        specific fileservice that is installed in Medusa.
       x-authenticated: true
       requestBody:
         content:

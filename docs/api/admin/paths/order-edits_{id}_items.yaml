@@ -1,6 +1,6 @@
 post:
   operationId: PostOrderEditsEditLineItems
-  summary: Add an line item to an order (edit)
+  summary: Add a Line Item
   description: Create an OrderEdit LineItem.
   parameters:
     - in: path

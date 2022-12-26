@@ -1,6 +1,6 @@
 post:
   operationId: PostPublishableApiKysPublishableApiKey
-  summary: Updates a PublishableApiKey
+  summary: Update PublishableApiKey
   description: Updates a PublishableApiKey.
   x-authenticated: true
   parameters:

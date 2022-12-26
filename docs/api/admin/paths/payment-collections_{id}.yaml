@@ -1,6 +1,6 @@
 delete:
   operationId: DeletePaymentCollectionsPaymentCollection
-  summary: Delete a Payment Collection
+  summary: Del a PaymentCollection
   description: Deletes a Payment Collection
   x-authenticated: true
   parameters:
@@ -49,7 +49,7 @@ delete:
       $ref: ../components/responses/unauthorized.yaml
 get:
   operationId: GetPaymentCollectionsPaymentCollection
-  summary: Retrieve an PaymentCollection
+  summary: Get a PaymentCollection
   description: Retrieves a PaymentCollection.
   x-authenticated: true
   parameters:
@@ -107,7 +107,7 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostPaymentCollectionsPaymentCollection
-  summary: Updates a PaymentCollection
+  summary: Update PaymentCollection
   description: Updates a PaymentCollection.
   x-authenticated: true
   parameters:

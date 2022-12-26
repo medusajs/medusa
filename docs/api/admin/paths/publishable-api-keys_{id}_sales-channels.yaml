@@ -1,6 +1,6 @@
 get:
   operationId: GetPublishableApiKeySalesChannels
-  summary: List PublishableApiKey's SalesChannels
+  summary: List SalesChannels
   description: List PublishableApiKey's SalesChannels
   x-authenticated: true
   parameters:
