@@ -8,9 +8,13 @@ To manage images in Medusa, you need a file service plugin responsible for hosti
 
 Medusa provides three different options to handle your file storage. This document will focus on setting up [MinIO](https://min.io) on your local machine and connecting Medusa to it.
 
+---
+
 ## Prerequisites
 
 A Medusa server is required to be set up before following along with this document. You can follow the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
+
+---
 
 ## Set up MinIO
 
@@ -76,6 +80,8 @@ You will not be able to access the Secret Key after closing the pop-up. So, make
 
 :::
 
+---
+
 ## Plugin Installation
 
 In the directory of your Medusa server, run the following command to install the MinIO plugin:
@@ -115,11 +121,15 @@ If you have multiple storage plugins configured, the last plugin declared in the
 
 :::
 
+---
+
 ## Test it Out
 
 Run your Medusa server alongside the [Medusa Admin](../admin/quickstart.mdx) to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored in a MinIO server.
 
 ![Image Uploaded on Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000429/Medusa%20Docs/MinIO/alabX2i_dzg2mh.png)
+
+---
 
 ## Private Buckets
 
@@ -181,6 +191,8 @@ Then, add two new options to the plugin’s options in `medusa-config.js`:
 },
 ```
 
+---
+
 ## Next.js Storefront Configuration
 
 If you’re using a [Next.js](../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the MinIO domain name into the configured images domain names. This is because all URLs of product images will be from the MinIO server.
@@ -207,6 +219,8 @@ module.exports = withStoreConfig({
 
 Where `127.0.0.1` is the domain of your local MinIO server.
 
-## What’s Next
+---
+
+## See Also
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.

@@ -10,6 +10,8 @@ MeiliSearch also provides a pleasant developer experience, as it is extremely in
 
 Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa server and storefront using MeiliSearch with just a few steps.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -29,6 +31,8 @@ If you don’t install and configure Redis on your Medusa server, the MeiliSearc
 You must install MeiliSearch to use it with Medusa. You can follow [this documentation to install MeiliSearch](https://docs.meilisearch.com/learn/getting_started/quick_start.html#setup-and-installation) either locally or on a cloud.
 
 Furthermore, you should create a master key for your MeiliSearch instance. If you don’t have one created, follow [this guide](https://docs.meilisearch.com/learn/security/master_api_keys.html#protecting-a-meilisearch-instance) to create a master key.
+
+---
 
 ## Install the MeiliSearch Plugin
 
@@ -77,6 +81,8 @@ const plugins = [
 
 You can change the `searchableAttributes` and `displayedAttributes` as you see fit. However, the attributes included are the recommended attributes.
 
+---
+
 ## Test MeiliSearch Plugin
 
 Make sure your MeiliSearch instance is running. If you’re unsure how to run it, you can check the [installation documentation](https://docs.meilisearch.com/learn/getting_started/quick_start.html#setup-and-installation) for the command to run the MeiliSearch instance.
@@ -104,6 +110,8 @@ If you add or update products on your Medusa server, the addition or update will
 This feature is only available if you have Redis installed and configured with your Medusa server as mentioned in the [Prerequisites section](#prerequisites). Otherwise, you must re-run the Medusa server to see the change in the MeiliSearch indices.
 
 :::
+
+---
 
 ## Add Search to your Storefront
 
@@ -286,7 +294,9 @@ If you run your Gatsby storefront while the Medusa server and the MeiliSearch in
 
 ![Search box in the header of the storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000317/Medusa%20Docs/MeiliSearch/ZkRgF2h_ytnpv9.png)
 
-## What’s Next
+---
 
-- Learn how to [deploy your Medusa server](../deployments/server/index.mdx).
-- Learn how to [deploy your Gatsby storefront](./../deployments/storefront/deploying-gatsby-on-netlify.md).
+## See Also
+
+- [Deploy your Medusa server](../deployments/server/index.mdx).
+- [Deploy your Gatsby storefront](./../deployments/storefront/deploying-gatsby-on-netlify.md).

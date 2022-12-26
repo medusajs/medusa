@@ -12,9 +12,13 @@ On your storefront, you can add any necessary components that can render the Con
 
 As an example to explain this process, in this documentation, you’ll create a migration that creates a Rich Text content model in Contentful and edits the Page and Product content models to allow using Rich Text content as a tile in pages and products. Then, you’ll modify the Gatsby storefront to render the Rich Text content model.
 
+---
+
 ## Prerequisites
 
 It’s assumed you already have set up a Medusa server integrated with Contentful and have a Gatsby storefront integrated with Contentful. If not, [please follow this documentation first](index.md).
+
+---
 
 ## Create a Contentful Migration
 
@@ -143,6 +147,8 @@ Similarly, in the About page editor, click on the Publish Changes button on the 
 Similarly, you can add Rich Text content to any product page.
 
 ![A rich text content is added to a product](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001305/Medusa%20Docs/Contentful/wgI8mEB_wbukpd.png)
+
+---
 
 ## Render New Content Models in the Storefront
 
@@ -308,7 +314,9 @@ Restart the Gatsby storefront then open a product that you added Rich Text conte
 
 ![Rich Text content you added to the product should be visible at the end of the page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001342/Medusa%20Docs/Contentful/LGiVMxx_rqsr2l.png)
 
-## What’s Next
+---
 
-- Learn how to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
-- Learn [how to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).
+## See Also
+
+- Deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
+- [How to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).

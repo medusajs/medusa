@@ -10,6 +10,8 @@ The purpose of these events is to allow other parts of the platform, or third-pa
 
 Medusa's queuing and events system is handled by Redis. So, you must have [Redis configured](../../../tutorial/0-set-up-your-development-environment.mdx#redis) on your server to use subscribers.
 
+---
+
 ## What are Subscribers
 
 Subscribers register handlers for an events and allows you to perform an action when that event occurs. For example, if you want to send your customer an email when they place an order, then you can listen to the `order.placed` event and send the email when the event is emitted.
@@ -20,7 +22,9 @@ Custom subscribers are TypeScript or JavaScript files in your project's `src/sub
 
 Whenever an event is emitted, the subscriber’s registered handler method is executed. The handler method receives as a parameter an object that holds data related to the event. For example, if an order is placed the `order.placed` event will be emitted and all the handlers will receive the order id in the parameter object.
 
-## What's Next
+---
 
-- Learn [how to create a Subscriber](create-subscriber.md).
-- [View the list of all events](events-list.md).
+## See Also
+
+- [Create a Subscriber](create-subscriber.md).
+- [Events reference](events-list.md).

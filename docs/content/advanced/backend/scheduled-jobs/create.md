@@ -8,6 +8,8 @@ Medusa allows you to create scheduled jobs that run at specific times during you
 
 This guide explains how to create a scheduled job on your Medusa server. The scheduled job in this example will simply change the status of draft products to `published`.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -18,6 +20,8 @@ It is assumed that you already have a Medusa server installed and set up. If not
 
 Redis is required for scheduled jobs to work. Make sure you [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../../usage/configurations.md#redis).
 
+---
+
 ## 1. Create a File
 
 Each scheduled job should reside in a TypeScript or JavaScript file under the `src/loaders` directory.
@@ -25,6 +29,8 @@ Each scheduled job should reside in a TypeScript or JavaScript file under the `s
 Start by creating the `src/loaders` directory. Then, inside that directory, create the JavaScript or TypeScript file that you’ll add the scheduled job in. You can use any name for the file.
 
 For the example in this tutorial, you can create the file `src/loaders/publish.ts`.
+
+---
 
 ## 2. Create Cron Job
 
@@ -89,6 +95,8 @@ jobSchedulerService.create("publish-products", {
 });
 ```
 
+---
+
 ## 3. Run Medusa Server
 
 :::info
@@ -129,6 +137,8 @@ To test the previous example out instantly, you can change the scheduled job exp
 
 :::
 
-## What’s Next
+---
 
-- Learn more about [services and how you can use them](../services/overview.md).
+## See Also
+
+- [Services Overview](../services/overview.md).

@@ -8,6 +8,8 @@ Feature flags are used in Medusa to guard beta features that aren’t ready for 
 
 To use these beta features, you must enable their feature flags.
 
+---
+
 ## Available Feature Flags
 
 You can view a list of available feature flags that you can toggle in [the Medusa GitHub mono-repository](https://github.com/medusajs/medusa/tree/master/packages/medusa/src/loaders/feature-flags). In each feature flag file, you can find the default value of the feature flag, its name, environment variable name, and more.
@@ -17,6 +19,8 @@ You can view a list of available feature flags that you can toggle in [the Medus
 If a feature flag is enabled/disabled by default, you don’t need to manually enable/disable it. Only set the feature flag’s value if it’s different than the default.
 
 :::
+
+---
 
 ## Enable Feature Flags
 
@@ -73,6 +77,8 @@ You can learn more about migrations in this documentation.
 
 :::
 
+---
+
 ## Disable Feature Flags
 
 Disabling feature flags follows the same process as enabling the feature flags. All you have to do is change the value in the environment variables or the server settings to `false`.
@@ -85,7 +91,9 @@ If you had the feature flag previously enabled, and you want to disable this fea
 
 You can follow [this documentation to learn how to revert the last migration you ran](https://docs.medusajs.com/cli/reference#migrations).
 
-## What’s Next
+---
 
-- Learn more about [Migrations](../migrations/overview.md).
-- Learn how to [configure your Medusa server](../../../usage/configurations.md).
+## See Also
+
+- [Migrations Overview](../migrations/overview.md).
+- [Configure your Medusa server](../../../usage/configurations.md).

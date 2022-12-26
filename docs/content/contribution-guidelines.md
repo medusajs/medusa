@@ -14,16 +14,22 @@ The documentation website is built with [Docusaurus](https://docusaurus.io/), a 
 
 The documentation codebase is hosted as part of the [medusa repository](https://github.com/medusajs/medusa) on GitHub. You’ll find the code that runs the docusaurus website under the [www/docs](https://github.com/medusajs/medusa/tree/master/www/docs) directory.
 
+---
+
 ## Documentation Content
 
 The documentation content is written in Markdown format and is located in the [docs/content](https://github.com/medusajs/medusa/tree/master/docs/content) directory of the same repository. If you’re not familiar with Markdown, check out [this cheat sheet](https://www.markdownguide.org/cheat-sheet/) for a quick start.
 
 You’ll also find MDX files. MDX files combine the power of Markdown with React. So, the content of the file can contain JSX components and import statements, among other features. You can learn more about [MDX in docusaurus’s guide.](https://docusaurus.io/docs/markdown-features/react)
 
+---
+
 ## What You Can Contribute To
 
 - You can contribute to the Docusaurus codebase to add a new feature or fix a bug in the documentation website.
 - You can contribute to the documentation content either by fixing errors you find or by adding documentation pages.
+
+---
 
 ## What You Can’t Contribute To
 
@@ -31,9 +37,13 @@ The [Services Reference](/references/services/classes/AuthService) is an automat
 
 You can, however, contribute to the script generating it if you find any issues in it.
 
+---
+
 ## Style Guide
 
 When you contribute to the documentation content, make sure to follow the [documentation style guide](https://www.notion.so/Style-Guide-Docs-fad86dd1c5f84b48b145e959f36628e0).
+
+---
 
 ## How to Contribute
 
@@ -63,6 +73,8 @@ In the body of the PR, explain clearly what the PR does. If the PR solves an iss
 
 <!-- vale on -->
 
+---
+
 ## Sidebar
 
 When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js` under the `docsSidebar`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
@@ -77,6 +89,8 @@ When the documentation page is tutorial documentation, the label in the sidebar 
 
 The character count of the sidebar item's label must be at most twenty-seven characters. For the API Reference, the sidebar item's label must be at most twenty-five characters.
 
+---
+
 ## Notes and Additional Information
 
 When displaying notes and additional information on a documentation page, use [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions). Make sure the type of admonition used matches the note’s importance to the current document.
@@ -89,9 +103,13 @@ If the note displays helpful information and tips use the `tip` admonition.
 
 If the admonition does not match any of the mentioned criteria, always default to the `note` admonition.
 
+---
+
 ## Images
 
 If you are adding images to a documentation page, you can host the image on [Imgur](https://imgur.com) for free.
+
+---
 
 ## Code Blocks
 
@@ -176,6 +194,8 @@ medusa new my-medusa-store --seed
 ```
 ~~~
 
+---
+
 ## NPM and Yarn Code Blocks
 
 If you’re adding code blocks that use NPM and Yarn, you must use the [npm2yarn syntax](https://docusaurus.io/docs/markdown-features/code-blocks#npm2yarn-remark-plugin).
@@ -215,6 +235,8 @@ When a command uses the global option `-g`, add it at the end of the NPM command
 ```bash npm2yarn
 npm install @medusajs/medusa-cli -g
 ```
+
+---
 
 ## Linting with Vale
 
@@ -268,6 +290,8 @@ Medusa supports Node versions 14 and 16.
 ```
 
 If you use this in your PR, you must justify its usage.
+
+---
 
 ## Need Additional Help
 

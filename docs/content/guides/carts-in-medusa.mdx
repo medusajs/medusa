@@ -21,6 +21,8 @@ This document does not cover implementing the checkout flow. You can refer to [t
 
 - **Line Item**: When products are added to the cart in Medusa, they are referred to as line items. Line items have, by default, the same properties and attributes as a product. However, you can customize line items specifically for a cart if necessary.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -34,6 +36,8 @@ It is also assumed you already have a storefront set up. It can be a custom stor
 This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../js-client/overview.md) and have [created an instance of the client](../js-client/overview.md#configuration).
+
+---
 
 ## Create a Cart
 
@@ -123,6 +127,8 @@ The region a cart is associated with determines the currency the cart uses, the 
 
 :::
 
+---
+
 ## Retrieve a Cart
 
 Notice that in the previous code snippets, you set the cart’s ID in the local storage. This is helpful to persist the customer’s cart even when they leave the website and come back later.
@@ -168,6 +174,8 @@ You can run this code snippet every time the storefront is opened. If a customer
 Make sure to remove the ID from the local storage after the customer places an order with this cart.
 
 :::
+
+---
 
 ## Update a Cart
 
@@ -288,6 +296,8 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
 </TabItem>
 </Tabs>
 
+---
+
 ## Add Line Item to the Cart
 
 To create a line item of a product and add it to a cart, you can use the following code snippet:
@@ -337,6 +347,8 @@ If you’re using Sales Channels, make sure that the cart and the product belong
 
 :::
 
+---
+
 ## Update Line Item in the Cart
 
 To update a line item's quantity in the cart, you can use the following code snippet:
@@ -376,6 +388,8 @@ This request accepts the ID of the cart and the ID of the line item as path para
 
 It returns the updated cart.
 
+---
+
 ## Delete a Line Item from the Cart
 
 To delete a line item from the cart, you can use the following code snippet:
@@ -407,7 +421,9 @@ This request accepts the ID of the cart and the ID of the line item as path para
 
 It returns the updated cart.
 
-## What’s Next
+---
 
-- Learn [how to implement the checkout flow in your storefront](../advanced/storefront/how-to-implement-checkout-flow.mdx).
-- Learn more about the [JS Client and how to use it](../js-client/overview.md).
+## See Also
+
+- [Implement the checkout flow in your storefront](../advanced/storefront/how-to-implement-checkout-flow.mdx)
+- [Medusa JS Client Overview](../js-client/overview.md)

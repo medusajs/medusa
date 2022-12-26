@@ -17,6 +17,8 @@ It’s recommended to go through the [Shipping Architecture Overview](../backend
 
 :::
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
@@ -36,6 +38,8 @@ If you follow the JS Client code blocks, it’s assumed you already have [Medusa
 This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
 
 You can learn how to implement the cart flow using [this documentation](../../guides/carts-in-medusa.mdx).
+
+---
 
 ## Shipping Step
 
@@ -105,6 +109,8 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
 This request accepts the ID of the cart as a path parameter and the new shipping address in the request body.
 
 The request returns the updated cart, with the new shipping address available in `cart.shipping_address`.
+
+---
 
 ### List Shipping Options
 
@@ -182,6 +188,8 @@ fetch(`<SERVER_URL>/store/carts/${cartId}/shipping-methods`, {
 The request accepts the ID of the cart as a path parameter and its body the ID of the selected shipping option.
 
 It returns the updated cart, with the created shipping method available in the array `cart.shipping_methods`.
+
+---
 
 ## Payment Step
 
@@ -366,8 +374,11 @@ The request returns two properties: `type` and `data`. If the order was placed s
 
 If an error occurred while placing the order, `type` will be `cart` and `data` will be the cart's data.
 
-## What’s Next
+---
 
-- Learn more about the [JS Client and how to use it](../../js-client/overview.md).
+## See Also
+
+- [Medusa JS Client Overview](../../js-client/overview.md).
 - Check out available plugins for popular payment providers such as [Stripe](../../add-plugins/stripe.md) and [PayPal](/add-plugins/paypal.md).
-- Learn more about the [Payment](../backend/payment/overview.md) and [Shipping](../backend/shipping/overview.md) Architectures.
+- [Payment Architecture](../backend/payment/overview.md)
+- [Shipping Architecture](../backend/shipping/overview.md)
