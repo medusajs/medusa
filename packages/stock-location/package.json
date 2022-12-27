@@ -24,8 +24,8 @@
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "test": "jest",
-    "test:unit": "jest"
+    "test": "jest --passWithNoTests",
+    "test:unit": "jest --passWithNoTests"
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.7.1",
