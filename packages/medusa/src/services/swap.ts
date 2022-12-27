@@ -83,7 +83,6 @@ class SwapService extends TransactionBaseService {
   protected readonly returnService_: ReturnService
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
-  // protected readonly inventoryService_: InventoryService
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly paymentProviderService_: PaymentProviderService
