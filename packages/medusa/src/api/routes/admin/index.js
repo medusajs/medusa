@@ -83,7 +83,6 @@ export default (app, container, config) => {
   discountRoutes(route)
   draftOrderRoutes(route)
   giftCardRoutes(route)
-  inventoryItemRoutes(route)
   inviteRoutes(route)
   noteRoutes(route)
   notificationRoutes(route)
