@@ -461,6 +461,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/customers/index"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/taxes/inclusive-pricing",
           label: "Tax Inclusive Pricing"
         },
