@@ -1055,9 +1055,13 @@ describe("/store/carts", () => {
         regions: ["test-region"],
       }
 
-      const cartId =  "discount-cart"
+      const cartId = "discount-cart"
 
-      const discount = await simpleDiscountFactory(dbConnection, discountData, 100)
+      const discount = await simpleDiscountFactory(
+        dbConnection,
+        discountData,
+        100
+      )
       const discountCart = await simpleCartFactory(
         dbConnection,
         {
@@ -1088,14 +1092,10 @@ describe("/store/carts", () => {
 
       const api = useApi()
 
-      let response = await api
-        .post(
-          `/store/carts/${cartId}/line-items`,
-          {
-            quantity: 1,
-            variant_id: "test-variant-quantity",
-          },
-        )
+      let response = await api.post(`/store/carts/${cartId}/line-items`, {
+        quantity: 1,
+        variant_id: "test-variant-quantity",
+      })
 
       expect(response.data.cart.items.length).toEqual(1)
       expect(response.data.cart.items).toEqual(
@@ -1111,13 +1111,9 @@ describe("/store/carts", () => {
         ])
       )
 
-      response = await api
-        .post(
-          `/store/carts/${cartId}`,
-          {
-            discounts: [],
-          },
-        )
+      response = await api.post(`/store/carts/${cartId}`, {
+        discounts: [],
+      })
 
       expect(response.data.cart.items.length).toEqual(1)
       expect(response.data.cart.items[0].adjustments).toHaveLength(0)
@@ -2201,7 +2197,11 @@ describe("/store/carts", () => {
 
     it("removes line item adjustments upon discount deletion", async () => {
       const cartId = "discount-cart"
-      const discount = await simpleDiscountFactory(dbConnection, discountData, 100)
+      const discount = await simpleDiscountFactory(
+        dbConnection,
+        discountData,
+        100
+      )
       const discountCart = await simpleCartFactory(
         dbConnection,
         {
@@ -2232,14 +2232,10 @@ describe("/store/carts", () => {
 
       const api = useApi()
 
-      let response = await api
-        .post(
-          `/store/carts/${cartId}/line-items`,
-          {
-            quantity: 1,
-            variant_id: "test-variant-quantity",
-          },
-        )
+      let response = await api.post(`/store/carts/${cartId}/line-items`, {
+        quantity: 1,
+        variant_id: "test-variant-quantity",
+      })
 
       expect(response.data.cart.items.length).toEqual(1)
       expect(response.data.cart.items).toEqual(
@@ -2255,8 +2251,9 @@ describe("/store/carts", () => {
         ])
       )
 
-      response = await api
-        .delete(`/store/carts/${cartId}/discounts/${discountData.code}`)
+      response = await api.delete(
+        `/store/carts/${cartId}/discounts/${discountData.code}`
+      )
 
       expect(response.data.cart.items.length).toEqual(1)
       expect(response.data.cart.items[0].adjustments).toHaveLength(0)
