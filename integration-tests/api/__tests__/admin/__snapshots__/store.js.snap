@@ -25,6 +25,7 @@ Object {
     },
   ],
   "default_currency_code": "usd",
+  "default_location_id": null,
   "id": Any<String>,
   "invite_link_template": null,
   "metadata": null,
@@ -59,6 +60,7 @@ Object {
     "symbol_native": "￥",
   },
   "default_currency_code": "jpy",
+  "default_location_id": null,
   "id": Any<String>,
   "invite_link_template": null,
   "metadata": null,
@@ -93,6 +95,7 @@ Object {
     "symbol_native": "kr",
   },
   "default_currency_code": "dkk",
+  "default_location_id": null,
   "id": Any<String>,
   "invite_link_template": null,
   "metadata": null,
@@ -121,6 +124,7 @@ Object {
     "symbol_native": "$",
   },
   "default_currency_code": "usd",
+  "default_location_id": null,
   "feature_flags": Any<Array>,
   "fulfillment_providers": Array [
     Object {
