@@ -33534,7 +33534,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.2.29, typeorm@npm:^0.2.31, typeorm@npm:^0.2.45":
+"typeorm@npm:^0.2.29, typeorm@npm:^0.2.31":
   version: 0.2.45
   resolution: "typeorm@npm:0.2.45"
   dependencies:
