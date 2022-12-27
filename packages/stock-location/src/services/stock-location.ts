@@ -95,12 +95,12 @@ export default class StockLocationService {
         name: data.name,
       })
 
-      if (typeof data.address !== "undefined") {
+      if (isDefined("undefined")) {
         if (typeof data.address === "string") {
           loc.address_id = data.address
         } else {
           const locAddressRepo = manager.getRepository(StockLocationAddress)
-          const locAddress = locAddressRepo.create(data.address)
+          const locAddress = locAddressRepo.create(data.address!)
           const addressResult = await locAddressRepo.save(locAddress)
           loc.address_id = addressResult.id
         }
