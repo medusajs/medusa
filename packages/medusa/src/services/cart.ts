@@ -935,6 +935,7 @@ class CartService extends TransactionBaseService {
 
         if (lineItemUpdate.quantity) {
           if (lineItem.variant_id) {
+            console.log("is here")
             const select: (keyof Cart)[] = ["id"]
             if (
               this.featureFlagRouter_.isFeatureEnabled(
@@ -945,6 +946,7 @@ class CartService extends TransactionBaseService {
             }
 
             const cart = await this.retrieve(cartId, { select: select })
+            console.log("got cart")
 
             const hasInventory =
               await this.productVariantInventoryService_.confirmInventory(
@@ -2066,6 +2068,7 @@ class CartService extends TransactionBaseService {
       const lineItemServiceTx =
         this.lineItemService_.withTransaction(transactionManager)
 
+      console.log(cart)
       cart.items = (
         await Promise.all(
           cart.items.map(async (item) => {
