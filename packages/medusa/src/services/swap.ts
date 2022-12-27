@@ -12,7 +12,6 @@ import {
   CustomShippingOptionService,
   EventBusService,
   FulfillmentService,
-  InventoryService,
   LineItemService,
   OrderService,
   PaymentProviderService,
