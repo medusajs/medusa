@@ -15,7 +15,7 @@ import { FindParams } from "../../../../types/common"
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostStockLocationsReq"
+ *         $ref: "#/components/schemas/CreateStockLocationInput"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -106,29 +106,6 @@ class StockLocationAddress {
   @IsString()
   province?: string
 }
-
-/**
- * @schema AdminPostStockLocationsReq
- * type: object
- * required:
- *   - name
- * properties:
- *   name:
- *     type: string
- *     description: The Stock Location's name.
- *     format: email
- *   address_id:
- *     type: string
- *     description: The Stock Location Adress' ID.
- *   address:
- *     description: "The Address of the Stock Location"
- *     allOf:
- *       - $ref: "#/components/schemas/StockLocationAddressInput"
- *       - type: object
- *   metadata:
- *     description: An optional set of key-value pairs to hold additional information.
- *     type: object
- */
 
 export class AdminPostStockLocationsReq {
   @IsString()
