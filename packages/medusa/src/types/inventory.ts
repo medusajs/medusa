@@ -100,3 +100,9 @@ export type UpdateInventoryLevelInput = {
   stocked_quantity?: number
   incoming_quantity?: number
 }
+
+export type ReserveQuantityContext = {
+  locationId?: string
+  lineItemId?: string
+  salesChannelId?: string | null
+}

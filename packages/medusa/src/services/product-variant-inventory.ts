@@ -7,7 +7,7 @@ import {
 } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { ProductVariantService, SalesChannelLocationService } from "./"
-import { InventoryItemDTO } from "../types/inventory"
+import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
 import { ProductVariant } from "../models"
 
 type InjectedDependencies = {
@@ -48,13 +48,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * confirms if requested inventory is available
    * @param variantId id of the variant to confirm inventory for
    * @param quantity quantity of inventory to confirm is available
-   * @param options optionally include a sales channel if applicable
+   * @param context optionally include a sales channel if applicable
    * @returns boolean indicating if inventory is available
    */
   async confirmInventory(
     variantId: string,
     quantity: number,
-    options: { salesChannelId?: string | null } = {}
+    context: { salesChannelId?: string | null } = {}
   ): Promise<Boolean> {
     if (!variantId) {
       return true
@@ -91,9 +91,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let locations: string[] = []
-    if (options.salesChannelId) {
+    if (context.salesChannelId) {
       locations = await this.salesChannelLocationService_.listLocations(
-        options.salesChannelId
+        context.salesChannelId
       )
     } else {
       const stockLocations = await this.stockLocationService_.list(
@@ -288,16 +288,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * Reserves a quantity of a variant
    * @param variantId variant id
    * @param quantity quantity to reserve
-   * @param options optional parameters
+   * @param context optional parameters
    */
   async reserveQuantity(
     variantId: string,
     quantity: number,
-    options: {
-      locationId?: string
-      lineItemId?: string
-      salesChannelId?: string | null
-    } = {}
+    context: ReserveQuantityContext = {}
   ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
 
@@ -315,7 +311,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     const toReserve = {
       type: "order",
-      line_item_id: options.lineItemId,
+      line_item_id: context.lineItemId,
     }
 
     const variantInventory = await this.listByVariant(variantId)
@@ -324,11 +320,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return
     }
 
-    let locationId = options.locationId
-    if (!isDefined(locationId) && options.salesChannelId) {
+    let locationId = context.locationId
+    if (!isDefined(locationId) && context.salesChannelId) {
       const locations = await this.salesChannelLocationService_
         .withTransaction(manager)
-        .listLocations(options.salesChannelId)
+        .listLocations(context.salesChannelId)
 
       if (!locations.length) {
         throw new MedusaError(
