@@ -907,8 +907,8 @@ describe("SwapService", () => {
         expect(
           productVariantInventoryService.reserveQuantity
         ).toHaveBeenCalledWith("variant", 2, {
-          line_item_id: "1",
-          sales_channel_id: undefined,
+          lineItemId: "1",
+          salesChannelId: undefined,
         })
 
         expect(swapRepo.save).toHaveBeenCalledWith({

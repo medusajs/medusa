@@ -161,8 +161,8 @@ describe("ClaimService", () => {
       expect(
         productVariantInventoryService.reserveQuantity
       ).toHaveBeenCalledWith("var_123", 1, {
-        line_item_id: "test_item",
-        sales_channel_id: undefined,
+        lineItemId: "test_item",
+        salesChannelId: undefined,
       })
 
       expect(withTransactionMock).toHaveBeenCalledWith("claimItem")
