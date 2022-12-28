@@ -703,8 +703,8 @@ class OrderService extends TransactionBaseService {
                   lineItem.variant_id,
                   lineItem.quantity,
                   {
-                    line_item_id: lineItem.id,
-                    sales_channel_id: cart.sales_channel_id,
+                    lineItemId: lineItem.id,
+                    salesChannelId: cart.sales_channel_id,
                   }
                 )
               )

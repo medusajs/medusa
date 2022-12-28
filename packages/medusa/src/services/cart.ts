@@ -684,7 +684,7 @@ class CartService extends TransactionBaseService {
             await this.productVariantInventoryService_.confirmInventory(
               lineItem.variant_id,
               quantity,
-              { sales_channel_id: cart.sales_channel_id }
+              { salesChannelId: cart.sales_channel_id }
             )
 
           if (!isCovered) {
@@ -837,7 +837,7 @@ class CartService extends TransactionBaseService {
             const isSufficient = await inventoryServiceTx.confirmInventory(
               item.variant_id,
               item.quantity,
-              { sales_channel_id: cart.sales_channel_id }
+              { salesChannelId: cart.sales_channel_id }
             )
 
             if (!isSufficient) {
@@ -935,7 +935,6 @@ class CartService extends TransactionBaseService {
 
         if (lineItemUpdate.quantity) {
           if (lineItem.variant_id) {
-            console.log("is here")
             const select: (keyof Cart)[] = ["id"]
             if (
               this.featureFlagRouter_.isFeatureEnabled(
@@ -946,13 +945,12 @@ class CartService extends TransactionBaseService {
             }
 
             const cart = await this.retrieve(cartId, { select: select })
-            console.log("got cart")
 
             const hasInventory =
               await this.productVariantInventoryService_.confirmInventory(
                 lineItem.variant_id,
                 lineItemUpdate.quantity,
-                { sales_channel_id: cart.sales_channel_id }
+                { salesChannelId: cart.sales_channel_id }
               )
 
             if (!hasInventory) {
@@ -2068,7 +2066,6 @@ class CartService extends TransactionBaseService {
       const lineItemServiceTx =
         this.lineItemService_.withTransaction(transactionManager)
 
-      console.log(cart)
       cart.items = (
         await Promise.all(
           cart.items.map(async (item) => {

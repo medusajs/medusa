@@ -47,7 +47,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   async confirmInventory(
     variantId: string,
     quantity: number,
-    options: { sales_channel_id?: string | null } = {}
+    options: { salesChannelId?: string | null } = {}
   ): Promise<Boolean> {
     if (!variantId) {
       return true
@@ -84,9 +84,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let locations: string[] = []
-    if (options.sales_channel_id) {
+    if (options.salesChannelId) {
       locations = await this.salesChannelLocationService.listLocations(
-        options.sales_channel_id
+        options.salesChannelId
       )
     } else {
       const stockLocations = await this.stockLocationService.list(
@@ -249,9 +249,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
     variantId: string,
     quantity: number,
     options: {
-      location_id?: string
-      line_item_id?: string
-      sales_channel_id?: string | null
+      locationId?: string
+      lineItemId?: string
+      salesChannelId?: string | null
     } = {}
   ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
@@ -270,7 +270,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     const toReserve = {
       type: "order",
-      line_item_id: options.line_item_id,
+      line_item_id: options.lineItemId,
     }
 
     const variantInventory = await this.listByVariant(variantId)
@@ -279,11 +279,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return
     }
 
-    let locationId = options.location_id
-    if (typeof locationId === "undefined" && options.sales_channel_id) {
+    let locationId = options.locationId
+    if (typeof locationId === "undefined" && options.salesChannelId) {
       const locations = await this.salesChannelLocationService
         .withTransaction(manager)
-        .listLocations(options.sales_channel_id)
+        .listLocations(options.salesChannelId)
 
       if (!locations.length) {
         throw new MedusaError(

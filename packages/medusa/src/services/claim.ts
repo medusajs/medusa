@@ -352,8 +352,8 @@ export default class ClaimService extends TransactionBaseService {
                   newItem.variant_id,
                   newItem.quantity,
                   {
-                    line_item_id: newItem.id,
-                    sales_channel_id: order.sales_channel_id,
+                    lineItemId: newItem.id,
+                    salesChannelId: order.sales_channel_id,
                   }
                 )
               }

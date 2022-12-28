@@ -781,8 +781,8 @@ class SwapService extends TransactionBaseService {
                 item.variant_id,
                 item.quantity,
                 {
-                  line_item_id: item.id,
-                  sales_channel_id: cart.sales_channel_id,
+                  lineItemId: item.id,
+                  salesChannelId: cart.sales_channel_id,
                 }
               )
             }
