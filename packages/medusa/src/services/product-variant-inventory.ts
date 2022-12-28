@@ -44,6 +44,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.inventoryService = inventoryService
   }
 
+  /**
+   * confirms if requested inventory is available
+   * @param variantId id of the variant to confirm inventory for
+   * @param quantity quantity of inventory to confirm is available
+   * @param options optionally include a sales channel if applicable
+   * @returns boolean indicating if inventory is available
+   */
   async confirmInventory(
     variantId: string,
     quantity: number,
@@ -110,6 +117,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
     return hasInventory.every(Boolean)
   }
 
+  /**
+   * list registered inventory items
+   * @param itemIds list inventory item ids
+   * @returns list of inventory items
+   */
   async listByItem(itemIds: string[]): Promise<ProductVariantInventoryItem[]> {
     const manager = this.transactionManager_ || this.manager_
 
@@ -124,6 +136,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
     return variantInventory
   }
 
+  /**
+   * List inventory items for a specific variant
+   * @param variantId variant id
+   * @returns variant inventory items for the variant id
+   */
   private async listByVariant(
     variantId: string
   ): Promise<ProductVariantInventoryItem[]> {
@@ -140,6 +157,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
     return variantInventory
   }
 
+  /**
+   * lists variant by inventory item id
+   * @param itemId item id
+   * @returns a list of product variants that are associated with the item id
+   */
   async listVariantsByItem(itemId: string): Promise<ProductVariant[]> {
     if (!this.inventoryService) {
       return []
@@ -153,6 +175,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
     return items
   }
 
+  /**
+   * lists inventory items for a given variant
+   * @param variantId variant id
+   * @returns lidt of inventory items for the variant
+   */
   async listInventoryItemsByVariant(
     variantId: string
   ): Promise<InventoryItemDTO[]> {
@@ -168,6 +195,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
     return items
   }
 
+  /**
+   * Attach a variant to an inventory item
+   * @param variantId variant id
+   * @param inventoryItemId inventory item id
+   * @param quantity quantity of variant to attach
+   * @returns the variant inventory item
+   */
   async attachInventoryItem(
     variantId: string,
     inventoryItemId: string,
@@ -223,6 +257,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
     return await variantInventoryRepo.save(variantInventory)
   }
 
+  /**
+   * Remove a variant from an inventory item
+   * @param variantId variant id
+   * @param inventoryItemId inventory item id
+   */
   async detachInventoryItem(
     variantId: string,
     inventoryItemId: string
@@ -245,6 +284,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
   }
 
+  /**
+   * Reserves a quantity of a variant
+   * @param variantId variant id
+   * @param quantity quantity to reserve
+   * @param options optional parameters
+   */
   async reserveQuantity(
     variantId: string,
     quantity: number,
@@ -308,11 +353,17 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
   }
 
+  /**
+   * Remove reservation of variant quantity
+   * @param lineItemId line item id
+   * @param variantId variant id
+   * @param quantity quantity to release
+   */
   async releaseReservationsByLineItem(
     lineItemId: string,
     variantId: string,
     quantity: number
-  ) {
+  ): Promise<void> {
     if (!this.inventoryService) {
       const variant = await this.productVariantService.retrieve(variantId, {
         select: ["id", "inventory_quantity", "manage_inventory"],
@@ -330,11 +381,17 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
   }
 
+  /**
+   * Adjusts inventory of a variant on a location
+   * @param variantId variant id
+   * @param locationId location id
+   * @param quantity quantity to adjust
+   */
   async adjustInventory(
     variantId: string,
     locationId: string,
     quantity: number
-  ) {
+  ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
     if (!this.inventoryService) {
       const variant = await this.productVariantService

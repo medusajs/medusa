@@ -927,7 +927,6 @@ class CartService extends TransactionBaseService {
 
         if (lineItem.cart_id !== cartId) {
           // Ensure that the line item exists in the cart
-          // const lineItemExists = cart.items.find((i) => i.id === lineItemId)
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "A line item with the provided id doesn't exist in the cart"
