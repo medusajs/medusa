@@ -2,15 +2,59 @@ import { IStockLocationService } from "../../../../interfaces"
 import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 
+/**
+ * @oas [get] /stock-locations/{id}
+ * operationId: "GetStockLocationsStockLocation"
+ * summary: "Get a Stock Location"
+ * description: "Retrieves the Stock Location."
+ * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Stock Location.
+ * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.stockLocations.retrieve(stock_location_id)
+ *       .then(({ stock_location }) => {
+ *         console.log(stock_location.id);
+ *       });
+ *   - lang: Shell
+ *     label: cURL
+ *     source: |
+ *       curl --location --request POST 'https://medusa-url.com/admin/stock-locations/{id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "name": "App"
+ *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
+ * tags:
+ *   - Stock Location
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             stock_location:
+ *               $ref: "#/components/schemas/StockLocationDTO"
+ */
 export default async (req: Request, res: Response) => {
   const { id } = req.params
 
   const locationService: IStockLocationService = req.scope.resolve(
     "stockLocationService"
   )
-  const data = await locationService.retrieve(id)
+  const stockLocation = await locationService.retrieve(id)
 
-  res.status(200).json({ stock_location: data })
+  res.status(200).json({ stock_location: stockLocation })
 }
 
 export class AdminGetStockLocationsLocationParams extends FindParams {}
