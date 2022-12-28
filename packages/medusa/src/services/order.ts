@@ -697,19 +697,6 @@ class OrderService extends TransactionBaseService {
               )
             }
 
-            if (lineItem.variant_id) {
-              toReturn.push(
-                this.productVariantInventoryService_.reserveQuantity(
-                  lineItem.variant_id,
-                  lineItem.quantity,
-                  {
-                    lineItemId: lineItem.id,
-                    salesChannelId: cart.sales_channel_id,
-                  }
-                )
-              )
-            }
-
             return toReturn
           }),
           cart.shipping_methods.map(async (method) => {

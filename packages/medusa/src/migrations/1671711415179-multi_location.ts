@@ -35,19 +35,11 @@ export class multiLocation1671711415179 implements MigrationInterface {
       `ALTER TABLE "store" DROP COLUMN "default_location_id"`
     )
     await queryRunner.query(`ALTER TABLE "return" DROP COLUMN "location_id"`)
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_bf5386e7f2acc460adbf96d6f3"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_c74e8c2835094a37dead376a3b"`
-    )
+    await queryRunner.query(`DROP INDEX "IDX_bf5386e7f2acc460adbf96d6f3"`)
+    await queryRunner.query(`DROP INDEX "IDX_c74e8c2835094a37dead376a3b"`)
     await queryRunner.query(`DROP TABLE "product_variant_inventory_item"`)
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_c2203162ca946a71aeb98390b0"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_6caaa358f12ed0b846f00e2dcd"`
-    )
+    await queryRunner.query(`DROP INDEX "IDX_c2203162ca946a71aeb98390b0"`)
+    await queryRunner.query(`DROP INDEX "IDX_6caaa358f12ed0b846f00e2dcd"`)
     await queryRunner.query(`DROP TABLE "sales_channel_location"`)
   }
 }

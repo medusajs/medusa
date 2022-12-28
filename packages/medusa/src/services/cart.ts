@@ -636,12 +636,12 @@ class CartService extends TransactionBaseService {
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
             if (typeof lineItem.variant_id === "string") {
-              if (
-                !(await this.validateLineItem(
-                  cart,
-                  lineItem as LineItemValidateData
-                ))
-              ) {
+              const lineItemIsValid = await this.validateLineItem(
+                cart,
+                lineItem as LineItemValidateData
+              )
+
+              if (!lineItemIsValid) {
                 throw new MedusaError(
                   MedusaError.Types.INVALID_DATA,
                   `The product "${lineItem.title}" must belongs to the sales channel on which the cart has been created.`
@@ -2085,13 +2085,12 @@ class CartService extends TransactionBaseService {
                 availablePrice !== undefined &&
                 availablePrice.calculatedPrice !== null
               ) {
-                return lineItemServiceTx.update(item.id, {
+                return await lineItemServiceTx.update(item.id, {
                   has_shipping: false,
                   unit_price: availablePrice.calculatedPrice,
                 })
               } else {
-                await lineItemServiceTx.delete(item.id)
-                return
+                return await lineItemServiceTx.delete(item.id)
               }
             } else {
               return item

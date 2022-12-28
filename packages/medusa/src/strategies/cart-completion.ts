@@ -269,7 +269,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     let swapId: string
 
     if (cart.type === "swap") {
-      const swap = await this.swapService_.retrieveByCartId(id)
+      const swap = await swapServiceTx.retrieveByCartId(id)
       allowBackorder = swap.allow_backorder
       swapId = swap.id
     }
@@ -296,6 +296,15 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
                   MedusaError.Codes.INSUFFICIENT_INVENTORY
                 )
               }
+
+              await productVariantInventoryServiceTx.reserveQuantity(
+                item.variant_id,
+                item.quantity,
+                {
+                  lineItemId: item.id,
+                  salesChannelId: cart.sales_channel_id,
+                }
+              )
             }
           })
         )

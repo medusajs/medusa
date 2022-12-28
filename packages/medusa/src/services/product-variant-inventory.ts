@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import {
   IStockLocationService,
@@ -325,7 +325,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let locationId = options.locationId
-    if (typeof locationId === "undefined" && options.salesChannelId) {
+    if (!isDefined(locationId) && options.salesChannelId) {
       const locations = await this.salesChannelLocationService_
         .withTransaction(manager)
         .listLocations(options.salesChannelId)

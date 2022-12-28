@@ -12,11 +12,11 @@ type InjectedDependencies = {
 }
 
 class SalesChannelInventoryService {
-  protected manager: EntityManager
+  protected manager_: EntityManager
 
-  protected readonly salesChannelLocationService: SalesChannelLocationService
-  protected readonly eventBusService: EventBusService
-  protected readonly inventoryService: IInventoryService
+  protected readonly salesChannelLocationService_: SalesChannelLocationService
+  protected readonly eventBusService_: EventBusService
+  protected readonly inventoryService_: IInventoryService
 
   constructor({
     salesChannelLocationService,
@@ -24,21 +24,21 @@ class SalesChannelInventoryService {
     eventBusService,
     manager,
   }: InjectedDependencies) {
-    this.manager = manager
-    this.salesChannelLocationService = salesChannelLocationService
-    this.eventBusService = eventBusService
-    this.inventoryService = inventoryService
+    this.manager_ = manager
+    this.salesChannelLocationService_ = salesChannelLocationService
+    this.eventBusService_ = eventBusService
+    this.inventoryService_ = inventoryService
   }
 
   async retrieveAvailableItemQuantity(
     salesChannelId: string,
     itemId: string
   ): Promise<number> {
-    const locations = await this.salesChannelLocationService.listLocations(
+    const locations = await this.salesChannelLocationService_.listLocations(
       salesChannelId
     )
 
-    return await this.inventoryService.retrieveAvailableQuantity(
+    return await this.inventoryService_.retrieveAvailableQuantity(
       itemId,
       locations
     )
