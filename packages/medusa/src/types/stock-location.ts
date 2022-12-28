@@ -127,15 +127,11 @@ export type FilterableStockLocationProps = {
 }
 
 /**
- * @schema StockLocationAddressDTO
- * title: "Stock Location Address"
- * description: "Represents a Stock Location Address"
+ * @schema StockLocationAddressInput
+ * title: "Stock Location Address Input"
+ * description: "Represents a Stock Location Address Input"
  * type: object
  * properties:
- *   id:
- *     type: string
- *     description: The stock location address' ID
- *     example: laddr_51G4ZW853Y6TFXWPG5ENJ81X42
  *   address_1:
  *     type: string
  *     description: Stock location address
