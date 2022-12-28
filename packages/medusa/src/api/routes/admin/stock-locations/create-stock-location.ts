@@ -4,6 +4,7 @@ import { ValidateNested, IsOptional, IsString, IsObject } from "class-validator"
 
 import { IStockLocationService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
+import { CreateStockLocationInput } from "../../../../types/stock-location"
 
 /**
  * @oas [post] /stock-locations
