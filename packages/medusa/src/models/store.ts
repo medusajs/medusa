@@ -57,7 +57,7 @@ export class Store extends BaseEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @FeatureFlagColumn("sales_channels", { nullable: true })
+  @FeatureFlagColumn("sales_channels", { nullable: true, type: "text" })
   default_sales_channel_id: string | null
 
   @Column({ nullable: true, type: "text" })
