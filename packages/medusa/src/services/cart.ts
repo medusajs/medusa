@@ -635,7 +635,7 @@ class CartService extends TransactionBaseService {
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
-            if (typeof lineItem.variant_id === "string") {
+            if (lineItem.variant_id) {
               const lineItemIsValid = await this.validateLineItem(
                 cart,
                 lineItem as LineItemValidateData
@@ -765,7 +765,7 @@ class CartService extends TransactionBaseService {
           if (config.validateSalesChannels) {
             const areValid = await Promise.all(
               items.map(async (item) => {
-                if (typeof item.variant_id === "string") {
+                if (item.variant_id) {
                   return await this.validateLineItem(
                     cart,
                     item as LineItemValidateData
