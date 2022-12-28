@@ -34,6 +34,11 @@ class SalesChannelLocationService extends TransactionBaseService {
     this.stockLocationService_ = stockLocationService
   }
 
+  /**
+   * Removes location from sales channel
+   * @param salesChannelId sales channel id
+   * @param locationId location id
+   */
   async removeLocation(
     salesChannelId: string,
     locationId: string
@@ -45,6 +50,11 @@ class SalesChannelLocationService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Links location to sales channel
+   * @param salesChannelId sales channel id
+   * @param locationId location id
+   */
   async associateLocation(
     salesChannelId: string,
     locationId: string
@@ -63,6 +73,11 @@ class SalesChannelLocationService extends TransactionBaseService {
     await manager.save(salesChannelLocation)
   }
 
+  /**
+   * Lists all locations associated with sales channel by id
+   * @param salesChannelId sales channel id
+   * @returns list of location ids associated with sales channel
+   */
   async listLocations(salesChannelId: string): Promise<string[]> {
     const manager = this.transactionManager_ || this.manager_
     const salesChannel = await this.salesChannelService_
