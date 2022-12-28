@@ -1,4 +1,4 @@
-import { BeforeInsert, Entity } from "typeorm"
+import { BeforeInsert, Entity, Index } from "typeorm"
 import {
   SoftDeletableEntity,
   DbAwareColumn,
@@ -16,6 +16,7 @@ export class StockLocationAddress extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text", nullable: true })
   city: string | null
 
+  @Index()
   @DbAwareColumn({ type: "text", nullable: true })
   country_code: string | null
 
