@@ -8,6 +8,7 @@ import {
   AdminDeleteSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsChannelStockLocationsReq,
+  AdminDeleteSalesChannelsChannelStockLocationsReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -137,6 +138,22 @@ class AdminSalesChannelsResource extends BaseResource {
   ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}/stock-locations`
     return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * remove a location from a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+   * @description Remove a stock location from a SalesChannel
+   * @returns an deletion result
+   */
+  removeLocation(
+    salesChannelId: string,
+    payload: AdminDeleteSalesChannelsChannelStockLocationsReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminSalesChannelsRes> {
+    const path = `/admin/sales-channels/${salesChannelId}/stock-locations`
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 }
 
