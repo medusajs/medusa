@@ -4,7 +4,6 @@ import { ValidateNested, IsOptional, IsString, IsObject } from "class-validator"
 
 import { IStockLocationService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
-import { UpdateStockLocationInput } from "../../../../types/stock-location"
 
 /**
  * @oas [post] /stock-locations/{id}
@@ -18,7 +17,7 @@ import { UpdateStockLocationInput } from "../../../../types/stock-location"
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/UpdateStockLocationInput"
+ *         $ref: "#/components/schemas/AdminPostStockLocationsLocationReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -112,6 +111,56 @@ class StockLocationAddress {
   province?: string
 }
 
+/**
+ * @schema AdminPostStockLocationsLocationReq
+ * type: object
+ * properties:
+ *   name:
+ *     description: the name of the stock location
+ *     type: string
+ *   address_id:
+ *     description: the stock location address ID
+ *     type: string
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
+ *   address:
+ *     type: object
+ *     properties:
+ *       address_1:
+ *         type: string
+ *         description: Stock location address
+ *         example: 35, Jhon Doe Ave
+ *       address_2:
+ *         type: string
+ *         description: Stock location address' complement
+ *         example: apartment 4432
+ *       city:
+ *         type: string
+ *         description: Stock location address' city
+ *         example: Mexico city
+ *       country_code:
+ *         type: string
+ *         description: Stock location address' country
+ *         example: MX
+ *       phone:
+ *         type: string
+ *         description: Stock location address' phone number
+ *         example: +1 555 61646
+ *       postal_code:
+ *         type: string
+ *         description: Stock location address' postal code
+ *         example: HD3-1G8
+ *       province:
+ *         type: string
+ *         description: Stock location address' province
+ *         example: Sinaloa
+ *       metadata:
+ *         type: object
+ *         description: An optional key-value map with additional details
+ *         example: {car: "white"}
+ */
 export class AdminPostStockLocationsLocationReq {
   @IsOptional()
   @IsString()
