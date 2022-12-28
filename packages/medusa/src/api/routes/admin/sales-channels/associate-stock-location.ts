@@ -88,6 +88,17 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ sales_channel: channel })
 }
 
+/**
+ * @schema AdminPostSalesChannelsChannelStockLocationsReq
+ * type: object
+ * required:
+ *   - location_id
+ * properties:
+ *   location_id:
+ *     description: The ID of the stock location
+ *     type: string
+ */
+
 export class AdminPostSalesChannelsChannelStockLocationsReq {
   @IsString()
   location_id: string

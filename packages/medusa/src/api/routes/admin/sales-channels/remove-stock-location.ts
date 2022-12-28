@@ -99,6 +99,16 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * @schema AdminDeleteSalesChannelsChannelStockLocationsReq
+ * type: object
+ * required:
+ *   - location_id
+ * properties:
+ *   location_id:
+ *     description: The ID of the stock location
+ *     type: string
+ */
 export class AdminDeleteSalesChannelsChannelStockLocationsReq {
   @IsString()
   location_id: string
