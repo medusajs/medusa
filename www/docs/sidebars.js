@@ -244,6 +244,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/storefront/customer-profiles",
+              label: "Add Customer Profiles"
+            },
+            {
+              type: "doc",
               id: "guides/carts-in-medusa",
               label: "Implement Cart"
             },
