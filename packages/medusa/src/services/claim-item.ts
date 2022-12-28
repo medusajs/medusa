@@ -73,7 +73,7 @@ class ClaimItemService extends TransactionBaseService {
       if (!lineItem.variant_id) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Cannot claim a virtual line item"
+          "Cannot claim a custom line item"
         )
       }
 
