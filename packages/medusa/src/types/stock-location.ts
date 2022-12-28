@@ -5,9 +5,6 @@ import { StringComparisonOperator } from "./common"
  * title: "Stock Location Address"
  * description: "Represents a Stock Location Address"
  * type: object
- * required:
- *   - address_1
- *   - country_code
  * properties:
  *   id:
  *     type: string
@@ -61,12 +58,13 @@ import { StringComparisonOperator } from "./common"
 export type StockLocationAddressDTO = {
   id?: string
   address_1: string
-  address_2?: string
+  address_2?: string | null
   country_code: string
-  city?: string
-  phone?: string
-  postal_code?: string
-  province?: string
+  city?: string | null
+  phone?: string | null
+  postal_code?: string | null
+  province?: string | null
+  metadata?: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
   deleted_at: string | Date | null
@@ -77,9 +75,6 @@ export type StockLocationAddressDTO = {
  * title: "Stock Location"
  * description: "Represents a Stock Location"
  * type: object
- * required:
- *   - name
- *   - address_id
  * properties:
  *   id:
  *     type: string
@@ -98,8 +93,6 @@ export type StockLocationAddressDTO = {
  *     allOf:
  *       - $ref: "#/components/schemas/StockLocationAddressDTO"
  *       - type: object
- *         required:
- *           - address_1
  *   metadata:
  *     type: object
  *     description: An optional key-value map with additional details
@@ -133,6 +126,49 @@ export type FilterableStockLocationProps = {
   name?: string | string[] | StringComparisonOperator
 }
 
+/**
+ * @schema StockLocationAddressDTO
+ * title: "Stock Location Address"
+ * description: "Represents a Stock Location Address"
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The stock location address' ID
+ *     example: laddr_51G4ZW853Y6TFXWPG5ENJ81X42
+ *   address_1:
+ *     type: string
+ *     description: Stock location address
+ *     example: 35, Jhon Doe Ave
+ *   address_2:
+ *     type: string
+ *     description: Stock location address' complement
+ *     example: apartment 4432
+ *   city:
+ *     type: string
+ *     description: Stock location address' city
+ *     example: Mexico city
+ *   country_code:
+ *     type: string
+ *     description: Stock location address' country
+ *     example: MX
+ *   phone:
+ *     type: string
+ *     description: Stock location address' phone number
+ *     example: +1 555 61646
+ *   postal_code:
+ *     type: string
+ *     description: Stock location address' postal code
+ *     example: HD3-1G8
+ *   province:
+ *     type: string
+ *     description: Stock location address' province
+ *     example: Sinaloa
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
+ */
 export type StockLocationAddressInput = {
   address_1: string
   address_2?: string
@@ -141,15 +177,55 @@ export type StockLocationAddressInput = {
   phone?: string
   province?: string
   postal_code?: string
+  metadata?: Record<string, unknown>
 }
 
+/**
+ * @schema CreateStockLocationInput
+ * title: "Create Stock Location Input"
+ * description: "Represents the Input to create a Stock Location"
+ * type: object
+ * properties:
+ *   name:
+ *     type: string
+ *     description: The stock location name
+ *   address_id:
+ *     type: string
+ *     description: The Stock location address ID
+ *   address:
+ *     description: Stock location address object
+ *     allOf:
+ *       - $ref: "#/components/schemas/StockLocationAddressInput"
+ *       - type: object
+ */
 export type CreateStockLocationInput = {
   name: string
+  address_id?: string
   address?: string | StockLocationAddressInput
+  metadata?: Record<string, unknown>
 }
 
+/**
+ * @schema UpdateStockLocationInput
+ * title: "Update Stock Location Input"
+ * description: "Represents the Input to update a Stock Location"
+ * type: object
+ * properties:
+ *   name:
+ *     type: string
+ *     description: The stock location name
+ *   address_id:
+ *     type: string
+ *     description: The Stock location address ID
+ *   address:
+ *     description: Stock location address object
+ *     allOf:
+ *       - $ref: "#/components/schemas/StockLocationAddressInput"
+ *       - type: object
+ */
 export type UpdateStockLocationInput = {
   name?: string
   address_id?: string
   address?: StockLocationAddressInput
+  metadata?: Record<string, unknown>
 }

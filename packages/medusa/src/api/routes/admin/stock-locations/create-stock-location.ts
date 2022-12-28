@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { Type } from "class-transformer"
-import { ValidateNested, IsOptional, IsString } from "class-validator"
+import { ValidateNested, IsOptional, IsString, IsObject } from "class-validator"
 
 import { IStockLocationService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
@@ -107,6 +107,29 @@ class StockLocationAddress {
   province?: string
 }
 
+/**
+ * @schema AdminPostStockLocationsReq
+ * type: object
+ * required:
+ *   - name
+ * properties:
+ *   name:
+ *     type: string
+ *     description: The Stock Location's name.
+ *     format: email
+ *   address_id:
+ *     type: string
+ *     description: The Stock Location Adress' ID.
+ *   address:
+ *     description: "The Address of the Stock Location"
+ *     allOf:
+ *       - $ref: "#/components/schemas/StockLocationAddressInput"
+ *       - type: object
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
+
 export class AdminPostStockLocationsReq {
   @IsString()
   name: string
@@ -115,6 +138,14 @@ export class AdminPostStockLocationsReq {
   @ValidateNested()
   @Type(() => StockLocationAddress)
   address?: StockLocationAddress
+
+  @IsOptional()
+  @IsString()
+  address_id?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }
 
 export class AdminPostStockLocationsParams extends FindParams {}

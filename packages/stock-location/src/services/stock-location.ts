@@ -8,6 +8,7 @@ import {
   UpdateStockLocationInput,
   StockLocationAddressInput,
   IEventBusService,
+  setMetadata,
 } from "@medusajs/medusa"
 
 import { StockLocation, StockLocationAddress } from "../models"
@@ -95,15 +96,24 @@ export default class StockLocationService {
         name: data.name,
       })
 
-      if (isDefined("undefined")) {
-        if (typeof data.address === "string") {
-          loc.address_id = data.address
+      if (isDefined(data.address) || isDefined(data.address_id)) {
+        if (typeof data.address === "string" || data.address_id) {
+          const addrId = (data.address ?? data.address_id) as string
+          const address = await this.retrieve(addrId, {
+            select: ["id"],
+          })
+          loc.address_id = address.id
         } else {
           const locAddressRepo = manager.getRepository(StockLocationAddress)
           const locAddress = locAddressRepo.create(data.address!)
           const addressResult = await locAddressRepo.save(locAddress)
           loc.address_id = addressResult.id
         }
+      }
+
+      const { metadata } = data
+      if (metadata) {
+        loc.metadata = setMetadata(loc, metadata)
       }
 
       const result = await locationRepo.save(loc)
@@ -126,7 +136,7 @@ export default class StockLocationService {
 
       const item = await this.retrieve(itemId)
 
-      const { address, ...data } = updateData
+      const { address, metadata, ...data } = updateData
 
       let hasUpdated = false
       let shouldUpdate = Object.keys(data).some((key) => {
@@ -143,6 +153,11 @@ export default class StockLocationService {
           const addressResult = await locAddressRepo.save(locAddress)
           data.address_id = addressResult.id
         }
+        shouldUpdate = true
+      }
+
+      if (metadata) {
+        item.metadata = setMetadata(item, metadata)
         shouldUpdate = true
       }
 
@@ -179,6 +194,12 @@ export default class StockLocationService {
     }
 
     const toSave = locationAddressRepo.merge(existingAddress, address)
+
+    const { metadata } = address
+    if (metadata) {
+      toSave.metadata = setMetadata(toSave, metadata)
+    }
+
     return await locationAddressRepo.save(toSave)
   }
 

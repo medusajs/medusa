@@ -69,7 +69,7 @@ export class setup1665749860179 implements MigrationInterface {
         "updated_at" TIMESTAMP WITH time zone NOT NULL DEFAULT Now(),
         "deleted_at" TIMESTAMP WITH time zone,
         "name"       TEXT NOT NULL,
-        "address_id" TEXT,
+        "address_id" TEXT NOT NULL,
         "metadata"   JSONB,
         CONSTRAINT "PK_adf770067d0df1421f525fa25cc" PRIMARY KEY ("id")
       );
