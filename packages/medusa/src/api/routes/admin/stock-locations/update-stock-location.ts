@@ -7,7 +7,7 @@ import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /stock-locations/{id}
- * operationId: "PostSalesChannelsSalesChannel"
+ * operationId: "PostStockLocationsStockLocation"
  * summary: "Update a Stock Location"
  * description: "Updates a Stock Location."
  * x-authenticated: true
