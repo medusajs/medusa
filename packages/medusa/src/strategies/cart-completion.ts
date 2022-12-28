@@ -275,7 +275,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     }
 
     if (!allowBackorder) {
-      const inventoryServiceTx =
+      const productVariantInventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
 
       try {
@@ -283,10 +283,10 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
           cart.items.map(async (item) => {
             if (item.variant_id) {
               const inventoryConfirmed =
-                await inventoryServiceTx.confirmInventory(
+                await productVariantInventoryServiceTx.confirmInventory(
                   item.variant_id,
                   item.quantity,
-                  { sales_channel_id: cart.sales_channel_id }
+                  { salesChannelId: cart.sales_channel_id }
                 )
 
               if (!inventoryConfirmed) {

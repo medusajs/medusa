@@ -1,7 +1,6 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ClaimService from "../claim"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
-// import { InventoryServiceMock } from "../__mocks__/inventory"
 
 const withTransactionMock = jest.fn()
 const eventBusService = {

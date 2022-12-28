@@ -796,7 +796,7 @@ class CartService extends TransactionBaseService {
 
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
-        const inventoryServiceTx =
+        const productVariantInventoryServiceTx =
           this.productVariantInventoryService_.withTransaction(
             transactionManager
           )
@@ -834,11 +834,12 @@ class CartService extends TransactionBaseService {
             : item.quantity
 
           if (item.variant_id) {
-            const isSufficient = await inventoryServiceTx.confirmInventory(
-              item.variant_id,
-              item.quantity,
-              { salesChannelId: cart.sales_channel_id }
-            )
+            const isSufficient =
+              await productVariantInventoryServiceTx.confirmInventory(
+                item.variant_id,
+                item.quantity,
+                { salesChannelId: cart.sales_channel_id }
+              )
 
             if (!isSufficient) {
               throw new MedusaError(
