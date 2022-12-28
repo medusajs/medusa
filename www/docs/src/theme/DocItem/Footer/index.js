@@ -8,8 +8,6 @@ export default function FooterWrapper(props) {
   const { metadata } = useDoc()
   const { footerFeedback = { event: '' } } = useThemeConfig();
 
-  console.log(footerFeedback)
-
   return (
     <>
       {!metadata.frontMatter?.hide_footer && (

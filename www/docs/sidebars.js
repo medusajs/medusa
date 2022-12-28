@@ -290,8 +290,18 @@ module.exports = {
           items: [
             {
               type: "doc",
-              id: "advanced/admin/manage-regions",
-              label: "Manage Regions"
+              id: "advanced/admin/order-edit",
+              label: "Edit an Order"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-customers",
+              label: "Manage Customers"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/use-customergroups-api",
+              label: "Manage Customer Groups"
             },
             {
               type: "doc",
@@ -306,27 +316,22 @@ module.exports = {
             {
               type: "doc",
               id: "advanced/backend/price-lists/use-api",
-              label: "Use PriceList APIs"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/sales-channels/manage-admin",
-              label: "Use SalesChannel APIs"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/use-customergroups-api",
-              label: "Use CustomerGroup APIs"
+              label: "Manage PriceLists"
             },
             {
               type: "doc",
               id: "advanced/admin/manage-discounts",
-              label: "Use Discount APIs"
+              label: "Manage Discounts"
             },
             {
               type: "doc",
-              id: "advanced/admin/order-edit",
-              label: "Edit an Order"
+              id: "advanced/admin/manage-regions",
+              label: "Manage Regions"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/sales-channels/manage-admin",
+              label: "Manage Sales Channels"
             },
           ]
         },
