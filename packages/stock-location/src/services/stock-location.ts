@@ -18,6 +18,10 @@ type InjectedDependencies = {
   eventBusService: IEventBusService
 }
 
+/**
+ * Service for managing stock locations.
+ */
+
 export default class StockLocationService {
   static Events = {
     CREATED: "stock-location.created",
@@ -38,6 +42,12 @@ export default class StockLocationService {
     return connection.manager
   }
 
+  /**
+   * Lists all stock locations that match the given selector.
+   * @param {FilterableStockLocationProps} [selector={}] - Properties to filter by.
+   * @param {FindConfig} [config={ relations: [], skip: 0, take: 10 }] - Additional configuration for the query.
+   * @return {Promise<StockLocation[]>} A list of stock locations.
+   */
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 }
@@ -49,6 +59,12 @@ export default class StockLocationService {
     return await locationRepo.find(query)
   }
 
+  /**
+   * Lists all stock locations that match the given selector and returns the count of matching stock locations.
+   * @param {FilterableStockLocationProps} [selector={}] - Properties to filter by.
+   * @param {FindConfig} [config={ relations: [], skip: 0, take: 10 }] - Additional configuration for the query.
+   * @return {Promise<[StockLocation[], number]>} A list of stock locations and the count of matching stock locations.
+   */
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 }
@@ -60,6 +76,14 @@ export default class StockLocationService {
     return await locationRepo.findAndCount(query)
   }
 
+  /**
+   * Retrieves a stock location by its ID.
+   * @param {string} stockLocationId - The ID of the stock location.
+   * @param {FindConfig} [config={}] - Additional configuration for the query.
+   * @return {Promise<StockLocation>} The stock location.
+   * @throws {MedusaError} If the stock location ID is not defined.
+   * @throws {MedusaError} If the stock location with the given ID was not found.
+   */
   async retrieve(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {}
@@ -87,6 +111,11 @@ export default class StockLocationService {
     return loc
   }
 
+  /**
+   * Creates a new stock location.
+   * @param {CreateStockLocationInput} data - The input data for creating a stock location.
+   * @returns {Promise<StockLocation>} - The created stock location.
+   */
   async create(data: CreateStockLocationInput): Promise<StockLocation> {
     const defaultManager = this.getManager()
     return await defaultManager.transaction(async (manager) => {
@@ -125,6 +154,13 @@ export default class StockLocationService {
       return result
     })
   }
+
+  /**
+   * Updates an existing stock location.
+   * @param {string} itemId - The ID of the stock location to update.
+   * @param {UpdateStockLocationInput} updateData - The update data for the stock location.
+   * @returns {Promise<StockLocation>} - The updated stock location.
+   */
 
   async update(
     itemId: string,
@@ -177,6 +213,15 @@ export default class StockLocationService {
     })
   }
 
+  /**
+   * Updates an address for a stock location.
+   * @param {string} addressId - The ID of the address to update.
+   * @param {StockLocationAddressInput} address - The update data for the address.
+   * @param {Object} options - Options for the update.
+   * @param {EntityManager} options.manager - The entity manager to use for the update.
+   * @returns {Promise<StockLocationAddress>} - The updated stock location address.
+   */
+
   protected async updateAddress(
     addressId: string,
     address: StockLocationAddressInput,
@@ -203,6 +248,11 @@ export default class StockLocationService {
     return await locationAddressRepo.save(toSave)
   }
 
+  /**
+   * Deletes a stock location.
+   * @param {string} id - The ID of the stock location to delete.
+   * @returns {Promise<void>} - An empty promise.
+   */
   async delete(id: string): Promise<void> {
     const manager = this.getManager()
     const locationRepo = manager.getRepository(StockLocation)

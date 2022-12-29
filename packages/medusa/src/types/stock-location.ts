@@ -193,6 +193,10 @@ export type StockLocationAddressInput = {
  *     allOf:
  *       - $ref: "#/components/schemas/StockLocationAddressInput"
  *       - type: object
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */
 export type CreateStockLocationInput = {
   name: string
@@ -218,6 +222,10 @@ export type CreateStockLocationInput = {
  *     allOf:
  *       - $ref: "#/components/schemas/StockLocationAddressInput"
  *       - type: object
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
  */
 export type UpdateStockLocationInput = {
   name?: string

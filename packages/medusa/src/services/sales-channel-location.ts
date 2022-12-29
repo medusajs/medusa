@@ -11,6 +11,10 @@ type InjectedDependencies = {
   manager: EntityManager
 }
 
+/**
+ * Service for managing the stock locations of sales channels
+ */
+
 class SalesChannelLocationService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -34,6 +38,12 @@ class SalesChannelLocationService extends TransactionBaseService {
     this.stockLocationService = stockLocationService
   }
 
+  /**
+   * Removes an association between a sales channel and a stock location.
+   * @param {string} salesChannelId - The ID of the sales channel.
+   * @param {string} locationId - The ID of the stock location.
+   * @returns {Promise<void>} A promise that resolves when the association has been removed.
+   */
   async removeLocation(
     salesChannelId: string,
     locationId: string
@@ -45,6 +55,12 @@ class SalesChannelLocationService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Associates a sales channel with a stock location.
+   * @param {string} salesChannelId - The ID of the sales channel.
+   * @param {string} locationId - The ID of the stock location.
+   * @returns {Promise<void>} A promise that resolves when the association has been created.
+   */
   async associateLocation(
     salesChannelId: string,
     locationId: string
@@ -63,6 +79,11 @@ class SalesChannelLocationService extends TransactionBaseService {
     await manager.save(salesChannelLocation)
   }
 
+  /**
+   * Lists the stock locations associated with a sales channel.
+   * @param {string} salesChannelId - The ID of the sales channel.
+   * @returns {Promise<string[]>} A promise that resolves with an array of location IDs.
+   */
   async listLocations(salesChannelId: string): Promise<string[]> {
     const manager = this.transactionManager_ || this.manager_
     const salesChannel = await this.salesChannelService
