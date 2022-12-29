@@ -1,10 +1,7 @@
 import { IsString } from "class-validator"
 import { Request, Response } from "express"
 
-import {
-  SalesChannelService,
-  SalesChannelLocationService,
-} from "../../../../services"
+import { SalesChannelLocationService } from "../../../../services"
 
 /**
  * @oas [delete] /sales-channels/{id}/stock-locations
@@ -84,9 +81,6 @@ export default async (req: Request, res: Response) => {
     validatedBody: AdminDeleteSalesChannelsChannelStockLocationsReq
   }
 
-  const salesChannelService: SalesChannelService = req.scope.resolve(
-    "salesChannelService"
-  )
   const channelLocationService: SalesChannelLocationService = req.scope.resolve(
     "salesChannelLocationService"
   )
