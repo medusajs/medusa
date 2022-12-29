@@ -1428,8 +1428,6 @@ describe("/admin/orders", () => {
         },
       })
 
-      console.log(order.customer)
-
       const api = useApi()
 
       const response = await api.get("/admin/orders?q=Doe", adminReqConfig)

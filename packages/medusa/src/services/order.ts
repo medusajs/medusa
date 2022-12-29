@@ -234,8 +234,6 @@ class OrderService extends TransactionBaseService {
             })
               .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
               .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
-
-              // Customer
               .orWhere(`customer.first_name ILIKE :q`, { q: `%${q}%` })
               .orWhere(`customer.last_name ILIKE :q`, { q: `%${q}%` })
               .orWhere(`customer.phone ILIKE :q`, { q: `%${q}%` })
