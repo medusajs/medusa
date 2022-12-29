@@ -1369,6 +1369,84 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("list all orders with matching customer phone", async () => {
+      const order = await simpleOrderFactory(dbConnection, {
+        customer: {
+          phone: "1234567890",
+        },
+      })
+
+      const api = useApi()
+
+      const response = await api.get("/admin/orders?q=123456", adminReqConfig)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toHaveLength(1)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: order.id,
+            customer: expect.objectContaining({
+              phone: "1234567890",
+            }),
+          }),
+        ])
+      )
+    })
+
+    it("list all orders with matching customer first_name", async () => {
+      const order = await simpleOrderFactory(dbConnection, {
+        customer: {
+          first_name: "john",
+        },
+      })
+
+      const api = useApi()
+
+      const response = await api.get("/admin/orders?q=john", adminReqConfig)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toHaveLength(1)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: order.id,
+            customer: expect.objectContaining({
+              first_name: "john",
+            }),
+          }),
+        ])
+      )
+    })
+
+    it("list all orders with matching customer last_name", async () => {
+      const order = await simpleOrderFactory(dbConnection, {
+        customer: {
+          last_name: "Doe",
+        },
+      })
+
+      const api = useApi()
+
+      const response = await api.get("/admin/orders?q=Doe", adminReqConfig)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toHaveLength(1)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: order.id,
+            customer: expect.objectContaining({
+              last_name: "Doe",
+            }),
+          }),
+        ])
+      )
+    })
+
     it("list all orders with matching shipping_address first name", async () => {
       const api = useApi()
 
