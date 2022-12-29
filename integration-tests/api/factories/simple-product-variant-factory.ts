@@ -45,7 +45,7 @@ export const simpleProductVariantFactory = async (
   const options = data.options || [{ option_id: "test-option", value: "Large" }]
   for (const o of options) {
     await manager.insert(ProductOptionValue, {
-      id: `${variant.id}-${o.value}-${o.option_id}`,
+      id: `${variant.id}-${o.option_id}`,
       value: o.value,
       variant_id: id,
       option_id: o.option_id,
