@@ -4,7 +4,7 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
   {
     key: "stockLocationService",
     registrationName: "stockLocationService",
-    defaultPackage: "@medusajs/stock-location",
+    defaultPackage: false,
     label: "StockLocationService",
     isRequired: false,
     canOverride: true,
