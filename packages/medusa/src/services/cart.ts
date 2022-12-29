@@ -2069,32 +2069,32 @@ class CartService extends TransactionBaseService {
       cart.items = (
         await Promise.all(
           cart.items.map(async (item) => {
-            if (item.variant_id) {
-              const availablePrice = await this.priceSelectionStrategy_
-                .withTransaction(transactionManager)
-                .calculateVariantPrice(item.variant_id, {
-                  region_id: region.id,
-                  currency_code: region.currency_code,
-                  quantity: item.quantity,
-                  customer_id: customer_id || cart.customer_id,
-                  include_discount_prices: true,
-                })
-                .catch(() => undefined)
-
-              if (
-                availablePrice !== undefined &&
-                availablePrice.calculatedPrice !== null
-              ) {
-                return await lineItemServiceTx.update(item.id, {
-                  has_shipping: false,
-                  unit_price: availablePrice.calculatedPrice,
-                })
-              } else {
-                return await lineItemServiceTx.delete(item.id)
-              }
-            } else {
+            if (!item.variant_id) {
               return item
             }
+
+            const availablePrice = await this.priceSelectionStrategy_
+              .withTransaction(transactionManager)
+              .calculateVariantPrice(item.variant_id, {
+                region_id: region.id,
+                currency_code: region.currency_code,
+                quantity: item.quantity,
+                customer_id: customer_id || cart.customer_id,
+                include_discount_prices: true,
+              })
+              .catch(() => undefined)
+
+            if (
+              availablePrice !== undefined &&
+              availablePrice.calculatedPrice !== null
+            ) {
+              return await lineItemServiceTx.update(item.id, {
+                has_shipping: false,
+                unit_price: availablePrice.calculatedPrice,
+              })
+            }
+
+            return await lineItemServiceTx.delete(item.id)
           })
         )
       )
