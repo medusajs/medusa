@@ -138,7 +138,27 @@ cd medusa-server
 medusa-dev
 ```
 
-By default, Medusa’s dev CLI runs in watch mode. So, it copies the files when you first run it, then, whenever you make changes in the packages in the Medusa repository, it copies the changed files again.
+By default, Medusa’s dev CLI runs in watch mode. So, it copies the files when you first run it. Then, whenever you make changes in the `dist` directory of the packages in the Medusa repository, it copies the changed files again.
+
+### Watch and Compile Changes
+
+While the above command is running, it's recommended to run the `watch` command inside the directory of every package you're making changes to.
+
+The combination of these two commands running at the same time will compile the package into the `dist` directory of the package, then copy the compiled changes into your local server.
+
+For example, if you're making changes in the `medusa` package, run the following command inside the directory of the `medusa` package:
+
+```bash title=packages/medusa
+yarn watch
+```
+
+Make sure the `medusa-dev` command is also running to copy the changes automatically.
+
+Alternatively, you can manually run the `build` command every time you want to compile the changes:
+
+```bash title=packages/medusa
+yarn build
+```
 
 ### CLI Options
 
