@@ -367,19 +367,22 @@ medusa.admin.discounts.updateCondition(discountId, conditionId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    products: [
-      productId1,
-      productId2,
-    ],
-  }),
-})
+fetch(
+  `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, 
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      products: [
+        productId1,
+        productId2,
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ discount }) => {
   console.log(discount.id)
@@ -428,10 +431,13 @@ medusa.admin.discounts.deleteCondition(discountId, conditionId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, {
-  method: "DELETE",
-  credentials: "include",
-})
+fetch(
+  `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`,
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ discount }) => {
   console.log(discount.id)

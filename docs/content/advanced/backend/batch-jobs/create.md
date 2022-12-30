@@ -50,7 +50,10 @@ Batch job strategies must extend the abstract class `AbstractBatchJobStrategy` a
 Add the following content to the file you created:
 
 ```ts title=src/strategies/publish.ts
-import { AbstractBatchJobStrategy, BatchJobService } from "@medusajs/medusa"
+import { 
+  AbstractBatchJobStrategy, 
+  BatchJobService, 
+} from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
 
 class PublishStrategy extends AbstractBatchJobStrategy {

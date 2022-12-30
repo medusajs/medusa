@@ -335,10 +335,13 @@ medusa.admin.orderEdits.deleteItemChange(orderEditId, changeId)
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/changes/${changeId}`, {
-  method: "DELETE",
-  credentials: "include",
-})
+fetch(
+  `<YOUR_SERVER>/admin/order-edits/${orderEditId}/changes/${changeId}`,
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
   console.log(id, object, deleted)

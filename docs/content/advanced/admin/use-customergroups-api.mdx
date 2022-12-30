@@ -306,20 +306,23 @@ medusa.admin.customerGroups.addCustomers(customerGroupId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    customer_ids: [
-	    {
-	      id: customerId,
-	    },
-	  ],
-  }),
-})
+fetch(
+  `<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      customer_ids: [
+        {
+          id: customerId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
@@ -417,20 +420,23 @@ medusa.admin.customerGroups.removeCustomers(customer_group_id, {
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
-  method: "DELETE",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    customer_ids: [
-	    {
-	      id: customerId,
-	    },
-	  ],
-  }),
-})
+fetch(
+  `<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
+  {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      customer_ids: [
+        {
+          id: customerId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)

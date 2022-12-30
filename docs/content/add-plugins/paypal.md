@@ -158,7 +158,10 @@ npm install @paypal/react-paypal-js
 Next, create a new file `src/components/payment/paypal-payment/index.jsx` with the following content:
 
 ```jsx title=src/components/payment/paypal-payment/index.jsx
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
+import { 
+  PayPalButtons, 
+  PayPalScriptProvider,
+} from "@paypal/react-paypal-js"
 import React, { useMemo, useState } from "react"
 
 import { navigate } from "gatsby"
@@ -219,7 +222,9 @@ const PaypalPayment = () => {
   const handlePayment = (data, actions) => {
     actions.order.authorize().then((authorization) => {
       if (authorization.status !== "COMPLETED") {
-        setErrorMessage(`An error occurred, status: ${authorization.status}`)
+        setErrorMessage(
+          `An error occurred, status: ${authorization.status}`
+        )
         setProcessing(false)
         return
       }
@@ -305,7 +310,10 @@ Then, add the Client ID as an environment variable based on the framework you’
 Next, create the file that will hold the PayPal component with the following content:
 
 ```jsx
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
+import { 
+  PayPalButtons, 
+  PayPalScriptProvider,
+} from "@paypal/react-paypal-js"
 import { useEffect, useState } from "react"
 
 import Medusa from "@medusajs/medusa-js"
@@ -319,7 +327,9 @@ function Paypal() {
   const handlePayment = (data, actions) => {
     actions.order.authorize().then(async (authorization) => {
       if (authorization.status !== "COMPLETED") {
-        setErrorMessage(`An error occurred, status: ${authorization.status}`)
+        setErrorMessage(
+          `An error occurred, status: ${authorization.status}`
+        )
         setProcessing(false)
         return
       }

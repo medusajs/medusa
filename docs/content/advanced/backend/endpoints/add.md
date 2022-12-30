@@ -232,7 +232,9 @@ To disallow guest customers from accessing the endpoint, you can throw an error 
 To make an admin route protected, first, import the `authenticate` middleware:
 
 ```ts
-import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate"
+import 
+  authenticate 
+from "@medusajs/medusa/dist/api/middlewares/authenticate"
 ```
 
 Then, add the middleware to your route:

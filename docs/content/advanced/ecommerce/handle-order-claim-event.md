@@ -149,7 +149,7 @@ class ClaimOrderSubscriber {
       from: "hello@medusajs.com",
       to: data.old_email,
       data: {
-        link: `http://example-storefront.com/confirm-order-claim/${data.token}`,
+        link: `http://example.com/confirm-order-claim/${data.token}`,
         // other data...
       },
     })

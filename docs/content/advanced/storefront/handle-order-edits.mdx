@@ -149,7 +149,8 @@ Here’s an example of how you can use this data to show the customer the reques
       {itemChange.type === "removed" && <span>Removed Item</span>}
       {itemChange.type === "edited" && 
         <span>
-          Edited Item. Old Quantity: {itemChange.original_line_item.quantity}
+          Edited Item
+          Old Quantity: {itemChange.original_line_item.quantity}
           New Quantity: {itemChange.line_item.quantity}
         </span>}
     </li>
@@ -199,7 +200,7 @@ medusa.paymentCollections.managePaymentSession(paymentCollectionId, {
 
 ```ts
 fetch(
-  `<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`, 
+  `<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`,
   {
     method: "POST",
     credentials: "include",

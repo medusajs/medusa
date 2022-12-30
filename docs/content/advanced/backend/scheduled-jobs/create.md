@@ -39,19 +39,21 @@ To create a scheduled job, add the following code in the file you created, which
 ```ts title=src/loaders/publish.ts
 const publishJob = async (container, options) => {
   const jobSchedulerService = container.resolve("jobSchedulerService")
-  jobSchedulerService.create("publish-products", {}, "0 0 * * *", async () => {
-    // job to execute
-    const productService = container.resolve("productService")
-    const draftProducts = await productService.list({
-      status: "draft",
-    })
-
-    for (const product of draftProducts) {
-      await productService.update(product.id, {
-        status: "published",
+  jobSchedulerService.create("publish-products", {}, "0 0 * * *", 
+    async () => {
+      // job to execute
+      const productService = container.resolve("productService")
+      const draftProducts = await productService.list({
+        status: "draft",
       })
+
+      for (const product of draftProducts) {
+        await productService.update(product.id, {
+          status: "published",
+        })
+      }
     }
-  })
+  )
 }
 
 export default publishJob

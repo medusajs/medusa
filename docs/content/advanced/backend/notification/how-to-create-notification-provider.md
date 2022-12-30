@@ -34,14 +34,22 @@ class EmailSenderService extends AbstractNotificationService {
     event: string, 
     data: unknown, 
     attachmentGenerator: unknown
-  ): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
     throw new Error("Method not implemented.")
   }
   resendNotification(
     notification: unknown,
     config: unknown,
     attachmentGenerator: unknown
-  ): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
+  ): Promise<{
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
     throw new Error("Method not implemented.")
   }
 
@@ -94,7 +102,10 @@ You can learn more about plugins and how to create them in the [Plugins](../plug
 Continuing on with the previous example, if you want to use the [`OrderService`](../../../references/services/classes/OrderService.md) later when sending notifications, you can inject it into the constructor:
 
 ```ts
-import { AbstractNotificationService, OrderService } from "@medusajs/medusa"
+import { 
+  AbstractNotificationService, 
+  OrderService,
+} from "@medusajs/medusa"
 
 class EmailSenderService extends AbstractNotificationService {
   protected manager_: EntityManager
@@ -146,7 +157,11 @@ class EmailSenderService extends AbstractNotificationService {
     event: string,
     data: any,
     attachmentGenerator: unknown
-  ): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
     if (event === "order.placed") {
       // retrieve order
       const order = await this.orderService.retrieve(data.id)
@@ -204,7 +219,11 @@ class EmailSenderService extends AbstractNotificationService {
     notification: any,
     config: any,
     attachmentGenerator: unknown
-  ): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
     // check if the receiver of the notification should be changed
     const to: string = config.to ? config.to : notification.to
 

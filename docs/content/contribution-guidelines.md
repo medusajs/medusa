@@ -245,7 +245,7 @@ npm install @medusajs/medusa-cli -g
 
 Medusa uses Vale to lint documentation pages and perform checks on incoming PRs into the repository.
 
-### Result of PR Checks
+### Result of Vale PR Checks
 
 You can check the result of running the "lint" action on your PR by clicking the Details link next to it. You can find there all errors that you need to fix.
 
@@ -293,6 +293,64 @@ Medusa supports Node versions 14 and 16.
 ```
 
 If you use this in your PR, you must justify its usage.
+
+---
+
+## Linting with ESLint
+
+Medusa uses Eslint to lint code blocks in the documentation and perform checks on incoming PRs into the repository.
+
+### Result of ESLint PR Checks
+
+You can check the result of running the "eslint" action on your PR by clicking the Details link next to it. You can find there all errors that you need to fix.
+
+### Running ESLint locally
+
+If you want to check your work locally, you can do that by:
+
+1. Installing the dependencies in the root directory:
+
+```bash
+yarn install
+```
+
+2\. Run the lint command:
+
+```bash
+yarn lint:docs
+```
+
+You can also pass the `--fix` option to automatically fix errors.
+
+### ESLint Exceptions
+
+If some code blocks have errors that can't or shouldn't be fixed, you can add the following command before the code block:
+
+~~~md
+<!-- eslint-skip -->
+
+```js
+console.log("This block isn't linted")
+```
+
+```js
+console.log("This block is linted")
+```
+~~~
+
+You can also disable specific rules. For example:
+
+~~~md
+<!-- eslint-disable semi -->
+
+```js
+console.log("This block can use semicolons");
+```
+
+```js
+console.log("This block can't use semi colons")
+```
+~~~
 
 ---
 

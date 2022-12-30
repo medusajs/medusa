@@ -320,20 +320,23 @@ medusa.admin.salesChannels.addProducts(salesChannelId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    product_ids: [
-	    {
-	      id: productId,
-	    },
-	  ],
-  }),
-})
+fetch(
+  `<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      product_ids: [
+        {
+          id: productId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
@@ -385,9 +388,12 @@ medusa.admin.products.list({
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`, {
-  credentials: "include",
-})
+fetch(
+  `<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`,
+  {
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
@@ -437,20 +443,23 @@ medusa.admin.salesChannels.removeProducts(salesChannelId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
-  method: "DELETE",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    product_ids: [
-	    {
-	      id: productId,
-	    },
-	  ],
-  }),
-})
+fetch(
+  `<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
+  {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      product_ids: [
+        {
+          id: productId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)

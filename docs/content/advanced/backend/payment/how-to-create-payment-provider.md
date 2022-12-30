@@ -50,6 +50,8 @@ The first step to create a payment provider is to create a JavaScript or TypeScr
 
 For example, create the file `src/services/my-payment.ts` with the following content:
 
+<!-- eslint-disable max-len -->
+
 ```ts title=src/services/my-payment.ts
 import { 
   AbstractPaymentService, 
@@ -130,6 +132,8 @@ You can also use the constructor to initialize your integration with the third-p
 
 Additionally, if you’re creating your Payment Provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
   // ...
@@ -150,6 +154,8 @@ The method receives the cart as an object for its first parameter. It holds all 
 This method must return an object that is going to be stored in the `data` field of the Payment Session to be created. As mentioned in the [Architecture Overview](./overview.md), the `data` field is useful to hold any data required by the third-party provider to process the payment or retrieve its details at a later point.
 
 An example of a minimal implementation of `createPayment` that does not interact with any third-party providers:
+
+<!-- eslint-disable max-len -->
 
 ```ts
 import { Cart, Data } from "@medusajs/medusa"
@@ -175,6 +181,8 @@ This method accepts the `data` field of a Payment Session or a Payment. So, you 
 This method must return an object containing the data from the third-party provider.
 
 An example of a minimal implementation of `retrievePayment` where you don’t need to interact with the third-party provider:
+
+<!-- eslint-disable max-len -->
 
 ```ts
 import { Data } from "@medusajs/medusa"
@@ -205,6 +213,8 @@ This method returns a string that represents the status. The status must be one 
 5. `canceled`: If the payment was canceled.
 
 An example of a minimal implementation of `getStatus` where you don’t need to interact with the third-party provider:
+
+<!-- eslint-disable max-len -->
 
 ```ts
 import { Data, PaymentSessionStatus } from "@medusajs/medusa"
@@ -242,6 +252,8 @@ This method must return an object that will be stored in the `data` field of the
 
 An example of a minimal implementation of `updatePayment` that does not need to make any updates on the third-party provider or the `data` field of the Payment Session:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 import { Cart, Data } from "@medusajs/medusa"
 // ...
@@ -265,6 +277,8 @@ You can utilize this method to interact with the third-party provider and make a
 This method must return an object that will be stored in the `data` field of the Payment Session.
 
 An example of a minimal implementation of `updatePaymentData` that returns the `updatedData` passed in the body of the request as-is to update the `data` field of the Payment Session.
+
+<!-- eslint-disable max-len -->
 
 ```ts
 import { Data } from "@medusajs/medusa"
@@ -295,6 +309,8 @@ It accepts the Payment Session as an object for its first parameter.
 You can use this method to interact with the third-party provider to delete data related to the Payment Session if necessary.
 
 An example of a minimal implementation of `deletePayment` where no interaction with a third-party provider is required:
+
+<!-- eslint-disable max-len -->
 
 ```ts
 import { PaymentSession } from "@medusajs/medusa"
@@ -337,8 +353,14 @@ You can utilize this method to interact with the third-party provider and perfor
 
 An example of a minimal implementation of `authorizePayment` that doesn’t need to interact with any third-party provider:
 
+<!-- eslint-disable max-len -->
+
 ```ts
-import { Data, PaymentSession, PaymentSessionStatus } from "@medusajs/medusa"
+import { 
+  Data, 
+  PaymentSession, 
+  PaymentSessionStatus, 
+} from "@medusajs/medusa"
 // ...
 
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
@@ -367,6 +389,8 @@ This method must return an object to be stored in the `data` field of the Paymen
 
 An example of a minimal implementation of `getPaymentData`:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 import { Data, PaymentSession } from "@medusajs/medusa"
 // ...
@@ -392,6 +416,8 @@ This method accepts the Payment as an object for its first parameter.
 This method must return an object that will be stored in the `data` field of the Payment.
 
 An example of a minimal implementation of `capturePayment` that doesn’t need to interact with a third-party provider:
+
+<!-- eslint-disable max-len -->
 
 ```ts
 import { Data, Payment } from "@medusajs/medusa"
@@ -421,13 +447,18 @@ This method must return an object that is stored in the `data` field of the Paym
 
 An example of a minimal implementation of `refundPayment` that doesn’t need to interact with a third-party provider:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 import { Data, Payment } from "@medusajs/medusa"
 // ...
 
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
   // ...
-  async refundPayment(payment: Payment, refundAmount: number): Promise<Data> {
+  async refundPayment(
+    payment: Payment, 
+    refundAmount: number
+  ): Promise<Data> {
     return {
       id: "test",
     }
@@ -451,6 +482,8 @@ This method accepts the Payment as an object for its first parameter.
 This method must return an object that is stored in the `data` field of the Payment.
 
 An example of a minimal implementation of `cancelPayment` that doesn’t need to interact with a third-party provider:
+
+<!-- eslint-disable max-len -->
 
 ```ts
 import { Data, Payment } from "@medusajs/medusa"
@@ -487,6 +520,8 @@ If you’re using Medusa’s [Next.js](../../../starters/nextjs-medusa-starter.m
 :::
 
 An example of the implementation of `retrieveSavedMethods` taken from Stripe’s Payment Provider:
+
+<!-- eslint-disable max-len -->
 
 ```ts
 import { Customer, Data } from "@medusajs/medusa"

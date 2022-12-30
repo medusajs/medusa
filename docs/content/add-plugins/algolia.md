@@ -287,7 +287,8 @@ const Search = () => {
         searchState && searchState.query && 
         searchResults && searchResults.nbHits !== 0 ? 
         (
-          <div className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
+          <div 
+            className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
             {children}
           </div>
         ) : (

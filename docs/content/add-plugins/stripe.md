@@ -237,7 +237,11 @@ Once the clientSecret is set, the `Elements` Stripe component will wrap a `Form`
 Create a new file for the `Form` component with the following content:
 
 ```jsx
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
+import { 
+  CardElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js"
 
 export default function Form({ clientSecret, cartId }) {
   const stripe = useStripe()
