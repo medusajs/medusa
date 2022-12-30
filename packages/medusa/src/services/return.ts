@@ -1,6 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
-import { ProductVariantInventoryService } from "."
 import { TransactionBaseService } from "../interfaces"
 import {
   FulfillmentStatus,
