@@ -70,6 +70,13 @@ class ClaimItemService extends TransactionBaseService {
         .withTransaction(manager)
         .retrieve(item_id)
 
+      if (!lineItem.variant_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot claim a custom line item"
+        )
+      }
+
       if (lineItem.fulfilled_quantity < quantity) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
