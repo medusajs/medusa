@@ -111,9 +111,6 @@ module.exports = {
       plugins: ["@typescript-eslint/eslint-plugin"],
       extends: ["plugin:@typescript-eslint/recommended"],
       parser: "@typescript-eslint/parser",
-      // parserOptions: {
-      //   project: "./packages/medusa/tsconfig.json",
-      // },
       rules: {
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-empty-function": "off",
