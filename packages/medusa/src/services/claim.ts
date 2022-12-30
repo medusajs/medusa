@@ -335,27 +335,6 @@ export default class ClaimService extends TransactionBaseService {
         let newItems: LineItem[] = []
 
         if (isDefined(additional_items)) {
-          await Promise.all(
-            additional_items.map(async (addItem) => {
-              if (addItem.variant_id) {
-                const hasInventory =
-                  await this.productVariantInventoryService_.confirmInventory(
-                    addItem.variant_id,
-                    addItem.quantity,
-                    { salesChannelId: order.sales_channel_id }
-                  )
-
-                if (!hasInventory) {
-                  throw new MedusaError(
-                    MedusaError.Types.NOT_ALLOWED,
-                    `Variant with id: ${addItem.variant_id} does not have the required inventory`,
-                    MedusaError.Codes.INSUFFICIENT_INVENTORY
-                  )
-                }
-              }
-            })
-          )
-
           newItems = await Promise.all(
             additional_items.map(async (i) =>
               lineItemServiceTx.generate(
