@@ -72,6 +72,10 @@ export class Return extends BaseEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   shipping_data: Record<string, unknown>
 
+  @Index()
+  @Column({ nullable: true })
+  location_id: string
+
   @Column({ type: "int" })
   refund_amount: number
 
