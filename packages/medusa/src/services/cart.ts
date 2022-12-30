@@ -1302,8 +1302,6 @@ class CartService extends TransactionBaseService {
       address = addressOrId as Address
     }
 
-    address.country_code = address.country_code?.toLowerCase() ?? null
-
     if (address.id) {
       cart.billing_address = await addrRepo.save(address)
     } else {
@@ -1348,7 +1346,6 @@ class CartService extends TransactionBaseService {
       address = addressOrId as Address
     }
 
-    address.country_code = address.country_code?.toLowerCase() ?? null
     if (
       address.country_code &&
       !cart.region.countries.find(
