@@ -239,7 +239,8 @@ When the customer chooses the payment provider they want to complete purchase wi
 
 ```jsx
 medusa.carts.setPaymentSession(cartId, {
-  provider_id: paymentProviderId // retrieved from the payment session selected by the customer
+  // retrieved from the payment session selected by the customer
+  provider_id: paymentProviderId
 })
 .then(({ cart }) => {
   console.log(cart.payment_session)
@@ -254,7 +255,8 @@ fetch(`<SERVER_URL>/store/carts/${cartId}/payment-session`, {
   method: 'POST',
   credentials: 'include',
   body: JSON.stringify({
-    provider_id: paymentProviderId // retrieved from the payment session selected by the customer
+    // retrieved from the payment session selected by the customer
+    provider_id: paymentProviderId
   }),
   headers: {
     'Content-Type': 'application/json'
@@ -305,20 +307,23 @@ medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, {
-  method: 'POST',
-  credentials: 'include',
-  body: JSON.stringify({
-    data: {
-      //pass any data you want to add in the `data` attribute
-      //for example:
-      "test": true
+fetch(
+  `<SERVER_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, 
+  {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify({
+      data: {
+        //pass any data you want to add in the `data` attribute
+        //for example:
+        "test": true
+      }
+    }),
+    headers: {
+      'Content-Type': 'application/json'
     }
-  }),
-  headers: {
-    'Content-Type': 'application/json'
   }
-})
+)
 .then((response) => response.json())
 .then(({ cart }) => {
   console.log(cart.payment_session.data)

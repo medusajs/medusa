@@ -51,7 +51,11 @@ The first step to create a payment provider is to create a JavaScript or TypeScr
 For example, create the file `src/services/my-payment.ts` with the following content:
 
 ```ts title=src/services/my-payment.ts
-import { AbstractPaymentService, Cart, Data, Payment, PaymentSession, PaymentSessionStatus, TransactionBaseService } from "@medusajs/medusa"
+import { 
+  AbstractPaymentService, 
+  Cart, Data, Payment, PaymentSession, 
+  PaymentSessionStatus, TransactionBaseService 
+} from "@medusajs/medusa"
 import { EntityManager } from "typeorm";
 
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
@@ -73,7 +77,10 @@ class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
   updatePayment(paymentSessionData: Data, cart: Cart): Promise<Data> {
     throw new Error("Method not implemented.");
   }
-  authorizePayment(paymentSession: PaymentSession, context: Data): Promise<{ data: Data; status: PaymentSessionStatus; }> {
+  authorizePayment(
+    paymentSession: PaymentSession,
+    context: Data
+  ): Promise<{ data: Data; status: PaymentSessionStatus; }> {
     throw new Error("Method not implemented.");
   }
   capturePayment(payment: Payment): Promise<Data> {
@@ -247,7 +254,10 @@ An example of a minimal implementation of `updatePaymentData` that returns the `
 import { Data } from "@medusajs/medusa";
 //...
 
-async updatePaymentData(paymentSessionData: Data, updatedData: Data): Promise<Data> {
+async updatePaymentData(
+  paymentSessionData: Data,
+  updatedData: Data
+): Promise<Data> {
   return updatedData;
 }
 ```
@@ -309,7 +319,10 @@ An example of a minimal implementation of `authorizePayment` that doesn’t need
 import { Data, PaymentSession, PaymentSessionStatus } from "@medusajs/medusa";
 //...
 
-async authorizePayment(paymentSession: PaymentSession, context: Data): Promise<{ data: Data; status: PaymentSessionStatus; }> {
+async authorizePayment(
+  paymentSession: PaymentSession,
+  context: Data
+): Promise<{ data: Data; status: PaymentSessionStatus; }> {
   return {
     status: PaymentSessionStatus.AUTHORIZED,
     data: {

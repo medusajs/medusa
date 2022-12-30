@@ -30,10 +30,18 @@ class EmailSenderService extends AbstractNotificationService {
   protected manager_: EntityManager;
   protected transactionManager_: EntityManager;
 
-  sendNotification(event: string, data: unknown, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
+  sendNotification(
+    event: string, 
+    data: unknown, 
+    attachmentGenerator: unknown
+  ): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
     throw new Error("Method not implemented.");
   }
-  resendNotification(notification: unknown, config: unknown, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
+  resendNotification(
+    notification: unknown,
+    config: unknown,
+    attachmentGenerator: unknown
+  ): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
     throw new Error("Method not implemented.");
   }
 
@@ -129,7 +137,11 @@ This method must return an object containing two properties:
 Continuing with the previous example you can have the following implementation of the `sendNotification` method:
 
 ```ts
-async sendNotification(event: string, data: any, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
+async sendNotification(
+  event: string,
+  data: any,
+  attachmentGenerator: unknown
+): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
   if (event === 'order.placed') {
     //retrieve order
     const order = await this.orderService.retrieve(data.id);
@@ -180,11 +192,16 @@ Similarly to the `sendNotification` method, this method must return an object co
 Continuing with the previous example you can have the following implementation of the `resendNotification` method:
 
 ```ts
-async resendNotification(notification: any, config: any, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
+async resendNotification(
+  notification: any,
+  config: any,
+  attachmentGenerator: unknown
+): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
   //check if the receiver of the notification should be changed
   const to: string = config.to ? config.to : notification.to;
 
-  //TODO resend the notification using the same data that is saved under notification.data
+  //TODO resend the notification using the same data
+  //that is saved under notification.data
 
   console.log('Notification resent');
   return {
@@ -288,5 +305,5 @@ This request returns the same notification object as the List Notifications endp
 - [Events reference](../subscribers/events-list.md)
 - [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
 - [Create a Subscriber](../subscribers/create-subscriber.md)
-- [Create a Service](../services/create-service.md).
-- [Create a Plugin](../plugins/create.md).
+- [Create a Service](../services/create-service.md)
+- [Create a Plugin](../plugins/create.md)

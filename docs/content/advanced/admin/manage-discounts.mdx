@@ -312,9 +312,13 @@ medusa.admin.discounts.getCondition(discountId, conditionId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}&expand=products`, {
-  credentials: 'include'
-})
+fetch(
+  `<YOUR_SERVER>/admin/discounts/${discountId}` + 
+  `/conditions/${conditionId}&expand=products`,
+  {
+    credentials: 'include'
+  }
+)
 .then((response) => response.json())
 .then(({ discount_condition }) => {
   console.log(discount_condition.id, discount_condition.products);
@@ -324,10 +328,14 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}&exp
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X GET '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>&expand=products' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
+
+<!-- vale docs.CodeLength = NO -->
 
 </TabItem>
 </Tabs>

@@ -136,12 +136,19 @@ Here’s an example of how you can use this data to show the customer the reques
 <ul>
   {orderEdit.changes.map(itemChange => (
     <li key={itemChange.id}>
-      <strong>{itemChange.line_item ? itemChange.line_item.title : itemChange.original_line_item.title}</strong>
+      <strong>
+        {
+          itemChange.line_item ? 
+          itemChange.line_item.title : 
+          itemChange.original_line_item.title
+        }
+      </strong>
       {itemChange.type === 'added' && <span>New Item</span>}
       {itemChange.type === 'removed' && <span>Removed Item</span>}
       {itemChange.type === 'edited' && 
         <span>
-          Edited Item. Old Quantity: {itemChange.original_line_item.quantity}. New Quantity: {itemChange.line_item.quantity}
+          Edited Item. Old Quantity: {itemChange.original_line_item.quantity}
+          New Quantity: {itemChange.line_item.quantity}
         </span>}
     </li>
   ))}
@@ -189,16 +196,19 @@ medusa.paymentCollections.managePaymentSession(paymentCollectionId, {
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`, {
-  method: 'POST',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    provider_id
-  })
-})
+fetch(
+  `<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`, 
+  {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      provider_id
+    })
+  }
+)
 .then((response) => response.json())
 .then(({ payment_collection }) => {
   console.log(payment_collection.payment_sessions);
@@ -215,7 +225,8 @@ fetch(`<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`, 
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-medusa.paymentCollection.authorizePaymentSession(paymentCollectionId, paymentSessionId)
+medusa.paymentCollection
+  .authorizePaymentSession(paymentCollectionId, paymentSessionId)
 .then(({ payment_session }) => {
   console.log(payment_session.id);
 });
@@ -225,10 +236,14 @@ medusa.paymentCollection.authorizePaymentSession(paymentCollectionId, paymentSes
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/payment-collection/${paymentCollectionId}/sessions/${paymentSessionId}/authorize`, {
-  method: 'POST',
-  credentials: 'include',
-})
+fetch(
+  `<SERVER_URL>/store/payment-collection/${paymentCollectionId}` + 
+  `/sessions/${paymentSessionId}/authorize`, 
+  {
+    method: 'POST',
+    credentials: 'include',
+  }
+)
 .then((response) => response.json())
 .then(({ payment_session }) => {
   console.log(payment_session.id);

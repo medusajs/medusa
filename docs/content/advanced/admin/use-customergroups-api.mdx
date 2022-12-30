@@ -329,6 +329,8 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
@@ -341,6 +343,8 @@ curl -L -X POST '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customer
     ]
 }'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>
@@ -377,10 +381,14 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X GET '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>
@@ -440,6 +448,8 @@ fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
@@ -452,6 +462,8 @@ curl -L -X DELETE '<SERVER_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/custom
     ]
 }'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>

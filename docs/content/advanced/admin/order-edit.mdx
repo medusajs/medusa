@@ -252,6 +252,8 @@ fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X POST '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
@@ -260,6 +262,8 @@ curl -L -X POST '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>'
     "quantity": 2
 }'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>
@@ -301,10 +305,14 @@ fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X DELETE '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>
@@ -348,10 +356,14 @@ fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/changes/${changeId}`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X DELETE '<SERVER_URL>/admin/order-edits/<ORDER_EDIT_ID>/changes/<CHANGE_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>

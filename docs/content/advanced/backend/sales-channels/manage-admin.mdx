@@ -343,6 +343,8 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
@@ -355,6 +357,8 @@ curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/b
     ]
 }'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>
@@ -397,10 +401,14 @@ fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```bash
 curl -L -X GET '<SERVER_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>
@@ -460,6 +468,8 @@ fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```jsx
 curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
@@ -472,6 +482,8 @@ curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products
     ]
 }'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>
@@ -518,10 +530,14 @@ fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
+<!-- vale docs.CodeLength = NO -->
+
 ```jsx
 curl -L -X GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 </TabItem>
 </Tabs>

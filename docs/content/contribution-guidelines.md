@@ -157,7 +157,10 @@ If you want to add a title to a code block with tabs, add the `codeTitle` prop t
 For example:
 
 ```md
-<Tabs groupId="request-type" wrapperClassName="code-tabs" codeTitle="/src/services/hello.ts">
+<Tabs 
+  groupId="request-type"
+  wrapperClassName="code-tabs"
+  codeTitle="/src/services/hello.ts">
 ```
 
 ### Add Title to Code Block without Tabs

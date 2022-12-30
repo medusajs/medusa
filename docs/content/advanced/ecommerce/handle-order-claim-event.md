@@ -78,7 +78,10 @@ In the subscriber you created, add the following in the `constructor`:
 
 ```ts title=src/subscribers/claim-order.ts
 constructor({ eventBusService }: InjectedDependencies) {
-  eventBusService.subscribe("order-update-token.created", this.handleRequestClaimOrder);
+  eventBusService.subscribe(
+    "order-update-token.created",
+    this.handleRequestClaimOrder
+  );
 }
 ```
 
@@ -130,7 +133,10 @@ class ClaimOrderSubscriber {
 
   constructor({ eventBusService, sendgridService }: InjectedDependencies) {
     this.sendGridService = sendgridService;
-    eventBusService.subscribe("order-update-token.created", this.handleRequestClaimOrder);
+    eventBusService.subscribe(
+      "order-update-token.created",
+      this.handleRequestClaimOrder
+    );
   }
 
   

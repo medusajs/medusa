@@ -102,6 +102,8 @@ If you don't make changes to the `build` and `watch` commands, please be aware o
 
 A basic Medusa installation comes with the following scripts:
 
+<!-- vale docs.CodeLength = NO -->
+
 ```json title=package.json
 "scripts": {
   "seed": "medusa seed -f ./data/seed.json",
@@ -117,6 +119,8 @@ It’s also recommended to add the `watch` script that automatically compiles yo
 ```json title=package.json
 "watch": "babel -w src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\""
 ```
+
+<!-- vale docs.CodeLength = YES -->
 
 This is helpful when testing the plugin.
 
