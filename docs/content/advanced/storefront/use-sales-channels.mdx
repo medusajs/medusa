@@ -39,12 +39,12 @@ To filter products by a specific sales channel, pass the `sales_channel_id` quer
 ```jsx
 medusa.products.list({
   sales_channel_id: [
-    salesChannelId
-  ]
+    salesChannelId,
+  ],
 })
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-});
+  console.log(products.length)
+})
 ```
 
 </TabItem>
@@ -55,7 +55,7 @@ fetch(`<SERVER_URL>/store/products?sales_channel_id[0]=${salesChannelId}`)
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
-});
+})
 ```
 
 </TabItem>
@@ -79,11 +79,11 @@ To associate a sales channel with a cart while creating it, you can pass the `sa
 
 ```jsx
 medusa.carts.create({
-  sales_channel_id: salesChannelId
+  sales_channel_id: salesChannelId,
 })
-.then(({cart}) => {
-  console.log(cart.id);
-});
+.then(({ cart }) => {
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -91,18 +91,18 @@ medusa.carts.create({
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts`, {
-  method: 'POST',
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    sales_channel_id: salesChannelId
-  })
+    sales_channel_id: salesChannelId,
+  }),
 })
 .then((response) => response.json())
-.then(({cart}) => {
-  console.log(cart.id);
-});
+.then(({ cart }) => {
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -119,11 +119,11 @@ You can update the sales channel of an existing cart by passing the `sales_chann
 
 ```jsx
 medusa.carts.update(cartId, {
-  sales_channel_id: salesChannelId
+  sales_channel_id: salesChannelId,
 })
-.then(({cart}) => {
-  console.log(cart.id);
-});
+.then(({ cart }) => {
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -131,16 +131,16 @@ medusa.carts.update(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    sales_channel_id: salesChannelId
-  })
+    sales_channel_id: salesChannelId,
+  }),
 })
 .then((response) => response.json())
-.then(({cart}) => console.log(cart.id));
+.then(({ cart }) => console.log(cart.id))
 ```
 
 </TabItem>

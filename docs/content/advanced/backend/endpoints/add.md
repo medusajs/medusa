@@ -62,12 +62,13 @@ Next, in the exported function, retrieve the CORS configurations of your server 
 
 ```ts
 export default (rootDirectory) => {
-  //...
+  // ...
 
-  const { configModule } = getConfigFile<ConfigModule>(rootDirectory, "medusa-config")
+  const { configModule } = 
+    getConfigFile<ConfigModule>(rootDirectory, "medusa-config")
   const { projectConfig } = configModule
 
-  //....
+  // ....
 }
 ```
 
@@ -94,7 +95,7 @@ Finally, for each route you add, create an `OPTIONS` request and add `cors` 
 ```ts
 router.options("/admin/hello", cors(corsOptions))
 router.get("/admin/hello", cors(corsOptions), (req, res) => {
-  //...
+  // ...
 })
 ```
 
@@ -202,20 +203,24 @@ Protected routes are routes that should be accessible by logged-in customers or 
 To make a storefront route protected, first, import the `authenticate-customer` middleware:
 
 ```ts
-import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate-customer"
+import 
+  authenticate 
+from "@medusajs/medusa/dist/api/middlewares/authenticate-customer"
 ```
 
 Then, add the middleware to your route:
 
 ```ts
 router.options("/store/hello", cors(corsOptions))
-router.get("/store/hello", cors(corsOptions), authenticate(), async (req, res) => {
-  if (req.user) {
-    //user is logged in
-    //to get customer id: req.user.customer_id
+router.get("/store/hello", cors(corsOptions), authenticate(), 
+  async (req, res) => {
+    if (req.user) {
+      // user is logged in
+      // to get customer id: req.user.customer_id
+    }
+    // ...
   }
-  //...
-})
+)
 ```
 
 Please note that the endpoint is still accessible by all users, however, you’ll be able to access the current logged-in customer if there’s any.
@@ -227,21 +232,25 @@ To disallow guest customers from accessing the endpoint, you can throw an error 
 To make an admin route protected, first, import the `authenticate` middleware:
 
 ```ts
-import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate"
+import 
+  authenticate 
+from "@medusajs/medusa/dist/api/middlewares/authenticate"
 ```
 
 Then, add the middleware to your route:
 
 ```ts
 router.options("/admin/products/count", cors(corsOptions))
-router.get("/admin/products/count", cors(corsOptions), authenticate(), async (req, res) => {
-  //access current user
-  const id = req.user.userId
-  const userService = req.scope.resolve("userService")
-    
-  const user = await userService.retrieve(id)
-  //...
-})
+router.get("/admin/products/count", cors(corsOptions), authenticate(),
+  async (req, res) => {
+    // access current user
+    const id = req.user.userId
+    const userService = req.scope.resolve("userService")
+      
+    const user = await userService.retrieve(id)
+    // ...
+  }
+)
 ```
 
 Now, only authenticated users can access this endpoint.
@@ -257,15 +266,17 @@ You can retrieve any registered service in your endpoint using `req.scope.resol
 Here’s an example of an endpoint that retrieves the count of products in your store:
 
 ```ts
-router.get("/admin/products/count", cors(corsOptions), authenticate(), (req, res) => {
-  const productService = req.scope.resolve("productService")
+router.get("/admin/products/count", cors(corsOptions), authenticate(),
+  (req, res) => {
+    const productService = req.scope.resolve("productService")
 
-  productService.count().then((count) => {
-    res.json({
-      count,
+    productService.count().then((count) => {
+      res.json({
+        count,
+      })
     })
-  })
-})
+  }
+)
 ```
 
 The `productService` has a `count` method that returns a Promise. This Promise resolves to the count of the products. You return a JSON of the product count.

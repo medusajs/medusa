@@ -51,7 +51,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of batch job
+  id // string ID of batch job
 }
 ```
 
@@ -72,7 +72,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of batch job
+  id // string ID of batch job
 }
 ```
 
@@ -93,7 +93,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of batch job
+  id // string ID of batch job
 }
 ```
 
@@ -116,7 +116,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of batch job
+  id // string ID of batch job
 }
 ```
 
@@ -139,7 +139,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of batch job
+  id // string ID of batch job
 }
 ```
 
@@ -160,7 +160,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of batch job
+  id // string ID of batch job
 }
 ```
 
@@ -181,7 +181,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of batch job
+  id // string ID of batch job
 }
 ```
 
@@ -202,7 +202,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of batch job
+  id // string ID of batch job
 }
 ```
 
@@ -262,7 +262,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of cart
+  id // string ID of cart
 }
 ```
 
@@ -329,8 +329,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of claim
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of claim
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -354,8 +354,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of claim
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of claim
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -379,8 +379,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of claim
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of claim
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -404,9 +404,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of claim
-  fulfillment_id, //string ID of the fulfillment created
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of claim
+  fulfillment_id, // string ID of the fulfillment created
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -430,9 +430,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of claim
-  fulfillment_id, //string ID of the fulfillment created
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of claim
+  fulfillment_id, // string ID of the fulfillment created
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -456,8 +456,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of claim
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of claim
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -505,7 +505,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of claim item
+  id // string ID of claim item
 }
 ```
 
@@ -529,7 +529,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of claim item
+  id // string ID of claim item
 }
 ```
 
@@ -553,7 +553,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of claim item
+  id // string ID of claim item
 }
 ```
 
@@ -601,7 +601,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  code //string 3 character ISO code of the updated currency.
+  code // string 3 character ISO code of the updated currency.
 }
 ```
 
@@ -685,11 +685,11 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of customer
-  email, //string email of the customer
-  first_name, //string first name of the customer
-  last_name, //string last name of the customer
-  token //string reset password token
+  id, // string ID of customer
+  email, // string email of the customer
+  first_name, // string first name of the customer
+  last_name, // string last name of the customer
+  token // string reset password token
 }
 ```
 
@@ -737,7 +737,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of draft order
+  id // string ID of draft order
 }
 ```
 
@@ -761,7 +761,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of draft order
+  id // string ID of draft order
 }
 ```
 
@@ -858,9 +858,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of invite
-  token, //string token generated to validate the invited user
-  user_email //string email of invited user
+  id // string ID of invite
+  token, // string token generated to validate the invited user
+  user_email // string email of invited user
 }
 ```
 
@@ -907,7 +907,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of note
+  id // string ID of note
 }
 ```
 
@@ -931,7 +931,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of note
+  id // string ID of note
 }
 ```
 
@@ -955,7 +955,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of note
+  id // string ID of note
 }
 ```
 
@@ -1070,8 +1070,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1095,8 +1095,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  no_notification //(optional) boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  no_notification // (optional) boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1120,8 +1120,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1145,8 +1145,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1194,7 +1194,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of order
+  id // string ID of order
 }
 ```
 
@@ -1218,8 +1218,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1243,10 +1243,10 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  payment_id, //string ID of Payment
-  error, //string error message
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  payment_id, // string ID of Payment
+  error, // string error message
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1270,9 +1270,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  fulfillment_id, // string ID of fulfillment
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1296,9 +1296,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  fulfillment_id, // string ID of fulfillment
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1322,9 +1322,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  fulfillment_id, // string ID of fulfillment
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1348,9 +1348,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  return_id, //string ID of return
-  no_notification //(optional) boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  return_id, // string ID of return
+  no_notification // (optional) boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1374,9 +1374,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  return_id, //string ID of return
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  return_id, // string ID of return
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1400,9 +1400,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  return_id, //string ID of return
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  return_id, // string ID of return
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1426,9 +1426,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of order
-  refund_id, //string ID of refund
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of order
+  refund_id, // string ID of refund
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -1631,7 +1631,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of order edit
+  id // string ID of order edit
 }
 ```
 
@@ -1712,7 +1712,7 @@ Triggered when an order edit item change is created.
 
 ```js noReport noCopy
 {
-  id //string ID of item change
+  id // string ID of item change
 }
 ```
 
@@ -1734,7 +1734,7 @@ Triggered when an order edit item change is deleted.
 
 ```js noReport noCopy
 {
-  id //string ID of item change
+  id // string ID of item change
 }
 ```
 
@@ -2027,7 +2027,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of product
+  id // string ID of product
 }
 ```
 
@@ -2053,8 +2053,8 @@ In one case, when the `/admin/products/{id}` endpoint is used to update the prod
 
 ```js noReport noCopy
 {
-  id, //id of product
-  fields //an array of field names that were updated
+  id, // id of product
+  fields // an array of field names that were updated
 }
 ```
 
@@ -2078,7 +2078,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of product
+  id // string ID of product
 }
 ```
 
@@ -2126,8 +2126,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of variant
-  product_id //string ID of product
+  id, // string ID of variant
+  product_id // string ID of product
 }
 ```
 
@@ -2151,9 +2151,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of variant
-  product_id, //string ID of product
-  fields //array of names of updated fields
+  id, // string ID of variant
+  product_id, // string ID of product
+  fields // array of names of updated fields
 }
 ```
 
@@ -2177,9 +2177,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of variant
-  product_id, //string ID of product
-  metadata //object of the `metadata` field of the variant
+  id, // string ID of variant
+  product_id, // string ID of product
+  metadata // object of the `metadata` field of the variant
 }
 ```
 
@@ -2239,7 +2239,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of publishable API key
+  id // string ID of publishable API key
 }
 ```
 
@@ -2263,7 +2263,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of publishable API key
+  id // string ID of publishable API key
 }
 ```
 
@@ -2311,7 +2311,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of region
+  id // string ID of region
 }
 ```
 
@@ -2335,8 +2335,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of region
-  fields //array of names of updated fields
+  id, // string ID of region
+  fields // array of names of updated fields
 }
 ```
 
@@ -2360,7 +2360,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of region
+  id // string ID of region
 }
 ```
 
@@ -2418,7 +2418,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of sales channel
+  id // string ID of sales channel
 }
 ```
 
@@ -2466,7 +2466,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of sales channel
+  id // string ID of sales channel
 }
 ```
 
@@ -2513,8 +2513,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2538,9 +2538,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  order_id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  order_id, // string ID of order
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2564,9 +2564,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  fulfillment_id, // string ID of fulfillment
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2590,9 +2590,9 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  fulfillment_id, // string ID of fulfillment
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2616,8 +2616,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2641,8 +2641,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2666,8 +2666,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2691,8 +2691,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2716,8 +2716,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+  id, // string ID of swap
+  no_notification // boolean indicating whether a notification should be sent
 }
 ```
 
@@ -2816,7 +2816,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of user
+  id // string ID of user
 }
 ```
 
@@ -2840,7 +2840,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of user
+  id // string ID of user
 }
 ```
 
@@ -2864,8 +2864,8 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  email, //string email of user requesting to reset their password
-  token //token create to reset the password
+  email, // string email of user requesting to reset their password
+  token // token create to reset the password
 }
 ```
 
@@ -2889,7 +2889,7 @@ Object of the following format:
 
 ```js noReport noCopy
 {
-  id //string ID of user
+  id // string ID of user
 }
 ```
 

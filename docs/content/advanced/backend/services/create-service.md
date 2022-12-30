@@ -9,12 +9,12 @@ To create a service, create a TypeScript or JavaScript file in `src/services` to
 For example, if you want to create a service `helloService`, create the file `hello.ts` in `src/services` with the following content:
 
 ```ts title=/src/services/hello.ts
-import { TransactionBaseService } from '@medusajs/medusa';
-import { EntityManager } from 'typeorm';
+import { TransactionBaseService } from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
 
 class HelloService extends TransactionBaseService {
-  protected manager_: EntityManager;
-  protected transactionManager_: EntityManager;
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
   getMessage() {
     return `Welcome to My Store!`
   }
@@ -32,19 +32,25 @@ As the service extends the `TransactionBaseService` class, all services in Medus
 So, if you want your service to use another service, simply add it as part of your constructor’s dependencies and set it to a field inside your service’s class:
 
 ```ts
-private productService: ProductService;
+class HelloService extends TransactionBaseService {
+  private productService: ProductService
 
-constructor(container) {
-  super(container);
-  this.productService = container.productService;
+  constructor(container) {
+    super(container)
+    this.productService = container.productService
+  }
+  // ...
 }
 ```
 
 Then, you can use that service anywhere in your custom service:
 
 ```ts
-async getProductCount() {
-  return await this.productService.count();
+class HelloService extends TransactionBaseService {
+  // ...
+  async getProductCount() {
+    return await this.productService.count()
+  }
 }
 ```
 
@@ -69,9 +75,12 @@ npm run build
 To use your custom service in another custom service, you can have easy access to it in the dependencies injected to the constructor of your service:
 
 ```ts
-constructor(container) {
-  super(container);
-  this.helloService = container.helloService;
+class MyService extends TransactionBaseService {
+  constructor(container) {
+    super(container)
+    this.helloService = container.helloService
+  }
+  // ...
 }
 ```
 
@@ -92,8 +101,11 @@ res.json({
 To use your custom service in a subscriber, you can have easy access to it in the subscriber’s dependencies injected to the constructor of your subscriber:
 
 ```ts
-constructor({ helloService, eventBusService }) {
-  this.helloService = helloService;
+class MySubscriber {
+  constructor({ helloService, eventBusService }) {
+    this.helloService = helloService
+  }
+  // ...
 }
 ```
 

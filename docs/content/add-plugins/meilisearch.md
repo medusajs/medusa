@@ -57,11 +57,12 @@ Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-meilisearch`,
     options: {
-      // config object passed when creating an instance of the MeiliSearch client
+      // config object passed when creating an instance
+      // of the MeiliSearch client
       config: {
         host: process.env.MEILISEARCH_HOST,
         apiKey: process.env.MEILISEARCH_API_KEY,
@@ -71,12 +72,18 @@ const plugins = [
         products: {
           // MeiliSearch's setting options to be set on a particular index
           searchableAttributes: ["title", "description", "variant_sku"],
-          displayedAttributes: ["title", "description", "variant_sku", "thumbnail", "handle"],
+          displayedAttributes: [
+            "title", 
+            "description", 
+            "variant_sku", 
+            "thumbnail", 
+            "handle",
+          ],
         },
       },
     },
   },
-];
+]
 ```
 
 You can change the `searchableAttributes` and `displayedAttributes` as you see fit. However, the attributes included are the recommended attributes.
@@ -220,7 +227,7 @@ import {
   Hits,
   InstantSearch,
   SearchBox,
-  connectStateResults
+  connectStateResults,
 } from "react-instantsearch-dom"
 
 import React from "react"
@@ -232,19 +239,28 @@ const searchClient = instantMeiliSearch(
 )
 
 const Search = () => {
-  const Results = connectStateResults(({ searchState, searchResults, children }) =>
-    searchState && searchState.query && searchResults && searchResults.nbHits !== 0 ? (
-      <div className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
-        {children}
-      </div>
-    ) : (
-      <div></div>
-    )
-  );
+  const Results = connectStateResults(
+    ({ searchState, searchResults, children }) => {
+      return (
+        searchState && searchState.query && 
+        searchResults && searchResults.nbHits !== 0 ? 
+        (
+          <div 
+            className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
+            {children}
+          </div>
+        ) : (
+          <div></div>
+        )
+      )
+    }
+  )
 
   return (
     <div className="relative">
-      <InstantSearch indexName={process.env.GATSBY_SEARCH_INDEX_NAME} searchClient={searchClient}>
+      <InstantSearch 
+        indexName={process.env.GATSBY_SEARCH_INDEX_NAME} 
+        searchClient={searchClient}>
         <SearchBox submit={null} reset={null} />
         <Results>
           <Hits hitComponent={Hit} />
@@ -264,7 +280,7 @@ const Hit = ({ hit }) => {
   )
 }
 
-export default Search;
+export default Search
 ```
 
 This file uses the dependencies you installed to show the search results. It also initializes MeiliSearch using the environment variables you added.
@@ -284,10 +300,12 @@ import Search from "./search"
 And add the `Search` component in the returned JSX before `RegionPopover`:
 
 ```jsx title=src/components/header/index.jsx
-//...
-<Search />
-<RegionPopover regions={mockData.regions} />
-//...
+// ...
+<div className="...">
+  <Search />
+  <RegionPopover regions={mockData.regions} />
+</div>
+// ...
 ```
 
 If you run your Gatsby storefront while the Medusa server and the MeiliSearch instance are running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.

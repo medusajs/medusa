@@ -60,8 +60,8 @@ medusa.customers.create({
   last_name,
 })
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -69,19 +69,19 @@ medusa.customers.create({
 
 ```ts
 fetch(`<SERVER_URL>/store/customers`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     email,
     password,
     first_name,
     last_name,
-  })
+  }),
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -112,11 +112,11 @@ You can log in a customer into your store by sending a request to the [Customer 
 ```ts
 medusa.auth.authenticate({
   email,
-  password
+  password,
 })
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -124,17 +124,17 @@ medusa.auth.authenticate({
 
 ```ts
 fetch(`<SERVER_URL>/store/auth`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     email,
-    password
-  })
+    password,
+  }),
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -158,8 +158,8 @@ You can log out a customer by sending a request to the [Customer Logout](/api/st
 ```ts
 medusa.auth.deleteSession()
 .then(() => {
-  //success
-});
+  // success
+})
 ```
 
 </TabItem>
@@ -167,12 +167,12 @@ medusa.auth.deleteSession()
 
 ```ts
 fetch(`<SERVER_URL>/store/auth`, {
-  method: 'DELETE',
-  credentials: 'include'
+  method: "DELETE",
+  credentials: "include",
 })
 .then(() => {
-  //success
-});
+  // success
+})
 ```
 
 </TabItem>
@@ -197,7 +197,7 @@ You can request to reset a customer’s password by sending a request to the [Re
 
 ```ts
 medusa.customers.generatePasswordToken({
-  email
+  email,
 })
 .then(() => {
   // successful
@@ -212,11 +212,11 @@ medusa.customers.generatePasswordToken({
 
 ```ts
 fetch(`<SERVER_URL>/store/customers/password-token`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    email
-  })
+    email,
+  }),
 })
 .then(() => {
   // successful
@@ -252,11 +252,11 @@ You can then reset the customer’s password to the new password they enter by s
 medusa.customers.resetPassword({
   email,
   password,
-  token
+  token,
 })
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -264,18 +264,18 @@ medusa.customers.resetPassword({
 
 ```ts
 fetch(`<SERVER_URL>/store/customers/password-reset`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     email,
     password,
-    token
-  })
+    token,
+  }),
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -302,11 +302,11 @@ You can edit a customer’s info using the [Update Customer](/api/store/#tag/Cus
 
 ```ts
 medusa.customers.update({
-  first_name
+  first_name,
 })
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -314,16 +314,16 @@ medusa.customers.update({
 
 ```ts
 fetch(`<SERVER_URL>/store/customers/me`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    first_name
-  })
+    first_name,
+  }),
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -365,12 +365,12 @@ medusa.customers.addresses.addAddress({
     company,
     address_2,
     province,
-    metadata
-  }
+    metadata,
+  },
 })
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -378,8 +378,8 @@ medusa.customers.addresses.addAddress({
 
 ```ts
 fetch(`<SERVER_URL>/store/customers/me/addresses`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     address: {
       first_name,
@@ -392,14 +392,14 @@ fetch(`<SERVER_URL>/store/customers/me/addresses`, {
       company,
       address_2,
       province,
-      metadata
-    }
-  })
+      metadata,
+    },
+  }),
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -427,11 +427,11 @@ You can edit a customer’s shipping address using the [Update a Shipping Addres
 
 ```ts
 medusa.customers.addresses.updateAddress(addressId, {
-  first_name
+  first_name,
 })
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -439,16 +439,16 @@ medusa.customers.addresses.updateAddress(addressId, {
 
 ```ts
 fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    first_name
-  })
+    first_name,
+  }),
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -468,8 +468,8 @@ You can delete a shipping address by sending a request to the [Delete an Address
 ```ts
 medusa.customers.addresses.deleteAddress(addressId)
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -477,13 +477,13 @@ medusa.customers.addresses.deleteAddress(addressId)
 
 ```ts
 fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`, {
-  method: 'DELETE',
-  credentials: 'include'
+  method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -505,8 +505,8 @@ You can retrieve a customer’s orders by sending a request to the [List Orders]
 ```ts
 medusa.customers.listOrders()
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders);
-});
+  console.log(orders)
+})
 ```
 
 </TabItem>
@@ -514,12 +514,12 @@ medusa.customers.listOrders()
 
 ```ts
 fetch(`<SERVER_URL>/store/customers/me/orders`, {
-  credentials: 'include'
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders);
-});
+  console.log(orders)
+})
 ```
 
 </TabItem>

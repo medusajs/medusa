@@ -48,7 +48,7 @@ In `medusa-config.js` add the following at the end of the `plugins` array:
 
 ```jsx title=medusa-config.js
 const plugins = [
-  ...,
+  // ...
   {
     resolve: `medusa-payment-stripe`,
     options: {
@@ -56,7 +56,7 @@ const plugins = [
       webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
     },
   },
-];
+]
 ```
 
 :::note
@@ -75,7 +75,7 @@ You’ll first retrieve the API key. You can find it by choosing API Keys from t
 
 Next, you need to add the key to your environment variables. In your Medusa server, create `.env` if it doesn’t already exist and add the Stripe key:
 
-```jsx
+```bash
 STRIPE_API_KEY=sk_...
 ```
 
@@ -95,7 +95,7 @@ Then, you can add a description. You must select at least one event to listen to
 
 After the Webhook is created, you’ll see "Signing secret" in the Webhook details. Click on "Reveal" to reveal the secret key. Copy that key and in your Medusa server add the Webhook secret environment variable:
 
-```jsx
+```bash
 STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
@@ -195,30 +195,30 @@ In this section, you’ll initialize Stripe without Medusa’s checkout workflow
 Create a container component that will hold the payment card component:
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react"
 
-import {Elements} from '@stripe/react-stripe-js';
-import Form from './Form';
-import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from "@stripe/react-stripe-js"
+import Form from "./Form"
+import { loadStripe } from "@stripe/stripe-js"
 
-const stripePromise = loadStripe('pk_...');
+const stripePromise = loadStripe("pk_...")
 
 export default function Container() {
   const [clientSecret, setClientSecret] = useState()
 
-  //TODO set clientSecret
+  // TODO set clientSecret
 
   return (
     <div>
       {clientSecret && (
         <Elements stripe={stripePromise} options={{
-          clientSecret
+          clientSecret,
         }}>
         <Form clientSecret={clientSecret} cartId={cartId} />
       </Elements>
       )}
     </div>
-  );
+  )
 };
 ```
 
@@ -237,15 +237,19 @@ Once the clientSecret is set, the `Elements` Stripe component will wrap a `Form`
 Create a new file for the `Form` component with the following content:
 
 ```jsx
-import {CardElement, useElements, useStripe} from '@stripe/react-stripe-js';
+import { 
+  CardElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js"
 
-export default function Form({clientSecret, cartId}) {
-  const stripe = useStripe();
-  const elements = useElements();
+export default function Form({ clientSecret, cartId }) {
+  const stripe = useStripe()
+  const elements = useElements()
 
   async function handlePayment(e) {
     e.preventDefault()
-    //TODO handle payment
+    // TODO handle payment
   }
 
   return (
@@ -253,7 +257,7 @@ export default function Form({clientSecret, cartId}) {
       <CardElement />
       <button onClick={handlePayment}>Submit</button>
   </form>
-  );
+  )
 };
 ```
 
@@ -267,8 +271,8 @@ You’ll now implement the workflow explained earlier. You’ll use Medusa’s J
 import Medusa from "@medusajs/medusa-js"
 
 export default function Container() {
-  const client = new Medusa();
-  ...
+  const client = new Medusa()
+  // ...
 }
 ```
 
@@ -282,19 +286,21 @@ Then, in the place of the `//TODO` inside the `Container` element, initialize th
 
 ```jsx
 client.carts.createPaymentSessions(cart.id)
-  .then(({cart}) => {
-    //check if stripe is selected
-    const isStripeAvailable = cart.payment_sessions?.some((session) => session.provider_id === 'stripe');
+  .then(({ cart }) => {
+    // check if stripe is selected
+    const isStripeAvailable = cart.payment_sessions?.some((session) => (
+      session.provider_id === "stripe"
+    ))
     if (!isStripeAvailable) {
-      return;
+      return
     }
 
-    //select stripe payment session
+    // select stripe payment session
     client.carts.setPaymentSession(cart.id, {
-      provider_id: 'stripe'
-    }).then(({cart}) => {
-      setClientSecret(cart.payment_session.data.client_secret);
-    });
+      provider_id: "stripe",
+    }).then(({ cart }) => {
+      setClientSecret(cart.payment_session.data.client_secret)
+    })
   })
 ```
 
@@ -314,8 +320,8 @@ As you’ll use Medusa’s client again make sure to import it and initialize it
 import Medusa from "@medusajs/medusa-js"
 
 export default function Form() {
-  const client = new Medusa();
-  ...
+  const client = new Medusa()
+  // ...
 }
 ```
 
@@ -335,12 +341,12 @@ return stripe.confirmCardPayment(clientSecret, {
         line1,
         line2,
         postal_code,
-      }
-    }
-  }
+      },
+    },
+  },
 }).then(({ error, paymentIntent }) => {
-  //TODO handle errors
-  client.carts.complete(cartId).then(resp => console.log(resp))
+  // TODO handle errors
+  client.carts.complete(cartId).then((resp) => console.log(resp))
 })
 ```
 

@@ -83,16 +83,16 @@ After that, open `medusa-config.js` and add the new plugin with its configuratio
 
 ```jsx title=medusa-config.js
 const plugins = [
-  ...,
+  // ...,
   {
     resolve: `medusa-plugin-slack-notification`,
     options: {
       show_discount_code: false,
       slack_url: `<WEBHOOK_URL>`,
-      admin_orders_url: `http://localhost:7001/a/orders`
-    }
-  }
-];
+      admin_orders_url: `http://localhost:7001/a/orders`,
+    },
+  },
+]
 ```
 
 - Make sure to change `<WEBHOOK_URL>` with the Webhook URL you copied after creating the Slack app.

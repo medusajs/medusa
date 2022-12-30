@@ -23,23 +23,39 @@ Creating a Notification Provider is as simple as creating a TypeScript or JavaS
 For example, create the file `src/services/email-sender.ts` with the following content:
 
 ```ts title=src/services/email-sender.ts
-import { AbstractNotificationService } from "@medusajs/medusa";
-import { EntityManager } from "typeorm";
+import { AbstractNotificationService } from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
 
 class EmailSenderService extends AbstractNotificationService {
-  protected manager_: EntityManager;
-  protected transactionManager_: EntityManager;
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
 
-  sendNotification(event: string, data: unknown, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
-    throw new Error("Method not implemented.");
+  sendNotification(
+    event: string, 
+    data: unknown, 
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    throw new Error("Method not implemented.")
   }
-  resendNotification(notification: unknown, config: unknown, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
-    throw new Error("Method not implemented.");
+  resendNotification(
+    notification: unknown,
+    config: unknown,
+    attachmentGenerator: unknown
+  ): Promise<{
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    throw new Error("Method not implemented.")
   }
 
 }
 
-export default EmailSenderService;
+export default EmailSenderService
 ```
 
 Where `EmailSenderService` is the name of your Notification Provider Service.
@@ -63,7 +79,10 @@ The value of this property is also used later when you want to subscribe the Not
 For example, in the class you created in the previous code snippet you can add the following property:
 
 ```ts
-static identifier = "email-sender";
+class EmailSenderService extends AbstractNotificationService {
+  static identifier = "email-sender"
+  // ...
+}
 ```
 
 ### constructor
@@ -83,23 +102,26 @@ You can learn more about plugins and how to create them in the [Plugins](../plug
 Continuing on with the previous example, if you want to use the [`OrderService`](../../../references/services/classes/OrderService.md) later when sending notifications, you can inject it into the constructor:
 
 ```ts
-import { AbstractNotificationService, OrderService } from "@medusajs/medusa";
+import { 
+  AbstractNotificationService, 
+  OrderService,
+} from "@medusajs/medusa"
 
 class EmailSenderService extends AbstractNotificationService {
-  protected manager_: EntityManager;
-  protected transactionManager_: EntityManager;
-  static identifier = "email-sender";
-  protected orderService: OrderService;
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
+  static identifier = "email-sender"
+  protected orderService: OrderService
 
   constructor(container, options) {
-    super(container);
-    //you can access options here in case you're
-    //using a plugin
+    super(container)
+    // you can access options here in case you're
+    // using a plugin
 
-    this.orderService = container.orderService;
+    this.orderService = container.orderService
   }
 
-  //...
+  // ...
 }
 ```
 
@@ -129,23 +151,34 @@ This method must return an object containing two properties:
 Continuing with the previous example you can have the following implementation of the `sendNotification` method:
 
 ```ts
-async sendNotification(event: string, data: any, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
-  if (event === 'order.placed') {
-    //retrieve order
-    const order = await this.orderService.retrieve(data.id);
-    //TODO send email
+class EmailSenderService extends AbstractNotificationService {
+  // ...
+  async sendNotification(
+    event: string,
+    data: any,
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    if (event === "order.placed") {
+      // retrieve order
+      const order = await this.orderService.retrieve(data.id)
+      // TODO send email
 
-    console.log('Notification sent');
-    return {
-      to: order.email,
-      status: 'done',
-      data: {
-        //any data necessary to send the email
-        //for example:
-        subject: 'You placed a new order!',
-        items: order.items
+      console.log("Notification sent")
+      return {
+        to: order.email,
+        status: "done",
+        data: {
+          // any data necessary to send the email
+          // for example:
+          subject: "You placed a new order!",
+          items: order.items,
+        },
       }
-    };
+    }
   }
 }
 ```
@@ -180,17 +213,29 @@ Similarly to the `sendNotification` method, this method must return an object co
 Continuing with the previous example you can have the following implementation of the `resendNotification` method:
 
 ```ts
-async resendNotification(notification: any, config: any, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
-  //check if the receiver of the notification should be changed
-  const to: string = config.to ? config.to : notification.to;
+class EmailSenderService extends AbstractNotificationService {
+  // ...
+  async resendNotification(
+    notification: any,
+    config: any,
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    // check if the receiver of the notification should be changed
+    const to: string = config.to ? config.to : notification.to
 
-  //TODO resend the notification using the same data that is saved under notification.data
+    // TODO resend the notification using the same data
+    // that is saved under notification.data
 
-  console.log('Notification resent');
-  return {
-    to,
-    status: 'done',
-    data: notification.data //you can also make changes to the data
+    console.log("Notification resent")
+    return {
+      to,
+      status: "done",
+      data: notification.data, // you can also make changes to the data
+    }
   }
 }
 ```
@@ -224,11 +269,12 @@ Following the previous example, to make sure the `email-sender` Notification Pro
 ```ts title=src/subscribers/notification.js
 class NotificationSubscriber {
   constructor({ notificationService }) {
-    notificationService.subscribe('order.placed', 'email-sender');
+    notificationService.subscribe("order.placed", "email-sender")
   }
+  // ...
 }
 
-export default NotificationSubscriber;
+export default NotificationSubscriber
 ```
 
 This subscriber accesses the `notificationService` using dependency injection. The `notificationService` contains a `subscribe` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that is subscribing to that event.
@@ -288,5 +334,5 @@ This request returns the same notification object as the List Notifications endp
 - [Events reference](../subscribers/events-list.md)
 - [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
 - [Create a Subscriber](../subscribers/create-subscriber.md)
-- [Create a Service](../services/create-service.md).
-- [Create a Plugin](../plugins/create.md).
+- [Create a Service](../services/create-service.md)
+- [Create a Plugin](../plugins/create.md)

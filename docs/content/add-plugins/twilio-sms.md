@@ -52,16 +52,16 @@ Finally, add the plugin and its options in the `medusa-config.js` file to the `p
 
 ```jsx title=medusa-config.js
 const plugins = [
-  ...,
+  // ...
   {
     resolve: `medusa-plugin-twilio-sms`,
     options: {
       account_sid: process.env.TWILIO_SMS_ACCOUNT_SID,
       auth_token: process.env.TWILIO_SMS_AUTH_TOKEN,
-      from_number: process.env.TWILIO_SMS_FROM_NUMBER
-    }
-  }
-];
+      from_number: process.env.TWILIO_SMS_FROM_NUMBER,
+    },
+  },
+]
 ```
 
 ---
@@ -83,27 +83,27 @@ Create the file `src/services/sms.js` in your Medusa server with the following c
 ```jsx title=src/services/sms.js
 class SmsSubscriber {
   constructor({ twilioSmsService, orderService, eventBusService }) {
-    this.twilioSmsService_ = twilioSmsService;
-    this.orderService = orderService;
+    this.twilioSmsService_ = twilioSmsService
+    this.orderService = orderService
 
-    eventBusService.subscribe("order.placed", this.sendSMS);
+    eventBusService.subscribe("order.placed", this.sendSMS)
   }
 
   sendSMS = async (data) => {
     const order = await this.orderService.retrieve(data.id, {
-      relations: ['shipping_address']
-    });
+      relations: ["shipping_address"],
+    })
 
     if (order.shipping_address.phone) {
       this.twilioSmsService_.sendSms({
         to: order.shipping_address.phone,
-        body: 'We have received your order #' + data.id,
+        body: "We have received your order #" + data.id,
       })
     }
-  };
+  }
 }
 
-export default SmsSubscriber;
+export default SmsSubscriber
 ```
 
 In the `constructor`, you resolve the `twilioSmsService` and `orderService` using dependency injection to use it later in the `sendSMS` method.

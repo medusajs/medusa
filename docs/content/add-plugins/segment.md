@@ -110,14 +110,14 @@ Finally, in `medusa-config.js`, add the following new item to the `plugins` arra
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-segment`,
     options: {
       write_key: process.env.SEGMENT_WRITE_KEY,
-    }
-  }
-];
+    },
+  },
+]
 ```
 
 ---
@@ -155,24 +155,24 @@ For example, you can add the following subscriber to listen to the `customer.cre
 ```jsx title=src/subscribers/customer.ts
 class CustomerSubscriber {
   constructor({ segmentService, eventBusService }) {
-    this.segmentService = segmentService;
+    this.segmentService = segmentService
 
-    eventBusService.subscribe("customer.created", this.handleCustomer);
+    eventBusService.subscribe("customer.created", this.handleCustomer)
   }
 
   handleCustomer = async (data) => {
-    const customerData = data;
-    delete customerData['password_hash'];
+    const customerData = data
+    delete customerData["password_hash"]
 
     this.segmentService.track({
-      event: 'Customer Created',
+      event: "Customer Created",
       userId: data.id,
-      properties: customerData
+      properties: customerData,
     })
-  };
+  }
 }
 
-export default CustomerSubscriber;
+export default CustomerSubscriber
 ```
 
 You resolve the `SegmentService` using dependency injection. Then, when the `customer.created` event is triggered, you use the `track` method available in the `SegmentService` to send tracking data to Segment.

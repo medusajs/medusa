@@ -126,7 +126,9 @@ Where `amount` is the amount of the variant’s price in the price list, `taxRat
 
 Here is an example of these fields when tax inclusivity is enabled for both the currency and the price list:
 
-```jsx noReport
+<!-- eslint-skip -->
+
+```js noReport
 {
   original_price: 110,
   calculated_price: 100,

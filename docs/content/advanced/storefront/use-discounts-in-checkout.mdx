@@ -58,17 +58,17 @@ You can add a discount to a customer’s cart by sending the [Update Cart reques
 medusa.carts.update(cartId, {
   discounts: [
     {
-      code
-    }
-  ]
+      code,
+    },
+  ],
 })
 .then(({ cart }) => {
   console.log(cart.discounts)
 })
 .catch((e) => {
-  //display an error to the customer
-  alert('Discount is invalid')
-});
+  // display an error to the customer
+  alert("Discount is invalid")
+})
 ```
 
 </TabItem>
@@ -76,27 +76,27 @@ medusa.carts.update(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     discounts: [
       {
-        code
-      }
+        code,
+      },
     ],
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.discounts);
+  console.log(cart.discounts)
 })
 .catch((e) => {
-  //display an error to the customer
-  alert('Discount is invalid')
-});
+  // display an error to the customer
+  alert("Discount is invalid")
+})
 ```
 
 </TabItem>
@@ -222,7 +222,7 @@ You can remove a discount from a customer’s cart using the [Remove Discount re
 medusa.carts.deleteDiscount(cartId, code)
 .then(({ cart }) => {
   console.log(cart.discounts)
-});
+})
 ```
 
 </TabItem>
@@ -230,13 +230,13 @@ medusa.carts.deleteDiscount(cartId, code)
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/discounts/${code}`, {
-  method: 'DELETE',
-  credentials: 'include'
+  method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.discounts);
-});
+  console.log(cart.discounts)
+})
 ```
 
 </TabItem>

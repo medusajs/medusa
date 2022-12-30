@@ -47,11 +47,11 @@ For SQLite you mainly need two configurations:
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     database_type: "sqlite",
     database_database: "./medusa-db.sql",
   },
-};
+}
 ```
 
 Where `database_type` is `sqlite` and `database_database` is the location you want the SQLite database to be created in.
@@ -69,12 +69,12 @@ For PostgreSQL you mainly need two configurations:
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     database_type: "postgres",
     database_url: DATABASE_URL,
-    database_schema: process.env.DATABASE_SCHEMA //optional
+    database_schema: process.env.DATABASE_SCHEMA, // optional
   },
-};
+}
 ```
 
 Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
@@ -109,11 +109,11 @@ These configurations are not required and can be omitted.
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     database_logging: true,
-    database_extra: {}
+    database_extra: {},
   },
-};
+}
 ```
 
 ---
@@ -125,10 +125,10 @@ Medusa uses Redis to handle the event queue, among other usages. You need to set
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
-    redis_url: REDIS_URL
+    // ...other configurations
+    redis_url: REDIS_URL,
   },
-};
+}
 ```
 
 Where `REDIS_URL` is the URL used to connect to Redis. The format of the connection string is `redis[s]://[[username][:password]@][host][:port][/db-number]`.
@@ -164,10 +164,10 @@ Medusa uses JSON Web Token (JWT) to handle user authentication. To set the JWT s
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     jwt_secret: "very secure string",
   },
-};
+}
 ```
 
 Where `jwt_secret` is the secret used to create the tokens. The more secure it is the better.
@@ -195,10 +195,10 @@ This configuration is used to sign the session ID cookie. To set the cookie secr
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     cookie_secret: "very secure string",
   },
-};
+}
 ```
 
 Where `cookie_secret` is the secret used to create the tokens. The more secure it is the better.
@@ -239,10 +239,10 @@ To make sure your Admin dashboard can access the Medusa server’s admin endpoin
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     admin_cors: ADMIN_CORS,
   },
-};
+}
 ```
 
 Where `ADMIN_CORS` is the URL of your admin dashboard. By default, it’s `http://localhost:7000,http://localhost:7001`.
@@ -268,10 +268,10 @@ To make sure your Storefront dashboard can access the Medusa server, set this co
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     store_cors: STORE_CORS,
   },
-};
+}
 ```
 
 Where `STORE_CORS` is the URL of your storefront. By default, it’s `http://localhost:8000`.
@@ -307,10 +307,10 @@ Aside from installing the plugin with NPM, you need to pass the plugin you insta
 ```jsx
 module.exports = {
   projectConfig: {
-    //previous configurations mentioned...
+    // previous configurations mentioned...
   },
   plugins,
-};
+}
 ```
 
 ### Add a Plugin Without Configuration
@@ -319,9 +319,9 @@ To add a plugin that doesn’t need any configurations, you can simply add its n
 
 ```jsx
 const plugins = [
-  //other plugins...
+  // other plugins...
   `medusa-my-plugin`,
-];
+]
 ```
 
 ### Add a Plugin With Configuration
@@ -330,14 +330,14 @@ To add a plugin with configurations, you need to add an object to the `plugins` 
 
 ```jsx
 const plugins = [
-  //other plugins...
+  // other plugins...
   {
     resolve: `medusa-my-plugin`,
     options: {
-      apiKey: `test`
-    }
-  }
-];
+      apiKey: `test`,
+    },
+  },
+]
 ```
 
 :::tip

@@ -3928,7 +3928,7 @@ Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array
 
 ```jsx title=medusa-config.js
 const plugins = [
-  ...,
+  // ...,
   {
     resolve: `medusa-plugin-sendgrid`,
     options: {
@@ -3937,12 +3937,13 @@ const plugins = [
       order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID,
       localization: {
         "de-DE": { // locale key
-          order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
-        }
-      }
-    }
-  }
-];
+          order_placed_template: 
+            process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+        },
+      },
+    },
+  },
+]
 ```
 
 The `api_key` and `from` options are required. Then, use the key of each template you create (from the [reference](#template-reference)) as the option name with the template ID as the value.

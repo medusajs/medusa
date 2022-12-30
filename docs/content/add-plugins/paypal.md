@@ -57,17 +57,17 @@ Then, in `medusa-config.js`, add the PayPal plugin to the `plugins` array with t
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //other plugins...
+  // other plugins...
   {
     resolve: `medusa-payment-paypal`,
     options: {
       sandbox: process.env.PAYPAL_SANDBOX,
       client_id: process.env.PAYPAL_CLIENT_ID,
       client_secret: process.env.PAYPAL_CLIENT_SECRET,
-      auth_webhook_id: process.env.PAYPAL_AUTH_WEBHOOK_ID
-    }
-  }
-];
+      auth_webhook_id: process.env.PAYPAL_AUTH_WEBHOOK_ID,
+    },
+  },
+]
 ```
 
 That’s all you need to install PayPal on your Medusa server!
@@ -158,12 +158,15 @@ npm install @paypal/react-paypal-js
 Next, create a new file `src/components/payment/paypal-payment/index.jsx` with the following content:
 
 ```jsx title=src/components/payment/paypal-payment/index.jsx
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
-import React, { useMemo, useState } from "react";
+import { 
+  PayPalButtons, 
+  PayPalScriptProvider,
+} from "@paypal/react-paypal-js"
+import React, { useMemo, useState } from "react"
 
 import { navigate } from "gatsby"
 import { useCart } from "../../../hooks/use-cart"
-import { useMedusa } from "../../../hooks/use-medusa";
+import { useMedusa } from "../../../hooks/use-medusa"
 
 const paypalClientId = process.env.GATSBY_PAYPAL_CLIENT_ID || ""
 
@@ -179,7 +182,7 @@ const PaypalPayment = () => {
 
   const paypalSession = useMemo(() => {
     if (cart.payment_sessions) {
-      return cart.payment_sessions.find(s => s.provider_id === "paypal")
+      return cart.payment_sessions.find((s) => s.provider_id === "paypal")
     }
 
     return null
@@ -200,10 +203,10 @@ const PaypalPayment = () => {
     await client.carts.updatePaymentSession(cart.id, "paypal", {
       data: {
         data: {
-          ...authorizationOrder
-        }
-      }
-    });
+          ...authorizationOrder,
+        },
+      },
+    })
 
     const order = await completeCart(cart.id)
 
@@ -218,10 +221,12 @@ const PaypalPayment = () => {
 
   const handlePayment = (data, actions) => {
     actions.order.authorize().then((authorization) => {
-      if (authorization.status !== 'COMPLETED') {
-        setErrorMessage(`An error occurred, status: ${authorization.status}`);
-        setProcessing(false);
-        return;
+      if (authorization.status !== "COMPLETED") {
+        setErrorMessage(
+          `An error occurred, status: ${authorization.status}`
+        )
+        setProcessing(false)
+        return
       }
 
       completeOrder(authorization)
@@ -232,7 +237,7 @@ const PaypalPayment = () => {
     <PayPalScriptProvider options={{ 
       "client-id": paypalClientId,
       "currency": cart.region.currency_code.toUpperCase(),
-      "intent": "authorize"
+      "intent": "authorize",
     }}>
         {errorMessage && (
           <span className="text-rose-500 mt-4">{errorMessage}</span>
@@ -246,7 +251,7 @@ const PaypalPayment = () => {
   )
 }
 
-export default PaypalPayment;
+export default PaypalPayment
 ```
 
 Here’s briefly what this code snippet does:
@@ -264,9 +269,11 @@ In `src/components/payment/index.js` you’ll find in the return statement a swi
 ```jsx title=src/components/payment/index.js
 switch (ps.provider_id) {
   case "stripe":
-    //...
+    // ...
+    break
   case "manual":
-    //...
+    // ...
+    break
   case "paypal":
     return <PaypalPayment />
   default:
@@ -303,28 +310,33 @@ Then, add the Client ID as an environment variable based on the framework you’
 Next, create the file that will hold the PayPal component with the following content:
 
 ```jsx
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { 
+  PayPalButtons, 
+  PayPalScriptProvider,
+} from "@paypal/react-paypal-js"
 import { useEffect, useState } from "react"
 
 import Medusa from "@medusajs/medusa-js"
 
 function Paypal() {
-  const client = new Medusa();
+  const client = new Medusa()
   const [errorMessage, setErrorMessage] = useState(undefined)
   const [processing, setProcessing] = useState(false)
-  const cart //TODO retrieve the cart here
+  const cart = "..." // TODO retrieve the cart here
 
   const handlePayment = (data, actions) => {
     actions.order.authorize().then(async (authorization) => {
-      if (authorization.status !== 'COMPLETED') {
-        setErrorMessage(`An error occurred, status: ${authorization.status}`);
-        setProcessing(false);
-        return;
+      if (authorization.status !== "COMPLETED") {
+        setErrorMessage(
+          `An error occurred, status: ${authorization.status}`
+        )
+        setProcessing(false)
+        return
       }
 
       const response = await client.carts.setPaymentSession(cart.id, {
-        "provider_id": "paypal"
-      });
+        "provider_id": "paypal",
+      })
 
       if (!response.cart) {
         setProcessing(false)
@@ -334,30 +346,30 @@ function Paypal() {
       await client.carts.updatePaymentSession(cart.id, "paypal", {
         data: {
           data: {
-            ...authorization
-          }
-        }
-      });
+            ...authorization,
+          },
+        },
+      })
 
-      const {data} = await client.carts.complete(cart.id)
+      const { data } = await client.carts.complete(cart.id)
 
       if (!data || data.object !== "order") {
         setProcessing(false)
         return
       }
       
-      //order successful
+      // order successful
       alert("success")
     })
   }
 
   return (
-    <div style={{marginTop: "10px", marginLeft: "10px"}}>
+    <div style={{ marginTop: "10px", marginLeft: "10px" }}>
       {cart !== undefined && (
         <PayPalScriptProvider options={{ 
-          "client-id": <CLIENT_ID>,
+          "client-id": "<CLIENT_ID>",
           "currency": "EUR",
-          "intent": "authorize"
+          "intent": "authorize",
         }}>
             {errorMessage && (
               <span className="text-rose-500 mt-4">{errorMessage}</span>
@@ -370,10 +382,10 @@ function Paypal() {
         </PayPalScriptProvider>
       )}
     </div>
-  );
+  )
 }
 
-export default Paypal;
+export default Paypal
 ```
 
 Here’s briefly what this code snippet does:

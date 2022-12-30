@@ -104,7 +104,9 @@ Where `<ENDPOINT>` is the URL of your MinIO server, `<BUCKET>` is the name of th
 Finally, configure your `medusa-config.js` to include the plugin with the required options:
 
 ```js title=medusa-config.js
-{
+const plugins = [
+  // ...
+  {
     resolve: `medusa-file-minio`,
     options: {
         endpoint: process.env.MINIO_ENDPOINT,
@@ -112,7 +114,8 @@ Finally, configure your `medusa-config.js` to include the plugin with the requ
         access_key_id: process.env.MINIO_ACCESS_KEY,
         secret_access_key: process.env.MINIO_SECRET_KEY,
     },
-},
+  },
+]
 ```
 
 :::caution
@@ -156,13 +159,16 @@ MINIO_PRIVATE_BUCKET=exports
 Then, add a new option to the plugin’s options in `medusa-config.js`:
 
 ```jsx title=medusa-config.js
-{
+const plugins = [
+  // ...
+  {
     resolve: `medusa-file-minio`,
     options: {
-        //...
-        private_bucket: process.env.MINIO_PRIVATE_BUCKET
+        // ...
+        private_bucket: process.env.MINIO_PRIVATE_BUCKET,
     },
-},
+  },
+]
 ```
 
 ### Use Different Secret and Access Keys
@@ -181,14 +187,17 @@ Where `<YOUR_PRIVATE_ACCESS_KEY>` and `<YOUR_PRIVATE_SECRET_KEY>` are the access
 Then, add two new options to the plugin’s options in `medusa-config.js`:
 
 ```jsx title=medusa-config.js
-{
+const plugins = [
+  // ...
+  {
     resolve: `medusa-file-minio`,
     options: {
-        //...
+        // ...
         private_access_key_id: process.env.MINIO_PRIVATE_ACCESS_KEY,
-        private_secret_access_key: process.env.MINIO_PRIVATE_SECRET_KEY
+        private_secret_access_key: process.env.MINIO_PRIVATE_SECRET_KEY,
     },
-},
+  },
+]
 ```
 
 ---
@@ -204,13 +213,13 @@ In `next.config.js` add the following option in the exported object:
 ```jsx title=next.config.js
 const { withStoreConfig } = require("./store-config")
 
-//...
+// ...
 
 module.exports = withStoreConfig({
-  //...
+  // ...
   images: {
     domains: [
-      //...
+      // ...
       "127.0.0.1",
     ],
   },

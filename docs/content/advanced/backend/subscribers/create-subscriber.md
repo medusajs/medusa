@@ -18,20 +18,20 @@ After creating the file under `src/subscribers`, in the constructor of your subs
 
 The `eventBusService.subscribe` method receives the name of the event as a first parameter and as a second parameter a method in your subscriber that will handle this event.
 
-For example, here is the `OrderNotifierSubscriber` class created in `src/subscribers/orderNotifier.js`:
+For example, here is the `OrderNotifierSubscriber` class created in `src/subscribers/orderNotifier.ts`:
 
-```ts title=src/subscribers/orderNotifier.js
+```ts title=src/subscribers/orderNotifier.ts
 class OrderNotifierSubscriber {
   constructor({ eventBusService }) {
-    eventBusService.subscribe("order.placed", this.handleOrder);
+    eventBusService.subscribe("order.placed", this.handleOrder)
   }
 
   handleOrder = async (data) => {
     console.log("New Order: " + data.id)
-  };
+  }
 }
 
-export default OrderNotifierSubscriber;
+export default OrderNotifierSubscriber
 ```
 
 This subscriber registers the method `handleOrder` as one of the handlers of the `order.placed` event. The method `handleOrder` will be executed every time an order is placed. It receives the order ID in the `data` parameter. You can then use the order’s details to perform any kind of task you need.
@@ -51,19 +51,25 @@ You can access any service through the dependencies injected to your subscriber�
 For example:
 
 ```ts
-constructor({ productService, eventBusService }) {
-    this.productService = productService;
+class OrderNotifierSubscriber {
+  constructor({ productService, eventBusService }) {
+      this.productService = productService
 
-    eventBusService.subscribe("order.placed", this.handleOrder);
+      eventBusService.subscribe("order.placed", this.handleOrder)
+  }
+  // ...
 }
 ```
 
 You can then use `this.productService` anywhere in your subscriber’s methods. For example:
 
 ```ts
-handleOrder = async (data) => {
-  //...
-  const product = this.productService.list()
+class OrderNotifierSubscriber {
+  // ...
+  handleOrder = async (data) => {
+    // ...
+    const product = this.productService.list()
+  }
 }
 ```
 

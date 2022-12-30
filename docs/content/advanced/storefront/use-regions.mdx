@@ -47,9 +47,9 @@ You can retrieve available regions by sending a request to the [List Regions](/a
 ```tsx
 medusa.regions.list()
 .then(({ regions }) => {
-  console.log(regions.length);
-  //show customers available regions
-});
+  console.log(regions.length)
+  // show customers available regions
+})
 ```
 
 </TabItem>
@@ -57,13 +57,13 @@ medusa.regions.list()
 
 ```tsx
 fetch(`<SERVER_URL>/store/regions`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ regions }) => {
-  console.log(regions.length);
-  //show customers available regions
-});
+  console.log(regions.length)
+  // show customers available regions
+})
 ```
 
 </TabItem>
@@ -86,12 +86,12 @@ For example:
 
 ```tsx
 medusa.products.list({
-  region_id: regionId
+  region_id: regionId,
 })
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-  //show customer the products
-});
+  console.log(products.length)
+  // show customer the products
+})
 ```
 
 </TabItem>
@@ -99,13 +99,13 @@ medusa.products.list({
 
 ```tsx
 fetch(`<SERVER_URL>/store/products?region_id=${regionId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-  //show customer the products
-});
+  console.log(products.length)
+  // show customer the products
+})
 ```
 
 </TabItem>
@@ -136,11 +136,11 @@ For example:
 
 ```tsx
 medusa.carts.update(cartId, {
-  region_id: regionId
+  region_id: regionId,
 })
 .then(({ cart }) => {
-  console.log(cart.id);
-});
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -148,16 +148,16 @@ medusa.carts.update(cartId, {
 
 ```tsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    region_id: regionId
-  })
+    region_id: regionId,
+  }),
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.id);
-});
+  console.log(cart.id)
+})
 ```
 
 </TabItem>

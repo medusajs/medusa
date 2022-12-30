@@ -47,7 +47,7 @@ You can learn more about subscribers in the [Subscribers](../backend/subscribers
 Create the file `src/subscribers/claim-order.ts` with the following content:
 
 ```ts title=src/subscribers/claim-order.ts
-import { EventBusService } from "@medusajs/medusa";
+import { EventBusService } from "@medusajs/medusa"
 
 type InjectedDependencies = {
   eventBusService: EventBusService,
@@ -59,7 +59,7 @@ class ClaimOrderSubscriber {
   }
 }
 
-export default ClaimOrderSubscriber;
+export default ClaimOrderSubscriber
 ```
 
 If you want to add any other dependencies, you can add them to the `InjectedDependencies` type.
@@ -77,8 +77,14 @@ You can learn more about dependency injection in [this documentation](../backend
 In the subscriber you created, add the following in the `constructor`:
 
 ```ts title=src/subscribers/claim-order.ts
-constructor({ eventBusService }: InjectedDependencies) {
-  eventBusService.subscribe("order-update-token.created", this.handleRequestClaimOrder);
+class ClaimOrderSubscriber {
+  constructor({ eventBusService }: InjectedDependencies) {
+    eventBusService.subscribe(
+      "order-update-token.created",
+      this.handleRequestClaimOrder
+    )
+  }
+  // ...
 }
 ```
 
@@ -90,14 +96,14 @@ In the subscriber, add a new method `handleRequestClaimOrder`:
 
 ```ts title=src/subscribers/claim-order.ts
 class ClaimOrderSubscriber {
-  //...
+  // ...
 
-  handleRequestClaimOrder = async (data) {
-    //TODO: handle event
+  handleRequestClaimOrder = async (data) => {
+    // TODO: handle event
   }
 }
 
-export default ClaimOrderSubscriber;
+export default ClaimOrderSubscriber
 ```
 
 The `handleRequestClaimOrder` event receives a `data` object as a parameter. This object holds the following properties:
@@ -118,7 +124,7 @@ The page would then send a request to the server to verify that the `token` is v
 For example, you can implement this subscriber to send emails using SendGrid:
 
 ```ts title=src/subscribers/claim-order.ts
-import { EventBusService } from "@medusajs/medusa";
+import { EventBusService } from "@medusajs/medusa"
 
 type InjectedDependencies = {
   eventBusService: EventBusService,
@@ -126,28 +132,31 @@ type InjectedDependencies = {
 }
 
 class ClaimOrderSubscriber {
-  protected sendGridService: any;
+  protected sendGridService: any
 
   constructor({ eventBusService, sendgridService }: InjectedDependencies) {
-    this.sendGridService = sendgridService;
-    eventBusService.subscribe("order-update-token.created", this.handleRequestClaimOrder);
+    this.sendGridService = sendgridService
+    eventBusService.subscribe(
+      "order-update-token.created",
+      this.handleRequestClaimOrder
+    )
   }
 
   
   handleRequestClaimOrder = async (data) => {
     this.sendGridService.sendEmail({
-      templateId: 'order-claim-confirmation',
-      from: 'hello@medusajs.com',
+      templateId: "order-claim-confirmation",
+      from: "hello@medusajs.com",
       to: data.old_email,
       data: {
-        link: `http://example-storefront.com/confirm-order-claim/${data.token}`,
-        //other data...
-      }
+        link: `http://example.com/confirm-order-claim/${data.token}`,
+        // other data...
+      },
     })
   }
 }
 
-export default ClaimOrderSubscriber;
+export default ClaimOrderSubscriber
 ```
 
 Notice how the `token` is passed to the storefront link as a parameter.

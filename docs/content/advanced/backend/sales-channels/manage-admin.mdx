@@ -57,12 +57,12 @@ You can create a sales channel by sending a request to the Create a Sales Channe
 
 ```jsx
 medusa.admin.salesChannels.create({
-  name: 'App',
-  description: 'Mobile app'
+  name: "App",
+  description: "Mobile app",
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
@@ -70,20 +70,20 @@ medusa.admin.salesChannels.create({
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    name: 'App',
-	  description: 'Mobile app'
-  })
+    name: "App",
+	  description: "Mobile app",
+  }),
 })
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
-});
+})
 ```
 
 </TabItem>
@@ -118,8 +118,8 @@ You can list all sales channels by sending a request to the List Sales Channels 
 ```jsx
 medusa.admin.salesChannels.list()
 .then(({ sales_channels, limit, offset, count }) => {
-  console.log(sales_channels.length);
-});
+  console.log(sales_channels.length)
+})
 ```
 
 </TabItem>
@@ -127,12 +127,12 @@ medusa.admin.salesChannels.list()
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ sales_channels, limit, offset, count }) => {
   console.log(sales_channels.length)
-});
+})
 ```
 
 </TabItem>
@@ -160,8 +160,8 @@ You can retrieve a sales channel’s details by its ID using the Get Sales Chann
 ```jsx
 medusa.admin.salesChannels.retrieve(salesChannelId)
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
@@ -169,12 +169,12 @@ medusa.admin.salesChannels.retrieve(salesChannelId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ sales_channels, limit, offset, count }) => {
   console.log(sales_channels.length)
-});
+})
 ```
 
 </TabItem>
@@ -201,11 +201,11 @@ You can update a Sales Channel’s details and attributes by sending a request t
 
 ```jsx
 medusa.admin.salesChannels.update(salesChannelId, {
-  is_disabled: false
+  is_disabled: false,
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
@@ -213,19 +213,19 @@ medusa.admin.salesChannels.update(salesChannelId, {
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    is_disabled: false
-  })
+    is_disabled: false,
+  }),
 })
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
-});
+})
 ```
 
 </TabItem>
@@ -261,8 +261,8 @@ You can delete a sales channel by sending a request to the Delete Sales Channel 
 ```jsx
 medusa.admin.salesChannels.delete(salesChannelId)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -270,13 +270,13 @@ medusa.admin.salesChannels.delete(salesChannelId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
-  method: 'DELETE',
-  credentials: 'include',
+  method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
   console.log(id)
-});
+})
 ```
 
 </TabItem>
@@ -307,37 +307,40 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
 medusa.admin.salesChannels.addProducts(salesChannelId, {
   product_ids: [
     {
-      id: productId
-    }
-  ]
+      id: productId,
+    },
+  ],
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
-  method: 'POST',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    product_ids: [
-	    {
-	      id: productId
-	    }
-	  ]
-  })
-})
+fetch(
+  `<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      product_ids: [
+        {
+          id: productId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
-});
+})
 ```
 
 </TabItem>
@@ -373,25 +376,28 @@ You can list the products available in a sales channel by sending a request to t
 ```jsx
 medusa.admin.products.list({
   sales_channel_id: [
-    salesChannelId
-  ]
+    salesChannelId,
+  ],
 })
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-});
+  console.log(products.length)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`, {
-  credentials: 'include',
-})
+fetch(
+  `<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`,
+  {
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
-});
+})
 ```
 
 </TabItem>
@@ -424,43 +430,46 @@ You can delete a product from a sales channel by sending a request to the Sales 
 medusa.admin.salesChannels.removeProducts(salesChannelId, {
   product_ids: [
     {
-      id: productId
-    }
-  ]
+      id: productId,
+    },
+  ],
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
-  method: 'DELETE',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    product_ids: [
-	    {
-	      id: productId
-	    }
-	  ]
-  })
-})
+fetch(
+  `<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
+  {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      product_ids: [
+        {
+          id: productId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```jsx
+```bash
 curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
@@ -492,14 +501,14 @@ You can filter orders by a specific sales channel by sending a request to the Li
 ```jsx
 medusa.admin.orders.list({
   sales_channel_id: [
-    salesChannelId
+    salesChannelId,
   ],
   limit: 50,
-  offset: 0
+  offset: 0,
 })
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
@@ -507,18 +516,18 @@ medusa.admin.orders.list({
 
 ```jsx
 fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
   console.log(orders.length)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```jsx
+```bash
 curl -L -X GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```

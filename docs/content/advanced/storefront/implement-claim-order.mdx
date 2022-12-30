@@ -82,7 +82,7 @@ medusa.orders.claimOrders({
 })
 .catch(() => {
   // an error occurred
-});
+})
 ```
 
 </TabItem>
@@ -90,23 +90,23 @@ medusa.orders.claimOrders({
 
 ```tsx
 fetch(`<SERVER_URL>/store/orders/batch/customer/token`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     order_ids: [
       order_id,
     ],
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then(() => {
-  //successful
+  // successful
 })
 .catch(() => {
-  //display an error to the customer
-});
+  // display an error to the customer
+})
 ```
 
 </TabItem>
@@ -131,14 +131,14 @@ Then, you send a request to the Verify Claim Order endpoint:
 
 ```tsx
 medusa.orders.confirmRequest({
-  token
+  token,
 })
 .then(() => {
   // successful
 })
 .catch(() => {
   // an error occurred
-});
+})
 ```
 
 </TabItem>
@@ -146,21 +146,21 @@ medusa.orders.confirmRequest({
 
 ```tsx
 fetch(`<SERVER_URL>/store/orders/customer/confirm`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    token
+    token,
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then(() => {
-  //successful
+  // successful
 })
 .catch(() => {
-  //display an error to the customer
-});
+  // display an error to the customer
+})
 ```
 
 </TabItem>

@@ -87,11 +87,11 @@ To do that, send a request to the [Create an OrderEdit](/api/admin/#tag/OrderEdi
 
 ```ts
 medusa.admin.orderEdits.create({
-  order_id, //required
+  order_id, // required
 })
 .then(({ order_edit }) => {
-  console.log(order_edit.id);
-});
+  console.log(order_edit.id)
+})
 ```
 
 </TabItem>
@@ -99,19 +99,19 @@ medusa.admin.orderEdits.create({
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    order_id
-  })
+    order_id,
+  }),
 })
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.id);
-});
+  console.log(order_edit.id)
+})
 ```
 
 </TabItem>
@@ -161,11 +161,11 @@ To add a new item to the original order, send a request to the [Add Line Item](/
 ```ts
 medusa.admin.orderEdits.addLineItem(orderEditId, {
   quantity: 1,
-  variant_id
+  variant_id,
 })
 .then(({ order_edit }) => {
-  console.log(order_edit.changes);
-});
+  console.log(order_edit.changes)
+})
 ```
 
 </TabItem>
@@ -173,20 +173,20 @@ medusa.admin.orderEdits.addLineItem(orderEditId, {
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
     quantity: 1,
-    variant_id
-  })
+    variant_id,
+  }),
 })
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.changes);
-});
+  console.log(order_edit.changes)
+})
 ```
 
 </TabItem>
@@ -225,8 +225,8 @@ medusa.admin.orderEdits.updateLineItem(orderEditId, itemId, {
   quantity: 2,
 })
 .then(({ order_edit }) => {
-  console.log(order_edit.changes);
-});
+  console.log(order_edit.changes)
+})
 ```
 
 </TabItem>
@@ -234,19 +234,19 @@ medusa.admin.orderEdits.updateLineItem(orderEditId, itemId, {
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    quantity: 2
-  })
+    quantity: 2,
+  }),
 })
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.changes);
-});
+  console.log(order_edit.changes)
+})
 ```
 
 </TabItem>
@@ -280,8 +280,8 @@ You can remove an item from the original order by sending a request to the [Remo
 ```ts
 medusa.admin.orderEdits.removeLineItem(orderEditId, itemId)
 .then(({ order_edit }) => {
-  console.log(order_edit.changes);
-});
+  console.log(order_edit.changes)
+})
 ```
 
 </TabItem>
@@ -289,13 +289,13 @@ medusa.admin.orderEdits.removeLineItem(orderEditId, itemId)
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/items/${itemId}`, {
-  method: 'DELETE',
-  credentials: 'include'
+  method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.changes);
-});
+  console.log(order_edit.changes)
+})
 ```
 
 </TabItem>
@@ -327,22 +327,25 @@ To revert an item change, send a request to the [Delete Item Change](/api/admin/
 ```ts
 medusa.admin.orderEdits.deleteItemChange(orderEditId, changeId)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/changes/${changeId}`, {
-  method: 'DELETE',
-  credentials: 'include'
-})
+fetch(
+  `<YOUR_SERVER>/admin/order-edits/${orderEditId}/changes/${changeId}`,
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
-  console.log(id, object, deleted);
-});
+  console.log(id, object, deleted)
+})
 ```
 
 </TabItem>
@@ -378,7 +381,7 @@ To move an Order Edit into the request state, send a request to the [Request Con
 ```ts
 medusa.admin.orderEdits.requestConfirmation(orderEditId)
 .then(({ order_edit }) => {
-  console.log(order_edit.requested_at, order_edit.requested_by);
+  console.log(order_edit.requested_at, order_edit.requested_by)
 })
 ```
 
@@ -387,12 +390,12 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/request`, {
-  method: 'POST',
-  credentials: 'include'
+  method: "POST",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.requested_at, order_edit.requested_by);
+  console.log(order_edit.requested_at, order_edit.requested_by)
 })
 ```
 
@@ -445,7 +448,7 @@ To confirm an Order Edit, send a request to the [Confirm Order Edit](/api/admin/
 ```ts
 medusa.admin.orderEdits.confirm(orderEditId)
 .then(({ order_edit }) => {
-  console.log(order_edit.confirmed_at, order_edit.confirmed_by);
+  console.log(order_edit.confirmed_at, order_edit.confirmed_by)
 })
 ```
 
@@ -454,12 +457,12 @@ medusa.admin.orderEdits.confirm(orderEditId)
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/order-edits/${orderEditId}/confirm`, {
-  method: 'POST',
-  credentials: 'include'
+  method: "POST",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.confirmed_at, order_edit.confirmed_by);
+  console.log(order_edit.confirmed_at, order_edit.confirmed_by)
 })
 ```
 
@@ -507,7 +510,7 @@ If the payment is authorized by the customer, it can be captured by sending a re
 ```ts
 medusa.admin.payments.capturePayment(paymentId)
 .then(({ payment }) => {
-  console.log(payment.captured_at);
+  console.log(payment.captured_at)
 })
 ```
 
@@ -516,12 +519,12 @@ medusa.admin.payments.capturePayment(paymentId)
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/payments/${paymentId}/capture`, {
-  method: 'POST',
-  credentials: 'include'
+  method: "POST",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ payment }) => {
-  console.log(payment.captured_at);
+  console.log(payment.captured_at)
 })
 ```
 
@@ -551,10 +554,10 @@ To refund the difference to the customer, send a request to the [Refund Payment]
 
 ```ts
 medusa.admin.payments.refundPayment(paymentId, {
-  amount
+  amount,
 })
 .then(({ refund }) => {
-  console.log(refund.id);
+  console.log(refund.id)
 })
 ```
 
@@ -563,18 +566,18 @@ medusa.admin.payments.refundPayment(paymentId, {
 
 ```ts
 fetch(`<YOUR_SERVER>/admin/payments/${paymentId}/refund`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    amount
-  })
+    amount,
+  }),
 })
 .then((response) => response.json())
 .then(({ refund }) => {
-  console.log(refund.id);
+  console.log(refund.id)
 })
 ```
 

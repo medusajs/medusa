@@ -64,11 +64,11 @@ medusa.carts.update(cartId, {
     country_code,
     province,
     postal_code,
-    phone
+    phone,
   },
 })
 .then(({ cart }) => {
-  console.log(cart.shipping_address);
+  console.log(cart.shipping_address)
 })
 ```
 
@@ -77,8 +77,8 @@ medusa.carts.update(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     shipping_address: {
       company,
@@ -90,17 +90,17 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
       country_code,
       province,
       postal_code,
-      phone
+      phone,
     },
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.shipping_address);
-});
+  console.log(cart.shipping_address)
+})
 ```
 
 </TabItem>
@@ -124,7 +124,7 @@ You can retrieve the list of shipping options by sending a `GET` request to the 
 ```jsx
 medusa.shippingOptions.listCartOptions(cartId)
 .then(({ shipping_options }) => {
-  console.log(shipping_options.length);
+  console.log(shipping_options.length)
 })
 ```
 
@@ -133,11 +133,11 @@ medusa.shippingOptions.listCartOptions(cartId)
 
 ```jsx
 fetch(`<SERVER_URL>/store/shipping-options/${cartId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ shipping_options }) => {
-  console.log(shipping_options.length);
+  console.log(shipping_options.length)
 })
 ```
 
@@ -155,7 +155,7 @@ Once the customer chooses one of the available shipping options, send a `POST` r
 
 ```jsx
 medusa.carts.addShippingMethod(cartId, {
-  option_id: shippingOptionId //the ID of the selected option
+  option_id: shippingOptionId, // the ID of the selected option
 })
 .then(({ cart }) => {
   console.log(cart.shipping_methods)
@@ -167,14 +167,14 @@ medusa.carts.addShippingMethod(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/shipping-methods`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    option_id: shippingOptionId //the ID of the selected option
+    option_id: shippingOptionId, // the ID of the selected option
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ cart }) => {
@@ -216,8 +216,8 @@ medusa.carts.createPaymentSessions(cartId)
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/payment-sessions`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ cart }) => {
@@ -239,7 +239,8 @@ When the customer chooses the payment provider they want to complete purchase wi
 
 ```jsx
 medusa.carts.setPaymentSession(cartId, {
-  provider_id: paymentProviderId // retrieved from the payment session selected by the customer
+  // retrieved from the payment session selected by the customer
+  provider_id: paymentProviderId,
 })
 .then(({ cart }) => {
   console.log(cart.payment_session)
@@ -251,14 +252,15 @@ medusa.carts.setPaymentSession(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/payment-session`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    provider_id: paymentProviderId // retrieved from the payment session selected by the customer
+    // retrieved from the payment session selected by the customer
+    provider_id: paymentProviderId,
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ cart }) => {
@@ -291,10 +293,10 @@ If you need to update that data at any point before the purchase is made, send a
 ```jsx
 medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
   data: {
-    //pass any data you want to add in the `data` attribute
-    //for example:
-    "test": true
-  }
+    // pass any data you want to add in the `data` attribute
+    // for example:
+    "test": true,
+  },
 })
 .then(({ cart }) => {
   console.log(cart.payment_session.data)
@@ -304,21 +306,26 @@ medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, {
-  method: 'POST',
-  credentials: 'include',
-  body: JSON.stringify({
-    data: {
-      //pass any data you want to add in the `data` attribute
-      //for example:
-      "test": true
-    }
-  }),
-  headers: {
-    'Content-Type': 'application/json'
+fetch(
+  `<SERVER_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, 
+  {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({
+      data: {
+        // pass any data you want to add in the `data` attribute
+        // for example:
+        "test": true,
+      },
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
   }
-})
+)
 .then((response) => response.json())
 .then(({ cart }) => {
   console.log(cart.payment_session.data)
@@ -344,7 +351,7 @@ To complete a cart, send a `POST` request to the [Complete a Cart](/api/store/#t
 ```jsx
 medusa.carts.complete(cartId)
 .then(({ type, data }) => {
-  console.log(type, data);
+  console.log(type, data)
 })
 ```
 
@@ -353,15 +360,15 @@ medusa.carts.complete(cartId)
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/complete`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ type, data }) => {
-  console.log(type, data);
+  console.log(type, data)
 })
 ```
 

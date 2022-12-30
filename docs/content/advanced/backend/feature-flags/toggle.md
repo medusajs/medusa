@@ -51,9 +51,9 @@ For example, to enable the Tax-Inclusive Pricing beta feature, add the following
 ```jsx title=medusa-config.js
 module.exports = {
   featureFlags: {
-    tax_inclusive_pricing: true
+    tax_inclusive_pricing: true,
   },
-  //...
+  // ...
 }
 ```
 

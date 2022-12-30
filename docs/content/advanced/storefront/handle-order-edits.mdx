@@ -78,9 +78,9 @@ You can retrieve a single order edit by its ID by sending a request to the [Get 
 ```ts
 medusa.orderEdits.retrieve(orderEditId)
 .then(({ order_edit }) => {
-  console.log(order_edit.changes);
-  //show changed items to the customer
-});
+  console.log(order_edit.changes)
+  // show changed items to the customer
+})
 ```
 
 </TabItem>
@@ -90,9 +90,9 @@ medusa.orderEdits.retrieve(orderEditId)
 fetch(`<SERVER_URL>/store/order-edits/${orderEditId}`)
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.changes);
-  //show changed items to the customer
-});
+  console.log(order_edit.changes)
+  // show changed items to the customer
+})
 ```
 
 </TabItem>
@@ -116,6 +116,8 @@ You can learn more about what fields to expect in the [API reference](/api/store
 
 All data about changes to the original order’s items can be found in `order_edit.changes`. `changes` is an array of item changes. Each item change includes the following fields:
 
+<!-- eslint-skip -->
+
 ```ts
 {
   type: string,
@@ -134,14 +136,22 @@ Here’s an example of how you can use this data to show the customer the reques
 
 ```jsx
 <ul>
-  {orderEdit.changes.map(itemChange => (
+  {orderEdit.changes.map((itemChange) => (
     <li key={itemChange.id}>
-      <strong>{itemChange.line_item ? itemChange.line_item.title : itemChange.original_line_item.title}</strong>
-      {itemChange.type === 'added' && <span>New Item</span>}
-      {itemChange.type === 'removed' && <span>Removed Item</span>}
-      {itemChange.type === 'edited' && 
+      <strong>
+        {
+          itemChange.line_item ? 
+          itemChange.line_item.title : 
+          itemChange.original_line_item.title
+        }
+      </strong>
+      {itemChange.type === "added" && <span>New Item</span>}
+      {itemChange.type === "removed" && <span>Removed Item</span>}
+      {itemChange.type === "edited" && 
         <span>
-          Edited Item. Old Quantity: {itemChange.original_line_item.quantity}. New Quantity: {itemChange.line_item.quantity}
+          Edited Item
+          Old Quantity: {itemChange.original_line_item.quantity}
+          New Quantity: {itemChange.line_item.quantity}
         </span>}
     </li>
   ))}
@@ -178,31 +188,34 @@ If `difference_due` is greater than 0, then additional payment from the customer
 
 ```ts
 medusa.paymentCollections.managePaymentSession(paymentCollectionId, {
-  provider_id
+  provider_id,
 })
 .then(({ payment_collection }) => {
-  console.log(payment_collection.payment_sessions);
-});
+  console.log(payment_collection.payment_sessions)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`, {
-  method: 'POST',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    provider_id
-  })
-})
+fetch(
+  `<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      provider_id,
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ payment_collection }) => {
-  console.log(payment_collection.payment_sessions);
-});
+  console.log(payment_collection.payment_sessions)
+})
 ```
 
 </TabItem>
@@ -215,24 +228,29 @@ fetch(`<SERVER_URL>/store/payment-collections/${paymentCollectionId}/sessions`, 
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
-medusa.paymentCollection.authorizePaymentSession(paymentCollectionId, paymentSessionId)
+medusa.paymentCollection
+  .authorizePaymentSession(paymentCollectionId, paymentSessionId)
 .then(({ payment_session }) => {
-  console.log(payment_session.id);
-});
+  console.log(payment_session.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<SERVER_URL>/store/payment-collection/${paymentCollectionId}/sessions/${paymentSessionId}/authorize`, {
-  method: 'POST',
-  credentials: 'include',
-})
+fetch(
+  `<SERVER_URL>/store/payment-collection/${paymentCollectionId}` + 
+  `/sessions/${paymentSessionId}/authorize`, 
+  {
+    method: "POST",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ payment_session }) => {
-  console.log(payment_session.id);
-});
+  console.log(payment_session.id)
+})
 ```
 
 </TabItem>
@@ -252,8 +270,8 @@ To confirm and complete the order edit, send a request to the [Complete Order Ed
 ```ts
 medusa.orderEdits.complete(orderEditId)
 .then(({ order_edit }) => {
-  console.log(order_edit.confirmed_at);
-});
+  console.log(order_edit.confirmed_at)
+})
 ```
 
 </TabItem>
@@ -261,13 +279,13 @@ medusa.orderEdits.complete(orderEditId)
 
 ```ts
 fetch(`<SERVER_URL>/store/order-edits/${orderEditId}/complete`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.confirmed_at);
-});
+  console.log(order_edit.confirmed_at)
+})
 ```
 
 </TabItem>
@@ -296,11 +314,11 @@ If the customer wants to decline the Order Edit, you can do that by sending a re
 
 ```ts
 medusa.orderEdits.decline(orderEditId, {
-  decline_reason: 'I am not satisfied'
+  decline_reason: "I am not satisfied",
 })
 .then(({ order_edit }) => {
-  console.log(order_edit.declined_at);
-});
+  console.log(order_edit.declined_at)
+})
 ```
 
 </TabItem>
@@ -308,19 +326,19 @@ medusa.orderEdits.decline(orderEditId, {
 
 ```ts
 fetch(`<SERVER_URL>/store/order-edits/${orderEditId}/decline`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    decline_reason: 'I am not satisfied'
-  })
+    decline_reason: "I am not satisfied",
+  }),
 })
 .then((response) => response.json())
 .then(({ order_edit }) => {
-  console.log(order_edit.declined_at);
-});
+  console.log(order_edit.declined_at)
+})
 ```
 
 </TabItem>

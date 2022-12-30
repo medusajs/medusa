@@ -49,17 +49,20 @@ Batch job strategies must extend the abstract class `AbstractBatchJobStrategy` a
 
 Add the following content to the file you created:
 
-```tsx title=src/strategies/publish.ts
-import { AbstractBatchJobStrategy, BatchJobService } from '@medusajs/medusa'
-import { EntityManager } from 'typeorm'
+```ts title=src/strategies/publish.ts
+import { 
+  AbstractBatchJobStrategy, 
+  BatchJobService, 
+} from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
 
 class PublishStrategy extends AbstractBatchJobStrategy {
   protected batchJobService_: BatchJobService
   processJob(batchJobId: string): Promise<void> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   buildTemplate(): Promise<string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
@@ -79,12 +82,12 @@ You will use the `batchType` later when you [interact with the Batch Job APIs](#
 
 Following the same example, add the following properties to the `PublishStrategy` class:
 
-```tsx
+```ts
 class PublishStrategy extends AbstractBatchJobStrategy {
-  static identifier = 'publish-products-strategy'
-  static batchType = 'publish-products'
+  static identifier = "publish-products-strategy"
+  static batchType = "publish-products"
 
-  //...
+  // ...
 }
 ```
 
@@ -98,10 +101,16 @@ Medusa runs this method before it creates the batch job to prepare the content o
 
 Implementing this method is optional. For example:
 
-```tsx
-async prepareBatchJobForProcessing(batchJob: CreateBatchJobInput, req: Express.Request): Promise<CreateBatchJobInput> {
-  //make changes to the batch job's fields...
-  return batchJob
+```ts
+class PublishStrategy extends AbstractBatchJobStrategy {
+  // ...
+  async prepareBatchJobForProcessing(
+    batchJob: CreateBatchJobInput, 
+    req: Express.Request
+  ): Promise<CreateBatchJobInput> {
+    // make changes to the batch job's fields...
+    return batchJob
+  }
 }
 ```
 
@@ -111,35 +120,38 @@ Medusa runs this method after it creates the batch job, but before it is confirm
 
 For example, this implementation of the `preProcessBatchJob` method calculates how many draft products it will published and adds it to the `result` attribute of the batch job:
 
-```tsx
-async preProcessBatchJob(batchJobId: string): Promise<void> {
-  return await this.atomicPhase_(async (transactionManager) => {
-    const batchJob = (await this.batchJobService_
-      .withTransaction(transactionManager)
-      .retrieve(batchJobId))
-      
-    const count = await this.productService_
-      .withTransaction(transactionManager)
-      .count({
-        status: ProductStatus.DRAFT
-      });
+```ts
+class PublishStrategy extends AbstractBatchJobStrategy {
+    // ...
+  async preProcessBatchJob(batchJobId: string): Promise<void> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const batchJob = (await this.batchJobService_
+        .withTransaction(transactionManager)
+        .retrieve(batchJobId))
+        
+      const count = await this.productService_
+        .withTransaction(transactionManager)
+        .count({
+          status: ProductStatus.DRAFT,
+        })
 
-    await this.batchJobService_
-      .withTransaction(transactionManager)
-      .update(batchJob, {
-        result: {
-          advancement_count: 0,
-          count,
-          stat_descriptors: [
-            {
-              key: 'product-publish-count',
-              name: 'Number of products to publish',
-              message: `${count} product(s) will be published.`
-            }
-          ]
-        }
-      })
-  })
+      await this.batchJobService_
+        .withTransaction(transactionManager)
+        .update(batchJob, {
+          result: {
+            advancement_count: 0,
+            count,
+            stat_descriptors: [
+              {
+                key: "product-publish-count",
+                name: "Number of products to publish",
+                message: `${count} product(s) will be published.`,
+              },
+            ],
+          },
+        })
+    })
+  }
 }
 ```
 
@@ -155,34 +167,37 @@ Medusa runs this method to process the batch job once it is confirmed.
 
 For example, this implementation of the `processJob` method retrieves all draft products and changes their status to published:
 
-```tsx
-async processJob(batchJobId: string): Promise<void> {
-  return await this.atomicPhase_(
-    async (transactionManager) => {
-      const productServiceTx = this.productService_
-        .withTransaction(transactionManager)
+```ts
+class PublishStrategy extends AbstractBatchJobStrategy {
+  // ...
+  async processJob(batchJobId: string): Promise<void> {
+    return await this.atomicPhase_(
+      async (transactionManager) => {
+        const productServiceTx = this.productService_
+          .withTransaction(transactionManager)
 
-      const productList = await productServiceTx
-        .list({
-          status: [ProductStatus.DRAFT]
-        })
-
-      productList.forEach(async (product: Product) => {
-        await productServiceTx
-          .update(product.id, {
-            status: ProductStatus.PUBLISHED
+        const productList = await productServiceTx
+          .list({
+            status: [ProductStatus.DRAFT],
           })
-      })
-        
-      await this.batchJobService_
-        .withTransaction(transactionManager)
-        .update(batchJobId, {
-          result: {
-            advancement_count: productList.length
-          }
+
+        productList.forEach(async (product: Product) => {
+          await productServiceTx
+            .update(product.id, {
+              status: ProductStatus.PUBLISHED,
+            })
         })
-    }
-  )
+          
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .update(batchJobId, {
+            result: {
+              advancement_count: productList.length,
+            },
+          })
+      }
+    )
+  }
 }
 ```
 
@@ -198,9 +213,12 @@ This method can be used in cases where you provide a template file to download, 
 
 If not necessary to your use case, you can simply return an empty string:
 
-```tsx
-async buildTemplate(): Promise<string> {
-  return ''
+```ts
+class PublishStrategy extends AbstractBatchJobStrategy {
+  // ...
+  async buildTemplate(): Promise<string> {
+    return ""
+  }
 }
 ```
 
@@ -212,9 +230,15 @@ By default, the `AbstractBatchJobStrategy` class implements this method and retu
 
 If you would like to change that behavior, you can override this method to return a different value:
 
-```tsx
-protected async shouldRetryOnProcessingError(batchJob: BatchJob, err: unknown): Promise<boolean> {
-  return true
+```ts
+class PublishStrategy extends AbstractBatchJobStrategy {
+  // ...
+  protected async shouldRetryOnProcessingError(
+    batchJob: BatchJob, 
+    err: unknown
+  ): Promise<boolean> {
+    return true
+  }
 }
 ```
 
@@ -226,9 +250,16 @@ You can use this method as implemented in `AbstractBatchJobStrategy` at any poin
 
 You can also override this method in your batch job strategy and change how it works:
 
-```tsx
-protected async handleProcessingError<T>(batchJobId: string, err: unknown, result: T): Promise<void> {
-  //different implementation...
+```ts
+class PublishStrategy extends AbstractBatchJobStrategy {
+  // ...
+  protected async handleProcessingError<T>(
+    batchJobId: string, 
+    err: unknown, 
+    result: T
+  ): Promise<void> {
+    // different implementation...
+  }
 }
 ```
 
@@ -273,13 +304,13 @@ For example, this creates a batch job of the type `publish-products`:
 
 ```jsx
 medusa.admin.batchJobs.create({
-  type: 'publish-products',
+  type: "publish-products",
   context: { },
-  dry_run: true
+  dry_run: true,
 })
 .then(( batch_job ) => {
-  console.log(batch_job.status);
-});
+  console.log(batch_job.status)
+})
 ```
 
 </TabItem>
@@ -287,21 +318,21 @@ medusa.admin.batchJobs.create({
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    type: 'publish-products',
+    type: "publish-products",
     context: { },
-    dry_run: true
-  })
+    dry_run: true,
+  }),
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {
-  console.log(batch_job.status);
-});
+  console.log(batch_job.status)
+})
 ```
 
 </TabItem>
@@ -335,8 +366,8 @@ You can retrieve the batch job afterward to get its status and view details abou
 ```jsx
 medusa.admin.batchJobs.retrieve(batchJobId)
 .then(( batch_job ) => {
-  console.log(batch_job.status, batch_job.result);
-});
+  console.log(batch_job.status, batch_job.result)
+})
 ```
 
 </TabItem>
@@ -344,12 +375,12 @@ medusa.admin.batchJobs.retrieve(batchJobId)
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {
-  console.log(batch_job.status, batch_job.result);
-});
+  console.log(batch_job.status, batch_job.result)
+})
 ```
 
 </TabItem>
@@ -390,8 +421,8 @@ To process the batch job, send a request to [confirm the batch job](https://docs
 ```jsx
 medusa.admin.batchJobs.confirm(batchJobId)
 .then(( batch_job ) => {
-  console.log(batch_job.status);
-});
+  console.log(batch_job.status)
+})
 ```
 
 </TabItem>
@@ -399,13 +430,13 @@ medusa.admin.batchJobs.confirm(batchJobId)
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ batch_job }) => {
-  console.log(batch_job.status);
-});
+  console.log(batch_job.status)
+})
 ```
 
 </TabItem>
