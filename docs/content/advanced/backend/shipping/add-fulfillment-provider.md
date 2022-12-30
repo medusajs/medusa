@@ -32,7 +32,7 @@ class MyFulfillmentService extends FulfillmentService {
 
 }
 
-export default MyFulfillmentService;
+export default MyFulfillmentService
 ```
 
 Fulfillment provider services must extend the `FulfillmentService` class imported from `medusa-interfaces`.
@@ -55,10 +55,10 @@ The value of this property will also be used to reference the fulfillment provid
 import { FulfillmentService } from "medusa-interfaces"
 
 class MyFulfillmentService extends FulfillmentService {
-  static identifier = 'my-fulfillment';
+  static identifier = "my-fulfillment"
 }
 
-export default MyFulfillmentService;
+export default MyFulfillmentService
 ```
 
 ### constructor
@@ -72,9 +72,12 @@ Additionally, if you’re creating your fulfillment provider as an external plug
 For example:
 
 ```ts
-constructor({ productService }, options) {
-  super();
-  //you can access options here
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  constructor(container, options) {
+    super(container)
+    // you can access options here
+  }
 }
 ```
 
@@ -89,15 +92,18 @@ These fulfillment options are defined in the `getFulfillmentOptions` method. Thi
 For example:
 
 ```ts
-async getFulfillmentOptions () {
-  return [
-    {
-      id: 'my-fulfillment'
-    },
-    {
-      id: 'my-fulfillment-dynamic'
-    }
-  ];
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async getFulfillmentOptions() {
+    return [
+      {
+        id: "my-fulfillment",
+      },
+      {
+        id: "my-fulfillment-dynamic",
+      },
+    ]
+  }
 }
 ```
 
@@ -116,8 +122,11 @@ This method returns a boolean. If the result is false, an error is thrown and th
 For example, you can use this method to ensure that the `id` in the `data` object is correct:
 
 ```ts
-async validateOption (data) {
-    return data.id == 'my-fulfillment';
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async validateOption(data) {
+      return data.id == "my-fulfillment"
+  }
 }
 ```
 
@@ -144,13 +153,16 @@ If everything is valid, this method must return a value that will be stored in t
 For example:
 
 ```ts
-async validateFulfillmentData(optionData, data, cart) {
-  if (data.id !== "my-fulfillment") {
-    throw new Error("invalid data");
-  }
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async validateFulfillmentData(optionData, data, cart) {
+    if (data.id !== "my-fulfillment") {
+      throw new Error("invalid data")
+    }
 
-  return {
-    ...data
+    return {
+      ...data,
+    }
   }
 }
 ```
@@ -173,14 +185,17 @@ You can use the `data` property in the shipping method (first parameter) to acce
 Here is a basic implementation of `createFulfillment` for a fulfillment provider that does not interact with any third-party provider to create the fulfillment:
 
 ```ts
-createFulfillment(
-  methodData,
-  fulfillmentItems,
-  fromOrder,
-  fulfillment
-) {
-  // No data is being sent anywhere
-  return Promise.resolve({})
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  createFulfillment(
+    methodData,
+    fulfillmentItems,
+    fromOrder,
+    fulfillment
+  ) {
+    // No data is being sent anywhere
+    return Promise.resolve({})
+  }
 }
 ```
 
@@ -206,8 +221,11 @@ This method receives as a parameter the `data` object sent with the request that
 For example:
 
 ```ts
-canCalculate(data) {
-  return data.id === 'my-fulfillment-dynamic';
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  canCalculate(data) {
+    return data.id === "my-fulfillment-dynamic"
+  }
 }
 ```
 
@@ -224,16 +242,22 @@ This method receives three parameters:
 If your fulfillment provider does not provide any dynamically calculated rates you can keep the function empty:
 
 ```ts
-calculatePrice() {
-
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  calculatePrice() {
+    // leave empty
+  }
 }
 ```
 
 Otherwise, you can use it to calculate the price with a custom logic. For example:
 
 ```ts
-calculatePrice (optionData, data, cart) {
-  return cart.items.length * 1000;
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  calculatePrice(optionData, data, cart) {
+    return cart.items.length * 1000
+  }
 }
 ```
 
@@ -250,8 +274,11 @@ It receives the return created as a parameter. The value it returns is set to th
 This is the basic implementation of the method for a fulfillment provider that does not contact with a third-party provider to fulfill the return:
 
 ```ts
-createReturn(returnOrder) {
-  return Promise.resolve({})
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  createReturn(returnOrder) {
+    return Promise.resolve({})
+  }
 }
 ```
 
@@ -266,8 +293,11 @@ This method receives the fulfillment being cancelled as a parameter.
 This is the basic implementation of the method for a fulfillment provider that does not interact with a third-party provider to cancel the fulfillment:
 
 ```ts
-cancelFulfillment(fulfillment) {
-  return Promise.resolve({})
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  cancelFulfillment(fulfillment) {
+    return Promise.resolve({})
+  }
 }
 ```
 

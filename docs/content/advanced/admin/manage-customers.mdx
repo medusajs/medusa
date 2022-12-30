@@ -49,8 +49,8 @@ You can show a list of customers by sending a request to the [List Customers](/a
 ```ts
 medusa.admin.customers.list()
 .then(({ customers, limit, offset, count }) => {
-  console.log(customers.length);
-});
+  console.log(customers.length)
+})
 ```
 
 </TabItem>
@@ -58,12 +58,12 @@ medusa.admin.customers.list()
 
 ```ts
 fetch(`<SERVER_URL>/admin/customers`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ customers, limit, offset, count }) => {
-  console.log(customers.length);
-});
+  console.log(customers.length)
+})
 ```
 
 </TabItem>
@@ -108,11 +108,11 @@ medusa.admin.customers.create({
   email,
   password,
   first_name,
-  last_name
+  last_name,
 })
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -120,19 +120,19 @@ medusa.admin.customers.create({
 
 ```ts
 fetch(`<SERVER_URL>/admin/customers`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     email,
     password,
     first_name,
-    last_name
-  })
+    last_name,
+  }),
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -177,11 +177,11 @@ You can edit a customer’s information by sending a request to the [Update a Cu
 
 ```ts
 medusa.admin.customers.update(customerId, {
-  first_name
+  first_name,
 })
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>
@@ -189,16 +189,16 @@ medusa.admin.customers.update(customerId, {
 
 ```ts
 fetch(`<SERVER_URL>/admin/customers/${customerId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    first_name
-  })
+    first_name,
+  }),
 })
 .then((response) => response.json())
 .then(({ customer }) => {
-  console.log(customer.id);
-});
+  console.log(customer.id)
+})
 ```
 
 </TabItem>

@@ -55,22 +55,22 @@ Finally, in `medusa-config.js`, add the Klarna plugin to the `plugins` array wit
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //other plugins...
+  // other plugins...
   {
     resolve: `medusa-payment-klarnal`,
     options: {
-      backend_url: process.env.KLARNA_BACKEND_URL
+      backend_url: process.env.KLARNA_BACKEND_URL,
       url: process.env.KLARNA_URL,
       user: process.env.KLARNA_USER,
       password: process.env.KLARNA_PASSWORD,
       merchant_urls: {
         terms: process.env.KLARNA_TERMS_URL,
         checkout: process.env.KLARNA_CHECKOUT_URL,
-        confirmation: process.env.KLARNA_CONFIRMATION_URL
-      }
-    }
-  }
-];
+        confirmation: process.env.KLARNA_CONFIRMATION_URL,
+      },
+    },
+  },
+]
 ```
 
 ---

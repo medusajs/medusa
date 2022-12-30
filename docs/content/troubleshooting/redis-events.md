@@ -11,7 +11,7 @@ After installing it, make sure to configure your Medusa server to use Redis:
 ```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
-    //...
+    // ...
     redis_url: REDIS_URL,
   },
 }

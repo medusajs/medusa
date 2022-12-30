@@ -52,13 +52,15 @@ In `medusa-config.js`, the `DATABASE_URL` variable is set to the environment var
 Replace the previous declaration of `DATABASE_URL` in `medusa-config.js` with the following:
 
 ```js
-const DB_USERNAME = process.env.DB_USERNAME;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_HOST = process.env.DB_HOST;
-const DB_PORT = process.env.DB_PORT;
-const DB_DATABASE = process.env.DB_DATABASE;
+const DB_USERNAME = process.env.DB_USERNAME
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_HOST = process.env.DB_HOST
+const DB_PORT = process.env.DB_PORT
+const DB_DATABASE = process.env.DB_DATABASE
 
-const DATABASE_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
+const DATABASE_URL = 
+  `postgres://${DB_USERNAME}:${DB_PASSWORD}` + 
+  `@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`
 ```
 
 In addition, you must add to `projectConfig` in the exported object a new property `database_extra`:
@@ -66,10 +68,10 @@ In addition, you must add to `projectConfig` in the exported object a new proper
 ```js
 module.exports = {
   projectConfig: {
-    //...
-    database_extra: { ssl: { rejectUnauthorized: false } }
+    // ...
+    database_extra: { ssl: { rejectUnauthorized: false } },
   },
-};
+}
 ```
 
 ---

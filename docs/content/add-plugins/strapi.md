@@ -94,10 +94,10 @@ Once the command is done executing, change to the newly created `medusa-server` 
 module.exports = {
   projectConfig: {
     redis_url: REDIS_URL,
-    //...
-  }
-  //...
-};
+    // ...
+  },
+  // ...
+}
 ```
 
 This uses the default Redis configurations. If you want to learn more about configuring Redis, [check out this documentation](../usage/configurations.md#redis).
@@ -140,18 +140,18 @@ Finally, open `medusa-config.js` and add the following new item to the `plugins`
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-strapi`,
     options: {
       strapi_medusa_user: process.env.STRAPI_USER,
       strapi_medusa_password: process.env.STRAPI_PASSWORD,
-      strapi_url: process.env.STRAPI_URL, //optional
-      strapi_port: process.env.STRAPI_PORT, //optional
-      strapi_protocol: process.env.STRAPI_PROTOCOL //optional
-    }
-  }
-];
+      strapi_url: process.env.STRAPI_URL, // optional
+      strapi_port: process.env.STRAPI_PORT, // optional
+      strapi_protocol: process.env.STRAPI_PROTOCOL, // optional
+    },
+  },
+]
 ```
 
 ---

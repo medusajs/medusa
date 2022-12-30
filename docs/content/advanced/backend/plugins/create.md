@@ -102,8 +102,6 @@ If you don't make changes to the `build` and `watch` commands, please be aware o
 
 A basic Medusa installation comes with the following scripts:
 
-<!-- vale docs.CodeLength = NO -->
-
 ```json title=package.json
 "scripts": {
   "seed": "medusa seed -f ./data/seed.json",
@@ -119,8 +117,6 @@ It’s also recommended to add the `watch` script that automatically compiles yo
 ```json title=package.json
 "watch": "babel -w src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\""
 ```
-
-<!-- vale docs.CodeLength = YES -->
 
 This is helpful when testing the plugin.
 
@@ -216,7 +212,7 @@ To pass a plugin its configurations on a Medusa server, you have to add it to th
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-custom`,
     options: {
@@ -229,19 +225,23 @@ const plugins = [
 Then, you can have access to your plugin configuration in the constructor of services in your plugin:
 
 ```jsx title=src/service/test.ts
-//In a service in your plugin
-constructor({}, options) {
-  //options contains plugin configurations
-  this.name = options.name
+  // In a service in your plugin
+class MyService extends TransactionBaseService {
+  constructor(container, options) {
+    super(container)
+    // options contains plugin configurations
+    this.name = options.name
+  }
+  // ...
 }
 ```
 
 You can also have access to the configurations in endpoints in your plugin:
 
 ```jsx title=src/api/index.ts
-//in an endpoint in your plugin
+// in an endpoint in your plugin
 export default (rootDirectory, options) => {
-  //options contain the plugin configurations
+  // options contain the plugin configurations
   const router = Router()
 
   router.get("/hello-world", (req, res) => {
@@ -297,10 +297,10 @@ Then, add your plugin into the array of plugins in `medusa-config.js`:
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-custom`,
-    //if your plugin has configurations
+    // if your plugin has configurations
     options: {
       name: "My Store",
     },

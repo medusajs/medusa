@@ -97,7 +97,7 @@ Finally, in `medusa-config.js` add the following item into the `plugins` arr
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-algolia`,
     options: {
@@ -123,7 +123,7 @@ const plugins = [
       },
     },
   },
-];
+]
 ```
 
 The `searchableAttributes` are the attributes in a product that are searchable, and `attributesToRetrieve` are the attributes to retrieve for each product result. You’re free to make changes to these attributes as you see fit, but these are the recommended attributes.
@@ -207,7 +207,7 @@ Finally, change the code in `src/lib/search-client.ts` to the following:
 ```jsx title=src/lib/search-client.ts
 import algoliasearch from "algoliasearch/lite"
 
-const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || "" // You should add this to your environment variables
+const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || ""
 
 const apiKey = process.env.NEXT_PUBLIC_SEARCH_API_KEY || "test_key"
 
@@ -269,11 +269,11 @@ import {
   Hits,
   InstantSearch,
   SearchBox,
-  connectStateResults
+  connectStateResults,
 } from "react-instantsearch-dom"
 
 import React from "react"
-import algoliasearch from 'algoliasearch/lite';
+import algoliasearch from "algoliasearch/lite"
 
 const searchClient = algoliasearch(
   process.env.GATSBY_ALGOLIA_APP_ID,
@@ -281,19 +281,27 @@ const searchClient = algoliasearch(
 )
 
 const Search = () => {
-  const Results = connectStateResults(({ searchState, searchResults, children }) =>
-    searchState && searchState.query && searchResults && searchResults.nbHits !== 0 ? (
-      <div className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
-        {children}
-      </div>
-    ) : (
-      <div></div>
-    )
-  );
+  const Results = connectStateResults(
+    ({ searchState, searchResults, children }) => {
+      return (
+        searchState && searchState.query && 
+        searchResults && searchResults.nbHits !== 0 ? 
+        (
+          <div className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
+            {children}
+          </div>
+        ) : (
+          <div></div>
+        )
+      )
+    }      
+  )
 
   return (
     <div className="relative">
-      <InstantSearch indexName={process.env.GATSBY_SEARCH_INDEX_NAME} searchClient={searchClient}>
+      <InstantSearch 
+        indexName={process.env.GATSBY_SEARCH_INDEX_NAME} 
+        searchClient={searchClient}>
         <SearchBox submit={null} reset={null} />
         <Results>
           <Hits hitComponent={Hit} />
@@ -313,7 +321,7 @@ const Hit = ({ hit }) => {
   )
 }
 
-export default Search;
+export default Search
 ```
 
 This file uses the dependencies you installed to show the search results. It also initializes Algolia using the environment variables you added.
@@ -333,10 +341,12 @@ import Search from "./search"
 And add the `Search` component in the returned JSX before `RegionPopover`:
 
 ```jsx title=src/components/header/index.jsx
-//...
-<Search />
-<RegionPopover regions={mockData.regions} />
-//...
+// ...
+<div className="...">
+  <Search />
+  <RegionPopover regions={mockData.regions} />
+</div>
+// ...
 ```
 
 If you run your Gatsby storefront while the Medusa server is running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.

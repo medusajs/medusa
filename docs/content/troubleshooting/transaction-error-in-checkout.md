@@ -19,7 +19,7 @@ Then in your `medusa-config.js`, you should change the project configuration to 
 ```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
-    //...
+    // ...
     database_url: DATABASE_URL,
     database_type: "postgres",
   },
@@ -30,6 +30,8 @@ module.exports = {
 Where `DATABASE_URL` is the connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
 
 Make sure to also remove the following lines that are used to configure an SQLite database:
+
+<!-- eslint-skip -->
 
 ```jsx title=medusa-config.js
 database_type: "sqlite",

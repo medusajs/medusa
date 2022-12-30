@@ -123,14 +123,14 @@ Then, in `medusa-config.js` in the exported object, comment out or remove the SQ
 ```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
-    //...
+    // ...
     database_url: DATABASE_URL,
     database_type: "postgres",
-    //REMOVE OR COMMENT OUT THE BELOW:
+    // REMOVE OR COMMENT OUT THE BELOW:
     // database_database: "./medusa-db.sql",
     // database_type: "sqlite",
   },
-};
+}
 ```
 
 ### Migrate Content Types to Contentful

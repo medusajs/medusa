@@ -62,13 +62,13 @@ Next, in the exported function, retrieve the CORS configurations of your server 
 
 ```ts
 export default (rootDirectory) => {
-  //...
+  // ...
 
   const { configModule } = 
     getConfigFile<ConfigModule>(rootDirectory, "medusa-config")
   const { projectConfig } = configModule
 
-  //....
+  // ....
 }
 ```
 
@@ -95,7 +95,7 @@ Finally, for each route you add, create an `OPTIONS` request and add `cors` 
 ```ts
 router.options("/admin/hello", cors(corsOptions))
 router.get("/admin/hello", cors(corsOptions), (req, res) => {
-  //...
+  // ...
 })
 ```
 
@@ -215,10 +215,10 @@ router.options("/store/hello", cors(corsOptions))
 router.get("/store/hello", cors(corsOptions), authenticate(), 
   async (req, res) => {
     if (req.user) {
-      //user is logged in
-      //to get customer id: req.user.customer_id
+      // user is logged in
+      // to get customer id: req.user.customer_id
     }
-    //...
+    // ...
   }
 )
 ```
@@ -241,12 +241,12 @@ Then, add the middleware to your route:
 router.options("/admin/products/count", cors(corsOptions))
 router.get("/admin/products/count", cors(corsOptions), authenticate(),
   async (req, res) => {
-    //access current user
+    // access current user
     const id = req.user.userId
     const userService = req.scope.resolve("userService")
       
     const user = await userService.retrieve(id)
-    //...
+    // ...
   }
 )
 ```

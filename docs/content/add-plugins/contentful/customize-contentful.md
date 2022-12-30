@@ -29,32 +29,32 @@ Here’s an example of a migration created in a new file `contentful-migrations/
 ```jsx title=contentful-migrations/rich-text.js
 #! /usr/bin/env node
 
-require("dotenv").config();
+require("dotenv").config()
 
-const { runMigration } = require("contentful-migration");
+const { runMigration } = require("contentful-migration")
 
 const options = {
   spaceId: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
   environment: process.env.CONTENTFUL_ENVIRONMENT,
   yes: true,
-};
+}
 
 const migration = async () => {
   await runMigration({
     ...options,
     migrationFunction: function (migration, context) {
 
-      //create Rich Text content model
+      // create Rich Text content model
       const richText = migration
         .createContentType("richText")
         .name("Rich Text")
-        .displayField("title");
+        .displayField("title")
     
-      richText.createField("title").name("Title (Internal)").type("Symbol");
-      richText.createField("body").name("Body").type("RichText");
+      richText.createField("title").name("Title (Internal)").type("Symbol")
+      richText.createField("body").name("Body").type("RichText")
 
-      //edit Page content model
+      // edit Page content model
       const page = migration.editContentType("page")
 
       page.editField("contentModules").items({
@@ -67,7 +67,7 @@ const migration = async () => {
         ],
       })
 
-      //edit Product content model
+      // edit Product content model
       const product = migration.editContentType("product")
 
       product
@@ -83,11 +83,11 @@ const migration = async () => {
             },
           ],
         })
-    }
-  });
+    },
+  })
 }
 
-migration();
+migration()
 ```
 
 This example creates a new content model Rich Text that has two fields: title and body. It also edits the Page content model to allow using Rich Text content models on the page.
@@ -97,7 +97,19 @@ In addition, it edits the Product content model by adding a new field `contentMo
 You can also add other types of content models the `contentModules` should accept. For example, to accept `tileSection` add it to the `linkContentType` option:
 
 ```jsx
-linkContentType: ["tileSection", "richText"],
+product
+  .createField("contentModules")
+  .name("Content Modules")
+  .type("Array")
+  .items({
+    type: "Link",
+    linkType: "Entry",
+    validations: [
+      {
+        linkContentType: ["richText", "tileSection"],
+      },
+    ],
+  })
 ```
 
 ### Run a Contentful Migration
@@ -165,10 +177,10 @@ import { renderRichText } from "gatsby-source-contentful/rich-text"
 const RichText = ({ data }) => {
   return (
     <div style={{
-      maxWidth: '870px',
-      margin: '0 auto',
-      paddingTop: '20px',
-      paddingBottom: '20px'
+      maxWidth: "870px",
+      margin: "0 auto",
+      paddingTop: "20px",
+      paddingBottom: "20px",
     }}>
       {data.body ? renderRichText(data.body) : ""}
     </div>
@@ -194,7 +206,7 @@ Then, in the returned JSX add a new case to the switch statement:
 
 ```jsx title=src/pages/{ContentfulPage.slug}.js
 switch (cm.internal.type) {
-  //...
+  // ...
   case "ContentfulRichText":
       return <RichText key={cm.id} data={cm} />
   default:

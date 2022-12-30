@@ -105,7 +105,7 @@ Finally, in `medusa-config.js` add a new item to the `plugins` array:
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-file-spaces`,
     options: {
@@ -116,7 +116,7 @@ const plugins = [
         secret_access_key: process.env.SPACE_SECRET_ACCESS_KEY,
     },
   },
-];
+]
 ```
 
 :::caution
@@ -158,14 +158,14 @@ In `next.config.js` add the following option in the exported object:
 ```jsx title=next.config.js
 const { withStoreConfig } = require("./store-config")
 
-//...
+// ...
 
 module.exports = withStoreConfig({
-  //...
+  // ...
   images: {
     domains: [
-      //...
-      "<YOUR_SPACE_DOMAIN>"
+      // ...
+      "<YOUR_SPACE_DOMAIN>",
     ],
   },
 })

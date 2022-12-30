@@ -130,10 +130,10 @@ import TabItem from '@theme/TabItem';
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-medusa.admin.uploads.create(file) //file is an instance of File
+medusa.admin.uploads.create(file) // file is an instance of File
 .then(({ uploads }) => {
-  const key = uploads[0].key;
-});
+  const key = uploads[0].key
+})
 ```
 
 </TabItem>

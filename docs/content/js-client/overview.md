@@ -37,9 +37,9 @@ import Medusa from "@medusajs/medusa-js"
 
 const medusa = new Medusa()
 
-//use method
+// use method
 medusa.customers.create({
-  //data
+  // data
 })
 ```
 
@@ -47,7 +47,7 @@ The `customers` resource also has another resource `addresses` nested inside it 
 
 ```js
 medusa.customers.addresses.addAddress({
-  //data
+  // data
 })
 ```
 

@@ -565,7 +565,7 @@ To load resources, such as services, in endpoints, use the `req.scope.resolve` f
 For example:
 
 ```ts
-const logger = req.scope.resolve('logger');
+const logger = req.scope.resolve("logger")
 ```
 
 Please note that in endpoints some resources, such as repositories, are not available.
@@ -577,13 +577,13 @@ In classes such as services, strategies, or subscribers, you can load resources 
 For example:
 
 ```ts
-import { OrderService } from '@medusajs/medusa';
+import { OrderService } from "@medusajs/medusa"
 
 class OrderSubscriber {
-  protected orderService: OrderService;
+  protected orderService: OrderService
 
   constructor({ orderService }) {
-    this.orderService = orderService;
+    this.orderService = orderService
   }
 }
 ```

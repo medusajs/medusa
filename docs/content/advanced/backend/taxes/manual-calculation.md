@@ -29,7 +29,7 @@ You can, however, force calculating the taxes of the cart by passing in the thir
 For example:
 
 ```jsx
-cartService.retrieve('cart_01G8Z...', { }, { force_taxes: true });
+cartService.retrieve("cart_01G8Z...", { }, { force_taxes: true })
 ```
 
 :::tip
@@ -45,20 +45,20 @@ Another way you can use the `CartService` to calculate taxes is using the method
 ```jsx
 
 export default () => {
-  //...
+  // ...
 
   router.get("/store/line-taxes", async (req, res) => {
-    //example of retrieving cart
-    const cartService = req.scope.resolve("cartService");
+    // example of retrieving cart
+    const cartService = req.scope.resolve("cartService")
     const cart = await cartService.retrieve(cart_id)
     
-    //...
-    //retrieve taxes of line items
+    // ...
+    // retrieve taxes of line items
     const data = await decorateTotals(cart, {
-      force_taxes: true
+      force_taxes: true,
     })
     
-    return res.status(200).json({ cart: data });
+    return res.status(200).json({ cart: data })
   })
 }
 ```
@@ -72,7 +72,7 @@ You can calculate and retrieve taxes of line items using the `getLineItemTotals`
 ```jsx
 const itemTotals = await totalsService
   .getLineItemTotals(item, cart, {
-    include_tax: true
+    include_tax: true,
   })
 ```
 
