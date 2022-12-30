@@ -227,9 +227,7 @@ To make sure the Next.js storefront properly displays the products in the search
 
 ![Search pop up in the Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000082/Medusa%20Docs/Algolia/1f9qqK6_c0z8zi.png)
 
----
-
-## Add to Gatsby and React-Based Storefronts
+### Add to Gatsby and React-Based Storefronts
 
 This section covers adding the search UI to React-based storefronts. It uses the Gatsby storefront as an example, but you can use the same steps on any React-based framework.
 
