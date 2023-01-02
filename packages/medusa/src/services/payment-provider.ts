@@ -193,7 +193,14 @@ export default class PaymentProviderService extends TransactionBaseService {
       ) as Cart | PaymentSessionInput
 
       const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
+
       const context = this.buildPaymentContext(data)
+      context.customer = context.customer?.id
+        ? await this.customerService_
+            .withTransaction(transactionManager)
+            .retrieve(context.customer.id)
+            .catch(() => context.customer)
+        : context.customer
 
       if (!isDefined(context.currency_code) || !isDefined(context.amount)) {
         throw new MedusaError(
@@ -274,10 +281,25 @@ export default class PaymentProviderService extends TransactionBaseService {
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
       const context = this.buildPaymentContext(sessionInput)
+      context.customer = context.customer?.id
+        ? await this.customerService_
+            .withTransaction(transactionManager)
+            .retrieve(context.customer.id)
+            .catch(() => context.customer)
+        : context.customer
 
-      const sessionData = await provider
+      const paymentResponse = await provider
         .withTransaction(transactionManager)
         .updatePayment(paymentSession.data, context)
+
+      const sessionData = paymentResponse.session_data ?? paymentResponse
+
+      await this.processUpdateRequestsData(
+        {
+          customer: { id: context.customer?.id },
+        },
+        paymentResponse
+      )
 
       return await this.saveSession(paymentSession.provider_id, {
         payment_session_id: paymentSession.id,

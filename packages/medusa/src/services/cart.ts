@@ -1746,34 +1746,35 @@ class CartService extends TransactionBaseService {
           currency_code: cart.region.currency_code,
         }
 
+        const paymentProviderServiceTx =
+          this.paymentProviderService_.withTransaction(transactionManager)
+
         // If there are existing payment sessions ensure that these are up to date
         const seen: string[] = []
         if (cart.payment_sessions?.length) {
-          await Promise.all(
-            cart.payment_sessions.map(async (paymentSession) => {
-              if (
-                total <= 0 ||
-                !region.payment_providers.find(
-                  ({ id }) => id === paymentSession.provider_id
-                )
-              ) {
-                return this.paymentProviderService_
-                  .withTransaction(transactionManager)
-                  .deleteSession(paymentSession)
-              } else {
-                seen.push(paymentSession.provider_id)
+          for (const paymentSession of cart.payment_sessions) {
+            if (
+              total <= 0 ||
+              !region.payment_providers.find(
+                ({ id }) => id === paymentSession.provider_id
+              )
+            ) {
+              await paymentProviderServiceTx.deleteSession(paymentSession)
+              continue
+            }
 
-                const paymentSessionInput = {
-                  ...partialSessionInput,
-                  provider_id: paymentSession.provider_id,
-                }
+            seen.push(paymentSession.provider_id)
 
-                return this.paymentProviderService_
-                  .withTransaction(transactionManager)
-                  .updateSession(paymentSession, paymentSessionInput)
-              }
-            })
-          )
+            const paymentSessionInput = {
+              ...partialSessionInput,
+              provider_id: paymentSession.provider_id,
+            }
+
+            await paymentProviderServiceTx.updateSession(
+              paymentSession,
+              paymentSessionInput
+            )
+          }
         }
 
         if (total > 0) {
@@ -1785,29 +1786,26 @@ class CartService extends TransactionBaseService {
               provider_id: paymentProvider.id,
             }
 
-            const paymentSession = await this.paymentProviderService_
-              .withTransaction(transactionManager)
-              .createSession(paymentSessionInput)
+            const paymentSession = await paymentProviderServiceTx.createSession(
+              paymentSessionInput
+            )
 
             paymentSession.is_selected = true
 
             await psRepo.save(paymentSession)
           } else {
-            await Promise.all(
-              region.payment_providers.map(async (paymentProvider) => {
-                if (!seen.includes(paymentProvider.id)) {
-                  const paymentSessionInput = {
-                    ...partialSessionInput,
-                    provider_id: paymentProvider.id,
-                  }
+            for (const paymentProvider of region.payment_providers) {
+              if (seen.includes(paymentProvider.id)) {
+                continue
+              }
 
-                  return this.paymentProviderService_
-                    .withTransaction(transactionManager)
-                    .createSession(paymentSessionInput)
-                }
-                return
-              })
-            )
+              const paymentSessionInput = {
+                ...partialSessionInput,
+                provider_id: paymentProvider.id,
+              }
+
+              await paymentProviderServiceTx.createSession(paymentSessionInput)
+            }
           }
         }
       }
