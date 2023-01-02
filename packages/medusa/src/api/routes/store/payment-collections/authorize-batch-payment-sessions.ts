@@ -4,7 +4,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /payment-collections/{id}/sessions/batch/authorize
  * operationId: "PostPaymentCollectionsSessionsBatchAuthorize"
- * summary: "Authorize Payment Sessions of a Payment Collection"
+ * summary: "Authorize PaymentSessions"
  * description: "Authorizes Payment Sessions of a Payment Collection."
  * x-authenticated: false
  * parameters:
@@ -33,7 +33,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Payment
+ *   - PaymentCollection
  * responses:
  *   200:
  *     description: OK

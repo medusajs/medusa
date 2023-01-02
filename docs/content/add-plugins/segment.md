@@ -36,17 +36,21 @@ Check out the [Event Reference](../advanced/backend/subscribers/events-list.md) 
 
 :::
 
+---
+
 ## Prerequisites
 
 ### Medusa Server
 
-It is assumed you already have a Medusa server installed. If not, please follow the [Quickstart guide](../quickstart/quick-start.md) to get started in minutes.
+It is assumed you already have a Medusa server installed. If not, please follow the [Quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
 
 In addition, make sure to have Redis installed and configured with your Medusa server. If not, follow [this documentation](../tutorial/0-set-up-your-development-environment.mdx#redis) to install Redis and then [configure it](../usage/configurations.md#redis).
 
 ### Segment Account
 
 You need to [create a Segment account](https://app.segment.com/signup/) to follow along with the tutorial. Segment offers a free plan to get started quickly.
+
+---
 
 ## Create a Segment Source
 
@@ -84,6 +88,8 @@ You can then choose from a list of destinations such as Google Universal Analyti
 
 The process of integrating each destination is different, so you must follow the steps detailed in Segment for each destination you choose.
 
+---
+
 ## Install the Segment Plugin
 
 In the directory of your Medusa server, run the following command to install the Segment plugin:
@@ -104,15 +110,17 @@ Finally, in `medusa-config.js`, add the following new item to the `plugins` arra
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-segment`,
     options: {
       write_key: process.env.SEGMENT_WRITE_KEY,
-    }
-  }
-];
+    },
+  },
+]
 ```
+
+---
 
 ## Test the Plugin
 
@@ -122,7 +130,7 @@ Run your server with the following command:
 npm run start
 ```
 
-Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
+Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts.
 
 After you place an order, on the Segment source that you created, click on the Debugger tab. You should see at least one event triggered for each order you place. If you click on the event, you can see the order details are passed to the event.
 
@@ -136,6 +144,8 @@ If the data is not appearing on the destination, the issue is related to your co
 
 :::
 
+---
+
 ## Add Custom Tracking
 
 In some cases, you might want to track more events or custom events. You can do that using the `SegmentService` provided by the Segment Plugin.
@@ -145,24 +155,24 @@ For example, you can add the following subscriber to listen to the `customer.cre
 ```jsx title=src/subscribers/customer.ts
 class CustomerSubscriber {
   constructor({ segmentService, eventBusService }) {
-    this.segmentService = segmentService;
+    this.segmentService = segmentService
 
-    eventBusService.subscribe("customer.created", this.handleCustomer);
+    eventBusService.subscribe("customer.created", this.handleCustomer)
   }
 
   handleCustomer = async (data) => {
-    const customerData = data;
-    delete customerData['password_hash'];
+    const customerData = data
+    delete customerData["password_hash"]
 
     this.segmentService.track({
-      event: 'Customer Created',
+      event: "Customer Created",
       userId: data.id,
-      properties: customerData
+      properties: customerData,
     })
-  };
+  }
 }
 
-export default CustomerSubscriber;
+export default CustomerSubscriber
 ```
 
 You resolve the `SegmentService` using dependency injection. Then, when the `customer.created` event is triggered, you use the `track` method available in the `SegmentService` to send tracking data to Segment.
@@ -185,8 +195,11 @@ After adding the above subscriber, run your server again if it isn’t running a
 
 ![The customer created event is recoreded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000759/Medusa%20Docs/Segment/4LD41xE_qungdw.png)
 
-## What’s Next
+---
 
-- Learn how [services](../advanced/backend/services/create-service.md) and [subscribers](../advanced/backend/subscribers/create-subscriber.md) work.
-- Check out a [full list of events](../advanced/backend/subscribers/events-list.md) in Medusa.
-- Learn how to [deploy the Medusa server](../deployments/server/index.mdx).
+## See Also
+
+- [Services Overview](../advanced/backend/services/create-service.md)
+- [Subscribers Overview](../advanced/backend/subscribers/create-subscriber.md)
+- [Events Reference](../advanced/backend/subscribers/events-list.md)
+- [Deploy the Medusa server](../deployments/server/index.mdx)

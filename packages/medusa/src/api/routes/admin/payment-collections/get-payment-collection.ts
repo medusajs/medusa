@@ -4,7 +4,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [get] /payment-collections/{id}
  * operationId: "GetPaymentCollectionsPaymentCollection"
- * summary: "Retrieve an PaymentCollection"
+ * summary: "Get a PaymentCollection"
  * description: "Retrieves a PaymentCollection."
  * x-authenticated: true
  * parameters:

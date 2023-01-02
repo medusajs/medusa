@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# How to Use CustomerGroup APIs
+# How to Manage Customer Groups
 
 In this document, you’ll learn how to use the customer groups admin APIs to manage customer groups and their associated customers and price lists.
 
@@ -19,7 +19,7 @@ This guide covers how to use these APIs to perform these tasks.
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
 ### JS Client
 
@@ -44,11 +44,11 @@ You can create a customer group by sending a request to the Create Customer Grou
 
 ```jsx
 medusa.admin.customerGroups.create({
-  name: 'VIP'
+  name: "VIP",
 })
 .then(({ customer_group }) => {
-  console.log(customer_group.id);
-});
+  console.log(customer_group.id)
+})
 ```
 
 </TabItem>
@@ -56,19 +56,19 @@ medusa.admin.customerGroups.create({
 
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    name: 'VIP'
-  })
+    name: "VIP",
+  }),
 })
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
-});
+})
 ```
 
 </TabItem>
@@ -100,8 +100,8 @@ You can get a list of all customer groups by sending a request to the List Custo
 ```jsx
 medusa.admin.customerGroups.list()
 .then(({ customer_groups, limit, offset, count }) => {
-  console.log(customer_groups.length);
-});
+  console.log(customer_groups.length)
+})
 ```
 
 </TabItem>
@@ -109,12 +109,12 @@ medusa.admin.customerGroups.list()
 
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ customer_groups, limit, offset, count }) => {
   console.log(customer_groups.length)
-});
+})
 ```
 
 </TabItem>
@@ -144,8 +144,8 @@ You can retrieve a single customer group by sending a request to the Get a Custo
 ```jsx
 medusa.admin.customerGroups.retrieve(customerGroupId)
 .then(({ customer_group }) => {
-  console.log(customer_group.id);
-});
+  console.log(customer_group.id)
+})
 ```
 
 </TabItem>
@@ -153,12 +153,12 @@ medusa.admin.customerGroups.retrieve(customerGroupId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
-});
+})
 ```
 
 </TabItem>
@@ -186,12 +186,12 @@ You can update a customer group’s data by sending a request to the Update Cust
 ```jsx
 medusa.admin.customerGroups.update(customerGroupId, {
   metadata: {
-		is_seller: true
-	}
+		is_seller: true,
+	},
 })
 .then(({ customer_group }) => {
-  console.log(customer_group.id);
-});
+  console.log(customer_group.id)
+})
 ```
 
 </TabItem>
@@ -199,21 +199,21 @@ medusa.admin.customerGroups.update(customerGroupId, {
 
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
     metadata: {
-			is_seller: true
-		}
-  })
+			is_seller: true,
+		},
+  }),
 })
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
-});
+})
 ```
 
 </TabItem>
@@ -247,8 +247,8 @@ You can delete a customer group by sending a request to the Delete a Customer Gr
 ```jsx
 medusa.admin.customerGroups.delete(customerGroupId)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -256,13 +256,13 @@ medusa.admin.customerGroups.delete(customerGroupId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
-	method: 'DELETE',
-  credentials: 'include',
+	method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
   console.log(id)
-});
+})
 ```
 
 </TabItem>
@@ -293,37 +293,40 @@ You can add a customer to a group by sending a request to the Customer Group’s
 medusa.admin.customerGroups.addCustomers(customerGroupId, {
   customer_ids: [
     {
-      id: customerId
-    }
-  ]
+      id: customerId,
+    },
+  ],
 })
 .then(({ customer_group }) => {
-  console.log(customer_group.id);
-});
+  console.log(customer_group.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
-  method: 'POST',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    customer_ids: [
-	    {
-	      id: customerId
-	    }
-	  ]
-  })
-})
+fetch(
+  `<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      customer_ids: [
+        {
+          id: customerId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
-});
+})
 ```
 
 </TabItem>
@@ -357,8 +360,8 @@ You can retrieve a list of all customers in a customer group using the List Cust
 ```jsx
 medusa.admin.customerGroups.listCustomers(customerGroupId)
 .then(({ customers, count, offset, limit }) => {
-  console.log(customers.length);
-});
+  console.log(customers.length)
+})
 ```
 
 </TabItem>
@@ -366,12 +369,12 @@ medusa.admin.customerGroups.listCustomers(customerGroupId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ customers, count, offset, limit }) => {
   console.log(customers.length)
-});
+})
 ```
 
 </TabItem>
@@ -404,37 +407,40 @@ You can remove customers from a customer group by sending a request to the Remov
 medusa.admin.customerGroups.removeCustomers(customer_group_id, {
   customer_ids: [
     {
-      id: customer_id
-    }
-  ]
+      id: customer_id,
+    },
+  ],
 })
 .then(({ customer_group }) => {
-  console.log(customer_group.id);
-});
+  console.log(customer_group.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`, {
-  method: 'DELETE',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    customer_ids: [
-	    {
-	      id: customerId
-	    }
-	  ]
-  })
-})
+fetch(
+  `<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
+  {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      customer_ids: [
+        {
+          id: customerId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ customer_group }) => {
   console.log(customer_group.id)
-});
+})
 ```
 
 </TabItem>
@@ -468,7 +474,7 @@ When you create or update a price list, you can specify one or more customer gro
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn more about [Customer Groups](../backend/customer-groups/index.md).
-- Learn about [how to use Sales Channels](../backend/sales-channels/manage-admin.mdx).
+- [Customer Groups Overview](../backend/customer-groups/index.md).
+- [Use Sales Channels Admin APIs](../backend/sales-channels/manage-admin.mdx).

@@ -33,7 +33,7 @@ get:
             type: object
             properties:
               payment:
-                $ref: ../components/schemas/payment.yaml
+                $ref: ../components/schemas/Payment.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

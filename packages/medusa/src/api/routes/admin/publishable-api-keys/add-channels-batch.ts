@@ -9,7 +9,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [post] /publishable-api-keys/{id}/sales-channels/batch
  * operationId: "PostPublishableApiKeySalesChannelsChannelsBatch"
- * summary: "Add sales channel to a publishable api key scope"
+ * summary: "Add SalesChannels"
  * description: "Assign a batch of sales channels to a publishable api key."
  * x-authenticated: true
  * parameters:

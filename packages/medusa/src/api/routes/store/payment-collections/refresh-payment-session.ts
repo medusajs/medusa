@@ -4,7 +4,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /payment-collections/{id}/sessions/{session_id}
  * operationId: PostPaymentCollectionsPaymentCollectionPaymentSessionsSession
- * summary: Refresh a Payment Session
+ * summary: "Refresh a Payment Session"
  * description: "Refreshes a Payment Session to ensure that it is in sync with the Payment Collection."
  * x-authenticated: false
  * parameters:

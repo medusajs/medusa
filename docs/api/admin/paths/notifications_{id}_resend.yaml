@@ -16,13 +16,8 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            to:
-              description: >-
-                A new address or user identifier that the Notification should be
-                sent to
-              type: string
+          $ref: >-
+            ../components/schemas/AdminPostNotificationsNotificationResendReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -46,7 +41,7 @@ post:
             type: object
             properties:
               notification:
-                $ref: ../components/schemas/notification.yaml
+                $ref: ../components/schemas/Notification.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -7,32 +7,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - email
-            - password
-          properties:
-            email:
-              description: The Users email.
-              type: string
-              format: email
-            first_name:
-              description: The name of the User.
-              type: string
-            last_name:
-              description: The name of the User.
-              type: string
-            role:
-              description: Userrole assigned to the user.
-              type: string
-              enum:
-                - admin
-                - member
-                - developer
-            password:
-              description: The Users password.
-              type: string
-              format: password
+          $ref: ../components/schemas/AdminCreateUserRequest.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -56,7 +31,7 @@ post:
             type: object
             properties:
               user:
-                $ref: ../components/schemas/user.yaml
+                $ref: ../components/schemas/User.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -99,7 +74,7 @@ get:
               users:
                 type: array
                 items:
-                  $ref: ../components/schemas/user.yaml
+                  $ref: ../components/schemas/User.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

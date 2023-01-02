@@ -100,7 +100,7 @@ get:
             type: object
             properties:
               customer_group:
-                $ref: ../components/schemas/customer_group.yaml
+                $ref: ../components/schemas/CustomerGroup.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -129,14 +129,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            name:
-              description: Name of the customer group
-              type: string
-            metadata:
-              description: Metadata for the customer.
-              type: object
+          $ref: ../components/schemas/AdminPostCustomerGroupsGroupReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -160,7 +153,7 @@ post:
             type: object
             properties:
               customer_group:
-                $ref: ../components/schemas/customer_group.yaml
+                $ref: ../components/schemas/CustomerGroup.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

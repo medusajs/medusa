@@ -12,6 +12,8 @@ Medusa Admin previously was built using Gatsby. As of a recent update, the Admin
 
 This introduced breaking changes related to environment variables used and the published directory. Read below for actions required following this update.
 
+---
+
 ## Required Node.js Version
 
 <!-- vale docs.Numbers = NO -->
@@ -19,6 +21,8 @@ This introduced breaking changes related to environment variables used and the p
 Following the change to Vite 3, the required Node.js version for the Admin has changed. [Vite 3](https://vitejs.dev/guide/#scaffolding-your-first-vite-project) requires versions 14.8+ or 16+ of Node.js.
 
 <!-- vale docs.Numbers = YES -->
+
+---
 
 ## Changed Environment Variables
 
@@ -35,6 +39,8 @@ Change your `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` environment variab
 ```bash
 MEDUSA_BACKEND_URL=<YOUR_MEDUSA_SERVER_URL>
 ```
+
+---
 
 ## Changed Publish Directory
 

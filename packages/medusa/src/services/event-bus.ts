@@ -52,6 +52,7 @@ export default class EventBusService {
       stagedJobRepository,
       redisClient,
       redisSubscriber,
+      jobSchedulerService,
     }: InjectedDependencies,
     config: ConfigModule,
     singleton = true
@@ -59,6 +60,7 @@ export default class EventBusService {
     this.config_ = config
     this.manager_ = manager
     this.logger_ = logger
+    this.jobSchedulerService_ = jobSchedulerService
     this.stagedJobRepository_ = stagedJobRepository
 
     if (singleton) {

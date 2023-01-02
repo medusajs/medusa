@@ -20,11 +20,15 @@ By integrating SendGrid with Medusa, you’ll be sending email notifications to 
 4. User-related events including reset passwords.
 5. Restock Notifications for when product stocks are low.
 
+---
+
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](../quickstart/quick-start.md).
+Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](../quickstart/quick-start.mdx).
 
 You also must have [Redis configured on your Medusa server](/tutorial/set-up-your-development-environment#redis). Sending emails is done through Subscribers, which uses Redis as the event queue. If you don’t set up Redis, the plugin will not send emails.
+
+---
 
 ## Create a SendGrid Account
 
@@ -59,6 +63,8 @@ For a full list of templates and their variables please check out the [Template 
 Medusa supports localization so you can also create multiple templates for multiple languages.
 
 :::
+
+---
 
 ## Template Reference
 
@@ -3891,6 +3897,8 @@ You don’t have to create a template for every type in the reference. You can s
   ```
 </details>
 
+---
+
 ## Install the SendGrid Plugin
 
 In the directory of your Medusa server run the following command to install the SendGrid plugin:
@@ -3920,7 +3928,7 @@ Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array
 
 ```jsx title=medusa-config.js
 const plugins = [
-  ...,
+  // ...,
   {
     resolve: `medusa-plugin-sendgrid`,
     options: {
@@ -3929,17 +3937,20 @@ const plugins = [
       order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID,
       localization: {
         "de-DE": { // locale key
-          order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
-        }
-      }
-    }
-  }
-];
+          order_placed_template: 
+            process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+        },
+      },
+    },
+  },
+]
 ```
 
 The `api_key` and `from` options are required. Then, use the key of each template you create (from the [reference](#template-reference)) as the option name with the template ID as the value.
 
 You can also optionally pass the option `localization` if you want to support different languages. `localization` accepts an object that has the country and language codes as keys. The value for each code should be an object of template keys and their IDs as values. Make sure to include the localized template IDs in `.env` as well.
+
+---
 
 ## Test it Out
 
@@ -3953,7 +3964,7 @@ To test it out, perform an action that would trigger one of the emails being sen
 
 :::tip
 
-If you don’t have a storefront installed, check out the [Gatsby](../starters/gatsby-medusa-starter.md) or [Next.js](../starters/nextjs-medusa-starter.md) starters to create a storefront in minutes.
+If you don’t have a storefront installed, check out the [Gatsby](../starters/gatsby-medusa-starter.mdx) or [Next.js](../starters/nextjs-medusa-starter.mdx) starters to create a storefront in minutes.
 
 :::
 
@@ -3961,7 +3972,9 @@ You can also track analytics related to emails sent from the SendGrid dashboard.
 
 ![SendGrid Analytics](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000788/Medusa%20Docs/SendGrid/X01LigH_mxmtbn.png)
 
-## What’s Next
+---
 
-- Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
-- Install the [Medusa admin](https://github.com/medusajs/admin#-setting-up-admin) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.
+## See Also
+
+- [Notifications Overview](../advanced/backend/notification/overview.md)
+- Install the [Medusa admin](../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

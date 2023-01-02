@@ -11,19 +11,23 @@ In your storefront, you can filter products by sales channels. You can also asso
 
 This guide explains how to perform these operations using the Storefront APIs.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
-It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.md) or [Gatsby](../../starters/gatsby-medusa-starter.md) storefronts.
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
 This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+---
 
 ## Filter Products by Sales Channel
 
@@ -35,12 +39,12 @@ To filter products by a specific sales channel, pass the `sales_channel_id` quer
 ```jsx
 medusa.products.list({
   sales_channel_id: [
-    salesChannelId
-  ]
+    salesChannelId,
+  ],
 })
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-});
+  console.log(products.length)
+})
 ```
 
 </TabItem>
@@ -51,7 +55,7 @@ fetch(`<SERVER_URL>/store/products?sales_channel_id[0]=${salesChannelId}`)
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
-});
+})
 ```
 
 </TabItem>
@@ -60,6 +64,8 @@ fetch(`<SERVER_URL>/store/products?sales_channel_id[0]=${salesChannelId}`)
 The `sales_channel_id` query parameter is an array of sales channel IDs. You can pass more than one sales channel.
 
 The request returns an array of products. These are the products that are available in the sales channel.
+
+---
 
 ## Associate a Cart with a Sales Channel
 
@@ -73,11 +79,11 @@ To associate a sales channel with a cart while creating it, you can pass the `sa
 
 ```jsx
 medusa.carts.create({
-  sales_channel_id: salesChannelId
+  sales_channel_id: salesChannelId,
 })
-.then(({cart}) => {
-  console.log(cart.id);
-});
+.then(({ cart }) => {
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -85,18 +91,18 @@ medusa.carts.create({
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts`, {
-  method: 'POST',
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    sales_channel_id: salesChannelId
-  })
+    sales_channel_id: salesChannelId,
+  }),
 })
 .then((response) => response.json())
-.then(({cart}) => {
-  console.log(cart.id);
-});
+.then(({ cart }) => {
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -113,11 +119,11 @@ You can update the sales channel of an existing cart by passing the `sales_chann
 
 ```jsx
 medusa.carts.update(cartId, {
-  sales_channel_id: salesChannelId
+  sales_channel_id: salesChannelId,
 })
-.then(({cart}) => {
-  console.log(cart.id);
-});
+.then(({ cart }) => {
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -125,16 +131,16 @@ medusa.carts.update(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    sales_channel_id: salesChannelId
-  })
+    sales_channel_id: salesChannelId,
+  }),
 })
 .then((response) => response.json())
-.then(({cart}) => console.log(cart.id));
+.then(({ cart }) => console.log(cart.id))
 ```
 
 </TabItem>
@@ -142,7 +148,9 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
 
 The request returns the updated cart.
 
-## What’s Next 🚀
+---
 
-- Learn how to [Implement the Cart functionality in a storefront](../../guides/carts-in-medusa.mdx).
-- Learn how to [Implement the Checkout functionality in a storefront](./how-to-implement-checkout-flow.mdx).
+## See Also
+
+- [Implement the Cart functionality in a storefront](../../guides/carts-in-medusa.mdx)
+- [Implement the Checkout functionality in a storefront](./how-to-implement-checkout-flow.mdx)

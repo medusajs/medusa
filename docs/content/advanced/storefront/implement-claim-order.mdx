@@ -32,13 +32,15 @@ In this document, you’ll learn how to implement two parts of this flow:
 1. Allow customers to claim their orders.
 2. Verify a claim to an order.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
-It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.md) or [Gatsby](../../starters/gatsby-medusa-starter.md) storefronts.
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
@@ -57,6 +59,8 @@ You can learn how to implement this flow in [this documentation](../ecommerce/ha
 It is assumed you already have an order placed by a guest customer. You can refer to the [Cart](../../guides/carts-in-medusa.mdx) and [Checkout](./how-to-implement-checkout-flow.mdx) implementation documentation to learn how to implement them in your storefront.
 
 In addition, it is assumed you already have a logged-in customer before performing the steps in this document. You can refer to the [API reference](/api/store/#tag/Auth/operation/PostAuth) for more details on that.
+
+---
 
 ## Request to Claim an Order
 
@@ -78,7 +82,7 @@ medusa.orders.claimOrders({
 })
 .catch(() => {
   // an error occurred
-});
+})
 ```
 
 </TabItem>
@@ -86,23 +90,23 @@ medusa.orders.claimOrders({
 
 ```tsx
 fetch(`<SERVER_URL>/store/orders/batch/customer/token`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     order_ids: [
       order_id,
     ],
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then(() => {
-  //successful
+  // successful
 })
 .catch(() => {
-  //display an error to the customer
-});
+  // display an error to the customer
+})
 ```
 
 </TabItem>
@@ -113,6 +117,8 @@ This request accepts as a body parameter the array `order_ids`. Each item in the
 If the customer’s request has been processed successfully, the request returns a response with a `200` status code.
 
 The customer at this point will receive an email with a link to verify their claim on the order.
+
+---
 
 ## Manually Verify a Claim to an Order
 
@@ -125,14 +131,14 @@ Then, you send a request to the Verify Claim Order endpoint:
 
 ```tsx
 medusa.orders.confirmRequest({
-  token
+  token,
 })
 .then(() => {
   // successful
 })
 .catch(() => {
   // an error occurred
-});
+})
 ```
 
 </TabItem>
@@ -140,21 +146,21 @@ medusa.orders.confirmRequest({
 
 ```tsx
 fetch(`<SERVER_URL>/store/orders/customer/confirm`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    token
+    token,
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then(() => {
-  //successful
+  // successful
 })
 .catch(() => {
-  //display an error to the customer
-});
+  // display an error to the customer
+})
 ```
 
 </TabItem>
@@ -164,6 +170,8 @@ This request accepts as a body parameter the string `token`. This would be the t
 
 If the verification is successful, the order will now be associated with the customer and the customer will be able to see it among their orders.
 
+---
+
 ## See Also
 
-- Learn [how to send a confirmation email to claim an order](../ecommerce/handle-order-claim-event.md).
+- [Send a confirmation email to claim an order](../ecommerce/handle-order-claim-event.md)

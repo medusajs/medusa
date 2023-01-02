@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Manage Regions using Admin APIs
+# How to Manage Regions using Admin APIs
 
 In this document, you’ll learn how to manage regions using the Admin APIs.
 
@@ -31,7 +31,7 @@ You can use Medusa’s Admin APIs to achieve more functionalities as well. Check
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
 ### JS Client
 
@@ -57,9 +57,9 @@ You can retrieve regions available on your server using the [List Regions](/api/
 ```tsx
 medusa.admin.regions.list()
 .then(({ regions, limit, offset, count }) => {
-  console.log(regions.length);
-  //display regions
-});
+  console.log(regions.length)
+  // display regions
+})
 ```
 
 </TabItem>
@@ -67,13 +67,13 @@ medusa.admin.regions.list()
 
 ```tsx
 fetch(`<SERVER_URL>/admin/regions`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ regions, limit, offset, count }) => {
-  console.log(regions.length);
-  //display regions
-});
+  console.log(regions.length)
+  // display regions
+})
 ```
 
 </TabItem>
@@ -102,22 +102,22 @@ You can create a region by sending a request to the [Create a Region](/api/admin
 
 ```tsx
 medusa.admin.regions.create({
-  name: 'Europe',
-  currency_code: 'eur',
+  name: "Europe",
+  currency_code: "eur",
   tax_rate: 0,
   payment_providers: [
-    'manual'
+    "manual",
   ],
   fulfillment_providers: [
-    'manual'
+    "manual",
   ],
   countries: [
-    'DK'
-  ]
+    "DK",
+  ],
 })
 .then(({ region }) => {
-  console.log(region.id);
-});
+  console.log(region.id)
+})
 ```
 
 </TabItem>
@@ -125,27 +125,27 @@ medusa.admin.regions.create({
 
 ```tsx
 fetch(`<SERVER_URL>/admin/regions`, {
-  credentials: 'include',
-  method: 'POST',
+  credentials: "include",
+  method: "POST",
   body: JSON.stringify({
-    name: 'Europe',
-    currency_code: 'eur',
+    name: "Europe",
+    currency_code: "eur",
     tax_rate: 0,
     payment_providers: [
-      'manual'
+      "manual",
     ],
     fulfillment_providers: [
-      'manual'
+      "manual",
     ],
     countries: [
-      'DK'
-    ]
-  })
+      "DK",
+    ],
+  }),
 })
 .then((response) => response.json())
 .then(({ region }) => {
-  console.log(region.id);
-});
+  console.log(region.id)
+})
 ```
 
 </TabItem>
@@ -202,12 +202,12 @@ Alternatively, you can update the details of a region using the [Update a Region
 medusa.admin.regions.update(regionId, {
   countries: [
     "DK",
-    "DE"
-  ]
+    "DE",
+  ],
 })
 .then(({ region }) => {
-  console.log(region.id);
-});
+  console.log(region.id)
+})
 ```
 
 </TabItem>
@@ -215,25 +215,25 @@ medusa.admin.regions.update(regionId, {
 
 ```tsx
 fetch(`<SERVER_URL>/admin/regions/${regionId}`, {
-  credentials: 'include',
-  method: 'POST',
+  credentials: "include",
+  method: "POST",
   body: JSON.stringify({
     countries: [
-      'DK',
-      'DE'
-    ]
-  })
+      "DK",
+      "DE",
+    ],
+  }),
 })
 .then((response) => response.json())
 .then(({ region }) => {
-  console.log(region.id);
-});
+  console.log(region.id)
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```tsx
+```bash
 curl -L -X POST '<SERVER_URL>/admin/regions/<REGION_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
@@ -271,17 +271,17 @@ You can add a shipping option to a region by sending a request to the [Create Sh
 
 ```tsx
 medusa.admin.shippingOptions.create({
-  name: 'PostFake',
+  name: "PostFake",
   region_id: regionId,
   provider_id: "manual",
   data: {
   },
-  price_type: 'flat_rate',
-  amount: 1000
+  price_type: "flat_rate",
+  amount: 1000,
 })
 .then(({ shipping_option }) => {
-  console.log(shipping_option.id);
-});
+  console.log(shipping_option.id)
+})
 ```
 
 </TabItem>
@@ -289,28 +289,28 @@ medusa.admin.shippingOptions.create({
 
 ```tsx
 fetch(`<SERVER_URL>/admin/shipping-options`, {
-  credentials: 'include',
-  method: 'POST',
+  credentials: "include",
+  method: "POST",
   body: JSON.stringify({
-    name: 'PostFake',
+    name: "PostFake",
     region_id: regionId,
     provider_id: "manual",
-    price_type: 'flat_rate',
+    price_type: "flat_rate",
     data: {
     },
-    amount: 1000
-  })
+    amount: 1000,
+  }),
 })
 .then((response) => response.json())
 .then(({ shipping_option }) => {
-  console.log(shipping_option.id);
-});
+  console.log(shipping_option.id)
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```tsx
+```bash
 curl -L -X POST '<SERVER_URL>/admin/shipping-options' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
@@ -360,8 +360,8 @@ You can delete a region by sending a request to the [Delete a Region](/api/admin
 ```tsx
 medusa.admin.regions.delete(regionId)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -369,19 +369,19 @@ medusa.admin.regions.delete(regionId)
 
 ```tsx
 fetch(`<SERVER_URL>/admin/regions/${regionId}`, {
-  credentials: 'include',
-  method: 'DELETE'
+  credentials: "include",
+  method: "DELETE",
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```tsx
+```bash
 curl -L -X DELETE '<SERVER_URL>/admin/regions/<REGION_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
@@ -397,7 +397,7 @@ This request requires the region ID as a path parameter. It deletes the region a
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn more about [Regions’ architecture](../backend/regions/overview.md).
-- Learn [how to use Regions on the storefront](../storefront/use-regions.mdx).
+- [Regions Overview](../backend/regions/overview.md)
+- [Use Regions on the storefront](../storefront/use-regions.mdx)

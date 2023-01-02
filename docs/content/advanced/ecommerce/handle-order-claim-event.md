@@ -14,11 +14,13 @@ When the customer requests to claim the order, the event `order-update-token.cre
 
 In this document, you’ll learn how to handle the `order-update-token.created` event on the server to send the customer a confirmation email.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
 ### Redis
 
@@ -29,6 +31,8 @@ Redis is required for batch jobs to work. Make sure you [install Redis](../../t
 To send an email or another type of notification method, you must have a notification provider installed or configured.
 
 This document has an example using the [SendGrid](../../add-plugins/sendgrid.mdx) plugin.
+
+---
 
 ## Step 1: Create a Subscriber
 
@@ -43,7 +47,7 @@ You can learn more about subscribers in the [Subscribers](../backend/subscribers
 Create the file `src/subscribers/claim-order.ts` with the following content:
 
 ```ts title=src/subscribers/claim-order.ts
-import { EventBusService } from "@medusajs/medusa";
+import { EventBusService } from "@medusajs/medusa"
 
 type InjectedDependencies = {
   eventBusService: EventBusService,
@@ -55,7 +59,7 @@ class ClaimOrderSubscriber {
   }
 }
 
-export default ClaimOrderSubscriber;
+export default ClaimOrderSubscriber
 ```
 
 If you want to add any other dependencies, you can add them to the `InjectedDependencies` type.
@@ -66,13 +70,21 @@ You can learn more about dependency injection in [this documentation](../backend
 
 :::
 
+---
+
 ## Step 2: Subscribe to the Event
 
 In the subscriber you created, add the following in the `constructor`:
 
 ```ts title=src/subscribers/claim-order.ts
-constructor({ eventBusService }: InjectedDependencies) {
-  eventBusService.subscribe("order-update-token.created", this.handleRequestClaimOrder);
+class ClaimOrderSubscriber {
+  constructor({ eventBusService }: InjectedDependencies) {
+    eventBusService.subscribe(
+      "order-update-token.created",
+      this.handleRequestClaimOrder
+    )
+  }
+  // ...
 }
 ```
 
@@ -84,14 +96,14 @@ In the subscriber, add a new method `handleRequestClaimOrder`:
 
 ```ts title=src/subscribers/claim-order.ts
 class ClaimOrderSubscriber {
-  //...
+  // ...
 
-  handleRequestClaimOrder = async (data) {
-    //TODO: handle event
+  handleRequestClaimOrder = async (data) => {
+    // TODO: handle event
   }
 }
 
-export default ClaimOrderSubscriber;
+export default ClaimOrderSubscriber
 ```
 
 The `handleRequestClaimOrder` event receives a `data` object as a parameter. This object holds the following properties:
@@ -105,12 +117,14 @@ In this method, you should typically send an email to the customer’s old email
 
 The page would then send a request to the server to verify that the `token` is valid and associate the order with the customer. You can read more about how to implement this in your storefront in [this documentation](../storefront/implement-claim-order.mdx).
 
+---
+
 ## Example: Using SendGrid
 
 For example, you can implement this subscriber to send emails using SendGrid:
 
 ```ts title=src/subscribers/claim-order.ts
-import { EventBusService } from "@medusajs/medusa";
+import { EventBusService } from "@medusajs/medusa"
 
 type InjectedDependencies = {
   eventBusService: EventBusService,
@@ -118,32 +132,37 @@ type InjectedDependencies = {
 }
 
 class ClaimOrderSubscriber {
-  protected sendGridService: any;
+  protected sendGridService: any
 
   constructor({ eventBusService, sendgridService }: InjectedDependencies) {
-    this.sendGridService = sendgridService;
-    eventBusService.subscribe("order-update-token.created", this.handleRequestClaimOrder);
+    this.sendGridService = sendgridService
+    eventBusService.subscribe(
+      "order-update-token.created",
+      this.handleRequestClaimOrder
+    )
   }
 
   
   handleRequestClaimOrder = async (data) => {
     this.sendGridService.sendEmail({
-      templateId: 'order-claim-confirmation',
-      from: 'hello@medusajs.com',
+      templateId: "order-claim-confirmation",
+      from: "hello@medusajs.com",
       to: data.old_email,
       data: {
-        link: `http://example-storefront.com/confirm-order-claim/${data.token}`,
-        //other data...
-      }
+        link: `http://example.com/confirm-order-claim/${data.token}`,
+        // other data...
+      },
     })
   }
 }
 
-export default ClaimOrderSubscriber;
+export default ClaimOrderSubscriber
 ```
 
 Notice how the `token` is passed to the storefront link as a parameter.
 
+---
+
 ## See Also
 
-- Learn [how to implement claim-order flow in your storefront](../storefront/implement-claim-order.mdx).
+- [Implement claim-order flow in your storefront](../storefront/implement-claim-order.mdx)

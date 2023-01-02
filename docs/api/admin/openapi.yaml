@@ -108,106 +108,77 @@ tags:
       sessions.
   - name: App
     description: App endpoints that allow handling apps in Medusa.
-    x-resourceId: OAuth
   - name: Batch Job
     description: Batch Job endpoints that allow handling batch jobs in Medusa.
-    x-resourceId: batch_job
   - name: Claim
     description: Claim endpoints that allow handling claims in Medusa.
-    x-resourceId: claim_order
   - name: Collection
     description: Collection endpoints that allow handling collections in Medusa.
-    x-resourceId: product_collection
   - name: Customer
     description: Customer endpoints that allow handling customers in Medusa.
-    x-resourceId: customer
   - name: Customer Group
     description: Customer Group endpoints that allow handling customer groups in Medusa.
-    x-resourceId: customer_group
   - name: Discount
     description: Discount endpoints that allow handling discounts in Medusa.
-    x-resourceId: discount
   - name: Discount Condition
     description: >-
       Discount Condition endpoints that allow handling discount conditions in
       Medusa.
-    x-resourceId: discount_condition
   - name: Draft Order
     description: Draft Order endpoints that allow handling draft orders in Medusa.
-    x-resourceId: draft-order
   - name: Gift Card
     description: Gift Card endpoints that allow handling gift cards in Medusa.
-    x-resourceId: gift_card
   - name: Invite
     description: Invite endpoints that allow handling invites in Medusa.
-    x-resourceId: invite
   - name: Note
     description: Note endpoints that allow handling notes in Medusa.
-    x-resourceId: note
   - name: Notification
     description: Notification endpoints that allow handling notifications in Medusa.
-    x-resourceId: notification
   - name: Order
     description: Order endpoints that allow handling orders in Medusa.
-    x-resourceId: order
   - name: Price List
     description: Price List endpoints that allow handling price lists in Medusa.
-    x-resourceId: price_list
   - name: Product
     description: Product endpoints that allow handling products in Medusa.
-    x-resourceId: product
   - name: Product Tag
     description: Product Tag endpoints that allow handling product tags in Medusa.
-    x-resourceId: product_tag
   - name: Product Type
     description: Product Types endpoints that allow handling product types in Medusa.
-    x-resourceId: product_type
   - name: Product Variant
     description: Product Variant endpoints that allow handling product variants in Medusa.
-    x-resourceId: product_variant
   - name: Region
     description: Region endpoints that allow handling regions in Medusa.
-    x-resourceId: region
   - name: Return Reason
     description: Return Reason endpoints that allow handling return reasons in Medusa.
-    x-resourceId: return_reason
   - name: Return
     description: Return endpoints that allow handling returns in Medusa.
-    x-resourceId: return
   - name: Sales Channel
     description: Sales Channel endpoints that allow handling sales channels in Medusa.
-    x-resourceId: sales_channel
   - name: Shipping Option
     description: Shipping Option endpoints that allow handling shipping options in Medusa.
-    x-resourceId: shipping_option
   - name: Shipping Profile
     description: >-
       Shipping Profile endpoints that allow handling shipping profiles in
       Medusa.
-    x-resourceId: shipping_profile
   - name: Store
     description: Store endpoints that allow handling stores in Medusa.
-    x-resourceId: store
   - name: Swap
     description: Swap endpoints that allow handling swaps in Medusa.
-    x-resourceId: swap
   - name: Tax Rate
     description: Tax Rate endpoints that allow handling tax rates in Medusa.
-    x-resourceId: tax_rate
   - name: Upload
     description: Upload endpoints that allow handling uploads in Medusa.
   - name: User
     description: User endpoints that allow handling users in Medusa.
-    x-resourceId: user
 servers:
   - url: https://api.medusa-commerce.com/admin
 paths:
+  /apps/authorizations:
+    $ref: paths/apps_authorizations.yaml
+  /apps:
+    $ref: paths/apps.yaml
   /auth:
     $ref: paths/auth.yaml
-  /currencies:
-    $ref: paths/currencies.yaml
-  /currencies/{code}:
-    $ref: paths/currencies_{code}.yaml
   /batch-jobs/{id}/cancel:
     $ref: paths/batch-jobs_{id}_cancel.yaml
   /batch-jobs/{id}/confirm:
@@ -230,26 +201,14 @@ paths:
     $ref: paths/customer-groups_{id}.yaml
   /customer-groups/{id}/customers:
     $ref: paths/customer-groups_{id}_customers.yaml
-  /apps/authorizations:
-    $ref: paths/apps_authorizations.yaml
-  /apps:
-    $ref: paths/apps.yaml
+  /currencies:
+    $ref: paths/currencies.yaml
+  /currencies/{code}:
+    $ref: paths/currencies_{code}.yaml
   /customers:
     $ref: paths/customers.yaml
   /customers/{id}:
     $ref: paths/customers_{id}.yaml
-  /draft-orders:
-    $ref: paths/draft-orders.yaml
-  /draft-orders/{id}/line-items:
-    $ref: paths/draft-orders_{id}_line-items.yaml
-  /draft-orders/{id}:
-    $ref: paths/draft-orders_{id}.yaml
-  /draft-orders/{id}/line-items/{line_id}:
-    $ref: paths/draft-orders_{id}_line-items_{line_id}.yaml
-  /draft-orders/{id}/pay:
-    $ref: paths/draft-orders_{id}_pay.yaml
-  /admin/draft-orders/{id}:
-    $ref: paths/admin_draft-orders_{id}.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
   /discounts/{discount_id}/conditions/{condition_id}/batch:
@@ -272,6 +231,18 @@ paths:
     $ref: paths/gift-cards.yaml
   /gift-cards/{id}:
     $ref: paths/gift-cards_{id}.yaml
+  /draft-orders:
+    $ref: paths/draft-orders.yaml
+  /draft-orders/{id}/line-items:
+    $ref: paths/draft-orders_{id}_line-items.yaml
+  /draft-orders/{id}:
+    $ref: paths/draft-orders_{id}.yaml
+  /draft-orders/{id}/line-items/{line_id}:
+    $ref: paths/draft-orders_{id}_line-items_{line_id}.yaml
+  /draft-orders/{id}/pay:
+    $ref: paths/draft-orders_{id}_pay.yaml
+  /admin/draft-orders/{id}:
+    $ref: paths/admin_draft-orders_{id}.yaml
   /invites/accept:
     $ref: paths/invites_accept.yaml
   /invites:
@@ -288,6 +259,22 @@ paths:
     $ref: paths/notifications.yaml
   /notifications/{id}/resend:
     $ref: paths/notifications_{id}_resend.yaml
+  /order-edits/{id}/items:
+    $ref: paths/order-edits_{id}_items.yaml
+  /order-edits/{id}/cancel:
+    $ref: paths/order-edits_{id}_cancel.yaml
+  /order-edits/{id}/confirm:
+    $ref: paths/order-edits_{id}_confirm.yaml
+  /order-edits:
+    $ref: paths/order-edits.yaml
+  /order-edits/{id}/items/{item_id}:
+    $ref: paths/order-edits_{id}_items_{item_id}.yaml
+  /order-edits/{id}/changes/{change_id}:
+    $ref: paths/order-edits_{id}_changes_{change_id}.yaml
+  /order-edits/{id}:
+    $ref: paths/order-edits_{id}.yaml
+  /order-edits/{id}/request:
+    $ref: paths/order-edits_{id}_request.yaml
   /orders/{id}/shipping-methods:
     $ref: paths/orders_{id}_shipping-methods.yaml
   /orders/{id}/archive:
@@ -338,32 +325,10 @@ paths:
     $ref: paths/orders_{id}_return.yaml
   /order/{id}/claims/{claim_id}:
     $ref: paths/order_{id}_claims_{claim_id}.yaml
-  /order-edits/{id}/items:
-    $ref: paths/order-edits_{id}_items.yaml
-  /order-edits/{id}/cancel:
-    $ref: paths/order-edits_{id}_cancel.yaml
-  /order-edits/{id}/confirm:
-    $ref: paths/order-edits_{id}_confirm.yaml
-  /order-edits:
-    $ref: paths/order-edits.yaml
-  /order-edits/{id}/items/{item_id}:
-    $ref: paths/order-edits_{id}_items_{item_id}.yaml
-  /order-edits/{id}/changes/{change_id}:
-    $ref: paths/order-edits_{id}_changes_{change_id}.yaml
-  /order-edits/{id}:
-    $ref: paths/order-edits_{id}.yaml
-  /order-edits/{id}/request:
-    $ref: paths/order-edits_{id}_request.yaml
   /payment-collections/{id}:
     $ref: paths/payment-collections_{id}.yaml
   /payment-collections/{id}/authorize:
     $ref: paths/payment-collections_{id}_authorize.yaml
-  /payments/{id}/capture:
-    $ref: paths/payments_{id}_capture.yaml
-  /payments/{id}:
-    $ref: paths/payments_{id}.yaml
-  /payments/{id}/refund:
-    $ref: paths/payments_{id}_refund.yaml
   /price-lists/{id}/prices/batch:
     $ref: paths/price-lists_{id}_prices_batch.yaml
   /price-lists:
@@ -376,10 +341,10 @@ paths:
     $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
   /price-lists/{id}/products:
     $ref: paths/price-lists_{id}_products.yaml
-  /product-tags:
-    $ref: paths/product-tags.yaml
   /product-types:
     $ref: paths/product-types.yaml
+  /product-tags:
+    $ref: paths/product-tags.yaml
   /products/{id}/options:
     $ref: paths/products_{id}_options.yaml
   /products:
@@ -398,6 +363,12 @@ paths:
     $ref: paths/products_types.yaml
   /products/{id}/metadata:
     $ref: paths/products_{id}_metadata.yaml
+  /payments/{id}/capture:
+    $ref: paths/payments_{id}_capture.yaml
+  /payments/{id}:
+    $ref: paths/payments_{id}.yaml
+  /payments/{id}/refund:
+    $ref: paths/payments_{id}_refund.yaml
   /publishable-api-keys/{id}/sales-channels/batch:
     $ref: paths/publishable-api-keys_{id}_sales-channels_batch.yaml
   /publishable-api-keys:
@@ -448,10 +419,6 @@ paths:
     $ref: paths/shipping-options.yaml
   /shipping-options/{id}:
     $ref: paths/shipping-options_{id}.yaml
-  /shipping-profiles:
-    $ref: paths/shipping-profiles.yaml
-  /shipping-profiles/{id}:
-    $ref: paths/shipping-profiles_{id}.yaml
   /store/currencies/{code}:
     $ref: paths/store_currencies_{code}.yaml
   /store:
@@ -474,6 +441,10 @@ paths:
     $ref: paths/tax-rates.yaml
   /tax-rates/{id}:
     $ref: paths/tax-rates_{id}.yaml
+  /shipping-profiles:
+    $ref: paths/shipping-profiles.yaml
+  /shipping-profiles/{id}:
+    $ref: paths/shipping-profiles_{id}.yaml
   /uploads/protected:
     $ref: paths/uploads_protected.yaml
   /uploads:

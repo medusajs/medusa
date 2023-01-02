@@ -8,17 +8,21 @@ In this document, you’ll learn how to integrate Klarna as a payment provider i
 
 You can integrate Klarna into Medusa using the [official plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-klarna).
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../quickstart/quick-start.md).
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../quickstart/quick-start.mdx).
 
-In addition, you’ll need to use the [Medusa Admin](../admin/quickstart.md) to enable the payment provider in later steps. You can alternatively use the [REST APIs](/api/admin/#tag/Region/operation/PostRegionsRegionPaymentProviders).
+In addition, you’ll need to use the [Medusa Admin](../admin/quickstart.mdx) to enable the payment provider in later steps. You can alternatively use the [REST APIs](/api/admin/#tag/Region/operation/PostRegionsRegionPaymentProviders).
 
 ### Needed Accounts
 
 - A [Klarna business account](https://portal.klarna.com/)
+
+---
 
 ## Install Plugin
 
@@ -51,23 +55,25 @@ Finally, in `medusa-config.js`, add the Klarna plugin to the `plugins` array wit
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //other plugins...
+  // other plugins...
   {
     resolve: `medusa-payment-klarnal`,
     options: {
-      backend_url: process.env.KLARNA_BACKEND_URL
+      backend_url: process.env.KLARNA_BACKEND_URL,
       url: process.env.KLARNA_URL,
       user: process.env.KLARNA_USER,
       password: process.env.KLARNA_PASSWORD,
       merchant_urls: {
         terms: process.env.KLARNA_TERMS_URL,
         checkout: process.env.KLARNA_CHECKOUT_URL,
-        confirmation: process.env.KLARNA_CONFIRMATION_URL
-      }
-    }
-  }
-];
+        confirmation: process.env.KLARNA_CONFIRMATION_URL,
+      },
+    },
+  },
+]
 ```
+
+---
 
 ## Enable Klarna in Regions
 
@@ -75,6 +81,8 @@ To use Klarna in your store, you must enable it in at least one region.
 
 You can follow [this user guide to learn how to enable a payment provider in a region](../user-guide/regions/providers#manage-payment-providers). You can alternatively use the [REST APIs](/api/admin/#tag/Region/operation/PostRegionsRegionPaymentProviders).
 
-## What’s Next
+---
+
+## See Also
 
 - Check out [more plugins](https://github.com/medusajs/medusa/tree/master/packages) you can add to your store.
