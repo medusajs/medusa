@@ -215,17 +215,11 @@ export default class PaymentProviderService extends TransactionBaseService {
         paymentResponse
       )
 
-      const amount = this.featureFlagRouter_.isFeatureEnabled(
-        OrderEditingFeatureFlag.key
-      )
-        ? context.amount
-        : undefined
-
       return await this.saveSession(providerId, {
         cartId: context.id,
         sessionData,
         status: PaymentSessionStatus.PENDING,
-        amount,
+        amount: context.amount,
       })
     })
   }
@@ -285,16 +279,10 @@ export default class PaymentProviderService extends TransactionBaseService {
         .withTransaction(transactionManager)
         .updatePayment(paymentSession.data, context)
 
-      const amount = this.featureFlagRouter_.isFeatureEnabled(
-        OrderEditingFeatureFlag.key
-      )
-        ? context.amount
-        : undefined
-
       return await this.saveSession(paymentSession.provider_id, {
         payment_session_id: paymentSession.id,
         sessionData,
-        amount,
+        amount: context.amount,
       })
     })
   }
@@ -691,16 +679,6 @@ export default class PaymentProviderService extends TransactionBaseService {
     }
   ): Promise<PaymentSession> {
     const manager = this.transactionManager_ ?? this.manager_
-
-    if (
-      data.amount != null &&
-      !this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Amount on payment sessions is only available with the OrderEditing API currently guarded by feature flag `MEDUSA_FF_ORDER_EDITING`.  Read more about feature flags here: https://docs.medusajs.com/advanced/backend/feature-flags/toggle/"
-      )
-    }
 
     const sessionRepo = manager.getCustomRepository(
       this.paymentSessionRepository_
