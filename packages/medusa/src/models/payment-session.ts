@@ -24,12 +24,13 @@ export enum PaymentSessionStatus {
 }
 
 @Unique("OneSelected", ["cart_id", "is_selected"])
+// TODO: This uniq constraint should be updated once the order edit flag is dropped and should add a where clause on cart_id is not null
 @Unique("UniqPaymentSessionCartIdProviderId", ["cart_id", "provider_id"])
 @Entity()
 export class PaymentSession extends BaseEntity {
   @Index()
-  @Column()
-  cart_id: string
+  @Column({ nullable: true })
+  cart_id: string | null
 
   @ManyToOne(() => Cart, (cart) => cart.payment_sessions)
   @JoinColumn({ name: "cart_id" })
@@ -52,6 +53,11 @@ export class PaymentSession extends BaseEntity {
   idempotency_key: string
 
   @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
+    Column({ type: "integer", nullable: true }),
+  ])
+  amount: number
+
+  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
     Column({ type: resolveDbType("timestamptz"), nullable: true }),
   ])
   payment_authorized_at: Date
@@ -63,10 +69,10 @@ export class PaymentSession extends BaseEntity {
 }
 
 /**
- * @schema payment_session
+ * @schema PaymentSession
  * title: "Payment Session"
  * description: "Payment Sessions are created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, who is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for capture/refunds/etc."
- * x-resourceId: payment_session
+ * type: object
  * required:
  *   - cart_id
  *   - provider_id

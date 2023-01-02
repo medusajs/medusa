@@ -54,11 +54,12 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             notifications:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/notification"
+ *                 $ref: "#/components/schemas/Notification"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

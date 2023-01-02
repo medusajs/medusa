@@ -25,19 +25,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           unit_price:
- *             description: The potential custom price of the item.
- *             type: integer
- *           title:
- *             description: The potential custom title of the item.
- *             type: string
- *           quantity:
- *             description: The quantity of the Line Item.
- *             type: integer
- *           metadata:
- *             description: The optional key-value map with additional details about the Line Item.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostDraftOrdersDraftOrderLineItemsItemReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -71,9 +59,10 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *               $ref: "#/components/schemas/DraftOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -146,7 +135,7 @@ export default async (req, res) => {
 
     draftOrder.cart = await cartService
       .withTransaction(manager)
-      .retrieve(draftOrder.cart_id, {
+      .retrieveWithTotals(draftOrder.cart_id, {
         relations: defaultAdminDraftOrdersCartRelations,
         select: defaultAdminDraftOrdersCartFields,
       })
@@ -155,6 +144,23 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * @schema AdminPostDraftOrdersDraftOrderLineItemsItemReq
+ * type: object
+ * properties:
+ *   unit_price:
+ *     description: The potential custom price of the item.
+ *     type: integer
+ *   title:
+ *     description: The potential custom title of the item.
+ *     type: string
+ *   quantity:
+ *     description: The quantity of the Line Item.
+ *     type: integer
+ *   metadata:
+ *     description: The optional key-value map with additional details about the Line Item.
+ *     type: object
+ */
 export class AdminPostDraftOrdersDraftOrderLineItemsItemReq {
   @IsString()
   @IsOptional()

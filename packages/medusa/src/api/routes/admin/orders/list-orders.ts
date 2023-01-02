@@ -180,11 +180,12 @@ import { pick } from "lodash"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             orders:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/order"
+ *                 $ref: "#/components/schemas/Order"
  *             count:
  *               type: integer
  *               description: The total number of items available

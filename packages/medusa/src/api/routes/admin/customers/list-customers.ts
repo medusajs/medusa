@@ -43,11 +43,12 @@ import customerController from "../../../../controllers/customers"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             customers:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/customer"
+ *                 $ref: "#/components/schemas/Customer"
  *             count:
  *               type: integer
  *               description: The total number of items available

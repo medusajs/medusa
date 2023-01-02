@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 
 import ProductCollectionService from "../../../../services/product-collection"
 import { defaultAdminCollectionsRelations } from "."
+
 /**
  * @oas [get] /collections/{id}
  * operationId: "GetCollectionsCollection"
@@ -37,9 +38,10 @@ import { defaultAdminCollectionsRelations } from "."
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            collection:
- *              $ref: "#/components/schemas/product_collection"
+ *              $ref: "#/components/schemas/ProductCollection"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

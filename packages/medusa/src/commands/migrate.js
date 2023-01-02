@@ -1,6 +1,7 @@
 import { createConnection } from "typeorm"
 import { getConfigFile } from "medusa-core-utils"
 import featureFlagLoader from "../loaders/feature-flags"
+import { handleConfigError } from "../loaders/config"
 import Logger from "../loaders/logger"
 
 import getMigrations from "./utils/get-migrations"
@@ -11,7 +12,11 @@ const t = async function ({ directory }) {
   args.shift()
   args.shift()
 
-  const { configModule } = getConfigFile(directory, `medusa-config`)
+  const { configModule, error } = getConfigFile(directory, `medusa-config`)
+
+  if (error) {
+    handleConfigError(error)
+  }
 
   const featureFlagRouter = featureFlagLoader(configModule)
 
@@ -20,6 +25,7 @@ const t = async function ({ directory }) {
   const connection = await createConnection({
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
+    schema: configModule.projectConfig.database_schema,
     extra: configModule.projectConfig.database_extra || {},
     migrations: enabledMigrations,
     logging: true,

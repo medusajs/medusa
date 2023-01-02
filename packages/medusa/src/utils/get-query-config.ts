@@ -1,8 +1,7 @@
 import { pick } from "lodash"
 import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
-import { MedusaError } from "medusa-core-utils/dist"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { BaseEntity } from "../interfaces"
-import { isDefined } from "."
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -51,7 +50,7 @@ export function getListConfig<TModel extends BaseEntity>(
   expand?: string[],
   limit = 50,
   offset = 0,
-  order?: { [k: symbol]: "DESC" | "ASC" }
+  order: { [k: string | symbol]: "DESC" | "ASC" } = {}
 ): FindConfig<TModel> {
   let includeFields: (keyof TModel)[] = []
   if (isDefined(fields)) {
@@ -67,8 +66,10 @@ export function getListConfig<TModel extends BaseEntity>(
     expandFields = expand
   }
 
-  const orderBy: Record<string, "DESC" | "ASC"> = order ?? {
-    created_at: "DESC",
+  const orderBy = order
+
+  if (!Object.keys(order).length) {
+    orderBy["created_at"] = "DESC"
   }
 
   return {

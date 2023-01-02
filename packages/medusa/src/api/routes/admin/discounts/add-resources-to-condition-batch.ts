@@ -3,8 +3,8 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import { DiscountService } from "../../../../services"
 import {
+  DiscountConditionInput,
   DiscountConditionMapTypeToProperty,
-  UpsertDiscountConditionInput,
 } from "../../../../types/discount"
 import { IsArray } from "class-validator"
 import { FindParams } from "../../../../types/common"
@@ -12,37 +12,24 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
- * summary: "Add a batch of resources to a discount condition"
+ * summary: "Add Batch Resources"
  * description: "Add a batch of resources to a discount condition."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the Product.
  *   - (path) condition_id=* {string} The ID of the condition on which to add the item.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each discount of the result.
+ *   - (query) expand {string} (Comma separated) Which relations should be expanded in each discount of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each discount of the result.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - resources
- *         properties:
- *           resources:
- *             description: The resources to be added to the discount condition
- *             type: array
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The id of the item
- *                   type: string
+ *         $ref: "#/components/schemas/AdminPostDiscountsDiscountConditionsConditionBatchReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
- *       import { DiscountConditionOperator } from "@medusajs/medusa"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.discounts.addConditionResourceBatch(discount_id, condition_id, {
@@ -71,9 +58,10 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             discount:
- *               $ref: "#/components/schemas/discount"
+ *               $ref: "#/components/schemas/Discount"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -101,7 +89,7 @@ export default async (req: Request, res: Response) => {
     select: ["id", "type", "discount_rule_id"],
   })
 
-  const updateObj: UpsertDiscountConditionInput = {
+  const updateObj: DiscountConditionInput = {
     id: condition_id,
     rule_id: condition.discount_rule_id,
     [DiscountConditionMapTypeToProperty[condition.type]]:
@@ -123,9 +111,27 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+/**
+ * @schema AdminPostDiscountsDiscountConditionsConditionBatchReq
+ * type: object
+ * required:
+ *   - resources
+ * properties:
+ *   resources:
+ *     description: The resources to be added to the discount condition
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The id of the item
+ *           type: string
+ */
 export class AdminPostDiscountsDiscountConditionsConditionBatchReq {
   @IsArray()
   resources: { id: string }[]
 }
 
+// eslint-disable-next-line max-len
 export class AdminPostDiscountsDiscountConditionsConditionBatchParams extends FindParams {}

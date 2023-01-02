@@ -18,17 +18,14 @@ import {
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           declined_reason:
- *             type: string
- *             description: The reason for declining the OrderEdit.
+ *         $ref: "#/components/schemas/StorePostOrderEditsOrderEditDecline"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdit.decline(orderEditId)
+ *       medusa.orderEdits.decline(order_edit_id)
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id);
  *         })
@@ -44,9 +41,10 @@ import {
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *               $ref: "#/components/schemas/OrderEdit"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -85,6 +83,14 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ order_edit: orderEdit })
 }
 
+/**
+ * @schema StorePostOrderEditsOrderEditDecline
+ * type: object
+ * properties:
+ *   declined_reason:
+ *     type: string
+ *     description: The reason for declining the OrderEdit.
+ */
 export class StorePostOrderEditsOrderEditDecline {
   @IsOptional()
   @IsString()

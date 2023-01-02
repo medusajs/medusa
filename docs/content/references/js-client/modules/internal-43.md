@@ -2,32 +2,16 @@
 
 ## Type Aliases
 
-### StoreReturnReasonsListRes
+### StoreCustomersListPaymentMethodsRes
 
-Ƭ **StoreReturnReasonsListRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `return_reasons` | [`ReturnReason`](../classes/internal.ReturnReason.md)[] |
-
-#### Defined in
-
-medusa/dist/api/routes/store/return-reasons/index.d.ts:6
-
-___
-
-### StoreReturnReasonsRes
-
-Ƭ **StoreReturnReasonsRes**: `Object`
+Ƭ **StoreCustomersListPaymentMethodsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `return_reason` | [`ReturnReason`](../classes/internal.ReturnReason.md) |
+| `payment_methods` | { `data`: `object` ; `provider_id`: `string`  }[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/return-reasons/index.d.ts:9
+medusa/dist/api/routes/store/customers/index.d.ts:15

@@ -4,7 +4,7 @@ import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /gift-cards
@@ -43,11 +43,12 @@ import { isDefined } from "../../../../utils"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             gift_cards:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/gift_card"
+ *                 $ref: "#/components/schemas/GiftCard"
  *             count:
  *               type: integer
  *               description: The total number of items available

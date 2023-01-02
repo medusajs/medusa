@@ -11,6 +11,7 @@ import {
   FulfillmentService,
   OauthService,
 } from "medusa-interfaces"
+import { trackInstallation } from "medusa-telemetry"
 import path from "path"
 import { EntitySchema } from "typeorm"
 import {
@@ -77,6 +78,8 @@ export default async ({
   await Promise.all(
     resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
   )
+
+  resolved.forEach((plugin) => trackInstallation(plugin.name, "plugin"))
 }
 
 function getResolvedPlugins(
@@ -628,7 +631,7 @@ function resolvePlugin(pluginName: string): {
     // warnOnIncompatiblePeerDependency(packageJSON.name, packageJSON)
 
     return {
-      resolve: resolvedPath,
+      resolve: resolvedPath + (process.env.DEV_MODE ? "/src" : ""),
       id: createPluginId(packageJSON.name),
       name: packageJSON.name,
       options: {},

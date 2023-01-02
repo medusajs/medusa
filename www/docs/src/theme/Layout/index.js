@@ -1,11 +1,31 @@
 import React, { useEffect } from 'react';
-
-import Layout from '@theme-original/Layout';
+import clsx from 'clsx';
+import ErrorBoundary from '@docusaurus/ErrorBoundary';
+import {
+  PageMetadata,
+  SkipToContentFallbackId,
+  ThemeClassNames,
+} from '@docusaurus/theme-common';
+import {useKeyboardNavigation} from '@docusaurus/theme-common/internal';
+import SkipToContent from '@theme/SkipToContent';
+import Navbar from '@theme/Navbar';
+import Footer from '@theme/Footer';
+import LayoutProvider from '@theme/Layout/Provider';
+import ErrorPageContent from '@theme/ErrorPageContent';
+import styles from './styles.module.css';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import {useLocation} from '@docusaurus/router';
 
-export default function LayoutWrapper(props) {
-  
+export default function Layout(props) {
+  const {
+    children,
+    noFooter,
+    wrapperClassName,
+    // Not really layout-related, but kept for convenience/retro-compatibility
+    title,
+    description,
+  } = props;
+
   const isBrowser = useIsBrowser();
   const location = useLocation();
 
@@ -29,9 +49,29 @@ export default function LayoutWrapper(props) {
     }
   }, [isBrowser, location.pathname]);
 
+
+  useKeyboardNavigation();
   return (
-    <>
-      <Layout {...props} />
-    </>
+    <LayoutProvider>
+      <PageMetadata title={title} description={description} />
+
+      <SkipToContent />
+
+      <Navbar />
+
+      <div
+        id={SkipToContentFallbackId}
+        className={clsx(
+          ThemeClassNames.wrapper.main,
+          styles.mainWrapper,
+          wrapperClassName,
+        )}>
+        <ErrorBoundary fallback={(params) => <ErrorPageContent {...params} />}>
+          {children}
+        </ErrorBoundary>
+      </div>
+
+      {!noFooter && <Footer />}
+    </LayoutProvider>
   );
 }

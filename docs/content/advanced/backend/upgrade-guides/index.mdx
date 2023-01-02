@@ -1,8 +1,19 @@
+---
+hide_table_of_contents: true
+---
+
 import DocCardList from '@theme/DocCardList';
 import {useCurrentSidebarCategory} from '@docusaurus/theme-common';
+import filterListItems from '@site/src/utils/filterListItems';
 
 # Upgrade Guides
 
 Find in this page the upgrade guides that require necessary steps when upgrading to a new version.
 
-<DocCardList items={useCurrentSidebarCategory().items}/>
+## Server
+
+<DocCardList items={filterListItems(useCurrentSidebarCategory().items, /^(?!.*\/admin\/).*$/)}/>
+
+## Admin
+
+<DocCardList items={filterListItems(useCurrentSidebarCategory().items, /\/admin\//)}/>

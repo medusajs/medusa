@@ -47,9 +47,10 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             customer_group:
- *               $ref: "#/components/schemas/customer_group"
+ *               $ref: "#/components/schemas/CustomerGroup"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

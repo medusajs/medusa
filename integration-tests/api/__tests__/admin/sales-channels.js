@@ -9,7 +9,6 @@ const adminSeeder = require("../../helpers/admin-seeder")
 const {
   simpleSalesChannelFactory,
   simpleProductFactory,
-  simpleCartFactory,
 } = require("../../factories")
 const { simpleOrderFactory } = require("../../factories")
 const orderSeeder = require("../../helpers/order-seeder")
@@ -35,7 +34,6 @@ describe("sales channels", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_SALES_CHANNELS: true },
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process

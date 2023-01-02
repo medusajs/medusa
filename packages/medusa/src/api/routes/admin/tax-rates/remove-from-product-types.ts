@@ -36,14 +36,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - product_types
- *         properties:
- *           product_types:
- *             type: array
- *             description: "The IDs of the types of products to remove association with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminDeleteTaxRatesTaxRateProductTypesReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -81,9 +74,10 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *               $ref: "#/components/schemas/TaxRate"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -127,6 +121,18 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminDeleteTaxRatesTaxRateProductTypesReq
+ * type: object
+ * required:
+ *   - product_types
+ * properties:
+ *   product_types:
+ *     type: array
+ *     description: "The IDs of the types of products to remove association with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminDeleteTaxRatesTaxRateProductTypesReq {
   @IsArray()
   product_types: string[]

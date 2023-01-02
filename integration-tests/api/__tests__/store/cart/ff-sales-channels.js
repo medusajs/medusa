@@ -6,15 +6,9 @@ const { useApi } = require("../../../../helpers/use-api")
 const { useDb } = require("../../../../helpers/use-db")
 
 const {
-  simpleCartFactory,
   simpleRegionFactory,
-  simpleShippingOptionFactory,
-  simpleCustomShippingOptionFactory,
   simpleProductFactory,
-  simplePriceListFactory,
-  simpleDiscountFactory,
 } = require("../../../factories")
-const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(30000)
 
@@ -34,7 +28,6 @@ describe("[MEDUSA_FF_SALES_CHANNELS] /store/carts", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_SALES_CHANNELS: true },
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process

@@ -14,14 +14,25 @@ class S3Service extends AbstractFileService {
     this.secretAccessKey_ = options.secret_access_key
     this.region_ = options.region
     this.endpoint_ = options.endpoint
+    this.awsConfigObject_ = options.aws_config_object
   }
 
   upload(file) {
     this.updateAwsConfig()
 
+    return this.uploadFile(file)
+  }
+
+  uploadProtected(file) {
+    this.updateAwsConfig()
+
+    return this.uploadFile(file, { acl: "private" })
+  }
+
+  uploadFile(file, options = { isProtected: false, acl: undefined }) {
     const s3 = new aws.S3()
     const params = {
-      ACL: "public-read",
+      ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: `${file.originalname}`,
@@ -112,16 +123,17 @@ class S3Service extends AbstractFileService {
 
   updateAwsConfig(additionalConfiguration = {}) {
     aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: this.accessKeyId_,
-        secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-        ...additionalConfiguration,
-      },
-      true
-    )
+
+    const config = {
+      ...additionalConfiguration,
+      accessKeyId: this.accessKeyId_,
+      secretAccessKey: this.secretAccessKey_,
+      region: this.region_,
+      endpoint: this.endpoint_,
+      ...this.awsConfigObject_,
+    }
+
+    aws.config.update(config, true)
   }
 }
 

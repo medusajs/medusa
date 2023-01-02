@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
@@ -15,7 +15,6 @@ import {
   PriceListPriceUpdateInput,
   UpdatePriceListInput,
 } from "../types/price-list"
-import { formatException } from "../utils/exception-formatter"
 import ProductService from "./product"
 import RegionService from "./region"
 import { TransactionBaseService } from "../interfaces"
@@ -90,6 +89,13 @@ class PriceListService extends TransactionBaseService {
     priceListId: string,
     config: FindConfig<PriceList> = {}
   ): Promise<PriceList> {
+    if (!isDefined(priceListId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"priceListId" must be defined`
+      )
+    }
+
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
 
     const query = buildQuery({ id: priceListId }, config)
@@ -119,40 +125,36 @@ class PriceListService extends TransactionBaseService {
 
       const { prices, customer_groups, includes_tax, ...rest } = priceListObject
 
-      try {
-        const rawPriceList: DeepPartial<PriceList> = {
-          ...rest,
-        }
-
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            TaxInclusivePricingFeatureFlag.key
-          )
-        ) {
-          if (typeof includes_tax !== "undefined") {
-            rawPriceList.includes_tax = includes_tax
-          }
-        }
-
-        const entity = priceListRepo.create(rawPriceList)
-
-        const priceList = await priceListRepo.save(entity)
-
-        if (prices) {
-          const prices_ = await this.addCurrencyFromRegion(prices)
-          await moneyAmountRepo.addPriceListPrices(priceList.id, prices_)
-        }
-
-        if (customer_groups) {
-          await this.upsertCustomerGroups_(priceList.id, customer_groups)
-        }
-
-        return await this.retrieve(priceList.id, {
-          relations: ["prices", "customer_groups"],
-        })
-      } catch (error) {
-        throw formatException(error)
+      const rawPriceList: DeepPartial<PriceList> = {
+        ...rest,
       }
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          TaxInclusivePricingFeatureFlag.key
+        )
+      ) {
+        if (typeof includes_tax !== "undefined") {
+          rawPriceList.includes_tax = includes_tax
+        }
+      }
+
+      const entity = priceListRepo.create(rawPriceList)
+
+      const priceList = await priceListRepo.save(entity)
+
+      if (prices) {
+        const prices_ = await this.addCurrencyFromRegion(prices)
+        await moneyAmountRepo.addPriceListPrices(priceList.id, prices_)
+      }
+
+      if (customer_groups) {
+        await this.upsertCustomerGroups_(priceList.id, customer_groups)
+      }
+
+      return await this.retrieve(priceList.id, {
+        relations: ["prices", "customer_groups"],
+      })
     })
   }
 

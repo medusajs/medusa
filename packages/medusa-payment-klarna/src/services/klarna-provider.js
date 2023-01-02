@@ -230,6 +230,82 @@ class KlarnaProviderService extends PaymentService {
     return order
   }
 
+  validateKlarnaOrderUrls(property) {
+    const required = ["terms", "checkout", "confirmation"]
+
+    const isMissing = required.some((prop) => !this.options_[property]?.[prop])
+
+    if (isMissing) {
+      throw new Error(
+        `options.${property} is required to create a Klarna Order.\n` +
+          `medusa-config.js file has to contain ${property} { ${required.join(
+            ", "
+          )}}`
+      )
+    }
+  }
+
+  static replaceStringWithPropertyValue(string, obj) {
+    const keys = Object.keys(obj)
+    for (const key of keys) {
+      if (string.includes(`{${key}}`)) {
+        string = string.replace(`{${key}}`, obj[key])
+      }
+    }
+    return string
+  }
+
+  async paymentInputToKlarnaOrder(paymentInput) {
+    if (paymentInput.cart) {
+      this.validateKlarnaOrderUrls("merchant_urls")
+      return this.cartToKlarnaOrder(paymentInput.cart)
+    }
+
+    this.validateKlarnaOrderUrls("payment_collection_urls")
+
+    const { currency_code, amount, resource_id } = paymentInput
+
+    const order = {
+      // Custom id is stored, such that we can use it for hooks
+      merchant_data: resource_id,
+      locale: "en-US",
+      order_lines: [
+        {
+          name: "Payment Collection",
+          quantity: 1,
+          unit_price: amount,
+          tax_rate: 0,
+          total_amount: amount,
+          total_tax_amount: 0,
+        },
+      ],
+      // Defaults to Sweden
+      purchase_country: "SE",
+
+      order_amount: amount,
+      order_tax_amount: 0,
+      purchase_currency: currency_code.toUpperCase(),
+
+      merchant_urls: {
+        terms: KlarnaProviderService.replaceStringWithPropertyValue(
+          this.options_.payment_collection_urls.terms,
+          paymentInput
+        ),
+        checkout: KlarnaProviderService.replaceStringWithPropertyValue(
+          this.options_.payment_collection_urls.checkout,
+          paymentInput
+        ),
+        confirmation: KlarnaProviderService.replaceStringWithPropertyValue(
+          this.options_.payment_collection_urls.confirmation,
+          paymentInput
+        ),
+        push: `${this.backendUrl_}/klarna/push?klarna_order_id={checkout.order.id}`,
+      },
+    }
+
+    return order
+  }
+
   /**
    * Status for Klarna order.
    * @param {Object} paymentData - payment method data from cart
@@ -251,7 +327,7 @@ class KlarnaProviderService extends PaymentService {
   }
 
   /**
-   * Creates Stripe PaymentIntent.
+   * Creates Klarna PaymentIntent.
    * @param {string} cart - the cart to create a payment for
    * @param {number} amount - the amount to create a payment for
    * @returns {string} id of payment intent
@@ -259,6 +335,21 @@ class KlarnaProviderService extends PaymentService {
   async createPayment(cart) {
     try {
       const order = await this.cartToKlarnaOrder(cart)
+
+      const klarnaPayment = await this.klarna_
+        .post(this.klarnaOrderUrl_, order)
+        .then(({ data }) => data)
+
+      return klarnaPayment
+    } catch (error) {
+      this.logger_.error(error)
+      throw error
+    }
+  }
+
+  async createPaymentNew(paymentInput) {
+    try {
+      const order = await this.paymentInputToKlarnaOrder(paymentInput)
 
       const klarnaPayment = await this.klarna_
         .post(this.klarnaOrderUrl_, order)
@@ -338,18 +429,20 @@ class KlarnaProviderService extends PaymentService {
    * @param {string} klarnaOrderId - id of the order to acknowledge
    * @returns {string} id of acknowledged order
    */
-  async acknowledgeOrder(klarnaOrderId, orderId) {
+  async acknowledgeOrder(klarnaOrderId, orderId = null) {
     try {
       await this.klarna_.post(
         `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/acknowledge`
       )
 
-      await this.klarna_.patch(
-        `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/merchant-references`,
-        {
-          merchant_reference1: orderId,
-        }
-      )
+      if (orderId !== null) {
+        await this.klarna_.patch(
+          `${this.klarnaOrderManagementUrl_}/${klarnaOrderId}/merchant-references`,
+          {
+            merchant_reference1: orderId,
+          }
+        )
+      }
 
       return klarnaOrderId
     } catch (error) {
@@ -395,6 +488,22 @@ class KlarnaProviderService extends PaymentService {
   async updatePayment(paymentData, cart) {
     if (cart.total !== paymentData.order_amount) {
       const order = await this.cartToKlarnaOrder(cart)
+      return this.klarna_
+        .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
+        .then(({ data }) => data)
+        .catch(async (_) => {
+          return this.klarna_
+            .post(this.klarnaOrderUrl_, order)
+            .then(({ data }) => data)
+        })
+    }
+
+    return paymentData
+  }
+
+  async updatePaymentNew(paymentData, paymentInput) {
+    if (paymentInput.amount !== paymentData.order_amount) {
+      const order = await this.paymentInputToKlarnaOrder(paymentInput)
       return this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)

@@ -98,11 +98,12 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             tax_rates:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/tax_rate"
+ *                 $ref: "#/components/schemas/TaxRate"
  *             count:
  *               type: integer
  *               description: The total number of items available

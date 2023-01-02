@@ -26,9 +26,10 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               gift_card:
-                $ref: ../components/schemas/gift_card.yaml
+                $ref: ../components/schemas/GiftCard.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

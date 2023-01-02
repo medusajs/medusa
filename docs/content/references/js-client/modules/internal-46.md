@@ -2,22 +2,52 @@
 
 ## Classes
 
-- [AdditionalItem](../classes/internal-46.AdditionalItem.md)
-- [Item](../classes/internal-46.Item.md)
-- [StorePostSwapsReq](../classes/internal-46.StorePostSwapsReq.md)
+- [StoreGetProductsPaginationParams](../classes/internal-46.StoreGetProductsPaginationParams.md)
+- [StoreGetProductsParams](../classes/internal-46.StoreGetProductsParams.md)
+- [StorePostSearchReq](../classes/internal-46.StorePostSearchReq.md)
 
 ## Type Aliases
 
-### StoreSwapsRes
+### StorePostSearchRes
 
-Ƭ **StoreSwapsRes**: `Object`
+Ƭ **StorePostSearchRes**: `Object`
+
+#### Index signature
+
+▪ [k: `string`]: `unknown`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `swap` | [`Swap`](../classes/internal.Swap.md) |
+| `hits` | `unknown`[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/swaps/index.d.ts:7
+medusa/dist/api/routes/store/products/index.d.ts:13
+
+___
+
+### StoreProductsListRes
+
+Ƭ **StoreProductsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `products`: [`Product`](../classes/internal.Product.md)[]  }
+
+#### Defined in
+
+medusa/dist/api/routes/store/products/index.d.ts:17
+
+___
+
+### StoreProductsRes
+
+Ƭ **StoreProductsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `product` | [`Product`](../classes/internal.Product.md) |
+
+#### Defined in
+
+medusa/dist/api/routes/store/products/index.d.ts:10

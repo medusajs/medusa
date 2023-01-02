@@ -6,6 +6,7 @@ import { sync as existsSync } from "fs-exists-cached"
 import { getConfigFile } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 
+import { handleConfigError } from "../loaders/config"
 import Logger from "../loaders/logger"
 import loaders from "../loaders"
 
@@ -29,7 +30,11 @@ const t = async function ({ directory, migrate, seedFile }) {
     }
   }
 
-  const { configModule } = getConfigFile(directory, `medusa-config`)
+  const { configModule, error } = getConfigFile(directory, `medusa-config`)
+
+  if (error) {
+    handleConfigError(error)
+  }
 
   const featureFlagRouter = featureFlagLoader(configModule)
 
@@ -39,6 +44,7 @@ const t = async function ({ directory, migrate, seedFile }) {
     const connection = await createConnection({
       type: configModule.projectConfig.database_type,
       database: configModule.projectConfig.database_database,
+      schema: configModule.projectConfig.database_schema,
       url: configModule.projectConfig.database_url,
       extra: configModule.projectConfig.database_extra || {},
       migrations: migrationDirs,

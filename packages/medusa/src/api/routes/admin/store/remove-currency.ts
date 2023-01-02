@@ -44,9 +44,10 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             store:
- *               $ref: "#/components/schemas/store"
+ *               $ref: "#/components/schemas/Store"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

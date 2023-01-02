@@ -42,6 +42,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             id:
  *               type: string
@@ -56,7 +57,7 @@ import { FindParams } from "../../../../types/common"
  *               default: true
  *             discount:
  *               description: The Discount to which the condition used to belong
- *               $ref: "#/components/schemas/discount"
+ *               $ref: "#/components/schemas/Discount"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

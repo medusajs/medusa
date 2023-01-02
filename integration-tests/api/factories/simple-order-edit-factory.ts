@@ -8,6 +8,7 @@ export type OrderEditFactoryData = {
   order_id?: string
   internal_note?: string
   declined_reason?: string
+  payment_collection_id?: string
   confirmed_at?: Date | string
   confirmed_by?: string
   created_at?: Date | string
@@ -46,6 +47,7 @@ export const simpleOrderEditFactory = async (
     created_by: data.created_by,
     confirmed_at: data.confirmed_at,
     confirmed_by: data.confirmed_by,
+    payment_collection_id: data.payment_collection_id,
   })
 
   return await manager.save<OrderEdit>(orderEdit)

@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, ILike } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
@@ -10,7 +10,6 @@ import {
   UpdateProductCollection,
 } from "../types/product-collection"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -56,6 +55,13 @@ class ProductCollectionService extends TransactionBaseService {
     collectionId: string,
     config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
+    if (!isDefined(collectionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"collectionId" must be defined`
+      )
+    }
+
     const collectionRepo = this.manager_.getCustomRepository(
       this.productCollectionRepository_
     )
@@ -113,12 +119,8 @@ class ProductCollectionService extends TransactionBaseService {
         this.productCollectionRepository_
       )
 
-      try {
-        const productCollection = collectionRepo.create(collection)
-        return await collectionRepo.save(productCollection)
-      } catch (error) {
-        throw formatException(error)
-      }
+      const productCollection = collectionRepo.create(collection)
+      return await collectionRepo.save(productCollection)
     })
   }
 
@@ -183,17 +185,13 @@ class ProductCollectionService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      try {
-        const { id } = await this.retrieve(collectionId, { select: ["id"] })
+      const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
-        await productRepo.bulkAddToCollection(productIds, id)
+      await productRepo.bulkAddToCollection(productIds, id)
 
-        return await this.retrieve(id, {
-          relations: ["products"],
-        })
-      } catch (error) {
-        throw formatException(error)
-      }
+      return await this.retrieve(id, {
+        relations: ["products"],
+      })
     })
   }
 

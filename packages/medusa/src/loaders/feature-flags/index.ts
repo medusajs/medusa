@@ -4,8 +4,8 @@ import path from "path"
 import { trackFeatureFlag } from "medusa-telemetry"
 import { FlagSettings } from "../../types/feature-flags"
 import { Logger } from "../../types/global"
+import { isDefined } from "medusa-core-utils"
 import { FlagRouter } from "../../utils/flag-router"
-import { isDefined } from "../../utils"
 
 const isTruthy = (val: string | boolean | undefined): boolean => {
   if (typeof val === "string") {

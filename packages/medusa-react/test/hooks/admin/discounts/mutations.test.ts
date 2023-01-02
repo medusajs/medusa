@@ -6,6 +6,7 @@ import {
   useAdminCreateDiscount,
   useAdminCreateDynamicDiscountCode,
   useAdminDeleteDiscount,
+  useAdminDeleteDiscountConditionResourceBatch,
   useAdminDeleteDynamicDiscountCode,
   useAdminDiscountAddRegion,
   useAdminDiscountCreateCondition,
@@ -15,6 +16,48 @@ import {
   useAdminUpdateDiscount,
 } from "../../../../src/"
 import { createWrapper } from "../../../utils"
+
+describe("useAdminDeleteDiscountConditionResourceBatch hook", () => {
+  test("delete items from a discount condition and return the discount", async () => {
+    const resources = [
+      {
+        id: fixtures.get("product").id,
+      },
+    ]
+    const discountId = fixtures.get("discount").id
+    const conditionId = fixtures.get("discount").rule.conditions[0].id
+
+    const { result, waitFor } = renderHook(
+      () =>
+        useAdminDeleteDiscountConditionResourceBatch(discountId, conditionId),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    result.current.mutate({
+      resources,
+    })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.discount).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("discount"),
+        rule: {
+          ...fixtures.get("discount").rule,
+          conditions: [
+            {
+              ...fixtures.get("discount").rule.conditions[0],
+              products: [],
+            },
+          ],
+        },
+      })
+    )
+  })
+})
 
 describe("useAdminAddDiscountConditionResourceBatch hook", () => {
   test("add items to a discount condition and return the discount", async () => {

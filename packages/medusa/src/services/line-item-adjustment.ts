@@ -1,19 +1,14 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 
-import {
-  Cart,
-  DiscountRuleType,
-  LineItem,
-  LineItemAdjustment,
-  ProductVariant,
-} from "../models"
+import { Cart, DiscountRuleType, LineItem, LineItemAdjustment } from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
 import { FindConfig } from "../types/common"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
 import DiscountService from "./discount"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, setMetadata } from "../utils"
+import { CalculationContextData } from "../types/totals"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
@@ -22,7 +17,7 @@ type LineItemAdjustmentServiceProps = {
 }
 
 type AdjustmentContext = {
-  variant: ProductVariant
+  variant: { product_id: string }
 }
 
 type GeneratedAdjustment = {
@@ -56,24 +51,31 @@ class LineItemAdjustmentService extends TransactionBaseService {
 
   /**
    * Retrieves a line item adjustment by id.
-   * @param id - the id of the line item adjustment to retrieve
+   * @param lineItemAdjustmentId - the id of the line item adjustment to retrieve
    * @param config - the config to retrieve the line item adjustment by
    * @return the line item adjustment.
    */
   async retrieve(
-    id: string,
+    lineItemAdjustmentId: string,
     config: FindConfig<LineItemAdjustment> = {}
   ): Promise<LineItemAdjustment> {
+    if (!isDefined(lineItemAdjustmentId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"lineItemAdjustmentId" must be defined`
+      )
+    }
+
     const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
       this.manager_.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: lineItemAdjustmentId }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
 
     if (!lineItemAdjustment) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Line item adjustment with id: ${id} was not found`
+        `Line item adjustment with id: ${lineItemAdjustmentId} was not found`
       )
     }
 
@@ -174,30 +176,34 @@ class LineItemAdjustmentService extends TransactionBaseService {
 
   /**
    * Creates adjustment for a line item
-   * @param cart - the cart object holding discounts
+   * @param calculationContextData - the calculationContextData object holding discounts
    * @param generatedLineItem - the line item for which a line item adjustment might be created
    * @param context - the line item for which a line item adjustment might be created
    * @return a line item adjustment or undefined if no adjustment was created
    */
   async generateAdjustments(
-    cart: Cart,
+    calculationContextData: CalculationContextData,
     generatedLineItem: LineItem,
     context: AdjustmentContext
   ): Promise<GeneratedAdjustment[]> {
+    const lineItem = {
+      ...generatedLineItem,
+    } as LineItem
+
     return this.atomicPhase_(async (manager) => {
       // if lineItem should not be discounted
       // or lineItem is a return line item
       // or the cart does not have any discounts
       // then do nothing
       if (
-        !generatedLineItem.allow_discounts ||
-        generatedLineItem.is_return ||
-        !cart?.discounts?.length
+        !lineItem.allow_discounts ||
+        lineItem.is_return ||
+        !calculationContextData?.discounts?.length
       ) {
         return []
       }
 
-      const [discount] = cart.discounts.filter(
+      const [discount] = calculationContextData.discounts.filter(
         (d) => d.rule.type !== DiscountRuleType.FREE_SHIPPING
       )
 
@@ -217,10 +223,12 @@ class LineItemAdjustmentService extends TransactionBaseService {
         return []
       }
 
+      // In case of a generated line item the id is not available, it is mocked instead to be used for totals calculations
+      lineItem.id = lineItem.id ?? new Date().getTime()
       const amount = await this.discountService.calculateDiscountForLineItem(
         discount.id,
-        generatedLineItem,
-        cart
+        lineItem,
+        calculationContextData
       )
 
       // if discounted amount is 0, then do nothing
@@ -228,15 +236,13 @@ class LineItemAdjustmentService extends TransactionBaseService {
         return []
       }
 
-      const adjustments = [
+      return [
         {
           amount,
           discount_id: discount.id,
           description: "discount",
         },
       ]
-
-      return adjustments
     })
   }
 

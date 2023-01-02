@@ -33,11 +33,12 @@ import UserService from "../../../../services/user"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             users:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/user"
+ *                 $ref: "#/components/schemas/User"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

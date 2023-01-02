@@ -111,11 +111,12 @@ import { Type } from "class-transformer"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            collections:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/product_collection"
+ *                 $ref: "#/components/schemas/ProductCollection"
  *            count:
  *               type: integer
  *               description: The total number of items available

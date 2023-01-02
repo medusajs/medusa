@@ -17,13 +17,15 @@ It’s recommended to go through the [Shipping Architecture Overview](../backend
 
 :::
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
-It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.md) or [Gatsby](../../starters/gatsby-medusa-starter.md) storefronts.
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
@@ -33,9 +35,11 @@ If you follow the JS Client code blocks, it’s assumed you already have [Medusa
 
 ### Previous Steps
 
-This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartLineItems).
+This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
 
 You can learn how to implement the cart flow using [this documentation](../../guides/carts-in-medusa.mdx).
+
+---
 
 ## Shipping Step
 
@@ -43,9 +47,9 @@ In this step, the customer generally enters their shipping info, then chooses th
 
 ### Add Shipping Address
 
-After the customer enters their shipping address information, you must send a `POST` request to the [Update a Cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCart) API endpoint:
+After the customer enters their shipping address information, you must send a `POST` request to the [Update a Cart](/api/store/#tag/Cart/operation/PostCartsCart) API endpoint:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -60,11 +64,11 @@ medusa.carts.update(cartId, {
     country_code,
     province,
     postal_code,
-    phone
+    phone,
   },
 })
 .then(({ cart }) => {
-  console.log(cart.shipping_address);
+  console.log(cart.shipping_address)
 })
 ```
 
@@ -73,7 +77,8 @@ medusa.carts.update(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     shipping_address: {
       company,
@@ -85,17 +90,17 @@ fetch(`<SERVER_URL>/store/carts/${cartId}`, {
       country_code,
       province,
       postal_code,
-      phone
+      phone,
     },
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.shipping_address);
-});
+  console.log(cart.shipping_address)
+})
 ```
 
 </TabItem>
@@ -105,19 +110,21 @@ This request accepts the ID of the cart as a path parameter and the new shipping
 
 The request returns the updated cart, with the new shipping address available in `cart.shipping_address`.
 
+---
+
 ### List Shipping Options
 
 After updating the cart with the customer’s address, the list of available [shipping options](../backend/shipping/overview.md#shipping-option) for that cart might change. So, you should retrieve the updated list of options. 
 
-You can retrieve the list of shipping options by sending a `GET` request to the [Retrieve Shipping Options for Cart API](https://docs.medusajs.com/api/store/#tag/Shipping-Option/operation/GetShippingOptionsCartId) endpoint:
+You can retrieve the list of shipping options by sending a `GET` request to the [Retrieve Shipping Options for Cart API](/api/store/#tag/Shipping-Option/operation/GetShippingOptionsCartId) endpoint:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.shippingOptions.listCartOptions(cartId)
 .then(({ shipping_options }) => {
-  console.log(shipping_options.length);
+  console.log(shipping_options.length)
 })
 ```
 
@@ -125,28 +132,30 @@ medusa.shippingOptions.listCartOptions(cartId)
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/store/shipping-options/${cartId}`)
+fetch(`<SERVER_URL>/store/shipping-options/${cartId}`, {
+  credentials: "include",
+})
 .then((response) => response.json())
 .then(({ shipping_options }) => {
-  console.log(shipping_options.length);
+  console.log(shipping_options.length)
 })
 ```
 
 </TabItem>
 </Tabs>
 
-The request accepts the ID of the cart as a path parameter. It returns the array of [shipping options](https://docs.medusajs.com/api/store/#tag/Shipping-Option/operation/GetShippingOptions). Typically you would display those options to the customer to choose from.
+The request accepts the ID of the cart as a path parameter. It returns the array of [shipping options](/api/store/#tag/Shipping-Option/operation/GetShippingOptions). Typically you would display those options to the customer to choose from.
 
 ### Choose Shipping Option
 
-Once the customer chooses one of the available shipping options, send a `POST` request to the [Add a Shipping Method](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod) API endpoint. This will create a [shipping method](../backend/shipping/overview.md#shipping-method) based on the shipping option chosen and will associate it with the customer’s cart:
+Once the customer chooses one of the available shipping options, send a `POST` request to the [Add a Shipping Method](/api/store/#tag/Cart/operation/PostCartsCartShippingMethod) API endpoint. This will create a [shipping method](../backend/shipping/overview.md#shipping-method) based on the shipping option chosen and will associate it with the customer’s cart:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.carts.addShippingMethod(cartId, {
-  option_id: shippingOptionId //the ID of the selected option
+  option_id: shippingOptionId, // the ID of the selected option
 })
 .then(({ cart }) => {
   console.log(cart.shipping_methods)
@@ -158,13 +167,14 @@ medusa.carts.addShippingMethod(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/shipping-methods`, {
-  method: 'POST',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    option_id: shippingOptionId //the ID of the selected option
+    option_id: shippingOptionId, // the ID of the selected option
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ cart }) => {
@@ -179,6 +189,8 @@ The request accepts the ID of the cart as a path parameter and its body the ID o
 
 It returns the updated cart, with the created shipping method available in the array `cart.shipping_methods`.
 
+---
+
 ## Payment Step
 
 In this step, the customer generally chooses a payment method to complete their purchase. The implementation of payment providers is done differently for each provider, so this section will just show the general steps you should follow when implementing this step.
@@ -187,9 +199,9 @@ In this step, the customer generally chooses a payment method to complete their 
 
 When the page opens and before the payment providers are displayed to the customer to choose from, you must initialize the [payment sessions](./../backend/payment/overview.md#payment-session) for the current cart. Each payment provider will have a payment session associated with it. These payment sessions will be used later when the customer chooses the payment provider they want to complete their purchase with.
 
-To initialize the payment sessions, send a `POST` request to the [Initialize Payment Sessions](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) API endpoint:
+To initialize the payment sessions, send a `POST` request to the [Initialize Payment Sessions](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessions) API endpoint:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -204,7 +216,8 @@ medusa.carts.createPaymentSessions(cartId)
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/payment-sessions`, {
-  method: 'POST'
+  method: "POST",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ cart }) => {
@@ -219,14 +232,15 @@ This endpoint accepts the ID of the cart as a path parameter. It returns the upd
 
 ### Select Payment Session
 
-When the customer chooses the payment provider they want to complete purchase with, you should select the payment session associated with that payment provider. To do that, send a `POST` request to the [Select a Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) API endpoint:
+When the customer chooses the payment provider they want to complete purchase with, you should select the payment session associated with that payment provider. To do that, send a `POST` request to the [Select a Payment Session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSession) API endpoint:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.carts.setPaymentSession(cartId, {
-  provider_id: paymentProviderId // retrieved from the payment session selected by the customer
+  // retrieved from the payment session selected by the customer
+  provider_id: paymentProviderId,
 })
 .then(({ cart }) => {
   console.log(cart.payment_session)
@@ -238,13 +252,15 @@ medusa.carts.setPaymentSession(cartId, {
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/payment-session`, {
-  method: 'POST',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    provider_id: paymentProviderId // retrieved from the payment session selected by the customer
+    // retrieved from the payment session selected by the customer
+    provider_id: paymentProviderId,
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ cart }) => {
@@ -269,18 +285,18 @@ If you have one payment provider or if only one payment provider is available fo
 
 This step is optional and is only necessary for some payment providers. As mentioned in the [Payment Architecture](../backend/payment/overview.md#overview) documentation, the `PaymentSession` model has a `data` attribute that holds any data required for the Payment Provider to perform payment operations such as capturing payment.
 
-If you need to update that data at any point before the purchase is made, send a request to [Update a Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) API endpoint:
+If you need to update that data at any point before the purchase is made, send a request to [Update a Payment Session](/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionUpdate) API endpoint:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
   data: {
-    //pass any data you want to add in the `data` attribute
-    //for example:
-    "test": true
-  }
+    // pass any data you want to add in the `data` attribute
+    // for example:
+    "test": true,
+  },
 })
 .then(({ cart }) => {
   console.log(cart.payment_session.data)
@@ -290,20 +306,26 @@ medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```jsx
-fetch(`<SERVER_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, {
-  method: 'POST',
-  body: JSON.stringify({
-    data: {
-      //pass any data you want to add in the `data` attribute
-      //for example:
-      "test": true
-    }
-  }),
-  headers: {
-    'Content-Type': 'application/json'
+fetch(
+  `<SERVER_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, 
+  {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({
+      data: {
+        // pass any data you want to add in the `data` attribute
+        // for example:
+        "test": true,
+      },
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
   }
-})
+)
 .then((response) => response.json())
 .then(({ cart }) => {
   console.log(cart.payment_session.data)
@@ -321,15 +343,15 @@ It returns the updated cart. You can access the payment session's data on `cart.
 
 The last step is to place the order by completing the cart. When you complete the cart, your Medusa server will try to authorize the payment first, then place the order if the authorization is successful. So, you should perform any necessary action with your payment provider first to make sure the authorization is successful when you send the request to complete the cart.
 
-To complete a cart, send a `POST` request to the [Complete a Cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete) API endpoint:
+To complete a cart, send a `POST` request to the [Complete a Cart](/api/store/#tag/Cart/operation/PostCartsCartComplete) API endpoint:
 
-<Tabs groupId="request-tyoe">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.carts.complete(cartId)
 .then(({ type, data }) => {
-  console.log(type, data);
+  console.log(type, data)
 })
 ```
 
@@ -338,14 +360,15 @@ medusa.carts.complete(cartId)
 
 ```jsx
 fetch(`<SERVER_URL>/store/carts/${cartId}/complete`, {
-  method: 'POST',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ type, data }) => {
-  console.log(type, data);
+  console.log(type, data)
 })
 ```
 
@@ -358,8 +381,11 @@ The request returns two properties: `type` and `data`. If the order was placed s
 
 If an error occurred while placing the order, `type` will be `cart` and `data` will be the cart's data.
 
-## What’s Next
+---
 
-- Learn more about the [JS Client and how to use it](../../js-client/overview.md).
+## See Also
+
+- [Medusa JS Client Overview](../../js-client/overview.md).
 - Check out available plugins for popular payment providers such as [Stripe](../../add-plugins/stripe.md) and [PayPal](/add-plugins/paypal.md).
-- Learn more about the [Payment](../backend/payment/overview.md) and [Shipping](../backend/shipping/overview.md) Architectures.
+- [Payment Architecture](../backend/payment/overview.md)
+- [Shipping Architecture](../backend/shipping/overview.md)

@@ -42,11 +42,12 @@ import { Swap } from "../../../../models"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             swaps:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/swap"
+ *                 $ref: "#/components/schemas/Swap"
  *             count:
  *               type: integer
  *               description: The total number of items available

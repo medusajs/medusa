@@ -23,6 +23,10 @@ describe("GET /store/products", () => {
           relations: defaultStoreProductsRelations,
           skip: 0,
           take: 100,
+          select: undefined,
+          order: {
+            created_at: "DESC",
+          },
         }
       )
     })
@@ -50,6 +54,10 @@ describe("GET /store/products", () => {
           relations: defaultStoreProductsRelations,
           skip: 0,
           take: 100,
+          order: {
+            created_at: "DESC",
+          },
+          select: undefined,
         }
       )
     })

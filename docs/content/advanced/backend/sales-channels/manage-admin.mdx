@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# How to Use SalesChannels APIs
+# How to Manage Sales Channels
 
 In this document, you’ll learn how to manage sales channels and their products and orders using the Admin APIs.
 
@@ -23,7 +23,7 @@ This guide explains how to perform all these operations using the Admin APIs.
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
 
 ### Enabled Feature Flags
 
@@ -52,17 +52,17 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 You can create a sales channel by sending a request to the Create a Sales Channel endpoint:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.salesChannels.create({
-  name: 'App',
-  description: 'Mobile app'
+  name: "App",
+  description: "Mobile app",
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
@@ -70,28 +70,29 @@ medusa.admin.salesChannels.create({
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels`, {
-  method: 'POST',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    name: 'App',
-	  description: 'Mobile app'
-  })
+    name: "App",
+	  description: "Mobile app",
+  }),
 })
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     name: 'App',
 	  description: 'Mobile app'
@@ -111,33 +112,35 @@ It returns the created sales channel.
 
 You can list all sales channels by sending a request to the List Sales Channels endpoint:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.salesChannels.list()
 .then(({ sales_channels, limit, offset, count }) => {
-  console.log(sales_channels.length);
-});
+  console.log(sales_channels.length)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels`)
+fetch(`<SERVER_URL>/admin/sales-channels`, {
+  credentials: "include",
+})
 .then((response) => response.json())
 .then(({ sales_channels, limit, offset, count }) => {
   console.log(sales_channels.length)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/sales-channels' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/sales-channels' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -151,33 +154,35 @@ This request returns an array of all sales channels in your store. You can also 
 
 You can retrieve a sales channel’s details by its ID using the Get Sales Channel endpoint:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.salesChannels.retrieve(salesChannelId)
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`)
+fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
+  credentials: "include",
+})
 .then((response) => response.json())
 .then(({ sales_channels, limit, offset, count }) => {
   console.log(sales_channels.length)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -191,16 +196,16 @@ This request returns the sales channel with the specified ID.
 
 You can update a Sales Channel’s details and attributes by sending a request to the Update Sales Channel endpoint:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.salesChannels.update(salesChannelId, {
-  is_disabled: false
+  is_disabled: false,
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
@@ -208,27 +213,28 @@ medusa.admin.salesChannels.update(salesChannelId, {
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
-  method: 'POST',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    is_disabled: false
-  })
+    is_disabled: false,
+  }),
 })
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "is_disabled": false
 }'
@@ -249,14 +255,14 @@ You can check out [the API Reference for a full list of body parameters](https:/
 
 You can delete a sales channel by sending a request to the Delete Sales Channel endpoint with the ID of the sales channel to delete:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.salesChannels.delete(salesChannelId)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -264,20 +270,21 @@ medusa.admin.salesChannels.delete(salesChannelId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}`, {
-  method: 'DELETE'
+  method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
   console.log(id)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -293,52 +300,56 @@ The ID of the deleted sales channel is returned in the response.
 
 To add a product to a sales channel, send a request to the Sales Channel’s Add Products endpoint:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.salesChannels.addProducts(salesChannelId, {
   product_ids: [
     {
-      id: productId
-    }
-  ]
+      id: productId,
+    },
+  ],
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    product_ids: [
-	    {
-	      id: productId
-	    }
-	  ]
-  })
-})
+fetch(
+  `<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      product_ids: [
+        {
+          id: productId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+curl -L -X POST '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "product_ids": [
       {
@@ -359,37 +370,42 @@ This request returns the sales channel.
 
 You can list the products available in a sales channel by sending a request to the List Products endpoint and passing the `sales_channel_id` query parameter to filter by a specific sales channel:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.products.list({
   sales_channel_id: [
-    salesChannelId
-  ]
+    salesChannelId,
+  ],
 })
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-});
+  console.log(products.length)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`)
+fetch(
+  `<SERVER_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`,
+  {
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
   console.log(products.length)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl --location --request GET '<SERVER_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+curl -L -X GET '<SERVER_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -407,52 +423,56 @@ Deleting a product from a sales channel doesn't delete it completely. It only ma
 
 You can delete a product from a sales channel by sending a request to the Sales Channel’s Delete Products endpoint:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.salesChannels.removeProducts(salesChannelId, {
   product_ids: [
     {
-      id: productId
-    }
-  ]
+      id: productId,
+    },
+  ],
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`, {
-  method: 'DELETE',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    product_ids: [
-	    {
-	      id: productId
-	    }
-	  ]
-  })
-})
+fetch(
+  `<SERVER_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
+  {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      product_ids: [
+        {
+          id: productId,
+        },
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ sales_channel }) => {
   console.log(sales_channel.id)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```jsx
-curl --location --request DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
---header 'Authorization: Bearer <API_TOKEN>' \
---header 'Content-Type: application/json' \
+```bash
+curl -L -X DELETE '<SERVER_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
+-H 'Authorization: Bearer <API_TOKEN>' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "product_ids": [
       {
@@ -475,39 +495,41 @@ This request returns the sales channel.
 
 You can filter orders by a specific sales channel by sending a request to the List Orders endpoint and passing the `sales_channel_id` query parameter to filter by a specific sales channel:
 
-<Tabs groupId="request-type">
+<Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
 medusa.admin.orders.list({
   sales_channel_id: [
-    salesChannelId
+    salesChannelId,
   ],
   limit: 50,
-  offset: 0
+  offset: 0,
 })
 .then(({ orders, limit, offset, count }) => {
-  console.log(orders.length);
-});
+  console.log(orders.length)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`)
+fetch(`<SERVER_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
+  credentials: "include",
+})
 .then((response) => response.json())
 .then(({ orders, limit, offset, count }) => {
   console.log(orders.length)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```jsx
-curl --location --request GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
---header 'Authorization: Bearer <API_TOKEN>'
+```bash
+curl -L -X GET '<SERVER_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
+-H 'Authorization: Bearer <API_TOKEN>'
 ```
 
 </TabItem>
@@ -517,6 +539,6 @@ The request returns an array of orders that are associated with the specified sa
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn more about [Sales Channels and how they work](./index.md).
+- [Sales Channels Overview](./index.md).

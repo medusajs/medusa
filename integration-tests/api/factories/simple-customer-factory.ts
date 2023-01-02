@@ -1,5 +1,5 @@
-import { Customer } from "@medusajs/medusa"
 import faker from "faker"
+import { Customer } from "@medusajs/medusa"
 import { Connection } from "typeorm"
 import {
   CustomerGroupFactoryData,
@@ -9,7 +9,12 @@ import {
 export type CustomerFactoryData = {
   id?: string
   email?: string
+  phone?: string
+  first_name?: string
+  last_name?: string
   groups?: CustomerGroupFactoryData[]
+  password_hash?: string
+  has_account?: boolean
 }
 
 export const simpleCustomerFactory = async (
@@ -26,8 +31,20 @@ export const simpleCustomerFactory = async (
   const customerId = data.id || `simple-customer-${Math.random() * 1000}`
   const c = manager.create(Customer, {
     id: customerId,
-    email: data.email,
+    email: data.email ?? faker.internet.email(),
+    phone: data.phone ?? faker.phone.phoneNumber(),
+    first_name: data.first_name ?? faker.name.firstName(),
+    last_name: data.last_name ?? faker.name.lastName(),
+    password_hash:
+      data.password_hash ??
+      "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+    has_account: data.has_account ?? true,
   })
+
+  if (data.password_hash) {
+    c.password_hash = data.password_hash
+    c.has_account = true
+  }
 
   const customer = await manager.save(c)
 

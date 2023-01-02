@@ -6,11 +6,13 @@ In this document, you’ll learn how to create endpoints in your Medusa server.
 
 Custom endpoints reside under the `src/api` directory in your Medusa Backend. They're defined in a TypeScript or JavaScript file that is named `index` (for example, `index.ts`). This file should export a function that returns an Express router.
 
+---
+
 ## Implementation
 
 To create a new endpoint, start by creating a new file in `src/api` called `index.ts`. At its basic format, `index.ts` should look something like this:
 
-```ts
+```ts title=src/api/index.ts
 import { Router } from "express"
 
 export default (rootDirectory, pluginOptions) => {
@@ -42,18 +44,35 @@ By Medusa’s conventions:
 
 You can also create endpoints that don't reside under these two prefixes, similar to the `hello` endpoint in the previous example.
 
+---
+
 ## CORS Configuration
 
 If you’re adding a storefront or admin endpoint and you want to access these endpoints from the storefront or Medusa admin, you need to pass your endpoints Cross-Origin Resource Origin (CORS) options using the `cors` package.
 
-First, you need to import your Medusa configurations along with the `cors` library:
+First, you need to import the necessary utility functions and types from Medusa's packages with the `cors` library:
 
 ```ts
+import { getConfigFile, parseCorsOrigins } from "medusa-core-utils"
+import { ConfigModule } from "@medusajs/medusa/dist/types/global"
 import cors from "cors"
-import { projectConfig } from "../../medusa-config"
 ```
 
-Then, create an object that will hold the Cross-Origin Resource Sharing (CORS) configurations. If it’s a storefront endpoint, pass the `origin` property storefront options:
+Next, in the exported function, retrieve the CORS configurations of your server using the utility functions you imported:
+
+```ts
+export default (rootDirectory) => {
+  // ...
+
+  const { configModule } = 
+    getConfigFile<ConfigModule>(rootDirectory, "medusa-config")
+  const { projectConfig } = configModule
+
+  // ....
+}
+```
+
+Then, create an object that will hold the CORS configurations. If it’s a storefront endpoint, pass the `origin` property storefront options:
 
 ```ts
 const corsOptions = {
@@ -71,14 +90,16 @@ const corsOptions = {
 }
 ```
 
-Finally, for each route you add, create an `OPTIONS` request and add `cors` as a middleware for the route:
+Finally, for each route you add, create an `OPTIONS` request and add `cors` as a middleware for the route passing it the CORS option:
 
 ```ts
 router.options("/admin/hello", cors(corsOptions))
 router.get("/admin/hello", cors(corsOptions), (req, res) => {
-  //...
+  // ...
 })
 ```
+
+---
 
 ## Create Multiple Endpoints
 
@@ -86,7 +107,7 @@ router.get("/admin/hello", cors(corsOptions), (req, res) => {
 
 You can add more than one endpoint in `src/api/index.ts`:
 
-```ts
+```ts title=src/api/index.ts
 router.options("/store/hello", cors(storeCorsOptions))
 router.get("/store/hello", cors(storeCorsOptions), (req, res) => {
   res.json({
@@ -108,7 +129,7 @@ Alternatively, you can add multiple files for each endpoint or set of endpoints 
 
 To do that with the previous example, first, create the file `src/api/store.ts` with the following content:
 
-```ts
+```ts title=src/api/store.ts
 import cors from "cors"
 import { projectConfig } from "../../medusa-config"
 
@@ -130,7 +151,7 @@ You export a function that receives an Express router as a parameter and adds th
 
 Next, create the file `src/api/admin.ts` with the following content:
 
-```ts
+```ts title=src/api/admin.ts
 import cors from "cors"
 import { projectConfig } from "../../medusa-config"
 
@@ -152,14 +173,15 @@ Again, you export a function that receives an Express router as a parameter and 
 
 Finally, in `src/api/index.ts` import the two functions at the beginning of the file:
 
-```ts
+```ts title=src/api/index.ts
+import { Router } from "express"
 import storeRoutes from "./store"
 import adminRoutes from "./admin"
 ```
 
 and in the exported function, call each of the functions passing them the Express router:
 
-```ts
+```ts title=src/api/index.ts
 export default () => {
   const router = Router()
 
@@ -170,6 +192,8 @@ export default () => {
 }
 ```
 
+---
+
 ## Protected Routes
 
 Protected routes are routes that should be accessible by logged-in customers or users only.
@@ -179,20 +203,24 @@ Protected routes are routes that should be accessible by logged-in customers or 
 To make a storefront route protected, first, import the `authenticate-customer` middleware:
 
 ```ts
-import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate-customer"
+import 
+  authenticate 
+from "@medusajs/medusa/dist/api/middlewares/authenticate-customer"
 ```
 
 Then, add the middleware to your route:
 
 ```ts
 router.options("/store/hello", cors(corsOptions))
-router.get("/store/hello", cors(corsOptions), authenticate(), async (req, res) => {
-  if (req.user) {
-    //user is logged in
-    //to get customer id: req.user.customer_id
+router.get("/store/hello", cors(corsOptions), authenticate(), 
+  async (req, res) => {
+    if (req.user) {
+      // user is logged in
+      // to get customer id: req.user.customer_id
+    }
+    // ...
   }
-  //...
-})
+)
 ```
 
 Please note that the endpoint is still accessible by all users, however, you’ll be able to access the current logged-in customer if there’s any.
@@ -204,24 +232,30 @@ To disallow guest customers from accessing the endpoint, you can throw an error 
 To make an admin route protected, first, import the `authenticate` middleware:
 
 ```ts
-import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate"
+import 
+  authenticate 
+from "@medusajs/medusa/dist/api/middlewares/authenticate"
 ```
 
 Then, add the middleware to your route:
 
 ```ts
 router.options("/admin/products/count", cors(corsOptions))
-router.get("/admin/products/count", cors(corsOptions), authenticate(), async (req, res) => {
-  //access current user
-  const id = req.user.userId
-  const userService = req.scope.resolve("userService")
-    
-  const user = await userService.retrieve(id)
-  //...
-})
+router.get("/admin/products/count", cors(corsOptions), authenticate(),
+  async (req, res) => {
+    // access current user
+    const id = req.user.userId
+    const userService = req.scope.resolve("userService")
+      
+    const user = await userService.retrieve(id)
+    // ...
+  }
+)
 ```
 
 Now, only authenticated users can access this endpoint.
+
+---
 
 ## Use Services
 
@@ -232,18 +266,22 @@ You can retrieve any registered service in your endpoint using `req.scope.resol
 Here’s an example of an endpoint that retrieves the count of products in your store:
 
 ```ts
-router.get("/admin/products/count", cors(corsOptions), authenticate(), (req, res) => {
-  const productService = req.scope.resolve("productService")
+router.get("/admin/products/count", cors(corsOptions), authenticate(),
+  (req, res) => {
+    const productService = req.scope.resolve("productService")
 
-  productService.count().then((count) => {
-    res.json({
-      count,
+    productService.count().then((count) => {
+      res.json({
+        count,
+      })
     })
-  })
-})
+  }
+)
 ```
 
 The `productService` has a `count` method that returns a Promise. This Promise resolves to the count of the products. You return a JSON of the product count.
+
+---
 
 ## Building Files
 
@@ -253,7 +291,10 @@ Custom endpoints must be transpiled and moved to the `dist` directory. This happ
 npm run build
 ```
 
-## What’s Next
+---
 
-- Check out the available [Admin](https://docs.medusajs.com/api/admin/) and [Storefront](https://docs.medusajs.com/api/store/) APIs.
-- Learn how to create a [Service](./../services/create-service.md).
+## See Also
+
+- [Storefront API Reference](/api/store)
+- [Admin API Reference](/api/admin)
+- [Create a Service](./../services/create-service.md).

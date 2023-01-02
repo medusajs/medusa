@@ -31,11 +31,12 @@ import ReturnReasonService from "../../../../services/return-reason"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             return_reasons:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/return_reason"
+ *                 $ref: "#/components/schemas/ReturnReason"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

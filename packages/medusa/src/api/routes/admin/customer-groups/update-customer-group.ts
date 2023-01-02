@@ -19,13 +19,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           name:
- *             description: "Name of the customer group"
- *             type: string
- *           metadata:
- *             description: "Metadata for the customer."
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostCustomerGroupsGroupReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -59,9 +53,10 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             customer_group:
- *               $ref: "#/components/schemas/customer_group"
+ *               $ref: "#/components/schemas/CustomerGroup"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -112,6 +107,17 @@ export default async (req: Request, res: Response) => {
   res.json({ customer_group: customerGroup })
 }
 
+/**
+ * @schema AdminPostCustomerGroupsGroupReq
+ * type: object
+ * properties:
+ *   name:
+ *     description: "Name of the customer group"
+ *     type: string
+ *   metadata:
+ *     description: "Metadata for the customer."
+ *     type: object
+ */
 export class AdminPostCustomerGroupsGroupReq {
   @IsString()
   @IsOptional()

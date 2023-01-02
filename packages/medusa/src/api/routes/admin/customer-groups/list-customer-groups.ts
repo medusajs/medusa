@@ -127,11 +127,12 @@ import { Type } from "class-transformer"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             customer_groups:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/customer_group"
+ *                 $ref: "#/components/schemas/CustomerGroup"
  *             count:
  *               type: integer
  *               description: The total number of items available

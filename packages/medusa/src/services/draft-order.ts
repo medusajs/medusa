@@ -1,18 +1,19 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
-import { PaymentRepository } from "../repositories/payment"
-import EventBusService from "./event-bus"
-import CartService from "./cart"
-import LineItemService from "./line-item"
 import { OrderRepository } from "../repositories/order"
+import { PaymentRepository } from "../repositories/payment"
+import { ExtendedFindConfig, FindConfig } from "../types/common"
+import { DraftOrderCreateProps } from "../types/draft-orders"
+import { buildQuery } from "../utils"
+import CartService from "./cart"
+import CustomShippingOptionService from "./custom-shipping-option"
+import EventBusService from "./event-bus"
+import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
-import { AdminPostDraftOrdersReq } from "../api/routes/admin/draft-orders"
-import { TransactionBaseService } from "../interfaces"
-import { ExtendedFindConfig, FindConfig } from "../types/common"
-import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -24,6 +25,7 @@ type InjectedDependencies = {
   lineItemService: LineItemService
   productVariantService: ProductVariantService
   shippingOptionService: ShippingOptionService
+  customShippingOptionService: CustomShippingOptionService
 }
 
 /**
@@ -47,6 +49,7 @@ class DraftOrderService extends TransactionBaseService {
   protected readonly lineItemService_: LineItemService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly customShippingOptionService_: CustomShippingOptionService
 
   constructor({
     manager,
@@ -58,7 +61,9 @@ class DraftOrderService extends TransactionBaseService {
     lineItemService,
     productVariantService,
     shippingOptionService,
+    customShippingOptionService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -69,30 +74,38 @@ class DraftOrderService extends TransactionBaseService {
     this.cartService_ = cartService
     this.productVariantService_ = productVariantService
     this.shippingOptionService_ = shippingOptionService
+    this.customShippingOptionService_ = customShippingOptionService
     this.eventBus_ = eventBusService
   }
 
   /**
    * Retrieves a draft order with the given id.
-   * @param id - id of the draft order to retrieve
+   * @param draftOrderId - id of the draft order to retrieve
    * @param config - query object for findOne
    * @return the draft order
    */
   async retrieve(
-    id: string,
+    draftOrderId: string,
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
+    if (!isDefined(draftOrderId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"draftOrderId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const draftOrderRepo = manager.getCustomRepository(
       this.draftOrderRepository_
     )
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: draftOrderId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
     if (!draftOrder) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Draft order with ${id} was not found`
+        `Draft order with ${draftOrderId} was not found`
       )
     }
 
@@ -232,7 +245,7 @@ class DraftOrderService extends TransactionBaseService {
    * @param data - data to create draft order from
    * @return the created draft order
    */
-  async create(data: AdminPostDraftOrdersReq): Promise<DraftOrder> {
+  async create(data: DraftOrderCreateProps): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const draftOrderRepo = transactionManager.getCustomRepository(
@@ -246,15 +259,13 @@ class DraftOrderService extends TransactionBaseService {
           )
         }
 
-        if (!data.items || !data.items.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Items are required to create a draft order`
-          )
-        }
-
-        const { shipping_methods, no_notification_order, items, ...rawCart } =
-          data
+        const {
+          shipping_methods,
+          no_notification_order,
+          items,
+          idempotency_key,
+          ...rawCart
+        } = data
 
         const cartServiceTx =
           this.cartService_.withTransaction(transactionManager)
@@ -268,14 +279,18 @@ class DraftOrderService extends TransactionBaseService {
           }
         }
 
-        const createdCart = await cartServiceTx.create({
+        let createdCart = await cartServiceTx.create({
           type: CartType.DRAFT_ORDER,
           ...rawCart,
+        })
+        createdCart = await cartServiceTx.retrieve(createdCart.id, {
+          relations: ["discounts", "discounts.rule", "items", "region"],
         })
 
         const draftOrder = draftOrderRepo.create({
           cart_id: createdCart.id,
           no_notification_order,
+          idempotency_key,
         })
         const result = await draftOrderRepo.save(draftOrder)
 
@@ -288,7 +303,7 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of items) {
+        for (const item of (items || [])) {
           if (item.variant_id) {
             const line = await lineItemServiceTx.generate(
               item.variant_id,
@@ -326,6 +341,16 @@ class DraftOrderService extends TransactionBaseService {
         }
 
         for (const method of shipping_methods) {
+          if (typeof method.price !== "undefined") {
+            await this.customShippingOptionService_
+              .withTransaction(transactionManager)
+              .create({
+                shipping_option_id: method.option_id,
+                cart_id: createdCart.id,
+                price: method.price,
+              })
+          }
+
           await cartServiceTx.addShippingMethod(
             createdCart.id,
             method.option_id,

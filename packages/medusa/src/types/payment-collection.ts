@@ -10,6 +10,16 @@ export type CreatePaymentCollectionInput = {
   description?: string
 }
 
+export type PaymentCollectionsSessionsBatchInput = {
+  provider_id: string
+  amount: number
+  session_id?: string
+}
+
+export type PaymentCollectionsSessionsInput = {
+  provider_id: string
+}
+
 export const defaultPaymentCollectionRelations = [
   "region",
   "region.payment_providers",
@@ -23,7 +33,6 @@ export const defaultPaymentCollectionFields: (keyof PaymentCollection)[] = [
   "description",
   "amount",
   "authorized_amount",
-  "refunded_amount",
   "currency_code",
   "metadata",
   "region",

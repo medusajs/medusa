@@ -55,11 +55,12 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             shipping_options:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/shipping_option"
+ *                 $ref: "#/components/schemas/ShippingOption"
  *             count:
  *               type: integer
  *               description: The total number of items available

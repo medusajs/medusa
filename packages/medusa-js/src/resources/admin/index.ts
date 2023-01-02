@@ -17,6 +17,7 @@ import AdminPriceListResource from "./price-lists"
 import AdminProductTagsResource from "./product-tags"
 import AdminProductTypesResource from "./product-types"
 import AdminProductsResource from "./products"
+import AdminPublishableApiKeyResource from "./publishable-api-keys"
 import AdminRegionsResource from "./regions"
 import AdminReturnReasonsResource from "./return-reasons"
 import AdminReturnsResource from "./returns"
@@ -29,6 +30,8 @@ import AdminTaxRatesResource from "./tax-rates"
 import AdminUploadsResource from "./uploads"
 import AdminUsersResource from "./users"
 import AdminVariantsResource from "./variants"
+import AdminPaymentCollectionsResource from "./payment-collections"
+import AdminPaymentsResource from "./payments"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -50,6 +53,7 @@ class Admin extends BaseResource {
   public returns = new AdminReturnsResource(this.client)
   public orders = new AdminOrdersResource(this.client)
   public orderEdits = new AdminOrderEditsResource(this.client)
+  public publishableApiKeys = new AdminPublishableApiKeyResource(this.client)
   public returnReasons = new AdminReturnReasonsResource(this.client)
   public variants = new AdminVariantsResource(this.client)
   public salesChannels = new AdminSalesChannelsResource(this.client)
@@ -61,6 +65,8 @@ class Admin extends BaseResource {
   public notifications = new AdminNotificationsResource(this.client)
   public taxRates = new AdminTaxRatesResource(this.client)
   public uploads = new AdminUploadsResource(this.client)
+  public paymentCollections = new AdminPaymentCollectionsResource(this.client)
+  public payments = new AdminPaymentsResource(this.client)
 }
 
 export default Admin

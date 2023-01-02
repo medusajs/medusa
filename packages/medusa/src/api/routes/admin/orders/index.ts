@@ -29,8 +29,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(AdminGetOrdersParams, {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
-      allowedFields: allowedAdminOrdersFields,
-      allowedRelations: allowedAdminOrdersRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-orders").default)
@@ -43,9 +41,19 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/:id",
     transformQuery(FindParams, {
       defaultRelations: relations,
-      defaultFields: defaultAdminOrdersFields,
-      allowedFields: allowedAdminOrdersFields,
-      allowedRelations: allowedAdminOrdersRelations,
+      defaultFields: defaultAdminOrdersFields.filter((field) => {
+        return ![
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+        ].includes(field)
+      }),
       isList: false,
     }),
     middlewares.wrap(require("./get-order").default)
@@ -311,55 +319,6 @@ export const defaultAdminOrdersFields = [
   "refundable_amount",
   "no_notification",
 ] as (keyof Order)[]
-
-export const allowedAdminOrdersFields = [
-  "id",
-  "status",
-  "fulfillment_status",
-  "payment_status",
-  "display_id",
-  "cart_id",
-  "draft_order_id",
-  "customer_id",
-  "email",
-  "region_id",
-  "currency_code",
-  "tax_rate",
-  "canceled_at",
-  "created_at",
-  "updated_at",
-  "metadata",
-  "shipping_total",
-  "discount_total",
-  "tax_total",
-  "refunded_total",
-  "subtotal",
-  "gift_card_total",
-  "total",
-  "paid_total",
-  "refundable_amount",
-  "no_notification",
-]
-
-export const allowedAdminOrdersRelations = [
-  "customer",
-  "region",
-  "edits",
-  "sales_channel",
-  "billing_address",
-  "shipping_address",
-  "discounts",
-  "discounts.rule",
-  "shipping_methods",
-  "payments",
-  "fulfillments",
-  "fulfillments.tracking_links",
-  "returns",
-  "claims",
-  "swaps",
-  "swaps.return_order",
-  "swaps.additional_items",
-]
 
 export const filterableAdminOrdersFields = [
   "id",

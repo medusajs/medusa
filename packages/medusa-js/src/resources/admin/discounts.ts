@@ -1,4 +1,5 @@
 import {
+  AdminDeleteDiscountsDiscountConditionsConditionBatchReq,
   AdminDiscountConditionsRes,
   AdminDiscountsDeleteRes,
   AdminDiscountsListRes,
@@ -229,6 +230,19 @@ class AdminDiscountsResource extends BaseResource {
     }
 
     return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Delete a batch of items from a discount condition
+   */
+  deleteConditionResourceBatch(
+    discountId: string,
+    conditionId: string,
+    payload: AdminDeleteDiscountsDiscountConditionsConditionBatchReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
+    const path = `/admin/discounts/${discountId}/conditions/${conditionId}/batch`
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 }
 

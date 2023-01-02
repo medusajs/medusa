@@ -21,21 +21,11 @@ export default async (req, res) => {
     return
   }
 
-  try {
-    const body = req.body
-    const authId = body.resource.id
-    const auth = await paypalService.retrieveAuthorization(authId)
+  function isPaymentCollection(id) {
+    return id && id.startsWith("paycol")
+  }
 
-    const order = await paypalService.retrieveOrderFromAuth(auth)
-
-    const purchaseUnit = order.purchase_units[0]
-    const cartId = purchaseUnit.custom_id
-
-    if (!cartId) {
-      res.sendStatus(200)
-      return
-    }
-
+  async function autorizeCart(req, cartId) {
     const manager = req.scope.resolve("manager")
     const cartService = req.scope.resolve("cartService")
     const swapService = req.scope.resolve("swapService")
@@ -78,6 +68,40 @@ export default async (req, res) => {
         }
       }
     })
+  }
+
+  async function autorizePaymentCollection(req, id, orderId) {
+    const manager = req.scope.resolve("manager")
+    const paymentCollectionService = req.scope.resolve(
+      "paymentCollectionService"
+    )
+
+    await manager.transaction(async (manager) => {
+      await paymentCollectionService.withTransaction(manager).authorize(id)
+    })
+  }
+
+  try {
+    const body = req.body
+    const authId = body.resource.id
+    const auth = await paypalService.retrieveAuthorization(authId)
+
+    const order = await paypalService.retrieveOrderFromAuth(auth)
+
+    const purchaseUnit = order.purchase_units[0]
+    const customId = purchaseUnit.custom_id
+
+    if (!customId) {
+      res.sendStatus(200)
+      return
+    }
+
+    if (isPaymentCollection(customId)) {
+      const orderId = order.id
+      await autorizePaymentCollection(req, customId, orderId)
+    } else {
+      await autorizeCart(req, customId)
+    }
 
     res.sendStatus(200)
   } catch (err) {

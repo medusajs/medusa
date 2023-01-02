@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -86,9 +87,10 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               collection:
-                $ref: ../components/schemas/product_collection.yaml
+                $ref: ../components/schemas/ProductCollection.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -117,20 +119,7 @@ post:
     content:
       application/json:
         schema:
-          properties:
-            title:
-              type: string
-              description: The title to identify the Collection by.
-            handle:
-              type: string
-              description: >-
-                An optional handle to be used in slugs, if none is provided we
-                will kebab-case the title.
-            metadata:
-              description: >-
-                An optional set of key-value pairs to hold additional
-                information.
-              type: object
+          $ref: ../components/schemas/AdminPostCollectionsCollectionReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -151,9 +140,10 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               collection:
-                $ref: ../components/schemas/product_collection.yaml
+                $ref: ../components/schemas/ProductCollection.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
