@@ -212,9 +212,9 @@ class FulfillmentService extends TransactionBaseService {
     order: CreateFulfillmentOrder,
     itemsToFulfill: FulFillmentItemType[],
     custom: Partial<Fulfillment> = {},
-    context: { location_id?: string } = {}
+    context: { locationId?: string } = {}
   ): Promise<Fulfillment[]> {
-    const { location_id } = context
+    const { locationId } = context
     return await this.atomicPhase_(async (manager) => {
       const pvInventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
@@ -237,10 +237,21 @@ class FulfillmentService extends TransactionBaseService {
           await Promise.all(
             items.map(
               async (i) =>
+                await pvInventoryServiceTx.confirmInventory(
+                  i.variant_id!,
+                  i.quantity,
+                  { locationId }
+                )
+            )
+          )
+
+          await Promise.all(
+            items.map(
+              async (i) =>
                 await pvInventoryServiceTx.adjustReservationsQuantityByLineItem(
                   i.id,
                   i.variant_id!,
-                  location_id!,
+                  locationId!,
                   -i.quantity
                 )
             )
@@ -251,7 +262,7 @@ class FulfillmentService extends TransactionBaseService {
             provider_id: shipping_method.shipping_option.provider_id,
             items: items.map((i) => ({ item_id: i.id, quantity: i.quantity })),
             data: {},
-            location_id,
+            location_id: locationId,
           })
 
           const result = await fulfillmentRepository.save(ful)
@@ -261,7 +272,7 @@ class FulfillmentService extends TransactionBaseService {
               async (i) =>
                 await pvInventoryServiceTx.adjustInventory(
                   i.variant_id!,
-                  location_id!,
+                  locationId!,
                   -i.quantity
                 )
             )

@@ -54,7 +54,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   async confirmInventory(
     variantId: string,
     quantity: number,
-    context: { salesChannelId?: string | null } = {}
+    context: { salesChannelId?: string | null; locationId?: string } = {}
   ): Promise<Boolean> {
     if (!variantId) {
       return true
@@ -91,7 +91,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let locations: string[] = []
-    if (context.salesChannelId) {
+    if (context.locationId) {
+      locations = [context.locationId]
+    } else if (context.salesChannelId) {
       locations = await this.salesChannelLocationService_.listLocations(
         context.salesChannelId
       )
@@ -375,10 +377,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     } else {
       const [reservations, reservationCount] =
-        await this.inventoryService_.listReservationItems({
-          line_item_id: lineItemId,
-          location_id,
-        })
+        await this.inventoryService_.listReservationItems(
+          {
+            line_item_id: lineItemId,
+          },
+          {
+            order: { created_at: "DESC" },
+          }
+        )
 
       if (reservationCount === 0) {
         throw new MedusaError(
@@ -386,8 +392,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
           `Reservation not found for line item ${lineItemId}`
         )
       }
+      let reservation = reservations[0]
 
-      const reservation = reservations[0]
+      reservation =
+        reservations.find(
+          (r) => r.location_id === location_id && r.quantity >= quantity
+        ) ?? reservation
 
       await this.inventoryService_.updateReservation(reservation.id, {
         quantity: reservation.quantity + quantity,

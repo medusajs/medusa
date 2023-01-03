@@ -1358,7 +1358,7 @@ class OrderService extends TransactionBaseService {
             order_id: orderId,
           },
           {
-            location_id,
+            locationId: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []
