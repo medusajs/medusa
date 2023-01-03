@@ -1147,7 +1147,8 @@ class OrderService extends TransactionBaseService {
       await Promise.all(
         order.items.map(async (item) => {
           if (item.variant_id) {
-            return await inventoryServiceTx.releaseReservationsByLineItem(
+            // eslint-disable-next-line max-len
+            return await inventoryServiceTx.adjustReservationsQuantityByLineItem(
               item.id,
               item.variant_id,
               item.quantity
@@ -1295,13 +1296,13 @@ class OrderService extends TransactionBaseService {
     itemsToFulfill: FulFillmentItemType[],
     config: {
       no_notification?: boolean
+      location_id?: string
       metadata?: Record<string, unknown>
     } = {
-      no_notification: undefined,
       metadata: {},
     }
   ): Promise<Order> {
-    const { metadata, no_notification } = config
+    const { metadata, no_notification, location_id } = config
 
     return await this.atomicPhase_(async (manager) => {
       // NOTE: we are telling the service to calculate all totals for us which
@@ -1357,6 +1358,9 @@ class OrderService extends TransactionBaseService {
             metadata,
             no_notification: no_notification,
             order_id: orderId,
+          },
+          {
+            location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []

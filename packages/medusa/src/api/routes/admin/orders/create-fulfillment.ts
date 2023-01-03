@@ -150,6 +150,10 @@ export class AdminPostOrdersOrderFulfillmentsReq {
   @Type(() => Item)
   items: Item[]
 
+  @IsString()
+  @IsOptional()
+  location_id?: string
+
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))

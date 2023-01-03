@@ -355,7 +355,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param variantId variant id
    * @param quantity quantity to release
    */
-  async releaseReservationsByLineItem(
+  async adjustReservationsQuantityByLineItem(
     lineItemId: string,
     variantId: string,
     quantity: number
@@ -370,10 +370,26 @@ class ProductVariantInventoryService extends TransactionBaseService {
       }
 
       await this.productVariantService_.update(variantId, {
-        inventory_quantity: variant.inventory_quantity + quantity,
+        inventory_quantity: variant.inventory_quantity - quantity,
       })
     } else {
-      await this.inventoryService_.deleteReservationItemsByLineItem(lineItemId)
+      const [reservations, reservationCount] =
+        await this.inventoryService_.listReservationItems({
+          line_item_id: lineItemId,
+        })
+
+      if (reservationCount === 0) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Reservation not found for line item ${lineItemId}`
+        )
+      }
+
+      const reservation = reservations[0]
+
+      await this.inventoryService_.updateReservation(reservation.id, {
+        quantity: reservation.quantity + quantity,
+      })
     }
   }
 
@@ -414,7 +430,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
       await Promise.all(
         variantInventory.map(async (inventoryPart) => {
-          const itemQuantity = inventoryPart.quantity * quantity
+          const itemQuantity = inventoryPart.quantity + quantity
           return await this.inventoryService_.adjustInventory(
             inventoryPart.inventory_item_id,
             locationId,

@@ -22,10 +22,18 @@ export type ReservationItemDTO = {
   id: string
   location_id: string
   item_id: string
+  quantity: number
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
   deleted_at: string | Date | null
+}
+
+export type UpdateReservationDTO = {
+  location_id?: string
+  item_id?: string
+  quantity?: number
+  metadata?: Record<string, unknown> | null
 }
 
 export type InventoryLevelDTO = {
@@ -99,6 +107,12 @@ export type CreateInventoryLevelInput = {
 export type UpdateInventoryLevelInput = {
   stocked_quantity?: number
   incoming_quantity?: number
+}
+
+export type UpdateReservationItemInput = {
+  quantity?: number
+  location_id: string
+  metadata: Record<string, unknown> | null
 }
 
 export type ReserveQuantityContext = {
