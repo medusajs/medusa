@@ -234,16 +234,29 @@ class FulfillmentService extends TransactionBaseService {
 
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
-          await Promise.all(
-            items.map(
-              async (i) =>
-                await pvInventoryServiceTx.confirmInventory(
-                  i.variant_id!,
-                  i.quantity,
-                  { locationId }
-                )
-            )
+          const inventoryItemIsCovered = await Promise.all(
+            items.map(async (i) => {
+              const result = await pvInventoryServiceTx.confirmInventory(
+                i.variant_id!,
+                i.quantity,
+                { locationId }
+              )
+              if (result) {
+                return { result }
+              }
+              return { variant: i.title }
+            })
           )
+
+          if (!inventoryItemIsCovered.every((res) => !!res.result)) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Location does not have sufficient inventory for: ${inventoryItemIsCovered
+                .filter((res) => !res.result)
+                .map((res) => res.variant)
+                .join(", ")}`
+            )
+          }
 
           await Promise.all(
             items.map(
