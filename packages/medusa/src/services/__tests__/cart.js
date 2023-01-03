@@ -7,6 +7,8 @@ import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import { loggerMock } from "../__mocks__/logger"
+import { EOL } from "os"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -1501,7 +1503,7 @@ describe("CartService", () => {
     const paymentProviderService = {
       deleteSession: jest.fn(),
       updateSession: jest.fn(),
-      createSession: jest.fn(),
+      createSession: jest.fn().mockImplementation(async (data) => {}),
       withTransaction: function () {
         return this
       },
@@ -1539,6 +1541,56 @@ describe("CartService", () => {
         amount: cart1.total,
         currency_code: cart1.region.currency_code,
         provider_id: "provider_2",
+      })
+    })
+
+    it("initializes payment sessions for each of the providers and log a warning for the ones that fails", async () => {
+      const createSessionErrorMessage = `Unable to create the payment session`
+      const errorProviderId = "provider_2"
+
+      const paymentProviderService_ = {
+        ...paymentProviderService,
+        createSession: jest.fn().mockImplementation(async (data) => {
+          if (data.provider_id === errorProviderId) {
+            throw new Error(createSessionErrorMessage)
+          }
+        }),
+      }
+
+      const cartService = new CartService({
+        manager: MockManager,
+        totalsService,
+        cartRepository,
+        paymentProviderService: paymentProviderService_,
+        eventBusService,
+        taxProviderService: taxProviderServiceMock,
+        newTotalsService: newTotalsServiceMock,
+        featureFlagRouter: new FlagRouter({}),
+        logger: loggerMock,
+      })
+
+      await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
+
+      expect(loggerMock.warn).toHaveBeenCalledWith(
+        expect.stringContaining(
+          `Unable to create the payment session for ${errorProviderId}${EOL}`
+        )
+      )
+
+      expect(paymentProviderService_.createSession).toHaveBeenCalledTimes(2)
+      expect(paymentProviderService_.createSession).toHaveBeenCalledWith({
+        cart: cart1,
+        customer: cart1.customer,
+        amount: cart1.total,
+        currency_code: cart1.region.currency_code,
+        provider_id: "provider_1",
+      })
+      expect(paymentProviderService_.createSession).toHaveBeenCalledWith({
+        cart: cart1,
+        customer: cart1.customer,
+        amount: cart1.total,
+        currency_code: cart1.region.currency_code,
+        provider_id: errorProviderId,
       })
     })
 

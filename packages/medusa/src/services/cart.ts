@@ -1,4 +1,5 @@
 import { isEmpty, isEqual } from "lodash"
+import { EOL } from "os"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
@@ -39,28 +40,30 @@ import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import { PaymentSessionInput } from "../types/payment"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
-  LineItemService,
   LineItemAdjustmentService,
+  LineItemService,
   NewTotalsService,
   PaymentProviderService,
   ProductService,
-  ProductVariantService,
   ProductVariantInventoryService,
+  ProductVariantService,
   RegionService,
+  SalesChannelService,
   ShippingOptionService,
   StoreService,
   TaxProviderService,
   TotalsService,
-  SalesChannelService,
 } from "."
+import { Logger } from "../types/global"
 
 type InjectedDependencies = {
   manager: EntityManager
+  logger: Logger
   cartRepository: typeof CartRepository
   shippingMethodRepository: typeof ShippingMethodRepository
   addressRepository: typeof AddressRepository
@@ -105,6 +108,8 @@ class CartService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
+  protected readonly logger_: Logger
+
   protected readonly shippingMethodRepository_: typeof ShippingMethodRepository
   protected readonly cartRepository_: typeof CartRepository
   protected readonly addressRepository_: typeof AddressRepository
@@ -134,6 +139,7 @@ class CartService extends TransactionBaseService {
 
   constructor({
     manager,
+    logger,
     cartRepository,
     shippingMethodRepository,
     lineItemRepository,
@@ -164,6 +170,7 @@ class CartService extends TransactionBaseService {
     super(arguments[0])
 
     this.manager_ = manager
+    this.logger_ = logger
     this.shippingMethodRepository_ = shippingMethodRepository
     this.cartRepository_ = cartRepository
     this.lineItemRepository_ = lineItemRepository
@@ -1800,6 +1807,11 @@ class CartService extends TransactionBaseService {
                   return this.paymentProviderService_
                     .withTransaction(transactionManager)
                     .createSession(paymentSessionInput)
+                    .catch((e) => {
+                      this.logger_.warn(
+                        `Unable to create the payment session for ${paymentProvider.id}${EOL}${e.stack}`
+                      )
+                    })
                 }
                 return
               })
