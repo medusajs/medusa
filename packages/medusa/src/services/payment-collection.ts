@@ -365,11 +365,33 @@ export default class PaymentCollectionService extends TransactionBaseService {
     return await this.atomicPhase_(async () => {
       const payCol = await this.retrieve(paymentCollectionId, {
         select: ["amount"],
+        relations: ["region", "region.payment_providers", "payment_sessions"],
       })
+
+      const hasProvider = payCol?.region?.payment_providers.find(
+        (p) => p.id === sessionInput.provider_id
+      )
+
+      if (!hasProvider) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Payment provider not found"
+        )
+      }
+
+      const existingSession = payCol.payment_sessions?.find(
+        (sess) => sessionInput.provider_id === sess?.provider_id
+      )
 
       return await this.setPaymentSessionsBatch(
         paymentCollectionId,
-        [{ ...sessionInput, amount: payCol.amount }],
+        [
+          {
+            ...sessionInput,
+            amount: payCol.amount,
+            session_id: existingSession?.id,
+          },
+        ],
         customerId
       )
     })
