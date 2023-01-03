@@ -54,44 +54,44 @@ For example, create the file `src/services/my-payment.ts` with the following con
 
 ```ts title=src/services/my-payment.ts
 import { AbstractPaymentService, Context, Data, Payment, PaymentSession, PaymentSessionStatus, TransactionBaseService } from "@medusajs/medusa"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
 
   async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async updatePaymentData(paymentSessionData: Data, data: Data): Promise<Data> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async createPayment(context: Context): Promise<PaymentSessionResponse> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async retrievePayment(paymentData: Data): Promise<Data> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async updatePayment(paymentSessionData: Data, context: Context): Promise<PaymentSessionResponse> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async authorizePayment(paymentSession: PaymentSession, context: Data): Promise<{ data: Data; status: PaymentSessionStatus; }> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async capturePayment(payment: Payment): Promise<Data> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async refundPayment(payment: Payment, refundAmount: number): Promise<Data> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async cancelPayment(payment: Payment): Promise<Data> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async deletePayment(paymentSession: PaymentSession): Promise<void> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
   async getStatus(data: Data): Promise<PaymentSessionStatus> {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
 
 }
@@ -165,7 +165,7 @@ type PaymentContext = {
 This method must return an object of type `PaymentSessionResponse`. It should have the following properties:
 
 ```ts
-PaymentSessionResponse = {
+type PaymentSessionResponse = {
   update_requests: { customer_metadata: Record<string, unknown> }
   session_data: Record<string, unknown>
 }
@@ -186,11 +186,12 @@ import { PaymentContext, PaymentSessionResponse } from "@medusajs/medusa"
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
   // ...
   async createPayment(context: PaymentContext): Promise<PaymentSessionResponse> {
-  //prepare data
-  return { 
-    session_data,
-    update_requests
-   };
+    // prepare data
+    return { 
+      session_data,
+      update_requests,
+    }
+  }
 }
 ```
 
@@ -289,7 +290,7 @@ You can utilize this method to interact with the third-party provider and update
 This method must return an object of type `PaymentSessionResponse`. It should have the following properties:
 
 ```ts
-PaymentSessionResponse = {
+type PaymentSessionResponse = {
   update_requests: { customer_metadata: Record<string, unknown> }
   session_data: Record<string, unknown>
 }
@@ -305,16 +306,17 @@ An example of a minimal implementation of `updatePayment`:
 <!-- eslint-disable max-len -->
 
 ```ts
-import { PaymentContext, Data } from "@medusajs/medusa";
-//...
+import { PaymentContext, Data } from "@medusajs/medusa"
+// ...
 
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
   // ...
-async updatePayment(paymentSessionData: Data, context: PaymentContext): Promise<PaymentSessionResponse> {
-  //prepare data
-  return {
-    session_data,
-    update_requests
+  async updatePayment(paymentSessionData: Data, context: PaymentContext): Promise<PaymentSessionResponse> {
+    // prepare data
+    return {
+      session_data,
+      update_requests,
+    }
   }
 }
 ```
