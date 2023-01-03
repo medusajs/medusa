@@ -1146,12 +1146,12 @@ class OrderService extends TransactionBaseService {
         this.productVariantInventoryService_.withTransaction(manager)
       await Promise.all(
         order.items.map(async (item) => {
+          const amountToRelease = item.quantity - item.fulfilled_quantity
           if (item.variant_id) {
-            // eslint-disable-next-line max-len
-            return await inventoryServiceTx.adjustReservationsQuantityByLineItem(
+            return await inventoryServiceTx.releaseReservationsByLineItem(
               item.id,
               item.variant_id,
-              item.quantity
+              amountToRelease
             )
           }
         })

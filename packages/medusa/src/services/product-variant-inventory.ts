@@ -350,10 +350,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
   }
 
   /**
-   * Remove reservation of variant quantity
-   * @param lineItemId line item id
-   * @param variantId variant id
-   * @param quantity quantity to release
+   * Adjusts the quantity of reservations for a line item by a given amount.
+   * @param {string} lineItemId - The ID of the line item
+   * @param {string} variantId - The ID of the variant
+   * @param {number} quantity - The amount to adjust the quantity by
    */
   async adjustReservationsQuantityByLineItem(
     lineItemId: string,
@@ -390,6 +390,34 @@ class ProductVariantInventoryService extends TransactionBaseService {
       await this.inventoryService_.updateReservation(reservation.id, {
         quantity: reservation.quantity + quantity,
       })
+    }
+  }
+
+  /**
+   * Remove reservation of variant quantity
+   * @param lineItemId line item id
+   * @param variantId variant id
+   * @param quantity quantity to release
+   */
+  async releaseReservationsByLineItem(
+    lineItemId: string,
+    variantId: string,
+    quantity: number
+  ): Promise<void> {
+    if (!this.inventoryService_) {
+      const variant = await this.productVariantService_.retrieve(variantId, {
+        select: ["id", "inventory_quantity", "manage_inventory"],
+      })
+
+      if (!variant.manage_inventory) {
+        return
+      }
+
+      await this.productVariantService_.update(variantId, {
+        inventory_quantity: variant.inventory_quantity + quantity,
+      })
+    } else {
+      await this.inventoryService_.deleteReservationItemsByLineItem(lineItemId)
     }
   }
 

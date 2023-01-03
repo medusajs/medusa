@@ -321,13 +321,25 @@ class FulfillmentService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      for (const fItem of fulfillment.items) {
-        const item = await lineItemServiceTx.retrieve(fItem.item_id)
-        const fulfilledQuantity = item.fulfilled_quantity! - fItem.quantity
-        await lineItemServiceTx.update(item.id, {
-          fulfilled_quantity: fulfilledQuantity,
+      const productVariantInventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
+
+      await Promise.all(
+        fulfillment.items.map(async (fItem) => {
+          const item = await lineItemServiceTx.retrieve(fItem.item_id)
+          const fulfilledQuantity = item.fulfilled_quantity! - fItem.quantity
+          await lineItemServiceTx.update(item.id, {
+            fulfilled_quantity: fulfilledQuantity,
+          })
+          if (item.variant_id) {
+            await productVariantInventoryServiceTx.adjustInventory(
+              item.variant_id,
+              fulfillment.location_id!,
+              fItem.quantity
+            )
+          }
         })
-      }
+      )
 
       const fulfillmentRepo = manager.getCustomRepository(
         this.fulfillmentRepository_
