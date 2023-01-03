@@ -8,7 +8,7 @@ import {
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { ProductVariantService, SalesChannelLocationService } from "./"
 import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
-import { ProductVariant } from "../models"
+import { LineItem, ProductVariant } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -405,6 +405,44 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
   }
 
+  async validateInventoryAtLocation(items: LineItem[], locationId: string) {
+    if (!this.inventoryService_) {
+      return
+    }
+
+    const [inventoryLevels] = await this.inventoryService_.listInventoryLevels(
+      {
+        item_id: items.map((i) => i.id),
+        location_id: locationId,
+      },
+      {
+        order: { item_id: "DESC" },
+      }
+    )
+
+    // inventoryLevels.sort((a, b) => a.item_id.localeCompare(b.item_id)).reverse()
+
+    const insufficientStockItems: string[] = []
+
+    for (const item of items) {
+      if (item.variant.allow_backorder) {
+        continue
+      }
+
+      const level = inventoryLevels.find((i) => i.item_id === item.id)
+      if (!level || level.stocked_quantity < item.quantity) {
+        insufficientStockItems.push(item.title)
+      }
+    }
+
+    if (insufficientStockItems.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Insufficient stock for items: ${insufficientStockItems.join(", ")}`
+      )
+    }
+  }
+
   /**
    * Remove reservation of variant quantity
    * @param lineItemId line item id
@@ -455,6 +493,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
       if (!variant.manage_inventory) {
         return
       }
+
+      // validate here what we are doing is correct
 
       await this.productVariantService_
         .withTransaction(manager)

@@ -19,4 +19,7 @@ export const ProductVariantInventoryServiceMock = {
   reserveQuantity: jest
     .fn()
     .mockImplementation((variantId, quantity, options) => {}),
+  validateInventoryAtLocation: jest
+    .fn()
+    .mockImplementation((items, locationId) => {}),
 }

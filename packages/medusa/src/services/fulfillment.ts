@@ -234,6 +234,11 @@ class FulfillmentService extends TransactionBaseService {
 
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
+          await pvInventoryServiceTx.validateInventoryAtLocation(
+            items,
+            locationId!
+          )
+
           await Promise.all(
             items.map(
               async (i) =>
