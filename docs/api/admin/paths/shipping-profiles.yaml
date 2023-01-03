@@ -7,13 +7,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - name
-          properties:
-            name:
-              description: The name of the Shipping Profile
-              type: string
+          $ref: ../components/schemas/AdminPostShippingProfilesReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -37,7 +31,7 @@ post:
             type: object
             properties:
               shipping_profile:
-                $ref: ../components/schemas/shipping_profile.yaml
+                $ref: ../components/schemas/ShippingProfile.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -80,7 +74,7 @@ get:
               shipping_profiles:
                 type: array
                 items:
-                  $ref: ../components/schemas/shipping_profile.yaml
+                  $ref: ../components/schemas/ShippingProfile.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

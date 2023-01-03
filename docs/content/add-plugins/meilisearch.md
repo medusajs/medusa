@@ -10,11 +10,13 @@ MeiliSearch also provides a pleasant developer experience, as it is extremely in
 
 Through Medusa's flexible plugin system, it is possible to add a search engine to your Medusa server and storefront using MeiliSearch with just a few steps.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-It is required to have a Medusa server installed before starting with this documentation. If not, please follow along with the [quickstart guide](../quickstart/quick-start.md) to get started in minutes.
+It is required to have a Medusa server installed before starting with this documentation. If not, please follow along with the [quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
 
 Furthermore, it’s highly recommended to ensure your Medusa server is configured to work with Redis. As Medusa uses Redis for the event queue internally, configuring Redis ensures that the search indices in MeiliSearch are updated whenever products on the Medusa server are updated. You can follow [this documentation to install Redis](../tutorial/0-set-up-your-development-environment.mdx#redis) and then [configure it on your Medusa server](../usage/configurations.md#redis).
 
@@ -29,6 +31,8 @@ If you don’t install and configure Redis on your Medusa server, the MeiliSearc
 You must install MeiliSearch to use it with Medusa. You can follow [this documentation to install MeiliSearch](https://docs.meilisearch.com/learn/getting_started/quick_start.html#setup-and-installation) either locally or on a cloud.
 
 Furthermore, you should create a master key for your MeiliSearch instance. If you don’t have one created, follow [this guide](https://docs.meilisearch.com/learn/security/master_api_keys.html#protecting-a-meilisearch-instance) to create a master key.
+
+---
 
 ## Install the MeiliSearch Plugin
 
@@ -53,11 +57,12 @@ Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
 ```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-meilisearch`,
     options: {
-      // config object passed when creating an instance of the MeiliSearch client
+      // config object passed when creating an instance
+      // of the MeiliSearch client
       config: {
         host: process.env.MEILISEARCH_HOST,
         apiKey: process.env.MEILISEARCH_API_KEY,
@@ -67,15 +72,23 @@ const plugins = [
         products: {
           // MeiliSearch's setting options to be set on a particular index
           searchableAttributes: ["title", "description", "variant_sku"],
-          displayedAttributes: ["title", "description", "variant_sku", "thumbnail", "handle"],
+          displayedAttributes: [
+            "title", 
+            "description", 
+            "variant_sku", 
+            "thumbnail", 
+            "handle",
+          ],
         },
       },
     },
   },
-];
+]
 ```
 
 You can change the `searchableAttributes` and `displayedAttributes` as you see fit. However, the attributes included are the recommended attributes.
+
+---
 
 ## Test MeiliSearch Plugin
 
@@ -105,9 +118,11 @@ This feature is only available if you have Redis installed and configured with y
 
 :::
 
+---
+
 ## Add Search to your Storefront
 
-In this section, you’ll learn how to add the UI on your storefront to allow searching with MeiliSearch. This section has instructions for Medusa’s [Next.js](../starters/nextjs-medusa-starter.md) storefront as well as React-based frameworks such as the [Gatsby storefront](../starters/gatsby-medusa-starter.md).
+In this section, you’ll learn how to add the UI on your storefront to allow searching with MeiliSearch. This section has instructions for Medusa’s [Next.js](../starters/nextjs-medusa-starter.mdx) storefront as well as React-based frameworks such as the [Gatsby storefront](../starters/gatsby-medusa-starter.mdx).
 
 ### Storefront Prerequisites
 
@@ -115,7 +130,7 @@ It is assumed you already have a storefront set up and working with the Medusa s
 
 :::tip
 
-If you don’t have a storefront set up, you can use the [Gatsby](../starters/gatsby-medusa-starter.md) or [Next.js](../starters/nextjs-medusa-starter.md) storefronts Medusa provides.
+If you don’t have a storefront set up, you can use the [Gatsby](../starters/gatsby-medusa-starter.mdx) or [Next.js](../starters/nextjs-medusa-starter.mdx) storefronts Medusa provides.
 
 :::
 
@@ -212,7 +227,7 @@ import {
   Hits,
   InstantSearch,
   SearchBox,
-  connectStateResults
+  connectStateResults,
 } from "react-instantsearch-dom"
 
 import React from "react"
@@ -224,19 +239,28 @@ const searchClient = instantMeiliSearch(
 )
 
 const Search = () => {
-  const Results = connectStateResults(({ searchState, searchResults, children }) =>
-    searchState && searchState.query && searchResults && searchResults.nbHits !== 0 ? (
-      <div className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
-        {children}
-      </div>
-    ) : (
-      <div></div>
-    )
-  );
+  const Results = connectStateResults(
+    ({ searchState, searchResults, children }) => {
+      return (
+        searchState && searchState.query && 
+        searchResults && searchResults.nbHits !== 0 ? 
+        (
+          <div 
+            className="absolute top-full w-full p-2 bg-gray-200 shadow-md">
+            {children}
+          </div>
+        ) : (
+          <div></div>
+        )
+      )
+    }
+  )
 
   return (
     <div className="relative">
-      <InstantSearch indexName={process.env.GATSBY_SEARCH_INDEX_NAME} searchClient={searchClient}>
+      <InstantSearch 
+        indexName={process.env.GATSBY_SEARCH_INDEX_NAME} 
+        searchClient={searchClient}>
         <SearchBox submit={null} reset={null} />
         <Results>
           <Hits hitComponent={Hit} />
@@ -256,7 +280,7 @@ const Hit = ({ hit }) => {
   )
 }
 
-export default Search;
+export default Search
 ```
 
 This file uses the dependencies you installed to show the search results. It also initializes MeiliSearch using the environment variables you added.
@@ -276,17 +300,21 @@ import Search from "./search"
 And add the `Search` component in the returned JSX before `RegionPopover`:
 
 ```jsx title=src/components/header/index.jsx
-//...
-<Search />
-<RegionPopover regions={mockData.regions} />
-//...
+// ...
+<div className="...">
+  <Search />
+  <RegionPopover regions={mockData.regions} />
+</div>
+// ...
 ```
 
 If you run your Gatsby storefront while the Medusa server and the MeiliSearch instance are running, you should find a search bar in the header of the page. Try entering a query to search through the products in your store.
 
 ![Search box in the header of the storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000317/Medusa%20Docs/MeiliSearch/ZkRgF2h_ytnpv9.png)
 
-## What’s Next
+---
 
-- Learn how to [deploy your Medusa server](../deployments/server/index.mdx).
-- Learn how to [deploy your Gatsby storefront](./../deployments/storefront/deploying-gatsby-on-netlify.md).
+## See Also
+
+- [Deploy your Medusa server](../deployments/server/index.mdx).
+- [Deploy your Gatsby storefront](./../deployments/storefront/deploying-gatsby-on-netlify.md).

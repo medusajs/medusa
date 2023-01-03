@@ -7,7 +7,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
 /**
  * @oas [get] /publishable-api-keys/{id}/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
- * summary: "List PublishableApiKey's SalesChannels"
+ * summary: "List SalesChannels"
  * description: "List PublishableApiKey's SalesChannels"
  * x-authenticated: true
  * parameters:

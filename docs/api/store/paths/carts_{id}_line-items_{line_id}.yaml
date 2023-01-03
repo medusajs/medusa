@@ -36,7 +36,7 @@ delete:
             type: object
             properties:
               cart:
-                $ref: ../components/schemas/cart.yaml
+                $ref: ../components/schemas/Cart.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':
@@ -85,7 +85,7 @@ post:
             type: object
             properties:
               cart:
-                $ref: ../components/schemas/cart.yaml
+                $ref: ../components/schemas/Cart.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

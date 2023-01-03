@@ -1,0 +1,5 @@
+type: object
+properties:
+  title:
+    description: A title to update for the key.
+    type: string

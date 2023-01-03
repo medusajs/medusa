@@ -21,6 +21,8 @@ This can be useful when some countries have the same currency but have different
 
 Then, Medusa handles calculating the tax amount using the tax rate and the tax-inclusive price. This is managed in the backend and relayed to accounting and analytics tools.
 
+---
+
 ## How is Tax Inclusivity Defined
 
 Tax inclusivity can be toggled for regions, currencies, price lists, and shipping options either during creation or while editing. This is represented by the boolean attribute `includes_tax` available in the entities `Region`, `Currency`, `PriceList`, and `ShippingOption`. By default, this attribute is set to `false`.
@@ -54,6 +56,8 @@ When a shipping option is selected, a shipping method is created based on that s
 
 The `ShippingMethod` entity also has the `includes_tax` attribute. Its value is the same as the value of `includes_tax` of the shipping option the method is associated with.
 
+---
+
 ## Tax Amount Calculation Formula
 
 When a price is tax-inclusive, the tax amount is calculated using the following formula:
@@ -65,6 +69,8 @@ const taxAmount = (taxRate * taxInclusivePrice) / (1 + taxRate)
 Where `taxRate` is the tax rate to be applied to the price, and `taxInclusivePrice` is the price entered by the store operator.
 
 For example, if the tax rate is `0.25` and the price of a product is `100`, the resulting tax amount calculated by Medusa will be `0.25 * 100 / 1.25 = 20`.
+
+---
 
 ## Retrieving Tax Amounts
 
@@ -120,7 +126,9 @@ Where `amount` is the amount of the variant’s price in the price list, `taxRat
 
 Here is an example of these fields when tax inclusivity is enabled for both the currency and the price list:
 
-```jsx noReport
+<!-- eslint-skip -->
+
+```js noReport
 {
   original_price: 110,
   calculated_price: 100,
@@ -187,7 +195,9 @@ The relevant fields are:
 
 During the calculation of the totals of different components of the cart or order, such as shipping or line items, if tax inclusivity is enabled on that component, a process similar to those explained above will be applied to retrieve the total.
 
-## What’s Next
+---
 
-- Learn how to [calculate taxes manually](manual-calculation.md).
-- [Check out the API reference](https://docs.medusajs.com/api/store/).
+## See Also
+
+- [Calculate taxes manually](manual-calculation.md)
+- [Storefront API reference](/api/store)

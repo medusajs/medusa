@@ -5,7 +5,7 @@ import { OrderEditService } from "../../../../services"
  * @oas [delete] /order-edits/{id}
  * operationId: "DeleteOrderEditsOrderEdit"
  * summary: "Delete an Order Edit"
- * description: "Deletes an Order Edit"
+ * description: "Delete an Order Edit"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete.

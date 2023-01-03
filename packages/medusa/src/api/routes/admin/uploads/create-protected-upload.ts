@@ -4,8 +4,8 @@ import { IFileService } from "../../../../interfaces"
 /**
  * @oas [post] /uploads/protected
  * operationId: "PostUploadsProtected"
- * summary: "Upload files with acl or in a non-public bucket"
- * description: "Uploads at least one file to the specific fileservice that is installed in Medusa."
+ * summary: "Protected File Upload"
+ * description: "Uploads at least one file with ACL or a non-public bucket to the specific fileservice that is installed in Medusa."
  * x-authenticated: true
  * requestBody:
  *   content:

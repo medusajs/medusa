@@ -5,7 +5,16 @@ import './index.css';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import {useLocation} from '@docusaurus/router';
 
-export default function Feedback () {
+export default function Feedback ({
+  event,
+  question = 'Was this page helpful?',
+  positiveBtn = 'Yes',
+  negativeBtn = 'No',
+  positiveQuestion = 'What was most helpful?',
+  negativeQuestion = 'What can we improve?',
+  submitBtn = 'Submit',
+  submitMessage = 'Thank you for helping improve our documentation!'
+}) {
   const [showForm, setShowForm] = useState(false);
   const [submittedFeedback, setSubmittedFeedback] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,7 +37,7 @@ export default function Feedback () {
     if (isBrowser) {
       if (window.analytics) {
         setLoading(true);
-        window.analytics.track('survey', {
+        window.analytics.track(event, {
           url: location.pathname,
           label: document.title,
           feedback: positiveFeedback ? 'yes' : 'no',
@@ -63,21 +72,21 @@ export default function Feedback () {
           <>
             {(!showForm && !submittedFeedback) && (
               <div className='inline-feedback' ref={inlineFeedbackRef}>
-                <span>Was this page helpful?</span>
-                <button className='positive feedback-btn' onClick={handleFeedback}>Yes</button>
-                <button className='negative feedback-btn' onClick={handleFeedback}>No</button>
+                <span>{question}</span>
+                <button className='positive feedback-btn' onClick={handleFeedback}>{positiveBtn}</button>
+                <button className='negative feedback-btn' onClick={handleFeedback}>{negativeBtn}</button>
               </div>
             )}
             {(showForm && !submittedFeedback) && (
               <div className='inline-question' ref={inlineQuestionRef}>
-                <span>{positiveFeedback ? 'What was most helpful?' : 'What can we improve?'}</span>
+                <span>{positiveFeedback ? positiveQuestion : negativeQuestion}</span>
                 <textarea rows={4} value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
-                <button className='feedback-btn' onClick={submitFeedback} disabled={loading}>Submit</button>
+                <button className='feedback-btn' onClick={submitFeedback} disabled={loading}>{submitBtn}</button>
               </div>
             )}
             {submittedFeedback && (
               <div className='feedback-message' ref={inlineMessageRef}>
-                Thank you for helping improve our documentation!
+                {submitMessage}
               </div>
             )}
           </>

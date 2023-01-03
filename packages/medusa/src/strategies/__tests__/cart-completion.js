@@ -1,6 +1,7 @@
 import { MockManager } from "medusa-test-utils"
 import CartCompletionStrategy from "../cart-completion"
 import { newTotalsServiceMock } from "../../services/__mocks__/new-totals"
+import { ProductVariantInventoryServiceMock } from "../../services/__mocks__/product-variant-inventory"
 
 const IdempotencyKeyServiceMock = {
   withTransaction: function () {
@@ -183,9 +184,11 @@ describe("CartCompletionStrategy", () => {
             return this
           },
           createTaxLines: jest.fn(() => {
-            cart.items[0].tax_lines = [{
-              id: "tax_lines"
-            }]
+            cart.items[0].tax_lines = [
+              {
+                id: "tax_lines",
+              },
+            ]
             return Promise.resolve(cart)
           }),
           deleteTaxLines: jest.fn(() => Promise.resolve(cart)),
@@ -207,12 +210,16 @@ describe("CartCompletionStrategy", () => {
           withTransaction: function () {
             return this
           },
+          retrieveByCartId: jest.fn((id) =>
+            Promise.resolve({ id, allow_backorder: true })
+          ),
           registerCartCompletion: jest.fn(() => Promise.resolve({})),
           retrieve: jest.fn(() => Promise.resolve({})),
         }
         const idempotencyKeyServiceMock = IdempotencyKeyServiceMock
 
         const completionStrat = new CartCompletionStrategy({
+          productVariantInventoryService: ProductVariantInventoryServiceMock,
           cartService: cartServiceMock,
           idempotencyKeyService: idempotencyKeyServiceMock,
           orderService: orderServiceMock,

@@ -155,7 +155,7 @@ export class ProductVariantRepository extends Repository<ProductVariant> {
         entitiesIds,
         idsOrOptionsWithoutRelations as FindConditions<ProductVariant>
       )
-      return [toReturn, toReturn.length]
+      return [toReturn, count]
     }
 
     const groupedRelations = this.getGroupedRelations(

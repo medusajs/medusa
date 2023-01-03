@@ -9,6 +9,7 @@ import {
   Fulfillment,
   FulfillmentItem,
   FulfillmentStatus,
+  GiftCard,
   LineItem,
   Order,
   OrderStatus,
@@ -17,7 +18,6 @@ import {
   Return,
   Swap,
   TrackingLink,
-  GiftCard,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
@@ -38,13 +38,13 @@ import EventBusService from "./event-bus"
 import FulfillmentService from "./fulfillment"
 import FulfillmentProviderService from "./fulfillment-provider"
 import GiftCardService from "./gift-card"
-import InventoryService from "./inventory"
 import LineItemService from "./line-item"
 import PaymentProviderService from "./payment-provider"
 import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import ShippingProfileService from "./shipping-profile"
 import TotalsService from "./totals"
+import ProductVariantInventoryService from "./product-variant-inventory"
 import { NewTotalsService, TaxProviderService } from "./index"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -68,9 +68,9 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
-  inventoryService: InventoryService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
+  productVariantInventoryService: ProductVariantInventoryService
 }
 
 type TotalsConfig = {
@@ -117,9 +117,10 @@ class OrderService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
-  protected readonly inventoryService_: InventoryService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  // eslint-disable-next-line max-len
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
     manager,
@@ -140,9 +141,9 @@ class OrderService extends TransactionBaseService {
     addressRepository,
     giftCardService,
     draftOrderService,
-    inventoryService,
     eventBusService,
     featureFlagRouter,
+    productVariantInventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -166,8 +167,8 @@ class OrderService extends TransactionBaseService {
     this.cartService_ = cartService
     this.addressRepository_ = addressRepository
     this.draftOrderService_ = draftOrderService
-    this.inventoryService_ = inventoryService
     this.featureFlagRouter_ = featureFlagRouter
+    this.productVariantInventoryService_ = productVariantInventoryService
   }
 
   /**
@@ -220,6 +221,7 @@ class OrderService extends TransactionBaseService {
         alias: "order",
         innerJoin: {
           shipping_address: "order.shipping_address",
+          customer: "order.customer",
         },
       }
 
@@ -233,6 +235,9 @@ class OrderService extends TransactionBaseService {
             })
               .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
               .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+              .orWhere(`customer.first_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.last_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.phone ILIKE :q`, { q: `%${q}%` })
           })
         )
       }
@@ -536,7 +541,6 @@ class OrderService extends TransactionBaseService {
   async createFromCart(cartOrId: string | Cart): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
       const cartServiceTx = this.cartService_.withTransaction(manager)
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
       const exists = !!(await this.retrieveByCartId(
         isString(cartOrId) ? cartOrId : cartOrId?.id,
@@ -566,23 +570,6 @@ class OrderService extends TransactionBaseService {
       }
 
       const { payment, region, total } = cart
-
-      await Promise.all(
-        cart.items.map(async (lineItem) => {
-          return await inventoryServiceTx.confirmInventory(
-            lineItem.variant_id,
-            lineItem.quantity
-          )
-        })
-      ).catch(async (err) => {
-        if (payment) {
-          await this.paymentProviderService_
-            .withTransaction(manager)
-            .cancelPayment(payment)
-        }
-        await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-        throw err
-      })
 
       // Would be the case if a discount code is applied that covers the item
       // total
@@ -674,7 +661,10 @@ class OrderService extends TransactionBaseService {
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
       for (const giftCard of cart.gift_cards) {
-        const newGiftCardBalance = Math.max(0, giftCard.balance - giftCardableAmountBalance)
+        const newGiftCardBalance = Math.max(
+          0,
+          giftCard.balance - giftCardableAmountBalance
+        )
         const giftCardBalanceUsed = giftCard.balance - newGiftCardBalance
 
         await giftCardService.update(giftCard.id, {
@@ -687,10 +677,11 @@ class OrderService extends TransactionBaseService {
           order_id: order.id,
           amount: giftCardBalanceUsed,
           is_taxable: !!giftCard.tax_rate,
-          tax_rate: giftCard.tax_rate
+          tax_rate: giftCard.tax_rate,
         })
 
-        giftCardableAmountBalance = giftCardableAmountBalance - giftCardBalanceUsed
+        giftCardableAmountBalance =
+          giftCardableAmountBalance - giftCardBalanceUsed
       }
 
       const shippingOptionServiceTx =
@@ -699,20 +690,18 @@ class OrderService extends TransactionBaseService {
 
       await Promise.all(
         [
-          cart.items.map((lineItem) => {
-            const lineItemPromises: unknown[] = [
+          cart.items.map((lineItem): unknown[] => {
+            const toReturn: unknown[] = [
               lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
-              inventoryServiceTx.adjustInventory(
-                lineItem.variant_id,
-                -lineItem.quantity
-              ),
             ]
 
             if (lineItem.is_giftcard) {
-              lineItemPromises.push(this.createGiftCardsFromLineItem_(order, lineItem, manager))
+              toReturn.push(
+                this.createGiftCardsFromLineItem_(order, lineItem, manager)
+              )
             }
 
-            return lineItemPromises
+            return toReturn
           }),
           cart.shipping_methods.map(async (method) => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
@@ -748,7 +737,9 @@ class OrderService extends TransactionBaseService {
 
     // LineItem type doesn't promise either the subtotal or quantity. Adding a check here provides
     // additional type safety/strictness
-    if (!lineItem.subtotal || !lineItem.quantity) return createGiftCardPromises
+    if (!lineItem.subtotal || !lineItem.quantity) {
+      return createGiftCardPromises
+    }
 
     // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
     // We divide here by quantity to get the value of the product/variant as a lineItem
@@ -758,7 +749,8 @@ class OrderService extends TransactionBaseService {
     // On utilizing the gift card, the same set of taxRate will apply to gift card
     // We calculate the summation of all taxes and add that as a snapshot in the giftcard.tax_rate column
     const giftCardTaxRate = lineItem.tax_lines.reduce(
-      (sum, taxLine) => sum + taxLine.rate, 0
+      (sum, taxLine) => sum + taxLine.rate,
+      0
     )
 
     const giftCardTxnService = this.giftCardService_.withTransaction(manager)
@@ -770,7 +762,7 @@ class OrderService extends TransactionBaseService {
         value: taxExclusivePrice,
         balance: taxExclusivePrice,
         metadata: lineItem.metadata,
-        tax_rate: giftCardTaxRate || null
+        tax_rate: giftCardTaxRate || null,
       })
 
       createGiftCardPromises.push(createGiftCardPromise)
@@ -1146,10 +1138,19 @@ class OrderService extends TransactionBaseService {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
-      for (const item of order.items) {
-        await inventoryServiceTx.adjustInventory(item.variant_id, item.quantity)
-      }
+      const inventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
+      await Promise.all(
+        order.items.map(async (item) => {
+          if (item.variant_id) {
+            return await inventoryServiceTx.releaseReservationsByLineItem(
+              item.id,
+              item.variant_id,
+              item.quantity
+            )
+          }
+        })
+      )
 
       const paymentProviderServiceTx =
         this.paymentProviderService_.withTransaction(manager)
@@ -1933,6 +1934,7 @@ class OrderService extends TransactionBaseService {
     relationSet.add("items")
     relationSet.add("items.tax_lines")
     relationSet.add("items.adjustments")
+    relationSet.add("items.variant")
     relationSet.add("swaps")
     relationSet.add("swaps.additional_items")
     relationSet.add("swaps.additional_items.tax_lines")

@@ -176,18 +176,13 @@ module.exports = {
           items: [
             {
               type: "doc",
-              id: "advanced/backend/upgrade-guides/1-3-0",
-              label: "v1.3.0"
+              id: "advanced/backend/upgrade-guides/1-7-1",
+              label: "v1.7.1"
             },
             {
               type: "doc",
-              id: "advanced/backend/upgrade-guides/1-3-6",
-              label: "v1.3.6"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/upgrade-guides/1-3-8",
-              label: "v1.3.8"
+              id: "advanced/backend/upgrade-guides/1-7-0",
+              label: "v1.7.0"
             },
             {
               type: "doc",
@@ -196,15 +191,42 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "advanced/backend/upgrade-guides/1-7-0",
-              label: "v1.7.0"
+              id: "advanced/backend/upgrade-guides/1-3-8",
+              label: "v1.3.8"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-3-6",
+              label: "v1.3.6"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-3-0",
+              label: "v1.3.0"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/admin/admin-vite",
+              label: "Medusa Admin: Vite"
             },
           ]
         },
         {
-          type: "doc",
-          id: "usage/local-development",
-        },
+          type: "category",
+          label: 'Local Development',
+          items: [
+            {
+              type: "doc",
+              id: "usage/local-development",
+              label: "Server and Monorepo"
+            },
+            {
+              type: "doc",
+              id: "admin/development",
+              label: "Medusa Admin"
+            }
+          ]
+        }
       ]
     },
     {
@@ -215,6 +237,16 @@ module.exports = {
           type: "category",
           label: "Storefront",
           items: [
+            {
+              type: "doc",
+              id: "advanced/storefront/use-regions",
+              label: "Use Regions"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/customer-profiles",
+              label: "Add Customer Profiles"
+            },
             {
               type: "doc",
               id: "guides/carts-in-medusa",
@@ -242,6 +274,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/storefront/handle-order-edits",
+              label: "Handle Order Edits"
+            },
+            {
+              type: "doc",
               id: "advanced/storefront/use-sales-channels",
               label: "Use SalesChannels APIs"
             },
@@ -251,6 +288,21 @@ module.exports = {
           type: "category",
           label: "Admin",
           items: [
+            {
+              type: "doc",
+              id: "advanced/admin/order-edit",
+              label: "Edit an Order"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-customers",
+              label: "Manage Customers"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/use-customergroups-api",
+              label: "Manage Customer Groups"
+            },
             {
               type: "doc",
               id: "advanced/admin/import-products",
@@ -264,22 +316,22 @@ module.exports = {
             {
               type: "doc",
               id: "advanced/backend/price-lists/use-api",
-              label: "Use PriceList APIs"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/sales-channels/manage-admin",
-              label: "Use SalesChannel APIs"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/use-customergroups-api",
-              label: "Use CustomerGroup APIs"
+              label: "Manage PriceLists"
             },
             {
               type: "doc",
               id: "advanced/admin/manage-discounts",
-              label: "Use Discount APIs"
+              label: "Manage Discounts"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-regions",
+              label: "Manage Regions"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/sales-channels/manage-admin",
+              label: "Manage Sales Channels"
             },
           ]
         },
@@ -411,6 +463,15 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/batch-jobs/index",
           label: "Batch Jobs"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/regions/overview",
+          label: "Regions"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/customers/index"
         },
         {
           type: "doc",
@@ -574,6 +635,16 @@ module.exports = {
           type: "doc",
           id: "troubleshooting/cli-installation-errors",
           label: "Errors Installing CLI",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/common-installation-errors",
+          label: "Installation Errors",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/database-error",
+          label: "Database SASL Error",
         },
         {
           type: "doc",

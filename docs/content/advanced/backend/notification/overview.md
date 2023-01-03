@@ -8,6 +8,8 @@ Medusa provides a Notification API to mainly handle sending and resending notifi
 
 The Notification architecture is made up of two main components: the Notification Provider and the Notification. Simply put, the Notification Provider handles the sending and resending of a Notification.
 
+---
+
 ## Notification Provider
 
 A Notification Provider is a provider that handles sending and resending of notifications. You can either create and integrate your own provider or install a Notification Provider through a third-party plugin.
@@ -31,6 +33,8 @@ The `NotificationProvider` entity only has 2 attributes: `id` and `is_installed`
 `is_installed` indicates whether the Notification Provider is installed or not. When you install a Notification Provider, the value of this attribute is `true`.
 
 If you installed a Notification provider and then removed the Service files or plugin that registered the Notification Provider, the Notification Provider remains in your database, but the value of the `is_installed` field changes to `false`.
+
+---
 
 ## Notification
 A notification is a form of an alert sent to the customers or users to inform them of an action that has occurred. For example, if an order is placed, the notification, in this case, can be an email that confirms their order and lists the order details.
@@ -67,6 +71,8 @@ You can also access the specific resource using the `resource_id` property, whic
 
 The `Notification` entity also includes properties related to the receiver of the Notification. In case the receiver is a customer, the `customer_id` property is used to identify which customer.
 
+---
+
 ## Automating Flows with Notifications
 
 With Medusa you can create notifications as a reaction to a wide spectrum of events, allowing you to automate communication and processes. 
@@ -78,10 +84,13 @@ An example of a flow that can be implemented using Medusa's Notification API is 
 - The customer returns the items triggering the `return.recieved` event.
 - The Notification Provider listens to the `return.received` event and sends an email to the customer with confirmation that their items have been received and that a refund has been issued.
 
-## What’s Next
+---
 
-- Learn how to [create your own Notification Provider](how-to-create-notification-provider.md).
-- Check out the [list of events](../subscribers/events-list.md) in Medusa.
-- Check the [`NotificationService`](../../../references/services/classes/NotificationService.md) API reference for more details on how it works.
-- Check out the [SendGrid](../../../add-plugins/sendgrid.mdx) Notification plugin.
-- Learn more about [Subscribers](../subscribers/create-subscriber.md) and [Services](../services/create-service.md) in Medusa.
+## See Also
+
+- [Create a Notification Provider](how-to-create-notification-provider.md)
+- [Events reference](../subscribers/events-list.md)
+- [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
+- [Subscribers Overview](../subscribers/create-subscriber.md)
+- [Services Overview](../services/create-service.md)
+

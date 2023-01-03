@@ -7,7 +7,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [post] /publishable-api-key/{id}
  * operationId: "PostPublishableApiKysPublishableApiKey"
- * summary: "Updates a PublishableApiKey"
+ * summary: "Update PublishableApiKey"
  * description: "Updates a PublishableApiKey."
  * x-authenticated: true
  * parameters:

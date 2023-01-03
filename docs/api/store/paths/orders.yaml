@@ -49,7 +49,7 @@ get:
             type: object
             properties:
               order:
-                $ref: ../components/schemas/order.yaml
+                $ref: ../components/schemas/Order.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

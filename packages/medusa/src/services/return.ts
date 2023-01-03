@@ -1,5 +1,6 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
+import { ProductVariantInventoryService } from "."
 import { TransactionBaseService } from "../interfaces"
 import {
   FulfillmentStatus,
@@ -17,7 +18,6 @@ import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
 import { buildQuery, setMetadata } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
-import InventoryService from "./inventory"
 import LineItemService from "./line-item"
 import OrderService from "./order"
 import ReturnReasonService from "./return-reason"
@@ -35,8 +35,8 @@ type InjectedDependencies = {
   returnReasonService: ReturnReasonService
   taxProviderService: TaxProviderService
   fulfillmentProviderService: FulfillmentProviderService
-  inventoryService: InventoryService
   orderService: OrderService
+  productVariantInventoryService: ProductVariantInventoryService
 }
 
 type Transformer = (
@@ -57,8 +57,9 @@ class ReturnService extends TransactionBaseService {
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
   protected readonly returnReasonService_: ReturnReasonService
-  protected readonly inventoryService_: InventoryService
   protected readonly orderService_: OrderService
+  // eslint-disable-next-line
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
     manager,
@@ -70,9 +71,10 @@ class ReturnService extends TransactionBaseService {
     returnReasonService,
     taxProviderService,
     fulfillmentProviderService,
-    inventoryService,
     orderService,
+    productVariantInventoryService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -84,8 +86,8 @@ class ReturnService extends TransactionBaseService {
     this.shippingOptionService_ = shippingOptionService
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.returnReasonService_ = returnReasonService
-    this.inventoryService_ = inventoryService
     this.orderService_ = orderService
+    this.productVariantInventoryService_ = productVariantInventoryService
   }
 
   /**
@@ -669,12 +671,14 @@ class ReturnService extends TransactionBaseService {
         })
       }
 
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
+      const inventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
       for (const line of newLines) {
         const orderItem = order.items.find((i) => i.id === line.item_id)
-        if (orderItem) {
+        if (orderItem && orderItem?.variant_id) {
           await inventoryServiceTx.adjustInventory(
             orderItem.variant_id,
+            returnObj.location_id,
             line.received_quantity
           )
         }

@@ -40,7 +40,7 @@ get:
               returns:
                 type: array
                 items:
-                  $ref: ../components/schemas/return.yaml
+                  $ref: ../components/schemas/Return.yaml
               count:
                 type: integer
                 description: The total number of items available
