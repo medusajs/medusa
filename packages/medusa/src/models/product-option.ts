@@ -40,10 +40,9 @@ export class ProductOption extends SoftDeletableEntity {
 }
 
 /**
- * @schema product_option
+ * @schema ProductOption
  * title: "Product Option"
  * description: "Product Options define properties that may vary between different variants of a Product. Common Product Options are \"Size\" and \"Color\", but Medusa doesn't limit what Product Options that can be defined."
- * x-resourceId: product_option
  * type: object
  * required:
  *   - title
@@ -61,7 +60,7 @@ export class ProductOption extends SoftDeletableEntity {
  *     description: The Product Option Values that are defined for the Product Option. Available if the relation `values` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product_option_value"
+ *       $ref: "#/components/schemas/ProductOptionValue"
  *   product_id:
  *     description: "The ID of the Product that the Product Option is defined for."
  *     type: string

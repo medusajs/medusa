@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.18
+
+### Patch Changes
+
+- [#2808](https://github.com/medusajs/medusa/pull/2808) [`0a9c89185`](https://github.com/medusajs/medusa/commit/0a9c891853c4d16b553d38268a3408ca1daa71f0) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - chore: explicitly add devDependencies for monorepo peerDependencies
+
 ## 1.0.17
 
 ### Patch Changes

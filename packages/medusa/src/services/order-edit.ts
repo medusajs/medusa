@@ -1,8 +1,8 @@
 import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { FindConfig, Selector } from "../types/common"
-import { buildQuery, isDefined, isString } from "../utils"
+import { buildQuery, isString } from "../utils"
 import { OrderEditRepository } from "../repositories/order-edit"
 import {
   Cart,
@@ -91,6 +91,13 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     config: FindConfig<OrderEdit> = {}
   ): Promise<OrderEdit> {
+    if (!isDefined(orderEditId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"orderEditId" must be defined`
+      )
+    }
+
     const manager = this.transactionManager_ ?? this.manager_
     const orderEditRepository = manager.getCustomRepository(
       this.orderEditRepository_

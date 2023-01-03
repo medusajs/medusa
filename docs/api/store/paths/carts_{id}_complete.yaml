@@ -57,21 +57,21 @@ post:
                       successfully.
                     properties:
                       order:
-                        $ref: ../components/schemas/order.yaml
+                        $ref: ../components/schemas/Order.yaml
                   - type: object
                     description: >-
                       Cart was successfully authorized but requires further
                       actions.
                     properties:
                       cart:
-                        $ref: ../components/schemas/cart.yaml
+                        $ref: ../components/schemas/Cart.yaml
                   - type: object
                     description: >-
                       When cart is used for a swap and it has been completed
                       successfully.
                     properties:
                       cart:
-                        $ref: ../components/schemas/swap.yaml
+                        $ref: ../components/schemas/Swap.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

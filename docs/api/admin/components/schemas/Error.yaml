@@ -1,0 +1,12 @@
+title: Response Error
+type: object
+properties:
+  code:
+    type: string
+    description: A slug code to indicate the type of the error.
+  message:
+    type: string
+    description: Description of the error that occurred.
+  type:
+    type: string
+    description: A slug indicating the type of the error.

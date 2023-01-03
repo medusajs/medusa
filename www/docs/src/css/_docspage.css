@@ -83,7 +83,7 @@ kbd {
 }
 
 .theme-doc-footer {
-  margin-top: var(--ifm-base-margin-vertical) !important;
+  margin-top: 0 !important;
   border-top: 1px solid var(--ifm-doc-footer-border-color) !important;
   padding-top: var(--ifm-base-margin-vertical);
 }

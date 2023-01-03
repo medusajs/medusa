@@ -1,7 +1,7 @@
 import { IsString } from "class-validator"
 
 /**
- * [delete] /uploads
+ * @oas [delete] /uploads
  * operationId: "AdminDeleteUploads"
  * summary: "Delete an Uploaded File"
  * description: "Removes an uploaded file using the installed fileservice"
@@ -10,13 +10,7 @@ import { IsString } from "class-validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - file_key
- *         properties:
- *           file_key:
- *             description: "key of the file to delete"
- *             type: string
+ *         $ref: "#/components/schemas/AdminDeleteUploadsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -88,6 +82,16 @@ export default async (req, res) => {
     .send({ id: validated.file_key, object: "file", deleted: true })
 }
 
+/**
+ * @schema AdminDeleteUploadsReq
+ * type: object
+ * required:
+ *   - file_key
+ * properties:
+ *   file_key:
+ *     description: "key of the file to delete"
+ *     type: string
+ */
 export class AdminDeleteUploadsReq {
   @IsString()
   file_key: string

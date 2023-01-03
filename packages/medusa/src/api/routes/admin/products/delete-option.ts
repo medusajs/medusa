@@ -53,7 +53,7 @@ import { ProductService } from "../../../../services"
  *               description: Whether or not the items were deleted.
  *               default: true
  *             product:
- *               $ref: "#/components/schemas/product"
+ *               $ref: "#/components/schemas/Product"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

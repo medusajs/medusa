@@ -14,6 +14,8 @@ Whether you want to implement something differently, introduce a new future as p
 
 All the packages are part of a [Yarn workspace](https://classic.yarnpkg.com/lang/en/docs/workspaces/). So, when you run a command in the root of the project, such as `yarn build`, it goes through all registered packages in the workspace under the `packages` directory and runs the `build` command in each of those packages.
 
+---
+
 ## Prerequisites
 
 ### Yarn
@@ -51,9 +53,21 @@ In the directory of your forked GitHub repository, run the following command to 
 medusa-dev --set-path-to-repo `pwd`
 ```
 
+---
+
 ## Run Tests in the Repository
 
 In this section, you’ll learn how to run tests in the Medusa repository. This is helpful after you customize any of Medusa’s packages and want to make sure everything is still working as expected.
+
+### Set System Environment Variables
+
+Before you can run the tests, make sure you set the following system environment variables:
+
+```bash
+DB_HOST=<YOUR_DB_HOST>
+DB_USERNAME=<YOUR_DB_USERNAME>
+DB_PASSWORD=<YOUR_PASSWORD>
+```
 
 ### Run Unit Tests
 
@@ -94,6 +108,8 @@ To run the plugin integration tests, run the following command in the root direc
 yarn test:integration:plugins
 ```
 
+---
+
 ## Test in a Local Server
 
 Using Medusa’s dev CLI tool, you can test any changes you make to Medusa’s packages in a local server installation. This eliminates the need to publish these packages on NPM publicly to be able to use them.
@@ -122,7 +138,27 @@ cd medusa-server
 medusa-dev
 ```
 
-By default, Medusa’s dev CLI runs in watch mode. So, it copies the files when you first run it, then, whenever you make changes in the packages in the Medusa repository, it copies the changed files again.
+By default, Medusa’s dev CLI runs in watch mode. So, it copies the files when you first run it. Then, whenever you make changes in the `dist` directory of the packages in the Medusa repository, it copies the changed files again.
+
+### Watch and Compile Changes
+
+While the above command is running, it's recommended to run the `watch` command inside the directory of every package you're making changes to.
+
+The combination of these two commands running at the same time will compile the package into the `dist` directory of the package, then copy the compiled changes into your local server.
+
+For example, if you're making changes in the `medusa` package, run the following command inside the directory of the `medusa` package:
+
+```bash title=packages/medusa
+yarn watch
+```
+
+Make sure the `medusa-dev` command is also running to copy the changes automatically.
+
+Alternatively, you can manually run the `build` command every time you want to compile the changes:
+
+```bash title=packages/medusa
+yarn build
+```
 
 ### CLI Options
 
@@ -146,7 +182,9 @@ medusa-dev -q
 medusa-dev --packages @medusajs/medusa-cli medusa-file-minio
 ```
 
-## What’s Next
+---
 
-- Check out our [contribution guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
-- Learn how to [create a plugin](../advanced/backend/plugins/create.md).
+## See Also
+
+- [Create a Plugin](../advanced/backend/plugins/create.md)
+- [Contribution Guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md)

@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:52](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L52)
+[packages/medusa/src/services/payment-collection.ts:51](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L51)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L48)
+[packages/medusa/src/services/payment-collection.ts:47](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L47)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:46](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L46)
+[packages/medusa/src/services/payment-collection.ts:45](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L45)
 
 ___
 
@@ -86,7 +86,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:44](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L44)
+[packages/medusa/src/services/payment-collection.ts:43](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L43)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:50](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L50)
+[packages/medusa/src/services/payment-collection.ts:49](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L49)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:47](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L47)
+[packages/medusa/src/services/payment-collection.ts:46](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L46)
 
 ___
 
@@ -120,7 +120,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:45](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L45)
+[packages/medusa/src/services/payment-collection.ts:44](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L44)
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:37](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L37)
+[packages/medusa/src/services/payment-collection.ts:36](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L36)
 
 ## Methods
 
@@ -178,28 +178,33 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
-### authorize
+### authorizePaymentSessions
 
-▸ **authorize**(`paymentCollectionId`, `context?`): `Promise`<`PaymentCollection`\>
+▸ **authorizePaymentSessions**(`paymentCollectionId`, `sessionIds`, `context?`): `Promise`<`PaymentCollection`\>
+
+Authorizes the payment sessions of a payment collection.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentCollectionId` | `string` |
-| `context` | `Record`<`string`, `unknown`\> |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentCollectionId` | `string` | the id of the payment collection |
+| `sessionIds` | `string`[] | array of payment session ids to be authorized |
+| `context` | `Record`<`string`, `unknown`\> | additional data required by payment providers |
 
 #### Returns
 
 `Promise`<`PaymentCollection`\>
 
+the payment collection and its payment session.
+
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:390](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L390)
+[packages/medusa/src/services/payment-collection.ts:587](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L587)
 
 ___
 
@@ -207,19 +212,23 @@ ___
 
 ▸ **create**(`data`): `Promise`<`PaymentCollection`\>
 
+Creates a new payment collection.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `data` | `CreatePaymentCollectionInput` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `CreatePaymentCollectionInput` | info to create the payment collection |
 
 #### Returns
 
 `Promise`<`PaymentCollection`\>
 
+the payment collection created.
+
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:92](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L92)
+[packages/medusa/src/services/payment-collection.ts:111](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L111)
 
 ___
 
@@ -227,19 +236,23 @@ ___
 
 ▸ **delete**(`paymentCollectionId`): `Promise`<`undefined` \| `PaymentCollection`\>
 
+Deletes a payment collection.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentCollectionId` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentCollectionId` | `string` | the id of the payment collection to be removed |
 
 #### Returns
 
 `Promise`<`undefined` \| `PaymentCollection`\>
 
+the payment collection removed.
+
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:150](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L150)
+[packages/medusa/src/services/payment-collection.ts:180](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L180)
 
 ___
 
@@ -252,7 +265,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `total` | `number` |
-| `sessionsInput` | `PaymentCollectionSessionInput`[] |
+| `sessionsInput` | `PaymentCollectionsSessionsBatchInput`[] |
 
 #### Returns
 
@@ -260,7 +273,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:188](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L188)
+[packages/medusa/src/services/payment-collection.ts:218](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L218)
 
 ___
 
@@ -268,41 +281,49 @@ ___
 
 ▸ **markAsAuthorized**(`paymentCollectionId`): `Promise`<`PaymentCollection`\>
 
+Marks a payment collection as authorized bypassing the payment flow.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentCollectionId` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentCollectionId` | `string` | the id of the payment collection |
 
 #### Returns
 
 `Promise`<`PaymentCollection`\>
 
+the payment session authorized.
+
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:368](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L368)
+[packages/medusa/src/services/payment-collection.ts:558](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L558)
 
 ___
 
 ### refreshPaymentSession
 
-▸ **refreshPaymentSession**(`paymentCollectionId`, `sessionId`, `sessionInput`): `Promise`<`PaymentSession`\>
+▸ **refreshPaymentSession**(`paymentCollectionId`, `sessionId`, `customerId`): `Promise`<`PaymentSession`\>
+
+Removes and recreate a payment session of a payment collection.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentCollectionId` | `string` |
-| `sessionId` | `string` |
-| `sessionInput` | `Omit`<`PaymentCollectionSessionInput`, ``"amount"``\> |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentCollectionId` | `string` | the id of the payment collection |
+| `sessionId` | `string` | the id of the payment session to be replaced |
+| `customerId` | `string` | the id of the customer |
 
 #### Returns
 
 `Promise`<`PaymentSession`\>
 
+the new payment session created.
+
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:293](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L293)
+[packages/medusa/src/services/payment-collection.ts:468](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L468)
 
 ___
 
@@ -310,41 +331,76 @@ ___
 
 ▸ **retrieve**(`paymentCollectionId`, `config?`): `Promise`<`PaymentCollection`\>
 
+Retrieves a payment collection by id.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentCollectionId` | `string` |
-| `config` | `FindConfig`<`PaymentCollection`\> |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentCollectionId` | `string` | the id of the payment collection |
+| `config` | `FindConfig`<`PaymentCollection`\> | the config to retrieve the payment collection |
 
 #### Returns
 
 `Promise`<`PaymentCollection`\>
 
+the payment collection.
+
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:69](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L69)
+[packages/medusa/src/services/payment-collection.ts:74](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L74)
 
 ___
 
-### setPaymentSessions
+### setPaymentSession
 
-▸ **setPaymentSessions**(`paymentCollectionId`, `sessions`): `Promise`<`PaymentCollection`\>
+▸ **setPaymentSession**(`paymentCollectionId`, `sessionInput`, `customerId`): `Promise`<`PaymentCollection`\>
+
+Manages a single payment sessions of a payment collection.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentCollectionId` | `string` |
-| `sessions` | `PaymentCollectionSessionInput` \| `PaymentCollectionSessionInput`[] |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentCollectionId` | `string` | the id of the payment collection |
+| `sessionInput` | `PaymentCollectionsSessionsInput` | object containing payment session info |
+| `customerId` | `string` | the id of the customer |
 
 #### Returns
 
 `Promise`<`PaymentCollection`\>
 
+the payment collection and its payment session.
+
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:196](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L196)
+[packages/medusa/src/services/payment-collection.ts:360](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L360)
+
+___
+
+### setPaymentSessionsBatch
+
+▸ **setPaymentSessionsBatch**(`paymentCollectionId`, `sessionsInput`, `customerId`): `Promise`<`PaymentCollection`\>
+
+Manages multiple payment sessions of a payment collection.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentCollectionId` | `string` | the id of the payment collection |
+| `sessionsInput` | `PaymentCollectionsSessionsBatchInput`[] | array containing payment session info |
+| `customerId` | `string` | the id of the customer |
+
+#### Returns
+
+`Promise`<`PaymentCollection`\>
+
+the payment collection and its payment sessions.
+
+#### Defined in
+
+[packages/medusa/src/services/payment-collection.ts:233](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L233)
 
 ___
 
@@ -368,7 +424,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -376,37 +432,41 @@ ___
 
 ▸ **update**(`paymentCollectionId`, `data`): `Promise`<`PaymentCollection`\>
 
+Updates a payment collection.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentCollectionId` | `string` |
-| `data` | `Object` |
-| `data.amount?` | `number` |
-| `data.authorized_amount?` | ``null`` \| `number` |
-| `data.created_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
-| `data.created_by?` | `string` |
-| `data.currency?` | { code?: string \| undefined; symbol?: string \| undefined; symbol\_native?: string \| undefined; name?: string \| undefined; includes\_tax?: boolean \| undefined; } |
-| `data.currency_code?` | `string` |
-| `data.deleted_at?` | ``null`` \| { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
-| `data.description?` | ``null`` \| `string` |
-| `data.id?` | `string` |
-| `data.metadata?` | { [x: string]: unknown; } |
-| `data.payment_sessions?` | (`undefined` \| { cart\_id?: string \| undefined; cart?: { readonly object?: "cart" \| undefined; email?: string \| undefined; billing\_address\_id?: string \| undefined; billing\_address?: { customer\_id?: string \| ... 1 more ... \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 36 more ...; updated\_at?: {...)[] |
-| `data.payments?` | (`undefined` \| { swap\_id?: string \| undefined; swap?: { fulfillment\_status?: SwapFulfillmentStatus \| undefined; payment\_status?: SwapPaymentStatus \| undefined; ... 21 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; })[] |
-| `data.region?` | { name?: string \| undefined; currency\_code?: string \| undefined; currency?: { code?: string \| undefined; symbol?: string \| undefined; symbol\_native?: string \| undefined; name?: string \| undefined; includes\_tax?: boolean \| undefined; } \| undefined; ... 15 more ...; updated\_at?: { ...; } \| undefined; } |
-| `data.region_id?` | `string` |
-| `data.status?` | `PaymentCollectionStatus` |
-| `data.type?` | `ORDER_EDIT` |
-| `data.updated_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentCollectionId` | `string` | the id of the payment collection to update |
+| `data` | `Object` | info to be updated |
+| `data.amount?` | `number` | - |
+| `data.authorized_amount?` | ``null`` \| `number` | - |
+| `data.created_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } | - |
+| `data.created_by?` | `string` | - |
+| `data.currency?` | { code?: string \| undefined; symbol?: string \| undefined; symbol\_native?: string \| undefined; name?: string \| undefined; includes\_tax?: boolean \| undefined; } | - |
+| `data.currency_code?` | `string` | - |
+| `data.deleted_at?` | ``null`` \| { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } | - |
+| `data.description?` | ``null`` \| `string` | - |
+| `data.id?` | `string` | - |
+| `data.metadata?` | { [x: string]: unknown; } | - |
+| `data.payment_sessions?` | (`undefined` \| { cart\_id?: string \| null \| undefined; cart?: { readonly object?: "cart" \| undefined; email?: string \| undefined; billing\_address\_id?: string \| undefined; billing\_address?: { customer\_id?: string \| ... 1 more ... \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 36 more ...; updated...)[] | - |
+| `data.payments?` | (`undefined` \| { swap\_id?: string \| undefined; swap?: { fulfillment\_status?: SwapFulfillmentStatus \| undefined; payment\_status?: SwapPaymentStatus \| undefined; ... 21 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; })[] | - |
+| `data.region?` | { name?: string \| undefined; currency\_code?: string \| undefined; currency?: { code?: string \| undefined; symbol?: string \| undefined; symbol\_native?: string \| undefined; name?: string \| undefined; includes\_tax?: boolean \| undefined; } \| undefined; ... 15 more ...; updated\_at?: { ...; } \| undefined; } | - |
+| `data.region_id?` | `string` | - |
+| `data.status?` | `PaymentCollectionStatus` | - |
+| `data.type?` | `ORDER_EDIT` | - |
+| `data.updated_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } | - |
 
 #### Returns
 
 `Promise`<`PaymentCollection`\>
 
+the payment collection updated.
+
 #### Defined in
 
-[packages/medusa/src/services/payment-collection.ts:121](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment-collection.ts#L121)
+[packages/medusa/src/services/payment-collection.ts:146](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment-collection.ts#L146)
 
 ___
 
@@ -430,4 +490,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

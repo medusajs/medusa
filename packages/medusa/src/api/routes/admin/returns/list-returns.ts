@@ -46,7 +46,7 @@ import { Return } from "../../../../models"
  *             returns:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/return"
+ *                 $ref: "#/components/schemas/Return"
  *             count:
  *               type: integer
  *               description: The total number of items available

@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:40](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L40)
+[packages/medusa/src/services/payment.ts:40](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L40)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:28](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L28)
+[packages/medusa/src/services/payment.ts:28](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L28)
 
 ___
 
@@ -76,7 +76,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:26](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L26)
+[packages/medusa/src/services/payment.ts:26](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L26)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L29)
+[packages/medusa/src/services/payment.ts:29](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L29)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:30](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L30)
+[packages/medusa/src/services/payment.ts:30](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L30)
 
 ___
 
@@ -110,7 +110,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:27](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L27)
+[packages/medusa/src/services/payment.ts:27](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L27)
 
 ___
 
@@ -131,7 +131,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:31](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L31)
+[packages/medusa/src/services/payment.ts:31](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L31)
 
 ## Methods
 
@@ -170,7 +170,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
@@ -178,19 +178,23 @@ ___
 
 ▸ **capture**(`paymentOrId`): `Promise`<`Payment`\>
 
+Captures a payment.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentOrId` | `string` \| `Payment` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentOrId` | `string` \| `Payment` | the id or the class instance of the payment |
 
 #### Returns
 
 `Promise`<`Payment`\>
 
+the payment captured.
+
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:132](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L132)
+[packages/medusa/src/services/payment.ts:161](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L161)
 
 ___
 
@@ -198,19 +202,23 @@ ___
 
 ▸ **create**(`paymentInput`): `Promise`<`Payment`\>
 
+Created a new payment.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentInput` | `PaymentDataInput` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentInput` | `PaymentDataInput` | info to create the payment |
 
 #### Returns
 
 `Promise`<`Payment`\>
 
+the payment created.
+
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:78](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L78)
+[packages/medusa/src/services/payment.ts:96](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L96)
 
 ___
 
@@ -218,22 +226,26 @@ ___
 
 ▸ **refund**(`paymentOrId`, `amount`, `reason`, `note?`): `Promise`<`Refund`\>
 
+refunds a payment.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentOrId` | `string` \| `Payment` |
-| `amount` | `number` |
-| `reason` | `string` |
-| `note?` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentOrId` | `string` \| `Payment` | the id or the class instance of the payment |
+| `amount` | `number` | the amount to be refunded from the payment |
+| `reason` | `string` | the refund reason |
+| `note?` | `string` | additional note of the refund |
 
 #### Returns
 
 `Promise`<`Refund`\>
 
+the refund created.
+
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:173](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L173)
+[packages/medusa/src/services/payment.ts:210](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L210)
 
 ___
 
@@ -241,20 +253,24 @@ ___
 
 ▸ **retrieve**(`paymentId`, `config?`): `Promise`<`Payment`\>
 
+Retrieves a payment by id.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentId` | `string` |
-| `config` | `FindConfig`<`Payment`\> |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentId` | `string` | the id of the payment |
+| `config` | `FindConfig`<`Payment`\> | the config to retrieve the payment |
 
 #### Returns
 
 `Promise`<`Payment`\>
 
+the payment.
+
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:55](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L55)
+[packages/medusa/src/services/payment.ts:61](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L61)
 
 ___
 
@@ -278,7 +294,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -286,22 +302,26 @@ ___
 
 ▸ **update**(`paymentId`, `data`): `Promise`<`Payment`\>
 
+Updates a payment in order to link it to an order or a swap.
+
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `paymentId` | `string` |
-| `data` | `Object` |
-| `data.order_id?` | `string` |
-| `data.swap_id?` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentId` | `string` | the id of the payment |
+| `data` | `Object` | order_id or swap_id to link the payment |
+| `data.order_id?` | `string` | - |
+| `data.swap_id?` | `string` | - |
 
 #### Returns
 
 `Promise`<`Payment`\>
 
+the payment updated.
+
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:103](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/payment.ts#L103)
+[packages/medusa/src/services/payment.ts:127](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/payment.ts#L127)
 
 ___
 
@@ -325,4 +345,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

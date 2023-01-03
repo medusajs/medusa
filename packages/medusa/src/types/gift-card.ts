@@ -1,10 +1,12 @@
 export type CreateGiftCardInput = {
+  order_id?: string
   value?: number
   balance?: number
   ends_at?: Date
   is_disabled?: boolean
   region_id: string
   metadata?: Record<string, unknown>
+  tax_rate?: number | null
 }
 
 export type UpdateGiftCardInput = {

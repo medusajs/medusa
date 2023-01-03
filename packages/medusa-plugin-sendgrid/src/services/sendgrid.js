@@ -129,6 +129,8 @@ class SendGridService extends NotificationService {
           eventData,
           attachmentGenerator
         )
+      case "order.refund_created":
+        return this.orderRefundCreatedData(eventData, attachmentGenerator)
       default:
         return {}
     }
@@ -166,6 +168,8 @@ class SendGridService extends NotificationService {
           return map.customer_password_reset_template
         case "restock-notification.restocked":
           return map.medusa_restock_template
+        case "order.refund_created":
+          return map.order_refund_created_template
         default:
           return null
       }
@@ -203,6 +207,8 @@ class SendGridService extends NotificationService {
         return this.options_.customer_password_reset_template
       case "restock-notification.restocked":
         return this.options_.medusa_restock_template
+      case "order.refund_created":
+        return this.options_.order_refund_created_template
       default:
         return null
     }
@@ -1153,6 +1159,30 @@ class SendGridService extends NotificationService {
 
   customerPasswordResetData(data) {
     return data
+  }
+
+  async orderRefundCreatedData({ id, refund_id }) {
+    const order = await this.orderService_.retrieveWithTotals(id, {
+      select: [
+        "total",
+      ],
+      relations: [
+        "refunds",
+        "items",
+      ]
+    })
+
+    const refund = order.refunds.find((refund) => refund.id === refund_id)
+
+    return {
+      order,
+      refund,
+      refund_amount: `${this.humanPrice_(
+        refund.amount,
+        order.currency_code
+      )} ${order.currency_code}`,
+      email: order.email
+    }
   }
 
   processItems_(items, taxRate, currencyCode) {

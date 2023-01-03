@@ -11,20 +11,13 @@ import { TokenEvents } from "../../../../types/token"
 /**
  * @oas [post] /orders/batch/customer/token
  * operationId: "PostOrdersCustomerOrderClaim"
- * summary: "Claim orders for signed in account"
+ * summary: "Claim an Order"
  * description: "Sends an email to emails registered to orders provided with link to transfer order ownership"
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - order_ids
- *         properties:
- *           order_ids:
- *             description: "The ids of the orders to claim"
- *             type: array
- *             items:
- *              type: string
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerOrderClaimReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -125,6 +118,18 @@ export default async (req, res) => {
   res.sendStatus(200)
 }
 
+/**
+ * @schema StorePostCustomersCustomerOrderClaimReq
+ * type: object
+ * required:
+ *   - order_ids
+ * properties:
+ *   order_ids:
+ *     description: "The ids of the orders to claim"
+ *     type: array
+ *     items:
+ *      type: string
+ */
 export class StorePostCustomersCustomerOrderClaimReq {
   @IsNotEmpty({ each: true })
   @IsString({ each: true })

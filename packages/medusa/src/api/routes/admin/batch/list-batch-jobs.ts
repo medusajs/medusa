@@ -6,7 +6,7 @@ import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { Request } from "express"
 import { pickBy } from "lodash"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /batch-jobs
@@ -242,7 +242,7 @@ import { isDefined } from "../../../../utils"
  *            batch_jobs:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/batch_job"
+ *                 $ref: "#/components/schemas/BatchJob"
  *            count:
  *               type: integer
  *               description: The total number of items available

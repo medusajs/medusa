@@ -14,13 +14,8 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - provider_id
-          properties:
-            provider_id:
-              description: The ID of the Fulfillment Provider to add.
-              type: string
+          $ref: >-
+            ../components/schemas/AdminPostRegionsRegionFulfillmentProvidersReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -45,7 +40,7 @@ post:
             type: object
             properties:
               region:
-                $ref: ../components/schemas/region.yaml
+                $ref: ../components/schemas/Region.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -32,15 +32,8 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - shipping_options
-          properties:
-            shipping_options:
-              type: array
-              description: The IDs of the shipping options to associate with this tax rate
-              items:
-                type: string
+          $ref: >-
+            ../components/schemas/AdminPostTaxRatesTaxRateShippingOptionsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -66,7 +59,7 @@ post:
             type: object
             properties:
               tax_rate:
-                $ref: ../components/schemas/tax_rate.yaml
+                $ref: ../components/schemas/TaxRate.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -113,17 +106,8 @@ delete:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - shipping_options
-          properties:
-            shipping_options:
-              type: array
-              description: >-
-                The IDs of the shipping options to remove association with this
-                tax rate
-              items:
-                type: string
+          $ref: >-
+            ../components/schemas/AdminDeleteTaxRatesTaxRateShippingOptionsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -149,7 +133,7 @@ delete:
             type: object
             properties:
               tax_rate:
-                $ref: ../components/schemas/tax_rate.yaml
+                $ref: ../components/schemas/TaxRate.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

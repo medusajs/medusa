@@ -47,10 +47,9 @@ export class ShippingOptionRequirement {
 }
 
 /**
- * @schema shipping_option_requirement
+ * @schema ShippingOptionRequirement
  * title: "Shipping Option Requirement"
  * description: "A requirement that a Cart must satisfy for the Shipping Option to be available to the Cart."
- * x-resourceId: shipping_option_requirement
  * type: object
  * required:
  *   - shipping_option_id
@@ -67,7 +66,7 @@ export class ShippingOptionRequirement {
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   shipping_option:
  *     description: Available if the relation `shipping_option` is expanded.
- *     $ref: "#/components/schemas/shipping_option"
+ *     $ref: "#/components/schemas/ShippingOption"
  *   type:
  *     description: "The type of the requirement, this defines how the value will be compared to the Cart's total. `min_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available."
  *     type: string

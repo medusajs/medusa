@@ -33,10 +33,9 @@ export class ProductCollection extends SoftDeletableEntity {
 }
 
 /**
- * @schema product_collection
+ * @schema ProductCollection
  * title: "Product Collection"
  * description: "Product Collections represents a group of Products that are related."
- * x-resourceId: product_collection
  * type: object
  * required:
  *   - title

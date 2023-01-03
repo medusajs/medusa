@@ -15,27 +15,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - items
-          properties:
-            items:
-              description: The Line Items that have been received.
-              type: array
-              items:
-                required:
-                  - item_id
-                  - quantity
-                properties:
-                  item_id:
-                    description: The ID of the Line Item.
-                    type: string
-                  quantity:
-                    description: The quantity of the Line Item.
-                    type: integer
-            refund:
-              description: The amount to refund.
-              type: number
+          $ref: ../components/schemas/AdminPostReturnsReturnReceiveReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -59,7 +39,7 @@ post:
             type: object
             properties:
               return:
-                $ref: ../components/schemas/return.yaml
+                $ref: ../components/schemas/Return.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -1,0 +1,13 @@
+type: object
+required:
+  - name
+properties:
+  name:
+    description: The name of the Sales Channel
+    type: string
+  description:
+    description: The description of the Sales Channel
+    type: string
+  is_disabled:
+    description: Whether the Sales Channel is disabled or not.
+    type: boolean

@@ -42,19 +42,23 @@ These methods are used at different points in the Checkout flow as well as when 
 
 ![Checkout Flow - Payment](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001750/Medusa%20Docs/Diagrams/WeDr0ph_idcrir.jpg)
 
+---
+
 ## Create a Payment Provider
 
 The first step to create a payment provider is to create a JavaScript or TypeScript file in `src/services`. The file's name should be the name of the payment provider.
 
 For example, create the file `src/services/my-payment.ts` with the following content:
 
+<!-- eslint-disable max-len -->
+
 ```ts title=src/services/my-payment.ts
 import { AbstractPaymentService, Context, Data, Payment, PaymentSession, PaymentSessionStatus, TransactionBaseService } from "@medusajs/medusa"
 import { EntityManager } from "typeorm";
 
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
-  protected manager_: EntityManager;
-  protected transactionManager_: EntityManager;
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
 
   async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
     throw new Error("Method not implemented.");
@@ -92,7 +96,7 @@ class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
 
 }
 
-export default MyPaymentService;
+export default MyPaymentService
 ```
 
 Where `MyPaymentService` is the name of your Payment Provider service. For example, Stripe’s Payment Provider Service is called `StripeProviderService`.
@@ -121,10 +125,16 @@ You can also use the constructor to initialize your integration with the third-p
 
 Additionally, if you’re creating your Payment Provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
 
+<!-- eslint-disable max-len -->
+
 ```ts
-constructor({ productService }, options) {
-  super();
-  //you can access options here
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  constructor({ productService }, options) {
+    super()
+    // you can access options here
+  }
+  // ...
 }
 ```
 
@@ -168,11 +178,14 @@ Where:
 
 An example of a minimal implementation of `createPayment`:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 import { PaymentContext, PaymentSessionResponse } from "@medusajs/medusa"
-//...
 
-async createPayment(context: PaymentContext): Promise<PaymentSessionResponse> {
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async createPayment(context: PaymentContext): Promise<PaymentSessionResponse> {
   //prepare data
   return { 
     session_data,
@@ -191,12 +204,17 @@ This method must return an object containing the data from the third-party provi
 
 An example of a minimal implementation of `retrievePayment` where you don’t need to interact with the third-party provider:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 import { Data } from "@medusajs/medusa"
-//...
+// ...
 
-async retrievePayment(paymentData: Data): Promise<Data> {
-  return {};
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async retrievePayment(paymentData: Data): Promise<Data> {
+    return {}
+  }
 }
 ```
 
@@ -218,12 +236,17 @@ This method returns a string that represents the status. The status must be one 
 
 An example of a minimal implementation of `getStatus` where you don’t need to interact with the third-party provider:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 import { Data, PaymentSessionStatus } from "@medusajs/medusa"
-//...
+// ...
 
-async getStatus(data: Data): Promise<PaymentSessionStatus> {
-  return PaymentSessionStatus.AUTHORIZED;
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async getStatus(data: Data): Promise<PaymentSessionStatus> {
+    return PaymentSessionStatus.AUTHORIZED
+  }
 }
 ```
 
@@ -279,10 +302,14 @@ Where:
 
 An example of a minimal implementation of `updatePayment`:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 import { PaymentContext, Data } from "@medusajs/medusa";
 //...
 
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
 async updatePayment(paymentSessionData: Data, context: PaymentContext): Promise<PaymentSessionResponse> {
   //prepare data
   return {
@@ -304,12 +331,20 @@ This method must return an object that will be stored in the `data` field of the
 
 An example of a minimal implementation of `updatePaymentData` that returns the `updatedData` passed in the body of the request as-is to update the `data` field of the Payment Session.
 
-```ts
-import { Data } from "@medusajs/medusa";
-//...
+<!-- eslint-disable max-len -->
 
-async updatePaymentData(paymentSessionData: Data, updatedData: Data): Promise<Data> {
-  return updatedData;
+```ts
+import { Data } from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async updatePaymentData(
+    paymentSessionData: Data,
+    updatedData: Data
+  ): Promise<Data> {
+    return updatedData
+  }
 }
 ```
 
@@ -328,12 +363,17 @@ You can use this method to interact with the third-party provider to delete data
 
 An example of a minimal implementation of `deletePayment` where no interaction with a third-party provider is required:
 
-```ts
-import { PaymentSession } from "@medusajs/medusa";
-//...
+<!-- eslint-disable max-len -->
 
-async deletePayment(paymentSession: PaymentSession): Promise<void> {
-  return;
+```ts
+import { PaymentSession } from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async deletePayment(paymentSession: PaymentSession): Promise<void> {
+    return
+  }
 }
 ```
 
@@ -366,17 +406,29 @@ You can utilize this method to interact with the third-party provider and perfor
 
 An example of a minimal implementation of `authorizePayment` that doesn’t need to interact with any third-party provider:
 
-```ts
-import { Data, PaymentSession, PaymentSessionStatus } from "@medusajs/medusa";
-//...
+<!-- eslint-disable max-len -->
 
-async authorizePayment(paymentSession: PaymentSession, context: Data): Promise<{ data: Data; status: PaymentSessionStatus; }> {
-  return {
-    status: PaymentSessionStatus.AUTHORIZED,
-    data: {
-      id: 'test'
+```ts
+import { 
+  Data, 
+  PaymentSession, 
+  PaymentSessionStatus, 
+} from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async authorizePayment(
+    paymentSession: PaymentSession,
+    context: Data
+  ): Promise<{ data: Data; status: PaymentSessionStatus; }> {
+    return {
+      status: PaymentSessionStatus.AUTHORIZED,
+      data: {
+        id: "test",
+      },
     }
-  };
+  }
 }
 ```
 
@@ -390,12 +442,17 @@ This method must return an object to be stored in the `data` field of the Paymen
 
 An example of a minimal implementation of `getPaymentData`:
 
-```ts
-import { Data, PaymentSession } from "@medusajs/medusa";
-//...
+<!-- eslint-disable max-len -->
 
-async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
-  return paymentSession.data;
+```ts
+import { Data, PaymentSession } from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
+    return paymentSession.data
+  }
 }
 ```
 
@@ -413,14 +470,19 @@ This method must return an object that will be stored in the `data` field of the
 
 An example of a minimal implementation of `capturePayment` that doesn’t need to interact with a third-party provider:
 
-```ts
-import { Data, Payment } from "@medusajs/medusa";
-//...
+<!-- eslint-disable max-len -->
 
-async capturePayment(payment: Payment): Promise<Data> {
-  return {
-    status: 'captured'
-  };
+```ts
+import { Data, Payment } from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async capturePayment(payment: Payment): Promise<Data> {
+    return {
+      status: "captured",
+    }
+  }
 }
 ```
 
@@ -438,13 +500,21 @@ This method must return an object that is stored in the `data` field of the Paym
 
 An example of a minimal implementation of `refundPayment` that doesn’t need to interact with a third-party provider:
 
-```ts
-import { Data, Payment } from "@medusajs/medusa";
-//...
+<!-- eslint-disable max-len -->
 
-async refundPayment(payment: Payment, refundAmount: number): Promise<Data> {
-  return {
-    id: 'test'
+```ts
+import { Data, Payment } from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async refundPayment(
+    payment: Payment, 
+    refundAmount: number
+  ): Promise<Data> {
+    return {
+      id: "test",
+    }
   }
 }
 ```
@@ -466,16 +536,23 @@ This method must return an object that is stored in the `data` field of the Paym
 
 An example of a minimal implementation of `cancelPayment` that doesn’t need to interact with a third-party provider:
 
-```ts
-import { Data, Payment } from "@medusajs/medusa";
-//...
+<!-- eslint-disable max-len -->
 
-async cancelPayment(payment: Payment): Promise<Data> {
-  return {
-    id: 'test'
+```ts
+import { Data, Payment } from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  async cancelPayment(payment: Payment): Promise<Data> {
+    return {
+      id: "test",
+    }
   }
 }
 ```
+
+---
 
 ## Optional Methods
 
@@ -491,36 +568,43 @@ This method returns an array of saved payment methods retrieved from the third-p
 
 :::note
 
-If you’re using Medusa’s [Next.js](../../../starters/nextjs-medusa-starter.md) or [Gatsby](../../../starters/gatsby-medusa-starter.md) storefront starters, note that the presentation of this method is not implemented. You’ll need to implement the UI and pages for this method based on your implementation and the provider you are using.
+If you’re using Medusa’s [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) storefront starters, note that the presentation of this method is not implemented. You’ll need to implement the UI and pages for this method based on your implementation and the provider you are using.
 
 :::
 
 An example of the implementation of `retrieveSavedMethods` taken from Stripe’s Payment Provider:
 
+<!-- eslint-disable max-len -->
+
 ```ts
 import { Customer, Data } from "@medusajs/medusa"
-//...
+// ...
 
-/**
-* Fetches a customers saved payment methods if registered in Stripe.
-* @param {object} customer - customer to fetch saved cards for
-* @returns {Promise<Array<object>>} saved payments methods
-*/
-async retrieveSavedMethods(customer: Customer): Promise<Data[]> {
-  if (customer.metadata && customer.metadata.stripe_id) {
-    const methods = await this.stripe_.paymentMethods.list({
-      customer: customer.metadata.stripe_id,
-      type: "card",
-    })
+class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+  // ...
+  /**
+  * Fetches a customers saved payment methods if registered in Stripe.
+  * @param {object} customer - customer to fetch saved cards for
+  * @return {Promise<Array<object>>} saved payments methods
+  */
+  async retrieveSavedMethods(customer: Customer): Promise<Data[]> {
+    if (customer.metadata && customer.metadata.stripe_id) {
+      const methods = await this.stripe_.paymentMethods.list({
+        customer: customer.metadata.stripe_id,
+        type: "card",
+      })
 
-    return methods.data
+      return methods.data
+    }
+
+    return Promise.resolve([])
   }
-
-  return Promise.resolve([])
 }
 ```
 
-## What’s Next
+---
 
-- Check out the Payment Providers for [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) for implementation examples.
-- Learn more about the [frontend checkout flow](./../../storefront/how-to-implement-checkout-flow.mdx).
+## See Also
+
+- Implementation Examples: [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) payment providers.
+- [Implement checkout flow on the storefront](./../../storefront/how-to-implement-checkout-flow.mdx).

@@ -91,6 +91,8 @@ export const carts = {
         customer: IdMap.getId("not-lebron"),
       },
     },
+    region: { currency_code: "usd" },
+    total: 100,
     shipping_address: {},
     billing_address: {},
     discounts: [],

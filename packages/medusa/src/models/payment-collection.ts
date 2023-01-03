@@ -102,10 +102,9 @@ export class PaymentCollection extends SoftDeletableEntity {
 }
 
 /**
- * @schema payment_collection
+ * @schema PaymentCollection
  * title: "Payment Collection"
  * description: "Payment Collection"
- * x-resourceId: payment_collection
  * type: object
  * required:
  *   - type
@@ -148,7 +147,7 @@ export class PaymentCollection extends SoftDeletableEntity {
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
  *     description: Available if the relation `region` is expanded.
- *     $ref: "#/components/schemas/region"
+ *     $ref: "#/components/schemas/Region"
  *   currency_code:
  *     description: "The 3 character ISO code for the currency."
  *     type: string
@@ -158,17 +157,17 @@ export class PaymentCollection extends SoftDeletableEntity {
  *       description: See a list of codes.
  *   currency:
  *     description: Available if the relation `currency` is expanded.
- *     $ref: "#/components/schemas/currency"
+ *     $ref: "#/components/schemas/Currency"
  *   payment_sessions:
  *     type: array
  *     description: Available if the relation `payment_sessions` is expanded.
  *     items:
- *       $ref: "#/components/schemas/payment_session"
+ *       $ref: "#/components/schemas/PaymentSession"
  *   payments:
  *     type: array
  *     description: Available if the relation `payments` is expanded.
  *     items:
- *       $ref: "#/components/schemas/payment"
+ *       $ref: "#/components/schemas/Payment"
  *   created_by:
  *     type: string
  *     description: "The ID of the user that created the payment collection."

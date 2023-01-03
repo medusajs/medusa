@@ -23,9 +23,9 @@ You want to implement the following in your storefront:
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
-It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.md) or [Gatsby](../../starters/gatsby-medusa-starter.md) storefronts.
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
@@ -47,9 +47,9 @@ You can retrieve available regions by sending a request to the [List Regions](/a
 ```tsx
 medusa.regions.list()
 .then(({ regions }) => {
-  console.log(regions.length);
-  //show customers available regions
-});
+  console.log(regions.length)
+  // show customers available regions
+})
 ```
 
 </TabItem>
@@ -57,13 +57,13 @@ medusa.regions.list()
 
 ```tsx
 fetch(`<SERVER_URL>/store/regions`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ regions }) => {
-  console.log(regions.length);
-  //show customers available regions
-});
+  console.log(regions.length)
+  // show customers available regions
+})
 ```
 
 </TabItem>
@@ -86,12 +86,12 @@ For example:
 
 ```tsx
 medusa.products.list({
-  region_id: regionId
+  region_id: regionId,
 })
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-  //show customer the products
-});
+  console.log(products.length)
+  // show customer the products
+})
 ```
 
 </TabItem>
@@ -99,13 +99,13 @@ medusa.products.list({
 
 ```tsx
 fetch(`<SERVER_URL>/store/products?region_id=${regionId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
-  console.log(products.length);
-  //show customer the products
-});
+  console.log(products.length)
+  // show customer the products
+})
 ```
 
 </TabItem>
@@ -136,11 +136,11 @@ For example:
 
 ```tsx
 medusa.carts.update(cartId, {
-  region_id: regionId
+  region_id: regionId,
 })
 .then(({ cart }) => {
-  console.log(cart.id);
-});
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -148,16 +148,16 @@ medusa.carts.update(cartId, {
 
 ```tsx
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
-    region_id: regionId
-  })
+    region_id: regionId,
+  }),
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.id);
-});
+  console.log(cart.id)
+})
 ```
 
 </TabItem>
@@ -169,7 +169,7 @@ This request returns the full object of the updated cart.
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn [how to implement cart functionalities in your storefront](../../guides/carts-in-medusa.mdx)
-- Learn [how to implement checkout in your storefront](./how-to-implement-checkout-flow.mdx)
+- [Implement cart functionalities in your storefront](../../guides/carts-in-medusa.mdx)
+- [Implement checkout in your storefront](./how-to-implement-checkout-flow.mdx)

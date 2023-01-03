@@ -1,5 +1,6 @@
 import { StoreService } from "../../../../services"
 import { EntityManager } from "typeorm"
+
 /**
  * @oas [post] /store/currencies/{code}
  * operationId: "PostStoreCurrenciesCode"
@@ -46,7 +47,7 @@ import { EntityManager } from "typeorm"
  *           type: object
  *           properties:
  *             store:
- *               $ref: "#/components/schemas/store"
+ *               $ref: "#/components/schemas/Store"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

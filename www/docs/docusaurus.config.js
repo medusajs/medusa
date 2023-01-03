@@ -191,7 +191,10 @@ const config = {
         href: 'https://github.com/medusajs/medusa'
       },
     ],
-    reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml'
+    reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml',
+    footerFeedback: {
+      event: 'survey'
+    }
   },
   presets: [
     [

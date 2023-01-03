@@ -174,10 +174,9 @@ export class LineItem extends BaseEntity {
 }
 
 /**
- * @schema line_item
+ * @schema LineItem
  * title: "Line Item"
  * description: "Line Items represent purchasable units that can be added to a Cart for checkout. When Line Items are purchased they will get copied to the resulting order and can eventually be referenced in Fulfillments and Returns. Line Items may also be created when processing Swaps and Claims."
- * x-resourceId: line_item
  * type: object
  * required:
  *   - title
@@ -220,12 +219,12 @@ export class LineItem extends BaseEntity {
  *     description: Available if the relation `tax_lines` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/line_item_tax_line"
+ *       $ref: "#/components/schemas/LineItemTaxLine"
  *   adjustments:
  *     description: Available if the relation `adjustments` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/line_item_adjustment"
+ *       $ref: "#/components/schemas/LineItemAdjustment"
  *   title:
  *     description: "The title of the Line Item, this should be easily identifiable by the Customer."
  *     type: string
