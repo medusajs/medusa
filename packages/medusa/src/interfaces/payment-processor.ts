@@ -1,20 +1,14 @@
-import {
-  Address,
-  Customer,
-  PaymentSessionStatus,
-  ShippingMethod,
-} from "../models"
+import { Address, Customer, PaymentSessionStatus } from "../models"
 import { MedusaContainer } from "../types/global"
 
 export type PaymentProcessorContext = {
-  shipping_address?: Address | null
-  shipping_methods?: ShippingMethod[]
   billing_address?: Address | null
   email: string
   currency_code: string
   amount: number
   resource_id?: string
   customer?: Customer
+  context: Record<string, unknown>
 }
 
 export type PaymentProcessorSessionResponse = {
