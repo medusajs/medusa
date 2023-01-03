@@ -362,99 +362,16 @@ export default class PaymentCollectionService extends TransactionBaseService {
     sessionInput: PaymentCollectionsSessionsInput,
     customerId: string
   ): Promise<PaymentCollection> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
-        this.paymentCollectionRepository_
-      )
-
+    return await this.atomicPhase_(async () => {
       const payCol = await this.retrieve(paymentCollectionId, {
-        relations: ["region", "region.payment_providers", "payment_sessions"],
+        select: ["amount"],
       })
 
-      if (payCol.status !== PaymentCollectionStatus.NOT_PAID) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Cannot set payment sessions for a payment collection with status ${payCol.status}`
-        )
-      }
-
-      const hasProvider = payCol?.region?.payment_providers
-        .map((p) => p.id)
-        .includes(sessionInput.provider_id)
-
-      if (!hasProvider) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Payment provider not found"
-        )
-      }
-
-      const customer = !isDefined(customerId)
-        ? null
-        : await this.customerService_
-            .withTransaction(manager)
-            .retrieve(customerId, {
-              select: ["id", "email", "metadata"],
-            })
-            .catch(() => null)
-
-      const paymentSessions: PaymentSession[] = []
-
-      const inputData: PaymentSessionInput = {
-        cart: {
-          email: customer?.email || "",
-          context: {},
-          shipping_methods: [],
-          shipping_address: null,
-          id: "",
-        },
-        resource_id: payCol.id,
-        currency_code: payCol.currency_code,
-        amount: payCol.amount,
-        provider_id: sessionInput.provider_id,
-        customer,
-      }
-
-      const existingSession = payCol.payment_sessions?.find(
-        (sess) => sessionInput.provider_id === sess?.provider_id
+      return await this.setPaymentSessionsBatch(
+        paymentCollectionId,
+        [{ ...sessionInput, amount: payCol.amount }],
+        customerId
       )
-
-      if (existingSession) {
-        const paymentSession = await this.paymentProviderService_
-          .withTransaction(manager)
-          .updateSession(existingSession, inputData)
-
-        paymentSessions.push(paymentSession)
-      } else {
-        const paymentSession = await this.paymentProviderService_
-          .withTransaction(manager)
-          .createSession(inputData)
-
-        paymentSessions.push(paymentSession)
-
-        const removeSessions: PaymentSession[] = payCol.payment_sessions.filter(
-          ({ id }) => id != paymentSession.id
-        )
-
-        if (removeSessions.length) {
-          await paymentCollectionRepository.delete(
-            removeSessions.map((sess) => sess.id)
-          )
-
-          const paymentProviderTx =
-            this.paymentProviderService_.withTransaction(manager)
-
-          Promise.all(
-            removeSessions.map(async (sess) =>
-              paymentProviderTx.deleteSession(sess)
-            )
-          ).catch(() => void 0)
-        }
-      }
-
-      payCol.payment_sessions = paymentSessions
-
-      return await paymentCollectionRepository.save(payCol)
     })
   }
 
