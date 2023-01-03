@@ -1021,7 +1021,7 @@ describe("OrderService", () => {
           },
         ],
         { metadata: {}, order_id: "test", no_notification: undefined },
-        { location_id: "loc_1" }
+        { locationId: "loc_1" }
       )
     })
 

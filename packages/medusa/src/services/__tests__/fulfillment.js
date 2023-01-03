@@ -53,12 +53,12 @@ describe("FulfillmentService", () => {
               },
             },
           ],
-          items: [{ id: IdMap.getId("test-line"), quantity: 10 }],
+          items: [{ id: IdMap.getId("test-line"), quantity: 9 }],
         },
         [
           {
             item_id: IdMap.getId("test-line"),
-            quantity: 10,
+            quantity: 9,
           },
         ],
         { order_id: "test", metadata: {} }
@@ -68,7 +68,7 @@ describe("FulfillmentService", () => {
       expect(fulfillmentRepository.create).toHaveBeenCalledWith({
         order_id: "test",
         provider_id: "GLS Express",
-        items: [{ item_id: IdMap.getId("test-line"), quantity: 10 }],
+        items: [{ item_id: IdMap.getId("test-line"), quantity: 9 }],
         data: expect.anything(),
         metadata: {},
       })
