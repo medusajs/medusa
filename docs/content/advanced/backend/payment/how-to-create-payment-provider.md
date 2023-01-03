@@ -130,8 +130,8 @@ Additionally, if you’re creating your Payment Provider as an external plugin t
 ```ts
 class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
   // ...
-  constructor({ productService }, options) {
-    super()
+  constructor(container, options) {
+    super(container)
     // you can access options here
   }
   // ...
