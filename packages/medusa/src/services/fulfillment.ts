@@ -44,7 +44,6 @@ class FulfillmentService extends TransactionBaseService {
   protected readonly fulfillmentRepository_: typeof FulfillmentRepository
   protected readonly trackingLinkRepository_: typeof TrackingLinkRepository
   protected readonly lineItemRepository_: typeof LineItemRepository
-  // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({

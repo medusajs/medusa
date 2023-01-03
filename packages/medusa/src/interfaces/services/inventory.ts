@@ -11,7 +11,7 @@ import {
   FilterableReservationItemProps,
   CreateInventoryLevelInput,
   UpdateInventoryLevelInput,
-  UpdateReservationDTO,
+  UpdateReservationInput,
 } from "../../types/inventory"
 
 export interface IInventoryService {
@@ -65,7 +65,7 @@ export interface IInventoryService {
 
   updateReservation(
     reservationId: string,
-    update: UpdateReservationDTO
+    update: UpdateReservationInput
   ): Promise<ReservationItemDTO>
 
   deleteReservationItem(id: string): Promise<void>

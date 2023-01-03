@@ -129,7 +129,6 @@ class CartService extends TransactionBaseService {
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly featureFlagRouter_: FlagRouter
-  // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({

@@ -107,11 +107,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     const hasInventory = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
-        const itemQuantity = inventoryPart.quantity * quantity
+        // const itemQuantity = quantity
         return await this.inventoryService_.confirmInventory(
           inventoryPart.inventory_item_id,
           locations,
-          itemQuantity
+          quantity
         )
       })
     )
@@ -375,34 +375,35 @@ class ProductVariantInventoryService extends TransactionBaseService {
       await this.productVariantService_.update(variantId, {
         inventory_quantity: variant.inventory_quantity - quantity,
       })
-    } else {
-      const [reservations, reservationCount] =
-        await this.inventoryService_.listReservationItems(
-          {
-            line_item_id: lineItemId,
-          },
-          {
-            order: { created_at: "DESC" },
-          }
-        )
 
-      if (reservationCount === 0) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Reservation not found for line item ${lineItemId}`
-        )
-      }
-      let reservation = reservations[0]
-
-      reservation =
-        reservations.find(
-          (r) => r.location_id === location_id && r.quantity >= quantity
-        ) ?? reservation
-
-      await this.inventoryService_.updateReservation(reservation.id, {
-        quantity: reservation.quantity + quantity,
-      })
+      return
     }
+    const [reservations, reservationCount] =
+      await this.inventoryService_.listReservationItems(
+        {
+          line_item_id: lineItemId,
+        },
+        {
+          order: { created_at: "DESC" },
+        }
+      )
+
+    if (reservationCount === 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Reservation not found for line item ${lineItemId}`
+      )
+    }
+    let reservation = reservations[0]
+
+    reservation =
+      reservations.find(
+        (r) => r.location_id === location_id && r.quantity >= quantity
+      ) ?? reservation
+
+    await this.inventoryService_.updateReservation(reservation.id, {
+      quantity: reservation.quantity + quantity,
+    })
   }
 
   async validateInventoryAtLocation(items: LineItem[], locationId: string) {
@@ -449,6 +450,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param variantId variant id
    * @param quantity quantity to release
    */
+  // TODO: RENAME
   async releaseReservationsByLineItem(
     lineItemId: string,
     variantId: string,

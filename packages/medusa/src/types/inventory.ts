@@ -29,7 +29,7 @@ export type ReservationItemDTO = {
   deleted_at: string | Date | null
 }
 
-export type UpdateReservationDTO = {
+export type UpdateReservationInput = {
   location_id?: string
   item_id?: string
   quantity?: number

@@ -1146,12 +1146,12 @@ class OrderService extends TransactionBaseService {
         this.productVariantInventoryService_.withTransaction(manager)
       await Promise.all(
         order.items.map(async (item) => {
-          const amountToRelease = item.quantity - item.fulfilled_quantity
           if (item.variant_id) {
+            // TODO: validate quantity for order with cancelled fulfillments being the same before and after
             return await inventoryServiceTx.releaseReservationsByLineItem(
               item.id,
               item.variant_id,
-              amountToRelease
+              item.quantity
             )
           }
         })
