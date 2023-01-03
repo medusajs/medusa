@@ -92,15 +92,11 @@ class FulfillmentService extends TransactionBaseService {
 
       // for each method find the items in the order, that are associated
       // with the profile on the current shipping method
-      // if (shippingMethods.length === 1) {
-      //   temp.items = items
-      // } else {
       const methodProfile = method.shipping_option.profile_id
 
       temp.items = items.filter(({ variant }) => {
         variant.product.profile_id === methodProfile
       })
-      // }
       partitioned.push(temp)
     }
     return partitioned
@@ -163,7 +159,6 @@ class FulfillmentService extends TransactionBaseService {
     }
     return lineItemRepo.create({
       ...item,
-      fulfilled_quantity: item.fulfilled_quantity + quantity,
       quantity,
     })
   }
@@ -245,6 +240,7 @@ class FulfillmentService extends TransactionBaseService {
                 await pvInventoryServiceTx.adjustReservationsQuantityByLineItem(
                   i.id,
                   i.variant_id!,
+                  location_id!,
                   -i.quantity
                 )
             )

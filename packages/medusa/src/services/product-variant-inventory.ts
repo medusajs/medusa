@@ -358,6 +358,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   async adjustReservationsQuantityByLineItem(
     lineItemId: string,
     variantId: string,
+    location_id: string,
     quantity: number
   ): Promise<void> {
     if (!this.inventoryService_) {
@@ -376,6 +377,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       const [reservations, reservationCount] =
         await this.inventoryService_.listReservationItems({
           line_item_id: lineItemId,
+          location_id,
         })
 
       if (reservationCount === 0) {
