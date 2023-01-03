@@ -1298,9 +1298,7 @@ class OrderService extends TransactionBaseService {
       no_notification?: boolean
       location_id?: string
       metadata?: Record<string, unknown>
-    } = {
-      metadata: {},
-    }
+    } = {}
   ): Promise<Order> {
     const { metadata, no_notification, location_id } = config
 
@@ -1355,7 +1353,7 @@ class OrderService extends TransactionBaseService {
           order as unknown as CreateFulfillmentOrder,
           itemsToFulfill,
           {
-            metadata,
+            metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
           },

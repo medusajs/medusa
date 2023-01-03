@@ -19,6 +19,9 @@ export const ProductVariantInventoryServiceMock = {
         )
       }
     }),
+  adjustReservationsQuantityByLineItem: jest
+    .fn()
+    .mockImplementation((lineItem) => {}),
   releaseReservationsByLineItem: jest.fn().mockImplementation((lineItem) => {}),
   reserveQuantity: jest
     .fn()
