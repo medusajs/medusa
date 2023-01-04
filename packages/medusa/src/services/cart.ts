@@ -1903,11 +1903,13 @@ class CartService extends TransactionBaseService {
           )
 
           if (paymentSession) {
-            // Delete the session with the provider
-            await psRepo.delete(paymentSession)
-            /* await this.paymentProviderService_
-              .withTransaction(transactionManager)
-              .deleteSession(paymentSession)*/
+            if (paymentSession.is_selected) {
+              await this.paymentProviderService_
+                .withTransaction(transactionManager)
+                .deleteSession(paymentSession)
+            } else {
+              await psRepo.delete(paymentSession)
+            }
           }
         }
 
@@ -1926,12 +1928,12 @@ class CartService extends TransactionBaseService {
    * @param cartId - the id of the cart to remove from
    * @param providerId - the id of the provider whoose payment session
    *    should be removed.
-   * @return {Promise<Cart>} the resulting cart.
+   * @return {Promise<void>} the resulting cart.
    */
   async refreshPaymentSession(
     cartId: string,
     providerId: string
-  ): Promise<Cart> {
+  ): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieveWithTotals(cartId, {
@@ -1944,25 +1946,30 @@ class CartService extends TransactionBaseService {
           )
 
           if (paymentSession) {
-            // Delete the session with the provider
-            await this.paymentProviderService_
-              .withTransaction(transactionManager)
-              .refreshSession(paymentSession, {
-                cart: cart as Cart,
-                customer: cart.customer,
+            if (paymentSession.is_selected) {
+              await this.paymentProviderService_
+                .withTransaction(transactionManager)
+                .refreshSession(paymentSession, {
+                  cart: cart as Cart,
+                  customer: cart.customer,
+                  amount: cart.total,
+                  currency_code: cart.region.currency_code,
+                  provider_id: providerId,
+                })
+            } else {
+              const psRepo = transactionManager.getCustomRepository(
+                this.paymentSessionRepository_
+              )
+              await psRepo.update(paymentSession.id, {
                 amount: cart.total,
-                currency_code: cart.region.currency_code,
-                provider_id: providerId,
               })
+            }
           }
         }
 
-        const updatedCart = await this.retrieve(cartId)
-
         await this.eventBus_
           .withTransaction(transactionManager)
-          .emit(CartService.Events.UPDATED, updatedCart)
-        return updatedCart
+          .emit(CartService.Events.UPDATED, { id: cartId })
       }
     )
   }
