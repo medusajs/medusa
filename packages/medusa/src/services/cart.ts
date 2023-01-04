@@ -12,6 +12,7 @@ import {
   DiscountRuleType,
   LineItem,
   PaymentSession,
+  PaymentSessionStatus,
   SalesChannel,
   ShippingMethod,
 } from "../models"
@@ -1631,43 +1632,41 @@ class CartService extends TransactionBaseService {
   }
 
   /**
-   * Sets a payment method for a cart.
+   * Sets a payment method for a cart as selected and create the session to the external provider.
    * @param cartId - the id of the cart to add payment method to
    * @param providerId - the id of the provider to be set to the cart
-   * @return result of update operation
    */
-  async setPaymentSession(cartId: string, providerId: string): Promise<Cart> {
+  async setPaymentSession(cartId: string, providerId: string): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const psRepo = transactionManager.getCustomRepository(
           this.paymentSessionRepository_
         )
 
-        const cart = await this.retrieveWithTotals(cartId, {
+        const cart = await this.retrieve(cartId, {
           relations: ["region", "region.payment_providers", "payment_sessions"],
         })
 
-        // The region must have the provider id in its providers array
-        if (
-          providerId !== "system" &&
-          !(
-            cart.region.payment_providers.length &&
-            cart.region.payment_providers.find(({ id }) => providerId === id)
-          )
-        ) {
+        const isProviderPresent = cart.region.payment_providers.find(
+          ({ id }) => providerId === id
+        )
+
+        if (providerId !== "system" && !isProviderPresent) {
           throw new MedusaError(
             MedusaError.Types.NOT_ALLOWED,
             `The payment method is not available in this region`
           )
         }
 
-        await Promise.all(
-          cart.payment_sessions.map(async (paymentSession) => {
-            return psRepo.save({ ...paymentSession, is_selected: null })
-          })
+        const cartPaymentSessionIds = cart.payment_sessions.map((p) => p.id)
+        await psRepo.update(
+          { id: In(cartPaymentSessionIds) },
+          {
+            is_selected: null,
+          }
         )
 
-        const paymentSession = cart.payment_sessions.find(
+        let paymentSession = cart.payment_sessions.find(
           (ps) => ps.provider_id === providerId
         )
 
@@ -1678,16 +1677,31 @@ class CartService extends TransactionBaseService {
           )
         }
 
-        paymentSession.is_selected = true
+        const sessionInput: PaymentSessionInput = {
+          cart,
+          customer: cart.customer,
+          amount: cart.total!,
+          currency_code: cart.region.currency_code,
+          provider_id: providerId,
+        }
 
-        await psRepo.save(paymentSession)
+        // If the session was already selected, then just update it remotely, otherwise we create it remotely
+        if (paymentSession.is_selected) {
+          await this.paymentProviderService_.updateSession(
+            paymentSession,
+            sessionInput
+          )
+        } else {
+          paymentSession = await this.paymentProviderService_.createSession(
+            sessionInput
+          )
 
-        const updatedCart = await this.retrieve(cartId)
+          await psRepo.update(paymentSession.id, { is_selected: true })
+        }
 
         await this.eventBus_
           .withTransaction(transactionManager)
-          .emit(CartService.Events.UPDATED, updatedCart)
-        return updatedCart
+          .emit(CartService.Events.UPDATED, { id: cartId })
       },
       "SERIALIZABLE"
     )
@@ -1727,6 +1741,7 @@ class CartService extends TransactionBaseService {
               "region",
               "region.tax_rates",
               "region.payment_providers",
+              "payment_session",
               "payment_sessions",
               "customer",
             ],
@@ -1735,77 +1750,120 @@ class CartService extends TransactionBaseService {
         )
 
         const { total, region } = cart
+
+        const providerSet = new Set(region.payment_providers.map((p) => p.id))
+
+        /**
+         * Find the payment sessions that needs to be removed
+         *
+         * if the cart total is <= 0 or the provider does not belong to the region then delete the sessions.
+         * The deletion occurs locally if there is no external data or if it is not selected
+         * otherwise the deletion will also occur remotely through the external provider.
+         */
+
+        const paymentSessionsToRemove = cart.payment_sessions.filter(
+          (session) => {
+            return total <= 0 || !providerSet.has(session.provider_id)
+          }
+        )
+
+        await Promise.all(
+          paymentSessionsToRemove.map(async (session) => {
+            if (session.is_selected || Object.keys(session.data).length) {
+              return this.paymentProviderService_
+                .withTransaction(transactionManager)
+                .deleteSession(session)
+            }
+
+            return psRepo.delete(session)
+          })
+        )
+
+        // In the case of a cart that has a total <= 0 we can return prematurely since
+        // we already have deleted the sessions, and we don't need to create or update anything from now on.
+        if (total <= 0) {
+          return
+        }
+
+        /**
+         * Find the payment sessions that needs to be updated
+         *
+         * if the cart total is > 0 and the provider belongs to the region then update the sessions.
+         * The update occurs locally if it is not selected
+         * otherwise the update will also occur remotely through the external provider.
+         * In case the session is not selected but contains an external provider data, we delete the external provider
+         * session to be in a clean state.
+         */
+
+        const seen: Set<string> = new Set()
+
         const partialSessionInput: Omit<PaymentSessionInput, "provider_id"> = {
           cart: cart as Cart,
           customer: cart.customer,
-          amount: cart.total,
+          amount: total,
           currency_code: cart.region.currency_code,
         }
 
-        // If there are existing payment sessions ensure that these are up to date
-        const seen: string[] = []
-        if (cart.payment_sessions?.length) {
-          await Promise.all(
-            cart.payment_sessions.map(async (paymentSession) => {
-              if (
-                total <= 0 ||
-                !region.payment_providers.find(
-                  ({ id }) => id === paymentSession.provider_id
-                )
-              ) {
-                return this.paymentProviderService_
-                  .withTransaction(transactionManager)
-                  .deleteSession(paymentSession)
-              } else {
-                seen.push(paymentSession.provider_id)
+        const paymentSessionsToUpdate = cart.payment_sessions.filter(
+          (session) => {
+            return providerSet.has(session.provider_id)
+          }
+        )
 
-                const paymentSessionInput = {
-                  ...partialSessionInput,
-                  provider_id: paymentSession.provider_id,
-                }
+        await Promise.all(
+          paymentSessionsToUpdate.map(async (session) => {
+            seen.add(session.provider_id)
 
-                return this.paymentProviderService_
-                  .withTransaction(transactionManager)
-                  .updateSession(paymentSession, paymentSessionInput)
+            // Update remotely
+            if (session.is_selected) {
+              const paymentSessionInput = {
+                ...partialSessionInput,
+                provider_id: session.provider_id,
               }
-            })
-          )
-        }
 
-        if (total > 0) {
-          // If only one payment session exists, we preselect it
-          if (region.payment_providers.length === 1 && !cart.payment_session) {
-            const paymentProvider = region.payment_providers[0]
-            const paymentSessionInput = {
-              ...partialSessionInput,
-              provider_id: paymentProvider.id,
+              return this.paymentProviderService_
+                .withTransaction(transactionManager)
+                .updateSession(session, paymentSessionInput)
             }
 
-            const paymentSession = await this.paymentProviderService_
-              .withTransaction(transactionManager)
-              .createSession(paymentSessionInput)
-
-            paymentSession.is_selected = true
-
-            await psRepo.save(paymentSession)
-          } else {
-            await Promise.all(
-              region.payment_providers.map(async (paymentProvider) => {
-                if (!seen.includes(paymentProvider.id)) {
-                  const paymentSessionInput = {
-                    ...partialSessionInput,
-                    provider_id: paymentProvider.id,
-                  }
-
-                  return this.paymentProviderService_
-                    .withTransaction(transactionManager)
-                    .createSession(paymentSessionInput)
-                }
-                return
+            // Delete remotely and create again locally
+            if (Object.keys(session.data).length) {
+              await this.paymentProviderService_.deleteSession(session)
+              const paymentSession = psRepo.create({
+                provider_id: session.provider_id,
+                status: PaymentSessionStatus.PENDING,
+                amount: total,
               })
-            )
-          }
+              return psRepo.save(paymentSession)
+            }
+
+            // Update locally
+            session.amount = total
+            return psRepo.save(session)
+          })
+        )
+
+        // If only one payment provider is available and there is no payment session on the cart
+        // then we set the payment session immediately as the selected one.
+        if (region.payment_providers.length === 1 && !cart.payment_session) {
+          const paymentProvider = region.payment_providers[0]
+          return await this.setPaymentSession(cartId, paymentProvider.id)
         }
+
+        await Promise.all(
+          region.payment_providers.map(async (paymentProvider) => {
+            if (seen.has(paymentProvider.id)) {
+              return
+            }
+
+            const paymentSession = psRepo.create({
+              provider_id: paymentProvider.id,
+              status: PaymentSessionStatus.PENDING,
+              amount: total,
+            })
+            return psRepo.save(paymentSession)
+          })
+        )
       }
     )
   }
@@ -1840,11 +1898,16 @@ class CartService extends TransactionBaseService {
             ({ provider_id }) => provider_id !== providerId
           )
 
+          const psRepo = transactionManager.getCustomRepository(
+            this.paymentSessionRepository_
+          )
+
           if (paymentSession) {
             // Delete the session with the provider
-            await this.paymentProviderService_
+            await psRepo.delete(paymentSession)
+            /* await this.paymentProviderService_
               .withTransaction(transactionManager)
-              .deleteSession(paymentSession)
+              .deleteSession(paymentSession)*/
           }
         }
 
