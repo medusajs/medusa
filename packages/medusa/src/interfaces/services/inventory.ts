@@ -68,9 +68,9 @@ export interface IInventoryService {
     update: UpdateReservationInput
   ): Promise<ReservationItemDTO>
 
-  deleteReservationItem(id: string): Promise<void>
-
   deleteReservationItemsByLineItem(lineItemId: string): Promise<void>
+
+  deleteReservationItem(id: string): Promise<void>
 
   deleteInventoryItem(itemId: string): Promise<void>
 
