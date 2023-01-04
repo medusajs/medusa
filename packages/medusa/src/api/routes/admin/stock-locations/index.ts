@@ -16,11 +16,19 @@ import {
   AdminPostStockLocationsParams,
   AdminPostStockLocationsReq,
 } from "./create-stock-location"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
 export default (app) => {
   app.use("/stock-locations", route)
+
+  app.use(
+    checkRegisteredModules({
+      stockLocationService:
+        "Stock Locations are not enabled. Please add a Stock Location module to enable this functionality.",
+    })
+  )
 
   route.get(
     "/",
