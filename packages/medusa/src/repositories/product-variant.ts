@@ -2,7 +2,6 @@ import {
   EntityRepository,
   FindConditions,
   FindManyOptions,
-  FindOperator,
   OrderByCondition,
   Repository,
 } from "typeorm"
