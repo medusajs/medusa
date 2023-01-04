@@ -40,13 +40,13 @@ export interface PaymentService extends TransactionBaseService {
   getIdentifier(): string
 
   /**
-   * @deprecated use PaymentServicePlugin.retrievePayment instead
+   * @deprecated use PaymentProcessor.retrievePayment instead
    * @param paymentSession
    */
   getPaymentData(paymentSession: PaymentSession): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentServicePlugin.updatePayment instead
+   * @deprecated use PaymentProcessor.updatePayment instead
    * @param paymentSessionData
    * @param data
    */
@@ -56,7 +56,7 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentServicePlugin.initiatePayment instead
+   * @deprecated use PaymentProcessor.initiatePayment instead
    * @param context The type of this argument is meant to be temporary and once the previous method signature
    * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
    */
@@ -69,13 +69,18 @@ export interface PaymentService extends TransactionBaseService {
   createPayment(cart: Cart): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentServicePlugin.retrievePayment instead
+   * @deprecated use PaymentProcessor.retrievePayment instead
    * @param paymentData
    */
   retrievePayment(paymentData: PaymentData): Promise<Data>
 
+  updatePayment(
+    paymentSessionData: PaymentSessionData,
+    context: Cart & PaymentContext
+  ): Promise<PaymentSessionData | PaymentSessionResponse>
+
   /**
-   * @deprecated use PaymentServicePlugin.updatePayment instead
+   * @deprecated use PaymentProcessor.updatePayment instead
    * @param paymentSessionData
    * @param cart
    */
@@ -85,7 +90,7 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<PaymentSessionData>
 
   /**
-   * @deprecated use PaymentServicePlugin.authorizePayment instead
+   * @deprecated use PaymentProcessor.authorizePayment instead
    * @param paymentSession
    * @param context
    */
@@ -95,45 +100,45 @@ export interface PaymentService extends TransactionBaseService {
   ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }>
 
   /**
-   * @deprecated use PaymentServicePlugin.capturePayment instead
+   * @deprecated use PaymentProcessor.capturePayment instead
    * @param payment
    */
   capturePayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentServicePlugin.refundPayment instead
+   * @deprecated use PaymentProcessor.refundPayment instead
    * @param payment
    * @param refundAmount
    */
   refundPayment(payment: Payment, refundAmount: number): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentServicePlugin.cancelPayment instead
+   * @deprecated use PaymentProcessor.cancelPayment instead
    * @param payment
    */
   cancelPayment(payment: Payment): Promise<PaymentData>
 
   /**
-   * @deprecated use PaymentServicePlugin.cancelPayment instead
+   * @deprecated use PaymentProcessor.cancelPayment instead
    * @param paymentSession
    */
   deletePayment(paymentSession: PaymentSession): Promise<void>
 
   /**
-   * @deprecated use PaymentServicePlugin.getSavedMethods instead
+   * @deprecated use PaymentProcessor.getSavedMethods instead
    * @param customer
    */
   retrieveSavedMethods(customer: Customer): Promise<Data[]>
 
   /**
-   * @deprecated use PaymentServicePlugin.getPaymentStatus instead
+   * @deprecated use PaymentProcessor.getPaymentStatus instead
    * @param data
    */
   getStatus(data: Data): Promise<PaymentSessionStatus>
 }
 
 /**
- * @deprecated use the AbstractPaymentServicePlugin instead
+ * @deprecated use the AbstractPaymentProcessor instead
  */
 export abstract class AbstractPaymentService
   extends TransactionBaseService

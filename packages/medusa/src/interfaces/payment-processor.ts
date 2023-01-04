@@ -24,6 +24,7 @@ export interface PaymentProcessorError {
 
 /**
  * The new payment service plugin interface
+ * This work is still experimental and can be changed until it becomes stable
  */
 export interface PaymentProcessor {
   /**
