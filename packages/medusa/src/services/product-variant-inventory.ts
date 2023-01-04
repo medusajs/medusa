@@ -7,7 +7,11 @@ import {
 } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { ProductVariantService, SalesChannelLocationService } from "./"
-import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
+import {
+  InventoryItemDTO,
+  InventoryLevelDTO,
+  ReserveQuantityContext,
+} from "../types/inventory"
 import { LineItem, ProductVariant } from "../models"
 
 type InjectedDependencies = {
@@ -107,7 +111,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     const hasInventory = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
-        // const itemQuantity = quantity
         return await this.inventoryService_.confirmInventory(
           inventoryPart.inventory_item_id,
           locations,
@@ -144,7 +147,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @returns variant inventory items for the variant id
    */
   private async listByVariant(
-    variantId: string
+    variantId: string | string[]
   ): Promise<ProductVariantInventoryItem[]> {
     const manager = this.transactionManager_ || this.manager_
 
@@ -152,8 +155,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
       ProductVariantInventoryItem
     )
 
+    const ids = Array.isArray(variantId) ? variantId : [variantId]
+
     const variantInventory = await variantInventoryRepo.find({
-      where: { variant_id: variantId },
+      where: { variant_id: In(ids) },
     })
 
     return variantInventory
@@ -340,12 +345,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     await Promise.all(
       variantInventory.map(async (inventoryPart) => {
-        const itemQuantity = inventoryPart.quantity * quantity
         return await this.inventoryService_.createReservationItem({
           ...toReserve,
           location_id: locationId as string,
           item_id: inventoryPart.inventory_item_id,
-          quantity: itemQuantity,
+          quantity,
         })
       })
     )
@@ -411,26 +415,38 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return
     }
 
-    const [inventoryLevels] = await this.inventoryService_.listInventoryLevels(
-      {
-        item_id: items.map((i) => i.id),
-        location_id: locationId,
-      },
-      {
-        order: { item_id: "DESC" },
-      }
+    const variantsToValidate = items.filter((item) => item.variant_id)
+
+    const pvInventoryItems = await this.listByVariant(
+      variantsToValidate.map((i) => i.variant_id) as string[]
     )
 
-    // inventoryLevels.sort((a, b) => a.item_id.localeCompare(b.item_id)).reverse()
+    const [inventoryLevels] = await this.inventoryService_.listInventoryLevels({
+      item_id: pvInventoryItems.map((i) => i.inventory_item_id),
+      location_id: locationId,
+    })
+
+    const pvInventoryItemsMap: Record<string, ProductVariantInventoryItem> =
+      pvInventoryItems.reduce((acc, curr) => {
+        acc[curr.inventory_item_id] = curr
+        return acc
+      }, {})
+
+    const inventoryLevelsMap: Record<string, InventoryLevelDTO> =
+      inventoryLevels.reduce((acc, curr) => {
+        const pvInventoryItem = pvInventoryItemsMap[curr.item_id]
+        acc[pvInventoryItem.variant_id] = curr
+        return acc
+      }, {})
 
     const insufficientStockItems: string[] = []
 
-    for (const item of items) {
+    for (const item of variantsToValidate) {
       if (item.variant.allow_backorder) {
         continue
       }
 
-      const level = inventoryLevels.find((i) => i.item_id === item.id)
+      const level = inventoryLevelsMap[item.variant_id!]
       if (!level || level.stocked_quantity < item.quantity) {
         insufficientStockItems.push(item.title)
       }

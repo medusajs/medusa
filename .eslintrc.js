@@ -27,6 +27,7 @@ module.exports = {
         ignoreTrailingComments: true,
         ignoreUrls: true,
         ignoreTemplateLiterals: true,
+        // ignorePattern: "^\\s*protected.*",
       },
     ],
     semi: ["error", "never"],
