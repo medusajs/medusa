@@ -12,7 +12,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
- * summary: "Add a batch of resources to a discount condition"
+ * summary: "Add Batch Resources"
  * description: "Add a batch of resources to a discount condition."
  * x-authenticated: true
  * parameters:

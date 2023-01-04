@@ -98,7 +98,7 @@ Based on the value of `type`, one of the following relations can be used to retr
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn [how to create a discount using the admin APIs](../../admin/manage-discounts.mdx)
-- Learn [how to use discounts on the storefront](../../storefront/use-discounts-in-checkout.mdx)
+- [Create a discount using the admin APIs](../../admin/manage-discounts.mdx)
+- [Use discounts on the storefront](../../storefront/use-discounts-in-checkout.mdx)

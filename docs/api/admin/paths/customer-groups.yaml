@@ -27,7 +27,7 @@ post:
             type: object
             properties:
               customer_group:
-                $ref: ../components/schemas/customer_group.yaml
+                $ref: ../components/schemas/CustomerGroup.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -201,7 +201,7 @@ get:
               customer_groups:
                 type: array
                 items:
-                  $ref: ../components/schemas/customer_group.yaml
+                  $ref: ../components/schemas/CustomerGroup.yaml
               count:
                 type: integer
                 description: The total number of items available

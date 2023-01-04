@@ -94,7 +94,7 @@ If your forked repository doesn’t have any conflicts with the changes from the
 
 ---
 
-## What’s Next
+## See Also
 
-- Check out the [Admin API reference](/api/admin).
-- Learn about [local development of the Medusa server](../usage/local-development.md).
+- [Admin API reference](/api/admin).
+- [Local development of the Medusa server](../usage/local-development.md).

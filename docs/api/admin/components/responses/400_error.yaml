@@ -3,12 +3,12 @@ content:
   application/json:
     schema:
       oneOf:
-        - $ref: ../schemas/error.yaml
-        - $ref: ../schemas/multiple_errors.yaml
+        - $ref: ../schemas/Error.yaml
+        - $ref: ../schemas/MultipleErrors.yaml
     examples:
       not_allowed:
         $ref: ../examples/not_allowed_error.yaml
       invalid_data:
         $ref: ../examples/invalid_data_error.yaml
-      multiple_errors:
+      MultipleErrors:
         $ref: ../examples/multiple_errors.yaml

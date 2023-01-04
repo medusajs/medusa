@@ -12,6 +12,8 @@ To install the Medusa JS Client run the following command:
 npm install @medusajs/medusa-js
 ```
 
+---
+
 ## Usage
 
 Import Medusa as a default import and initiate it:
@@ -21,6 +23,8 @@ import Medusa from "@medusajs/medusa-js"
 
 const medusa = new Medusa()
 ```
+
+---
 
 ## How to Use this Reference
 
@@ -33,9 +37,9 @@ import Medusa from "@medusajs/medusa-js"
 
 const medusa = new Medusa()
 
-//use method
+// use method
 medusa.customers.create({
-  //data
+  // data
 })
 ```
 
@@ -43,9 +47,11 @@ The `customers` resource also has another resource `addresses` nested inside it 
 
 ```js
 medusa.customers.addresses.addAddress({
-  //data
+  // data
 })
 ```
+
+---
 
 ## Authentication
 
@@ -58,6 +64,8 @@ API keys can only be used for admin functionality in Medusa since only users of 
 ### Using cookies
 
 Authentication using cookies is done automatically by Axios when authenticating using the [auth](/references/js-client/classes/AuthResource) endpoints. After authentication, all subsequent calls will be authenticated.
+
+---
 
 ## Configuration
 

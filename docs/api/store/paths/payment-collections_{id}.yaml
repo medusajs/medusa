@@ -1,7 +1,7 @@
 get:
   operationId: GetPaymentCollectionsPaymentCollection
-  summary: Retrieve an PaymentCollection
-  description: Retrieves a PaymentCollection.
+  summary: Get a PaymentCollection
+  description: Get a Payment Collection
   x-authenticated: false
   parameters:
     - in: path
@@ -43,7 +43,7 @@ get:
             type: object
             properties:
               payment_collection:
-                $ref: ../components/schemas/payment_collection.yaml
+                $ref: ../components/schemas/PaymentCollection.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

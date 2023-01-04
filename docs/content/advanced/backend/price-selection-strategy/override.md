@@ -114,6 +114,6 @@ Then, try out your strategy using any of the [Products](https://docs.medusajs.co
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn more about [price list selection strategy](./index.md).
+- [Price List Selection Strategy Overview](./index.md)

@@ -55,7 +55,7 @@ delete:
                 description: Whether or not the items were deleted.
                 default: true
               product:
-                $ref: ../components/schemas/product.yaml
+                $ref: ../components/schemas/Product.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -90,13 +90,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - title
-          properties:
-            title:
-              description: The title of the Product Option
-              type: string
+          $ref: ../components/schemas/AdminPostProductsProductOptionsOption.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -121,7 +115,7 @@ post:
             type: object
             properties:
               product:
-                $ref: ../components/schemas/product.yaml
+                $ref: ../components/schemas/Product.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

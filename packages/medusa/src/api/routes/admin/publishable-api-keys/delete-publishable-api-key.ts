@@ -5,7 +5,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [delete] /publishable-api-keys/{id}
  * operationId: "DeletePublishableApiKeysPublishableApiKey"
- * summary: "Delete a PublishableApiKey"
+ * summary: "Delete PublishableApiKey"
  * description: "Deletes a PublishableApiKeys"
  * x-authenticated: true
  * parameters:

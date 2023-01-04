@@ -8,5 +8,5 @@ curl --location --request POST 'https://medusa-url.com/admin/discounts' \
        "value": 10,
        "allocation": "item"
     },
-    "regions": ['reg_XXXXXXXX']
+    "regions": ["reg_XXXXXXXX"]
 }'

@@ -1,6 +1,7 @@
 
 .feedback-container {
   padding-top: var(--ifm-base-margin-vertical);
+  padding-bottom: var(--ifm-base-margin-vertical);
   border-top: 1px solid var(--ifm-doc-footer-border-color);
 }
 

@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Manage Discounts using Admin APIs
+# How to Manage Discounts using Admin APIs
 
 In this document, you’ll learn how to use the Admin’s Discount APIs to manage discounts, discount conditions, and more.
 
@@ -29,11 +29,13 @@ You can use Medusa’s Admin APIs to achieve more functionalities as well. Check
 
 :::
 
+---
+
 # Prerequisites
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
 ### JS Client
 
@@ -47,6 +49,8 @@ You must be an authenticated admin user before following along with the steps in
 
 You can learn more about [authenticating as an admin user in the API reference](/api/admin/#section/Authentication).
 
+---
+
 ## Create a Discount
 
 You can create a discount by sending a request to the [Create Discount](/api/admin/#tag/Discount/operation/PostDiscounts) endpoint:
@@ -56,21 +60,21 @@ You can create a discount by sending a request to the [Create Discount](/api/adm
 
 ```jsx
 import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
-//...
+// ...
 medusa.admin.discounts.create({
   code,
   rule: {
     type: DiscountRuleType.FIXED,
     value: 10,
-    allocation: AllocationType.ITEM
+    allocation: AllocationType.ITEM,
   },
   regions: [
-      regionId
-  ]
+      regionId,
+  ],
 })
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
@@ -78,27 +82,27 @@ medusa.admin.discounts.create({
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/discounts`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
     code,
     rule: {
-      type: 'fixed',
+      type: "fixed",
       value: 10,
-      allocation: 'item'
+      allocation: "item",
     },
     regions: [
-      regionId
-    ]
-  })
+      regionId,
+    ],
+  }),
 })
 .then((response) => response.json())
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
@@ -135,6 +139,8 @@ This request accepts [many request-body parameters](/api/admin/#tag/Discount/ope
 
 This request returns the full `discount` object.
 
+---
+
 ## Update Discount
 
 You can update any of the discount’s information, configurations, and conditions by sending a request to the [Update Discount](/api/admin/#tag/Discount/operation/PostDiscountsDiscount) endpoint.
@@ -147,11 +153,11 @@ For example, you can update the discount’s description and status by sending t
 ```jsx
 medusa.admin.discounts.update(discountId, {
   description: "New description",
-  is_disabled: true
+  is_disabled: true,
 })
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
@@ -159,20 +165,20 @@ medusa.admin.discounts.update(discountId, {
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
     description: "New description",
-    is_disabled: true
-  })
+    is_disabled: true,
+  }),
 })
 .then((response) => response.json())
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
@@ -197,6 +203,8 @@ You can check the [API reference](/api/admin/#tag/Discount/operation/PostDiscoun
 
 This updates the discount’s information and returns the full updated `discount` object in the response.
 
+---
+
 ## Manage Conditions
 
 ### Create a Condition
@@ -214,16 +222,16 @@ You can send a request to the [Create Condition](/api/admin/#tag/Discount-Condit
 
 ```jsx
 import { DiscountConditionOperator } from "@medusajs/medusa"
-//...
+// ...
 medusa.admin.discounts.createCondition(discount_id, {
   operator: DiscountConditionOperator.IN,
   products: [
-    productId
-  ]
+    productId,
+  ],
 })
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
@@ -231,22 +239,22 @@ medusa.admin.discounts.createCondition(discount_id, {
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    operator: 'in',
+    operator: "in",
     products: [
-      productId
-    ]
-  })
+      productId,
+    ],
+  }),
 })
 .then((response) => response.json())
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
@@ -293,24 +301,28 @@ You can retrieve a condition and its resources by sending a request to the [Get 
 
 ```jsx
 medusa.admin.discounts.getCondition(discountId, conditionId, {
-  expand: 'products'
+  expand: "products",
 })
 .then(({ discount_condition }) => {
-  console.log(discount_condition.id, discount_condition.products);
-});
+  console.log(discount_condition.id, discount_condition.products)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}&expand=products`, {
-  credentials: 'include'
-})
+fetch(
+  `<YOUR_SERVER>/admin/discounts/${discountId}` + 
+  `/conditions/${conditionId}&expand=products`,
+  {
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ discount_condition }) => {
-  console.log(discount_condition.id, discount_condition.products);
-});
+  console.log(discount_condition.id, discount_condition.products)
+})
 ```
 
 </TabItem>
@@ -343,35 +355,38 @@ For example, to update the products in a condition:
 medusa.admin.discounts.updateCondition(discountId, conditionId, {
   products: [
     productId1,
-    productId2
-  ]
+    productId2,
+  ],
 })
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, {
-  method: 'POST',
-  credentials: 'include',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    products: [
-      productId1,
-      productId2
-    ]
-  })
-})
+fetch(
+  `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, 
+  {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      products: [
+        productId1,
+        productId2,
+      ],
+    }),
+  }
+)
 .then((response) => response.json())
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
@@ -408,22 +423,25 @@ You can delete a condition by sending a request to the [Delete Condition](/api/a
 ```jsx
 medusa.admin.discounts.deleteCondition(discountId, conditionId)
 .then(({ discount }) => {
-  console.log(discount);
-});
+  console.log(discount)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
-fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, {
-  method: 'DELETE',
-  credentials: 'include'
-})
+fetch(
+  `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`,
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ discount }) => {
-  console.log(discount.id);
-});
+  console.log(discount.id)
+})
 ```
 
 </TabItem>
@@ -441,6 +459,8 @@ This request accepts as a path parameter the discount ID and the condition ID.
 
 It returns the `discount` object in the response.
 
+---
+
 ## Delete Discount
 
 You can delete a discount by sending a request to the [Delete Discount](/api/admin/#tag/Discount/operation/DeleteDiscountsDiscount) endpoint:
@@ -451,8 +471,8 @@ You can delete a discount by sending a request to the [Delete Discount](/api/adm
 ```jsx
 medusa.admin.discounts.delete(discount_id)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -460,13 +480,13 @@ medusa.admin.discounts.delete(discount_id)
 
 ```jsx
 fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
-  method: 'DELETE',
-  credentials: 'include'
+  method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -488,7 +508,9 @@ It returns in the response the following fields:
 - `object`: A string indicating the type of object deleted. By default, its value is `discount`.
 - `deleted`: A boolean value indicating whether the discount was deleted or not.
 
-## What’s Next
+---
 
-- Check out more [Admin Discount APIs in the API reference](/api/admin/#tag/Discount).
-- Learn how you can [use Discounts on the storefront](../storefront/use-discounts-in-checkout.mdx).
+## See Also
+
+- [Discounts API reference](/api/admin/#tag/Discount)
+- [Use Discounts on the storefront](../storefront/use-discounts-in-checkout.mdx)

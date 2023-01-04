@@ -39,7 +39,7 @@ post:
             type: object
             properties:
               user:
-                $ref: ../components/schemas/user.yaml
+                $ref: ../components/schemas/User.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -114,7 +114,7 @@ get:
             type: object
             properties:
               user:
-                $ref: ../components/schemas/user.yaml
+                $ref: ../components/schemas/User.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

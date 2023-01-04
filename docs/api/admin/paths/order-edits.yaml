@@ -6,16 +6,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - order_id
-          properties:
-            order_id:
-              description: The ID of the order to create the edit for.
-              type: string
-            internal_note:
-              description: An optional note to create for the order edit.
-              type: string
+          $ref: ../components/schemas/AdminPostOrderEditsReq.yaml
   x-authenticated: true
   x-codeSamples:
     - lang: JavaScript
@@ -40,7 +31,7 @@ post:
             type: object
             properties:
               order_edit:
-                $ref: ../components/schemas/order_edit.yaml
+                $ref: ../components/schemas/OrderEdit.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -115,7 +106,7 @@ get:
             properties:
               order_edits:
                 type: array
-                $ref: ../components/schemas/order_edit.yaml
+                $ref: ../components/schemas/OrderEdit.yaml
               count:
                 type: integer
                 description: The total number of items available
