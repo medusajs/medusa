@@ -1163,7 +1163,7 @@ class OrderService extends TransactionBaseService {
             return await inventoryServiceTx.deleteReservationsByLineItem(
               item.id,
               item.variant_id,
-              item.quantity - previouslyFulfilledQuantities[item.id] || 0
+              item.quantity - (previouslyFulfilledQuantities[item.id] || 0)
             )
           }
         })
