@@ -1774,6 +1774,21 @@ class CartService extends TransactionBaseService {
                 return this.paymentProviderService_
                   .withTransaction(transactionManager)
                   .updateSession(paymentSession, paymentSessionInput)
+                  .catch(async (e) => {
+                    if (!paymentSession.is_selected) {
+                      this.logger_.warn(
+                        `Unable to update the payment session for ${paymentSession.provider_id}. This session will be deleted since it is not selected${EOL}${e.stack}`
+                      )
+                      return await this.paymentProviderService_.deleteSession(
+                        paymentSession
+                      )
+                    }
+
+                    throw new MedusaError(
+                      MedusaError.Types.UNEXPECTED_STATE,
+                      `Unable to update the selected payment session for ${paymentSession.provider_id}${EOL}${e.stack}`
+                    )
+                  })
               }
             })
           )

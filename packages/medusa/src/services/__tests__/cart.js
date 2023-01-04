@@ -1482,6 +1482,24 @@ describe("CartService", () => {
       },
     }
 
+    const cart6 = {
+      total: 100,
+      items: [{ subtotal: 100 }],
+      shipping_methods: [],
+      region: {
+        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+      },
+      payment_sessions: [
+        {
+          provider_id: "provider_1",
+        },
+        {
+          provider_id: "provider_2",
+          is_selected: true,
+        },
+      ],
+    }
+
     const cartRepository = MockRepository({
       findOneWithRelations: (rels, q) => {
         if (q.where.id === IdMap.getId("cart-to-filter")) {
@@ -1495,6 +1513,15 @@ describe("CartService", () => {
         }
         if (q.where.id === IdMap.getId("cart-negative")) {
           return Promise.resolve(cart4)
+        }
+        if (q.where.id === IdMap.getId("cart-negative")) {
+          return Promise.resolve(cart4)
+        }
+        if (
+          q.where.id ===
+          IdMap.getId("cartWithLineAndPaymentSessionsIncludingSelectedOne")
+        ) {
+          return Promise.resolve(cart6)
         }
         return Promise.resolve(cart1)
       },
@@ -1592,6 +1619,61 @@ describe("CartService", () => {
         currency_code: cart1.region.currency_code,
         provider_id: errorProviderId,
       })
+    })
+
+    it("update payment sessions for each of the providers and log a warning for the ones that fails unless it is selected and throw", async () => {
+      const updateSessionNonSelectedErrorMessage = `Unable to update the payment session`
+      const updateSessionSelectedErrorMessage = `Unable to update the selected payment session`
+      const errorNonSelectedProviderId = "provider_1"
+      const errorSelectedProviderId = "provider_2"
+
+      const paymentProviderService_ = {
+        ...paymentProviderService,
+        updateSession: jest.fn().mockImplementation(async (data) => {
+          if (errorNonSelectedProviderId === data.provider_id) {
+            throw new Error(updateSessionNonSelectedErrorMessage)
+          }
+          if (errorSelectedProviderId === data.provider_id) {
+            throw new Error(updateSessionSelectedErrorMessage)
+          }
+        }),
+      }
+
+      const cartService = new CartService({
+        manager: MockManager,
+        totalsService,
+        cartRepository,
+        paymentProviderService: paymentProviderService_,
+        eventBusService,
+        taxProviderService: taxProviderServiceMock,
+        newTotalsService: newTotalsServiceMock,
+        featureFlagRouter: new FlagRouter({}),
+        logger: loggerMock,
+      })
+
+      const err = await cartService
+        .setPaymentSessions(
+          IdMap.getId("cartWithLineAndPaymentSessionsIncludingSelectedOne")
+        )
+        .catch((e) => e)
+
+      expect(loggerMock.warn).toHaveBeenCalledWith(
+        expect.stringContaining(
+          `Unable to update the payment session for ${errorNonSelectedProviderId}. This session will be deleted since it is not selected${EOL}`
+        )
+      )
+      expect(
+        err.message.startsWith(
+          `Unable to update the selected payment session for ${errorSelectedProviderId}${EOL}`
+        )
+      ).toBeTruthy()
+
+      expect(paymentProviderService_.deleteSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService_.deleteSession).toHaveBeenCalledWith(
+        expect.objectContaining({
+          provider_id: errorNonSelectedProviderId,
+        })
+      )
     })
 
     it("filters sessions not available in the region", async () => {
