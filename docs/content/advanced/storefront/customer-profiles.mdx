@@ -71,6 +71,9 @@ medusa.customers.create({
 fetch(`<SERVER_URL>/store/customers`, {
   method: "POST",
   credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({
     email,
     password,
@@ -126,6 +129,9 @@ medusa.auth.authenticate({
 fetch(`<SERVER_URL>/store/auth`, {
   method: "POST",
   credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({
     email,
     password,
@@ -214,6 +220,9 @@ medusa.customers.generatePasswordToken({
 fetch(`<SERVER_URL>/store/customers/password-token`, {
   method: "POST",
   credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({
     email,
   }),
@@ -266,6 +275,9 @@ medusa.customers.resetPassword({
 fetch(`<SERVER_URL>/store/customers/password-reset`, {
   method: "POST",
   credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({
     email,
     password,
@@ -316,6 +328,9 @@ medusa.customers.update({
 fetch(`<SERVER_URL>/store/customers/me`, {
   method: "POST",
   credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({
     first_name,
   }),
@@ -380,6 +395,9 @@ medusa.customers.addresses.addAddress({
 fetch(`<SERVER_URL>/store/customers/me/addresses`, {
   method: "POST",
   credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({
     address: {
       first_name,
@@ -441,6 +459,9 @@ medusa.customers.addresses.updateAddress(addressId, {
 fetch(`<SERVER_URL>/store/customers/me/addresses/${addressId}`, {
   method: "POST",
   credentials: "include",
+  headers: {
+    "Content-Type": "application/json",
+  },
   body: JSON.stringify({
     first_name,
   }),
