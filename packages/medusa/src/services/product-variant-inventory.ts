@@ -346,11 +346,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     await Promise.all(
       variantInventory.map(async (inventoryPart) => {
+        const itemQuantity = inventoryPart.quantity * quantity
         return await this.inventoryService_.createReservationItem({
           ...toReserve,
           location_id: locationId as string,
           item_id: inventoryPart.inventory_item_id,
-          quantity,
+          quantity: itemQuantity,
         })
       })
     )
@@ -500,8 +501,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
       if (!variant.manage_inventory) {
         return
       }
-
-      // validate here what we are doing is correct
 
       await this.productVariantService_
         .withTransaction(manager)
