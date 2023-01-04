@@ -415,48 +415,36 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return
     }
 
-    const variantsToValidate = items.filter((item) => item.variant_id)
+    const itemsToValidate = items.filter((item) => item.variant_id)
 
-    const pvInventoryItems = await this.listByVariant(
-      variantsToValidate.map((i) => i.variant_id) as string[]
-    )
+    for (const item of itemsToValidate) {
+      const pvInventoryItems = await this.listByVariant(item.variant_id!)
 
-    const [inventoryLevels] = await this.inventoryService_.listInventoryLevels({
-      item_id: pvInventoryItems.map((i) => i.inventory_item_id),
-      location_id: locationId,
-    })
+      const [inventoryLevels] =
+        await this.inventoryService_.listInventoryLevels({
+          item_id: pvInventoryItems.map((i) => i.inventory_item_id),
+          location_id: locationId,
+        })
 
-    const pvInventoryItemsMap: Record<string, ProductVariantInventoryItem> =
-      pvInventoryItems.reduce((acc, curr) => {
-        acc[curr.inventory_item_id] = curr
+      const pviMap = pvInventoryItems.reduce((acc, pvi) => {
+        acc[pvi.inventory_item_id] = pvi
         return acc
       }, {})
 
-    const inventoryLevelsMap: Record<string, InventoryLevelDTO> =
-      inventoryLevels.reduce((acc, curr) => {
-        const pvInventoryItem = pvInventoryItemsMap[curr.item_id]
-        acc[pvInventoryItem.variant_id] = curr
-        return acc
-      }, {})
+      for (const inventoryLevel of inventoryLevels) {
+        const pvInventoryItem = pviMap[inventoryLevel.item_id]
 
-    const insufficientStockItems: string[] = []
-
-    for (const item of variantsToValidate) {
-      if (item.variant.allow_backorder) {
-        continue
+        if (
+          !pvInventoryItem ||
+          pvInventoryItem.quantity * item.quantity >
+            inventoryLevel.stocked_quantity
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Insufficient stock for item: ${item.title}`
+          )
+        }
       }
-
-      const level = inventoryLevelsMap[item.variant_id!]
-      if (!level || level.stocked_quantity < item.quantity) {
-        insufficientStockItems.push(item.title)
-      }
-    }
-
-    if (insufficientStockItems.length > 0) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `Insufficient stock for items: ${insufficientStockItems.join(", ")}`
-      )
     }
   }
 
