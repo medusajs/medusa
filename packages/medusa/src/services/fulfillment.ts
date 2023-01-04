@@ -240,15 +240,20 @@ class FulfillmentService extends TransactionBaseService {
           )
 
           await Promise.all(
-            items.map(
-              async (i) =>
-                await pvInventoryServiceTx.adjustReservationsQuantityByLineItem(
-                  i.id,
-                  i.variant_id!,
-                  locationId!,
-                  -i.quantity
-                )
-            )
+            items.map(async (i) => {
+              await pvInventoryServiceTx.adjustReservationsQuantityByLineItem(
+                i.id,
+                i.variant_id!,
+                locationId!,
+                -i.quantity
+              )
+
+              await pvInventoryServiceTx.adjustInventory(
+                i.variant_id!,
+                locationId!,
+                -i.quantity
+              )
+            })
           )
 
           const ful = fulfillmentRepository.create({
@@ -260,17 +265,6 @@ class FulfillmentService extends TransactionBaseService {
           })
 
           const result = await fulfillmentRepository.save(ful)
-
-          await Promise.all(
-            items.map(
-              async (i) =>
-                await pvInventoryServiceTx.adjustInventory(
-                  i.variant_id!,
-                  locationId!,
-                  -i.quantity
-                )
-            )
-          )
 
           result.data =
             await this.fulfillmentProviderService_.createFulfillment(
