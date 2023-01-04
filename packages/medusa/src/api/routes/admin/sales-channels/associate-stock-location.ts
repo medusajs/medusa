@@ -1,5 +1,6 @@
 import { IsString } from "class-validator"
 import { Request, Response } from "express"
+import { EntityManager } from "typeorm"
 
 import {
   SalesChannelService,
@@ -81,7 +82,13 @@ export default async (req: Request, res: Response) => {
   const channelLocationService: SalesChannelLocationService = req.scope.resolve(
     "salesChannelLocationService"
   )
-  await channelLocationService.associateLocation(id, validatedBody.location_id)
+
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    return await channelLocationService
+      .withTransaction(transactionManager)
+      .associateLocation(id, validatedBody.location_id)
+  })
 
   const channel = await salesChannelService.retrieve(id)
 

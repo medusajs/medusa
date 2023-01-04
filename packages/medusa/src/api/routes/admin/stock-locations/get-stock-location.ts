@@ -10,6 +10,8 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Stock Location.
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -24,12 +26,8 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/stock-locations/{id}' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/stock-locations/{id}' \
  *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
- *       --data-raw '{
- *           "name": "App"
- *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -52,7 +50,7 @@ export default async (req: Request, res: Response) => {
   const locationService: IStockLocationService = req.scope.resolve(
     "stockLocationService"
   )
-  const stockLocation = await locationService.retrieve(id)
+  const stockLocation = await locationService.retrieve(id, req.retrieveConfig)
 
   res.status(200).json({ stock_location: stockLocation })
 }

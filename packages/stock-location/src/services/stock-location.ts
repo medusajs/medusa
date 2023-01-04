@@ -157,20 +157,20 @@ export default class StockLocationService {
 
   /**
    * Updates an existing stock location.
-   * @param {string} itemId - The ID of the stock location to update.
+   * @param {string} stockLocationId - The ID of the stock location to update.
    * @param {UpdateStockLocationInput} updateData - The update data for the stock location.
    * @returns {Promise<StockLocation>} - The updated stock location.
    */
 
   async update(
-    itemId: string,
+    stockLocationId: string,
     updateData: UpdateStockLocationInput
   ): Promise<StockLocation> {
     const defaultManager = this.getManager()
     return await defaultManager.transaction(async (manager) => {
       const locationRepo = manager.getRepository(StockLocation)
 
-      const item = await this.retrieve(itemId)
+      const item = await this.retrieve(stockLocationId)
 
       const { address, metadata, ...data } = updateData
 
@@ -182,7 +182,6 @@ export default class StockLocationService {
       if (address) {
         if (item.address_id) {
           await this.updateAddress(item.address_id, address, { manager })
-          hasUpdated = true
         } else {
           const locAddressRepo = manager.getRepository(StockLocationAddress)
           const locAddress = locAddressRepo.create(address)
@@ -205,7 +204,7 @@ export default class StockLocationService {
 
       if (hasUpdated) {
         await this.eventBusService_.emit(StockLocationService.Events.UPDATED, {
-          id: itemId,
+          id: stockLocationId,
         })
       }
 
@@ -217,17 +216,17 @@ export default class StockLocationService {
    * Updates an address for a stock location.
    * @param {string} addressId - The ID of the address to update.
    * @param {StockLocationAddressInput} address - The update data for the address.
-   * @param {Object} options - Options for the update.
-   * @param {EntityManager} options.manager - The entity manager to use for the update.
+   * @param {Object} context - Context for the update.
+   * @param {EntityManager} context.manager - The entity manager to use for the update.
    * @returns {Promise<StockLocationAddress>} - The updated stock location address.
    */
 
   protected async updateAddress(
     addressId: string,
     address: StockLocationAddressInput,
-    options: { manager?: EntityManager } = {}
+    context: { manager?: EntityManager } = {}
   ): Promise<StockLocationAddress> {
-    const manager = options.manager || this.getManager()
+    const manager = context.manager || this.getManager()
     const locationAddressRepo = manager.getRepository(StockLocationAddress)
 
     const existingAddress = await locationAddressRepo.findOne(addressId)

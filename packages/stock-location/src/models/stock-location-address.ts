@@ -1,35 +1,31 @@
-import { BeforeInsert, Entity, Index } from "typeorm"
-import {
-  SoftDeletableEntity,
-  DbAwareColumn,
-  generateEntityId,
-} from "@medusajs/medusa"
+import { BeforeInsert, Column, Entity, Index } from "typeorm"
+import { SoftDeletableEntity, generateEntityId } from "@medusajs/medusa"
 
 @Entity()
 export class StockLocationAddress extends SoftDeletableEntity {
-  @DbAwareColumn({ type: "text" })
+  @Column({ type: "text" })
   address_1: string
 
-  @DbAwareColumn({ type: "text", nullable: true })
+  @Column({ type: "text", nullable: true })
   address_2: string | null
 
-  @DbAwareColumn({ type: "text", nullable: true })
+  @Column({ type: "text", nullable: true })
   city: string | null
 
   @Index()
-  @DbAwareColumn({ type: "text", nullable: true })
-  country_code: string | null
+  @Column({ type: "text" })
+  country_code: string
 
-  @DbAwareColumn({ type: "text", nullable: true })
+  @Column({ type: "text", nullable: true })
   phone: string | null
 
-  @DbAwareColumn({ type: "text", nullable: true })
+  @Column({ type: "text", nullable: true })
   province: string | null
 
-  @DbAwareColumn({ type: "text", nullable: true })
+  @Column({ type: "text", nullable: true })
   postal_code: string | null
 
-  @DbAwareColumn({ type: "jsonb", nullable: true })
+  @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
   @BeforeInsert()

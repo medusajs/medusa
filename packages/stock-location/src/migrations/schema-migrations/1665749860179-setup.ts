@@ -64,7 +64,7 @@ export class setup1665749860179 implements MigrationInterface {
         CONSTRAINT "PK_b79bc27285bede680501b7b81a5" PRIMARY KEY ("id")
       );
 
-      CREATE INDEX "IDX_stock_location_address_currency_code" ON "stock_location_address" ("country_code");
+      CREATE INDEX "IDX_stock_location_address_country_code" ON "stock_location_address" ("country_code");
 
       CREATE TABLE "stock_location"
       (
@@ -87,7 +87,7 @@ export class setup1665749860179 implements MigrationInterface {
       DROP INDEX "IDX_stock_location_address_id";
       DROP TABLE "stock_location";
 
-      DROP INDEX "IDX_stock_location_address_currency_code";
+      DROP INDEX "IDX_stock_location_address_country_code";
       DROP TABLE "stock_location_address";
     `)
   }

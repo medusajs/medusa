@@ -5,6 +5,11 @@ import { StringComparisonOperator } from "./common"
  * title: "Stock Location Address"
  * description: "Represents a Stock Location Address"
  * type: object
+ * required:
+ *   - address_1
+ *   - country_code
+ *   - created_at
+ *   - updated_at
  * properties:
  *   id:
  *     type: string
@@ -75,6 +80,12 @@ export type StockLocationAddressDTO = {
  * title: "Stock Location"
  * description: "Represents a Stock Location"
  * type: object
+ * required:
+ *   - id
+ *   - name
+ *   - address_id
+ *   - created_at
+ *   - updated_at
  * properties:
  *   id:
  *     type: string
@@ -131,6 +142,9 @@ export type FilterableStockLocationProps = {
  * title: "Stock Location Address Input"
  * description: "Represents a Stock Location Address Input"
  * type: object
+ * required:
+ *   - address_1
+ *   - country_code
  * properties:
  *   address_1:
  *     type: string
@@ -181,6 +195,8 @@ export type StockLocationAddressInput = {
  * title: "Create Stock Location Input"
  * description: "Represents the Input to create a Stock Location"
  * type: object
+ * required:
+ *   - name
  * properties:
  *   name:
  *     type: string

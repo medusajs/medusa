@@ -19,7 +19,7 @@ class SalesChannelLocationService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly salesChannelService: SalesChannelService
+  protected readonly salesChannelService_: SalesChannelService
   protected readonly eventBusService: EventBusService
   protected readonly stockLocationService: IStockLocationService
 
@@ -33,7 +33,7 @@ class SalesChannelLocationService extends TransactionBaseService {
     super(arguments[0])
 
     this.manager_ = manager
-    this.salesChannelService = salesChannelService
+    this.salesChannelService_ = salesChannelService
     this.eventBusService = eventBusService
     this.stockLocationService = stockLocationService
   }
@@ -66,7 +66,7 @@ class SalesChannelLocationService extends TransactionBaseService {
     locationId: string
   ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
-    const salesChannel = await this.salesChannelService
+    const salesChannel = await this.salesChannelService_
       .withTransaction(manager)
       .retrieve(salesChannelId)
     const stockLocation = await this.stockLocationService.retrieve(locationId)
@@ -86,7 +86,7 @@ class SalesChannelLocationService extends TransactionBaseService {
    */
   async listLocations(salesChannelId: string): Promise<string[]> {
     const manager = this.transactionManager_ || this.manager_
-    const salesChannel = await this.salesChannelService
+    const salesChannel = await this.salesChannelService_
       .withTransaction(manager)
       .retrieve(salesChannelId)
 

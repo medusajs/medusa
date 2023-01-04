@@ -13,6 +13,8 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Stock Location.
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * requestBody:
  *   content:
  *     application/json:
@@ -75,10 +77,12 @@ export default async (req: Request, res: Response) => {
     "stockLocationService"
   )
 
-  const stockLocation = await locationService.update(
+  await locationService.update(
     id,
     req.validatedBody as AdminPostStockLocationsLocationReq
   )
+
+  const stockLocation = await locationService.retrieve(id, req.retrieveConfig)
 
   res.status(200).json({ stock_location: stockLocation })
 }

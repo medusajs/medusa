@@ -11,6 +11,9 @@ import { FindParams } from "../../../../types/common"
  * summary: "Create a Stock Location"
  * description: "Creates a Stock Location."
  * x-authenticated: true
+ * parameters:
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * requestBody:
  *   content:
  *     application/json:
@@ -72,8 +75,13 @@ export default async (req: Request, res: Response) => {
     "stockLocationService"
   )
 
-  const stockLocation = await locationService.create(
+  const createdStockLocation = await locationService.create(
     req.validatedBody as AdminPostStockLocationsReq
+  )
+
+  const stockLocation = await locationService.retrieve(
+    createdStockLocation.id,
+    req.retrieveConfig
   )
 
   res.status(200).json({ stock_location: stockLocation })
@@ -110,6 +118,8 @@ class StockLocationAddress {
 /**
  * @schema AdminPostStockLocationsReq
  * type: object
+ * required:
+ *   - name
  * properties:
  *   name:
  *     description: the name of the stock location

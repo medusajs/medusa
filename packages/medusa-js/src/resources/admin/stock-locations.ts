@@ -21,7 +21,7 @@ class AdminStockLocationsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminStockLocationsRes> {
     const path = `/admin/stock-locations`
-    return this.client.request("GET", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /** retrieve an stock location
