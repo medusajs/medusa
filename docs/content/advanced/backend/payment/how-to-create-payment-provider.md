@@ -50,41 +50,58 @@ The first step to create a payment provider is to create a JavaScript or TypeScr
 
 For example, create the file `src/services/my-payment.ts` with the following content:
 
-<!-- eslint-disable max-len -->
-
 ```ts title=src/services/my-payment.ts
-import { AbstractPaymentService, Context, Data, Payment, PaymentSession, PaymentSessionStatus, TransactionBaseService } from "@medusajs/medusa"
+import { 
+  AbstractPaymentService, PaymentContext, Data, 
+  Payment, PaymentSession, PaymentSessionStatus, 
+  PaymentSessionData, Cart, PaymentData,
+  PaymentSessionResponse } from "@medusajs/medusa"
+
 import { EntityManager } from "typeorm"
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   protected manager_: EntityManager
-  protected transactionManager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
 
   async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
     throw new Error("Method not implemented.")
   }
-  async updatePaymentData(paymentSessionData: Data, data: Data): Promise<Data> {
+  async updatePaymentData(
+    paymentSessionData: PaymentSessionData,
+    data: Data
+  ): Promise<PaymentSessionData> {
     throw new Error("Method not implemented.")
   }
-  async createPayment(context: Context): Promise<PaymentSessionResponse> {
+  async createPayment(
+    context: Cart & PaymentContext
+  ): Promise<PaymentSessionResponse> {
     throw new Error("Method not implemented.")
   }
   async retrievePayment(paymentData: Data): Promise<Data> {
     throw new Error("Method not implemented.")
   }
-  async updatePayment(paymentSessionData: Data, context: Context): Promise<PaymentSessionResponse> {
+  async updatePayment(
+    paymentSessionData: PaymentSessionData,
+    cart: Cart
+  ): Promise<PaymentSessionData> {
     throw new Error("Method not implemented.")
   }
-  async authorizePayment(paymentSession: PaymentSession, context: Data): Promise<{ data: Data; status: PaymentSessionStatus; }> {
+  async authorizePayment(
+    paymentSession: PaymentSession,
+    context: Data
+  ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }> {
     throw new Error("Method not implemented.")
   }
-  async capturePayment(payment: Payment): Promise<Data> {
+  async capturePayment(payment: Payment): Promise<PaymentData> {
     throw new Error("Method not implemented.")
   }
-  async refundPayment(payment: Payment, refundAmount: number): Promise<Data> {
+  async refundPayment(
+    payment: Payment, 
+    refundAmount: number
+  ): Promise<PaymentData> {
     throw new Error("Method not implemented.")
   }
-  async cancelPayment(payment: Payment): Promise<Data> {
+  async cancelPayment(payment: Payment): Promise<PaymentData> {
     throw new Error("Method not implemented.")
   }
   async deletePayment(paymentSession: PaymentSession): Promise<void> {
@@ -125,10 +142,8 @@ You can also use the constructor to initialize your integration with the third-p
 
 Additionally, if you’re creating your Payment Provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
 
-<!-- eslint-disable max-len -->
-
 ```ts
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   constructor(container, options) {
     super(container)
@@ -162,6 +177,12 @@ type PaymentContext = {
 }
 ```
 
+:::note
+
+Before v1.7.2, the first parameter was of type `Cart`. This method remains backwards compatible, but will be changed in the future. So, it's recommended to change the type of the first parameter to `PaymentContext`.
+
+:::
+
 This method must return an object of type `PaymentSessionResponse`. It should have the following properties:
 
 ```ts
@@ -178,14 +199,14 @@ Where:
 
 An example of a minimal implementation of `createPayment`:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { PaymentContext, PaymentSessionResponse } from "@medusajs/medusa"
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
-  async createPayment(context: PaymentContext): Promise<PaymentSessionResponse> {
+  async createPayment(
+    context: Cart & PaymentContext
+  ): Promise<PaymentSessionResponse> {
     // prepare data
     return { 
       session_data,
@@ -205,13 +226,11 @@ This method must return an object containing the data from the third-party provi
 
 An example of a minimal implementation of `retrievePayment` where you don’t need to interact with the third-party provider:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { Data } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async retrievePayment(paymentData: Data): Promise<Data> {
     return {}
@@ -237,13 +256,11 @@ This method returns a string that represents the status. The status must be one 
 
 An example of a minimal implementation of `getStatus` where you don’t need to interact with the third-party provider:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { Data, PaymentSessionStatus } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async getStatus(data: Data): Promise<PaymentSessionStatus> {
     return PaymentSessionStatus.AUTHORIZED
@@ -285,6 +302,12 @@ type PaymentContext = {
 }
 ```
 
+:::note
+
+Before v1.7.2, the second parameter was of type `Cart`. This method remains backwards compatible, but will be changed in the future. So, it's recommended to change the type of the first parameter to `PaymentContext`.
+
+:::
+
 You can utilize this method to interact with the third-party provider and update any details regarding the payment if necessary.
 
 This method must return an object of type `PaymentSessionResponse`. It should have the following properties:
@@ -303,15 +326,21 @@ Where:
 
 An example of a minimal implementation of `updatePayment`:
 
-<!-- eslint-disable max-len -->
-
 ```ts
-import { PaymentContext, Data } from "@medusajs/medusa"
+import { 
+  PaymentSessionData, 
+  Cart, 
+  PaymentContext, 
+  PaymentSessionResponse,
+} from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
-  async updatePayment(paymentSessionData: Data, context: PaymentContext): Promise<PaymentSessionResponse> {
+  async updatePayment(
+    paymentSessionData: PaymentSessionData,
+    cart: Cart
+  ): Promise<PaymentSessionData> {
     // prepare data
     return {
       session_data,
@@ -333,18 +362,16 @@ This method must return an object that will be stored in the `data` field of the
 
 An example of a minimal implementation of `updatePaymentData` that returns the `updatedData` passed in the body of the request as-is to update the `data` field of the Payment Session.
 
-<!-- eslint-disable max-len -->
-
 ```ts
-import { Data } from "@medusajs/medusa"
+import { Data, PaymentSessionData } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async updatePaymentData(
-    paymentSessionData: Data,
-    updatedData: Data
-  ): Promise<Data> {
+    paymentSessionData: PaymentSessionData,
+    data: Data
+  ): Promise<PaymentSessionData> {
     return updatedData
   }
 }
@@ -365,13 +392,11 @@ You can use this method to interact with the third-party provider to delete data
 
 An example of a minimal implementation of `deletePayment` where no interaction with a third-party provider is required:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { PaymentSession } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async deletePayment(paymentSession: PaymentSession): Promise<void> {
     return
@@ -408,22 +433,21 @@ You can utilize this method to interact with the third-party provider and perfor
 
 An example of a minimal implementation of `authorizePayment` that doesn’t need to interact with any third-party provider:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { 
   Data, 
   PaymentSession, 
   PaymentSessionStatus, 
+  PaymentSessionData,
 } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async authorizePayment(
     paymentSession: PaymentSession,
     context: Data
-  ): Promise<{ data: Data; status: PaymentSessionStatus; }> {
+  ): Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }> {
     return {
       status: PaymentSessionStatus.AUTHORIZED,
       data: {
@@ -444,13 +468,11 @@ This method must return an object to be stored in the `data` field of the Paymen
 
 An example of a minimal implementation of `getPaymentData`:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { Data, PaymentSession } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async getPaymentData(paymentSession: PaymentSession): Promise<Data> {
     return paymentSession.data
@@ -472,13 +494,11 @@ This method must return an object that will be stored in the `data` field of the
 
 An example of a minimal implementation of `capturePayment` that doesn’t need to interact with a third-party provider:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { Data, Payment } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async capturePayment(payment: Payment): Promise<Data> {
     return {
@@ -502,13 +522,11 @@ This method must return an object that is stored in the `data` field of the Paym
 
 An example of a minimal implementation of `refundPayment` that doesn’t need to interact with a third-party provider:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { Data, Payment } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async refundPayment(
     payment: Payment, 
@@ -538,13 +556,11 @@ This method must return an object that is stored in the `data` field of the Paym
 
 An example of a minimal implementation of `cancelPayment` that doesn’t need to interact with a third-party provider:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { Data, Payment } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   async cancelPayment(payment: Payment): Promise<Data> {
     return {
@@ -576,13 +592,11 @@ If you’re using Medusa’s [Next.js](../../../starters/nextjs-medusa-starter.m
 
 An example of the implementation of `retrieveSavedMethods` taken from Stripe’s Payment Provider:
 
-<!-- eslint-disable max-len -->
-
 ```ts
 import { Customer, Data } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService<TransactionBaseService> {
+class MyPaymentService extends AbstractPaymentService {
   // ...
   /**
   * Fetches a customers saved payment methods if registered in Stripe.
