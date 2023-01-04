@@ -174,11 +174,6 @@ export default class StockLocationService {
 
       const { address, metadata, ...data } = updateData
 
-      let hasUpdated = false
-      let shouldUpdate = Object.keys(data).some((key) => {
-        return item[key] !== data[key]
-      })
-
       if (address) {
         if (item.address_id) {
           await this.updateAddress(item.address_id, address, { manager })
@@ -188,25 +183,18 @@ export default class StockLocationService {
           const addressResult = await locAddressRepo.save(locAddress)
           data.address_id = addressResult.id
         }
-        shouldUpdate = true
       }
 
       if (metadata) {
         item.metadata = setMetadata(item, metadata)
-        shouldUpdate = true
       }
 
-      if (shouldUpdate) {
-        const toSave = locationRepo.merge(item, data)
-        await locationRepo.save(toSave)
-        hasUpdated = true
-      }
+      const toSave = locationRepo.merge(item, data)
+      await locationRepo.save(toSave)
 
-      if (hasUpdated) {
-        await this.eventBusService_.emit(StockLocationService.Events.UPDATED, {
-          id: stockLocationId,
-        })
-      }
+      await this.eventBusService_.emit(StockLocationService.Events.UPDATED, {
+        id: stockLocationId,
+      })
 
       return item
     })

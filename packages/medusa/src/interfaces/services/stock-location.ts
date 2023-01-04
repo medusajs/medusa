@@ -18,7 +18,10 @@ export interface IStockLocationService {
     config?: FindConfig<StockLocationDTO>
   ): Promise<[StockLocationDTO[], number]>
 
-  retrieve(id: string): Promise<StockLocationDTO>
+  retrieve(
+    id: string,
+    config?: FindConfig<StockLocationDTO>
+  ): Promise<StockLocationDTO>
 
   create(input: CreateStockLocationInput): Promise<StockLocationDTO>
 
