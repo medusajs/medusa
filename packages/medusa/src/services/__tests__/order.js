@@ -652,7 +652,9 @@ describe("OrderService", () => {
               fulfillment_status: "not_fulfilled",
               payment_status: "awaiting",
               status: "pending",
-              fulfillments: [{ id: "fulfillment_test", canceled_at: now }],
+              fulfillments: [
+                { id: "fulfillment_test", canceled_at: now, items: [] },
+              ],
               payments: [{ id: "payment_test" }],
               items: [
                 { id: "item_1", variant_id: "variant-1", quantity: 12 },
@@ -711,7 +713,7 @@ describe("OrderService", () => {
         payment_status: "canceled",
         canceled_at: expect.any(Date),
         status: "canceled",
-        fulfillments: [{ id: "fulfillment_test", canceled_at: now }],
+        fulfillments: [{ id: "fulfillment_test", canceled_at: now, items: [] }],
         payments: [{ id: "payment_test" }],
         items: [
           {

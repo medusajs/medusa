@@ -15,7 +15,7 @@ export const ProductVariantInventoryServiceMock = {
   adjustReservationsQuantityByLineItem: jest
     .fn()
     .mockImplementation((lineItem) => {}),
-  releaseReservationsByLineItem: jest.fn().mockImplementation((lineItem) => {}),
+  deleteReservationsByLineItem: jest.fn().mockImplementation((lineItem) => {}),
   reserveQuantity: jest
     .fn()
     .mockImplementation((variantId, quantity, options) => {}),
