@@ -451,13 +451,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
   }
 
   /**
-   * Remove reservation of variant quantity
+   * delete a reservation of variant quantity
    * @param lineItemId line item id
    * @param variantId variant id
    * @param quantity quantity to release
    */
-  // TODO: RENAME
-  async releaseReservationsByLineItem(
+  async deleteReservationsByLineItem(
     lineItemId: string,
     variantId: string,
     quantity: number
