@@ -1632,7 +1632,7 @@ class CartService extends TransactionBaseService {
   }
 
   /**
-   * Sets a payment method for a cart as selected and create the session to the external provider.
+   * Selects a payment session for a cart and creates a payment object in the external provider system
    * @param cartId - the id of the cart to add payment method to
    * @param providerId - the id of the provider to be set to the cart
    */
@@ -1878,7 +1878,7 @@ class CartService extends TransactionBaseService {
   async deletePaymentSession(
     cartId: string,
     providerId: string
-  ): Promise<Cart> {
+  ): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
@@ -1903,7 +1903,10 @@ class CartService extends TransactionBaseService {
           )
 
           if (paymentSession) {
-            if (paymentSession.is_selected) {
+            if (
+              paymentSession.is_selected ||
+              Object.keys(paymentSession.data).length
+            ) {
               await this.paymentProviderService_
                 .withTransaction(transactionManager)
                 .deleteSession(paymentSession)
@@ -1917,8 +1920,7 @@ class CartService extends TransactionBaseService {
 
         await this.eventBus_
           .withTransaction(transactionManager)
-          .emit(CartService.Events.UPDATED, cart)
-        return cart
+          .emit(CartService.Events.UPDATED, { id: cart.id })
       }
     )
   }
