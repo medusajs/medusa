@@ -21,13 +21,13 @@ import { checkRegisteredModules } from "../../../middlewares/check-registered-mo
 const route = Router()
 
 export default (app) => {
-  app.use("/stock-locations", route)
-
   app.use(
+    "/stock-locations",
     checkRegisteredModules({
       stockLocationService:
         "Stock Locations are not enabled. Please add a Stock Location module to enable this functionality.",
-    })
+    }),
+    route
   )
 
   route.get(
