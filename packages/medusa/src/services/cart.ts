@@ -1751,50 +1751,29 @@ class CartService extends TransactionBaseService {
 
         const { total, region } = cart
 
-        const providerSet = new Set(region.payment_providers.map((p) => p.id))
-
-        /**
-         * Find the payment sessions that needs to be removed
-         *
-         * if the cart total is <= 0 or the provider does not belong to the region then delete the sessions.
-         * The deletion occurs locally if there is no external data or if it is not selected
-         * otherwise the deletion will also occur remotely through the external provider.
-         */
-
-        const paymentSessionsToRemove = cart.payment_sessions.filter(
-          (session) => {
-            return total <= 0 || !providerSet.has(session.provider_id)
+        // Helpers that either delete a session locally or remotely. Will be used in multiple places below.
+        const deleteSessionAppropriately = async (session) => {
+          if (session.is_selected || Object.keys(session.data).length) {
+            return this.paymentProviderService_
+              .withTransaction(transactionManager)
+              .deleteSession(session)
           }
-        )
 
-        await Promise.all(
-          paymentSessionsToRemove.map(async (session) => {
-            if (session.is_selected || Object.keys(session.data).length) {
-              return this.paymentProviderService_
-                .withTransaction(transactionManager)
-                .deleteSession(session)
-            }
+          return psRepo.delete(session)
+        }
 
-            return psRepo.delete(session)
-          })
-        )
-
-        // In the case of a cart that has a total <= 0 we can return prematurely since
-        // we already have deleted the sessions, and we don't need to create or update anything from now on.
+        // In the case of a cart that has a total <= 0 we can return prematurely.
+        // we are deleting the sessions, and we don't need to create or update anything from now on.
         if (total <= 0) {
+          await Promise.all(
+            cart.payment_sessions.map(async (session) => {
+              return deleteSessionAppropriately(session)
+            })
+          )
           return
         }
 
-        /**
-         * Find the payment sessions that needs to be updated
-         *
-         * if the cart total is > 0 and the provider belongs to the region then update the sessions.
-         * The update occurs locally if it is not selected
-         * otherwise the update will also occur remotely through the external provider.
-         * In case the session is not selected but contains an external provider data, we delete the external provider
-         * session to be in a clean state.
-         */
-
+        const providerSet = new Set(region.payment_providers.map((p) => p.id))
         const seen: Set<string> = new Set()
 
         const partialSessionInput: Omit<PaymentSessionInput, "provider_id"> = {
@@ -1804,14 +1783,26 @@ class CartService extends TransactionBaseService {
           currency_code: cart.region.currency_code,
         }
 
-        const paymentSessionsToUpdate = cart.payment_sessions.filter(
-          (session) => {
-            return providerSet.has(session.provider_id)
-          }
-        )
-
         await Promise.all(
-          paymentSessionsToUpdate.map(async (session) => {
+          cart.payment_sessions.map(async (session) => {
+            if (!providerSet.has(session.provider_id)) {
+              /**
+               * if the provider does not belong to the region then delete the session.
+               * The deletion occurs locally if there is no external data or if it is not selected
+               * otherwise the deletion will also occur remotely through the external provider.
+               */
+
+              return await deleteSessionAppropriately(session)
+            }
+
+            /**
+             * if the provider belongs to the region then update the session.
+             * The update occurs locally if it is not selected
+             * otherwise the update will also occur remotely through the external provider.
+             * In case the session is not selected but contains an external provider data, we delete the external provider
+             * session to be in a clean state.
+             */
+
             seen.add(session.provider_id)
 
             // Update remotely
@@ -1826,7 +1817,7 @@ class CartService extends TransactionBaseService {
                 .updateSession(session, paymentSessionInput)
             }
 
-            // Delete remotely and create again locally
+            // At this stage the session is not selected. Delete remotely and create again locally
             if (Object.keys(session.data).length) {
               await this.paymentProviderService_.deleteSession(session)
               const paymentSession = psRepo.create({
@@ -1842,6 +1833,12 @@ class CartService extends TransactionBaseService {
             return psRepo.save(session)
           })
         )
+
+        /**
+         * From now on, the sessions have been cleanup. We can now
+         * - Set the provider session as selected if it is the only one existing and there is no payment session on the cart
+         * - Create a session per provider locally
+         */
 
         // If only one payment provider is available and there is no payment session on the cart
         // then we set the payment session immediately as the selected one.
