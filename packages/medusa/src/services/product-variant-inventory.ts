@@ -111,10 +111,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     const hasInventory = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
+        const itemQuantity = inventoryPart.quantity * quantity
         return await this.inventoryService_.confirmInventory(
           inventoryPart.inventory_item_id,
           locations,
-          quantity
+          itemQuantity
         )
       })
     )
@@ -516,7 +517,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
       await Promise.all(
         variantInventory.map(async (inventoryPart) => {
-          const itemQuantity = inventoryPart.quantity + quantity
+          const itemQuantity = inventoryPart.quantity * quantity
           return await this.inventoryService_.adjustInventory(
             inventoryPart.inventory_item_id,
             locationId,
