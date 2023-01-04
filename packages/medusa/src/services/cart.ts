@@ -1817,20 +1817,18 @@ class CartService extends TransactionBaseService {
                 .updateSession(session, paymentSessionInput)
             }
 
-            // At this stage the session is not selected. Delete remotely and create again locally
+            // At this stage the session is not selected. Delete it remotely if there is some
+            // external provider data and create the session locally only
             if (Object.keys(session.data).length) {
               await this.paymentProviderService_.deleteSession(session)
-              const paymentSession = psRepo.create({
-                provider_id: session.provider_id,
-                status: PaymentSessionStatus.PENDING,
-                amount: total,
-              })
-              return psRepo.save(paymentSession)
             }
 
-            // Update locally
-            session.amount = total
-            return psRepo.save(session)
+            const newPaymentSession = psRepo.create({
+              provider_id: session.provider_id,
+              status: PaymentSessionStatus.PENDING,
+              amount: total,
+            })
+            return psRepo.save(newPaymentSession)
           })
         )
 
