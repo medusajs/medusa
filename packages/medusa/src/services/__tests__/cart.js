@@ -1529,7 +1529,7 @@ describe("CartService", () => {
 
     const paymentProviderService = {
       deleteSession: jest.fn(),
-      updateSession: jest.fn(),
+      updateSession: jest.fn().mockImplementation(async () => void 0),
       createSession: jest.fn().mockImplementation(async (data) => {}),
       withTransaction: function () {
         return this
