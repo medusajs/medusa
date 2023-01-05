@@ -58,7 +58,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   async confirmInventory(
     variantId: string,
     quantity: number,
-    context: { salesChannelId?: string | null; locationId?: string } = {}
+    context: { salesChannelId?: string | null } = {}
   ): Promise<Boolean> {
     if (!variantId) {
       return true
@@ -95,9 +95,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let locations: string[] = []
-    if (context.locationId) {
-      locations = [context.locationId]
-    } else if (context.salesChannelId) {
+    if (context.salesChannelId) {
       locations = await this.salesChannelLocationService_.listLocations(
         context.salesChannelId
       )
