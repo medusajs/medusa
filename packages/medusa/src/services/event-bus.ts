@@ -275,16 +275,16 @@ export default class EventBusService {
    */
   worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
     const { eventName, data } = job.data
-    const eventObservers = this.eventToSubscribersMap_.get(eventName) || []
-    const wildcardObservers = this.eventToSubscribersMap_.get("*") || []
+    const eventSubscribers = this.eventToSubscribersMap_.get(eventName) || []
+    const wildcardSubscribers = this.eventToSubscribersMap_.get("*") || []
 
-    const observers = eventObservers.concat(wildcardObservers)
+    const allSubscribers = eventSubscribers.concat(wildcardSubscribers)
 
     // Pull already completed subscribers from the job data
     const completedSubscribers = job.data.completed_subscriber_ids || []
 
     // Filter out already completed subscribers from the all subscribers
-    const subscribers = observers.filter(
+    const subscribersInCurrentAttempt = allSubscribers.filter(
       (observer) => observer.id && !completedSubscribers.includes(observer.id)
     )
 
@@ -292,18 +292,18 @@ export default class EventBusService {
 
     if (isRetry) {
       this.logger_.info(
-        `Retrying (attempt ${job.attemptsMade}) ${eventName} which has ${eventObservers.length} subscribers (${subscribers.length} of them failed)`
+        `Retrying (attempt ${job.attemptsMade}) ${eventName} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
       )
     } else {
       this.logger_.info(
-        `Processing ${eventName} which has ${eventObservers.length} subscribers`
+        `Processing ${eventName} which has ${eventSubscribers.length} subscribers`
       )
     }
 
     const completedSubscribersInCurrentAttempt: string[] = []
 
     await Promise.all(
-      subscribers.map(async ({ id, subscriber }) => {
+      subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
         return subscriber(data, eventName)
           .then(() => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
@@ -321,7 +321,10 @@ export default class EventBusService {
 
     // If the number of completed subscribers is different from the number of subcribers to process in current attempt, some of them failed
     // Therefore, we update the job and retry
-    if (completedSubscribersInCurrentAttempt.length !== subscribers.length) {
+    if (
+      completedSubscribersInCurrentAttempt.length !==
+      subscribersInCurrentAttempt.length
+    ) {
       const updatedCompletedSubscribers = [
         ...completedSubscribers,
         ...completedSubscribersInCurrentAttempt,
