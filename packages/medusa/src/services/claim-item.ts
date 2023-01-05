@@ -77,7 +77,7 @@ class ClaimItemService extends TransactionBaseService {
         )
       }
 
-      if (lineItem.fulfilled_quantity < quantity) {
+      if (lineItem.fulfilled_quantity! < quantity) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot claim more of an item than has been fulfilled."

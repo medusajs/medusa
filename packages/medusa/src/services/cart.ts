@@ -37,27 +37,27 @@ import {
 import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
-import CustomShippingOptionService from "./custom-shipping-option"
-import CustomerService from "./customer"
-import DiscountService from "./discount"
-import EventBusService from "./event-bus"
-import GiftCardService from "./gift-card"
-import {
-  NewTotalsService,
-  ProductVariantInventoryService,
-  SalesChannelService,
-} from "./index"
-import LineItemService from "./line-item"
-import LineItemAdjustmentService from "./line-item-adjustment"
-import PaymentProviderService from "./payment-provider"
-import ProductService from "./product"
-import ProductVariantService from "./product-variant"
-import RegionService from "./region"
-import ShippingOptionService from "./shipping-option"
-import StoreService from "./store"
-import TaxProviderService from "./tax-provider"
-import TotalsService from "./totals"
 import { PaymentSessionInput } from "../types/payment"
+import {
+  CustomShippingOptionService,
+  CustomerService,
+  DiscountService,
+  EventBusService,
+  GiftCardService,
+  LineItemService,
+  LineItemAdjustmentService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductService,
+  ProductVariantService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  StoreService,
+  TaxProviderService,
+  TotalsService,
+  SalesChannelService,
+} from "."
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -584,11 +584,7 @@ class CartService extends TransactionBaseService {
     { sales_channel_id }: { sales_channel_id: string | null },
     lineItem: LineItemValidateData
   ): Promise<boolean> {
-    if (!sales_channel_id) {
-      return true
-    }
-
-    if (!lineItem.variant_id) {
+    if (!sales_channel_id || !lineItem.variant_id) {
       return true
     }
 

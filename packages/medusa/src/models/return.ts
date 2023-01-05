@@ -41,24 +41,24 @@ export class Return extends BaseEntity {
   items: ReturnItem[]
 
   @Index()
-  @Column({ nullable: true })
-  swap_id: string
+  @Column({ nullable: true, type: "text" })
+  swap_id: string | null
 
   @OneToOne(() => Swap, (swap) => swap.return_order)
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
   @Index()
-  @Column({ nullable: true })
-  claim_order_id: string
+  @Column({ nullable: true, type: "text" })
+  claim_order_id: string | null
 
   @OneToOne(() => ClaimOrder, (co) => co.return_order)
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
   @Index()
-  @Column({ nullable: true })
-  order_id: string
+  @Column({ nullable: true, type: "text" })
+  order_id: string | null
 
   @ManyToOne(() => Order, (o) => o.returns)
   @JoinColumn({ name: "order_id" })
@@ -69,12 +69,12 @@ export class Return extends BaseEntity {
   })
   shipping_method: ShippingMethod
 
+  @Index()
+  @Column({ nullable: true, type: "text" })
+  location_id: string | null
+
   @DbAwareColumn({ type: "jsonb", nullable: true })
   shipping_data: Record<string, unknown>
-
-  @Index()
-  @Column({ nullable: true })
-  location_id: string
 
   @Column({ type: "int" })
   refund_amount: number
@@ -83,13 +83,13 @@ export class Return extends BaseEntity {
   received_at: Date
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: boolean
+  no_notification: boolean | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
-  @Column({ nullable: true })
-  idempotency_key: string
+  @Column({ nullable: true, type: "text" })
+  idempotency_key: string | null
 
   @BeforeInsert()
   private beforeInsert(): void {
