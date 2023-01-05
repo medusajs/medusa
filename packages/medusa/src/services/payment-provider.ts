@@ -222,6 +222,9 @@ export default class PaymentProviderService extends TransactionBaseService {
         : undefined
 
       return await this.saveSession(providerId, {
+        payment_session_id: !isString(providerIdOrSessionInput)
+          ? providerIdOrSessionInput.payment_session_id
+          : undefined,
         cartId: context.id,
         sessionData,
         status: PaymentSessionStatus.PENDING,
