@@ -39,7 +39,8 @@ describe("POST /admin/returns/:id/receive", () => {
         IdMap.getId("test-return"),
         [{ item_id: IdMap.getId("test"), quantity: 2 }],
         undefined,
-        true
+        true,
+        { location_id: undefined }
       )
     })
 
