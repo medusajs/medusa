@@ -2,7 +2,7 @@ import { DeepPartial, EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { FindConfig } from "../types/common"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { PaymentCollectionRepository } from "../repositories/payment-collection"
 import {
   PaymentCollection,
@@ -225,13 +225,13 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   /**
    * Manages multiple payment sessions of a payment collection.
-   * @param paymentCollectionId - the id of the payment collection
+   * @param paymentCollectionOrId - the id of the payment collection
    * @param sessionsInput - array containing payment session info
    * @param customerId - the id of the customer
    * @return the payment collection and its payment sessions.
    */
   async setPaymentSessionsBatch(
-    paymentCollectionId: string,
+    paymentCollectionOrId: string | PaymentCollection,
     sessionsInput: PaymentCollectionsSessionsBatchInput[],
     customerId: string
   ): Promise<PaymentCollection> {
@@ -240,9 +240,15 @@ export default class PaymentCollectionService extends TransactionBaseService {
         this.paymentCollectionRepository_
       )
 
-      const payCol = await this.retrieve(paymentCollectionId, {
-        relations: ["region", "region.payment_providers", "payment_sessions"],
-      })
+      const payCol: PaymentCollection = isString(paymentCollectionOrId)
+        ? await this.retrieve(paymentCollectionOrId, {
+            relations: [
+              "region",
+              "region.payment_providers",
+              "payment_sessions",
+            ],
+          })
+        : paymentCollectionOrId
 
       if (payCol.status !== PaymentCollectionStatus.NOT_PAID) {
         throw new MedusaError(
@@ -364,7 +370,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async () => {
       const payCol = await this.retrieve(paymentCollectionId, {
-        select: ["amount"],
         relations: ["region", "region.payment_providers", "payment_sessions"],
       })
 
@@ -384,7 +389,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
       )
 
       return await this.setPaymentSessionsBatch(
-        paymentCollectionId,
+        payCol,
         [
           {
             ...sessionInput,
