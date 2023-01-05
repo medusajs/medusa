@@ -23,27 +23,16 @@ describe("Categories > Materialized Paths", () => {
   it("can fetch ancestors, descendents and root categories", async () => {
     const categoryRepository = dbConnection.getTreeRepository(Category)
 
-    const a1 = new Category()
-    a1.name = "a1"
-    a1.handle = "a1"
+    const a1 = categoryRepository.create({ name: 'a1', handle: 'a1' })
     await categoryRepository.save(a1)
 
-    const a11 = new Category()
-    a11.name = "a11"
-    a11.handle = "a11"
-    a11.parentCategory = a1
+    const a11 = categoryRepository.create({ name: 'a11', handle: 'a11', parentCategory: a1 })
     await categoryRepository.save(a11)
 
-    const a111 = new Category()
-    a111.name = "a111"
-    a111.handle = "a111"
-    a111.parentCategory = a11
+    const a111 = categoryRepository.create({ name: 'a111', handle: 'a111', parentCategory: a11 })
     await categoryRepository.save(a111)
 
-    const a12 = new Category()
-    a12.name = "a12"
-    a12.handle = "a12"
-    a12.parentCategory = a1
+    const a12 = categoryRepository.create({ name: 'a12', handle: 'a12', parentCategory: a1 })
     await categoryRepository.save(a12)
 
     const rootCategories = await categoryRepository.findRoots()
