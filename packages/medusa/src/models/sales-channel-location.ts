@@ -4,6 +4,7 @@ import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { BaseEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
 
+@FeatureFlagEntity("sales_channels")
 export class SalesChannelLocation extends BaseEntity {
   @Index()
   @Column({ type: "text" })

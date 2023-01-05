@@ -4466,6 +4466,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/stock-location@workspace:packages/stock-location":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/stock-location@workspace:packages/stock-location"
+  dependencies:
+    "@medusajs/medusa": ^1.7.1
+    cross-env: ^5.2.1
+    jest: ^25.5.2
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.1
+    medusa-interfaces: 1.3.3
+    typeorm: ^0.2.31
+  languageName: unknown
+  linkType: soft
+
 "@microsoft/fetch-event-source@npm:2.0.1":
   version: 2.0.1
   resolution: "@microsoft/fetch-event-source@npm:2.0.1"

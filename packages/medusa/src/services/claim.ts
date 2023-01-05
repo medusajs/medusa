@@ -332,8 +332,8 @@ export default class ClaimService extends TransactionBaseService {
             lines as LineItem[]
           )
         }
-
         let newItems: LineItem[] = []
+
         if (isDefined(additional_items)) {
           newItems = await Promise.all(
             additional_items.map(async (i) =>

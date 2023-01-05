@@ -1,6 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
-import { ProductVariantInventoryService } from "."
 import { TransactionBaseService } from "../interfaces"
 import {
   FulfillmentStatus,
@@ -17,13 +16,17 @@ import { FindConfig, Selector } from "../types/common"
 import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
 import { buildQuery, setMetadata } from "../utils"
-import FulfillmentProviderService from "./fulfillment-provider"
-import LineItemService from "./line-item"
-import OrderService from "./order"
-import ReturnReasonService from "./return-reason"
-import ShippingOptionService from "./shipping-option"
-import TaxProviderService from "./tax-provider"
-import TotalsService from "./totals"
+
+import {
+  FulfillmentProviderService,
+  ProductVariantInventoryService,
+  LineItemService,
+  OrderService,
+  ReturnReasonService,
+  ShippingOptionService,
+  TaxProviderService,
+  TotalsService,
+} from "."
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -226,7 +229,7 @@ class ReturnService extends TransactionBaseService {
       )
     }
 
-    const returnable = item.quantity - item.returned_quantity
+    const returnable = item.quantity - item.returned_quantity!
     if (quantity > returnable) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -590,7 +593,7 @@ class ReturnService extends TransactionBaseService {
 
       const order = await this.orderService_
         .withTransaction(manager)
-        .retrieve(orderId, {
+        .retrieve(orderId!, {
           relations: [
             "items",
             "returns",
@@ -671,14 +674,15 @@ class ReturnService extends TransactionBaseService {
         })
       }
 
-      const inventoryServiceTx =
+      const productVarInventoryTx =
         this.productVariantInventoryService_.withTransaction(manager)
+
       for (const line of newLines) {
         const orderItem = order.items.find((i) => i.id === line.item_id)
-        if (orderItem && orderItem?.variant_id) {
-          await inventoryServiceTx.adjustInventory(
+        if (orderItem && orderItem.variant_id) {
+          await productVarInventoryTx.adjustInventory(
             orderItem.variant_id,
-            returnObj.location_id,
+            returnObj.location_id!,
             line.received_quantity
           )
         }
