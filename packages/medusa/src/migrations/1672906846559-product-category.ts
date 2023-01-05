@@ -24,9 +24,14 @@ export class productCategory1672906846559 implements MigrationInterface {
     await queryRunner.query(
       `CREATE UNIQUE INDEX "IDX_product_category_handle" ON "product_category" ("handle") WHERE deleted_at IS NULL`
     )
+
+    await queryRunner.query(
+      `CREATE INDEX "IDX_product_category_path" ON "product_category" ("path")`
+    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DROP INDEX "IDX_product_category_path"`)
     await queryRunner.query(`DROP INDEX "IDX_product_category_handle"`)
     await queryRunner.query(`DROP TABLE "product_category"`)
   }
