@@ -12,9 +12,13 @@ import { Transform, Type } from "class-transformer"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
-import { OrderService } from "../../../../services"
+import {
+  OrderService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { Fulfillment, LineItem } from "../../../../models"
 
 /**
  * @oas [post] /orders/{id}/fulfillment
@@ -98,15 +102,35 @@ export default async (req, res) => {
   )
 
   const orderService: OrderService = req.scope.resolve("orderService")
-
+  const pvInventoryService: ProductVariantInventoryService = req.scope.resolve(
+    "productVariantInventoryService"
+  )
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await orderService
+    const { fulfillments: existingFulfillments } = await orderService
+      .withTransaction(transactionManager)
+      .retrieve(id, {
+        relations: ["fulfillments"],
+      })
+
+    const { fulfillments } = await orderService
       .withTransaction(transactionManager)
       .createFulfillment(id, validated.items, {
         metadata: validated.metadata,
         no_notification: validated.no_notification,
       })
+
+    const pvInventoryServiceTx =
+      pvInventoryService.withTransaction(transactionManager)
+
+    if (validated.location_id) {
+      await updateInventoryAndReservations(
+        fulfillments,
+        existingFulfillments,
+        pvInventoryServiceTx,
+        validated.location_id
+      )
+    }
   })
 
   const order = await orderService.retrieve(id, {
@@ -115,6 +139,47 @@ export default async (req, res) => {
   })
 
   res.json({ order })
+}
+
+const updateInventoryAndReservations = async (
+  fulfillments: Fulfillment[],
+  existingFulfillments: Fulfillment[],
+  inventoryService: ProductVariantInventoryService,
+  locationId: string
+) => {
+  fulfillments.map(async ({ id, items }) => {
+    const existingFulfillment = existingFulfillments.find((f) => f.id === id)
+
+    if (existingFulfillment) {
+      return
+    }
+
+    await inventoryService.validateInventoryAtLocation(
+      items.map(({ item, quantity }) => ({ ...item, quantity } as LineItem)),
+      locationId
+    )
+
+    await Promise.all(
+      items.map(async ({ item, quantity }) => {
+        if (!item.variant_id) {
+          return
+        }
+
+        await inventoryService.adjustReservationsQuantityByLineItem(
+          item.id,
+          item.variant_id,
+          locationId,
+          -quantity
+        )
+
+        await inventoryService.adjustInventory(
+          item.variant_id,
+          locationId,
+          -quantity
+        )
+      })
+    )
+  })
 }
 
 /**

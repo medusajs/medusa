@@ -216,8 +216,6 @@ class FulfillmentService extends TransactionBaseService {
   ): Promise<Fulfillment[]> {
     const { locationId } = context
     return await this.atomicPhase_(async (manager) => {
-      const pvInventoryServiceTx =
-        this.productVariantInventoryService_.withTransaction(manager)
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
       )
@@ -234,28 +232,6 @@ class FulfillmentService extends TransactionBaseService {
 
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
-          await pvInventoryServiceTx.validateInventoryAtLocation(
-            items,
-            locationId!
-          )
-
-          await Promise.all(
-            items.map(async (i) => {
-              await pvInventoryServiceTx.adjustReservationsQuantityByLineItem(
-                i.id,
-                i.variant_id!,
-                locationId!,
-                -i.quantity
-              )
-
-              await pvInventoryServiceTx.adjustInventory(
-                i.variant_id!,
-                locationId!,
-                -i.quantity
-              )
-            })
-          )
-
           const ful = fulfillmentRepository.create({
             ...custom,
             provider_id: shipping_method.shipping_option.provider_id,

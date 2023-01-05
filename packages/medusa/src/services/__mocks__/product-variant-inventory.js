@@ -23,3 +23,9 @@ export const ProductVariantInventoryServiceMock = {
     .fn()
     .mockImplementation((items, locationId) => {}),
 }
+
+const mock = jest.fn().mockImplementation(() => {
+  return ProductVariantInventoryServiceMock
+})
+
+export default mock
