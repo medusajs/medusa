@@ -7,11 +7,7 @@ import {
 } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { ProductVariantService, SalesChannelLocationService } from "./"
-import {
-  InventoryItemDTO,
-  InventoryLevelDTO,
-  ReserveQuantityContext,
-} from "../types/inventory"
+import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
 import { LineItem, ProductVariant } from "../models"
 
 type InjectedDependencies = {
@@ -119,6 +115,37 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
 
     return hasInventory.every(Boolean)
+  }
+
+  /**
+   * Retrieves a product variant inventory item by its inventory item ID and variant ID.
+   *
+   * @param inventoryItemId - The ID of the inventory item to retrieve.
+   * @param variantId - The ID of the variant to retrieve.
+   * @returns A promise that resolves with the product variant inventory item.
+   */
+  async retrieve(
+    inventoryItemId: string,
+    variantId: string
+  ): Promise<ProductVariantInventoryItem> {
+    const manager = this.transactionManager_ || this.manager_
+
+    const variantInventoryRepo = manager.getRepository(
+      ProductVariantInventoryItem
+    )
+
+    const variantInventory = await variantInventoryRepo.findOne({
+      where: { inventory_item_id: inventoryItemId, variant_id: variantId },
+    })
+
+    if (!variantInventory) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Inventory item with id ${inventoryItemId} not found`
+      )
+    }
+
+    return variantInventory
   }
 
   /**
@@ -400,8 +427,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
           (r) => r.location_id === location_id && r.quantity >= quantity
         ) ?? reservation
 
+      const pvit = await this.retrieve(reservation.item_id, variantId)
+
+      const reservationQtyUpdate = quantity * pvit.quantity
+
       await this.inventoryService_.updateReservation(reservation.id, {
-        quantity: reservation.quantity + quantity,
+        quantity: reservation.quantity + reservationQtyUpdate,
       })
     }
   }
