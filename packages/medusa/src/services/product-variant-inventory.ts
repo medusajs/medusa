@@ -392,22 +392,18 @@ class ProductVariantInventoryService extends TransactionBaseService {
         }
       )
 
-    if (reservationCount === 0) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Reservation not found for line item ${lineItemId}`
-      )
+    if (reservationCount) {
+      let reservation = reservations[0]
+
+      reservation =
+        reservations.find(
+          (r) => r.location_id === location_id && r.quantity >= quantity
+        ) ?? reservation
+
+      await this.inventoryService_.updateReservation(reservation.id, {
+        quantity: reservation.quantity + quantity,
+      })
     }
-    let reservation = reservations[0]
-
-    reservation =
-      reservations.find(
-        (r) => r.location_id === location_id && r.quantity >= quantity
-      ) ?? reservation
-
-    await this.inventoryService_.updateReservation(reservation.id, {
-      quantity: reservation.quantity + quantity,
-    })
   }
 
   async validateInventoryAtLocation(items: LineItem[], locationId: string) {
