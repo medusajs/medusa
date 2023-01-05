@@ -22,10 +22,11 @@ type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
 type BullJob<T> = {
   update: (data: unknown) => void
   attemptsMade: number
+  opts: EmitOptions
   data: {
     eventName: string
     data: T
-    completed_subscriber_ids: string[] | undefined
+    completedSubscriberIds: string[] | undefined
   }
 }
 
@@ -36,7 +37,7 @@ type SubscriberDescriptor = {
 
 type EmitOptions = {
   delay?: number
-  attempts?: number
+  attempts: number
   backoff?: {
     type: "fixed" | "exponential"
     delay: number
@@ -199,7 +200,7 @@ export default class EventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions = {}
+    options: EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void> {
     if (this.transactionManager_) {
       const stagedJobRepository = this.transactionManager_.getCustomRepository(
@@ -214,6 +215,7 @@ export default class EventBusService {
     } else {
       const opts: { removeOnComplete: boolean } & EmitOptions = {
         removeOnComplete: true,
+        attempts: 1,
       }
       if (typeof options.attempts === "number") {
         opts.attempts = options.attempts
@@ -281,7 +283,7 @@ export default class EventBusService {
     const allSubscribers = eventSubscribers.concat(wildcardSubscribers)
 
     // Pull already completed subscribers from the job data
-    const completedSubscribers = job.data.completed_subscriber_ids || []
+    const completedSubscribers = job.data.completedSubscriberIds || []
 
     // Filter out already completed subscribers from the all subscribers
     const subscribersInCurrentAttempt = allSubscribers.filter(
@@ -302,12 +304,13 @@ export default class EventBusService {
 
     const completedSubscribersInCurrentAttempt: string[] = []
 
-    await Promise.all(
+    const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
         return subscriber(data, eventName)
-          .then(() => {
+          .then((data) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)
+            return data
           })
           .catch((err) => {
             this.logger_.warn(
@@ -320,11 +323,13 @@ export default class EventBusService {
     )
 
     // If the number of completed subscribers is different from the number of subcribers to process in current attempt, some of them failed
-    // Therefore, we update the job and retry
-    if (
+    const didSubscribersFail =
       completedSubscribersInCurrentAttempt.length !==
       subscribersInCurrentAttempt.length
-    ) {
+
+    // Therefore, if retrying is configured, we try again
+    const shouldRetry = didSubscribersFail && job?.opts.attempts > 1
+    if (shouldRetry) {
       const updatedCompletedSubscribers = [
         ...completedSubscribers,
         ...completedSubscribersInCurrentAttempt,
@@ -332,17 +337,22 @@ export default class EventBusService {
 
       job.update({
         ...job.data,
-        completed_subscriber_ids: updatedCompletedSubscribers,
+        completedSubscriberIds: updatedCompletedSubscribers,
       })
 
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
 
       this.logger_.warn(errorMessage)
 
-      return Promise.reject(new Error(errorMessage))
+      return Promise.reject(Error(errorMessage))
+    } else {
+      // else we log that a subscriber failed
+      this.logger_.warn(
+        `One or more subscribers of ${eventName} failed. Retrying is not configured. Use 'attempts' option when emitting events.`
+      )
     }
 
-    return Promise.resolve(undefined)
+    return Promise.resolve(subscribersResult)
   }
 
   /**
