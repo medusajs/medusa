@@ -40,24 +40,24 @@ import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import { PaymentSessionInput } from "../types/payment"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
-  LineItemService,
   LineItemAdjustmentService,
+  LineItemService,
   NewTotalsService,
   PaymentProviderService,
   ProductService,
-  ProductVariantService,
   ProductVariantInventoryService,
+  ProductVariantService,
   RegionService,
+  SalesChannelService,
   ShippingOptionService,
   StoreService,
   TaxProviderService,
   TotalsService,
-  SalesChannelService,
 } from "."
 
 type InjectedDependencies = {
@@ -1741,7 +1741,6 @@ class CartService extends TransactionBaseService {
               "region",
               "region.tax_rates",
               "region.payment_providers",
-              "payment_session",
               "payment_sessions",
               "customer",
             ],

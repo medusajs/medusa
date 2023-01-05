@@ -1632,7 +1632,7 @@ describe("CartService", () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-to-filter"))
 
       expect(paymentSessionRepositoryMock.create).toHaveBeenCalledTimes(1)
-      expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(2) // create and update
       expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(1)
       expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
         provider_id: "not_in_region",
