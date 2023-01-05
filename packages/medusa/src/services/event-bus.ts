@@ -1,6 +1,7 @@
 import Bull from "bull"
 import Redis from "ioredis"
 import { EntityManager } from "typeorm"
+import { ulid } from "ulid"
 import { StagedJob } from "../models"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { ConfigModule, Logger } from "../types/global"
@@ -17,6 +18,21 @@ type InjectedDependencies = {
 }
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
+
+type BullJob<T> = {
+  update: (data: unknown) => void
+  attemptsMade: number
+  data: {
+    eventName: string
+    data: T
+    completed_subscribers: string[] | undefined
+  }
+}
+
+type Observer = {
+  id: string
+  subscriber: Subscriber
+}
 
 type EmitOptions = {
   delay?: number
@@ -37,7 +53,7 @@ export default class EventBusService {
   protected readonly logger_: Logger
   protected readonly stagedJobRepository_: typeof StagedJobRepository
   protected readonly jobSchedulerService_: JobSchedulerService
-  protected readonly observers_: Map<string | symbol, Subscriber[]>
+  protected readonly observers_: Map<string | symbol, Observer[]>
   protected readonly redisClient_: Redis.Redis
   protected readonly redisSubscriber_: Redis.Redis
   protected queue_: Bull
@@ -129,8 +145,12 @@ export default class EventBusService {
       throw new Error("Subscriber must be a function")
     }
 
+    const uniqueSubscriberId = ulid() // <- maybe we can do better?
+
+    const sub = { subscriber, id: uniqueSubscriberId }
+
     const observers = this.observers_.get(event) ?? []
-    this.observers_.set(event, [...observers, subscriber])
+    this.observers_.set(event, [...observers, sub])
 
     return this
   }
@@ -147,10 +167,15 @@ export default class EventBusService {
       throw new Error("Subscriber must be a function")
     }
 
-    if (this.observers_.get(event)?.length) {
-      const index = this.observers_.get(event)?.indexOf(subscriber)
-      if (index !== -1) {
-        this.observers_.get(event)?.splice(index as number, 1)
+    const subscribers = this.observers_.get(event)
+
+    if (subscribers?.length) {
+      const subIndex = subscribers?.findIndex(
+        (sub) => sub.subscriber === subscriber
+      )
+
+      if (subIndex !== -1) {
+        this.observers_.get(event)?.splice(subIndex as number, 1)
       }
     }
 
@@ -241,30 +266,73 @@ export default class EventBusService {
    * @param job The job object
    * @return resolves to the results of the subscriber calls.
    */
-  worker_ = async <T>(job: {
-    data: { eventName: string; data: T }
-  }): Promise<unknown[]> => {
+  worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
     const { eventName, data } = job.data
     const eventObservers = this.observers_.get(eventName) || []
     const wildcardObservers = this.observers_.get("*") || []
 
     const observers = eventObservers.concat(wildcardObservers)
 
-    this.logger_.info(
-      `Processing ${eventName} which has ${eventObservers.length} subscribers`
+    // Pull already completed subscribers from the job data
+    const completedSubscribers = job.data.completed_subscribers || []
+
+    // Filter out already completed subscribers from the all observers
+    const subscribers = observers.filter(
+      (observer) => observer.id && !completedSubscribers.includes(observer.id)
     )
 
-    return await Promise.all(
-      observers.map(async (subscriber) => {
-        return subscriber(data, eventName).catch((err) => {
-          this.logger_.warn(
-            `An error occurred while processing ${eventName}: ${err}`
-          )
-          console.error(err)
-          throw err
-        })
+    const isRetry = job.attemptsMade > 0
+
+    if (isRetry) {
+      this.logger_.info(
+        `Retrying (attempt ${job.attemptsMade}) ${eventName} which has ${eventObservers.length} subscribers (${subscribers.length} of them failed)`
+      )
+    } else {
+      this.logger_.info(
+        `Processing ${eventName} which has ${eventObservers.length} subscribers`
+      )
+    }
+
+    const completedSubscribersInCurrentAttempt: string[] = []
+
+    await Promise.all(
+      subscribers.map(async ({ id, subscriber }) => {
+        return subscriber(data, eventName)
+          .then(() => {
+            // For every subscriber that completes successfully, add their id to the list of completed subscribers
+            completedSubscribersInCurrentAttempt.push(id)
+          })
+          .catch((err) => {
+            this.logger_.warn(
+              `An error occurred while processing ${eventName}: ${err}`
+            )
+            console.error(err)
+            return err
+          })
       })
     )
+
+    // If the number of completed subscribers is different from the number of subcribers to process in current attempt, some of them failed
+    // Therefore, we update the job and retry
+    if (completedSubscribersInCurrentAttempt.length !== subscribers.length) {
+      const updatedCompletedSubscribers = [
+        ...completedSubscribers,
+        ...completedSubscribersInCurrentAttempt,
+      ]
+
+      job.update({
+        ...job.data,
+        completed_subscribers: updatedCompletedSubscribers,
+      })
+
+      const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
+
+      this.logger_.warn(errorMessage)
+
+      return Promise.reject(new Error(errorMessage))
+    }
+
+    return Promise.resolve(undefined)
   }
 
   /**
