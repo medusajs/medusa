@@ -261,7 +261,7 @@ export default class EventBusService {
             `An error occurred while processing ${eventName}: ${err}`
           )
           console.error(err)
-          return err
+          throw err
         })
       })
     )
