@@ -684,7 +684,7 @@ class ReturnService extends TransactionBaseService {
         if (orderItem && orderItem.variant_id) {
           await productVarInventoryTx.adjustInventory(
             orderItem.variant_id,
-            returnObj.location_id!,
+            result.location_id!,
             line.received_quantity
           )
         }
