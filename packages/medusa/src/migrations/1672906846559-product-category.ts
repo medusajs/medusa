@@ -1,9 +1,11 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-export class category1672906846559 implements MigrationInterface {
+export class productCategory1672906846559 implements MigrationInterface {
+  name = "productCategory1672906846559"
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      CREATE TABLE "category"
+      CREATE TABLE "product_category"
         (
           "id" character varying NOT NULL,
           "name" text NOT NULL,
@@ -15,17 +17,17 @@ export class category1672906846559 implements MigrationInterface {
           "deleted_at" TIMESTAMP WITH TIME ZONE,
           "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
           "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-          CONSTRAINT "PK_qgguwbn1cwstxk53efl0px9oqwt" PRIMARY KEY ("id")
+          CONSTRAINT "PK_qgguwbn1cwstxk93efl0px9oqwt" PRIMARY KEY ("id")
         )
     `)
 
     await queryRunner.query(
-      `CREATE UNIQUE INDEX "IDX_b0dhljrfjktg1e98cnub69n502" ON "category" ("handle") WHERE deleted_at IS NULL`
+      `CREATE UNIQUE INDEX "IDX_product_category_handle" ON "product_category" ("handle") WHERE deleted_at IS NULL`
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP INDEX "IDX_b0dhljrfjktg1e98cnub69n502"`)
-    await queryRunner.query(`DROP TABLE "category"`)
+    await queryRunner.query(`DROP INDEX "IDX_product_category_handle"`)
+    await queryRunner.query(`DROP TABLE "product_category"`)
   }
 }

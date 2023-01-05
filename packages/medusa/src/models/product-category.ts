@@ -15,7 +15,7 @@ import {
 
 @Entity()
 @Tree("materialized-path")
-export class Category extends SoftDeletableEntity {
+export class ProductCategory extends SoftDeletableEntity {
   @Column()
   name: string
 
@@ -37,27 +37,27 @@ export class Category extends SoftDeletableEntity {
 
   @TreeParent()
   @JoinColumn({ name: 'parent_category_id' })
-  parentCategory: Category
+  parentCategory: ProductCategory | null
 
   // Typeorm also keeps track of the category's parent at all times.
   // TODO: Uncomment this if there is a usecase for accessing this.
   // @Column()
-  // parent_category_id: Category
+  // parent_category_id: ProductCategory
 
   @TreeChildren({ cascade: true })
-  subCategories: Category[]
+  subCategories: ProductCategory[]
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.id = generateEntityId(this.id, "catg")
+    this.id = generateEntityId(this.id, "pcat")
   }
 }
 
 /**
- * @schema category
- * title: "Category"
- * description: "Represents a category"
- * x-resourceId: category
+ * @schema productCategory
+ * title: "ProductCategory"
+ * description: "Represents a product category"
+ * x-resourceId: productCategory
  * type: object
  * required:
  *   - name
@@ -65,11 +65,11 @@ export class Category extends SoftDeletableEntity {
  * properties:
  *   id:
  *     type: string
- *     description: The category's ID
+ *     description: The product category's ID
  *     example: catg_01G2SG30J8C85S4A5CHM2S1NS2
  *   name:
  *     type: string
- *     description: The category's name
+ *     description: The product category's name
  *     example: Regular Fit
  *   handle:
  *     description: "A unique string that identifies the Category - example: slug structures."
@@ -81,22 +81,22 @@ export class Category extends SoftDeletableEntity {
  *     example: catg_id1.catg_id2.catg_id3
  *   is_internal:
  *     type: boolean
- *     description: A flag to make category an internal category for admins
+ *     description: A flag to make product category an internal category for admins
  *     default: false
  *   is_active:
  *     type: boolean
- *     description: A flag to make category visible/hidden in the store front
+ *     description: A flag to make product category visible/hidden in the store front
  *     default: false
  *   subCategories:
  *     description: Available if the relation `subCategories` are expanded.
  *     type: array
  *     items:
  *       type: object
- *       description: A category object.
+ *       description: A product category object.
  *   parentCategory:
  *     description: Available if the relation `parentCategory` is expanded.
  *     type: object
- *     description: A category object.
+ *     description: A product category object.
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."
