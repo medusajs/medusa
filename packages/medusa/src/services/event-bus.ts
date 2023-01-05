@@ -25,11 +25,11 @@ type BullJob<T> = {
   data: {
     eventName: string
     data: T
-    completed_subscribers: string[] | undefined
+    completed_subscriber_ids: string[] | undefined
   }
 }
 
-type Observer = {
+type SubscriberDescriptor = {
   id: string
   subscriber: Subscriber
 }
@@ -53,7 +53,10 @@ export default class EventBusService {
   protected readonly logger_: Logger
   protected readonly stagedJobRepository_: typeof StagedJobRepository
   protected readonly jobSchedulerService_: JobSchedulerService
-  protected readonly observers_: Map<string | symbol, Observer[]>
+  protected readonly eventToSubscribersMap_: Map<
+    string | symbol,
+    SubscriberDescriptor[]
+  >
   protected readonly redisClient_: Redis.Redis
   protected readonly redisSubscriber_: Redis.Redis
   protected queue_: Bull
@@ -96,7 +99,7 @@ export default class EventBusService {
         },
       }
 
-      this.observers_ = new Map()
+      this.eventToSubscribersMap_ = new Map()
       this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
       this.redisClient_ = redisClient
       this.redisSubscriber_ = redisSubscriber
@@ -145,12 +148,16 @@ export default class EventBusService {
       throw new Error("Subscriber must be a function")
     }
 
-    const uniqueSubscriberId = ulid() // <- maybe we can do better?
+    const uniqueSubscriberId = `${event.toString()}-${ulid()}` // <- maybe we can do better?
 
-    const sub = { subscriber, id: uniqueSubscriberId }
+    const newSubscriberDescriptor = { subscriber, id: uniqueSubscriberId }
 
-    const observers = this.observers_.get(event) ?? []
-    this.observers_.set(event, [...observers, sub])
+    const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
+
+    this.eventToSubscribersMap_.set(event, [
+      ...existingSubscribers,
+      newSubscriberDescriptor,
+    ])
 
     return this
   }
@@ -167,15 +174,15 @@ export default class EventBusService {
       throw new Error("Subscriber must be a function")
     }
 
-    const subscribers = this.observers_.get(event)
+    const existingSubscribers = this.eventToSubscribersMap_.get(event)
 
-    if (subscribers?.length) {
-      const subIndex = subscribers?.findIndex(
+    if (existingSubscribers?.length) {
+      const subIndex = existingSubscribers?.findIndex(
         (sub) => sub.subscriber === subscriber
       )
 
       if (subIndex !== -1) {
-        this.observers_.get(event)?.splice(subIndex as number, 1)
+        this.eventToSubscribersMap_.get(event)?.splice(subIndex as number, 1)
       }
     }
 
@@ -268,15 +275,15 @@ export default class EventBusService {
    */
   worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
     const { eventName, data } = job.data
-    const eventObservers = this.observers_.get(eventName) || []
-    const wildcardObservers = this.observers_.get("*") || []
+    const eventObservers = this.eventToSubscribersMap_.get(eventName) || []
+    const wildcardObservers = this.eventToSubscribersMap_.get("*") || []
 
     const observers = eventObservers.concat(wildcardObservers)
 
     // Pull already completed subscribers from the job data
-    const completedSubscribers = job.data.completed_subscribers || []
+    const completedSubscribers = job.data.completed_subscriber_ids || []
 
-    // Filter out already completed subscribers from the all observers
+    // Filter out already completed subscribers from the all subscribers
     const subscribers = observers.filter(
       (observer) => observer.id && !completedSubscribers.includes(observer.id)
     )
@@ -322,7 +329,7 @@ export default class EventBusService {
 
       job.update({
         ...job.data,
-        completed_subscribers: updatedCompletedSubscribers,
+        completed_subscriber_ids: updatedCompletedSubscribers,
       })
 
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
