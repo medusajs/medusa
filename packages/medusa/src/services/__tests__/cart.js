@@ -7,6 +7,7 @@ import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
+import { PaymentSessionStatus } from "../../models"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -1423,13 +1424,16 @@ describe("CartService", () => {
   })
 
   describe("setPaymentSessions", () => {
+    const provider1Id = "provider_1"
+    const provider2Id = "provider_2"
+
     const cart1 = {
       total: 100,
       items: [{ subtotal: 100 }],
       shipping_methods: [],
       payment_sessions: [],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
@@ -1437,9 +1441,9 @@ describe("CartService", () => {
       total: 100,
       items: [],
       shipping_methods: [],
-      payment_sessions: [{ provider_id: "provider_1" }],
+      payment_sessions: [{ provider_id: provider1Id }],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
@@ -1448,11 +1452,11 @@ describe("CartService", () => {
       items: [{ subtotal: 100 }],
       shipping_methods: [{ subtotal: 100 }],
       payment_sessions: [
-        { provider_id: "provider_1" },
+        { provider_id: provider1Id },
         { provider_id: "not_in_region" },
       ],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
@@ -1461,22 +1465,22 @@ describe("CartService", () => {
       items: [{ total: 0 }],
       shipping_methods: [],
       payment_sessions: [
-        { provider_id: "provider_1" },
-        { provider_id: "provider_2" },
+        { provider_id: provider1Id },
+        { provider_id: provider2Id },
       ],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
     const cart5 = {
       total: -1,
       payment_sessions: [
-        { provider_id: "provider_1" },
-        { provider_id: "provider_2" },
+        { provider_id: provider1Id },
+        { provider_id: provider2Id },
       ],
       region: {
-        payment_providers: [{ id: "provider_1" }, { id: "provider_2" }],
+        payment_providers: [{ id: provider1Id }, { id: provider2Id }],
       },
     }
 
@@ -1507,8 +1511,11 @@ describe("CartService", () => {
       },
     }
 
+    const paymentSessionRepositoryMock = MockRepository({})
+
     const cartService = new CartService({
       manager: MockManager,
+      paymentSessionRepository: paymentSessionRepositoryMock,
       totalsService,
       cartRepository,
       paymentProviderService,
@@ -1525,20 +1532,21 @@ describe("CartService", () => {
     it("initializes payment sessions for each of the providers", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cartWithLine"))
 
-      expect(paymentProviderService.createSession).toHaveBeenCalledTimes(2)
-      expect(paymentProviderService.createSession).toHaveBeenCalledWith({
-        cart: cart1,
-        customer: cart1.customer,
+      expect(paymentSessionRepositoryMock.create).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(2)
+
+      expect(paymentSessionRepositoryMock.create).toHaveBeenCalledWith({
+        cart_id: IdMap.getId("cartWithLine"),
+        status: PaymentSessionStatus.PENDING,
         amount: cart1.total,
-        currency_code: cart1.region.currency_code,
-        provider_id: "provider_1",
+        provider_id: provider1Id,
       })
-      expect(paymentProviderService.createSession).toHaveBeenCalledWith({
-        cart: cart1,
-        customer: cart1.customer,
+
+      expect(paymentSessionRepositoryMock.create).toHaveBeenCalledWith({
+        cart_id: IdMap.getId("cartWithLine"),
+        status: PaymentSessionStatus.PENDING,
         amount: cart1.total,
-        currency_code: cart1.region.currency_code,
-        provider_id: "provider_2",
+        provider_id: provider2Id,
       })
     })
 
@@ -1560,10 +1568,10 @@ describe("CartService", () => {
       expect(paymentProviderService.createSession).toHaveBeenCalledTimes(0)
       expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(2)
       expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
-        provider_id: "provider_1",
+        provider_id: provider1Id,
       })
       expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
-        provider_id: "provider_2",
+        provider_id: provider2Id,
       })
     })
 
@@ -1574,10 +1582,10 @@ describe("CartService", () => {
       expect(paymentProviderService.createSession).toHaveBeenCalledTimes(0)
       expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(2)
       expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
-        provider_id: "provider_1",
+        provider_id: provider1Id,
       })
       expect(paymentProviderService.deleteSession).toHaveBeenCalledWith({
-        provider_id: "provider_2",
+        provider_id: provider2Id,
       })
     })
   })

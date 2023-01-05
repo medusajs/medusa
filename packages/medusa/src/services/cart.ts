@@ -1824,6 +1824,7 @@ class CartService extends TransactionBaseService {
             }
 
             const newPaymentSession = psRepo.create({
+              cart_id: cartId,
               provider_id: session.provider_id,
               status: PaymentSessionStatus.PENDING,
               amount: total,
@@ -1852,6 +1853,7 @@ class CartService extends TransactionBaseService {
             }
 
             const paymentSession = psRepo.create({
+              cart_id: cartId,
               provider_id: paymentProvider.id,
               status: PaymentSessionStatus.PENDING,
               amount: total,
