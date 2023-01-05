@@ -26,7 +26,7 @@ export class productCategory1672906846559 implements MigrationInterface {
     )
 
     await queryRunner.query(
-      `CREATE INDEX "IDX_product_category_path" ON "product_category" ("path")`
+      `CREATE INDEX "IDX_product_category_path" ON "product_category" ("mpath")`
     )
   }
 

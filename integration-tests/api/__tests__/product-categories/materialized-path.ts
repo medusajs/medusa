@@ -26,13 +26,13 @@ describe("Product Categories > Tree Queries > Materialized Paths", () => {
     const a1 = productCategoryRepository.create({ name: 'a1', handle: 'a1' })
     await productCategoryRepository.save(a1)
 
-    const a11 = productCategoryRepository.create({ name: 'a11', handle: 'a11', parentCategory: a1 })
+    const a11 = productCategoryRepository.create({ name: 'a11', handle: 'a11', parent_category: a1 })
     await productCategoryRepository.save(a11)
 
-    const a111 = productCategoryRepository.create({ name: 'a111', handle: 'a111', parentCategory: a11 })
+    const a111 = productCategoryRepository.create({ name: 'a111', handle: 'a111', parent_category: a11 })
     await productCategoryRepository.save(a111)
 
-    const a12 = productCategoryRepository.create({ name: 'a12', handle: 'a12', parentCategory: a1 })
+    const a12 = productCategoryRepository.create({ name: 'a12', handle: 'a12', parent_category: a1 })
     await productCategoryRepository.save(a12)
 
     const rootCategories = await productCategoryRepository.findRoots()

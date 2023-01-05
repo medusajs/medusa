@@ -37,7 +37,7 @@ export class ProductCategory extends SoftDeletableEntity {
 
   @TreeParent()
   @JoinColumn({ name: 'parent_category_id' })
-  parentCategory: ProductCategory | null
+  parent_category: ProductCategory | null
 
   // Typeorm also keeps track of the category's parent at all times.
   // TODO: Uncomment this if there is a usecase for accessing this.
@@ -45,7 +45,7 @@ export class ProductCategory extends SoftDeletableEntity {
   // parent_category_id: ProductCategory
 
   @TreeChildren({ cascade: true })
-  subCategories: ProductCategory[]
+  category_children: ProductCategory[]
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -66,7 +66,7 @@ export class ProductCategory extends SoftDeletableEntity {
  *   id:
  *     type: string
  *     description: The product category's ID
- *     example: catg_01G2SG30J8C85S4A5CHM2S1NS2
+ *     example: pcat_01G2SG30J8C85S4A5CHM2S1NS2
  *   name:
  *     type: string
  *     description: The product category's name
@@ -78,7 +78,7 @@ export class ProductCategory extends SoftDeletableEntity {
  *   path:
  *     type: string
  *     description: A string for Materialized Paths - used for finding ancestors and descendents
- *     example: catg_id1.catg_id2.catg_id3
+ *     example: pcat_id1.pcat_id2.pcat_id3
  *   is_internal:
  *     type: boolean
  *     description: A flag to make product category an internal category for admins
@@ -87,14 +87,14 @@ export class ProductCategory extends SoftDeletableEntity {
  *     type: boolean
  *     description: A flag to make product category visible/hidden in the store front
  *     default: false
- *   subCategories:
- *     description: Available if the relation `subCategories` are expanded.
+ *   category_children:
+ *     description: Available if the relation `category_children` are expanded.
  *     type: array
  *     items:
  *       type: object
  *       description: A product category object.
- *   parentCategory:
- *     description: Available if the relation `parentCategory` is expanded.
+ *   parent_category:
+ *     description: Available if the relation `parent_category` is expanded.
  *     type: object
  *     description: A product category object.
  *   created_at:
