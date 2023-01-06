@@ -1554,10 +1554,12 @@ describe("CartService", () => {
     }
 
     const cart5 = {
-      total: -1,
+      total: 100,
+      items: [{ subtotal: 100 }],
+      shipping_methods: [],
       payment_sessions: [
-        { provider_id: provider1Id },
-        { provider_id: provider2Id },
+        { provider_id: provider1Id, is_initiated: true },
+        { provider_id: provider2Id, is_selected: true },
       ],
       region: {
         payment_providers: [{ id: provider1Id }, { id: provider2Id }],
@@ -1577,6 +1579,11 @@ describe("CartService", () => {
         }
         if (q.where.id === IdMap.getId("cart-negative")) {
           return Promise.resolve(cart4)
+        }
+        if (
+          q.where.id === IdMap.getId("cartWithMixedSelectedInitiatedSessions")
+        ) {
+          return Promise.resolve(cart5)
         }
         return Promise.resolve(cart1)
       },
@@ -1630,6 +1637,31 @@ describe("CartService", () => {
         provider_id: provider2Id,
         data: {},
       })
+    })
+
+    it("delete or update payment sessions remotely depending if they are selected and/or initiated", async () => {
+      await cartService.setPaymentSessions(
+        IdMap.getId("cartWithMixedSelectedInitiatedSessions")
+      )
+
+      // Selected, update
+      expect(paymentProviderService.updateSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.updateSession).toHaveBeenCalledWith(
+        expect.any(Object),
+        expect.objectContaining({
+          provider_id: provider2Id,
+        })
+      )
+
+      // Not selected, but initiated, delete
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledTimes(1)
+      expect(paymentProviderService.deleteSession).toHaveBeenCalledWith(
+        expect.objectContaining({
+          provider_id: provider1Id,
+        })
+      )
+
+      expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(1)
     })
 
     it("filters sessions not available in the region", async () => {
