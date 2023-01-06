@@ -202,32 +202,46 @@ export default class EventBusService {
     data: T,
     options: EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void> {
+    const opts: { removeOnComplete: boolean } & EmitOptions = {
+      removeOnComplete: true,
+      attempts: 1,
+    }
+    if (typeof options.attempts === "number") {
+      opts.attempts = options.attempts
+      if (typeof options.backoff !== "undefined") {
+        opts.backoff = options.backoff
+      }
+    }
+    if (typeof options.delay === "number") {
+      opts.delay = options.delay
+    }
+
+    /**
+     * If we are in an ongoing transaction, we store the jobs in the database
+     * instead of processing them immediately. We only want to process those
+     * events, if the transaction successfully commits. This is to avoid jobs
+     * being processed if the transaction fails.
+     *
+     * In case of a failing transaction, kobs stored in the database are removed
+     * as part of the rollback.
+     */
     if (this.transactionManager_) {
       const stagedJobRepository = this.transactionManager_.getCustomRepository(
         this.stagedJobRepository_
       )
 
-      const stagedJobInstance = stagedJobRepository.create({
+      const jobToCreate: Partial<StagedJob> = {
         event_name: eventName,
-        data,
-      } as StagedJob)
+        data: data as Record<string, unknown>,
+        options: opts,
+      }
+
+      const stagedJobInstance = stagedJobRepository.create(jobToCreate)
+
       return await stagedJobRepository.save(stagedJobInstance)
-    } else {
-      const opts: { removeOnComplete: boolean } & EmitOptions = {
-        removeOnComplete: true,
-        attempts: 1,
-      }
-      if (typeof options.attempts === "number") {
-        opts.attempts = options.attempts
-        if (typeof options.backoff !== "undefined") {
-          opts.backoff = options.backoff
-        }
-      }
-      if (typeof options.delay === "number") {
-        opts.delay = options.delay
-      }
-      this.queue_.add({ eventName, data }, opts)
     }
+
+    this.queue_.add({ eventName, data }, opts)
   }
 
   startEnqueuer(): void {
@@ -256,10 +270,7 @@ export default class EventBusService {
       await Promise.all(
         jobs.map((job) => {
           this.queue_
-            .add(
-              { eventName: job.event_name, data: job.data },
-              { removeOnComplete: true }
-            )
+            .add({ eventName: job.event_name, data: job.data }, job.options)
             .then(async () => {
               await stagedJobRepo.remove(job)
             })
