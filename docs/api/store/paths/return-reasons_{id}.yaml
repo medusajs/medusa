@@ -26,9 +26,10 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               return_reason:
-                $ref: ../components/schemas/return_reason.yaml
+                $ref: ../components/schemas/ReturnReason.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

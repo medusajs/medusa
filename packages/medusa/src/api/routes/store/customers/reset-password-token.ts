@@ -12,14 +12,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - email
- *         properties:
- *           email:
- *             description: "The email of the customer."
- *             type: string
- *             format: email
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerPasswordTokenReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -62,16 +55,18 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(
+  const validated = (await validator(
     StorePostCustomersCustomerPasswordTokenReq,
     req.body
-  )
+  )) as StorePostCustomersCustomerPasswordTokenReq
 
   const customerService: CustomerService = req.scope.resolve(
     "customerService"
   ) as CustomerService
 
-  const customer = await customerService.retrieveByEmail(validated.email)
+  const customer = await customerService.retrieveRegisteredByEmail(
+    validated.email
+  )
 
   // Will generate a token and send it to the customer via an email provider
   const manager: EntityManager = req.scope.resolve("manager")
@@ -84,6 +79,17 @@ export default async (req, res) => {
   res.sendStatus(204)
 }
 
+/**
+ * @schema StorePostCustomersCustomerPasswordTokenReq
+ * type: object
+ * required:
+ *   - email
+ * properties:
+ *   email:
+ *     description: "The email of the customer."
+ *     type: string
+ *     format: email
+ */
 export class StorePostCustomersCustomerPasswordTokenReq {
   @IsEmail()
   email: string

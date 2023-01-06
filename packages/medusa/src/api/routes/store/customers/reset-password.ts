@@ -14,23 +14,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - email
- *           - password
- *           - token
- *         properties:
- *           email:
- *             description: "The email of the customer."
- *             type: string
- *             format: email
- *           password:
- *             description: "The Customer's password."
- *             type: string
- *             format: password
- *           token:
- *             description: "The reset password token"
- *             type: string
+ *         $ref: "#/components/schemas/StorePostCustomersResetPasswordReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -66,7 +50,7 @@ import { EntityManager } from "typeorm"
  *           type: object
  *           properties:
  *             customer:
- *               $ref: "#/components/schemas/customer"
+ *               $ref: "#/components/schemas/Customer"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -81,15 +65,18 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(
+  const validated = (await validator(
     StorePostCustomersResetPasswordReq,
     req.body
-  )
+  )) as StorePostCustomersResetPasswordReq
 
   const customerService: CustomerService = req.scope.resolve("customerService")
-  let customer = await customerService.retrieveByEmail(validated.email, {
-    select: ["id", "password_hash"],
-  })
+  let customer = await customerService.retrieveRegisteredByEmail(
+    validated.email,
+    {
+      select: ["id", "password_hash"],
+    }
+  )
 
   const decodedToken = jwt.verify(
     validated.token,
@@ -113,6 +100,26 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersResetPasswordReq
+ * type: object
+ * required:
+ *   - email
+ *   - password
+ *   - token
+ * properties:
+ *   email:
+ *     description: "The email of the customer."
+ *     type: string
+ *     format: email
+ *   password:
+ *     description: "The Customer's password."
+ *     type: string
+ *     format: password
+ *   token:
+ *     description: "The reset password token"
+ *     type: string
+ */
 export class StorePostCustomersResetPasswordReq {
   @IsEmail()
   email: string

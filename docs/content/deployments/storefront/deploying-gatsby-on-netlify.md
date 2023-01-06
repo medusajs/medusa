@@ -12,11 +12,13 @@ Alternatively, you can use this button to deploy the Gatsby Storefront to Netlif
   <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" class="no-zoom-img" />
 </a>
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally. If not, please go through the [quickstart guide](../../starters/gatsby-medusa-starter.md) first.
+Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally. If not, please go through the [quickstart guide](../../starters/gatsby-medusa-starter.mdx) first.
 
 Additionally, this documentation does not cover how to deploy the Medusa server. If you want to deploy the Medusa server, [check out one of the deployment documentation related to the Medusa server](../server/index.mdx).
 
@@ -34,6 +36,8 @@ If you want to use another Git Provider, it’s possible to follow along with th
 ### Required Tools
 
 - Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+
+---
 
 ## Create GitHub Repository
 
@@ -73,6 +77,8 @@ git push origin master
 ```
 
 After pushing the changes, you can find the files in your GitHub repository.
+
+---
 
 ## Deploy to Netlify
 
@@ -138,7 +144,7 @@ If you haven’t added any products to your Medusa server, the build process mig
 
 Alternatively, you can seed the server with demo data by running this command in the root directory of the server:
 
-```bash noHeader
+```bash noReport
 medusa seed -f data/seed.json
 ```
 
@@ -198,7 +204,7 @@ You’ll have to follow five steps for the initialization:
 
 You’ll be asked to either connect to an existing Netlify website or create a new one. Choose the second option to create a new site:
 
-```bash noHeader
+```bash noReport
 ? What would you like to do? 
   ⇄  Connect this directory to an existing Netlify site 
 ❯ +  Create & configure a new site
@@ -216,7 +222,7 @@ You’ll be asked to optionally enter a site name.
 
 At this point, the website is created on Netlify. However, Netlify needs to configure Webhooks and deployment keys. You’ll be asked to either authorize GitHub through Netlify’s website or through a personal access token. You’re free to choose either:
 
-```bash noHeader
+```bash noReport
 ? Netlify CLI needs access to your GitHub account to configure Webhooks and Depl
 oy Keys. What would you like to do? (Use arrow keys)
 ❯ Authorize with GitHub through app.netlify.com 
@@ -271,7 +277,7 @@ If you haven’t added any products to your Medusa server, the build process mig
 
 Alternatively, you can seed the server with demo data by running this command in the root directory of the server:
 
-```bash noHeader
+```bash noReport
 medusa seed -f data/seed.json
 ```
 
@@ -290,6 +296,8 @@ The Gatsby storefront will then open in your browser.
 ![Gatsby Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003089/Medusa%20Docs/Netlify/l08cBSA_yfj2rz.png)
 
 Before you can use the Gatsby storefront, you must add the URL as an environment variable on your deployed Medusa server.
+
+---
 
 ## Configure CORS Variable on the Medusa Server
 
@@ -311,7 +319,9 @@ Where `<STOREFRONT_URL>` is the URL of your Gatsby storefront that you just depl
 
 Then, restart your Medusa server. Once the server is running again, you can use your Gatsby storefront.
 
-## What’s Next
+---
 
-- Learn how to [deploy the Medusa Admin](../admin/index.mdx).
-- Learn more about [Medusa’s configurations](../../usage/configurations.md).
+## See Also
+
+- [Deploy the Medusa Admin](../admin/index.mdx)
+- [Configure your Medusa server](../../usage/configurations.md)

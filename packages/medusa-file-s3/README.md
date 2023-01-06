@@ -13,5 +13,8 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
   region: "eu-west-1"
   access_key_id: "YOUR-ACCESS-KEY",
   secret_access_key: "YOUR-SECRET-KEY",
+  aws_config_object : {
+    // object for aws config properties
+  }
 }
 ```

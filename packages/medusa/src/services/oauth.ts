@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { Oauth as OAuthModel } from "../models"
@@ -55,6 +55,13 @@ class Oauth extends TransactionBaseService {
   }
 
   async retrieve(oauthId: string): Promise<OAuthModel> {
+    if (!isDefined(oauthId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"oauthId" must be defined`
+      )
+    }
+
     const repo = this.manager.getCustomRepository(this.oauthRepository_)
     const oauth = await repo.findOne({
       id: oauthId,

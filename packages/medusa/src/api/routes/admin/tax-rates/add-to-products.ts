@@ -36,15 +36,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - products
- *         properties:
- *           products:
- *             type: array
- *             description: "The IDs of the products to associate with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostTaxRatesTaxRateProductsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -85,7 +77,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *               $ref: "#/components/schemas/TaxRate"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -126,6 +118,18 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminPostTaxRatesTaxRateProductsReq
+ * type: object
+ * required:
+ *   - products
+ * properties:
+ *   products:
+ *     type: array
+ *     description: "The IDs of the products to associate with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminPostTaxRatesTaxRateProductsReq {
   @IsArray()
   products: string[]

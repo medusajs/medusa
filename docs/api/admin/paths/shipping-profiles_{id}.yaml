@@ -30,6 +30,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string
@@ -86,9 +87,10 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               shipping_profile:
-                $ref: ../components/schemas/shipping_profile.yaml
+                $ref: ../components/schemas/ShippingProfile.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -116,10 +118,7 @@ post:
     content:
       application/json:
         schema:
-          properties:
-            name:
-              description: The name of the Shipping Profile
-              type: string
+          $ref: ../components/schemas/AdminPostShippingProfilesProfileReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -140,9 +139,10 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               shipping_profile:
-                $ref: ../components/schemas/shipping_profile.yaml
+                $ref: ../components/schemas/ShippingProfile.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

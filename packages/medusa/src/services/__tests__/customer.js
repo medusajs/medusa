@@ -64,6 +64,32 @@ describe("CustomerService", () => {
 
       expect(result.id).toEqual(IdMap.getId("ironman"))
     })
+
+    it("successfully retrieves a guest customer by email", async () => {
+      const result = await customerService.retrieveUnregisteredByEmail(
+        "tony@stark.com"
+      )
+
+      expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(customerRepository.findOne).toHaveBeenCalledWith({
+        where: { email: "tony@stark.com", has_account: false },
+      })
+
+      expect(result.id).toEqual(IdMap.getId("ironman"))
+    })
+
+    it("successfully retrieves a registered customer by email", async () => {
+      const result = await customerService.retrieveRegisteredByEmail(
+        "tony@stark.com"
+      )
+
+      expect(customerRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(customerRepository.findOne).toHaveBeenCalledWith({
+        where: { email: "tony@stark.com", has_account: true },
+      })
+
+      expect(result.id).toEqual(IdMap.getId("ironman"))
+    })
   })
 
   describe("retrieveByPhone", () => {
@@ -92,57 +118,118 @@ describe("CustomerService", () => {
   })
 
   describe("create", () => {
-    const customerRepository = MockRepository({
-      findOne: (query) => {
+    const customerRepository = {
+      ...MockRepository({
+        findOne: (query) => {
+          if (query.where.email === "tony@stark.com") {
+            return Promise.resolve({
+              id: IdMap.getId("exists"),
+              has_account: true,
+              password_hash: "test",
+            })
+          }
+          return undefined
+        },
+      }),
+      listAndCount: jest.fn().mockImplementation((query, q) => {
         if (query.where.email === "tony@stark.com") {
-          return Promise.resolve({
-            id: IdMap.getId("exists"),
-            password_hash: "test",
-          })
+          return Promise.resolve([
+            [
+              {
+                id: IdMap.getId("exists"),
+                has_account: true,
+                password_hash: "test",
+              },
+            ],
+            0,
+          ])
         }
-        return Promise.resolve({ id: IdMap.getId("ironman") })
-      },
-    })
+        return Promise.resolve([[], 0])
+      }),
+    }
 
+    const configModule = {
+      projectConfig: {
+        jwt_secret: "test",
+      },
+    }
     const customerService = new CustomerService({
       manager: MockManager,
       customerRepository,
       eventBusService,
+      configModule,
     })
 
     beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("successfully create a customer", async () => {
+    it("successfully creates a customer with password", async () => {
       await customerService.create({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
+        password: "test",
       })
 
       expect(customerRepository.create).toBeCalledTimes(1)
       expect(customerRepository.create).toBeCalledWith({
-        email: "oliver@medusa.com",
-        first_name: "Oliver",
-        last_name: "Juhl",
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
+        has_account: true,
+        password_hash: expect.anything(),
       })
     })
 
-    it("successfully updates an existing customer on create", async () => {
+    it("calls listAndCount with email", async () => {
       await customerService.create({
-        email: "tony@stark.com",
-        password: "stark123",
-        has_account: false,
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
+        password: "test",
       })
 
-      expect(customerRepository.save).toBeCalledTimes(1)
-      expect(customerRepository.save).toBeCalledWith({
-        id: IdMap.getId("exists"),
-        email: "tony@stark.com",
-        password_hash: expect.anything(),
-        has_account: true,
+      expect(customerRepository.listAndCount).toHaveBeenCalledWith(
+        {
+          relations: [],
+          skip: 0,
+          take: 2,
+          where: {
+            email: "john@doe.com",
+          },
+        },
+        undefined
+      )
+    })
+
+    it("successfully creates a one time customer", async () => {
+      await customerService.create({
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
       })
+
+      expect(customerRepository.create).toBeCalledTimes(1)
+      expect(customerRepository.create).toBeCalledWith({
+        email: "john@doe.com",
+        first_name: "John",
+        last_name: "Doe",
+      })
+    })
+
+    it("Fails to create a customer with an existing account", async () => {
+      expect.assertions(1)
+      await customerService
+        .create({
+          email: "tony@stark.com",
+          password: "stark123",
+        })
+        .catch((err) => {
+          expect(err.message).toEqual(
+            "A customer with the given email already has an account. Log in instead"
+          )
+        })
     })
   })
 

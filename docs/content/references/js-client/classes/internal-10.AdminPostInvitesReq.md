@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/invites/create-invite.d.ts:76
+medusa/dist/api/routes/admin/invites/create-invite.d.ts:77
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/invites/create-invite.d.ts:75
+medusa/dist/api/routes/admin/invites/create-invite.d.ts:76

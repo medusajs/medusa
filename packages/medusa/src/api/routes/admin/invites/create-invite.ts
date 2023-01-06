@@ -15,19 +15,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - user
- *           - role
- *         properties:
- *           user:
- *             description: "The email for the user to be created."
- *             type: string
- *             format: email
- *           role:
- *             description: "The role of the user to be created."
- *             type: string
- *             enum: [admin, member, developer]
+ *         $ref: "#/components/schemas/AdminPostInvitesReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -90,6 +78,23 @@ export default async (req, res) => {
 
   res.sendStatus(200)
 }
+
+/**
+ * @schema AdminPostInvitesReq
+ * type: object
+ * required:
+ *   - user
+ *   - role
+ * properties:
+ *   user:
+ *     description: "The email for the user to be created."
+ *     type: string
+ *     format: email
+ *   role:
+ *     description: "The role of the user to be created."
+ *     type: string
+ *     enum: [admin, member, developer]
+ */
 export class AdminPostInvitesReq {
   @IsEmail()
   user: string

@@ -16,17 +16,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           name:
- *             type: string
- *             description: Name of the sales channel.
- *           description:
- *             type: string
- *             description:  Sales Channel description.
- *           is_disabled:
- *             type: boolean
- *             description:  Indication of if the sales channel is active.
+ *         $ref: "#/components/schemas/AdminPostSalesChannelsSalesChannelReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -63,7 +53,7 @@ import { EntityManager } from "typeorm"
  *           type: object
  *           properties:
  *             sales_channel:
- *               $ref: "#/components/schemas/sales_channel"
+ *               $ref: "#/components/schemas/SalesChannel"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -98,6 +88,20 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ sales_channel })
 }
 
+/**
+ * @schema AdminPostSalesChannelsSalesChannelReq
+ * type: object
+ * properties:
+ *   name:
+ *     type: string
+ *     description: Name of the sales channel.
+ *   description:
+ *     type: string
+ *     description:  Sales Channel description.
+ *   is_disabled:
+ *     type: boolean
+ *     description:  Indication of if the sales channel is active.
+ */
 export class AdminPostSalesChannelsSalesChannelReq {
   @IsOptional()
   @IsString()

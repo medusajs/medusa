@@ -5,7 +5,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [get] /publishable-api-keys/{id}
  * operationId: "GetPublishableApiKeysPublishableApiKey"
- * summary: "Get a Publishable API Key"
+ * summary: "Get a PublishableApiKey"
  * description: "Retrieve the Publishable Api Key."
  * parameters:
  *   - (path) id=* {string} The ID of the PublishableApiKey.
@@ -41,7 +41,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *           type: object
  *           properties:
  *             publishable_api_key:
- *               $ref: "#/components/schemas/publishable_api_key"
+ *               $ref: "#/components/schemas/PublishableApiKey"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

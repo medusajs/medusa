@@ -3,8 +3,8 @@ import { PaymentCollectionService } from "../../../../services"
 
 /**
  * @oas [post] /payment-collections/{id}/authorize
- * operationId: "MarkAuthorizedPaymentCollectionsPaymentCollection"
- * summary: "Set the status of PaymentCollection as Authorized"
+ * operationId: "PostPaymentCollectionsPaymentCollectionAuthorize"
+ * summary: "Mark Authorized"
  * description: "Sets the status of PaymentCollection as Authorized."
  * x-authenticated: true
  * parameters:
@@ -39,7 +39,7 @@ import { PaymentCollectionService } from "../../../../services"
  *           type: object
  *           properties:
  *             payment_collection:
- *               $ref: "#/components/schemas/payment_collection"
+ *               $ref: "#/components/schemas/PaymentCollection"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

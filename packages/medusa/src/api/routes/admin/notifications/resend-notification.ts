@@ -4,8 +4,7 @@ import {
 } from "."
 
 import { EntityManager } from "typeorm"
-import { IsOptional } from "class-validator"
-import { IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { Notification } from "../../../../models"
 import { NotificationService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -22,11 +21,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           to:
- *             description: "A new address or user identifier that the Notification should be sent to"
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostNotificationsNotificationResendReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -57,7 +52,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             notification:
- *               $ref: "#/components/schemas/notification"
+ *               $ref: "#/components/schemas/Notification"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -104,6 +99,14 @@ export default async (req, res) => {
   res.json({ notification })
 }
 
+/**
+ * @schema AdminPostNotificationsNotificationResendReq
+ * type: object
+ * properties:
+ *   to:
+ *     description: "A new address or user identifier that the Notification should be sent to"
+ *     type: string
+ */
 export class AdminPostNotificationsNotificationResendReq {
   @IsOptional()
   @IsString()

@@ -3,7 +3,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [delete] /payment-collections/{id}
  * operationId: "DeletePaymentCollectionsPaymentCollection"
- * summary: "Delete a Payment Collection"
+ * summary: "Del a PaymentCollection"
  * description: "Deletes a Payment Collection"
  * x-authenticated: true
  * parameters:

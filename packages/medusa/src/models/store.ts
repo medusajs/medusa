@@ -45,20 +45,23 @@ export class Store extends BaseEntity {
   })
   currencies: Currency[]
 
-  @Column({ nullable: true })
-  swap_link_template: string
+  @Column({ nullable: true, type: "text" })
+  swap_link_template: string | null
+
+  @Column({ nullable: true, type: "text" })
+  payment_link_template: string | null
+
+  @Column({ nullable: true, type: "text" })
+  invite_link_template: string | null
 
   @Column({ nullable: true })
-  payment_link_template: string
-
-  @Column({ nullable: true })
-  invite_link_template: string
+  default_location_id: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
-  @FeatureFlagColumn("sales_channels", { nullable: true })
-  default_sales_channel_id: string
+  @FeatureFlagColumn("sales_channels", { nullable: true, type: "text" })
+  default_sales_channel_id: string | null
 
   @FeatureFlagDecorators("sales_channels", [
     OneToOne(() => SalesChannel),
@@ -73,10 +76,9 @@ export class Store extends BaseEntity {
 }
 
 /**
- * @schema store
+ * @schema Store
  * title: "Store"
  * description: "Holds settings for the Store, such as name, currencies, etc."
- * x-resourceId: store
  * type: object
  * properties:
  *   id:
@@ -96,12 +98,12 @@ export class Store extends BaseEntity {
  *       description: See a list of codes.
  *   default_currency:
  *     description: Available if the relation `default_currency` is expanded.
- *     $ref: "#/components/schemas/currency"
+ *     $ref: "#/components/schemas/Currency"
  *   currencies:
  *     description: The currencies that are enabled for the Store. Available if the relation `currencies` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/currency"
+ *       $ref: "#/components/schemas/Currency"
  *   swap_link_template:
  *     description: "A template to generate Swap links from. Use {{cart_id}} to include the Swap's `cart_id` in the link."
  *     type: string

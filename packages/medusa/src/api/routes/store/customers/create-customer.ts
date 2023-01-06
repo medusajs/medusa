@@ -16,30 +16,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - first_name
- *           - last_name
- *           - email
- *           - password
- *         properties:
- *           first_name:
- *             description: "The Customer's first name."
- *             type: string
- *           last_name:
- *             description: "The Customer's last name."
- *             type: string
- *           email:
- *             description: "The email of the customer."
- *             type: string
- *             format: email
- *           password:
- *             description: "The Customer's password."
- *             type: string
- *             format: password
- *           phone:
- *             description: "The Customer's phone number."
- *             type: string
+ *         $ref: "#/components/schemas/StorePostCustomersReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -77,7 +54,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             customer:
- *               $ref: "#/components/schemas/customer"
+ *               $ref: "#/components/schemas/Customer"
  *   422:
  *     description: A customer with the same email exists
  *     content:
@@ -120,6 +97,11 @@ export default async (req, res) => {
     }
   )
 
+  customer = await customerService.retrieve(customer.id, {
+    relations: defaultStoreCustomersRelations,
+    select: defaultStoreCustomersFields,
+  })
+
   // Add JWT to cookie
   const {
     projectConfig: { jwt_secret },
@@ -128,19 +110,43 @@ export default async (req, res) => {
     expiresIn: "30d",
   })
 
-  customer = await customerService.retrieve(customer.id, {
-    relations: defaultStoreCustomersRelations,
-    select: defaultStoreCustomersFields,
-  })
-
   res.status(200).json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersReq
+ * type: object
+ * required:
+ *   - first_name
+ *   - last_name
+ *   - email
+ *   - password
+ * properties:
+ *   first_name:
+ *     description: "The Customer's first name."
+ *     type: string
+ *   last_name:
+ *     description: "The Customer's last name."
+ *     type: string
+ *   email:
+ *     description: "The email of the customer."
+ *     type: string
+ *     format: email
+ *   password:
+ *     description: "The Customer's password."
+ *     type: string
+ *     format: password
+ *   phone:
+ *     description: "The Customer's phone number."
+ *     type: string
+ */
 export class StorePostCustomersReq {
   @IsString()
+  @IsOptional()
   first_name: string
 
   @IsString()
+  @IsOptional()
   last_name: string
 
   @IsEmail()

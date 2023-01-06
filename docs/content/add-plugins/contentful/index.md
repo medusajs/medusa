@@ -8,6 +8,8 @@ In this document, you’ll learn how to integrate a Medusa server with Contentfu
 
 By integrating Contentful to Medusa, you can benefit from powerful features in your ecommerce store including detailed product CMS details, easy-to-use interface to use for static content and pages, localization, and much more.
 
+---
+
 ## Prerequisites
 
 ### Needed Accounts
@@ -21,6 +23,8 @@ By integrating Contentful to Medusa, you can benefit from powerful features in y
 - Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
 - Gatsby’s CLI tool. You can follow [this documentation to install it](https://www.gatsbyjs.com/docs/reference/gatsby-cli/#how-to-use-gatsby-cli).
 - Medusa’s CLI tool. You can follow [this documentation to install it](../../cli/reference.md#how-to-install-cli-tool).
+
+---
 
 ## Install Medusa Server Using Contentful Starter
 
@@ -38,7 +42,7 @@ This installs a new Medusa server in the directory `medusa-contentful`.
 
 Change to the `medusa-contentful` directory. In `.env` you’ll find three variables:
 
-```bash
+```bash title=.env
 CONTENTFUL_SPACE_ID=
 CONTENTFUL_ACCESS_TOKEN=
 CONTENTFUL_ENV=
@@ -116,17 +120,17 @@ You can find the format of the PostgreSQL database URL in [PostgreSQL’s docume
 
 Then, in `medusa-config.js` in the exported object, comment out or remove the SQLite database configurations and add the PostgreSQL database configurations:
 
-```jsx
+```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
-    //...
+    // ...
     database_url: DATABASE_URL,
     database_type: "postgres",
-    //REMOVE OR COMMENT OUT THE BELOW:
+    // REMOVE OR COMMENT OUT THE BELOW:
     // database_database: "./medusa-db.sql",
     // database_type: "sqlite",
   },
-};
+}
 ```
 
 ### Migrate Content Types to Contentful
@@ -181,9 +185,13 @@ If you seeded the database with demo data, you should see that events related to
 
 The Contentful integration ensures a two-way sync between the Medusa server and Contentful. So, when new products are added to Medusa, these products will be added to your Contentful Space as well.
 
+---
+
 ## (Optional) Add Products with the Medusa Admin
 
 Using the Medusa admin, you can add products to your Medusa server. This will trigger product events that subsequently add these products to Contentful.
+
+---
 
 ## Manage Contentful Data
 
@@ -217,6 +225,8 @@ Once you’re done adding products, click on Publish changes in the right sideba
 
 ![Click on the publish changes button on the right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001508/Medusa%20Docs/Contentful/URNpkXq_cb5ppp.png)
 
+---
+
 ## Setup Gatsby Storefront
 
 In this section, you’ll set up the Gatsby storefront of your Medusa server.
@@ -239,7 +249,7 @@ mv .env.template .env
 
 Then, open `.env`. You should find the following environment variables:
 
-```bash
+```bash title=.env
 CONTENTFUL_SPACE_ID=
 CONTENTFUL_ACCESS_TOKEN=
 ```
@@ -264,6 +274,8 @@ This starts the storefront at `localhost:8000`. Open it in your browser and you 
 
 ![The storefront with the featured products section](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001537/Medusa%20Docs/Contentful/f6xwYbS_w1v993.png)
 
+---
+
 ## Make Changes to Content
 
 You can update the CMS content of your storefront in your Contentful Space. This includes the CMS pages or product details.
@@ -274,8 +286,13 @@ If you make changes to the data while your Gatsby storefront is running, the cha
 
 :::
 
+---
+
 ## What’s Next
 
-- Learn [how to customize your Contentful server and storefront](./customize-contentful.md).
-- Learn how to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
-- Learn [how to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).
+Learn [How to customize your Contentful server and storefront](./customize-contentful.md).
+
+## See Also
+
+- How to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
+- [How to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).

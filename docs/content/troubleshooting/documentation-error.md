@@ -8,11 +8,13 @@ This is because the content resides in `docs/content`. When that content is bein
 
 For that reason, when the `start` and `build` scripts in `www/docs` are used, the `clean-node-modules` script is called. This script deleted the `node_modules` directory in the root of the Medusa repository.
 
+---
+
 ## Out of Memory Error
 
 If you receive the following error when you run the `build` command in `www/docs`:
 
-```bash noHeader
+```bash noReport
 FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
 ```
 

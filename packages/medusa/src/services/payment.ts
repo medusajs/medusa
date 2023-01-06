@@ -1,6 +1,6 @@
 import { PaymentRepository } from "./../repositories/payment"
 import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { Payment, Refund } from "../models"
 import { TransactionBaseService } from "../interfaces"
@@ -52,10 +52,23 @@ export default class PaymentService extends TransactionBaseService {
     this.eventBusService_ = eventBusService
   }
 
+  /**
+   * Retrieves a payment by id.
+   * @param paymentId - the id of the payment
+   * @param config - the config to retrieve the payment
+   * @return the payment.
+   */
   async retrieve(
     paymentId: string,
     config: FindConfig<Payment> = {}
   ): Promise<Payment> {
+    if (!isDefined(paymentId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"paymentId" must be defined`
+      )
+    }
+
     const manager = this.transactionManager_ ?? this.manager_
     const paymentRepository = manager.getCustomRepository(
       this.paymentRepository_
@@ -75,6 +88,11 @@ export default class PaymentService extends TransactionBaseService {
     return payment[0]
   }
 
+  /**
+   * Created a new payment.
+   * @param paymentInput - info to create the payment
+   * @return the payment created.
+   */
   async create(paymentInput: PaymentDataInput): Promise<Payment> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const { data, currency_code, amount, provider_id } = paymentInput
@@ -100,6 +118,12 @@ export default class PaymentService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Updates a payment in order to link it to an order or a swap.
+   * @param paymentId - the id of the payment
+   * @param data - order_id or swap_id to link the payment
+   * @return the payment updated.
+   */
   async update(
     paymentId: string,
     data: { order_id?: string; swap_id?: string }
@@ -129,6 +153,11 @@ export default class PaymentService extends TransactionBaseService {
     })
   }
 
+  /**
+   * Captures a payment.
+   * @param paymentOrId - the id or the class instance of the payment
+   * @return the payment captured.
+   */
   async capture(paymentOrId: string | Payment): Promise<Payment> {
     const payment =
       typeof paymentOrId === "string"
@@ -170,6 +199,14 @@ export default class PaymentService extends TransactionBaseService {
     })
   }
 
+  /**
+   * refunds a payment.
+   * @param paymentOrId - the id or the class instance of the payment
+   * @param amount - the amount to be refunded from the payment
+   * @param reason - the refund reason
+   * @param note - additional note of the refund
+   * @return the refund created.
+   */
   async refund(
     paymentOrId: string | Payment,
     amount: number,

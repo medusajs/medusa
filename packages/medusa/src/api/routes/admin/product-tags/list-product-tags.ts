@@ -113,7 +113,7 @@ import { Request, Response } from "express"
  *          type: object
  *          properties:
  *            product_tags:
- *              $ref: "#/components/schemas/product_tag"
+ *              $ref: "#/components/schemas/ProductTag"
  *            count:
  *              type: integer
  *              description: The total number of items available

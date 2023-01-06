@@ -121,6 +121,14 @@ export const storeHandlers = [
     )
   }),
 
+  rest.post("/store/orders/customer/confirm", (req, res, ctx) => {
+    return res(ctx.status(200))
+  }),
+
+  rest.post("/store/orders/batch/customer/token", (req, res, ctx) => {
+    return res(ctx.status(200))
+  }),
+
   rest.get("/store/return-reasons/", (req, res, ctx) => {
     return res(
       ctx.status(200),
@@ -446,4 +454,100 @@ export const storeHandlers = [
       })
     )
   }),
+
+  rest.get("/store/payment-collections/:id", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment_collection: {
+          ...fixtures.get("payment_collection"),
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.post(
+    "/store/payment-collections/:id/sessions/batch",
+    (req, res, ctx) => {
+      const { id } = req.params
+      return res(
+        ctx.status(200),
+        ctx.json({
+          payment_collection: {
+            ...fixtures.get("payment_collection"),
+            id,
+          },
+        })
+      )
+    }
+  ),
+
+  rest.post(
+    "/store/payment-collections/:id/sessions/batch/authorize",
+    (req, res, ctx) => {
+      const { id } = req.params
+      return res(
+        ctx.status(207),
+        ctx.json({
+          payment_collection: {
+            ...fixtures.get("payment_collection"),
+            id,
+          },
+        })
+      )
+    }
+  ),
+
+  rest.post("/store/payment-collections/:id/sessions", (req, res, ctx) => {
+    const { id } = req.params
+    return res(
+      ctx.status(200),
+      ctx.json({
+        payment_collection: {
+          ...fixtures.get("payment_collection"),
+          id,
+        },
+      })
+    )
+  }),
+
+  rest.post(
+    "/store/payment-collections/:id/sessions/:session_id",
+    (req, res, ctx) => {
+      const { id, session_id } = req.params
+      const payCol: any = { ...fixtures.get("payment_collection") }
+
+      payCol.payment_sessions[0].id = `new_${session_id}`
+      const session = {
+        payment_session: payCol.payment_sessions[0],
+      }
+
+      return res(
+        ctx.status(200),
+        ctx.json({
+          ...session,
+        })
+      )
+    }
+  ),
+
+  rest.post(
+    "/store/payment-collections/:id/sessions/:session_id/authorize",
+    (req, res, ctx) => {
+      const { session_id } = req.params
+
+      const session = fixtures.get("payment_collection").payment_sessions[0]
+      return res(
+        ctx.status(200),
+        ctx.json({
+          payment_session: {
+            ...session,
+            id: session_id,
+          },
+        })
+      )
+    }
+  ),
 ]

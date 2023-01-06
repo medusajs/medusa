@@ -14,32 +14,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - token
- *           - user
- *         properties:
- *           token:
- *             description: "The invite token provided by the admin."
- *             type: string
- *           user:
- *             description: "The User to create."
- *             type: object
- *             required:
- *               - first_name
- *               - last_name
- *               - password
- *             properties:
- *               first_name:
- *                 type: string
- *                 description: the first name of the User
- *               last_name:
- *                 type: string
- *                 description: the last name of the User
- *               password:
- *                 description: The desired password for the User
- *                 type: string
- *                 format: password
+ *         $ref: "#/components/schemas/AdminPostInvitesInviteAcceptReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -122,6 +97,35 @@ export class AdminPostInvitesInviteAcceptUserReq {
   password: string
 }
 
+/**
+ * @schema AdminPostInvitesInviteAcceptReq
+ * type: object
+ * required:
+ *   - token
+ *   - user
+ * properties:
+ *   token:
+ *     description: "The invite token provided by the admin."
+ *     type: string
+ *   user:
+ *     description: "The User to create."
+ *     type: object
+ *     required:
+ *       - first_name
+ *       - last_name
+ *       - password
+ *     properties:
+ *       first_name:
+ *         type: string
+ *         description: the first name of the User
+ *       last_name:
+ *         type: string
+ *         description: the last name of the User
+ *       password:
+ *         description: The desired password for the User
+ *         type: string
+ *         format: password
+ */
 export class AdminPostInvitesInviteAcceptReq {
   @IsString()
   @IsNotEmpty()

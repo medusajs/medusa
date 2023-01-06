@@ -47,7 +47,7 @@ import { validator } from "../../../../utils/validator"
  *             notes:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/note"
+ *                 $ref: "#/components/schemas/Note"
  *             count:
  *               type: integer
  *               description: The total number of items available

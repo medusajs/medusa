@@ -26,26 +26,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - quantity
- *         properties:
- *           variant_id:
- *             description: The ID of the Product Variant to generate the Line Item from.
- *             type: string
- *           unit_price:
- *             description: The potential custom price of the item.
- *             type: integer
- *           title:
- *             description: The potential custom title of the item.
- *             type: string
- *             default: "Custom item"
- *           quantity:
- *             description: The quantity of the Line Item.
- *             type: integer
- *           metadata:
- *             description: The optional key-value map with additional details about the Line Item.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostDraftOrdersDraftOrderLineItemsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -82,7 +63,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *               $ref: "#/components/schemas/DraftOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -153,7 +134,7 @@ export default async (req, res) => {
 
     draftOrder.cart = await cartService
       .withTransaction(manager)
-      .retrieve(draftOrder.cart_id, {
+      .retrieveWithTotals(draftOrder.cart_id, {
         relations: defaultAdminDraftOrdersCartRelations,
         select: defaultAdminDraftOrdersCartFields,
       })
@@ -162,6 +143,29 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * @schema AdminPostDraftOrdersDraftOrderLineItemsReq
+ * type: object
+ * required:
+ *   - quantity
+ * properties:
+ *   variant_id:
+ *     description: The ID of the Product Variant to generate the Line Item from.
+ *     type: string
+ *   unit_price:
+ *     description: The potential custom price of the item.
+ *     type: integer
+ *   title:
+ *     description: The potential custom title of the item.
+ *     type: string
+ *     default: "Custom item"
+ *   quantity:
+ *     description: The quantity of the Line Item.
+ *     type: integer
+ *   metadata:
+ *     description: The optional key-value map with additional details about the Line Item.
+ *     type: object
+ */
 export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsString()
   @IsOptional()

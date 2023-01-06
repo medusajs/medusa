@@ -1,0 +1,5 @@
+type: object
+properties:
+  name:
+    description: The name of the Shipping Profile
+    type: string

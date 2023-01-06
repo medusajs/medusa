@@ -38,17 +38,23 @@ export type Logger = _Logger & {
 }
 
 export type ModuleResolution = {
-  resolutionPath: string
+  resolutionPath: string | false
   definition: ModuleDefinition
+  options?: Record<string, unknown>
 }
 
 export type ModuleDefinition = {
   key: string
   registrationName: string
-  defaultPackage: string
+  defaultPackage: string | false
   label: string
   canOverride?: boolean
   isRequired?: boolean
+}
+
+export type ConfigurableModuleDeclaration = {
+  resolve?: string
+  options?: Record<string, unknown>
 }
 
 export type ConfigModule = {
@@ -61,6 +67,7 @@ export type ConfigModule = {
     database_url?: string
     database_type: string
     database_database?: string
+    database_schema?: string
     database_logging: LoggerOptions
 
     database_extra?: Record<string, unknown> & {
@@ -70,7 +77,7 @@ export type ConfigModule = {
     admin_cors?: string
   }
   featureFlags: Record<string, boolean | string>
-  modules?: Record<string, string>
+  modules?: Record<string, false | string | ConfigurableModuleDeclaration>
   moduleResolutions?: Record<string, ModuleResolution>
   plugins: (
     | {

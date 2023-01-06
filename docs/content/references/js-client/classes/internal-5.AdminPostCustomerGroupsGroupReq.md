@@ -10,7 +10,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/update-customer-group.d.ts:74
+medusa/dist/api/routes/admin/customer-groups/update-customer-group.d.ts:76
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/update-customer-group.d.ts:73
+medusa/dist/api/routes/admin/customer-groups/update-customer-group.d.ts:75

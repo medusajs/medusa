@@ -14,6 +14,7 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [post] /orders/{id}/fulfillment
@@ -27,30 +28,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - items
- *         properties:
- *           items:
- *             description: The Line Items to include in the Fulfillment.
- *             type: array
- *             items:
- *               required:
- *                 - item_id
- *                 - quantity
- *               properties:
- *                 item_id:
- *                   description: The ID of Line Item to fulfill.
- *                   type: string
- *                 quantity:
- *                   description: The quantity of the Line Item to fulfill.
- *                   type: integer
- *           no_notification:
- *             description: If set to true no notification will be send related to this Swap.
- *             type: boolean
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderFulfillmentsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -97,7 +75,7 @@ import { validator } from "../../../../utils/validator"
  *           type: object
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/order"
+ *               $ref: "#/components/schemas/Order"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -139,6 +117,33 @@ export default async (req, res) => {
   res.json({ order })
 }
 
+/**
+ * @schema AdminPostOrdersOrderFulfillmentsReq
+ * type: object
+ * required:
+ *   - items
+ * properties:
+ *   items:
+ *     description: The Line Items to include in the Fulfillment.
+ *     type: array
+ *     items:
+ *       required:
+ *         - item_id
+ *         - quantity
+ *       properties:
+ *         item_id:
+ *           description: The ID of Line Item to fulfill.
+ *           type: string
+ *         quantity:
+ *           description: The quantity of the Line Item to fulfill.
+ *           type: integer
+ *   no_notification:
+ *     description: If set to true no notification will be send related to this Swap.
+ *     type: boolean
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostOrdersOrderFulfillmentsReq {
   @IsArray()
   @ValidateNested({ each: true })
@@ -147,7 +152,7 @@ export class AdminPostOrdersOrderFulfillmentsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   no_notification?: boolean
 
   @IsObject()

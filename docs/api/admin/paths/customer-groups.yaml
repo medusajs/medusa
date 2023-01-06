@@ -24,9 +24,10 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer_group:
-                $ref: ../components/schemas/customer_group.yaml
+                $ref: ../components/schemas/CustomerGroup.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -195,11 +196,12 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customer_groups:
                 type: array
                 items:
-                  $ref: ../components/schemas/customer_group.yaml
+                  $ref: ../components/schemas/CustomerGroup.yaml
               count:
                 type: integer
                 description: The total number of items available

@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, ILike } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
@@ -55,6 +55,13 @@ class ProductCollectionService extends TransactionBaseService {
     collectionId: string,
     config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
+    if (!isDefined(collectionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"collectionId" must be defined`
+      )
+    }
+
     const collectionRepo = this.manager_.getCustomRepository(
       this.productCollectionRepository_
     )
