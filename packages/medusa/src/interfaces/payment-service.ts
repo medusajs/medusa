@@ -130,7 +130,7 @@ export abstract class AbstractPaymentService
   public abstract updatePayment(
     paymentSessionData: PaymentSessionData,
     context: Cart & PaymentContext
-  ): Promise<PaymentSessionResponse>
+  ): Promise<PaymentSessionResponse | PaymentSessionResponse["session_data"]>
 
   /**
    * @deprecated use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
