@@ -429,11 +429,16 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
       const pvit = await this.retrieve(reservation.item_id, variantId)
 
-      const reservationQtyUpdate = quantity * pvit.quantity
+      const reservationQtyUpdate =
+        reservation.quantity - quantity * pvit.quantity
 
-      await this.inventoryService_.updateReservation(reservation.id, {
-        quantity: reservation.quantity + reservationQtyUpdate,
-      })
+      if (reservationQtyUpdate === 0) {
+        await this.inventoryService_.deleteReservationItem(reservation.id)
+      } else {
+        await this.inventoryService_.updateReservation(reservation.id, {
+          quantity: reservationQtyUpdate,
+        })
+      }
     }
   }
 
