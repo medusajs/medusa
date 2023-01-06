@@ -435,7 +435,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       if (reservationQtyUpdate === 0) {
         await this.inventoryService_.deleteReservationItem(reservation.id)
       } else {
-        await this.inventoryService_.updateReservation(reservation.id, {
+        await this.inventoryService_.updateReservationItem(reservation.id, {
           quantity: reservationQtyUpdate,
         })
       }
