@@ -19,6 +19,10 @@ type InjectedDependencies = {
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
 
+type SubscriberContext = {
+  subscriberId: string
+}
+
 type BullJob<T> = {
   update: (data: unknown) => void
   attemptsMade: number
@@ -144,14 +148,19 @@ export default class EventBusService {
    * happens. Subscribers must return a Promise.
    * @return this
    */
-  subscribe(event: string | symbol, subscriber: Subscriber): this {
+  subscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context?: SubscriberContext
+  ): this {
     if (typeof subscriber !== "function") {
       throw new Error("Subscriber must be a function")
     }
 
-    const uniqueSubscriberId = `${event.toString()}-${ulid()}` // <- maybe we can do better?
+    const subscriberId =
+      context?.subscriberId ?? `${event.toString()}-${ulid()}`
 
-    const newSubscriberDescriptor = { subscriber, id: uniqueSubscriberId }
+    const newSubscriberDescriptor = { subscriber, id: subscriberId }
 
     const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
 
