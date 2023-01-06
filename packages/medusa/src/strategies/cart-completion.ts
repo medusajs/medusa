@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
-import { Cart, IdempotencyKey, Order } from "../models"
+import { IdempotencyKey, Order } from "../models"
 import CartService from "../services/cart"
 import IdempotencyKeyService from "../services/idempotency-key"
 import OrderService, {
@@ -173,15 +173,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   protected async handleCreateTaxLines(
     id: string,
     { manager }: { manager: EntityManager }
-  ): Promise<
-    | {
-        response_code: number
-        response_body: Record<string, unknown>
-      }
-    | {
-        recovery_point
-      }
-  > {
+  ) {
     const cart = await this.cartService_.withTransaction(manager).retrieve(id, {
       relations: [
         "customer",
@@ -221,7 +213,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     { context, manager }: { context: any; manager: EntityManager }
   ) {
     const res = await this.handleCreateTaxLines(id, { manager })
-    if ("response_code" in res) {
+    if (res.response_code) {
       return res
     }
 
@@ -261,7 +253,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     { manager }: { manager: EntityManager }
   ) {
     const res = await this.handleCreateTaxLines(id, { manager })
-    if ("response_code" in res) {
+    if (res.response_code) {
       return res
     }
 
@@ -283,9 +275,61 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     }
 
     if (!allowBackorder) {
-      const res = await this.confirmAndUpdateInventory(cart, { manager })
-      if (res?.response_code) {
-        return res
+      const productVariantInventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
+
+      try {
+        await Promise.all(
+          cart.items.map(async (item) => {
+            if (item.variant_id) {
+              const inventoryConfirmed =
+                await productVariantInventoryServiceTx.confirmInventory(
+                  item.variant_id,
+                  item.quantity,
+                  { salesChannelId: cart.sales_channel_id }
+                )
+
+              if (!inventoryConfirmed) {
+                throw new MedusaError(
+                  MedusaError.Types.NOT_ALLOWED,
+                  `Variant with id: ${item.variant_id} does not have the required inventory`,
+                  MedusaError.Codes.INSUFFICIENT_INVENTORY
+                )
+              }
+
+              await productVariantInventoryServiceTx.reserveQuantity(
+                item.variant_id,
+                item.quantity,
+                {
+                  lineItemId: item.id,
+                  salesChannelId: cart.sales_channel_id,
+                }
+              )
+            }
+          })
+        )
+      } catch (error) {
+        if (error && error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY) {
+          if (cart.payment) {
+            await this.paymentProviderService_
+              .withTransaction(manager)
+              .cancelPayment(cart.payment)
+          }
+          await cartServiceTx.update(cart.id, {
+            payment_authorized_at: null,
+          })
+
+          return {
+            response_code: 409,
+            response_body: {
+              message: error.message,
+              type: error.type,
+              code: error.code,
+            },
+          }
+        } else {
+          throw error
+        }
       }
     }
 
@@ -363,76 +407,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     return {
       response_code: 200,
       response_body: { data: order, type: "order" },
-    }
-  }
-
-  private async confirmAndUpdateInventory(
-    cart: Cart,
-    { manager }: { manager: EntityManager }
-  ): Promise<
-    | {
-        response_code: number
-        response_body: Record<string, unknown>
-      }
-    | never
-    | void
-  > {
-    const productVariantInventoryServiceTx =
-      this.productVariantInventoryService_.withTransaction(manager)
-    const cartServiceTx = this.cartService_.withTransaction(manager)
-
-    try {
-      await Promise.all(
-        cart.items.map(async (item) => {
-          if (item.variant_id) {
-            const inventoryConfirmed =
-              await productVariantInventoryServiceTx.confirmInventory(
-                item.variant_id,
-                item.quantity,
-                { salesChannelId: cart.sales_channel_id }
-              )
-
-            if (!inventoryConfirmed) {
-              throw new MedusaError(
-                MedusaError.Types.NOT_ALLOWED,
-                `Variant with id: ${item.variant_id} does not have the required inventory`,
-                MedusaError.Codes.INSUFFICIENT_INVENTORY
-              )
-            }
-
-            await productVariantInventoryServiceTx.reserveQuantity(
-              item.variant_id,
-              item.quantity,
-              {
-                lineItemId: item.id,
-                salesChannelId: cart.sales_channel_id,
-              }
-            )
-          }
-        })
-      )
-    } catch (error) {
-      if (error && error.code === MedusaError.Codes.INSUFFICIENT_INVENTORY) {
-        if (cart.payment) {
-          await this.paymentProviderService_
-            .withTransaction(manager)
-            .cancelPayment(cart.payment)
-        }
-        await cartServiceTx.update(cart.id, {
-          payment_authorized_at: null,
-        })
-
-        return {
-          response_code: 409,
-          response_body: {
-            message: error.message,
-            type: error.type,
-            code: error.code,
-          },
-        }
-      } else {
-        throw error
-      }
     }
   }
 }

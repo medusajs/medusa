@@ -222,6 +222,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         cartId: context.id,
         sessionData,
         status: PaymentSessionStatus.PENDING,
+        isInitiated: true,
         amount: context.amount,
       })
     })
@@ -294,6 +295,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       return await this.saveSession(paymentSession.provider_id, {
         payment_session_id: paymentSession.id,
         sessionData,
+        isInitiated: true,
         amount: context.amount,
       })
     })
@@ -687,6 +689,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       amount?: number
       sessionData: Record<string, unknown>
       isSelected?: boolean
+      isInitiated?: boolean
       status?: PaymentSessionStatus
     }
   ): Promise<PaymentSession> {
@@ -696,19 +699,24 @@ export default class PaymentProviderService extends TransactionBaseService {
       this.paymentSessionRepository_
     )
 
+    // Update an existing session
     if (data.payment_session_id) {
       const session = await this.retrieveSession(data.payment_session_id)
       session.data = data.sessionData ?? session.data
       session.status = data.status ?? session.status
       session.amount = data.amount ?? session.amount
+      session.is_initiated = data.isInitiated ?? session.is_initiated
+      session.is_selected = data.isSelected ?? session.is_selected
       return await sessionRepo.save(session)
     }
 
+    // Create a new session
     const toCreate: Partial<PaymentSession> = {
       cart_id: data.cartId || null,
       provider_id: providerId,
       data: data.sessionData,
       is_selected: data.isSelected,
+      is_initiated: data.isInitiated,
       status: data.status,
       amount: data.amount,
     }

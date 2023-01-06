@@ -1691,15 +1691,14 @@ class CartService extends TransactionBaseService {
           payment_session_id: paymentSession.id,
         }
 
-        const isThirdPartyReached =
-          paymentSession.data && Object.keys(paymentSession.data).length
-
         if (paymentSession.is_selected) {
           // update the session remotely
           await this.paymentProviderService_
             .withTransaction(transactionManager)
             .updateSession(paymentSession, sessionInput)
-        } else if (!isThirdPartyReached) {
+        }
+
+        if (!paymentSession.is_initiated) {
           // Create the session remotely
           paymentSession = await this.paymentProviderService_
             .withTransaction(transactionManager)
@@ -1764,10 +1763,7 @@ class CartService extends TransactionBaseService {
 
         // Helpers that either delete a session locally or remotely. Will be used in multiple places below.
         const deleteSessionAppropriately = async (session) => {
-          const isThirdPartyReached =
-            session.data && Object.keys(session.data).length
-
-          if (session.is_selected || isThirdPartyReached) {
+          if (session.is_selected || session.is_initiated) {
             return paymentProviderServiceTx.deleteSession(session)
           }
 
@@ -1839,13 +1835,11 @@ class CartService extends TransactionBaseService {
               )
             }
 
-            const isThirdPartyReached =
-              session.data && Object.keys(session.data).length
             let updatedSession: PaymentSession
 
             // At this stage the session is not selected. Delete it remotely if there is some
             // external provider data and create the session locally only. Otherwise, update the existing local session.
-            if (isThirdPartyReached) {
+            if (session.is_initiated) {
               await paymentProviderServiceTx.deleteSession(session)
               updatedSession = psRepo.create({
                 ...partialPaymentSessionData,
@@ -1934,10 +1928,7 @@ class CartService extends TransactionBaseService {
           )
 
           if (paymentSession) {
-            const isThirdPartyReached =
-              paymentSession.data && Object.keys(paymentSession.data).length
-
-            if (paymentSession.is_selected || isThirdPartyReached) {
+            if (paymentSession.is_selected || paymentSession.is_initiated) {
               await this.paymentProviderService_
                 .withTransaction(transactionManager)
                 .deleteSession(paymentSession)
