@@ -567,7 +567,8 @@ class ReturnService extends TransactionBaseService {
     returnId: string,
     receivedItems: OrdersReturnItem[],
     refundAmount?: number,
-    allowMismatch = false
+    allowMismatch = false,
+    context: { locationId?: string } = {}
   ): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
       const returnRepository = manager.getCustomRepository(
@@ -657,6 +658,7 @@ class ReturnService extends TransactionBaseService {
       const now = new Date()
       const updateObj = {
         ...returnObj,
+        location_id: context.locationId || returnObj.location_id,
         status: returnStatus,
         items: newLines,
         refund_amount: totalRefundableAmount,
@@ -682,7 +684,7 @@ class ReturnService extends TransactionBaseService {
         if (orderItem && orderItem.variant_id) {
           await productVarInventoryTx.adjustInventory(
             orderItem.variant_id,
-            returnObj.location_id!,
+            result.location_id!,
             line.received_quantity
           )
         }
