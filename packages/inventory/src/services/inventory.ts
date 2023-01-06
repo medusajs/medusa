@@ -47,9 +47,9 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Lists inventory items that match the given selector
-   * @param {FilterableInventoryItemProps} selector - the selector to filter inventory items by
-   * @param {FindConfig<InventoryItemDTO>} [config={ relations: [], skip: 0, take: 10 }] - the find configuration to use
-   * @returns {Promise<[InventoryItemDTO[], number]>} a tuple of inventory items and their total count
+   * @param selector - the selector to filter inventory items by
+   * @param config - the find configuration to use
+   * @return A tuple of inventory items and their total count
    */
   async listInventoryItems(
     selector: FilterableInventoryItemProps,
@@ -60,9 +60,9 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Lists inventory levels that match the given selector
-   * @param {FilterableInventoryLevelProps} selector - the selector to filter inventory levels by
-   * @param {FindConfig<InventoryLevelDTO>} [config={ relations: [], skip: 0, take: 10 }] - the find configuration to use
-   * @returns {Promise<[InventoryLevelDTO[], number]>} a tuple of inventory levels and their total count
+   * @param selector - the selector to filter inventory levels by
+   * @param config - the find configuration to use
+   * @return A tuple of inventory levels and their total count
    */
   async listInventoryLevels(
     selector: FilterableInventoryLevelProps,
@@ -73,9 +73,9 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Lists reservation items that match the given selector
-   * @param {FilterableReservationItemProps} selector - the selector to filter reservation items by
-   * @param {FindConfig<ReservationItemDTO>} [config={ relations: [], skip: 0, take: 10 }] - the find configuration to use
-   * @returns {Promise<[ReservationItemDTO[], number]>} a tuple of reservation items and their total count
+   * @param selector - the selector to filter reservation items by
+   * @param config - the find configuration to use
+   * @return A tuple of reservation items and their total count
    */
   async listReservationItems(
     selector: FilterableReservationItemProps,
@@ -90,9 +90,9 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Retrieves an inventory item with the given id
-   * @param {string} inventoryItemId - the id of the inventory item to retrieve
-   * @param {FindConfig<InventoryItemDTO>} [config] - the find configuration to use
-   * @returns {Promise<InventoryItemDTO>} the retrieved inventory item
+   * @param inventoryItemId - the id of the inventory item to retrieve
+   * @param config - the find configuration to use
+   * @return The retrieved inventory item
    */
   async retrieveInventoryItem(
     inventoryItemId: string,
@@ -107,9 +107,9 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Retrieves an inventory level for a given inventory item and location
-   * @param {string} inventoryItemId - the id of the inventory item
-   * @param {string} locationId - the id of the location
-   * @returns {Promise<InventoryLevelDTO>} the retrieved inventory level
+   * @param inventoryItemId - the id of the inventory item
+   * @param locationId - the id of the location
+   * @return the retrieved inventory level
    */
   async retrieveInventoryLevel(
     inventoryItemId: string,
@@ -130,8 +130,8 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Creates a reservation item
-   * @param {CreateReservationItemInput} input - the input object
-   * @return {Promise<ReservationItemDTO>} - the created reservation item
+   * @param input - the input object
+   * @return The created reservation item
    */
   async createReservationItem(
     input: CreateReservationItemInput
@@ -159,8 +159,8 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Creates an inventory item
-   * @param {CreateInventoryItemInput} input - the input object
-   * @return {Promise<InventoryItemDTO>} - the created inventory item
+   * @param input - the input object
+   * @return The created inventory item
    */
   async createInventoryItem(
     input: CreateInventoryItemInput
@@ -171,8 +171,8 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Creates an inventory item
-   * @param {CreateInventoryItemInput} input - the input object
-   * @return {Promise<InventoryItemDTO>} - the created inventory item
+   * @param input - the input object
+   * @return The created inventory level
    */
   async createInventoryLevel(
     input: CreateInventoryLevelInput
@@ -182,9 +182,9 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Updates an inventory item
-   * @param {string} inventoryItemId - the id of the inventory item to update
-   * @param {Partial<CreateInventoryItemInput>} input - the input object
-   * @return {Promise<InventoryItemDTO>} - the updated inventory item
+   * @param inventoryItemId - the id of the inventory item to update
+   * @param input - the input object
+   * @return The updated inventory item
    */
   async updateInventoryItem(
     inventoryItemId: string,
@@ -199,8 +199,7 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Deletes an inventory item
-   * @param {string} inventoryItemId - the id of the inventory item to delete
-   * @return {Promise<void>} - a promise that resolves when the item is deleted
+   * @param inventoryItemId - the id of the inventory item to delete
    */
   async deleteInventoryItem(inventoryItemId: string): Promise<void> {
     return await this.inventoryItemService_.delete(inventoryItemId)
@@ -208,9 +207,8 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Deletes an inventory level
-   * @param {string} inventoryItemId - the id of the inventory item associated with the level
-   * @param {string} locationId - the id of the location associated with the level
-   * @return {Promise<void>} - a promise that resolves when the level is deleted
+   * @param inventoryItemId - the id of the inventory item associated with the level
+   * @param locationId - the id of the location associated with the level
    */
   async deleteInventoryLevel(
     inventoryItemId: string,
@@ -230,10 +228,10 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Updates an inventory level
-   * @param {string} inventoryItemId - the id of the inventory item associated with the level
-   * @param {string} locationId - the id of the location associated with the level
-   * @param {UpdateInventoryLevelInput} input - the input object
-   * @return {Promise<InventoryLevelDTO>} - the updated inventory level
+   * @param inventoryItemId - the id of the inventory item associated with the level
+   * @param locationId - the id of the location associated with the level
+   * @param input - the input object
+   * @return The updated inventory level
    */
   async updateInventoryLevel(
     inventoryItemId: string,
@@ -257,9 +255,9 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Updates a reservation item
-   * @param {string} inventoryItemId - the id of the inventory item associated with the level
-   * @param {UpdateReservationItemInput} input - the input object
-   * @return {Promise<InventoryLevelDTO>} - the updated inventory level
+   * @param inventoryItemId - the id of the inventory item associated with the level
+   * @param input - the input object
+   * @return The updated inventory level
    */
   async updateReservationItem(
     reservationItemId: string,
@@ -270,8 +268,7 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Deletes reservation items by line item
-   * @param {string} lineItemId - the id of the line item associated with the reservation item
-   * @return {Promise<void>} - a promise that resolves when the reservation items are deleted
+   * @param lineItemId - the id of the line item associated with the reservation item
    */
   async deleteReservationItemsByLineItem(lineItemId: string): Promise<void> {
     return await this.reservationItemService_.deleteByLineItem(lineItemId)
@@ -279,8 +276,7 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Deletes a reservation item
-   * @param {string} reservationItemId - the id of the reservation item to delete
-   * @return {Promise<void>} - a promise that resolves when the item is deleted
+   * @param reservationItemId - the id of the reservation item to delete
    */
   async deleteReservationItem(reservationItemId: string): Promise<void> {
     return await this.reservationItemService_.delete(reservationItemId)
@@ -288,11 +284,11 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Adjusts the inventory level for a given inventory item and location.
-   * @param {string} inventoryItemId - the id of the inventory item
-   * @param {string} locationId - the id of the location
-   * @param {number} adjustment - the number to adjust the inventory by (can be positive or negative)
-   * @returns {Promise<InventoryLevelDTO>} the updated inventory level
-   * @throws {MedusaError} when the inventory level is not found
+   * @param inventoryItemId - the id of the inventory item
+   * @param locationId - the id of the location
+   * @param adjustment - the number to adjust the inventory by (can be positive or negative)
+   * @return The updated inventory level
+   * @throws when the inventory level is not found
    */
   async adjustInventory(
     inventoryItemId: string,
@@ -322,10 +318,10 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Retrieves the available quantity of a given inventory item in a given location.
-   * @param {string} inventoryItemId - the id of the inventory item
-   * @param {string[]} locationIds - the ids of the locations to check
-   * @returns {Promise<number>} the available quantity
-   * @throws {MedusaError} when the inventory item is not found
+   * @param inventoryItemId - the id of the inventory item
+   * @param locationIds - the ids of the locations to check
+   * @return The available quantity
+   * @throws when the inventory item is not found
    */
   async retrieveAvailableQuantity(
     inventoryItemId: string,
@@ -347,10 +343,10 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Retrieves the stocked quantity of a given inventory item in a given location.
-   * @param {string} inventoryItemId - the id of the inventory item
-   * @param {string[]} locationIds - the ids of the locations to check
-   * @returns {Promise<number>} the stocked quantity
-   * @throws {MedusaError} when the inventory item is not found
+   * @param inventoryItemId - the id of the inventory item
+   * @param locationIds - the ids of the locations to check
+   * @return The stocked quantity
+   * @throws when the inventory item is not found
    */
   async retrieveStockedQuantity(
     inventoryItemId: string,
@@ -372,10 +368,10 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Retrieves the reserved quantity of a given inventory item in a given location.
-   * @param {string} inventoryItemId - the id of the inventory item
-   * @param {string[]} locationIds - the ids of the locations to check
-   * @returns {Promise<number>} the reserved quantity
-   * @throws {MedusaError} when the inventory item is not found
+   * @param inventoryItemId - the id of the inventory item
+   * @param locationIds - the ids of the locations to check
+   * @return The reserved quantity
+   * @throws when the inventory item is not found
    */
   async retrieveReservedQuantity(
     inventoryItemId: string,
@@ -397,10 +393,10 @@ export default class InventoryService implements IInventoryService {
 
   /**
    * Confirms whether there is sufficient inventory for a given quantity of a given inventory item in a given location.
-   * @param {string} inventoryItemId - the id of the inventory item
-   * @param {string[]} locationIds - the ids of the locations to check
-   * @param {number} quantity - the quantity to check
-   * @returns {Promise<boolean>} whether there is sufficient inventory
+   * @param inventoryItemId - the id of the inventory item
+   * @param locationIds - the ids of the locations to check
+   * @param quantity - the quantity to check
+   * @return Whether there is sufficient inventory
    */
   async confirmInventory(
     inventoryItemId: string,

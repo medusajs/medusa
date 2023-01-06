@@ -53,9 +53,9 @@ export default class ReservationItemService extends TransactionBaseService {
 
   /**
    * Lists reservation items that match the provided filter.
-   * @param {FilterableReservationItemProps} [selector={}] - Filters to apply to the reservation items.
-   * @param {FindConfig} [config={ relations: [], skip: 0, take: 10 }] - Configuration for the query.
-   * @returns {Promise<ReservationItem[]>} - Array of reservation items that match the selector.
+   * @param selector - Filters to apply to the reservation items.
+   * @param config - Configuration for the query.
+   * @return Array of reservation items that match the selector.
    */
   async list(
     selector: FilterableReservationItemProps = {},
@@ -70,9 +70,9 @@ export default class ReservationItemService extends TransactionBaseService {
 
   /**
    * Lists reservation items that match the provided filter and returns the total count.
-   * @param {FilterableReservationItemProps} [selector={}] - Filters to apply to the reservation items.
-   * @param {FindConfig} [config={ relations: [], skip: 0, take: 10 }] - Configuration for the query.
-   * @returns {Promise<[ReservationItem[], number]>} - Array of reservation items that match the selector and the total count.
+   * @param selector - Filters to apply to the reservation items.
+   * @param config - Configuration for the query.
+   * @return Array of reservation items that match the selector and the total count.
    */
   async listAndCount(
     selector: FilterableReservationItemProps = {},
@@ -87,10 +87,10 @@ export default class ReservationItemService extends TransactionBaseService {
 
   /**
    * Retrieves a reservation item by its id.
-   * @param {string} reservationItemId - The id of the reservation item to retrieve.
-   * @param {FindConfig} [config={}] - Configuration for the query.
-   * @returns {Promise<ReservationItem>} - The reservation item with the provided id.
-   * @throws {MedusaError} If reservationItemId is not defined or if the reservation item was not found.
+   * @param reservationItemId - The id of the reservation item to retrieve.
+   * @param config - Configuration for the query.
+   * @return The reservation item with the provided id.
+   * @throws If reservationItemId is not defined or if the reservation item was not found.
    */
   async retrieve(
     reservationItemId: string,
@@ -121,8 +121,8 @@ export default class ReservationItemService extends TransactionBaseService {
 
   /**
    * Create a new reservation item.
-   * @param {CreateReservationItemInput} data - The reservation item data.
-   * @returns {Promise<ReservationItem>} - The created reservation item.
+   * @param data - The reservation item data.
+   * @return The created reservation item.
    */
   async create(data: CreateReservationItemInput): Promise<ReservationItem> {
     const result = await this.atomicPhase_(async (manager) => {
@@ -159,9 +159,9 @@ export default class ReservationItemService extends TransactionBaseService {
 
   /**
    * Update a reservation item.
-   * @param {string} reservationItemId - The reservation item's id.
-   * @param {DeepPartial<ReservationItem>} data - The reservation item data to update.
-   * @returns {Promise<ReservationItem>} - The updated reservation item.
+   * @param reservationItemId - The reservation item's id.
+   * @param data - The reservation item data to update.
+   * @return The updated reservation item.
    */
   async update(
     reservationItemId: string,
@@ -209,8 +209,7 @@ export default class ReservationItemService extends TransactionBaseService {
 
   /**
    * Deletes a reservation item by line item id.
-   * @param {string} lineItemId - the id of the line item to delete.
-   * @returns {Promise<void>} - an empty promise
+   * @param lineItemId - the id of the line item to delete.
    */
   async deleteByLineItem(lineItemId: string): Promise<void> {
     await this.atomicPhase_(async (manager) => {
@@ -244,8 +243,7 @@ export default class ReservationItemService extends TransactionBaseService {
 
   /**
    * Deletes a reservation item by id.
-   * @param {string} reservationItemId - the id of the reservation item to delete.
-   * @returns {Promise<void>} - an empty promise
+   * @param reservationItemId - the id of the reservation item to delete.
    */
   async delete(reservationItemId: string): Promise<void> {
     await this.atomicPhase_(async (manager) => {

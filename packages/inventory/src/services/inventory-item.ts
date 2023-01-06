@@ -34,9 +34,9 @@ export default class InventoryItemService {
   }
 
   /**
-   * @param {FilterableInventoryItemProps} [selector={}] - Filter options for inventory items.
-   * @param {FindConfig<InventoryItem>} [config={relations: [], skip: 0, take: 10}] - Configuration for query.
-   * @returns {Promise<InventoryItem[]>} - Resolves to the list of inventory items that match the filter.
+   * @param selector - Filter options for inventory items.
+   * @param config - Configuration for query.
+   * @return Resolves to the list of inventory items that match the filter.
    */
   async list(
     selector: FilterableInventoryItemProps = {},
@@ -109,9 +109,9 @@ export default class InventoryItemService {
   }
 
   /**
-   * @param {FilterableInventoryItemProps} [selector={}] - Filter options for inventory items.
-   * @param {FindConfig<InventoryItem>} [config={relations: [], skip: 0, take: 10}] - Configuration for query.
-   * @returns {Promise<[InventoryItem[], number]>} - Resolves to the list of inventory items that match the filter and the count of all matching items.
+   * @param selector - Filter options for inventory items.
+   * @param config - Configuration for query.
+   * @return - Resolves to the list of inventory items that match the filter and the count of all matching items.
    */
   async listAndCount(
     selector: FilterableInventoryItemProps = {},
@@ -123,10 +123,10 @@ export default class InventoryItemService {
 
   /**
    * Retrieves an inventory item by its id.
-   * @param {string} inventoryItemId - the id of the inventory item to retrieve.
-   * @param {FindConfig} config - the configuration options for the find operation.
-   * @returns {Promise<InventoryItem>} a promise that resolves with the retrieved inventory item.
-   * @throws {MedusaError} if the inventory item id is not defined or if the inventory item is not found.
+   * @param inventoryItemId - the id of the inventory item to retrieve.
+   * @param config - the configuration options for the find operation.
+   * @return The retrieved inventory item.
+   * @throws If the inventory item id is not defined or if the inventory item is not found.
    */
   async retrieve(
     inventoryItemId: string,
@@ -156,8 +156,8 @@ export default class InventoryItemService {
   }
 
   /**
-   * @param {CreateInventoryItemInput} input - Input for creating a new inventory item.
-   * @returns {Promise<InventoryItem>} - Resolves to the newly created inventory item.
+   * @param input - Input for creating a new inventory item.
+   * @return The newly created inventory item.
    */
   async create(data: CreateInventoryItemInput): Promise<InventoryItem> {
     const manager = this.getManager()
@@ -187,9 +187,9 @@ export default class InventoryItemService {
   }
 
   /**
-   * @param {string} inventoryItemId - The id of the inventory item to update.
-   * @param {DeepPartial<InventoryItem>} update - The updates to apply to the inventory item.
-   * @returns {Promise<InventoryItem>} - Resolves to the updated inventory item.
+   * @param inventoryItemId - The id of the inventory item to update.
+   * @param update - The updates to apply to the inventory item.
+   * @return The updated inventory item.
    */
   async update(
     inventoryItemId: string,
@@ -220,8 +220,7 @@ export default class InventoryItemService {
   }
 
   /**
-   * @param {string} inventoryItemId - The id of the inventory item to delete.
-   * @returns {Promise<void>} - Resolves when the delete is completed.
+   * @param inventoryItemId - The id of the inventory item to delete.
    */
   async delete(inventoryItemId: string): Promise<void> {
     const manager = this.getManager()

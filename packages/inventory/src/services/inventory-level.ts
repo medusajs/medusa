@@ -46,9 +46,9 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Retrieves a list of inventory levels based on the provided selector and configuration.
-   * @param {FilterableInventoryLevelProps} [selector={}] - An object containing filterable properties for inventory levels.
-   * @param {FindConfig<InventoryLevel>} [config={ relations: [], skip: 0, take: 10 }] - An object containing configuration options for the query.
-   * @returns {Promise<InventoryLevel[]>} A promise that resolves with an array of inventory levels.
+   * @param selector - An object containing filterable properties for inventory levels.
+   * @param config - An object containing configuration options for the query.
+   * @return Array of inventory levels.
    */
   async list(
     selector: FilterableInventoryLevelProps = {},
@@ -63,9 +63,9 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Retrieves a list of inventory levels and a count based on the provided selector and configuration.
-   * @param {FilterableInventoryLevelProps} [selector={}] - An object containing filterable properties for inventory levels.
-   * @param {FindConfig<InventoryLevel>} [config={ relations: [], skip: 0, take: 10 }] - An object containing configuration options for the query.
-   * @returns {Promise<[InventoryLevel[], number]>} A promise that resolves with an array of inventory levels and a count.
+   * @param selector - An object containing filterable properties for inventory levels.
+   * @param config - An object containing configuration options for the query.
+   * @return An array of inventory levels and a count.
    */
   async listAndCount(
     selector: FilterableInventoryLevelProps = {},
@@ -80,11 +80,10 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Retrieves a single inventory level by its ID.
-   * @param {string} inventoryLevelId - The ID of the inventory level to retrieve.
-   * @param {FindConfig<InventoryLevel>} [config={}] - An object containing configuration options for the query.
-   * @returns {Promise<InventoryLevel>} A promise that resolves with the inventory level.
-   * @throws {MedusaError} If the inventory level ID is not defined.
-   * @throws {MedusaError} If the inventory level with the given ID was not found.
+   * @param inventoryLevelId - The ID of the inventory level to retrieve.
+   * @param config - An object containing configuration options for the query.
+   * @return A inventory level.
+   * @throws If the inventory level ID is not defined or the given ID was not found.
    */
   async retrieve(
     inventoryLevelId: string,
@@ -115,8 +114,8 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Creates a new inventory level.
-   * @param {CreateInventoryLevelInput} data - An object containing the properties for the new inventory level.
-   * @returns {Promise<InventoryLevel>} A promise that resolves with the created inventory level.
+   * @param data - An object containing the properties for the new inventory level.
+   * @return The created inventory level.
    */
   async create(data: CreateInventoryLevelInput): Promise<InventoryLevel> {
     const result = await this.atomicPhase_(async (manager) => {
@@ -142,12 +141,11 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Updates an existing inventory level.
-   * @param {string} inventoryLevelId - The ID of the inventory level to update.
-   * @param {DeepPartial<InventoryLevel>} data - An object containing the properties to update on the inventory level.
-   * @param {boolean} [autoSave=true] - A flag indicating whether to save the changes automatically.
-   * @returns {Promise<InventoryLevel>} A promise that resolves with the updated inventory level.
-   * @throws {MedusaError} If the inventory level ID is not defined.
-   * @throws {MedusaError} If the inventory level with the given ID was not found.
+   * @param inventoryLevelId - The ID of the inventory level to update.
+   * @param data - An object containing the properties to update on the inventory level.
+   * @param autoSave - A flag indicating whether to save the changes automatically.
+   * @return The updated inventory level.
+   * @throws If the inventory level ID is not defined or the given ID was not found.
    */
   async update(
     inventoryLevelId: string,
@@ -180,9 +178,9 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Adjust the reserved quantity for an inventory item at a specific location.
-   * @param {string} inventoryItemId - The ID of the inventory item.
-   * @param {string} locationId - The ID of the location.
-   * @param {number} quantity - The quantity to adjust from the reserved quantity.
+   * @param inventoryItemId - The ID of the inventory item.
+   * @param locationId - The ID of the location.
+   * @param quantity - The quantity to adjust from the reserved quantity.
    */
   async adjustReservedQuantity(
     inventoryItemId: string,
@@ -204,25 +202,25 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Deletes an inventory level by ID.
-   * @param {string} id - The ID of the inventory level to delete.
+   * @param inventoryLevelId - The ID of the inventory level to delete.
    */
-  async delete(id: string): Promise<void> {
+  async delete(inventoryLevelId: string): Promise<void> {
     await this.atomicPhase_(async (manager) => {
       const levelRepository = manager.getRepository(InventoryLevel)
 
-      await levelRepository.delete({ id })
+      await levelRepository.delete({ id: inventoryLevelId })
     })
 
     await this.eventBusService_.emit(InventoryLevelService.Events.DELETED, {
-      id,
+      id: inventoryLevelId,
     })
   }
 
   /**
    * Gets the total stocked quantity for a specific inventory item at multiple locations.
-   * @param {string} inventoryItemId - The ID of the inventory item.
-   * @param {string[]} locationIds - The IDs of the locations.
-   * @returns {number} - The total stocked quantity.
+   * @param inventoryItemId - The ID of the inventory item.
+   * @param locationIds - The IDs of the locations.
+   * @return The total stocked quantity.
    */
   async getStockedQuantity(
     inventoryItemId: string,
@@ -243,9 +241,9 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Gets the total available quantity for a specific inventory item at multiple locations.
-   * @param {string} inventoryItemId - The ID of the inventory item.
-   * @param {string[]} locationIds - The IDs of the locations.
-   * @returns {number} - The total available quantity.
+   * @param inventoryItemId - The ID of the inventory item.
+   * @param locationIds - The IDs of the locations.
+   * @return The total available quantity.
    */
   async getAvailableQuantity(
     inventoryItemId: string,
@@ -266,9 +264,9 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   /**
    * Gets the total reserved quantity for a specific inventory item at multiple locations.
-   * @param {string} inventoryItemId - The ID of the inventory item.
-   * @param {string[]} locationIds - The IDs of the locations.
-   * @returns {number} - The total reserved quantity.
+   * @param inventoryItemId - The ID of the inventory item.
+   * @param locationIds - The IDs of the locations.
+   * @return The total reserved quantity.
    */
   async getReservedQuantity(
     inventoryItemId: string,
