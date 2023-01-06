@@ -45,20 +45,49 @@ describe("EventBusService", () => {
 
   describe("subscribe", () => {
     let eventBus
-    describe("successfully adds subscriber", () => {
+    describe("throws when subscriber already exists", () => {
       beforeAll(() => {
         jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
         eventBus = new EventBusService({
           manager: MockManager,
-          stagedJobRepository,
           logger: loggerMock,
         })
+
+        eventBus.eventToSubscribersMap_.set(
+          "eventName",
+          () => void 0,
+          "my-subscriber"
+        )
+      })
+
+      afterAll(async () => {
+        await eventBus.stopEnqueuer()
+      })
+
+      it("throws", () => {
+        try {
+          eventBus.subscribe("eventName", () => "test", "my-subscriber")
+        } catch (error) {
+          expect(error.message).toEqual(
+            "Subscriber with id my-subscriber already exists"
+          )
+        }
+      })
+    })
+
+    describe("successfully adds subscriber", () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+
+        eventBus = new EventBusService({
+          manager: MockManager,
+          logger: loggerMock,
+        })
+
         eventBus.subscribe("eventName", () => "test")
       })
+
       afterAll(async () => {
         await eventBus.stopEnqueuer()
       })

@@ -159,14 +159,25 @@ export default class EventBusService {
       throw new Error("Subscriber must be a function")
     }
 
-    // If we have a context, we use the subscriberId from it
-    // otherwise we generate a random using a ulid
+    /**
+     * If context is provided, we use the subscriberId from it
+     * otherwise we generate a random using a ulid
+     */
     const subscriberId =
       context?.subscriberId ?? `${event.toString()}-${ulid()}`
 
     const newSubscriberDescriptor = { subscriber, id: subscriberId }
 
     const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
+
+    const existingSubscriberWithId = existingSubscribers?.find(
+      (sub) => sub.id === subscriberId
+    )
+
+    // To allow for horizontal scaling, we enforce uniqueness of subscribers
+    if (existingSubscriberWithId) {
+      throw Error(`Subscriber with id ${subscriberId} already exists`)
+    }
 
     this.eventToSubscribersMap_.set(event, [
       ...existingSubscribers,
@@ -314,7 +325,8 @@ export default class EventBusService {
 
     // Filter out already completed subscribers from the all subscribers
     const subscribersInCurrentAttempt = allSubscribers.filter(
-      (observer) => observer.id && !completedSubscribers.includes(observer.id)
+      (subscriber) =>
+        subscriber.id && !completedSubscribers.includes(subscriber.id)
     )
 
     const isRetry = job.attemptsMade > 0
