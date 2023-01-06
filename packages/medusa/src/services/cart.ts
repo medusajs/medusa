@@ -1644,7 +1644,12 @@ class CartService extends TransactionBaseService {
         )
 
         const cart = await this.retrieveWithTotals(cartId, {
-          relations: ["region", "region.payment_providers", "payment_sessions"],
+          relations: [
+            "customer",
+            "region",
+            "region.payment_providers",
+            "payment_sessions",
+          ],
         })
 
         const isProviderPresent = cart.region.payment_providers.find(
