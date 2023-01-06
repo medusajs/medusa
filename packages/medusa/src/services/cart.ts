@@ -1789,6 +1789,12 @@ class CartService extends TransactionBaseService {
           amount: total,
           currency_code: cart.region.currency_code,
         }
+        const partialPaymentSessionData = {
+          cart_id: cartId,
+          data: {},
+          status: PaymentSessionStatus.PENDING,
+          amount: total,
+        }
 
         await Promise.all(
           cart.payment_sessions.map(async (session) => {
@@ -1809,6 +1815,11 @@ class CartService extends TransactionBaseService {
              * In case the session is not selected but contains an external provider data, we delete the external provider
              * session to be in a clean state.
              */
+
+            // We are saving the provider id on which the work below will be done. That way,
+            // when handling the providers from the cart region at a later point below, we do not double the work on the sessions that already
+            // exists for the same provider.
+            alreadyConsumedProviderIds.add(session.provider_id)
 
             // Update remotely
             if (session.is_selected) {
@@ -1832,16 +1843,13 @@ class CartService extends TransactionBaseService {
             if (isThirdPartyReached) {
               await paymentProviderServiceTx.deleteSession(session)
               updatedSession = psRepo.create({
-                cart_id: cartId,
+                ...partialPaymentSessionData,
                 provider_id: session.provider_id,
-                status: PaymentSessionStatus.PENDING,
-                amount: total,
               })
             } else {
               updatedSession = { ...session, amount: total } as PaymentSession
             }
 
-            alreadyConsumedProviderIds.add(session.provider_id)
             return psRepo.save(updatedSession)
           })
         )
@@ -1849,11 +1857,10 @@ class CartService extends TransactionBaseService {
         /**
          * From now on, the sessions have been cleanup. We can now
          * - Set the provider session as selected if it is the only one existing and there is no payment session on the cart
-         * - Create a session per provider locally
+         * - Create a session per provider locally if it does not already exists on the cart as per the previous step
          */
 
-        // If only one payment provider is available and there is no payment session on the cart
-        // then we set the payment session immediately as the selected one.
+        // If only one provider exists and there is no session on the cart, create the session and select it.
         if (region.payment_providers.length === 1 && !cart.payment_session) {
           const paymentProvider = region.payment_providers[0]
 
@@ -1877,10 +1884,8 @@ class CartService extends TransactionBaseService {
             }
 
             const paymentSession = psRepo.create({
-              cart_id: cartId,
+              ...partialPaymentSessionData,
               provider_id: paymentProvider.id,
-              status: PaymentSessionStatus.PENDING,
-              amount: total,
             })
             return psRepo.save(paymentSession)
           })
