@@ -1490,6 +1490,7 @@ describe("CartService", () => {
           amount: expect.any(Number),
           currency_code: expect.any(String),
           provider_id: providerId,
+          payment_session_id: IdMap.getId("test-session"),
         }
       )
     })

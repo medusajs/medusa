@@ -1643,7 +1643,7 @@ class CartService extends TransactionBaseService {
           this.paymentSessionRepository_
         )
 
-        const cart = await this.retrieve(cartId, {
+        const cart = await this.retrieveWithTotals(cartId, {
           relations: ["region", "region.payment_providers", "payment_sessions"],
         })
 
@@ -1686,18 +1686,22 @@ class CartService extends TransactionBaseService {
           payment_session_id: paymentSession.id,
         }
 
-        // If the session was already selected, then just update it remotely, otherwise we create it remotely
+        const isThirdPartyReached =
+          paymentSession.data && Object.keys(paymentSession.data).length
+
         if (paymentSession.is_selected) {
+          // update the session remotely
           await this.paymentProviderService_
             .withTransaction(transactionManager)
             .updateSession(paymentSession, sessionInput)
-        } else {
+        } else if (!isThirdPartyReached) {
+          // Create the session remotely
           paymentSession = await this.paymentProviderService_
             .withTransaction(transactionManager)
             .createSession(sessionInput)
-
-          await psRepo.update(paymentSession.id, { is_selected: true })
         }
+
+        await psRepo.update(paymentSession.id, { is_selected: true })
 
         await this.eventBus_
           .withTransaction(transactionManager)
@@ -1777,7 +1781,7 @@ class CartService extends TransactionBaseService {
         }
 
         const providerSet = new Set(region.payment_providers.map((p) => p.id))
-        const seen: Set<string> = new Set()
+        const alreadyConsumedProviderIds: Set<string> = new Set()
 
         const partialSessionInput: Omit<PaymentSessionInput, "provider_id"> = {
           cart: cart as Cart,
@@ -1799,14 +1803,12 @@ class CartService extends TransactionBaseService {
             }
 
             /**
-             * if the provider belongs to the region then update the session.
+             * if the provider belongs to the region then update or delete the session.
              * The update occurs locally if it is not selected
              * otherwise the update will also occur remotely through the external provider.
              * In case the session is not selected but contains an external provider data, we delete the external provider
              * session to be in a clean state.
              */
-
-            seen.add(session.provider_id)
 
             // Update remotely
             if (session.is_selected) {
@@ -1839,6 +1841,7 @@ class CartService extends TransactionBaseService {
               updatedSession = { ...session, amount: total } as PaymentSession
             }
 
+            alreadyConsumedProviderIds.add(session.provider_id)
             return psRepo.save(updatedSession)
           })
         )
@@ -1869,7 +1872,7 @@ class CartService extends TransactionBaseService {
 
         await Promise.all(
           region.payment_providers.map(async (paymentProvider) => {
-            if (seen.has(paymentProvider.id)) {
+            if (alreadyConsumedProviderIds.has(paymentProvider.id)) {
               return
             }
 
