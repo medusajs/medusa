@@ -292,9 +292,6 @@ class FulfillmentService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      const productVariantInventoryServiceTx =
-        this.productVariantInventoryService_.withTransaction(manager)
-
       await Promise.all(
         fulfillment.items.map(async (fItem) => {
           const item = await lineItemServiceTx.retrieve(fItem.item_id)
@@ -302,13 +299,6 @@ class FulfillmentService extends TransactionBaseService {
           await lineItemServiceTx.update(item.id, {
             fulfilled_quantity: fulfilledQuantity,
           })
-          if (item.variant_id) {
-            await productVariantInventoryServiceTx.adjustInventory(
-              item.variant_id,
-              fulfillment.location_id!,
-              fItem.quantity
-            )
-          }
         })
       )
 
