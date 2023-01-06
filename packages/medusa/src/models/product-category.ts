@@ -36,7 +36,7 @@ export class ProductCategory extends SoftDeletableEntity {
   // mpath: String
 
   @TreeParent()
-  @JoinColumn({ name: 'parent_category_id' })
+  @JoinColumn({ name: "parent_category_id" })
   parent_category: ProductCategory | null
 
   // Typeorm also keeps track of the category's parent at all times.
@@ -94,9 +94,8 @@ export class ProductCategory extends SoftDeletableEntity {
  *       type: object
  *       description: A product category object.
  *   parent_category:
- *     description: Available if the relation `parent_category` is expanded.
+ *     description: A product category object. Available if the relation `parent_category` is expanded.
  *     type: object
- *     description: A product category object.
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."
