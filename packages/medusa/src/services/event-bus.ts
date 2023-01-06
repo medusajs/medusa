@@ -291,10 +291,11 @@ export default class EventBusService {
     )
 
     const isRetry = job.attemptsMade > 0
+    const currentAttempt = job.attemptsMade + 1
 
     if (isRetry) {
       this.logger_.info(
-        `Retrying (attempt ${job.attemptsMade}) ${eventName} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
+        `Retrying (attempt ${currentAttempt}) ${eventName} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
       )
     } else {
       this.logger_.info(
@@ -343,6 +344,11 @@ export default class EventBusService {
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
 
       this.logger_.warn(errorMessage)
+
+      const finalAttempt = job.opts.attempts === currentAttempt
+      if (finalAttempt) {
+        this.logger_.warn(`Final retry attempt for ${eventName}`)
+      }
 
       return Promise.reject(Error(errorMessage))
     }
