@@ -272,7 +272,7 @@ export default class EventBusService {
           this.queue_
             .add(
               { eventName: job.event_name, data: job.data },
-              job?.options ?? { removeOneComplete: true }
+              job?.options ?? { removeOnComplete: true }
             )
             .then(async () => {
               await stagedJobRepo.remove(job)
