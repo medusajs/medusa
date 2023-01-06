@@ -54,11 +54,12 @@ describe("EventBusService", () => {
           logger: loggerMock,
         })
 
-        eventBus.eventToSubscribersMap_.set(
-          "eventName",
-          () => void 0,
-          "my-subscriber"
-        )
+        eventBus.eventToSubscribersMap_.set("eventName", [
+          {
+            subscriber: () => "test",
+            id: "my-subscriber",
+          },
+        ])
       })
 
       afterAll(async () => {
@@ -66,13 +67,46 @@ describe("EventBusService", () => {
       })
 
       it("throws", () => {
+        expect.assertions(1)
+
         try {
-          eventBus.subscribe("eventName", () => "test", "my-subscriber")
+          eventBus.subscribe("eventName", () => "new", {
+            subscriberId: "my-subscriber",
+          })
         } catch (error) {
-          expect(error.message).toEqual(
+          expect(error.message).toBe(
             "Subscriber with id my-subscriber already exists"
           )
         }
+      })
+    })
+
+    describe("adds duplicate subscriber with same id", () => {
+      beforeAll(() => {
+        jest.resetAllMocks()
+
+        eventBus = new EventBusService({
+          manager: MockManager,
+          logger: loggerMock,
+        })
+
+        eventBus.eventToSubscribersMap_.set("eventName", [
+          {
+            subscriber: () => "test",
+            id: "my-subscriber",
+          },
+        ])
+      })
+
+      afterAll(async () => {
+        await eventBus.stopEnqueuer()
+      })
+
+      it("succeeds", () => {
+        eventBus.subscribe("eventName", () => "test", "my-subscriber")
+        expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(
+          2
+        )
       })
     })
 

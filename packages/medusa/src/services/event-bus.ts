@@ -170,12 +170,11 @@ export default class EventBusService {
 
     const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
 
-    const existingSubscriberWithId = existingSubscribers?.find(
-      (sub) => sub.id === subscriberId
+    const existingDifferentSubscriberWithId = existingSubscribers.find(
+      (sub) => sub.id === subscriberId && sub.subscriber !== subscriber
     )
 
-    // To allow for horizontal scaling, we enforce uniqueness of subscribers
-    if (existingSubscriberWithId) {
+    if (existingDifferentSubscriberWithId) {
       throw Error(`Subscriber with id ${subscriberId} already exists`)
     }
 
