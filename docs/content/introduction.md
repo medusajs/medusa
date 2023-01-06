@@ -2,13 +2,13 @@
 
 ## Architecture
 
-Medusa is composed of three components: The headless backend, the admin dashboard, and the storefront.
+Medusa is composed of three components: The Medusa server, the admin dashboard, and the storefront.
 
 ![Medusa's Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1667999772/Medusa%20Docs/Diagrams/ZHvM2bu_td4rnx.png)
 
-### Headless Backend
+### Medusa Server
 
-This is the main component that holds all the logic and data of the store. Your admin dashboard and storefront interact with the backend to retrieve, create, and modify data through REST APIs.
+The Medusa server is a headless backend built on Node.js. This is the main component that holds all the logic and data of the store. Your admin dashboard and storefront interact with the backend to retrieve, create, and modify data through REST APIs.
 
 Your Medusa server will include all functionalities related to your store’s checkout workflow. That includes cart management, shipping and payment providers, user management, and more. It also allows you to configure your store including your store’s region, tax rules, discounts, gift cards, and more.
 
