@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class PaymentSessionIsInitiated1672906846560 implements MigrationInterface {
-  name = "1672906846560PaymentSessionIsInitiated"
+  name = "paymentSessionIsInitiated1672906846560"
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
