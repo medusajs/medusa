@@ -342,7 +342,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         return await this.inventoryService_.createReservationItem({
           ...toReserve,
           location_id: locationId as string,
-          item_id: inventoryPart.inventory_item_id,
+          inventory_item_id: inventoryPart.inventory_item_id,
           quantity: itemQuantity,
         })
       })
