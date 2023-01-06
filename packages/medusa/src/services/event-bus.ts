@@ -270,7 +270,10 @@ export default class EventBusService {
       await Promise.all(
         jobs.map((job) => {
           this.queue_
-            .add({ eventName: job.event_name, data: job.data }, job.options)
+            .add(
+              { eventName: job.event_name, data: job.data },
+              job?.options ?? { removeOneComplete: true }
+            )
             .then(async () => {
               await stagedJobRepo.remove(job)
             })
