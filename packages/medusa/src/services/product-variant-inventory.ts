@@ -454,7 +454,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
       const [inventoryLevels] =
         await this.inventoryService_.listInventoryLevels({
-          item_id: pvInventoryItems.map((i) => i.inventory_item_id),
+          inventory_item_id: pvInventoryItems.map((i) => i.inventory_item_id),
           location_id: locationId,
         })
 
@@ -465,7 +465,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         }, {})
 
       for (const inventoryLevel of inventoryLevels) {
-        const pvInventoryItem = pviMap[inventoryLevel.item_id]
+        const pvInventoryItem = pviMap[inventoryLevel.inventory_item_id]
 
         if (
           !pvInventoryItem ||
