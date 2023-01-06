@@ -1620,6 +1620,7 @@ describe("CartService", () => {
         status: PaymentSessionStatus.PENDING,
         amount: cart1.total,
         provider_id: provider1Id,
+        data: {},
       })
 
       expect(paymentSessionRepositoryMock.create).toHaveBeenCalledWith({
@@ -1627,6 +1628,7 @@ describe("CartService", () => {
         status: PaymentSessionStatus.PENDING,
         amount: cart1.total,
         provider_id: provider2Id,
+        data: {},
       })
     })
 
