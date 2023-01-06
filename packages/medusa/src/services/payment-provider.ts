@@ -702,19 +702,19 @@ export default class PaymentProviderService extends TransactionBaseService {
       session.status = data.status ?? session.status
       session.amount = data.amount ?? session.amount
       return await sessionRepo.save(session)
-    } else {
-      const toCreate: Partial<PaymentSession> = {
-        cart_id: data.cartId || null,
-        provider_id: providerId,
-        data: data.sessionData,
-        is_selected: data.isSelected,
-        status: data.status,
-        amount: data.amount,
-      }
-
-      const created = sessionRepo.create(toCreate)
-      return await sessionRepo.save(created)
     }
+
+    const toCreate: Partial<PaymentSession> = {
+      cart_id: data.cartId || null,
+      provider_id: providerId,
+      data: data.sessionData,
+      is_selected: data.isSelected,
+      status: data.status,
+      amount: data.amount,
+    }
+
+    const created = sessionRepo.create(toCreate)
+    return await sessionRepo.save(created)
   }
 
   /**
