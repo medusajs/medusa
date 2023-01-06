@@ -375,7 +375,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         return await this.inventoryService_.createReservationItem({
           ...toReserve,
           location_id: locationId as string,
-          item_id: inventoryPart.inventory_item_id,
+          inventory_item_id: inventoryPart.inventory_item_id,
           quantity: itemQuantity,
         })
       })
@@ -427,7 +427,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
           (r) => r.location_id === location_id && r.quantity >= quantity
         ) ?? reservation
 
-      const pvit = await this.retrieve(reservation.item_id, variantId)
+      const pvit = await this.retrieve(reservation.inventory_item_id, variantId)
 
       const reservationQtyUpdate =
         reservation.quantity - quantity * pvit.quantity
