@@ -1,5 +1,6 @@
 import Bull from "bull"
 import Redis from "ioredis"
+import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
 import { StagedJob } from "../models"
@@ -145,6 +146,7 @@ export default class EventBusService {
    * Adds a function to a list of event subscribers.
    * @param event - the event that the subscriber will listen for.
    * @param subscriber - the function to be called when a certain event
+   * @param context - context to use when attaching subscriber
    * happens. Subscribers must return a Promise.
    * @return this
    */
@@ -157,6 +159,8 @@ export default class EventBusService {
       throw new Error("Subscriber must be a function")
     }
 
+    // If we have a context, we use the subscriberId from it
+    // otherwise we generate a random using a ulid
     const subscriberId =
       context?.subscriberId ?? `${event.toString()}-${ulid()}`
 
@@ -209,7 +213,7 @@ export default class EventBusService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: EmitOptions = { attempts: 1 }
+    options: Record<string, unknown> & EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void> {
     const opts: { removeOnComplete: boolean } & EmitOptions = {
       removeOnComplete: true,
@@ -217,7 +221,7 @@ export default class EventBusService {
     }
     if (typeof options.attempts === "number") {
       opts.attempts = options.attempts
-      if (typeof options.backoff !== "undefined") {
+      if (isDefined(options.backoff)) {
         opts.backoff = options.backoff
       }
     }
@@ -239,11 +243,11 @@ export default class EventBusService {
         this.stagedJobRepository_
       )
 
-      const jobToCreate: Partial<StagedJob> = {
+      const jobToCreate = {
         event_name: eventName,
-        data: data as Record<string, unknown>,
+        data: data as unknown as Record<string, unknown>,
         options: opts,
-      }
+      } as Partial<StagedJob>
 
       const stagedJobInstance = stagedJobRepository.create(jobToCreate)
 
@@ -281,7 +285,7 @@ export default class EventBusService {
           this.queue_
             .add(
               { eventName: job.event_name, data: job.data },
-              job?.options ?? { removeOnComplete: true }
+              job.options ?? { removeOnComplete: true }
             )
             .then(async () => {
               await stagedJobRepo.remove(job)

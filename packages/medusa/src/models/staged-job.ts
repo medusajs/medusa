@@ -14,7 +14,7 @@ export class StagedJob {
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>
 
-  @DbAwareColumn({ type: "jsonb" })
+  @DbAwareColumn({ type: "jsonb", default: {} })
   options: Record<string, unknown>
 
   @BeforeInsert()

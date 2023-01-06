@@ -5,7 +5,7 @@ export class stagedJobOptions1673003729870 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "staged_job" ADD "options" jsonb NOT NULL`
+      `ALTER TABLE "staged_job" ADD "options" jsonb NOT NULL DEFAULT '{}'::JSONB`
     )
   }
 
