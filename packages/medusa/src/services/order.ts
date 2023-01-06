@@ -30,22 +30,26 @@ import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import CartService from "./cart"
-import CustomerService from "./customer"
-import DiscountService from "./discount"
-import DraftOrderService from "./draft-order"
-import EventBusService from "./event-bus"
-import FulfillmentService from "./fulfillment"
-import FulfillmentProviderService from "./fulfillment-provider"
-import GiftCardService from "./gift-card"
-import LineItemService from "./line-item"
-import PaymentProviderService from "./payment-provider"
-import RegionService from "./region"
-import ShippingOptionService from "./shipping-option"
-import ShippingProfileService from "./shipping-profile"
-import TotalsService from "./totals"
-import ProductVariantInventoryService from "./product-variant-inventory"
-import { NewTotalsService, TaxProviderService } from "./index"
+
+import {
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  EventBusService,
+  FulfillmentService,
+  FulfillmentProviderService,
+  GiftCardService,
+  ProductVariantInventoryService,
+  LineItemService,
+  PaymentProviderService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TotalsService,
+  NewTotalsService,
+  TaxProviderService,
+} from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -1264,7 +1268,7 @@ class OrderService extends TransactionBaseService {
       return null
     }
 
-    if (quantity > item.quantity - item.fulfilled_quantity) {
+    if (quantity > item.quantity - item.fulfilled_quantity!) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Cannot fulfill more items than have been purchased"

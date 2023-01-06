@@ -145,7 +145,7 @@ class FulfillmentService extends TransactionBaseService {
       return null
     }
 
-    if (quantity > item.quantity - item.fulfilled_quantity) {
+    if (quantity > item.quantity - item.fulfilled_quantity!) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Cannot fulfill more items than have been purchased"
@@ -285,7 +285,7 @@ class FulfillmentService extends TransactionBaseService {
 
       for (const fItem of fulfillment.items) {
         const item = await lineItemServiceTx.retrieve(fItem.item_id)
-        const fulfilledQuantity = item.fulfilled_quantity - fItem.quantity
+        const fulfilledQuantity = item.fulfilled_quantity! - fItem.quantity
         await lineItemServiceTx.update(item.id, {
           fulfilled_quantity: fulfilledQuantity,
         })

@@ -5,7 +5,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { OrderService, ReturnService, SwapService } from "../../../../services"
+import {
+  OrderService,
+  ProductVariantInventoryService,
+  ReturnService,
+  SwapService,
+} from "../../../../services"
 
 import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
@@ -98,13 +103,15 @@ export default async (req, res) => {
   await entityManager.transaction(async (manager) => {
     let refundAmount = validated.refund
 
-    if (isDefined(validated.refund) && validated.refund < 0) {
+    if (isDefined(validated.refund) && validated.refund! < 0) {
       refundAmount = 0
     }
 
     receivedReturn = await returnService
       .withTransaction(manager)
-      .receive(id, validated.items, refundAmount, true)
+      .receive(id, validated.items, refundAmount, true, {
+        locationId: validated.location_id,
+      })
 
     if (receivedReturn.order_id) {
       await orderService
@@ -169,4 +176,8 @@ export class AdminPostReturnsReturnReceiveReq {
   @IsOptional()
   @IsNumber()
   refund?: number
+
+  @IsOptional()
+  @IsString()
+  location_id?: string
 }
