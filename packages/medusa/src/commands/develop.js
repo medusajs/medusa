@@ -1,3 +1,4 @@
+import { EOL } from "os"
 import boxen from "boxen"
 import path from "path"
 import { execSync } from "child_process"
@@ -24,10 +25,10 @@ export default async function ({ port, directory }) {
     const hasPrompted = configStore.getConfig("star.prompted") ?? false
     if (!hasPrompted) {
       const defaultMessage =
-        `✨ Thanks for using Medusa. ✨\n` +
-        `If you liked it, please consider starring us on GitHub\n` +
-        `https://medusajs.com/star\n` +
-        `\n` +
+        `✨ Thanks for using Medusa. ✨${EOL}${EOL}` +
+        `If you liked it, please consider starring us on GitHub${EOL}` +
+        `https://medusajs.com/star${EOL}` +
+        `${EOL}` +
         `Note: you will not see this message again.`
 
       console.log()
