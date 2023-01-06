@@ -180,7 +180,6 @@ jobs:
         env:
           DB_PASSWORD: postgres
 
-
   integration-tests-repositories:
     needs: setup
     runs-on: ubuntu-latest
