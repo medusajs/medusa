@@ -81,35 +81,6 @@ describe("EventBusService", () => {
       })
     })
 
-    describe("adds duplicate subscriber with same id", () => {
-      beforeAll(() => {
-        jest.resetAllMocks()
-
-        eventBus = new EventBusService({
-          manager: MockManager,
-          logger: loggerMock,
-        })
-
-        eventBus.eventToSubscribersMap_.set("eventName", [
-          {
-            subscriber: () => "test",
-            id: "my-subscriber",
-          },
-        ])
-      })
-
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
-      })
-
-      it("succeeds", () => {
-        eventBus.subscribe("eventName", () => "test", "my-subscriber")
-        expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(
-          2
-        )
-      })
-    })
-
     describe("successfully adds subscriber", () => {
       beforeAll(() => {
         jest.resetAllMocks()
