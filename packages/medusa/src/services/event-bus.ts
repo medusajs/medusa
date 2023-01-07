@@ -391,10 +391,12 @@ export default class EventBusService {
       return Promise.reject(Error(errorMessage))
     }
 
-    // If retrying is not configured, we log a warning to allow server admins to recover manually
-    this.logger_.warn(
-      `One or more subscribers of ${eventName} failed. Retrying is not configured. Use 'attempts' option when emitting events.`
-    )
+    if (didSubscribersFail) {
+      // If retrying is not configured, we log a warning to allow server admins to recover manually
+      this.logger_.warn(
+        `One or more subscribers of ${eventName} failed. Retrying is not configured. Use 'attempts' option when emitting events.`
+      )
+    }
 
     return Promise.resolve(subscribersResult)
   }
