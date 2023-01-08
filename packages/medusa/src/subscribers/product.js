@@ -1,6 +1,7 @@
 import ProductVariantService from "../services/product-variant"
 import ProductService from "../services/product"
 import { indexTypes } from "medusa-core-utils"
+import { isSearchEngineInstalledResolutionKey } from "../loaders/plugins"
 
 const searchFields = [
   "id",
@@ -31,12 +32,21 @@ const searchRelations = [
 ]
 
 class ProductSearchSubscriber {
-  constructor({ eventBusService, searchService, productService }) {
-    this.eventBus_ = eventBusService
+  constructor(container) {
+    this.eventBus_ = container.eventBusService
+    this.searchService_ = container.searchService
+    this.productService_ = container.productService
 
-    this.searchService_ = searchService
+    /**
+     * Do not subscribe to any event in case no search engine have been installed.
+     * If some events need to be subscribed out of the search engine reason, they can be subscribed above this comment
+     */
 
-    this.productService_ = productService
+    try {
+      container[isSearchEngineInstalledResolutionKey]
+    } catch (e) {
+      return this
+    }
 
     this.eventBus_.subscribe(
       ProductService.Events.CREATED,
