@@ -45,63 +45,40 @@ describe("EventBusService", () => {
 
   describe("subscribe", () => {
     let eventBus
-    describe("throws when subscriber already exists", () => {
-      beforeAll(() => {
-        jest.resetAllMocks()
 
-        eventBus = new EventBusService({
-          manager: MockManager,
-          logger: loggerMock,
-        })
+    beforeAll(() => {
+      jest.resetAllMocks()
 
-        eventBus.eventToSubscribersMap_.set("eventName", [
-          {
-            subscriber: () => "test",
-            id: "my-subscriber",
-          },
-        ])
+      eventBus = new EventBusService({
+        manager: MockManager,
+        logger: loggerMock,
       })
 
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
-      })
-
-      it("throws", () => {
-        expect.assertions(1)
-
-        try {
-          eventBus.subscribe("eventName", () => "new", {
-            subscriberId: "my-subscriber",
-          })
-        } catch (error) {
-          expect(error.message).toBe(
-            "Subscriber with id my-subscriber already exists"
-          )
-        }
+      eventBus.subscribe("eventName", () => "test", {
+        subscriberId: "my-subscriber",
       })
     })
 
-    describe("successfully adds subscriber", () => {
-      beforeAll(() => {
-        jest.resetAllMocks()
+    afterAll(async () => {
+      await eventBus.stopEnqueuer()
+    })
 
-        eventBus = new EventBusService({
-          manager: MockManager,
-          logger: loggerMock,
+    it("throws when subscriber already exists", async () => {
+      expect.assertions(1)
+
+      try {
+        eventBus.subscribe("eventName", () => "new", {
+          subscriberId: "my-subscriber",
         })
-
-        eventBus.subscribe("eventName", () => "test")
-      })
-
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
-      })
-
-      it("added the subscriber to the queue", () => {
-        expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(
-          1
+      } catch (error) {
+        expect(error.message).toBe(
+          "Subscriber with id my-subscriber already exists"
         )
-      })
+      }
+    })
+
+    it("successfully adds subscriber", () => {
+      expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(1)
     })
 
     describe("fails when adding non-function subscriber", () => {

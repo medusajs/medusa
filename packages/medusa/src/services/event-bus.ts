@@ -355,7 +355,6 @@ export default class EventBusService {
             this.logger_.warn(
               `An error occurred while processing ${eventName}: ${err}`
             )
-            console.error(err)
             return err
           })
       })
@@ -374,17 +373,16 @@ export default class EventBusService {
         ...completedSubscribersInCurrentAttempt,
       ]
 
-      job.update({
-        ...job.data,
-        completedSubscriberIds: updatedCompletedSubscribers,
-      })
+      job.data.completedSubscriberIds = updatedCompletedSubscribers
+
+      job.update(job.data)
 
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
 
       this.logger_.warn(errorMessage)
 
-      const finalAttempt = job.opts.attempts === currentAttempt
-      if (finalAttempt) {
+      const isFinalAttempt = job.opts.attempts === currentAttempt
+      if (isFinalAttempt) {
         this.logger_.warn(`Final retry attempt for ${eventName}`)
       }
 
