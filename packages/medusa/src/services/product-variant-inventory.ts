@@ -540,21 +540,19 @@ class ProductVariantInventoryService extends TransactionBaseService {
   ): Promise<void> {
     if (!this.inventoryService_) {
       return this.atomicPhase_(async (manager) => {
-        const variant = await this.productVariantService_
-          .withTransaction(manager)
-          .retrieve(variantId, {
-            select: ["id", "inventory_quantity", "manage_inventory"],
-          })
+        const productVariantServiceTx =
+          this.productVariantService_.withTransaction(manager)
+        const variant = await productVariantServiceTx.retrieve(variantId, {
+          select: ["id", "inventory_quantity", "manage_inventory"],
+        })
 
         if (!variant.manage_inventory) {
           return
         }
 
-        await this.productVariantService_
-          .withTransaction(manager)
-          .update(variantId, {
-            inventory_quantity: variant.inventory_quantity + quantity,
-          })
+        await productVariantServiceTx.update(variantId, {
+          inventory_quantity: variant.inventory_quantity + quantity,
+        })
       })
     } else {
       const variantInventory = await this.listByVariant(variantId)
