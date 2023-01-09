@@ -2,12 +2,6 @@
 
 In this document, you’ll learn about Sales Channels and how they can be used in Medusa.
 
-:::note
-
-The Sales Channels feature is in beta mode and guarded by a feature flag. Starting from v1.7.3, it's enabled by default.
-
-:::
-
 ## Introduction
 
 Sales Channels allow you to separate between the different channels you sell products in. For example, you can have a sales channel for your website and another for your mobile apps.
