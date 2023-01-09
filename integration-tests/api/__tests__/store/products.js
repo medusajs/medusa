@@ -953,5 +953,22 @@ describe("/store/products", () => {
         ])
       )
     })
+
+    it("filter fields", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/store/products/test-product?fields=handle"
+      )
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          handle: expect.any(String),
+          variants: expect.any(Array), // default relations are not filtered out
+        })
+      )
+    })
   })
 })

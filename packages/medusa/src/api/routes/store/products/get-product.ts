@@ -11,6 +11,7 @@ import {
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { FlagRouter } from "../../../../utils/flag-router"
 import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [get] /products/{id}
@@ -22,6 +23,7 @@ import { validator } from "../../../../utils/validator"
  *   - (query) sales_channel_id {string} The sales channel used when fetching the product.
  *   - (query) cart_id {string} The ID of the customer's cart.
  *   - (query) region_id {string} The ID of the region the customer is using. This is helpful to ensure correct prices are retrieved for a region.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
  *   - in: query
  *     name: currency_code
  *     style: form
@@ -123,11 +125,17 @@ export default async (req, res) => {
     sales_channel_id
   )
 
-  res.json({ product })
+  res.json({
+    product: cleanResponseData(product, req.allowedProperties || []),
+  })
 }
 
 export class StoreGetProductsProductParams extends PriceSelectionParams {
   @IsString()
   @IsOptional()
   sales_channel_id?: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
 }

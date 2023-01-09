@@ -127,8 +127,8 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *            format: date
  *   - (query) offset=0 {integer} How many products to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of products returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  *   - (query) order {string} the field used to order the products.
  *   - (query) cart_id {string} The id of the Cart to set prices based on.
  *   - (query) region_id {string} The id of the Region to set prices based on.

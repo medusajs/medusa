@@ -10,6 +10,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 import { StoreGetProductsParams } from "./list-products"
+import { StoreGetProductParams } from "./get-product"
 
 const route = Router()
 
@@ -33,7 +34,16 @@ export default (app, featureFlagRouter: FlagRouter) => {
     }),
     middlewares.wrap(require("./list-products").default)
   )
-  route.get("/:id", middlewares.wrap(require("./get-product").default))
+
+  route.get(
+    "/:id",
+    transformQuery(StoreGetProductParams, {
+      defaultRelations: defaultStoreProductsRelations,
+      defaultFields: defaultStoreProductsFields,
+    }),
+    middlewares.wrap(require("./get-product").default)
+  )
+
   route.post("/search", middlewares.wrap(require("./search").default))
 
   return app
@@ -49,6 +59,25 @@ export const defaultStoreProductsRelations = [
   "tags",
   "collection",
   "type",
+]
+
+export const defaultStoreProductsFields: (keyof Product)[] = [
+  "id",
+  "title",
+  "subtitle",
+  "status",
+  "description",
+  "handle",
+  "thumbnail",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "hs_code",
+  "mid_code",
+  "material",
+  "created_at",
+  "metadata",
 ]
 
 export * from "./list-products"
