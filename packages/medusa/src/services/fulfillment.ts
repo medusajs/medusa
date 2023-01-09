@@ -355,7 +355,7 @@ class FulfillmentService extends TransactionBaseService {
       )
 
       if (isDefined(no_notification)) {
-        fulfillment.no_notification = !!no_notification
+        fulfillment.no_notification = no_notification!
       }
 
       fulfillment.metadata = {
