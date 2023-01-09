@@ -126,6 +126,7 @@ export abstract class AbstractPaymentService
    * @param paymentSessionData
    * @param context The type of this argument is meant to be temporary and once the previous method signature
    * will be removed, the type will only be PaymentContext instead of Cart & PaymentContext
+   * @return it return either a PaymentSessionResponse or PaymentSessionResponse["session_data"] to maintain backward compatibility
    */
   public abstract updatePayment(
     paymentSessionData: PaymentSessionData,
