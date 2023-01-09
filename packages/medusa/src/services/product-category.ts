@@ -36,14 +36,14 @@ class ProductCategoryService extends TransactionBaseService {
    * @return the product category.
    */
   async retrieve(
-    id: string,
+    productCategoryId: string,
     config: FindConfig<ProductCategory> = {},
   ): Promise<ProductCategory> {
-    if (!isDefined(id)) {
-      throw new MedusaError(MedusaError.Types.NOT_FOUND, `"id" must be defined`)
+    if (!isDefined(productCategoryId)) {
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, `"productCategoryId" must be defined`)
     }
 
-    const query = buildQuery({ id: id }, config)
+    const query = buildQuery({ id: productCategoryId }, config)
     const productCategoryRepo = this.manager_.getCustomRepository(
       this.productCategoryRepository_
     )
@@ -53,7 +53,7 @@ class ProductCategoryService extends TransactionBaseService {
     if (!productCategory) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `ProductCategory with id: ${id} was not found`
+        `ProductCategory with id: ${productCategoryId} was not found`
       )
     }
 
