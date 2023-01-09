@@ -1,5 +1,8 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
+import ProductCategoryFeatureFlag from "../loaders/feature-flags/product-categories"
+export const featureFlag = ProductCategoryFeatureFlag.key
+
 export class productCategory1672906846559 implements MigrationInterface {
   name = "productCategory1672906846559"
 
