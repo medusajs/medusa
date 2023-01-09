@@ -125,8 +125,8 @@ export default class InventoryLevelService extends TransactionBaseService {
         location_id: data.location_id,
         inventory_item_id: data.inventory_item_id,
         stocked_quantity: data.stocked_quantity,
-        reserved_quantity: data.reserved_quantity ?? 0,
-        incoming_quantity: data.incoming_quantity ?? 0,
+        reserved_quantity: data.reserved_quantity,
+        incoming_quantity: data.incoming_quantity,
       })
 
       return await levelRepository.save(inventoryLevel)

@@ -174,7 +174,7 @@ export default class InventoryItemService {
       length: data.length,
       height: data.height,
       width: data.width,
-      requires_shipping: data.requires_shipping || false,
+      requires_shipping: data.requires_shipping,
     })
 
     const result = await itemRepository.save(inventoryItem)

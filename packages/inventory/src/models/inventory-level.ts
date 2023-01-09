@@ -12,13 +12,13 @@ export class InventoryLevel extends SoftDeletableEntity {
   @Column({ type: "text" })
   location_id: string
 
-  @Column()
+  @Column({ default: 0 })
   stocked_quantity: number
 
-  @Column()
+  @Column({ default: 0 })
   reserved_quantity: number
 
-  @Column()
+  @Column({ default: 0 })
   incoming_quantity: number
 
   @Column({ type: "jsonb", nullable: true })

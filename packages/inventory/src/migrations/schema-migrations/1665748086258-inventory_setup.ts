@@ -94,8 +94,9 @@ export class inventorySetup1665748086258 implements MigrationInterface {
         "deleted_at" TIMESTAMP WITH TIME ZONE,
         "inventory_item_id" text NOT NULL,
         "location_id" text NOT NULL,
-        "stocked_quantity" integer NOT NULL,
-        "incoming_quantity" integer NOT NULL,
+        "stocked_quantity" integer NOT NULL DEFAULT 0,
+        "reserved_quantity" integer NOT NULL DEFAULT 0,
+        "incoming_quantity" integer NOT NULL DEFAULT 0,
         "metadata" jsonb,
         CONSTRAINT "PK_inventory_level_id" PRIMARY KEY ("id")
       );
