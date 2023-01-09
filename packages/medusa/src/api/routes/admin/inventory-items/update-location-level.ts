@@ -6,7 +6,7 @@ import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /inventory-items/{id}/location-levels/{location_id}
- * operationId: "PostInventoryItemsInventoryItemLocationLevels"
+ * operationId: "PostInventoryItemsInventoryItemLocationLevelsLocationLevel"
  * summary: "Update an Inventory Location Level to a given Inventory Item."
  * description: "Updates an Inventory Location Level to a given Inventory Item."
  * x-authenticated: true
