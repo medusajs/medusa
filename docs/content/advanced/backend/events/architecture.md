@@ -145,12 +145,12 @@ type EmitOptions = {
 Here's what each of these options mean:
 
 - `delay`: delay the triggering of the handler methods by a number of milliseconds.
-- `attempts`: How many times should a subscriber handler be retried when it fails.
-- `backoff`: ...
+- `attempts`: the number of times a subscriber handler should be retried when it fails.
+- `backoff`: the wait time between each retry
 
 ### Note on Subscriber IDs
 
-If you have more than one handler methods attached to a single event, you must pass a subscriber ID as a third parameter to the `subscribe` method. This allows the `EventBusService` to differentiate between handler methods when retrying a failed one.
+If you have more than one handler methods attached to a single event, or if you have multiple server instances running, you must pass a subscriber ID as a third parameter to the `subscribe` method. This allows the `EventBusService` to differentiate between handler methods when retrying a failed one.
 
 If a subscriber ID is not passed on subscription, all handler methods are run again. This can lead to data inconsistencies or general unwanted behavior in your system.
 
