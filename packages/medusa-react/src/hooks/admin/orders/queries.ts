@@ -1,11 +1,11 @@
 import {
+  AdminGetOrdersParams,
   AdminOrdersListRes,
   AdminOrdersRes,
-  AdminGetOrdersParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { FindParams } from "@medusajs/medusa/dist/types/common"
-import { useQuery } from "react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils/index"
@@ -16,7 +16,7 @@ export const adminOrderKeys = {
   ...queryKeysFactory(ADMIN_ORDERS_QUERY_KEY),
   detailOrder(id: string, query?: FindParams) {
     return [...this.detail(id), { ...(query || {}) }]
-  }
+  },
 }
 
 type OrderQueryKeys = typeof adminOrderKeys
