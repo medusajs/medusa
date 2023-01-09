@@ -1,11 +1,16 @@
 import { Router } from "express"
 import middlewares from "../../../middlewares"
 import getProductCategory from "./get-product-category"
+import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 const route = Router()
 
 export default (app) => {
-  app.use("/product-categories", route)
+  app.use(
+    "/product-categories",
+    isFeatureFlagEnabled("product_categories"),
+    route
+  )
 
   route.get("/:id", middlewares.wrap(getProductCategory))
 
