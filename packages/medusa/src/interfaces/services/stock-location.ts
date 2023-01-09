@@ -26,4 +26,6 @@ export interface IStockLocationService {
   create(input: CreateStockLocationInput): Promise<StockLocationDTO>
 
   update(id: string, input: UpdateStockLocationInput): Promise<StockLocationDTO>
+
+  delete(id: string): Promise<void>
 }
