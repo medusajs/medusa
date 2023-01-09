@@ -386,12 +386,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * Adjusts the quantity of reservations for a line item by a given amount.
    * @param {string} lineItemId - The ID of the line item
    * @param {string} variantId - The ID of the variant
+   * @param {string} locationId - The ID of the location to prefer adjusting quantities at
    * @param {number} quantity - The amount to adjust the quantity by
    */
   async adjustReservationsQuantityByLineItem(
     lineItemId: string,
     variantId: string,
-    location_id: string,
+    locationId: string,
     quantity: number
   ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
@@ -428,7 +429,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
       reservation =
         reservations.find(
-          (r) => r.location_id === location_id && r.quantity >= quantity
+          (r) => r.location_id === locationId && r.quantity >= quantity
         ) ?? reservation
 
       const productVariantInventory = await this.retrieve(
@@ -449,6 +450,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
   }
 
+  /**
+   * Validate stock at a location for fulfillment items
+   * @param items Fulfillment Line items to validate quantities for
+   * @param locationId Location to validate stock at
+   * @returns nothing if successful, throws error if not
+   */
   async validateInventoryAtLocation(items: LineItem[], locationId: string) {
     if (!this.inventoryService_) {
       return
