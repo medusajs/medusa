@@ -1,8 +1,6 @@
 import { flatten, groupBy, map, merge } from "lodash"
 import { EntityMetadata, Repository, SelectQueryBuilder } from "typeorm"
-import { FindWithoutRelationsOptions } from "../repositories/customer-group"
-
-// TODO: All the utilities except applyOrdering needs to be re worked depending on the outcome of the product repository
+import { ExtendedFindConfig } from "../types/common"
 
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
@@ -12,27 +10,43 @@ import { FindWithoutRelationsOptions } from "../repositories/customer-group"
  * @param groupedRelations
  * @param withDeleted
  * @param select
+ * @param customJoinBuilders
  */
 export async function queryEntityWithIds<T>(
   repository: Repository<T>,
   entityIds: string[],
   groupedRelations: { [toplevel: string]: string[] },
   withDeleted = false,
-  select: (keyof T)[] = []
+  select: (keyof T)[] = [],
+  customJoinBuilders: ((
+    qb: SelectQueryBuilder<T>,
+    alias: string,
+    toplevel: string
+  ) => boolean)[] = []
 ): Promise<T[]> {
-  const alias = repository.constructor.name
+  const alias = repository.metadata.name.toLowerCase()
   return await Promise.all(
     Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
-      let querybuilder = repository.createQueryBuilder(`${alias}`)
+      let querybuilder = repository.createQueryBuilder(alias)
 
       if (select && select.length) {
         querybuilder.select(select.map((f) => `${alias}.${f as string}`))
       }
 
-      querybuilder = querybuilder.leftJoinAndSelect(
-        `${alias}.${toplevel}`,
-        toplevel
-      )
+      let shouldAttachDefault = true
+      for (const customJoinBuilder of customJoinBuilders) {
+        const result = customJoinBuilder(querybuilder, alias, toplevel)
+        shouldAttachDefault = shouldAttachDefault && result
+      }
+
+      // If the toplevel relation has been attached with a customJoinBuilder and the function return false then
+      // do not attach the toplevel join bellow.
+      if (shouldAttachDefault) {
+        querybuilder = querybuilder.leftJoinAndSelect(
+          `${alias}.${toplevel}`,
+          toplevel
+        )
+      }
 
       for (const rel of rels) {
         const [_, rest] = rel.split(".")
@@ -54,7 +68,7 @@ export async function queryEntityWithIds<T>(
           .withDeleted()
       } else {
         querybuilder = querybuilder.where(
-          `${alias}.deleted_at IS NULL AND products.id IN (:...entitiesIds)`,
+          `${alias}.deleted_at IS NULL AND ${alias}.id IN (:...entitiesIds)`,
           {
             entitiesIds: entityIds,
           }
@@ -77,14 +91,14 @@ export async function queryEntityWithIds<T>(
  */
 export async function queryEntityWithoutRelations<T>(
   repository: Repository<T>,
-  optionsWithoutRelations: FindWithoutRelationsOptions,
+  optionsWithoutRelations: Omit<ExtendedFindConfig<T, unknown>, "relations">,
   shouldCount = false,
   customJoinBuilders: ((
     qb: SelectQueryBuilder<T>,
     alias: string
   ) => void)[] = []
 ): Promise<[T[], number]> {
-  const alias = repository.constructor.name
+  const alias = repository.metadata.name.toLowerCase()
 
   const qb = repository
     .createQueryBuilder(alias)
