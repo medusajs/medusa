@@ -73,7 +73,7 @@ describe("/admin/product-categories", () => {
       return await db.teardown()
     })
 
-    it("gets product category with immediate children and parent", async () => {
+    it("gets product category with children tree and parent", async () => {
       const api = useApi()
 
       const response = await api.get(

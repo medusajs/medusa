@@ -11,6 +11,9 @@ describe("ProductCategoryService", () => {
 
         return Promise.resolve({ id: IdMap.getId("skinny-jeans") })
       },
+      findDescendantsTree: productCategory => {
+        return Promise.resolve(productCategory)
+      }
     })
 
     const productCategoryService = new ProductCategoryService({
@@ -27,6 +30,7 @@ describe("ProductCategoryService", () => {
 
       expect(result.id).toEqual(IdMap.getId("skinny-jeans"))
       expect(productCategoryRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.findDescendantsTree).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("skinny-jeans") },
       })
