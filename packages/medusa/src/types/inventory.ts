@@ -21,7 +21,8 @@ export type InventoryItemDTO = {
 export type ReservationItemDTO = {
   id: string
   location_id: string
-  item_id: string
+  inventory_item_id: string
+  quantity: number
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
@@ -30,7 +31,7 @@ export type ReservationItemDTO = {
 
 export type InventoryLevelDTO = {
   id: string
-  item_id: string
+  inventory_item_id: string
   location_id: string
   stocked_quantity: number
   incoming_quantity: number
@@ -44,7 +45,7 @@ export type FilterableReservationItemProps = {
   id?: string | string[]
   type?: string | string[]
   line_item_id?: string | string[]
-  item_id?: string | string[]
+  inventory_item_id?: string | string[]
   location_id?: string | string[]
   quantity?: number | NumericalComparisonOperator
 }
@@ -76,21 +77,21 @@ export type CreateInventoryItemInput = {
 export type CreateReservationItemInput = {
   type?: string
   line_item_id?: string
-  item_id: string
+  inventory_item_id: string
   location_id: string
   quantity: number
   metadata?: Record<string, unknown> | null
 }
 
 export type FilterableInventoryLevelProps = {
-  item_id?: string | string[]
+  inventory_item_id?: string | string[]
   location_id?: string | string[]
   stocked_quantity?: number | NumericalComparisonOperator
   incoming_quantity?: number | NumericalComparisonOperator
 }
 
 export type CreateInventoryLevelInput = {
-  item_id: string
+  inventory_item_id: string
   location_id: string
   stocked_quantity: number
   incoming_quantity: number
@@ -99,6 +100,12 @@ export type CreateInventoryLevelInput = {
 export type UpdateInventoryLevelInput = {
   stocked_quantity?: number
   incoming_quantity?: number
+}
+
+export type UpdateReservationItemInput = {
+  quantity?: number
+  location_id?: string
+  metadata?: Record<string, unknown> | null
 }
 
 export type ReserveQuantityContext = {
