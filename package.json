@@ -93,5 +93,8 @@
     "oas-normalize": "^5.0.1",
     "swagger-inline": "^3.2.2"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.1",
+  "resolutions": {
+    "react-query-test": "portal:/Users/kasperkristensen/Desktop/react-query-test"
+  }
 }
