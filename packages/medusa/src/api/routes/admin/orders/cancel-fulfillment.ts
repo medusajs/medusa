@@ -91,10 +91,10 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .retrieve(fulfillment_id, { relations: ["items", "items.item"] })
 
-    await adjustInventoryForCancelledFulfillment(
-      fulfillment,
-      productVariantInventoryService.withTransaction(transactionManager)
-    )
+    await adjustInventoryForCancelledFulfillment(fulfillment, {
+      productVariantInventoryService:
+        productVariantInventoryService.withTransaction(transactionManager),
+    })
   })
 
   const order = await orderService.retrieve(id, {
@@ -107,8 +107,11 @@ export default async (req, res) => {
 
 export const adjustInventoryForCancelledFulfillment = async (
   fulfillment: Fulfillment,
-  productVariantInventoryService: ProductVariantInventoryService
+  context: {
+    productVariantInventoryService: ProductVariantInventoryService
+  }
 ) => {
+  const { productVariantInventoryService } = context
   await Promise.all(
     fulfillment.items.map(async ({ item, quantity }) => {
       if (item.variant_id) {

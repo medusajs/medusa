@@ -124,12 +124,10 @@ export default async (req, res) => {
       pvInventoryService.withTransaction(transactionManager)
 
     if (validated.location_id) {
-      await updateInventoryAndReservations(
-        fulfillments,
-        existingFulfillments,
-        pvInventoryServiceTx,
-        validated.location_id
-      )
+      await updateInventoryAndReservations(fulfillments, existingFulfillments, {
+        inventoryService: pvInventoryServiceTx,
+        locationId: validated.location_id,
+      })
     }
   })
 
@@ -144,9 +142,12 @@ export default async (req, res) => {
 const updateInventoryAndReservations = async (
   fulfillments: Fulfillment[],
   existingFulfillments: Fulfillment[],
-  inventoryService: ProductVariantInventoryService,
-  locationId: string
+  context: {
+    inventoryService: ProductVariantInventoryService
+    locationId: string
+  }
 ) => {
+  const { inventoryService, locationId } = context
   fulfillments.map(async ({ id, items }) => {
     const existingFulfillment = existingFulfillments.find((f) => f.id === id)
 
