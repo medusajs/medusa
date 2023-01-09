@@ -19517,6 +19517,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"integration-tests-repositories@workspace:integration-tests/repositories":
+  version: 0.0.0-use.local
+  resolution: "integration-tests-repositories@workspace:integration-tests/repositories"
+  dependencies:
+    "@babel/cli": ^7.12.10
+    "@babel/core": ^7.12.10
+    "@babel/node": ^7.12.10
+    "@medusajs/medusa": "*"
+    babel-preset-medusa-package: "*"
+    jest: ^26.6.3
+    medusa-interfaces: "*"
+    typeorm: ^0.2.31
+  languageName: unknown
+  linkType: soft
+
 "internal-slot@npm:^1.0.3":
   version: 1.0.3
   resolution: "internal-slot@npm:1.0.3"
