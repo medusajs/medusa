@@ -26,7 +26,7 @@ describe("/admin/product-categories", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_PRODUCT_CAGEGORIES: true },
+      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
     })
     dbConnection = connection
     medusaProcess = process
