@@ -394,8 +394,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
     location_id: string,
     quantity: number
   ): Promise<void> {
+    const manager = this.transactionManager_ || this.manager_
+
     if (!this.inventoryService_) {
-      const variant = await this.productVariantService_.retrieve(variantId, {
+      const variantServiceTx =
+        this.productVariantService_.withTransaction(manager)
+      const variant = await variantServiceTx.retrieve(variantId, {
         select: ["id", "inventory_quantity", "manage_inventory"],
       })
 
@@ -403,7 +407,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         return
       }
 
-      await this.productVariantService_.update(variantId, {
+      await variantServiceTx.update(variantId, {
         inventory_quantity: variant.inventory_quantity - quantity,
       })
 
@@ -427,10 +431,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
           (r) => r.location_id === location_id && r.quantity >= quantity
         ) ?? reservation
 
-      const pvit = await this.retrieve(reservation.inventory_item_id, variantId)
+      const productVariantInventory = await this.retrieve(
+        reservation.inventory_item_id,
+        variantId
+      )
 
       const reservationQtyUpdate =
-        reservation.quantity - quantity * pvit.quantity
+        reservation.quantity - quantity * productVariantInventory.quantity
 
       if (reservationQtyUpdate === 0) {
         await this.inventoryService_.deleteReservationItem(reservation.id)
