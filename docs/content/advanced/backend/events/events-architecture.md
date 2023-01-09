@@ -18,7 +18,7 @@ async emit<T>(eventName: string, data: T, options: Record<string, unknown> & Emi
 // example
 eventBusService.emit("product.created", { id: "prod_id" }, { attempts: 2 })
 ```
-In the example above, the `EventBusService` emits event `product.created`, that contains the id of a product. Additionally, the `options` argument is used to configure the number of times a job is run - default is one - which kicks in  in case a subscriber fails to process it - here pass `attemps: 2` which means it is retried once. More on that later.
+In the example above, the `EventBusService` emits event `product.created`, containing the id of a product. Additionally, the `options` argument is used to configure the number of times a job is run - default is one - which kicks in, in case a subscriber fails. Here, it is retried once. More on that later.
 
 **Subscribe**
 ```ts
@@ -33,16 +33,15 @@ In the example above, the `EventBusService` subscribes to event `product.created
 Learn more about [subscribers and see concrete implementations](https://docs.medusajs.com/advanced/backend/subscribers/create-subscriber). 
 
 ### Processing
-In the `EventBusService` service, you'll find the `worker_` method, which defines the logic run on each job in the queue. By default, all subscribers to that event (job) are retrieved and for each of the them, the stored job data - provided in emit - is passed to them.
+In the `EventBusService` service, you'll find the `worker_` method, which defines the logic run on each job in the queue. In the default case, the worker retrieves all subscribers to an event (job) and passes the stored job data - passed on emit - to each of them for further processing.
 
 **Retrying**
+
 A subscriber might fail to process an event. This could happen because the subscriber communicates with a third party service currently down or due an error in the logic of the subscriber. In some cases, you might want to retry those failed subscribers. 
 
 As briefly described previously, you can pass options when emitting an event, that are used to configure how the queue worker processes your job. If you pass  `attempts` upon emitting the event, the processing of the event is retried. 
 
 Aside from `attempts`, there are other options to futher configure the retry mechanism:
-
-IMPORTANT: If you have more than one subscriber attached to a single event, you are required to define subscriber ids that allows the `EventBusService` to differentiate between them when retrying the job-processing. Otherwise, **all** subscribers are run again, which can lead to data inconsistencies or general unwanted behavior in your system. Conversely, you might want all subscribers to run on every retry, and in that case, the ids are redundant. 
 
 ```ts
 type EmitOptions = {
@@ -54,6 +53,8 @@ type EmitOptions = {
 	}
 }
 ```
+
+*IMPORTANT:* If you have more than one subscriber attached to a single event, you are required to define subscriber ids that allows the `EventBusService` to differentiate between them when retrying the job-processing. Otherwise, **all** subscribers are run again, which can lead to data inconsistencies or general unwanted behavior in your system. Conversely, you might want all subscribers to run on every retry, and in that case, the ids are redundant. 
 
 Subscriber ids are defined as part of the third argument to the `subscribe` method:
 
