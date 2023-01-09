@@ -112,10 +112,9 @@ export default async (req, res) => {
       .retrieve(id, {
         relations: ["fulfillments"],
       })
-    const existingFulfillmentMap = existingFulfillments.reduce((acc, f) => {
-      acc[f.id] = f
-      return acc
-    }, {})
+    const existingFulfillmentMap = new Map(
+      existingFulfillments.map((fulfillment) => [fulfillment.id, fulfillment])
+    )
 
     const { fulfillments } = await orderService
       .withTransaction(transactionManager)

@@ -472,11 +472,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
           location_id: locationId,
         })
 
-      const pviMap: Record<string, ProductVariantInventoryItem> =
-        pvInventoryItems.reduce((acc, pvi) => {
-          acc[pvi.inventory_item_id] = pvi
-          return acc
-        }, {})
+      const pviMap: Map<string, ProductVariantInventoryItem> = new Map(
+        pvInventoryItems.map((pvi) => [pvi.inventory_item_id, pvi])
+      )
 
       for (const inventoryLevel of inventoryLevels) {
         const pvInventoryItem = pviMap[inventoryLevel.inventory_item_id]
