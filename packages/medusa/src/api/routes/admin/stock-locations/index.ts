@@ -71,6 +71,11 @@ export default (app) => {
     middlewares.wrap(require("./update-stock-location").default)
   )
 
+  route.delete(
+    "/:id",
+    middlewares.wrap(require("./delete-stock-location").default)
+  )
+
   return app
 }
 
