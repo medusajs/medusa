@@ -10,17 +10,22 @@ export const ProductVariantInventoryServiceMock = {
   confirmInventory: jest
     .fn()
     .mockImplementation((variantId, quantity, options) => {
-      if (quantity < 10) {
-        return true
-      } else {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Variant with id: ${variantId} does not have the required inventory`
-        )
-      }
+      return quantity < 10
     }),
-  releaseReservationsByLineItem: jest.fn().mockImplementation((lineItem) => {}),
+  adjustReservationsQuantityByLineItem: jest
+    .fn()
+    .mockImplementation((lineItem) => {}),
+  deleteReservationsByLineItem: jest.fn().mockImplementation((lineItem) => {}),
   reserveQuantity: jest
     .fn()
     .mockImplementation((variantId, quantity, options) => {}),
+  validateInventoryAtLocation: jest
+    .fn()
+    .mockImplementation((items, locationId) => {}),
 }
+
+const mock = jest.fn().mockImplementation(() => {
+  return ProductVariantInventoryServiceMock
+})
+
+export default mock
