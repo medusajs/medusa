@@ -1,6 +1,6 @@
 import { Router } from "express"
 import middlewares from "../../../middlewares"
-import getProductCategory from './get-product-category'
+import getProductCategory from "./get-product-category"
 
 const route = Router()
 
@@ -14,4 +14,7 @@ export default (app) => {
 
 export * from "./get-product-category"
 
-export const defaultAdminProductCategoryRelations = ["parent_category", "category_children"]
+export const defaultAdminProductCategoryRelations = [
+  "parent_category",
+  "category_children",
+]

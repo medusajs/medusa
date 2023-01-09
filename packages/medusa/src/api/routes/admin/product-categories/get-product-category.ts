@@ -5,7 +5,7 @@ import { defaultAdminProductCategoryRelations } from "."
 
 /**
  * @oas [get] /product-categories/{id}
- * operationId: "GetProductCategory"
+ * operationId: "GetProductCategoriesCategory"
  * summary: "Get a Product Category"
  * description: "Retrieves a Product Category."
  * x-authenticated: true

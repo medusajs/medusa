@@ -16,17 +16,15 @@ type InjectedDependencies = {
  */
 class ProductCategoryService extends TransactionBaseService {
   protected manager_: EntityManager
-  protected readonly productCategoryRepository_: typeof ProductCategoryRepository
+  protected readonly productCategoryRepo_: typeof ProductCategoryRepository
   protected transactionManager_: EntityManager | undefined
 
-  constructor({
-    manager,
-    productCategoryRepository,
-  }: InjectedDependencies) {
+  constructor({ manager, productCategoryRepository }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
     this.manager_ = manager
 
-    this.productCategoryRepository_ = productCategoryRepository
+    this.productCategoryRepo_ = productCategoryRepository
   }
 
   /**
@@ -37,15 +35,18 @@ class ProductCategoryService extends TransactionBaseService {
    */
   async retrieve(
     productCategoryId: string,
-    config: FindConfig<ProductCategory> = {},
+    config: FindConfig<ProductCategory> = {}
   ): Promise<ProductCategory> {
     if (!isDefined(productCategoryId)) {
-      throw new MedusaError(MedusaError.Types.NOT_FOUND, `"productCategoryId" must be defined`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productCategoryId" must be defined`
+      )
     }
 
     const query = buildQuery({ id: productCategoryId }, config)
     const productCategoryRepo = this.manager_.getCustomRepository(
-      this.productCategoryRepository_
+      this.productCategoryRepo_
     )
 
     const productCategory = await productCategoryRepo.findOne(query)
@@ -58,7 +59,9 @@ class ProductCategoryService extends TransactionBaseService {
     }
 
     // Returns the productCategory with all of its descendants until the last child node
-    const productCategoryTree = await productCategoryRepo.findDescendantsTree(productCategory)
+    const productCategoryTree = await productCategoryRepo.findDescendantsTree(
+      productCategory
+    )
 
     return productCategoryTree
   }
