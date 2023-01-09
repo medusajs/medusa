@@ -26,6 +26,9 @@ export class multiLocation1671711415179 implements MigrationInterface {
       `ALTER TABLE "return" ADD "location_id" character varying`
     )
     await queryRunner.query(
+      `ALTER TABLE "fulfillment" ADD "location_id" character varying`
+    )
+    await queryRunner.query(
       `ALTER TABLE "store" ADD "default_location_id" character varying`
     )
   }
@@ -33,6 +36,9 @@ export class multiLocation1671711415179 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `ALTER TABLE "store" DROP COLUMN "default_location_id"`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "fulfillment" DROP COLUMN "location_id"`
     )
     await queryRunner.query(`ALTER TABLE "return" DROP COLUMN "location_id"`)
     await queryRunner.query(`DROP INDEX "IDX_bf5386e7f2acc460adbf96d6f3"`)

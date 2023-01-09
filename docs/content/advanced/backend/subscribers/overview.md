@@ -27,4 +27,5 @@ Whenever an event is emitted, the subscriber’s registered handler method is ex
 ## See Also
 
 - [Create a Subscriber](create-subscriber.md).
+- [Events architecture overview](../events/architecture.md)
 - [Events reference](events-list.md).
