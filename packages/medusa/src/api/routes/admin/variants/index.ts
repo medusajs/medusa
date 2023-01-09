@@ -21,6 +21,11 @@ export default (app) => {
     middlewares.wrap(require("./list-variants").default)
   )
 
+  route.get(
+    "/:id/inventory",
+    middlewares.wrap(require("./get-inventory").default)
+  )
+
   return app
 }
 
