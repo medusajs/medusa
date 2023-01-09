@@ -112,6 +112,12 @@ export type UpdateInventoryLevelInput = {
   incoming_quantity?: number
 }
 
+export type UpdateReservationItemInput = {
+  quantity?: number
+  location_id?: string
+  metadata?: Record<string, unknown> | null
+}
+
 export type ReserveQuantityContext = {
   locationId?: string
   lineItemId?: string
