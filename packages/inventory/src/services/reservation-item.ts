@@ -7,6 +7,7 @@ import {
   FilterableReservationItemProps,
   CreateReservationItemInput,
   TransactionBaseService,
+  UpdateReservationItemInput,
 } from "@medusajs/medusa"
 
 import { ReservationItem } from "../models"
@@ -165,12 +166,9 @@ export default class ReservationItemService extends TransactionBaseService {
    */
   async update(
     reservationItemId: string,
-    data: Omit<
-      DeepPartial<ReservationItem>,
-      "id" | "created_at" | "metadata" | "deleted_at"
-    >
+    data: UpdateReservationItemInput
   ): Promise<ReservationItem> {
-    const item = await this.atomicPhase_(async (manager) => {
+    const updatedItem = await this.atomicPhase_(async (manager) => {
       const itemRepository = manager.getRepository(ReservationItem)
 
       const item = await this.retrieve(reservationItemId)
@@ -192,19 +190,20 @@ export default class ReservationItemService extends TransactionBaseService {
         )
       }
 
-      itemRepository.merge(item, data)
+      const mergedItem = itemRepository.merge(item, data)
+
       ops.push(itemRepository.save(item))
 
       await Promise.all(ops)
 
-      return item
+      return mergedItem
     })
 
     await this.eventBusService_.emit(ReservationItemService.Events.UPDATED, {
-      id: item.id,
+      id: updatedItem.id,
     })
 
-    return item
+    return updatedItem
   }
 
   /**
