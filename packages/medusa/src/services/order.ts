@@ -1148,10 +1148,8 @@ class OrderService extends TransactionBaseService {
       const previouslyFulfilledQuantities = order.fulfillments.reduce(
         (acc, f) => {
           return f.items.reduce((acc, item) => {
-            return {
-              ...acc,
-              [item.item_id]: (acc[item.item_id] || 0) + item.quantity,
-            }
+            acc[item.item_id] = (acc[item.item_id] || 0) + item.quantity
+            return acc
           }, acc)
         },
         {}

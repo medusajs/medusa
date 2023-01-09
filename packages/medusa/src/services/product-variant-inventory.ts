@@ -331,15 +331,17 @@ class ProductVariantInventoryService extends TransactionBaseService {
     const manager = this.transactionManager_ || this.manager_
 
     if (!this.inventoryService_) {
-      const variantServiceTx =
-        this.productVariantService_.withTransaction(manager)
-      const variant = await variantServiceTx.retrieve(variantId, {
-        select: ["id", "inventory_quantity"],
+      return this.atomicPhase_(async (manager) => {
+        const variantServiceTx =
+          this.productVariantService_.withTransaction(manager)
+        const variant = await variantServiceTx.retrieve(variantId, {
+          select: ["id", "inventory_quantity"],
+        })
+        await variantServiceTx.update(variant.id, {
+          inventory_quantity: variant.inventory_quantity - quantity,
+        })
+        return
       })
-      await variantServiceTx.update(variant.id, {
-        inventory_quantity: variant.inventory_quantity - quantity,
-      })
-      return
     }
 
     const toReserve = {
@@ -395,24 +397,22 @@ class ProductVariantInventoryService extends TransactionBaseService {
     locationId: string,
     quantity: number
   ): Promise<void> {
-    const manager = this.transactionManager_ || this.manager_
-
     if (!this.inventoryService_) {
-      const variantServiceTx =
-        this.productVariantService_.withTransaction(manager)
-      const variant = await variantServiceTx.retrieve(variantId, {
-        select: ["id", "inventory_quantity", "manage_inventory"],
+      return this.atomicPhase_(async (manager) => {
+        const variantServiceTx =
+          this.productVariantService_.withTransaction(manager)
+        const variant = await variantServiceTx.retrieve(variantId, {
+          select: ["id", "inventory_quantity", "manage_inventory"],
+        })
+
+        if (!variant.manage_inventory) {
+          return
+        }
+
+        await variantServiceTx.update(variantId, {
+          inventory_quantity: variant.inventory_quantity - quantity,
+        })
       })
-
-      if (!variant.manage_inventory) {
-        return
-      }
-
-      await variantServiceTx.update(variantId, {
-        inventory_quantity: variant.inventory_quantity - quantity,
-      })
-
-      return
     }
     const [reservations, reservationCount] =
       await this.inventoryService_.listReservationItems(
@@ -507,20 +507,24 @@ class ProductVariantInventoryService extends TransactionBaseService {
     quantity: number
   ): Promise<void> {
     if (!this.inventoryService_) {
-      const variant = await this.productVariantService_.retrieve(variantId, {
-        select: ["id", "inventory_quantity", "manage_inventory"],
-      })
+      return this.atomicPhase_(async (manager) => {
+        const productVariantServiceTx =
+          this.productVariantService_.withTransaction(manager)
+        const variant = await productVariantServiceTx.retrieve(variantId, {
+          select: ["id", "inventory_quantity", "manage_inventory"],
+        })
 
-      if (!variant.manage_inventory) {
-        return
-      }
+        if (!variant.manage_inventory) {
+          return
+        }
 
-      await this.productVariantService_.update(variantId, {
-        inventory_quantity: variant.inventory_quantity + quantity,
+        await productVariantServiceTx.update(variantId, {
+          inventory_quantity: variant.inventory_quantity + quantity,
+        })
       })
-    } else {
-      await this.inventoryService_.deleteReservationItemsByLineItem(lineItemId)
     }
+
+    await this.inventoryService_.deleteReservationItemsByLineItem(lineItemId)
   }
 
   /**
@@ -534,23 +538,24 @@ class ProductVariantInventoryService extends TransactionBaseService {
     locationId: string,
     quantity: number
   ): Promise<void> {
-    const manager = this.transactionManager_ || this.manager_
     if (!this.inventoryService_) {
-      const variant = await this.productVariantService_
-        .withTransaction(manager)
-        .retrieve(variantId, {
-          select: ["id", "inventory_quantity", "manage_inventory"],
-        })
+      return this.atomicPhase_(async (manager) => {
+        const variant = await this.productVariantService_
+          .withTransaction(manager)
+          .retrieve(variantId, {
+            select: ["id", "inventory_quantity", "manage_inventory"],
+          })
 
-      if (!variant.manage_inventory) {
-        return
-      }
+        if (!variant.manage_inventory) {
+          return
+        }
 
-      await this.productVariantService_
-        .withTransaction(manager)
-        .update(variantId, {
-          inventory_quantity: variant.inventory_quantity + quantity,
-        })
+        await this.productVariantService_
+          .withTransaction(manager)
+          .update(variantId, {
+            inventory_quantity: variant.inventory_quantity + quantity,
+          })
+      })
     } else {
       const variantInventory = await this.listByVariant(variantId)
 
