@@ -432,6 +432,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/events/architecture",
+          label: "Events Architecture"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/shipping/overview",
           label: "Shipping Architecture"
         },
