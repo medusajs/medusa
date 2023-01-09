@@ -1,10 +1,15 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import middlewares, { transformBody } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import requireCustomerAuthentication from "../../../middlewares/require-customer-authentication"
 import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-order-request"
+import { StoreGetOrderParams } from "./get-order"
+import { StoreGetOrdersParams } from "./lookup-order"
 
 const route = Router()
 
@@ -14,12 +19,27 @@ export default (app) => {
   /**
    * Lookup
    */
-  route.get("/", middlewares.wrap(require("./lookup-order").default))
+  route.get(
+    "/",
+    transformQuery(StoreGetOrdersParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./lookup-order").default)
+  )
 
   /**
    * Retrieve Order
    */
-  route.get("/:id", middlewares.wrap(require("./get-order").default))
+  route.get(
+    "/:id",
+    transformQuery(StoreGetOrderParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+    }),
+    middlewares.wrap(require("./get-order").default)
+  )
 
   /**
    * Retrieve by Cart Id

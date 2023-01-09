@@ -5,11 +5,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+import { Type } from "class-transformer"
 
 import { OrderService } from "../../../../services"
-import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+
+import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 
 /**
  * @oas [get] /orders
@@ -101,7 +103,7 @@ export default async (req, res) => {
 
   const order = orders[0]
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, req.allowedProperties || []) })
 }
 
 export class ShippingAddressPayload {
@@ -117,6 +119,10 @@ export class StoreGetOrdersParams {
 
   @IsEmail()
   email: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
 
   @IsOptional()
   @ValidateNested()
