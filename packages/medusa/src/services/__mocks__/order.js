@@ -44,6 +44,7 @@ export const orders = {
     regionid: IdMap.getId("testRegion"),
     currency_code: "USD",
     customerid: IdMap.getId("testCustomer"),
+    fulfillments: [],
     payment_method: {
       providerid: "default_provider",
       data: {},
