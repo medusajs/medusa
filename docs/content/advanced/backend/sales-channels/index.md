@@ -4,12 +4,7 @@ In this document, you’ll learn about Sales Channels and how they can be used i
 
 :::note
 
-The Sales Channels feature is currently in beta mode and guarded by a feature flag. To use Sales Channels either:
-
-1. Enable the `MEDUSA_FF_SALES_CHANNELS` environment variable;
-2. Or enable the `sales_channels` key in the Medusa server's settings.
-
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
+The Sales Channels feature is in beta mode and guarded by a feature flag. Starting from v1.7.3, it's enabled by default.
 
 :::
 
