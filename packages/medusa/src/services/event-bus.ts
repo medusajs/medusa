@@ -174,6 +174,8 @@ export default class EventBusService {
       (sub) => sub.id === subscriberId
     )
 
+    console.log(subscriberId)
+
     if (subscriberAlreadyExists) {
       throw Error(`Subscriber with id ${subscriberId} already exists`)
     }
@@ -331,9 +333,15 @@ export default class EventBusService {
     const isRetry = job.attemptsMade > 0
     const currentAttempt = job.attemptsMade + 1
 
+    const isFinalAttempt = job?.opts?.attempts === currentAttempt
+
     if (isRetry) {
+      if (isFinalAttempt) {
+        this.logger_.info(`Final retry attempt for ${eventName}`)
+      }
+
       this.logger_.info(
-        `Retrying (attempt ${currentAttempt}) ${eventName} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
+        `Retrying ${eventName} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
       )
     } else {
       this.logger_.info(
@@ -365,8 +373,12 @@ export default class EventBusService {
       completedSubscribersInCurrentAttempt.length !==
       subscribersInCurrentAttempt.length
 
+    const isRetriesConfigured = job?.opts?.attempts > 1
+
     // Therefore, if retrying is configured, we try again
-    const shouldRetry = didSubscribersFail && job?.opts.attempts > 1
+    const shouldRetry =
+      didSubscribersFail && isRetriesConfigured && !isFinalAttempt
+
     if (shouldRetry) {
       const updatedCompletedSubscribers = [
         ...completedSubscribers,
@@ -381,15 +393,10 @@ export default class EventBusService {
 
       this.logger_.warn(errorMessage)
 
-      const isFinalAttempt = job.opts.attempts === currentAttempt
-      if (isFinalAttempt) {
-        this.logger_.warn(`Final retry attempt for ${eventName}`)
-      }
-
       return Promise.reject(Error(errorMessage))
     }
 
-    if (didSubscribersFail) {
+    if (didSubscribersFail && !isFinalAttempt) {
       // If retrying is not configured, we log a warning to allow server admins to recover manually
       this.logger_.warn(
         `One or more subscribers of ${eventName} failed. Retrying is not configured. Use 'attempts' option when emitting events.`
