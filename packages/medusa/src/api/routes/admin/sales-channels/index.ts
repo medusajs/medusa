@@ -13,6 +13,8 @@ import { AdminPostSalesChannelsReq } from "./create-sales-channel"
 import { AdminDeleteSalesChannelsChannelProductsBatchReq } from "./delete-products-batch"
 import { AdminGetSalesChannelsParams } from "./list-sales-channels"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
+import { AdminPostSalesChannelsChannelStockLocationsReq } from "./associate-stock-location"
+import { AdminDeleteSalesChannelsChannelStockLocationsReq } from "./remove-stock-location"
 
 const route = Router()
 
@@ -42,6 +44,16 @@ export default (app) => {
     "/",
     transformBody(AdminPostSalesChannelsSalesChannelReq),
     middlewares.wrap(require("./update-sales-channel").default)
+  )
+  salesChannelRouter.post(
+    "/stock-locations",
+    transformBody(AdminPostSalesChannelsChannelStockLocationsReq),
+    middlewares.wrap(require("./associate-stock-location").default)
+  )
+  salesChannelRouter.delete(
+    "/stock-locations",
+    transformBody(AdminDeleteSalesChannelsChannelStockLocationsReq),
+    middlewares.wrap(require("./remove-stock-location").default)
   )
   salesChannelRouter.delete(
     "/products/batch",
@@ -81,3 +93,5 @@ export * from "./delete-sales-channel"
 export * from "./get-sales-channel"
 export * from "./list-sales-channels"
 export * from "./update-sales-channel"
+export * from "./associate-stock-location"
+export * from "./remove-stock-location"
