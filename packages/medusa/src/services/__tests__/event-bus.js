@@ -45,27 +45,44 @@ describe("EventBusService", () => {
 
   describe("subscribe", () => {
     let eventBus
-    describe("successfully adds subscriber", () => {
-      beforeAll(() => {
-        jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
-        eventBus = new EventBusService({
-          manager: MockManager,
-          stagedJobRepository,
-          logger: loggerMock,
-        })
-        eventBus.subscribe("eventName", () => "test")
+    beforeEach(() => {
+      jest.resetAllMocks()
+
+      eventBus = new EventBusService({
+        manager: MockManager,
+        logger: loggerMock,
       })
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
+    })
+
+    afterAll(async () => {
+      await eventBus.stopEnqueuer()
+    })
+
+    it("throws when subscriber already exists", async () => {
+      expect.assertions(1)
+
+      eventBus.subscribe("eventName", () => "test", {
+        subscriberId: "my-subscriber",
       })
 
-      it("added the subscriber to the queue", () => {
-        expect(eventBus.observers_.get("eventName").length).toEqual(1)
+      try {
+        eventBus.subscribe("eventName", () => "new", {
+          subscriberId: "my-subscriber",
+        })
+      } catch (error) {
+        expect(error.message).toBe(
+          "Subscriber with id my-subscriber already exists"
+        )
+      }
+    })
+
+    it("successfully adds subscriber", () => {
+      eventBus.subscribe("eventName", () => "test", {
+        subscriberId: "my-subscriber",
       })
+
+      expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(1)
     })
 
     describe("fails when adding non-function subscriber", () => {
@@ -169,15 +186,12 @@ describe("EventBusService", () => {
       let eventBus
       beforeAll(async () => {
         jest.resetAllMocks()
-        const stagedJobRepository = MockRepository({
-          find: () => Promise.resolve([]),
-        })
 
         eventBus = new EventBusService({
           manager: MockManager,
-          stagedJobRepository,
           logger: loggerMock,
         })
+
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
         eventBus.subscribe("eventName", () => Promise.resolve("hi2"))
         eventBus.subscribe("eventName", () => Promise.resolve("hi3"))
@@ -187,14 +201,17 @@ describe("EventBusService", () => {
 
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
+          update: (data) => data,
+          opts: { attempts: 1 },
         })
       })
 
       afterAll(async () => {
         await eventBus.stopEnqueuer()
       })
+
       it("calls logger warn on rejections", () => {
-        expect(loggerMock.warn).toHaveBeenCalledTimes(3)
+        expect(loggerMock.warn).toHaveBeenCalledTimes(4)
         expect(loggerMock.warn).toHaveBeenCalledWith(
           "An error occurred while processing eventName: fail1"
         )
@@ -206,8 +223,10 @@ describe("EventBusService", () => {
         )
       })
 
-      it("returns result from all subscribers", async () => {
-        expect(result.length).toEqual(6)
+      it("calls logger warn from retry not kicking in", () => {
+        expect(loggerMock.warn).toHaveBeenCalledWith(
+          "One or more subscribers of eventName failed. Retrying is not configured. Use 'attempts' option when emitting events."
+        )
       })
     })
   })
