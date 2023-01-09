@@ -1,4 +1,4 @@
-The events system in Medusa is built on a publish/subscribe architecture. Events are published by the core when certain actions take place. Those events can be subscribed to, which means, that a reactive action is performed asynchronously. It is useful in a variety of scenarios including but not limited to processing heavy jobs in the background and reacting to specific events in a custom project or plugin. 
+The events system in Medusa is built on a publish/subscribe architecture. Events are published by the core when certain actions take place. Those events can be subscribed to, which means, a reactive action is performed asynchronously. It is useful in a variety of scenarios including but not limited to processing heavy jobs in the background and reacting to specific events in a custom project or plugin. 
 
 ### Publishing and subscribing
 
@@ -6,7 +6,7 @@ The `EventBusService` is responsible for publishing and processing events.
 
 > The current implementation of the `EventBusService` is powered by Redis. We will soon introduce an event bus module, allowing you to use any pub/sub provider. Therefore, the following documentation is based on the Redis implementation. Still, the general purpose and flows of the `EventBusService` will remain the same with the module implementation.
 
-The `EventBusService` exposes two methods in its public API for event processing; `emit` and `subscribe`. The former will take your event, add it to a Bull queue (powered by Redis) as a job, and process it asynchronously. The latter will attach a listener/subscriber to the specificed event, which is run upon processing it. In this document, the terms event and job are used interchangeably.
+The `EventBusService` exposes two methods in its public API for event processing; `emit` and `subscribe`. The former will take your event, add it to a Bull queue (powered by Redis) as a job, and process it asynchronously. The latter will attach a listener/subscriber to the specified event, which is run upon processing it. In this document, the terms event and job are used interchangeably.
 
 The signature of each method and an example can be seen below:
 
@@ -66,7 +66,7 @@ Visit the [Bull documentation](https://github.com/OptimalBits/bull/blob/develop/
 
 ### Database transactions
 
-Transactions in Medusa provides us with ACID guarantees for operations in the core, and they are used extensively throughout the project. In many cases, services typically update resources in the database **and** emits an event within a transactional operation. To protect us against these events causing data inconsistencies - e.g. an event is picked up by a plugin to use in a third party service, but the transaction fails - the concept of a staged job has been introduced. 
+Transactions in Medusa ensure ACID guarantees for operations in the core, and they are used extensively throughout the project. In many cases, services typically update resources in the database **and** emits an event within a transactional operation. To protect us against these events causing data inconsistencies - e.g. an event is picked up by a plugin to use in a third party service, but the transaction fails - the concept of a staged job has been introduced. 
 
 Instead of events being processed immediately, they are stored in the database as a staged job until they are ready i.e. the transaction has succeeded. This rather complex logic is abstracted away from the consumers of the `EventBusService`, but the flow of events is exemplified below - here in the case of an API request:
 
