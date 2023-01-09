@@ -12,6 +12,7 @@ const {
   simpleProductTaxRateFactory,
   simpleShippingOptionFactory,
   simpleShippingTaxRateFactory,
+  simpleSalesChannelFactory,
 } = require("../../factories")
 
 const adminSeeder = require("../../helpers/admin-seeder")
@@ -49,8 +50,14 @@ describe("tax inclusive prices", () => {
         includes_tax: true,
       })
 
+      const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        id: "test-channel",
+        is_default: true,
+      })
+
       const product = await simpleProductFactory(dbConnection, {
         variants: [{ id: "var_1", prices: [{ currency: "usd", amount: 100 }] }],
+        sales_channels: [{ id: salesChannel.id }],
       })
       productId = product.id
 

@@ -1,5 +1,6 @@
 const Scrypt = require("scrypt-kdf")
 const { User } = require("@medusajs/medusa")
+const { simpleSalesChannelFactory } = require("../factories")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
@@ -14,5 +15,10 @@ module.exports = async (connection, data = {}) => {
     role: "admin",
     password_hash,
     ...data,
+  })
+
+  await simpleSalesChannelFactory(connection, {
+    id: "test-channel",
+    is_default: true,
   })
 }

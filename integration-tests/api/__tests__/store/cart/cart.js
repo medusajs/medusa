@@ -22,6 +22,7 @@ const {
   simpleProductFactory,
   simpleShippingOptionFactory,
   simpleLineItemFactory,
+  simpleSalesChannelFactory,
 } = require("../../../factories")
 const {
   simpleDiscountFactory,
@@ -59,6 +60,11 @@ describe("/store/carts", () => {
   describe("POST /store/carts", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
+      await simpleSalesChannelFactory(dbConnection, {
+        id: "test-channel",
+        is_default: true,
+      })
+
       await manager.insert(Region, {
         id: "region",
         name: "Test Region",
@@ -931,6 +937,11 @@ describe("/store/carts", () => {
     beforeEach(async () => {
       await cartSeeder(dbConnection)
       await swapSeeder(dbConnection)
+
+      await simpleSalesChannelFactory(dbConnection, {
+        id: "test-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
@@ -2263,6 +2274,10 @@ describe("/store/carts", () => {
   describe("get-cart with session customer", () => {
     beforeEach(async () => {
       await cartSeeder(dbConnection)
+      await simpleSalesChannelFactory(dbConnection, {
+        id: "test-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
