@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 
 import ProductCategoryService from "../../../../services/product-category"
+import { FindParams } from "../../../../types/common"
 import { defaultAdminProductCategoryRelations } from "."
 
 /**
@@ -68,3 +69,5 @@ export default async (req: Request, res: Response) => {
 
   res.status(200).json({ product_category: productCategory })
 }
+
+export class GetProductCategoryParams extends FindParams {}
