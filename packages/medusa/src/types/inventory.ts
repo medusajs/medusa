@@ -29,13 +29,6 @@ export type ReservationItemDTO = {
   deleted_at: string | Date | null
 }
 
-export type UpdateReservationItemInput = {
-  location_id?: string
-  inventory_item_id?: string
-  quantity?: number
-  metadata?: Record<string, unknown> | null
-}
-
 export type InventoryLevelDTO = {
   id: string
   inventory_item_id: string
