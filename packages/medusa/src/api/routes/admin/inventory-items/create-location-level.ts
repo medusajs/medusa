@@ -5,7 +5,7 @@ import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /inventory-items/:id/location-levels
+ * @oas [post] /inventory-items/{id}/location-levels
  * operationId: "PostInventoryItemsInventoryItemLocationLevels"
  * summary: "Create an Inventory Location Level to a given Inventory Item."
  * description: "Creates an Inventory Location Level to a given Inventory Item."
@@ -36,7 +36,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/:id/location-levels' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

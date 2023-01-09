@@ -4,7 +4,7 @@ import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /inventory-items/:id/location-levels
+ * @oas [get] /inventory-items/{id}/location-levels
  * operationId: "GetInventoryItemsInventoryItemLocationLevels"
  * summary: "List stock levels of a given location."
  * description: "Retrives stock levels of a given location."
@@ -27,7 +27,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/:id/location-levels' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json'
  * security:

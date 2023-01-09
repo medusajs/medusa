@@ -55,7 +55,7 @@ import { NumericalComparisonOperator, StringComparisonOperator } from "./common"
  */
 export type InventoryItemDTO = {
   id: string
-  sku: string
+  sku?: string | null
   origin_country?: string | null
   hs_code?: string | null
   requires_shipping: boolean

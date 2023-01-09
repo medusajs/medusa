@@ -5,7 +5,7 @@ import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /inventory-items/:id
+ * @oas [post] /inventory-items/{id}
  * operationId: "PostInventoryItemsInventoryItem"
  * summary: "Update an Inventory Item."
  * description: "Updates an Inventory Item."
@@ -35,7 +35,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/:id' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

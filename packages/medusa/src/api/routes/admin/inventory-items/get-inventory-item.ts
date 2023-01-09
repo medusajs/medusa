@@ -4,7 +4,7 @@ import { FindParams } from "../../../../types/common"
 import { joinLevels } from "./utils/join-levels"
 
 /**
- * @oas [get] /inventory-items/:id
+ * @oas [get] /inventory-items/{id}
  * operationId: "GetInventoryItemsInventoryItem"
  * summary: "Retrive an Inventory Item."
  * description: "Retrives an Inventory Item."
@@ -27,7 +27,7 @@ import { joinLevels } from "./utils/join-levels"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/:id' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json'
  * security:

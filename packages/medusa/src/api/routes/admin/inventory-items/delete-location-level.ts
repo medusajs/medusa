@@ -2,13 +2,14 @@ import { Request, Response } from "express"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [delete] /inventory-items/:id/location-levels/:location_id
+ * @oas [delete] /inventory-items/{id}/location-levels/{location_id}
  * operationId: "GetInventoryItemsInventoryItem"
  * summary: "Delete a location level of an Inventory Item."
  * description: "Delete a location level of an Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
+ *   - (path) location_id=* {string} The ID of the location.
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codeSamples:
@@ -25,7 +26,7 @@ import { IInventoryService } from "../../../../interfaces"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/:id/location-levels/:location_id' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json'
  * security:
