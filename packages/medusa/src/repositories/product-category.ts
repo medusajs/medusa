@@ -11,15 +11,16 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
     q: string | undefined
   ): Promise<[ProductCategory[], number]> {
     const options_ = { ...options }
+    const entityName = "product_category"
 
-    const queryBuilder = this.createQueryBuilder("product_category")
+    const queryBuilder = this.createQueryBuilder(entityName)
       .select()
-      .skip(options.skip)
-      .take(options.take)
+      .skip(options_.skip)
+      .take(options_.take)
 
     if (q) {
-      delete options_?.where?.name
-      delete options_?.where?.handle
+      delete options_.where?.name
+      delete options_.where?.handle
 
       queryBuilder.where(
         new Brackets((bracket) => {
@@ -30,15 +31,15 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
       )
     }
 
-    queryBuilder.andWhere(options.where)
+    queryBuilder.andWhere(options_.where)
 
-    if (options.withDeleted) {
+    if (options_.withDeleted) {
       queryBuilder.withDeleted()
     }
 
-    if (options.relations?.length) {
-      options.relations.forEach((rel) => {
-        queryBuilder.leftJoinAndSelect(`product_category.${rel}`, rel)
+    if (options_.relations?.length) {
+      options_.relations.forEach((rel) => {
+        queryBuilder.leftJoinAndSelect(`${entityName}.${rel}`, rel)
       })
     }
 

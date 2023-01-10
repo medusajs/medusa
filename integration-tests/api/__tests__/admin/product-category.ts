@@ -210,5 +210,18 @@ describe("/admin/product-categories", () => {
       expect(response.data.count).toEqual(1)
       expect(response.data.product_categories[0].id).toEqual(productCategoryParent.id)
     })
+
+    it("filters based on parent category", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        `/admin/product-categories?parent_category_id=${productCategoryParent.id}`,
+        adminHeaders,
+      ).catch(e => e)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.product_categories[0].id).toEqual(productCategory.id)
+    })
   })
 })

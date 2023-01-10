@@ -42,7 +42,7 @@ class ProductCategoryService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[ProductCategory[], number]> {
-    const manager = this.manager_
+    const manager = this.transactionManager_ ?? this.manager_
     const productCategoryRepo = manager.getCustomRepository(
       this.productCategoryRepo_
     )

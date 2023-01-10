@@ -2,6 +2,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 
 import { ProductCategoryService } from "../../../../services"
+import { extendedFindParamsMixin } from "../../../../types/common"
 import { Type } from "class-transformer"
 
 /**
@@ -12,6 +13,9 @@ import { Type } from "class-transformer"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching product category names orhandles.
+ *   - (query) is_internal {boolean} Search for only internal categories.
+ *   - (query) is_active {boolean} Search for only active categories
+ *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many groups to skip in the result.
  *   - (query) limit=10 {integer} Limit the number of product categories returned.
  * x-codeSamples:
@@ -89,7 +93,10 @@ export default async (req: Request, res: Response) => {
   })
 }
 
-export class AdminGetProductCategoriesParams {
+export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
+  limit: 100,
+  offset: 0,
+}) {
   @IsString()
   @IsOptional()
   q?: string
@@ -104,15 +111,5 @@ export class AdminGetProductCategoriesParams {
 
   @IsString()
   @IsOptional()
-  order?: string
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  offset?: number = 0
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  limit?: number = 100
+  parent_category_id?: string
 }
