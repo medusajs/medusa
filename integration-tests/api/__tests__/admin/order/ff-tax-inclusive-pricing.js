@@ -12,6 +12,7 @@ const {
   simpleShippingOptionFactory,
   simpleOrderFactory,
   simpleProductFactory,
+  simpleSalesChannelFactory,
 } = require("../../../factories")
 
 jest.setTimeout(30000)
@@ -116,6 +117,11 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
+      await simpleSalesChannelFactory(dbConnection, {
+        id: "test-channel",
+        is_default: true,
+      })
+
       await simpleRegionFactory(dbConnection, {
         id: regionId,
         includes_tax: true,
@@ -125,6 +131,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
 
       await simpleProductFactory(dbConnection, {
         id: prodId,
+        sales_channels: [{ id: "test-channel" }],
         variants: [
           {
             id: variant1,

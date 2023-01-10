@@ -10,7 +10,6 @@ const {
   Image,
   Store,
 } = require("@medusajs/medusa")
-const { simpleProductFactory } = require("../factories")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
@@ -96,7 +95,7 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   })
 
-  const p = await simpleProductFactory(connection, {
+  const p = await manager.create(Product, {
     id: "test-product",
     handle: "test-product",
     title: "Test product",
@@ -108,7 +107,6 @@ module.exports = async (connection, data = {}) => {
       { id: "tag1", value: "123" },
       { tag: "tag2", value: "456" },
     ],
-    sales_channels: [{ id: defaultSalesChannel }],
   })
 
   p.images = [image]
@@ -214,11 +212,10 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(variant3)
 
-  const p1 = await simpleProductFactory(connection, {
+  const p1 = await manager.create(Product, {
     id: "test-product1",
     handle: "test-product1",
     title: "Test product1",
-    sales_channels: [{ id: defaultSalesChannel }],
     profile_id: defaultProfile.id,
     description: "test-product-description1",
     collection_id: "test-collection",
@@ -283,11 +280,10 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(variant5)
 
-  const product1 = await simpleProductFactory(connection, {
+  const product1 = await manager.create(Product, {
     id: "test-product_filtering_1",
     handle: "test-product_filtering_1",
     title: "Test product filtering 1",
-    sales_channels: [{ id: defaultSalesChannel }],
     profile_id: defaultProfile.id,
     description: "test-product-description",
     type: { id: "test-type", value: "test-type" },
@@ -298,11 +294,10 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(product1)
 
-  const product2 = await simpleProductFactory(connection, {
+  const product2 = await manager.create(Product, {
     id: "test-product_filtering_2",
     handle: "test-product_filtering_2",
     title: "Test product filtering 2",
-    sales_channels: [{ id: defaultSalesChannel }],
     profile_id: defaultProfile.id,
     description: "test-product-description",
     type: { id: "test-type", value: "test-type" },
@@ -313,11 +308,10 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(product2)
 
-  const product3 = await simpleProductFactory(connection, {
+  const product3 = await manager.create(Product, {
     id: "test-product_filtering_3",
     handle: "test-product_filtering_3",
     title: "Test product filtering 3",
-    sales_channels: [{ id: defaultSalesChannel }],
     profile_id: defaultProfile.id,
     description: "test-product-description",
     type: { id: "test-type", value: "test-type" },
@@ -328,11 +322,10 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(product3)
 
-  const product4 = await simpleProductFactory(connection, {
+  const product4 = await manager.create(Product, {
     id: "test-product_filtering_4",
     handle: "test-product_filtering_4",
     title: "Test product filtering 4",
-    sales_channels: [{ id: defaultSalesChannel }],
     profile_id: defaultProfile.id,
     description: "test-product-description",
     status: "proposed",

@@ -16,9 +16,4 @@ module.exports = async (connection, data = {}) => {
     password_hash,
     ...data,
   })
-
-  await simpleSalesChannelFactory(connection, {
-    id: "test-channel",
-    is_default: true,
-  })
 }

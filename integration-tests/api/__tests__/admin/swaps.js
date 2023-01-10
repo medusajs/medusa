@@ -14,6 +14,7 @@ const {
   simpleDiscountFactory,
   simpleRegionFactory,
   simpleShippingOptionFactory,
+  simpleSalesChannelFactory,
 } = require("../../factories")
 const {
   simpleCustomerFactory,
@@ -169,11 +170,16 @@ describe("/admin/swaps", () => {
 
       it("completes swap and ensures difference due", async () => {
         // ********* FACTORIES *********
+        await simpleSalesChannelFactory(dbConnection, {
+          id: "test-channel",
+          is_default: true,
+        })
         const prodA = await simpleProductFactory(dbConnection, {
           id: "prod-a",
           variants: [
             { id: "prod-a-var", prices: [{ amount: 1000, currency: "dkk" }] },
           ],
+          sales_channels: [{ id: "test-channel" }],
         })
 
         await simpleProductFactory(dbConnection, {
@@ -181,6 +187,7 @@ describe("/admin/swaps", () => {
           variants: [
             { id: "prod-b-var", prices: [{ amount: 1000, currency: "dkk" }] },
           ],
+          sales_channels: [{ id: "test-channel" }],
         })
 
         await simpleRegionFactory(dbConnection, {

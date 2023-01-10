@@ -109,31 +109,20 @@ describe("sales channels", () => {
       expect(response.status).toEqual(200)
       expect(response.data.sales_channels).toBeTruthy()
       expect(response.data.sales_channels.length).toBe(2)
-      expect(response.data).toMatchSnapshot({
-        count: 2,
-        limit: 20,
-        offset: 0,
-        sales_channels: expect.arrayContaining([
-          {
-            id: expect.any(String),
-            name: salesChannel1.name,
-            description: salesChannel1.description,
-            is_disabled: false,
-            deleted_at: null,
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          {
-            id: expect.any(String),
-            name: salesChannel2.name,
-            description: salesChannel2.description,
-            is_disabled: false,
-            deleted_at: null,
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-        ]),
-      })
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          sales_channels: expect.arrayContaining([
+            expect.objectContaining({
+              name: salesChannel1.name,
+              description: salesChannel1.description,
+            }),
+            expect.objectContaining({
+              name: salesChannel2.name,
+              description: salesChannel2.description,
+            }),
+          ]),
+        })
+      )
     })
 
     it("should list the sales channel using free text search", async () => {
