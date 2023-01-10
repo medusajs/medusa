@@ -54,10 +54,10 @@ export class ProductCategory extends SoftDeletableEntity {
 }
 
 /**
- * @schema productCategory
+ * @schema ProductCategory
  * title: "ProductCategory"
  * description: "Represents a product category"
- * x-resourceId: productCategory
+ * x-resourceId: ProductCategory
  * type: object
  * required:
  *   - name
