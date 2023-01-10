@@ -26,13 +26,25 @@ module.exports = {
           label: "Introduction",
         },
         {
-          type: "doc",
-          id: "quickstart/quick-start",
-          label: "Quickstart Guide",
-        },
-        {
-          type:"doc",
-          id: "quickstart/quick-start-docker",
+          type: "category",
+          label: "Install Medusa Server",
+          collapsed: false,
+          items: [
+            {
+              type: "doc",
+              id: "quickstart/quick-start",
+              label: "Quickstart Guide",
+            },
+            {
+              type: "doc",
+              id: "usage/create-medusa-app",
+              label: 'Use create-medusa-app'
+            },
+            {
+              type:"doc",
+              id: "quickstart/quick-start-docker",
+            },
+          ]
         },
         {
           type: "doc",
@@ -73,10 +85,6 @@ module.exports = {
         {
           type: "doc",
           id: "admin/quickstart",
-        },
-        {
-          type: "doc",
-          id: "usage/create-medusa-app",
         },
         {
           type: "category",
