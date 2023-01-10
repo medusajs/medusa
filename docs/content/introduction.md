@@ -39,3 +39,11 @@ Your customers use the Storefront to view products and make orders. Medusa provi
 - [Bulk Import](./user-guide/products/import.mdx): Bulk import strategies for different entities including [products](./advanced/admin/import-products.mdx) and [price lists](./advanced/admin/import-prices.mdx).
 - [Bulk Export](./user-guide/products/export.mdx): Bulk export strategies for different entities including [products](./user-guide/products/export.mdx) and [orders](./user-guide/orders/export.mdx).
 - Complete Customization Capabilities: Aside from all the features that Medusa provides, it is completely customizable providing capabilities to create custom [endpoints](./advanced/backend/endpoints/add.md), [services](./advanced/backend/services/create-service.md), [subscribers](./advanced/backend/subscribers/create-subscriber.md), [batch job strategies](./advanced/backend/batch-jobs/create.md), and much more!
+
+---
+
+## See Also
+
+- [Quickstart guide](./quickstart/quick-start.mdx)
+- [Install the Next.js Storefront](./starters/nextjs-medusa-starter.mdx)
+- [Install Medusa Admin](./admin/quickstart.mdx)
