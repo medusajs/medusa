@@ -647,6 +647,17 @@ describe("OrderService", () => {
               payment_status: "paid",
               status: "pending",
             })
+          case IdMap.getId("refunded-order"):
+            return Promise.resolve({
+              fulfillment_status: "fulfilled",
+              payment_status: "refunded",
+              refunds: [
+                {
+                  order_id: IdMap.getId("refunded-order"),
+                },
+              ],
+              status: "pending",
+            })
           default:
             return Promise.resolve({
               fulfillment_status: "not_fulfilled",
@@ -728,6 +739,12 @@ describe("OrderService", () => {
           },
         ],
       })
+    })
+
+    it("fails if order has refunds", async () => {
+      await expect(
+        orderService.cancel(IdMap.getId("refunded-order"))
+      ).rejects.toThrow("Order with refund(s) cannot be canceled")
     })
   })
 
