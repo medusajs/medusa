@@ -82,3 +82,4 @@ export type AdminVariantsListRes = PaginatedResponse & {
 }
 
 export * from "./list-variants"
+export * from "./get-inventory"
