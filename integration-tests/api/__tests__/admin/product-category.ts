@@ -112,7 +112,7 @@ describe("/admin/product-categories", () => {
     })
   })
 
-  describe("GET /admin/product-categories/:id", () => {
+  describe("GET /admin/product-categories", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
 
@@ -222,6 +222,15 @@ describe("/admin/product-categories", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
       expect(response.data.product_categories[0].id).toEqual(productCategory.id)
+
+      const nullCategoryResponse = await api.get(
+        `/admin/product-categories?parent_category_id=null`,
+        adminHeaders,
+      ).catch(e => e)
+
+      expect(nullCategoryResponse.status).toEqual(200)
+      expect(nullCategoryResponse.data.count).toEqual(1)
+      expect(nullCategoryResponse.data.product_categories[0].id).toEqual(productCategoryParent.id)
     })
   })
 })

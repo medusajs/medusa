@@ -1,9 +1,9 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
+import { Type, Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
-import { Type } from "class-transformer"
 
 /**
  * @oas [get] /product-categories
@@ -111,5 +111,8 @@ export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
 
   @IsString()
   @IsOptional()
-  parent_category_id?: string
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
+  parent_category_id?: string | null
 }
