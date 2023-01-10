@@ -5,6 +5,7 @@ const {
   LineItem,
   CustomShippingOption,
   ShippingMethod,
+  Fulfillment,
 } = require("@medusajs/medusa")
 const idMap = require("medusa-test-utils/src/id-map").default
 
@@ -203,6 +204,83 @@ describe("/admin/orders", () => {
       })
 
       await manager.save(li2)
+      const order3 = manager.create(Order, {
+        id: "test-order-not-payed-with-fulfillment",
+        customer_id: "test-customer",
+        email: "test@email.com",
+        fulfillment_status: "not_fulfilled",
+        payment_status: "awaiting",
+        billing_address: {
+          id: "test-billing-address",
+          first_name: "lebron",
+        },
+        shipping_address: {
+          id: "test-shipping-address",
+          first_name: "lebron",
+          country_code: "us",
+        },
+        region_id: "test-region",
+        currency_code: "usd",
+        tax_rate: 0,
+        discounts: [
+          {
+            id: "test-discount",
+            code: "TEST134",
+            is_dynamic: false,
+            rule: {
+              id: "test-rule",
+              description: "Test Discount",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            is_disabled: false,
+            regions: [
+              {
+                id: "test-region",
+              },
+            ],
+          },
+        ],
+        payments: [
+          {
+            id: "test-payment",
+            amount: 10000,
+            currency_code: "usd",
+            amount_refunded: 0,
+            provider_id: "test-pay",
+            data: {},
+          },
+        ],
+        items: [],
+      })
+
+      await manager.save(order3)
+
+      const li3 = manager.create(LineItem, {
+        id: "test-item-ful",
+        fulfilled_quantity: 1,
+        returned_quantity: 0,
+        title: "Line Item",
+        description: "Line Item Desc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 8000,
+        quantity: 2,
+        variant_id: "test-variant",
+        order_id: "test-order-not-payed-with-fulfillment",
+      })
+
+      await manager.save(li3)
+
+      const ful1 = manager.create(Fulfillment, {
+        id: "ful-1",
+        order_id: "test-order-not-payed-with-fulfillment",
+        provider_id: "test-ful",
+        items: [{ item_id: "test-item-ful", quantity: 1 }],
+        data: {},
+      })
+
+      await manager.save(ful1)
     })
 
     afterEach(async () => {
@@ -227,6 +305,34 @@ describe("/admin/orders", () => {
       const secondInventoryRes = await api.get("/store/variants/test-variant")
 
       expect(secondInventoryRes.data.variant.inventory_quantity).toEqual(2)
+    })
+
+    it("cancels a fulfillment and then an order and increments inventory_quantity correctly", async () => {
+      const api = useApi()
+
+      const initialInventoryRes = await api.get("/store/variants/test-variant")
+
+      expect(initialInventoryRes.data.variant.inventory_quantity).toEqual(1)
+
+      const cancelRes = await api.post(
+        `/admin/orders/test-order-not-payed-with-fulfillment/fulfillments/ful-1/cancel`,
+        {},
+        adminReqConfig
+      )
+
+      expect(cancelRes.status).toEqual(200)
+
+      const response = await api.post(
+        `/admin/orders/test-order-not-payed-with-fulfillment/cancel`,
+        {},
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      const secondInventoryRes = await api.get("/store/variants/test-variant")
+
+      expect(secondInventoryRes.data.variant.inventory_quantity).toEqual(3)
     })
 
     it("cancels an order but does not increment inventory_quantity of unmanaged variant", async () => {
