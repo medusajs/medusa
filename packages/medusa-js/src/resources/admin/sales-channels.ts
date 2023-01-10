@@ -1,18 +1,18 @@
 import {
+  AdminDeleteSalesChannelsChannelProductsBatchReq,
+  AdminDeleteSalesChannelsChannelStockLocationsReq,
   AdminGetSalesChannelsParams,
+  AdminPostSalesChannelsChannelProductsBatchReq,
+  AdminPostSalesChannelsChannelStockLocationsReq,
   AdminPostSalesChannelsReq,
-  AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
   AdminSalesChannelsListRes,
-  AdminDeleteSalesChannelsChannelProductsBatchReq,
-  AdminPostSalesChannelsChannelProductsBatchReq,
-  AdminPostSalesChannelsChannelStockLocationsReq,
-  AdminDeleteSalesChannelsChannelStockLocationsReq,
+  AdminSalesChannelsRes,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
-import qs from "qs"
 
 class AdminSalesChannelsResource extends BaseResource {
   /** retrieve a sales channel
