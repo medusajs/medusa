@@ -98,6 +98,38 @@ class ProductCategoryService extends TransactionBaseService {
 
     return productCategoryTree
   }
+
+  /**
+   * Deletes a product category
+   *
+   * @param productCategoryId is the id of the product category to delete
+   * @return a promise
+   */
+  async delete(productCategoryId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository: ProductCategoryRepository =
+        manager.getCustomRepository(this.productCategoryRepo_)
+
+      const productCategory = await this.retrieve(productCategoryId, {
+        relations: ["category_children"],
+      }).catch((err) => void 0)
+
+      if (!productCategory) {
+        return Promise.resolve()
+      }
+
+      if (productCategory.category_children.length > 0) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Deleting ProductCategory (${productCategoryId}) with category children is not allowed`
+        )
+      }
+
+      await productCategoryRepository.delete(productCategory.id)
+
+      return Promise.resolve()
+    })
+  }
 }
 
 export default ProductCategoryService

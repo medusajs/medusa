@@ -1,6 +1,8 @@
 import { Router } from "express"
+
 import middlewares, { transformQuery } from "../../../middlewares"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
+import deleteProductCategory from "./delete-product-category"
 
 import getProductCategory, {
   AdminGetProductCategoryParams,
@@ -38,10 +40,13 @@ export default (app) => {
     middlewares.wrap(getProductCategory)
   )
 
+  route.delete("/:id", middlewares.wrap(deleteProductCategory))
+
   return app
 }
 
 export * from "./get-product-category"
+export * from "./delete-product-category"
 export * from "./list-product-categories"
 
 export const defaultAdminProductCategoryRelations = [
