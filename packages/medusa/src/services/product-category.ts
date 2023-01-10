@@ -29,7 +29,7 @@ class ProductCategoryService extends TransactionBaseService {
 
   /**
    * Retrieves a product category by id.
-   * @param id - the id of the product category to retrieve.
+   * @param productCategoryId - the id of the product category to retrieve.
    * @param config - the config of the product category to retrieve.
    * @return the product category.
    */
