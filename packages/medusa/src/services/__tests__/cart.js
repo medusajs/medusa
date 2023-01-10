@@ -1400,7 +1400,7 @@ describe("CartService", () => {
               {
                 id: IdMap.getId("test-session"),
                 provider_id: "test-provider",
-                is_selected: true,
+                is_initiated: true,
               },
             ],
           })
@@ -1463,6 +1463,7 @@ describe("CartService", () => {
         IdMap.getId("test-session"),
         {
           is_selected: true,
+          is_initiated: true,
         }
       )
     })
@@ -1559,7 +1560,7 @@ describe("CartService", () => {
       shipping_methods: [],
       payment_sessions: [
         { provider_id: provider1Id, is_initiated: true },
-        { provider_id: provider2Id, is_selected: true },
+        { provider_id: provider2Id, is_selected: true, is_initiated: true },
       ],
       region: {
         payment_providers: [{ id: provider1Id }, { id: provider2Id }],

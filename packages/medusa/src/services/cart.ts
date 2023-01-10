@@ -1663,11 +1663,37 @@ class CartService extends TransactionBaseService {
           )
         }
 
+        let currentlySelectedSession = cart.payment_sessions.find(
+          (s) => s.is_selected
+        )
+
+        if (
+          currentlySelectedSession &&
+          currentlySelectedSession.provider_id !== providerId
+        ) {
+          const psRepo = transactionManager.getCustomRepository(
+            this.paymentSessionRepository_
+          )
+
+          if (currentlySelectedSession.is_initiated) {
+            await this.paymentProviderService_
+              .withTransaction(transactionManager)
+              .deleteSession(currentlySelectedSession)
+
+            currentlySelectedSession = psRepo.create(currentlySelectedSession)
+          }
+
+          currentlySelectedSession.is_initiated = false
+          currentlySelectedSession.is_selected = false
+          await psRepo.save(currentlySelectedSession)
+        }
+
         const cartPaymentSessionIds = cart.payment_sessions.map((p) => p.id)
         await psRepo.update(
           { id: In(cartPaymentSessionIds) },
           {
             is_selected: null,
+            is_initiated: false,
           }
         )
 
@@ -1691,21 +1717,22 @@ class CartService extends TransactionBaseService {
           payment_session_id: paymentSession.id,
         }
 
-        if (paymentSession.is_selected) {
+        if (paymentSession.is_initiated) {
           // update the session remotely
           await this.paymentProviderService_
             .withTransaction(transactionManager)
             .updateSession(paymentSession, sessionInput)
-        }
-
-        if (!paymentSession.is_initiated) {
+        } else {
           // Create the session remotely
           paymentSession = await this.paymentProviderService_
             .withTransaction(transactionManager)
             .createSession(sessionInput)
         }
 
-        await psRepo.update(paymentSession.id, { is_selected: true })
+        await psRepo.update(paymentSession.id, {
+          is_selected: true,
+          is_initiated: true,
+        })
 
         await this.eventBus_
           .withTransaction(transactionManager)
@@ -1763,7 +1790,7 @@ class CartService extends TransactionBaseService {
 
         // Helpers that either delete a session locally or remotely. Will be used in multiple places below.
         const deleteSessionAppropriately = async (session) => {
-          if (session.is_selected || session.is_initiated) {
+          if (session.is_initiated) {
             return paymentProviderServiceTx.deleteSession(session)
           }
 
@@ -1802,7 +1829,7 @@ class CartService extends TransactionBaseService {
             if (!providerSet.has(session.provider_id)) {
               /**
                * if the provider does not belong to the region then delete the session.
-               * The deletion occurs locally if there is no external data or if it is not selected
+               * The deletion occurs locally if the session is not initiated
                * otherwise the deletion will also occur remotely through the external provider.
                */
 
@@ -1813,8 +1840,6 @@ class CartService extends TransactionBaseService {
              * if the provider belongs to the region then update or delete the session.
              * The update occurs locally if it is not selected
              * otherwise the update will also occur remotely through the external provider.
-             * In case the session is not selected but contains an external provider data, we delete the external provider
-             * session to be in a clean state.
              */
 
             // We are saving the provider id on which the work below will be done. That way,
@@ -1823,7 +1848,7 @@ class CartService extends TransactionBaseService {
             alreadyConsumedProviderIds.add(session.provider_id)
 
             // Update remotely
-            if (session.is_selected) {
+            if (session.is_selected && session.is_initiated) {
               const paymentSessionInput = {
                 ...partialSessionInput,
                 provider_id: session.provider_id,
@@ -1843,6 +1868,7 @@ class CartService extends TransactionBaseService {
               await paymentProviderServiceTx.deleteSession(session)
               updatedSession = psRepo.create({
                 ...partialPaymentSessionData,
+                is_initiated: false,
                 provider_id: session.provider_id,
               })
             } else {
@@ -1872,7 +1898,10 @@ class CartService extends TransactionBaseService {
             .withTransaction(transactionManager)
             .createSession(paymentSessionInput)
 
-          await psRepo.update(paymentSession.id, { is_selected: true })
+          await psRepo.update(paymentSession.id, {
+            is_selected: true,
+            is_initiated: true,
+          })
           return
         }
 
