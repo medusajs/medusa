@@ -4,6 +4,7 @@ import { ProductVariant } from "../../../../models/product-variant"
 import { PaginatedResponse } from "../../../../types/common"
 import { PricedVariant } from "../../../../types/pricing"
 import middlewares, { transformQuery } from "../../../middlewares"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 import { AdminGetVariantsParams } from "./list-variants"
 
 const route = Router()
@@ -23,6 +24,10 @@ export default (app) => {
 
   route.get(
     "/:id/inventory",
+    checkRegisteredModules({
+      inventoryService:
+        "Inventory is not enabled. Please add an Inventory module to enable this functionality.",
+    }),
     middlewares.wrap(require("./get-inventory").default)
   )
 

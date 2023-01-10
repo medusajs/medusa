@@ -90,49 +90,43 @@ export default async (req, res) => {
     sales_channel_availability: [],
   }
 
-  if (inventoryService) {
-    const [rawChannels] = await channelService.listAndCount({})
-    const channels: SalesChannelDTO[] = await Promise.all(
-      rawChannels.map(async (channel) => {
-        const locations = await channelLocationService.listLocations(channel.id)
-        return {
-          ...channel,
-          locations,
-        }
-      })
-    )
+  const [rawChannels] = await channelService.listAndCount({})
+  const channels: SalesChannelDTO[] = await Promise.all(
+    rawChannels.map(async (channel) => {
+      const locations = await channelLocationService.listLocations(channel.id)
+      return {
+        ...channel,
+        locations,
+      }
+    })
+  )
 
-    const inventory = await variantInventoryService.listInventoryItemsByVariant(
-      variant.id
-    )
-    responseVariant.inventory = await joinLevels(
-      inventory,
-      [],
-      inventoryService
-    )
+  const inventory = await variantInventoryService.listInventoryItemsByVariant(
+    variant.id
+  )
+  responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
-    if (inventory.length) {
-      responseVariant.sales_channel_availability = await Promise.all(
-        channels.map(async (channel) => {
-          if (!channel.locations.length) {
-            return {
-              channel_name: channel.name as string,
-              channel_id: channel.id as string,
-              available_quantity: 0,
-            }
-          }
-          const quantity = await inventoryService.retrieveAvailableQuantity(
-            inventory[0].id,
-            channel.locations
-          )
+  if (inventory.length) {
+    responseVariant.sales_channel_availability = await Promise.all(
+      channels.map(async (channel) => {
+        if (!channel.locations.length) {
           return {
             channel_name: channel.name as string,
             channel_id: channel.id as string,
-            available_quantity: quantity,
+            available_quantity: 0,
           }
-        })
-      )
-    }
+        }
+        const quantity = await inventoryService.retrieveAvailableQuantity(
+          inventory[0].id,
+          channel.locations
+        )
+        return {
+          channel_name: channel.name as string,
+          channel_id: channel.id as string,
+          available_quantity: quantity,
+        }
+      })
+    )
   }
 
   res.json({
