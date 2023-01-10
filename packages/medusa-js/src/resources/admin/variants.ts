@@ -8,6 +8,12 @@ import { ResponsePromise } from "../.."
 import BaseResource from "../base"
 
 class AdminVariantsResource extends BaseResource {
+  /**
+   * List product variants
+   * @param query Query to filter variants by
+   * @param customHeaders custom headers
+   * @returns A list of variants satisfying the criteria of the query
+   */
   list(
     query?: AdminGetVariantsParams,
     customHeaders: Record<string, any> = {}
