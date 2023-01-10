@@ -217,7 +217,7 @@ describe("/admin/product-categories", () => {
       const response = await api.get(
         `/admin/product-categories?parent_category_id=${productCategoryParent.id}`,
         adminHeaders,
-      ).catch(e => e)
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
@@ -231,6 +231,78 @@ describe("/admin/product-categories", () => {
       expect(nullCategoryResponse.status).toEqual(200)
       expect(nullCategoryResponse.data.count).toEqual(1)
       expect(nullCategoryResponse.data.product_categories[0].id).toEqual(productCategoryParent.id)
+    })
+  })
+
+  describe("DELETE /admin/product-categories/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
+        name: "category parent",
+        handle: "category-parent",
+      })
+
+      productCategory = await simpleProductCategoryFactory(dbConnection, {
+        name: "category",
+        handle: "category",
+        parent_category: productCategoryParent,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("returns successfully with an invalid ID", async () => {
+      const api = useApi()
+
+      const response = await api.delete(
+        `/admin/product-categories/invalid-id`,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.id).toEqual("invalid-id")
+      expect(response.data.deleted).toBeTruthy()
+      expect(response.data.object).toEqual("product_category")
+    })
+
+    it("throws a not allowed error for a category with children", async () => {
+      const api = useApi()
+
+      const error = await api.delete(
+        `/admin/product-categories/${productCategoryParent.id}`,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data.type).toEqual("not_allowed")
+      expect(error.response.data.message).toEqual(
+        `Deleting ProductCategory (${productCategoryParent.id}) with category children is not allowed`
+      )
+    })
+
+    it("deletes a product category with no children successfully", async () => {
+      const api = useApi()
+
+      const deleteResponse = await api.delete(
+        `/admin/product-categories/${productCategory.id}`,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(deleteResponse.status).toEqual(200)
+      expect(deleteResponse.data.id).toEqual(productCategory.id)
+      expect(deleteResponse.data.deleted).toBeTruthy()
+      expect(deleteResponse.data.object).toEqual("product_category")
+
+      const errorFetchingDeleted = await api.get(
+        `/admin/product-categories/${productCategory.id}`,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(errorFetchingDeleted.response.status).toEqual(404)
     })
   })
 })
