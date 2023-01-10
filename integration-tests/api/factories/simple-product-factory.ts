@@ -66,7 +66,7 @@ export const simpleProductFactory = async (
       sales_channels = [store.default_sales_channel]
     } else {
       const salesChannel = await simpleSalesChannelFactory(connection, {
-        id: `test-channel-${Math.random() * 1000}`,
+        id: `default-${Math.random() * 1000}`,
         is_default: true,
       })
 

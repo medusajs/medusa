@@ -630,6 +630,10 @@ describe("sales channels", () => {
             description: "test description",
             is_disabled: false,
           }),
+          expect.objectContaining({
+            id: expect.any(String),
+            is_disabled: false,
+          }),
         ])
       )
 
@@ -731,6 +735,10 @@ describe("sales channels", () => {
             id: expect.any(String),
             name: "test name",
             description: "test description",
+            is_disabled: false,
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
             is_disabled: false,
           }),
         ])

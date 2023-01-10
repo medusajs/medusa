@@ -43,7 +43,7 @@ describe("GET /admin/orders", () => {
               "gift_card_tax_total",
             ].includes(field)
           }),
-          relations: [...defaultAdminOrdersRelations, "sales_channel"],
+          relations: [...defaultAdminOrdersRelations],
         }
       )
     })

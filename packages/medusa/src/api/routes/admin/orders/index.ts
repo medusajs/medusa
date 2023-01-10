@@ -275,6 +275,7 @@ export const defaultAdminOrdersRelations = [
   "claims.claim_items.item",
   "claims.claim_items.images",
   // "claims.claim_items.tags",
+  "sales_channel",
   "swaps",
   "swaps.return_order",
   "swaps.return_order.shipping_method",
