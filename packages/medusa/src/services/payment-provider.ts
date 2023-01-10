@@ -193,7 +193,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       ) as Cart | PaymentSessionInput
 
       const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
-      const context = this.buildPaymentContext(data)
+      const context = this.buildPaymentProcessorContext(data)
 
       if (!isDefined(context.currency_code) || !isDefined(context.amount)) {
         throw new MedusaError(
@@ -279,7 +279,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await this.atomicPhase_(async (transactionManager) => {
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
-      const context = this.buildPaymentContext(sessionInput)
+      const context = this.buildPaymentProcessorContext(sessionInput)
 
       const sessionData = await provider
         .withTransaction(transactionManager)
@@ -640,7 +640,7 @@ export default class PaymentProviderService extends TransactionBaseService {
    * @param cartOrData
    * @protected
    */
-  protected buildPaymentContext(
+  protected buildPaymentProcessorContext(
     cartOrData: Cart | PaymentSessionInput
   ): Cart & PaymentContext {
     const cart =
