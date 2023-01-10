@@ -122,8 +122,7 @@ describe("Product Categories", () => {
 
     it("fetches all active categories", async () => {
       const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
-        '',
-        { where: { is_active: true } }
+        { where: { is_active: true } },
       )
 
       expect(count).toEqual(2)
@@ -139,8 +138,7 @@ describe("Product Categories", () => {
 
     it("fetches all internal categories", async () => {
       const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
-        '',
-        { where: { is_internal: true } }
+        { where: { is_internal: true } },
       )
 
       expect(count).toEqual(1)
@@ -153,6 +151,7 @@ describe("Product Categories", () => {
 
     it("fetches all categories with query shoes", async () => {
       const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
+        { where: {} },
         'shoes'
       )
 
@@ -169,6 +168,7 @@ describe("Product Categories", () => {
 
     it("fetches all categories with query casual-", async () => {
       const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
+        { where: {} },
         'casual-'
       )
 
@@ -178,6 +178,30 @@ describe("Product Categories", () => {
           name: a12.name,
         }),
       ])
+    })
+
+    it("builds relations for categories", async () => {
+      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
+        {
+          where: { id: a11.id },
+          relations: ['parent_category', 'category_children']
+        },
+      )
+
+      expect(count).toEqual(1)
+      expect(categories[0]).toEqual(
+        expect.objectContaining({
+          id: a11.id,
+          parent_category: expect.objectContaining({
+            id: a1.id,
+          }),
+          category_children: [
+            expect.objectContaining({
+              id: a111.id,
+            })
+          ]
+        })
+      )
     })
   })
 })
