@@ -84,17 +84,6 @@ export default async (req, res) => {
 
   const variant = await variantService.retrieve(id, { select: ["id"] })
 
-  const [rawChannels] = await channelService.listAndCount({})
-  const channels: SalesChannelDTO[] = await Promise.all(
-    rawChannels.map(async (channel) => {
-      const locations = await channelLocationService.listLocations(channel.id)
-      return {
-        ...channel,
-        locations,
-      }
-    })
-  )
-
   const responseVariant: AdminGetVariantsVariantInventoryRes = {
     id: variant.id,
     inventory: [],
@@ -102,6 +91,17 @@ export default async (req, res) => {
   }
 
   if (inventoryService) {
+    const [rawChannels] = await channelService.listAndCount({})
+    const channels: SalesChannelDTO[] = await Promise.all(
+      rawChannels.map(async (channel) => {
+        const locations = await channelLocationService.listLocations(channel.id)
+        return {
+          ...channel,
+          locations,
+        }
+      })
+    )
+
     const inventory = await variantInventoryService.listInventoryItemsByVariant(
       variant.id
     )
