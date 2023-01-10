@@ -2,6 +2,7 @@ import path from "path"
 import { ProductCategory } from "@medusajs/medusa"
 import { initDb, useDb } from "../../../helpers/use-db"
 import { simpleProductCategoryFactory } from '../../factories'
+import { ProductCategoryRepository } from "@medusajs/medusa/dist/repositories/product-category"
 
 describe("Product Categories", () => {
   let dbConnection
@@ -30,7 +31,8 @@ describe("Product Categories", () => {
       a11 = await simpleProductCategoryFactory(dbConnection, { name: 'a11', handle: 'a11', parent_category: a1 })
       a111 = await simpleProductCategoryFactory(dbConnection, { name: 'a111', handle: 'a111', parent_category: a11 })
       a12 = await simpleProductCategoryFactory(dbConnection, { name: 'a12', handle: 'a12', parent_category: a1 })
-      productCategoryRepository = dbConnection.getTreeRepository(ProductCategory)
+
+      productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
     })
 
     it("can fetch all root categories", async () => {
@@ -56,7 +58,6 @@ describe("Product Categories", () => {
       ])
     })
 
-
     it("can fetch all root descendants of a category", async () => {
       const a1Children = await productCategoryRepository.findDescendants(a1)
 
@@ -74,6 +75,133 @@ describe("Product Categories", () => {
           name: "a12",
         }),
       ])
+    })
+  })
+
+  describe("getFreeTextSearchResultsAndCount", () => {
+    let a1, a11, a111, a12
+    let productCategoryRepository
+
+    beforeEach(async () => {
+      a1 = await simpleProductCategoryFactory(
+        dbConnection, {
+          name: 'skinny jeans',
+          handle: 'skinny-jeans',
+          is_active: true
+        }
+      )
+
+      a11 = await simpleProductCategoryFactory(
+        dbConnection, {
+          name: 'winter shirts',
+          handle: 'winter-shirts',
+          parent_category: a1,
+          is_active: true
+        }
+      )
+
+      a111 = await simpleProductCategoryFactory(
+        dbConnection, {
+          name: 'running shoes',
+          handle: 'running-shoes',
+          parent_category: a11
+        }
+      )
+
+      a12 = await simpleProductCategoryFactory(
+        dbConnection, {
+          name: 'casual shoes',
+          handle: 'casual-shoes',
+          parent_category: a1,
+          is_internal: true
+        }
+      )
+
+      productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
+    })
+
+    it("fetches all active categories", async () => {
+      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
+        { where: { is_active: true } },
+      )
+
+      expect(count).toEqual(2)
+      expect(categories).toEqual([
+        expect.objectContaining({
+          name: a1.name,
+        }),
+        expect.objectContaining({
+          name: a11.name,
+        }),
+      ])
+    })
+
+    it("fetches all internal categories", async () => {
+      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
+        { where: { is_internal: true } },
+      )
+
+      expect(count).toEqual(1)
+      expect(categories).toEqual([
+        expect.objectContaining({
+          name: a12.name,
+        }),
+      ])
+    })
+
+    it("fetches all categories with query shoes", async () => {
+      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
+        { where: {} },
+        'shoes'
+      )
+
+      expect(count).toEqual(2)
+      expect(categories).toEqual([
+        expect.objectContaining({
+          name: a111.name,
+        }),
+        expect.objectContaining({
+          name: a12.name,
+        }),
+      ])
+    })
+
+    it("fetches all categories with query casual-", async () => {
+      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
+        { where: {} },
+        'casual-'
+      )
+
+      expect(count).toEqual(1)
+      expect(categories).toEqual([
+        expect.objectContaining({
+          name: a12.name,
+        }),
+      ])
+    })
+
+    it("builds relations for categories", async () => {
+      const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
+        {
+          where: { id: a11.id },
+          relations: ['parent_category', 'category_children']
+        },
+      )
+
+      expect(count).toEqual(1)
+      expect(categories[0]).toEqual(
+        expect.objectContaining({
+          id: a11.id,
+          parent_category: expect.objectContaining({
+            id: a1.id,
+          }),
+          category_children: [
+            expect.objectContaining({
+              id: a111.id,
+            })
+          ]
+        })
+      )
     })
   })
 })

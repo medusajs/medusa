@@ -37,6 +37,7 @@ import userRoutes, { unauthenticatedUserRoutes } from "./users"
 import variantRoutes from "./variants"
 import paymentCollectionRoutes from "./payment-collections"
 import paymentRoutes from "./payments"
+import productCategoryRoutes from "./product-categories"
 import { parseCorsOrigins } from "medusa-core-utils"
 
 const route = Router()
@@ -108,6 +109,7 @@ export default (app, container, config) => {
   variantRoutes(route)
   paymentCollectionRoutes(route)
   paymentRoutes(route)
+  productCategoryRoutes(route)
 
   return app
 }
