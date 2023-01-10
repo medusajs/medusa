@@ -60,11 +60,6 @@ describe("/store/carts", () => {
   describe("POST /store/carts", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      await simpleSalesChannelFactory(dbConnection, {
-        id: "test-channel",
-        is_default: true,
-      })
-
       await manager.insert(Region, {
         id: "region",
         name: "Test Region",
@@ -114,7 +109,20 @@ describe("/store/carts", () => {
     })
 
     it("creates a cart with items", async () => {
-      await productSeeder(dbConnection)
+      const prod1 = await simpleProductFactory(dbConnection, {
+        id: "test-product",
+        variants: [{ id: "test-variant_1" }],
+      })
+
+      const prodSale = await simpleProductFactory(dbConnection, {
+        id: "test-product-sale",
+        variants: [
+          {
+            id: "test-variant-sale",
+            prices: [{ amount: 1000, currency: "usd" }],
+          },
+        ],
+      })
 
       const yesterday = ((today) =>
         new Date(today.setDate(today.getDate() - 1)))(new Date())
@@ -134,7 +142,7 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: "test-variant-sale",
+        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
@@ -148,11 +156,11 @@ describe("/store/carts", () => {
         .post("/store/carts", {
           items: [
             {
-              variant_id: "test-variant_1",
+              variant_id: prod1.variants[0].id,
               quantity: 1,
             },
             {
-              variant_id: "test-variant-sale",
+              variant_id: prodSale.variants[0].id,
               quantity: 2,
             },
           ],
@@ -166,11 +174,11 @@ describe("/store/carts", () => {
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            variant_id: "test-variant_1",
+            variant_id: prod1.variants[0].id,
             quantity: 1,
           }),
           expect.objectContaining({
-            variant_id: "test-variant-sale",
+            variant_id: prodSale.variants[0].id,
             quantity: 2,
             unit_price: 800,
           }),

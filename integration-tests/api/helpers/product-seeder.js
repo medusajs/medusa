@@ -18,10 +18,6 @@ module.exports = async (connection, data = {}) => {
     type: "default",
   })
 
-  const store = await manager.findOne(Store)
-
-  const defaultSalesChannel = store.default_sales_channel_id
-
   const coll = await manager.create(ProductCollection, {
     id: "test-collection",
     handle: "test-collection",
