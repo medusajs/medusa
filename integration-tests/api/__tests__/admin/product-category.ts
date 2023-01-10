@@ -217,7 +217,7 @@ describe("/admin/product-categories", () => {
       const response = await api.get(
         `/admin/product-categories?parent_category_id=${productCategoryParent.id}`,
         adminHeaders,
-      ).catch(e => e)
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
@@ -255,19 +255,18 @@ describe("/admin/product-categories", () => {
       return await db.teardown()
     })
 
-    it("throws a not found error with an invalid ID", async () => {
+    it("returns successfully with an invalid ID", async () => {
       const api = useApi()
 
-      const error = await api.delete(
+      const response = await api.delete(
         `/admin/product-categories/invalid-id`,
         adminHeaders
-      ).catch(e => e)
-
-      expect(error.response.status).toEqual(404)
-      expect(error.response.data.type).toEqual("not_found")
-      expect(error.response.data.message).toEqual(
-        "ProductCategory with id: invalid-id was not found"
       )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.id).toEqual("invalid-id")
+      expect(response.data.deleted).toBeTruthy()
+      expect(response.data.object).toEqual("product_category")
     })
 
     it("throws a not allowed error for a category with children", async () => {
@@ -285,13 +284,13 @@ describe("/admin/product-categories", () => {
       )
     })
 
-    it("soft deletes a product category with no children successfully", async () => {
+    it("deletes a product category with no children successfully", async () => {
       const api = useApi()
 
       const deleteResponse = await api.delete(
         `/admin/product-categories/${productCategory.id}`,
         adminHeaders
-      )
+      ).catch(e => e)
 
       expect(deleteResponse.status).toEqual(200)
       expect(deleteResponse.data.id).toEqual(productCategory.id)

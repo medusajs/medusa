@@ -121,9 +121,6 @@ describe("ProductCategoryService", () => {
       findDescendantsTree: (productCategory) => {
         return Promise.resolve(productCategory)
       },
-      softRemove: (productCategory) => {
-        return Promise.resolve(productCategory)
-      }
     })
 
     const productCategoryService = new ProductCategoryService({
@@ -138,21 +135,15 @@ describe("ProductCategoryService", () => {
         IdMap.getId("jeans")
       )
 
-      expect(productCategoryRepository.softRemove).toBeCalledTimes(1)
-      expect(productCategoryRepository.softRemove).toBeCalledWith({
-        id: IdMap.getId("jeans"),
-        category_children: [],
-      })
+      expect(productCategoryRepository.delete).toBeCalledTimes(1)
+      expect(productCategoryRepository.delete).toBeCalledWith(IdMap.getId("jeans"))
     })
 
-    it("fails on not-found product category id", async () => {
+    it("returns without failure on not-found product category id", async () => {
       const categoryResponse = await productCategoryService
         .delete("not-found")
-        .catch((e) => e)
 
-      expect(categoryResponse.message).toBe(
-        `ProductCategory with id: not-found was not found`
-      )
+      expect(categoryResponse).toBe(undefined)
     })
 
     it("fails on product category with children", async () => {

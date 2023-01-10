@@ -112,7 +112,7 @@ class ProductCategoryService extends TransactionBaseService {
 
       const productCategory = await this.retrieve(productCategoryId, {
         relations: ["category_children"],
-      })
+      }).catch((err) => void 0)
 
       if (!productCategory) {
         return Promise.resolve()
@@ -125,7 +125,7 @@ class ProductCategoryService extends TransactionBaseService {
         )
       }
 
-      await productCategoryRepository.softRemove(productCategory)
+      await productCategoryRepository.delete(productCategory.id)
 
       return Promise.resolve()
     })
