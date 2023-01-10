@@ -1,8 +1,13 @@
 import { asValue, createContainer } from "awilix"
 import { MockRepository } from "medusa-test-utils"
 import PaymentProviderService from "../payment-provider"
-import { defaultContainer } from "../__fixtures__/payment-provider"
+import {
+  defaultContainer,
+  defaultPaymentSessionInputData,
+  PaymentProcessor,
+} from "../__fixtures__/payment-provider"
 import { testPayServiceMock } from "../__mocks__/test-pay"
+import { EOL } from "os"
 
 describe("PaymentProviderService", () => {
   describe("retrieveProvider", () => {
@@ -74,30 +79,31 @@ describe("PaymentProviderService", () => {
 
   describe("updateSession", () => {
     const container = createContainer({}, defaultContainer)
-    container.register(
-      "paymentSessionRepository",
-      asValue(
-        MockRepository({
-          findOne: () =>
-            Promise.resolve({
-              id: "session",
-              provider_id: "default_provider",
-              data: {
-                id: "1234",
-              },
-            }),
+    container
+      .register(
+        "paymentSessionRepository",
+        asValue(
+          MockRepository({
+            findOne: () =>
+              Promise.resolve({
+                id: "session",
+                provider_id: "default_provider",
+                data: {
+                  id: "1234",
+                },
+              }),
+          })
+        )
+      )
+      .register(
+        "pp_default_provider",
+        asValue({
+          withTransaction: function () {
+            return this
+          },
+          updatePayment: jest.fn().mockReturnValue(Promise.resolve({})),
         })
       )
-    )
-    container.register(
-      "pp_default_provider",
-      asValue({
-        withTransaction: function () {
-          return this
-        },
-        updatePayment: jest.fn().mockReturnValue(Promise.resolve({})),
-      })
-    )
 
     const providerService = container.resolve("paymentProviderService")
 
@@ -142,49 +148,50 @@ describe("PaymentProviderService", () => {
 describe(`PaymentProviderService`, () => {
   const container = createContainer({}, defaultContainer)
   container.register("pp_default_provider", asValue(testPayServiceMock))
-  container.register(
-    "paymentSessionRepository",
-    asValue(
-      MockRepository({
-        findOne: () =>
-          Promise.resolve({
-            id: "session",
-            provider_id: "default_provider",
-            data: {
-              id: "1234",
-            },
-          }),
-      })
+  container
+    .register(
+      "paymentSessionRepository",
+      asValue(
+        MockRepository({
+          findOne: () =>
+            Promise.resolve({
+              id: "session",
+              provider_id: "default_provider",
+              data: {
+                id: "1234",
+              },
+            }),
+        })
+      )
     )
-  )
-  container.register(
-    "paymentRepository",
-    asValue(
-      MockRepository({
-        findOne: () =>
-          Promise.resolve({
-            id: "pay_jadazdjk",
-            provider_id: "default_provider",
-            data: {
-              id: "1234",
-            },
-          }),
-        find: () =>
-          Promise.resolve([
-            {
+    .register(
+      "paymentRepository",
+      asValue(
+        MockRepository({
+          findOne: () =>
+            Promise.resolve({
               id: "pay_jadazdjk",
               provider_id: "default_provider",
               data: {
                 id: "1234",
               },
-              captured_at: new Date(),
-              amount: 100,
-              amount_refunded: 0,
-            },
-          ]),
-      })
+            }),
+          find: () =>
+            Promise.resolve([
+              {
+                id: "pay_jadazdjk",
+                provider_id: "default_provider",
+                data: {
+                  id: "1234",
+                },
+                captured_at: new Date(),
+                amount: 100,
+                amount_refunded: 0,
+              },
+            ]),
+        })
+      )
     )
-  )
 
   const providerService = container.resolve("paymentProviderService")
 
@@ -356,5 +363,326 @@ describe(`PaymentProviderService`, () => {
       50
     )
     expect(testPayServiceMock.refundPayment).toBeCalledTimes(1)
+  })
+})
+
+describe("PaymentProviderService using AbstractPaymentProcessor", () => {
+  const paymentProcessorResolutionKey = "pp_payment_processor"
+  const paymentServiceResolutionKey = "paymentProviderService"
+  const paymentProviderId = "payment_processor"
+
+  describe("createSession", () => {
+    const container = createContainer({}, defaultContainer)
+
+    const mockPaymentProcessor = new PaymentProcessor(container)
+    mockPaymentProcessor.initiatePayment = jest
+      .fn()
+      .mockReturnValue(Promise.resolve({ session_data: {} }))
+
+    container.register(
+      paymentProcessorResolutionKey,
+      asValue(mockPaymentProcessor)
+    )
+
+    const providerService = container.resolve(paymentServiceResolutionKey)
+
+    it("successfully creates session", async () => {
+      await providerService.createSession(defaultPaymentSessionInputData)
+
+      const provider = container.resolve(paymentProcessorResolutionKey)
+
+      expect(provider.initiatePayment).toBeCalledTimes(1)
+      expect(provider.initiatePayment).toBeCalledWith({
+        billing_address: defaultPaymentSessionInputData.cart.billing_address,
+        email: defaultPaymentSessionInputData.cart.email,
+        currency_code: defaultPaymentSessionInputData.currency_code,
+        amount: defaultPaymentSessionInputData.amount,
+        resource_id: undefined,
+        customer: undefined,
+        context: {},
+        paymentSessionData: {},
+      })
+    })
+
+    it("throw an error using the provider error response", async () => {
+      const errResponse = {
+        error: "Error",
+        code: 400,
+        details: "Error details",
+      }
+
+      const mockPaymentProcessor = new PaymentProcessor(container)
+      mockPaymentProcessor.initiatePayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(errResponse))
+
+      container.register(
+        paymentProcessorResolutionKey,
+        asValue(mockPaymentProcessor)
+      )
+
+      const providerService = container.resolve(paymentServiceResolutionKey)
+
+      const err = await providerService
+        .createSession(defaultPaymentSessionInputData)
+        .catch((e) => e)
+
+      expect(err.message).toBe(
+        `${errResponse.error}:${EOL}${errResponse.details}`
+      )
+    })
+  })
+
+  describe("refreshSession", () => {
+    const sessionId = "test-session"
+    const externalId = "external-id"
+    const paymentSessionData = { id: externalId }
+
+    const container = createContainer({}, defaultContainer)
+
+    const mockPaymentProcessor = new PaymentProcessor(container)
+    mockPaymentProcessor.deletePayment = jest
+      .fn()
+      .mockReturnValue(Promise.resolve())
+    mockPaymentProcessor.initiatePayment = jest
+      .fn()
+      .mockReturnValue(Promise.resolve({ session_data: paymentSessionData }))
+
+    container
+      .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
+      .register(
+        "paymentSessionRepository",
+        asValue(
+          MockRepository({
+            findOne: jest
+              .fn()
+              .mockImplementation(async () => ({ data: paymentSessionData })),
+          })
+        )
+      )
+
+    const providerService = container.resolve(paymentServiceResolutionKey)
+
+    it("successfully refresh a session", async () => {
+      await providerService.refreshSession(
+        {
+          id: sessionId,
+          data: paymentSessionData,
+          provider_id: paymentProviderId,
+        },
+        defaultPaymentSessionInputData
+      )
+
+      const provider = container.resolve(paymentProcessorResolutionKey)
+
+      expect(provider.deletePayment).toBeCalledTimes(1)
+      expect(provider.deletePayment).toBeCalledWith({ id: externalId })
+
+      expect(provider.initiatePayment).toBeCalledTimes(1)
+      expect(provider.initiatePayment).toBeCalledWith({
+        billing_address: defaultPaymentSessionInputData.cart.billing_address,
+        email: defaultPaymentSessionInputData.cart.email,
+        currency_code: defaultPaymentSessionInputData.currency_code,
+        amount: defaultPaymentSessionInputData.amount,
+        resource_id: undefined,
+        customer: undefined,
+        context: {},
+        paymentSessionData: {},
+      })
+    })
+
+    it("throw an error using the provider error response", async () => {
+      const errResponse = {
+        error: "Error",
+        code: 400,
+        details: "Error details",
+      }
+
+      const mockPaymentProcessor = new PaymentProcessor(container)
+      mockPaymentProcessor.deletePayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(errResponse))
+
+      container.register(
+        paymentProcessorResolutionKey,
+        asValue(mockPaymentProcessor)
+      )
+
+      const providerService = container.resolve(paymentServiceResolutionKey)
+
+      const err = await providerService
+        .refreshSession(
+          {
+            id: sessionId,
+            data: paymentSessionData,
+            provider_id: paymentProviderId,
+          },
+          defaultPaymentSessionInputData
+        )
+        .catch((e) => e)
+
+      expect(err.message).toBe(
+        `${errResponse.error}:${EOL}${errResponse.details}`
+      )
+    })
+  })
+
+  describe("updateSession", () => {
+    const sessionId = "test-session"
+    const externalId = "external-id"
+    const paymentSessionData = { id: externalId }
+
+    const container = createContainer({}, defaultContainer)
+
+    const mockPaymentProcessor = new PaymentProcessor(container)
+    mockPaymentProcessor.updatePayment = jest
+      .fn()
+      .mockReturnValue(Promise.resolve({ session_data: paymentSessionData }))
+
+    container
+      .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
+      .register(
+        "paymentSessionRepository",
+        asValue(
+          MockRepository({
+            findOne: jest
+              .fn()
+              .mockImplementation(async () => ({ data: paymentSessionData })),
+          })
+        )
+      )
+
+    const providerService = container.resolve(paymentServiceResolutionKey)
+
+    it("successfully update a session", async () => {
+      await providerService.updateSession(
+        {
+          id: sessionId,
+          data: paymentSessionData,
+          provider_id: paymentProviderId,
+        },
+        defaultPaymentSessionInputData
+      )
+
+      const provider = container.resolve(paymentProcessorResolutionKey)
+
+      expect(provider.updatePayment).toBeCalledTimes(1)
+      expect(provider.updatePayment).toBeCalledWith({
+        billing_address: defaultPaymentSessionInputData.cart.billing_address,
+        email: defaultPaymentSessionInputData.cart.email,
+        currency_code: defaultPaymentSessionInputData.currency_code,
+        amount: defaultPaymentSessionInputData.amount,
+        resource_id: undefined,
+        customer: undefined,
+        context: {},
+        paymentSessionData,
+      })
+    })
+
+    it("throw an error using the provider error response", async () => {
+      const errResponse = {
+        error: "Error",
+        code: 400,
+        details: "Error details",
+      }
+
+      const mockPaymentProcessor = new PaymentProcessor(container)
+      mockPaymentProcessor.updatePayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(errResponse))
+
+      container.register(
+        paymentProcessorResolutionKey,
+        asValue(mockPaymentProcessor)
+      )
+
+      const providerService = container.resolve(paymentServiceResolutionKey)
+
+      const err = await providerService
+        .updateSession(
+          {
+            id: sessionId,
+            data: paymentSessionData,
+            provider_id: paymentProviderId,
+          },
+          defaultPaymentSessionInputData
+        )
+        .catch((e) => e)
+
+      expect(err.message).toBe(
+        `${errResponse.error}:${EOL}${errResponse.details}`
+      )
+    })
+  })
+
+  describe("deleteSession", () => {
+    const sessionId = "test-session"
+    const externalId = "external-id"
+    const paymentSessionData = { id: externalId }
+
+    const container = createContainer({}, defaultContainer)
+
+    const mockPaymentProcessor = new PaymentProcessor(container)
+    mockPaymentProcessor.deletePayment = jest.fn()
+
+    container
+      .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
+      .register(
+        "paymentSessionRepository",
+        asValue(
+          MockRepository({
+            findOne: jest
+              .fn()
+              .mockImplementation(async () => ({ data: paymentSessionData })),
+          })
+        )
+      )
+
+    const providerService = container.resolve(paymentServiceResolutionKey)
+
+    it("successfully delete a session", async () => {
+      await providerService.deleteSession({
+        id: sessionId,
+        data: paymentSessionData,
+        provider_id: paymentProviderId,
+      })
+
+      const provider = container.resolve(paymentProcessorResolutionKey)
+
+      expect(provider.deletePayment).toBeCalledTimes(1)
+      expect(provider.deletePayment).toBeCalledWith(paymentSessionData)
+    })
+
+    it("throw an error using the provider error response", async () => {
+      const errResponse = {
+        error: "Error",
+        code: 400,
+        details: "Error details",
+      }
+
+      const mockPaymentProcessor = new PaymentProcessor(container)
+      mockPaymentProcessor.deletePayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(errResponse))
+
+      container.register(
+        paymentProcessorResolutionKey,
+        asValue(mockPaymentProcessor)
+      )
+
+      const providerService = container.resolve(paymentServiceResolutionKey)
+
+      const err = await providerService
+        .deleteSession({
+          id: sessionId,
+          data: paymentSessionData,
+          provider_id: paymentProviderId,
+        })
+        .catch((e) => e)
+
+      expect(err.message).toBe(
+        `${errResponse.error}:${EOL}${errResponse.details}`
+      )
+    })
   })
 })

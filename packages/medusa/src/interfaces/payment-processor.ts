@@ -20,7 +20,7 @@ export type PaymentProcessorSessionResponse = {
 export interface PaymentProcessorError {
   error: string
   code: number
-  details: any
+  details?: any
 }
 
 /**
@@ -51,7 +51,7 @@ export interface PaymentProcessor {
    */
   updatePayment(
     context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse | void>
 
   /**
    * Refund an existing session
@@ -80,13 +80,15 @@ export interface PaymentProcessor {
   /**
    * Delete an existing session
    */
-  deletePayment(paymentId: string): Promise<PaymentProcessorError | void>
+  deletePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentProcessorError | void>
 
   /**
    * Retrieve an existing session
    */
   retrievePayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >
@@ -94,12 +96,16 @@ export interface PaymentProcessor {
   /**
    * Cancel an existing session
    */
-  cancelPayment(paymentId: string): Promise<PaymentProcessorError | void>
+  cancelPayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentProcessorError | void>
 
   /**
    * Return the status of the session
    */
-  getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus>
+  getPaymentStatus(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentSessionStatus>
 }
 
 /**
@@ -111,7 +117,7 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {}
 
-  protected static identifier: string
+  public static identifier: string
 
   public getIdentifier(): string {
     const ctr = this.constructor as typeof AbstractPaymentProcessor
@@ -134,7 +140,7 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   ): Promise<PaymentProcessorError | void>
 
   abstract cancelPayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<PaymentProcessorError | void>
 
   abstract initiatePayment(
@@ -142,17 +148,19 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse>
 
   abstract deletePayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<PaymentProcessorError | void>
 
-  abstract getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus>
+  abstract getPaymentStatus(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentSessionStatus>
 
   abstract refundPayment(
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | void>
 
   abstract retrievePayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >

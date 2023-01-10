@@ -2,8 +2,10 @@ import { isDefined, MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import {
+  AbstractPaymentProcessor,
   AbstractPaymentService,
   PaymentContext,
+  PaymentProcessorError,
   PaymentSessionResponse,
   TransactionBaseService,
 } from "../interfaces"
@@ -26,6 +28,7 @@ import { buildQuery, isString } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { CustomerService } from "./index"
 import PaymentService from "./payment"
+import { EOL } from "os"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -101,15 +104,27 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await ppRepo.find()
   }
 
+  /**
+   * Retrieve a payment entity with the given id.
+   * @param paymentId
+   * @param relations
+   */
   async retrievePayment(
-    id: string,
+    paymentId: string,
     relations: string[] = []
   ): Promise<Payment | never> {
+    if (!isDefined(paymentId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"paymentId" must be defined`
+      )
+    }
+
     const paymentRepo = this.manager_.getCustomRepository(
       this.paymentRepository_
     )
     const query = {
-      where: { id },
+      where: { id: paymentId },
       relations: [] as string[],
     }
 
@@ -122,13 +137,18 @@ export default class PaymentProviderService extends TransactionBaseService {
     if (!payment) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Payment with ${id} was not found`
+        `Payment with ${paymentId} was not found`
       )
     }
 
     return payment
   }
 
+  /**
+   * List all the payments according to the given selector and config.
+   * @param selector
+   * @param config
+   */
   async listPayments(
     selector: Selector<Payment>,
     config: FindConfig<Payment> = {
@@ -142,34 +162,53 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await payRepo.find(query)
   }
 
+  /**
+   * Return the payment session for the given id.
+   * @param paymentSessionId
+   * @param relations
+   */
   async retrieveSession(
-    id: string,
+    paymentSessionId: string,
     relations: string[] = []
   ): Promise<PaymentSession | never> {
+    if (!isDefined(paymentSessionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"paymentSessionId" must be defined`
+      )
+    }
+
     const sessionRepo = this.manager_.getCustomRepository(
       this.paymentSessionRepository_
     )
 
-    const query = {
-      where: { id },
-      relations: [] as string[],
-    }
-
-    if (relations.length) {
-      query.relations = relations
-    }
-
+    const query = buildQuery({ id: paymentSessionId }, { relations })
     const session = await sessionRepo.findOne(query)
 
     if (!session) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Payment Session with ${id} was not found`
+        `Payment Session with ${paymentSessionId} was not found`
       )
     }
 
     return session
   }
+
+  /**
+   * @deprecated
+   * @param providerId
+   * @param cart
+   */
+  async createSession(providerId: string, cart: Cart): Promise<PaymentSession>
+
+  /**
+   * Creates a payment session with the given provider.
+   * @param sessionInput
+   */
+  async createSession(
+    sessionInput: PaymentSessionInput
+  ): Promise<PaymentSession>
 
   /**
    * Creates a payment session with the given provider.
@@ -187,11 +226,14 @@ export default class PaymentProviderService extends TransactionBaseService {
       const providerId = isString(providerIdOrSessionInput)
         ? providerIdOrSessionInput
         : providerIdOrSessionInput.provider_id
+
       const data = (
         isString(providerIdOrSessionInput) ? cart : providerIdOrSessionInput
       ) as Cart | PaymentSessionInput
 
-      const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
+      const provider = this.retrieveProvider<
+        AbstractPaymentService | AbstractPaymentProcessor
+      >(providerId)
       const context = this.buildPaymentProcessorContext(data)
 
       if (!isDefined(context.currency_code) || !isDefined(context.amount)) {
@@ -201,9 +243,28 @@ export default class PaymentProviderService extends TransactionBaseService {
         )
       }
 
-      const paymentResponse = await provider
-        .withTransaction(transactionManager)
-        .createPayment(context)
+      let paymentResponse
+      if (provider instanceof AbstractPaymentProcessor) {
+        paymentResponse = await provider.initiatePayment({
+          amount: context.amount,
+          context: context.context,
+          currency_code: context.currency_code,
+          customer: context.customer,
+          email: context.email,
+          billing_address: context.billing_address,
+          resource_id: context.resource_id,
+          paymentSessionData: {},
+        })
+
+        if ("error" in paymentResponse) {
+          this.throwFromPaymentProcessorError(paymentResponse)
+        }
+      } else {
+        // Allow to maintain backward compatibility
+        paymentResponse = await provider
+          .withTransaction(transactionManager)
+          .createPayment(context)
+      }
 
       const sessionData = paymentResponse.session_data ?? paymentResponse
 
@@ -245,10 +306,21 @@ export default class PaymentProviderService extends TransactionBaseService {
   ): Promise<PaymentSession> {
     return this.atomicPhase_(async (transactionManager) => {
       const session = await this.retrieveSession(paymentSession.id)
-      const provider = this.retrieveProvider<AbstractPaymentService>(
-        paymentSession.provider_id
-      )
-      await provider.withTransaction(transactionManager).deletePayment(session)
+
+      const provider = this.retrieveProvider<
+        AbstractPaymentService | AbstractPaymentProcessor
+      >(paymentSession.provider_id)
+
+      if (provider instanceof AbstractPaymentProcessor) {
+        const res = await provider.deletePayment(session.data)
+        if (res) {
+          this.throwFromPaymentProcessorError(res)
+        }
+      } else {
+        await provider
+          .withTransaction(transactionManager)
+          .deletePayment(session)
+      }
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
@@ -274,13 +346,34 @@ export default class PaymentProviderService extends TransactionBaseService {
     sessionInput: Cart | PaymentSessionInput
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const provider = this.retrieveProvider(paymentSession.provider_id)
+      const provider = this.retrieveProvider<
+        AbstractPaymentService | AbstractPaymentProcessor
+      >(paymentSession.provider_id)
 
       const context = this.buildPaymentProcessorContext(sessionInput)
 
-      const paymentResponse = await provider
-        .withTransaction(transactionManager)
-        .updatePayment(paymentSession.data, context)
+      let paymentResponse
+      if (provider instanceof AbstractPaymentProcessor) {
+        paymentResponse =
+          (await provider.updatePayment({
+            amount: context.amount,
+            context: context.context,
+            currency_code: context.currency_code,
+            customer: context.customer,
+            email: context.email,
+            billing_address: context.billing_address,
+            resource_id: context.resource_id,
+            paymentSessionData: paymentSession.data,
+          })) ?? {}
+
+        if (paymentResponse && "error" in paymentResponse) {
+          this.throwFromPaymentProcessorError(paymentResponse)
+        }
+      } else {
+        paymentResponse = await provider
+          .withTransaction(transactionManager)
+          .updatePayment(paymentSession.data, context)
+      }
 
       const sessionData = paymentResponse.session_data ?? paymentResponse
 
@@ -312,10 +405,20 @@ export default class PaymentProviderService extends TransactionBaseService {
         return
       }
 
-      const provider = this.retrieveProvider(paymentSession.provider_id)
-      await provider
-        .withTransaction(transactionManager)
-        .deletePayment(paymentSession)
+      const provider = this.retrieveProvider<
+        AbstractPaymentService | AbstractPaymentProcessor
+      >(paymentSession.provider_id)
+
+      if (provider instanceof AbstractPaymentProcessor) {
+        const res = await provider.deletePayment(paymentSession.data)
+        if (res) {
+          this.throwFromPaymentProcessorError(res)
+        }
+      } else {
+        await provider
+          .withTransaction(transactionManager)
+          .deletePayment(paymentSession)
+      }
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
@@ -327,15 +430,20 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   /**
    * Finds a provider given an id
-   * @param {string} providerId - the id of the provider to get
-   * @return {PaymentService} the payment provider
+   * @param providerId - the id of the provider to get
+   * @return the payment provider
    */
   retrieveProvider<
-    TProvider extends AbstractPaymentService | typeof BasePaymentService
+    TProvider extends
+      | AbstractPaymentService
+      | typeof BasePaymentService
+      | AbstractPaymentProcessor
   >(
     providerId: string
   ): TProvider extends AbstractPaymentService
     ? AbstractPaymentService
+    : TProvider extends AbstractPaymentProcessor
+    ? AbstractPaymentProcessor
     : typeof BasePaymentService {
     try {
       let provider
@@ -653,6 +761,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       context.cart = {
         context: cart.context,
         shipping_address: cart.shipping_address,
+        billing_address: cart.billing_address,
         id: cart.id,
         email: cart.email,
         shipping_methods: cart.shipping_methods,
@@ -747,5 +856,13 @@ export default class PaymentProviderService extends TransactionBaseService {
           metadata: update_requests.customer_metadata,
         })
     }
+  }
+
+  private throwFromPaymentProcessorError(errObj: PaymentProcessorError) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `${errObj.error}${errObj.details ? `:${EOL}${errObj.details}` : ""}`,
+      errObj.code.toString()
+    )
   }
 }
