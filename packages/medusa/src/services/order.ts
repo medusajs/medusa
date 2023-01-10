@@ -37,18 +37,18 @@ import {
   DiscountService,
   DraftOrderService,
   EventBusService,
-  FulfillmentService,
   FulfillmentProviderService,
+  FulfillmentService,
   GiftCardService,
-  ProductVariantInventoryService,
   LineItemService,
+  NewTotalsService,
   PaymentProviderService,
+  ProductVariantInventoryService,
   RegionService,
   ShippingOptionService,
   ShippingProfileService,
-  TotalsService,
-  NewTotalsService,
   TaxProviderService,
+  TotalsService,
 } from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -1102,6 +1102,7 @@ class OrderService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         relations: [
+          "refunds",
           "fulfillments",
           "payments",
           "returns",
