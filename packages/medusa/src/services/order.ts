@@ -37,18 +37,18 @@ import {
   DiscountService,
   DraftOrderService,
   EventBusService,
-  FulfillmentService,
   FulfillmentProviderService,
+  FulfillmentService,
   GiftCardService,
-  ProductVariantInventoryService,
   LineItemService,
+  NewTotalsService,
   PaymentProviderService,
+  ProductVariantInventoryService,
   RegionService,
   ShippingOptionService,
   ShippingProfileService,
-  TotalsService,
-  NewTotalsService,
   TaxProviderService,
+  TotalsService,
 } from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -1102,6 +1102,7 @@ class OrderService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         relations: [
+          "refunds",
           "fulfillments",
           "payments",
           "returns",
@@ -1144,13 +1145,24 @@ class OrderService extends TransactionBaseService {
 
       const inventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
+
+      const previouslyFulfilledQuantities = order.fulfillments.reduce(
+        (acc, f) => {
+          return f.items.reduce((acc, item) => {
+            acc[item.item_id] = (acc[item.item_id] || 0) + item.quantity
+            return acc
+          }, acc)
+        },
+        {}
+      )
+
       await Promise.all(
         order.items.map(async (item) => {
           if (item.variant_id) {
-            return await inventoryServiceTx.releaseReservationsByLineItem(
+            return await inventoryServiceTx.deleteReservationsByLineItem(
               item.id,
               item.variant_id,
-              item.quantity
+              item.quantity - (previouslyFulfilledQuantities[item.id] || 0)
             )
           }
         })
@@ -1295,13 +1307,11 @@ class OrderService extends TransactionBaseService {
     itemsToFulfill: FulFillmentItemType[],
     config: {
       no_notification?: boolean
+      location_id?: string
       metadata?: Record<string, unknown>
-    } = {
-      no_notification: undefined,
-      metadata: {},
-    }
+    } = {}
   ): Promise<Order> {
-    const { metadata, no_notification } = config
+    const { metadata, no_notification, location_id } = config
 
     return await this.atomicPhase_(async (manager) => {
       // NOTE: we are telling the service to calculate all totals for us which
@@ -1354,9 +1364,12 @@ class OrderService extends TransactionBaseService {
           order as unknown as CreateFulfillmentOrder,
           itemsToFulfill,
           {
-            metadata,
+            metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
+          },
+          {
+            locationId: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []
