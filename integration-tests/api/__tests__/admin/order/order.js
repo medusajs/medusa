@@ -288,6 +288,48 @@ describe("/admin/orders", () => {
       await db.teardown()
     })
 
+    it("cancels an order with refund should fail", async () => {
+      const api = useApi()
+
+      const refundOrder = await simpleOrderFactory(dbConnection, {
+        id: "refunded-order",
+        customer_id: "test-customer",
+        email: "test@email.com",
+        fulfillment_status: "not_fulfilled",
+        payment_status: "refunded",
+        billing_address: {
+          id: "test-billing-address",
+          first_name: "lebron",
+        },
+        shipping_address: {
+          id: "test-shipping-address",
+          first_name: "lebron",
+          country_code: "us",
+        },
+        region_id: "test-region",
+        currency_code: "usd",
+        tax_rate: 0,
+        discounts: [],
+        payments: [],
+        items: [],
+        refunds: [
+          {
+            amount: 1000,
+            reason: "return",
+          },
+        ],
+      })
+
+      const err = await api
+        .post(`/admin/orders/${refundOrder.id}/cancel`, {}, adminReqConfig)
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "Order with refund(s) cannot be canceled"
+      )
+    })
+
     it("cancels an order and increments inventory_quantity", async () => {
       const api = useApi()
 
