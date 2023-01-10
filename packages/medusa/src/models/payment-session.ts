@@ -1,12 +1,4 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  Unique,
-} from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, Unique, } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
 import { Cart } from "./cart"
@@ -42,6 +34,9 @@ export class PaymentSession extends BaseEntity {
 
   @Column({ type: "boolean", nullable: true })
   is_selected: boolean | null
+
+  @Column({ type: "boolean", default: false })
+  is_initiated: boolean
 
   @DbAwareColumn({ type: "enum", enum: PaymentSessionStatus })
   status: string
@@ -97,6 +92,11 @@ export class PaymentSession extends BaseEntity {
  *     description: "A flag to indicate if the Payment Session has been selected as the method that will be used to complete the purchase."
  *     type: boolean
  *     example: true
+ *   is_initiated:
+ *     description: "A flag to indicate if a communication with the third party provider has been initiated."
+ *     type: boolean
+ *     example: true
+ *     default: false
  *   status:
  *     description: "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires_more` to indicate that further actions are to be completed by the Customer."
  *     type: string
