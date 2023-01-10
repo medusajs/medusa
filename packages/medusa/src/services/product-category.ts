@@ -75,7 +75,7 @@ class ProductCategoryService extends TransactionBaseService {
   async delete(productCategoryId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const productCategoryRepository: ProductCategoryRepository =
-        this.manager_.getCustomRepository(this.productCategoryRepo_)
+        manager.getCustomRepository(this.productCategoryRepo_)
 
       const productCategory = await this.retrieve(productCategoryId, {
         relations: ["category_children"],

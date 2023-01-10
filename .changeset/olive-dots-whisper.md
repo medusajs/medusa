@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-feat(nested-categories): added admin delete category endpoint
+feat(medusa): added admin delete category endpoint
