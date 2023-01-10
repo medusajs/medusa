@@ -49,7 +49,7 @@ class ManualPaymentService extends PaymentService {
 
   /**
    * Noop, simply returns existing data.
-   * @param {object} session - payment session data.
+   * @param {object} sessionData - payment session data.
    * @returns {object} same data
    */
   async updatePayment(sessionData) {
