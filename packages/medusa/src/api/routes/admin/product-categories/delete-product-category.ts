@@ -72,7 +72,13 @@ export default async (req: Request, res: Response) => {
     "productCategoryService"
   )
 
-  await productCategoryService.delete(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+
+  await manager.transaction(async (transactionManager) => {
+    return await productCategoryService
+      .withTransaction(transactionManager)
+      .delete(id)
+  })
 
   res.json({
     id: id,

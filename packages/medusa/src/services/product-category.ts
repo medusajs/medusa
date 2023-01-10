@@ -73,21 +73,29 @@ class ProductCategoryService extends TransactionBaseService {
    * @return a promise
    */
   async delete(productCategoryId: string): Promise<void> {
-    const productCategoryRepository: ProductCategoryRepository =
-      this.manager_.getCustomRepository(this.productCategoryRepo_)
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository: ProductCategoryRepository =
+        this.manager_.getCustomRepository(this.productCategoryRepo_)
 
-    const productCategory = await this.retrieve(productCategoryId, {
-      relations: ["category_children"],
-    })
+      const productCategory = await this.retrieve(productCategoryId, {
+        relations: ["category_children"],
+      })
 
-    if (productCategory.category_children.length === 0) {
+      if (!productCategory) {
+        return Promise.resolve()
+      }
+
+      if (productCategory.category_children.length > 0) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Deleting ProductCategory (${productCategoryId}) with category children is not allowed`
+        )
+      }
+
       await productCategoryRepository.softRemove(productCategory)
-    } else {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `Deleting ProductCategory (${productCategoryId}) with category children is not allowed`
-      )
-    }
+
+      return Promise.resolve()
+    })
   }
 }
 
