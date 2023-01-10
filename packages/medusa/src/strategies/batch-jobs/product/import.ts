@@ -462,7 +462,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     for (const productOp of productOps) {
       const productData = transformProductData(productOp)
       try {
-        if (isSalesChannelsFeatureOn) {
+        if (isSalesChannelsFeatureOn && productOp["product.sales_channels"]) {
           productData["sales_channels"] = await this.processSalesChannels(
             productOp["product.sales_channels"] as Pick<
               SalesChannel,

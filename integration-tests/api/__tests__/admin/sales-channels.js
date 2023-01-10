@@ -621,7 +621,7 @@ describe("sales channels", () => {
         relations: ["sales_channels"],
       })
 
-      expect(attachedProduct.sales_channels.length).toBe(1)
+      expect(attachedProduct.sales_channels.length).toBe(2)
       expect(attachedProduct.sales_channels).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -668,7 +668,8 @@ describe("sales channels", () => {
         relations: ["sales_channels"],
       })
 
-      expect(attachedProduct.sales_channels.length).toBe(0)
+      // default sales channel
+      expect(attachedProduct.sales_channels.length).toBe(1)
     })
   })
 
@@ -722,7 +723,8 @@ describe("sales channels", () => {
         relations: ["sales_channels"],
       })
 
-      expect(attachedProduct.sales_channels.length).toBe(1)
+      // + default sales channel
+      expect(attachedProduct.sales_channels.length).toBe(2)
       expect(attachedProduct.sales_channels).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
