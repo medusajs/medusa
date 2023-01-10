@@ -3,7 +3,7 @@ import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import { FindConfig, Selector } from "../types/common"
+import { FindConfig, Selector, QuerySelector } from "../types/common"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
@@ -25,6 +25,39 @@ class ProductCategoryService extends TransactionBaseService {
     this.manager_ = manager
 
     this.productCategoryRepo_ = productCategoryRepository
+  }
+
+  /**
+   * Lists product category based on the provided parameters and includes the count of
+   * product category that match the query.
+   * @return an array containing the product category as
+   *   the first element and the total count of product category that matches the query
+   *   as the second element.
+   */
+  async listAndCount(
+    selector: QuerySelector<ProductCategory>,
+    config: FindConfig<ProductCategory> = {
+      skip: 0,
+      take: 100,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[ProductCategory[], number]> {
+    const manager = this.transactionManager_ ?? this.manager_
+    const productCategoryRepo = manager.getCustomRepository(
+      this.productCategoryRepo_
+    )
+
+    const selector_ = { ...selector }
+    let q: string | undefined
+
+    if ("q" in selector_) {
+      q = selector_.q
+      delete selector_.q
+    }
+
+    const query = buildQuery(selector_, config)
+
+    return await productCategoryRepo.getFreeTextSearchResultsAndCount(query, q)
   }
 
   /**
@@ -64,6 +97,38 @@ class ProductCategoryService extends TransactionBaseService {
     )
 
     return productCategoryTree
+  }
+
+  /**
+   * Deletes a product category
+   *
+   * @param productCategoryId is the id of the product category to delete
+   * @return a promise
+   */
+  async delete(productCategoryId: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository: ProductCategoryRepository =
+        manager.getCustomRepository(this.productCategoryRepo_)
+
+      const productCategory = await this.retrieve(productCategoryId, {
+        relations: ["category_children"],
+      }).catch((err) => void 0)
+
+      if (!productCategory) {
+        return Promise.resolve()
+      }
+
+      if (productCategory.category_children.length > 0) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Deleting ProductCategory (${productCategoryId}) with category children is not allowed`
+        )
+      }
+
+      await productCategoryRepository.delete(productCategory.id)
+
+      return Promise.resolve()
+    })
   }
 }
 

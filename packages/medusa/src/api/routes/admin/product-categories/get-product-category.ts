@@ -70,4 +70,4 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ product_category: productCategory })
 }
 
-export class GetProductCategoryParams extends FindParams {}
+export class AdminGetProductCategoryParams extends FindParams {}
