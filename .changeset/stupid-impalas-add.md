@@ -1,6 +1,5 @@
 ---
 "medusa-payment-manual": patch
-"@medusajs/medusa": patch
 ---
 
-fix: manual payment wrongly used the input data
+fix(medusa-payment-manual): Correct wrongly used input data
