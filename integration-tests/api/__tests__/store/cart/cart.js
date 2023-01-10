@@ -58,6 +58,9 @@ describe("/store/carts", () => {
   })
 
   describe("POST /store/carts", () => {
+    let prod1
+    let prodSale
+
     beforeEach(async () => {
       const manager = dbConnection.manager
       await manager.insert(Region, {
@@ -71,6 +74,21 @@ describe("/store/carts", () => {
          SET region_id='region'
          WHERE iso_2 = 'us'`
       )
+
+      prod1 = await simpleProductFactory(dbConnection, {
+        id: "test-product",
+        variants: [{ id: "test-variant_1" }],
+      })
+
+      prodSale = await simpleProductFactory(dbConnection, {
+        id: "test-product-sale",
+        variants: [
+          {
+            id: "test-variant-sale",
+            prices: [{ amount: 1000, currency: "usd" }],
+          },
+        ],
+      })
     })
 
     afterEach(async () => {
@@ -109,21 +127,6 @@ describe("/store/carts", () => {
     })
 
     it("creates a cart with items", async () => {
-      const prod1 = await simpleProductFactory(dbConnection, {
-        id: "test-product",
-        variants: [{ id: "test-variant_1" }],
-      })
-
-      const prodSale = await simpleProductFactory(dbConnection, {
-        id: "test-product-sale",
-        variants: [
-          {
-            id: "test-variant-sale",
-            prices: [{ amount: 1000, currency: "usd" }],
-          },
-        ],
-      })
-
       const yesterday = ((today) =>
         new Date(today.setDate(today.getDate() - 1)))(new Date())
       const tomorrow = ((today) =>
