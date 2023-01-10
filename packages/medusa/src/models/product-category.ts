@@ -40,9 +40,8 @@ export class ProductCategory extends SoftDeletableEntity {
   parent_category: ProductCategory | null
 
   // Typeorm also keeps track of the category's parent at all times.
-  // TODO: Uncomment this if there is a usecase for accessing this.
-  // @Column()
-  // parent_category_id: ProductCategory
+  @Column()
+  parent_category_id: ProductCategory
 
   @TreeChildren({ cascade: true })
   category_children: ProductCategory[]
@@ -75,7 +74,7 @@ export class ProductCategory extends SoftDeletableEntity {
  *     description: "A unique string that identifies the Category - example: slug structures."
  *     type: string
  *     example: regular-fit
- *   path:
+ *   mpath:
  *     type: string
  *     description: A string for Materialized Paths - used for finding ancestors and descendents
  *     example: pcat_id1.pcat_id2.pcat_id3
