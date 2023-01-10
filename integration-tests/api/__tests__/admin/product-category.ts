@@ -111,4 +111,77 @@ describe("/admin/product-categories", () => {
       expect(response.status).toEqual(200)
     })
   })
+
+  describe("DELETE /admin/product-categories/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
+        name: "category parent",
+        handle: "category-parent",
+      })
+
+      productCategory = await simpleProductCategoryFactory(dbConnection, {
+        name: "category",
+        handle: "category",
+        parent_category: productCategoryParent,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("throws a not found error with an invalid ID", async () => {
+      const api = useApi()
+
+      const error = await api.delete(
+        `/admin/product-categories/invalid-id`,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(404)
+      expect(error.response.data.type).toEqual("not_found")
+      expect(error.response.data.message).toEqual(
+        "ProductCategory with id: invalid-id was not found"
+      )
+    })
+
+    it("throws a not allowed error for a category with children", async () => {
+      const api = useApi()
+
+      const error = await api.delete(
+        `/admin/product-categories/${productCategoryParent.id}`,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data.type).toEqual("not_allowed")
+      expect(error.response.data.message).toEqual(
+        `Deleting ProductCategory (${productCategoryParent.id}) with category children is not allowed`
+      )
+    })
+
+    it("soft deletes a product category with no children successfully", async () => {
+      const api = useApi()
+
+      const deleteResponse = await api.delete(
+        `/admin/product-categories/${productCategory.id}`,
+        adminHeaders
+      )
+
+      expect(deleteResponse.status).toEqual(200)
+      expect(deleteResponse.data.id).toEqual(productCategory.id)
+      expect(deleteResponse.data.deleted).toBeTruthy()
+      expect(deleteResponse.data.object).toEqual("product_category")
+
+      const errorFetchingDeleted = await api.get(
+        `/admin/product-categories/${productCategory.id}`,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(errorFetchingDeleted.response.status).toEqual(404)
+    })
+  })
 })

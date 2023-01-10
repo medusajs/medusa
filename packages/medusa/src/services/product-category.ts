@@ -65,6 +65,30 @@ class ProductCategoryService extends TransactionBaseService {
 
     return productCategoryTree
   }
+
+  /**
+   * Deletes a product category
+   *
+   * @param productCategoryId is the id of the product category to delete
+   * @return a promise
+   */
+  async delete(productCategoryId: string): Promise<void> {
+    const productCategoryRepository: ProductCategoryRepository =
+      this.manager_.getCustomRepository(this.productCategoryRepo_)
+
+    const productCategory = await this.retrieve(productCategoryId, {
+      relations: ["category_children"],
+    })
+
+    if (productCategory.category_children.length === 0) {
+      await productCategoryRepository.softRemove(productCategory)
+    } else {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Deleting ProductCategory (${productCategoryId}) with category children is not allowed`
+      )
+    }
+  }
 }
 
 export default ProductCategoryService
