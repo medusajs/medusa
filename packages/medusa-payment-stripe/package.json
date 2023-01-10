@@ -26,7 +26,7 @@
     "cross-env": "^5.2.1",
     "jest": "^25.5.2",
     "medusa-interfaces": "^1.3.3",
-    "medusa-test-utils": "^1.1.37"
+    "medusa-test-utils": "^1.1.38-alpha.0"
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__ --ignore **/__mocks__",

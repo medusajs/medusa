@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/inventory",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.0",
   "description": "Inventory Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -14,7 +14,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "*",
+    "@medusajs/medusa": "1.7.3-alpha.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.2",
     "ts-jest": "^25.5.1",
@@ -28,8 +28,8 @@
     "test:unit": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.x.x",
-    "medusa-interfaces": "1.x.x"
+    "@medusajs/medusa": "1.7.3-alpha.0",
+    "medusa-interfaces": "1.3.3"
   },
   "dependencies": {
     "typeorm": "^0.2.31"

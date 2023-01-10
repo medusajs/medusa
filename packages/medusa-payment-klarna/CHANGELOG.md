@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.3.6-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [[`47d075351`](https://github.com/medusajs/medusa/commit/47d075351fa4fdeaf32d48f2bd7e72943a293d9b)]:
+  - medusa-test-utils@1.1.38-alpha.0
+  - medusa-interfaces@1.3.3
+
 ## 1.3.5
 
 ### Patch Changes
