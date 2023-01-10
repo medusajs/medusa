@@ -44,20 +44,26 @@ describe("/admin/store", () => {
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.store).toMatchSnapshot({
-        id: expect.any(String),
-        name: "Medusa Store",
-        currencies: [
-          {
-            code: "usd",
-          },
-        ],
-        modules: expect.any(Array),
-        feature_flags: expect.any(Array),
-        default_currency_code: "usd",
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.store).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          default_sales_channel_id: expect.any(String),
+          default_sales_channel: expect.objectContaining({
+            id: expect.any(String),
+          }),
+          name: "Medusa Store",
+          currencies: expect.arrayContaining([
+            expect.objectContaining({
+              code: "usd",
+            }),
+          ]),
+          modules: expect.any(Array),
+          feature_flags: expect.any(Array),
+          default_currency_code: "usd",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 
@@ -142,21 +148,24 @@ describe("/admin/store", () => {
         .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
-      expect(response.data.store).toMatchSnapshot({
-        id: expect.any(String),
-        name: "Medusa Store",
-        currencies: [
-          {
-            code: "usd",
-          },
-          {
-            code: "dkk",
-          },
-        ],
-        default_currency_code: "dkk",
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.store).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "Medusa Store",
+          default_sales_channel_id: expect.any(String),
+          currencies: expect.arrayContaining([
+            expect.objectContaining({
+              code: "usd",
+            }),
+            expect.objectContaining({
+              code: "dkk",
+            }),
+          ]),
+          default_currency_code: "dkk",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
 
     it("successfully updates default currency and store currencies", async () => {
@@ -174,21 +183,24 @@ describe("/admin/store", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.store).toMatchSnapshot({
-        id: expect.any(String),
-        name: "Medusa Store",
-        currencies: [
-          {
-            code: "jpy",
-          },
-          {
-            code: "usd",
-          },
-        ],
-        default_currency_code: "jpy",
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.store).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "Medusa Store",
+          default_sales_channel_id: expect.any(String),
+          currencies: expect.arrayContaining([
+            expect.objectContaining({
+              code: "jpy",
+            }),
+            expect.objectContaining({
+              code: "usd",
+            }),
+          ]),
+          default_currency_code: "jpy",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
 
     it("successfully updates and store currencies", async () => {
@@ -205,21 +217,24 @@ describe("/admin/store", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.store).toMatchSnapshot({
-        id: expect.any(String),
-        name: "Medusa Store",
-        currencies: [
-          {
-            code: "jpy",
-          },
-          {
-            code: "usd",
-          },
-        ],
-        default_currency_code: "usd",
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.store).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          default_sales_channel_id: expect.any(String),
+          name: "Medusa Store",
+          currencies: expect.arrayContaining([
+            expect.objectContaining({
+              code: "jpy",
+            }),
+            expect.objectContaining({
+              code: "usd",
+            }),
+          ]),
+          default_currency_code: "usd",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 })
