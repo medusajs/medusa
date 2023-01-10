@@ -16,8 +16,8 @@ import { Type } from "class-transformer"
  *   - (query) is_internal {boolean} Search for only internal categories.
  *   - (query) is_active {boolean} Search for only active categories
  *   - (query) parent_category_id {string} Returns categories scoped by parent
- *   - (query) offset=0 {integer} How many groups to skip in the result.
- *   - (query) limit=10 {integer} Limit the number of product categories returned.
+ *   - (query) offset=0 {integer} How many product categories to skip in the result.
+ *   - (query) limit=100 {integer} Limit the number of product categories returned.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
