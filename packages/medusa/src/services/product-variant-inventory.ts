@@ -438,7 +438,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
 
       const reservationQtyUpdate =
-        reservation.quantity - quantity * productVariantInventory.quantity
+        reservation.quantity -
+        quantity * productVariantInventory.required_quantity
 
       if (reservationQtyUpdate === 0) {
         await this.inventoryService_.deleteReservationItem(reservation.id)
