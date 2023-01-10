@@ -1,12 +1,14 @@
 import commonjs from "@rollup/plugin-commonjs"
 import resolve from "@rollup/plugin-node-resolve"
+import { defineConfig } from "rollup"
 import { terser } from "rollup-plugin-terser"
 import typescript from "rollup-plugin-typescript2"
 
 const packageJson = require("./package.json")
 
-export default {
+export default defineConfig({
   input: "src/index.ts",
+  external: ["@medusajs/medusa"],
   output: [
     {
       file: packageJson.main,
@@ -29,4 +31,4 @@ export default {
       useTsconfigDeclarationDir: true,
     }),
   ],
-}
+})
