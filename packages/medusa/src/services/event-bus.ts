@@ -174,8 +174,6 @@ export default class EventBusService {
       (sub) => sub.id === subscriberId
     )
 
-    console.log(subscriberId)
-
     if (subscriberAlreadyExists) {
       throw Error(`Subscriber with id ${subscriberId} already exists`)
     }
