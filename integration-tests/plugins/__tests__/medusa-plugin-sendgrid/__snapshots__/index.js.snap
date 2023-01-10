@@ -107,6 +107,7 @@ Object {
       "object": "order",
       "payment_status": "captured",
       "region_id": "test-region",
+      "sales_channel_id": null,
       "shipping_address": Object {
         "address_1": "84185 Lindsey Centers",
         "address_2": null,
@@ -260,6 +261,7 @@ Object {
     "object": "order",
     "payment_status": "captured",
     "region_id": "test-region",
+    "sales_channel_id": null,
     "shipping_address": Object {
       "address_1": "84185 Lindsey Centers",
       "address_2": null,
@@ -579,6 +581,7 @@ Object {
         "updated_at": Any<Date>,
       },
     ],
+    "sales_channel_id": null,
     "shipping_address": Object {
       "address_1": "84185 Lindsey Centers",
       "address_2": null,
@@ -897,6 +900,7 @@ Object {
   },
   "region_id": "test-region",
   "returns": Array [],
+  "sales_channel_id": null,
   "shipping_address": Object {
     "address_1": "84185 Lindsey Centers",
     "address_2": null,
@@ -1149,6 +1153,7 @@ Object {
   },
   "region_id": "test-region",
   "returns": Array [],
+  "sales_channel_id": null,
   "shipping_address": Object {
     "address_1": "84185 Lindsey Centers",
     "address_2": null,
@@ -1400,6 +1405,7 @@ Object {
     },
     "region_id": "test-region",
     "returns": Array [],
+    "sales_channel_id": null,
     "shipping_address": Object {
       "address_1": "84185 Lindsey Centers",
       "address_2": null,
@@ -1754,6 +1760,7 @@ Object {
         "updated_at": Any<Date>,
       },
     ],
+    "sales_channel_id": null,
     "shipping_address": Object {
       "address_1": "84185 Lindsey Centers",
       "address_2": null,
@@ -2168,6 +2175,7 @@ Object {
       "updated_at": Any<Date>,
     },
     "region_id": "test-region",
+    "sales_channel_id": null,
     "shipping_address_id": Any<String>,
     "status": "pending",
     "swaps": Array [
