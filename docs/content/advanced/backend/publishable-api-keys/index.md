@@ -38,6 +38,12 @@ The relation is represented by the entity `PublishableApiKeySalesChannel`.
 
 ## Using Publishable API Keys in Requests
 
+:::note
+
+Publishable API keys are only for client-side use. They can be publicly accessible in your code, as they are not authorized for the Admin API.
+
+:::
+
 ### Using Medusa JS Client
 
 When using [Medusa’s JS Client](../../../js-client/overview.md), you can pass it to the client only once when you create the instance of the client:
