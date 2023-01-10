@@ -1,9 +1,14 @@
 import { Router } from "express"
 import middlewares, { transformQuery } from "../../../middlewares"
-import getProductCategory, {
-  GetProductCategoryParams,
-} from "./get-product-category"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
+
+import getProductCategory, {
+  AdminGetProductCategoryParams,
+} from "./get-product-category"
+
+import listProductCategories, {
+  AdminGetProductCategoriesParams,
+} from "./list-product-categories"
 
 const route = Router()
 
@@ -15,8 +20,18 @@ export default (app) => {
   )
 
   route.get(
+    "/",
+    transformQuery(AdminGetProductCategoriesParams, {
+      defaultFields: defaultProductCategoryFields,
+      defaultRelations: defaultAdminProductCategoryRelations,
+      isList: true,
+    }),
+    middlewares.wrap(listProductCategories)
+  )
+
+  route.get(
     "/:id",
-    transformQuery(GetProductCategoryParams, {
+    transformQuery(AdminGetProductCategoryParams, {
       defaultFields: defaultProductCategoryFields,
       isList: false,
     }),
@@ -27,6 +42,7 @@ export default (app) => {
 }
 
 export * from "./get-product-category"
+export * from "./list-product-categories"
 
 export const defaultAdminProductCategoryRelations = [
   "parent_category",
