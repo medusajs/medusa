@@ -4,6 +4,7 @@ import { EntityManager } from "typeorm"
 
 import { ProductCategoryService } from "../../../../services"
 import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /product-categories
@@ -11,6 +12,9 @@ import { AdminProductCategoriesReqBase } from "../../../../types/product-categor
  * summary: "Create a Product Category"
  * description: "Creates a Product Category."
  * x-authenticated: true
+ * parameters:
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.
+ *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each product category.
  * requestBody:
  *   content:
  *     application/json:
@@ -24,7 +28,8 @@ import { AdminProductCategoriesReqBase } from "../../../../types/product-categor
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.productCategories.create({
- *         name: 'Jeans'
+ *         name: 'Jeans',
+ *         handle: 'jeans',
  *       })
  *       .then(({ productCategory }) => {
  *         console.log(productCategory.id);
@@ -36,7 +41,8 @@ import { AdminProductCategoriesReqBase } from "../../../../types/product-categor
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "name": "Jeans"
+ *           "name": "Jeans",
+*            "handle": "jeans",
  *       }'
  * security:
  *   - api_token: []
@@ -82,7 +88,10 @@ export default async (req: Request, res: Response) => {
       .create(validatedBody)
   })
 
-  const productCategory = await productCategoryService.retrieve(created.id)
+  const productCategory = await productCategoryService.retrieve(
+    created.id,
+    req.retrieveConfig,
+  )
 
   res.status(200).json({ product_category: productCategory })
 }
@@ -106,6 +115,9 @@ export default async (req: Request, res: Response) => {
  *   is_active:
  *     type: boolean
  *     description: A flag to make product category visible/hidden in the store front
+ *   parent_category_id:
+ *     type: string
+ *     description: The ID of the parent product category
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesReq extends AdminProductCategoriesReqBase {
@@ -117,3 +129,5 @@ export class AdminPostProductCategoriesReq extends AdminProductCategoriesReqBase
   @IsNotEmpty()
   handle: string
 }
+
+export class AdminPostProductCategoriesParams extends FindParams {}

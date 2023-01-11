@@ -1,11 +1,11 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, DeepPartial } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { FindConfig, Selector, QuerySelector } from "../types/common"
 import { buildQuery } from "../utils"
-import { CreateProductCategory } from "../types/product-category"
+import { CreateProductCategoryInput } from "../types/product-category"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -106,7 +106,7 @@ class ProductCategoryService extends TransactionBaseService {
    * @return created product category
    */
   async create(
-    productCategory: CreateProductCategory
+    productCategory: CreateProductCategoryInput
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
       const pcRepo = manager.getCustomRepository(this.productCategoryRepo_)
@@ -132,7 +132,7 @@ class ProductCategoryService extends TransactionBaseService {
       }).catch((err) => void 0)
 
       if (!productCategory) {
-        return Promise.resolve()
+        return
       }
 
       if (productCategory.category_children.length > 0) {
@@ -143,8 +143,6 @@ class ProductCategoryService extends TransactionBaseService {
       }
 
       await productCategoryRepository.delete(productCategory.id)
-
-      return Promise.resolve()
     })
   }
 }

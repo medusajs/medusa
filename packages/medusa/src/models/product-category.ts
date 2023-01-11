@@ -41,7 +41,7 @@ export class ProductCategory extends SoftDeletableEntity {
 
   // Typeorm also keeps track of the category's parent at all times.
   @Column()
-  parent_category_id: ProductCategory
+  parent_category_id: string | null
 
   @TreeChildren({ cascade: true })
   category_children: ProductCategory[]

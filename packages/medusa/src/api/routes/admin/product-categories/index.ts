@@ -14,6 +14,7 @@ import listProductCategories, {
 
 import createProductCategory, {
   AdminPostProductCategoriesReq,
+  AdminPostProductCategoriesParams,
 } from "./create-product-category"
 
 const route = Router()
@@ -27,6 +28,11 @@ export default (app) => {
 
   route.post(
     "/",
+    transformQuery(AdminPostProductCategoriesParams, {
+      defaultFields: defaultProductCategoryFields,
+      defaultRelations: defaultAdminProductCategoryRelations,
+      isList: false,
+    }),
     transformBody(AdminPostProductCategoriesReq),
     middlewares.wrap(createProductCategory)
   )
@@ -71,4 +77,6 @@ export const defaultProductCategoryFields = [
   "handle",
   "is_active",
   "is_internal",
+  "created_at",
+  "updated_at",
 ]
