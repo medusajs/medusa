@@ -33,6 +33,7 @@ Array [
     ],
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
+    "sales_channels": Array [],
     "status": "draft",
     "subtitle": null,
     "tags": Array [],
@@ -174,6 +175,7 @@ Object {
   ],
   "origin_country": null,
   "profile_id": StringMatching /\\^sp_\\*/,
+  "sales_channels": Array [],
   "status": "draft",
   "subtitle": null,
   "tags": Array [
@@ -351,6 +353,7 @@ Object {
   ],
   "origin_country": null,
   "profile_id": StringMatching /\\^sp_\\*/,
+  "sales_channels": Array [],
   "status": "published",
   "subtitle": null,
   "tags": Array [

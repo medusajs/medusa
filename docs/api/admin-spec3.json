@@ -435,40 +435,19 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /currencies:
-    get:
-      operationId: GetCurrencies
-      summary: List Currency
-      description: Retrieves a list of Currency
+  '/batch-jobs/{id}/cancel':
+    post:
+      operationId: PostBatchJobsBatchJobCancel
+      summary: Cancel a Batch Job
+      description: Marks a batch job as canceled
       x-authenticated: true
       parameters:
-        - in: query
-          name: code
-          description: Code of the currency to search for.
+        - in: path
+          name: id
+          required: true
+          description: The ID of the batch job.
           schema:
             type: string
-        - in: query
-          name: includes_tax
-          description: Search for tax inclusive currencies.
-          schema:
-            type: boolean
-        - in: query
-          name: order
-          description: order to retrieve products in.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many products to skip in the result.
-          schema:
-            type: number
-            default: '0'
-        - in: query
-          name: limit
-          description: Limit the number of products returned.
-          schema:
-            type: number
-            default: '20'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -480,20 +459,23 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.currencies.list()
+            medusa.admin.batchJobs.cancel(batch_job_id)
 
-            .then(({ currencies, count, offset, limit }) => {
-              console.log(currencies.length);
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
             });
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/currencies' \
+            'https://medusa-url.com/admin/batch-jobs/{id}/cancel' \
 
             --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
-        - Currency
+        - Batch Job
       responses:
         '200':
           description: OK
@@ -502,10 +484,434 @@ paths:
               schema:
                 type: object
                 properties:
-                  currencies:
+                  batch_job:
+                    $ref: '#/components/schemas/BatchJob'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/batch-jobs/{id}/confirm':
+    post:
+      operationId: PostBatchJobsBatchJobConfirmProcessing
+      summary: Confirm a Batch Job
+      description: Confirms that a previously requested batch job should be executed.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the batch job.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.batchJobs.confirm(batch_job_id)
+
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/batch-jobs/{id}/confirm' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/BatchJob'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /batch-jobs:
+    post:
+      operationId: PostBatchJobs
+      summary: Create a Batch Job
+      description: Creates a Batch Job.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostBatchesReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.batchJobs.create({
+              type: 'product-export',
+              context: {},
+              dry_run: false
+            }).then((({ batch_job }) => {
+              console.log(batch_job.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/batch-jobs' \
+
+            --header 'Content-Type: application/json' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --data-raw '{
+                "type": "product-export",
+                "context": { }
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Batch Job
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/BatchJob'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetBatchJobs
+      summary: List Batch Jobs
+      description: Retrieve a list of Batch Jobs.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of batch jobs to return.
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: offset
+          description: The number of batch jobs to skip before results.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: id
+          style: form
+          explode: false
+          description: Filter by the batch ID
+          schema:
+            oneOf:
+              - type: string
+                description: batch job ID
+              - type: array
+                description: multiple batch job IDs
+                items:
+                  type: string
+        - in: query
+          name: type
+          style: form
+          explode: false
+          description: Filter by the batch type
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: confirmed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was confirmed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: pre_processed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was pre processed,
+            i.e. less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: completed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was completed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: failed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was failed, i.e. less
+            than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: canceled_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was canceled, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: order
+          description: Field used to order retrieved batch jobs
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each order of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each order of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.batchJobs.list()
+
+            .then(({ batch_jobs, limit, offset, count }) => {
+              console.log(batch_jobs.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/batch-jobs' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batch_jobs:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Currency'
+                      $ref: '#/components/schemas/BatchJob'
                   count:
                     type: integer
                     description: The total number of items available
@@ -515,24 +921,31 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-  '/currencies/{code}':
-    post:
-      operationId: PostCurrenciesCurrency
-      summary: Update a Currency
-      description: Update a Currency
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/batch-jobs/{id}':
+    get:
+      operationId: GetBatchJobsBatchJob
+      summary: Get a Batch Job
+      description: Retrieves a Batch Job.
       x-authenticated: true
       parameters:
         - in: path
-          name: code
+          name: id
           required: true
-          description: The code of the Currency.
+          description: The ID of the Batch Job
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostCurrenciesCurrencyReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -544,28 +957,23 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.currencies.update(code, {
-              includes_tax: true
-            })
+            medusa.admin.batchJobs.retrieve(batch_job_id)
 
-            .then(({ currency }) => {
-              console.log(currency.id);
+            .then(({ batch_job }) => {
+              console.log(batch_job.id);
             });
         - lang: Shell
           label: cURL
           source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/currencies/{code}' \
+            curl --location --request GET
+            'https://medusa-url.com/admin/batch-jobs/{id}' \
 
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "includes_tax": true
-            }'
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
       tags:
-        - Currency
+        - Batch Job
       responses:
         '200':
           description: OK
@@ -574,8 +982,20 @@ paths:
               schema:
                 type: object
                 properties:
-                  currency:
-                    $ref: '#/components/schemas/Currency'
+                  batch_job:
+                    $ref: '#/components/schemas/BatchJob'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/collections/{id}/products/batch':
     post:
       operationId: PostProductsToCollection
@@ -1153,6 +1573,147 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /currencies:
+    get:
+      operationId: GetCurrencies
+      summary: List Currency
+      description: Retrieves a list of Currency
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: code
+          description: Code of the currency to search for.
+          schema:
+            type: string
+        - in: query
+          name: includes_tax
+          description: Search for tax inclusive currencies.
+          schema:
+            type: boolean
+        - in: query
+          name: order
+          description: order to retrieve products in.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many products to skip in the result.
+          schema:
+            type: number
+            default: '0'
+        - in: query
+          name: limit
+          description: Limit the number of products returned.
+          schema:
+            type: number
+            default: '20'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.currencies.list()
+
+            .then(({ currencies, count, offset, limit }) => {
+              console.log(currencies.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/currencies' \
+
+            --header 'Authorization: Bearer {api_token}'
+      tags:
+        - Currency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currencies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Currency'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/currencies/{code}':
+    post:
+      operationId: PostCurrenciesCurrency
+      summary: Update a Currency
+      description: Update a Currency
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The code of the Currency.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostCurrenciesCurrencyReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.currencies.update(code, {
+              includes_tax: true
+            })
+
+            .then(({ currency }) => {
+              console.log(currency.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/currencies/{code}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "includes_tax": true
+            }'
+      tags:
+        - Currency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    $ref: '#/components/schemas/Currency'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -1873,567 +2434,6 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/batch-jobs/{id}/cancel':
-    post:
-      operationId: PostBatchJobsBatchJobCancel
-      summary: Cancel a Batch Job
-      description: Marks a batch job as canceled
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the batch job.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.cancel(batch_job_id)
-
-            .then(({ batch_job }) => {
-              console.log(batch_job.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/batch-jobs/{id}/cancel' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/BatchJob'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/batch-jobs/{id}/confirm':
-    post:
-      operationId: PostBatchJobsBatchJobConfirmProcessing
-      summary: Confirm a Batch Job
-      description: Confirms that a previously requested batch job should be executed.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the batch job.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.confirm(batch_job_id)
-
-            .then(({ batch_job }) => {
-              console.log(batch_job.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/batch-jobs/{id}/confirm' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/BatchJob'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /batch-jobs:
-    post:
-      operationId: PostBatchJobs
-      summary: Create a Batch Job
-      description: Creates a Batch Job.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostBatchesReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.create({
-              type: 'product-export',
-              context: {},
-              dry_run: false
-            }).then((({ batch_job }) => {
-              console.log(batch_job.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/batch-jobs' \
-
-            --header 'Content-Type: application/json' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --data-raw '{
-                "type": "product-export",
-                "context": { }
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Batch Job
-      responses:
-        '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/BatchJob'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetBatchJobs
-      summary: List Batch Jobs
-      description: Retrieve a list of Batch Jobs.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of batch jobs to return.
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: offset
-          description: The number of batch jobs to skip before results.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: id
-          style: form
-          explode: false
-          description: Filter by the batch ID
-          schema:
-            oneOf:
-              - type: string
-                description: batch job ID
-              - type: array
-                description: multiple batch job IDs
-                items:
-                  type: string
-        - in: query
-          name: type
-          style: form
-          explode: false
-          description: Filter by the batch type
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: confirmed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was confirmed, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: pre_processed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was pre processed,
-            i.e. less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: completed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was completed, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: failed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was failed, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: canceled_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was canceled, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: order
-          description: Field used to order retrieved batch jobs
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each order of
-            the result.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated) Which fields should be included in each order of
-            the result.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was created, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was updated, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.list()
-
-            .then(({ batch_jobs, limit, offset, count }) => {
-              console.log(batch_jobs.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/batch-jobs' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  batch_jobs:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/BatchJob'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/batch-jobs/{id}':
-    get:
-      operationId: GetBatchJobsBatchJob
-      summary: Get a Batch Job
-      description: Retrieves a Batch Job.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Batch Job
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.batchJobs.retrieve(batch_job_id)
-
-            .then(({ batch_job }) => {
-              console.log(batch_job.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/batch-jobs/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/BatchJob'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -9047,6 +9047,276 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}':
+    delete:
+      operationId: DeletePaymentCollectionsPaymentCollection
+      summary: Del a PaymentCollection
+      description: Deletes a Payment Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collection to delete.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.paymentCollections.delete(payment_collection_id)
+              .then(({ id, object, deleted }) => {
+                console.log(id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/payment-collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Payment Collection.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    format: payment_collection
+                  deleted:
+                    type: boolean
+                    description: Whether or not the Payment Collection was deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+    get:
+      operationId: GetPaymentCollectionsPaymentCollection
+      summary: Get a PaymentCollection
+      description: Retrieves a PaymentCollection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PaymentCollection.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.paymentCollections.retrieve(paymentCollectionId)
+              .then(({ payment_collection }) => {
+                console.log(payment_collection.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/payment-collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/PaymentCollection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostPaymentCollectionsPaymentCollection
+      summary: Update PaymentCollection
+      description: Updates a PaymentCollection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PaymentCollection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdatePaymentCollectionsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.paymentCollections.update(payment_collection_id, {
+              description: "Description of payCol"
+            })
+              .then(({ payment_collection }) => {
+                console.log(payment_collection.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/payment-collections/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "description": "Description of payCol"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/PaymentCollection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/authorize':
+    post:
+      operationId: PostPaymentCollectionsPaymentCollectionAuthorize
+      summary: Mark Authorized
+      description: Sets the status of PaymentCollection as Authorized.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PaymentCollection.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.paymentCollections.markAsAuthorized(payment_collection_id)
+              .then(({ payment_collection }) => {
+                console.log(payment_collection.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/payment-collections/{id}/authorize' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment_collection:
+                    $ref: '#/components/schemas/PaymentCollection'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/payments/{id}/capture':
     post:
       operationId: PostPaymentsPaymentCapture
@@ -10312,7 +10582,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Product
+        - Price List
       responses:
         '200':
           description: OK
@@ -10334,276 +10604,6 @@ paths:
                   limit:
                     type: integer
                     description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/payment-collections/{id}':
-    delete:
-      operationId: DeletePaymentCollectionsPaymentCollection
-      summary: Del a PaymentCollection
-      description: Deletes a Payment Collection
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Payment Collection to delete.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.paymentCollections.delete(payment_collection_id)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/payment-collections/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - PaymentCollection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Payment Collection.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    format: payment_collection
-                  deleted:
-                    type: boolean
-                    description: Whether or not the Payment Collection was deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-    get:
-      operationId: GetPaymentCollectionsPaymentCollection
-      summary: Get a PaymentCollection
-      description: Retrieves a PaymentCollection.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the PaymentCollection.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: Comma separated list of relations to include in the results.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: Comma separated list of fields to include in the results.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.paymentCollections.retrieve(paymentCollectionId)
-              .then(({ payment_collection }) => {
-                console.log(payment_collection.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/payment-collections/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - PaymentCollection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payment_collection:
-                    $ref: '#/components/schemas/PaymentCollection'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostPaymentCollectionsPaymentCollection
-      summary: Update PaymentCollection
-      description: Updates a PaymentCollection.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the PaymentCollection.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminUpdatePaymentCollectionsReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.paymentCollections.update(payment_collection_id, {
-              description: "Description of payCol"
-            })
-              .then(({ payment_collection }) => {
-                console.log(payment_collection.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/payment-collections/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "description": "Description of payCol"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - PaymentCollection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payment_collection:
-                    $ref: '#/components/schemas/PaymentCollection'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/payment-collections/{id}/authorize':
-    post:
-      operationId: PostPaymentCollectionsPaymentCollectionAuthorize
-      summary: Mark Authorized
-      description: Sets the status of PaymentCollection as Authorized.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the PaymentCollection.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.paymentCollections.markAsAuthorized(payment_collection_id)
-              .then(({ payment_collection }) => {
-                console.log(payment_collection.id)
-              })
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/payment-collections/{id}/authorize' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - PaymentCollection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payment_collection:
-                    $ref: '#/components/schemas/PaymentCollection'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -14418,6 +14418,638 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/sales-channels/{id}/products/batch':
+    post:
+      operationId: PostSalesChannelsChannelProductsBatch
+      summary: Add Products
+      description: Assign a batch of product to a sales channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Sales channel.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/AdminPostSalesChannelsChannelProductsBatchReq
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.addProducts(sales_channel_id, {
+              product_ids: [
+                {
+                  id: product_id
+                }
+              ]
+            })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/sales-channels/afasf/products/batch' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "product_ids": [
+                  {
+                    "id": "{product_id}"
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/SalesChannel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteSalesChannelsChannelProductsBatch
+      summary: Delete Products
+      description: Remove a list of products from a sales channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Sales Channel
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.removeProducts(sales_channel_id, {
+              product_ids: [
+                {
+                  id: product_id
+                }
+              ]
+            })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/sales-channels/{id}/products/batch' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "product_ids": [
+                  {
+                    "id": "{product_id}"
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/SalesChannel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /sales-channels:
+    post:
+      operationId: PostSalesChannels
+      summary: Create a Sales Channel
+      description: Creates a Sales Channel.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostSalesChannelsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.create({
+              name: 'App',
+              description: 'Mobile app'
+            })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/sales-channels' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "App"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/SalesChannel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetSalesChannels
+      summary: List Sales Channels
+      description: Retrieves a list of sales channels
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: id
+          description: ID of the sales channel
+          schema:
+            type: string
+        - in: query
+          name: name
+          description: Name of the sales channel
+          schema:
+            type: string
+        - in: query
+          name: description
+          description: Description of the sales channel
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: Query used for searching sales channels' names and descriptions.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: The field to order the results by.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting collections were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: offset
+          description: How many sales channels to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: Limit the number of sales channels returned.
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each sales
+            channel of the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each sales
+            channel of the result.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.list()
+
+            .then(({ sales_channels, limit, offset, count }) => {
+              console.log(sales_channels.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/sales-channels' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sales_channels:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SalesChannel'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/sales-channels/{id}':
+    delete:
+      operationId: DeleteSalesChannelsSalesChannel
+      summary: Delete a Sales Channel
+      description: Deletes the sales channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Sales channel.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.delete(sales_channel_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/sales-channels/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted sales channel
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: sales-channel
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetSalesChannelsSalesChannel
+      summary: Get a Sales Channel
+      description: Retrieves the sales channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Sales channel.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.retrieve(sales_channel_id)
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/sales-channels/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/SalesChannel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostSalesChannelsSalesChannel
+      summary: Update a Sales Channel
+      description: Updates a Sales Channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Sales Channel.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostSalesChannelsSalesChannelReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.update(sales_channel_id, {
+              name: 'App'
+            })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/sales-channels/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "App"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/SalesChannel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /shipping-options:
     post:
       operationId: PostShippingOptions
@@ -15115,638 +15747,6 @@ paths:
                 properties:
                   shipping_profile:
                     $ref: '#/components/schemas/ShippingProfile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/sales-channels/{id}/products/batch':
-    post:
-      operationId: PostSalesChannelsChannelProductsBatch
-      summary: Add Products
-      description: Assign a batch of product to a sales channel.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Sales channel.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/AdminPostSalesChannelsChannelProductsBatchReq
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.salesChannels.addProducts(sales_channel_id, {
-              product_ids: [
-                {
-                  id: product_id
-                }
-              ]
-            })
-
-            .then(({ sales_channel }) => {
-              console.log(sales_channel.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/sales-channels/afasf/products/batch' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "product_ids": [
-                  {
-                    "id": "{product_id}"
-                  }
-                ]
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  sales_channel:
-                    $ref: '#/components/schemas/SalesChannel'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    delete:
-      operationId: DeleteSalesChannelsChannelProductsBatch
-      summary: Delete Products
-      description: Remove a list of products from a sales channel.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Sales Channel
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: >-
-                #/components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.salesChannels.removeProducts(sales_channel_id, {
-              product_ids: [
-                {
-                  id: product_id
-                }
-              ]
-            })
-
-            .then(({ sales_channel }) => {
-              console.log(sales_channel.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/sales-channels/{id}/products/batch' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "product_ids": [
-                  {
-                    "id": "{product_id}"
-                  }
-                ]
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  sales_channel:
-                    $ref: '#/components/schemas/SalesChannel'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /sales-channels:
-    post:
-      operationId: PostSalesChannels
-      summary: Create a Sales Channel
-      description: Creates a Sales Channel.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostSalesChannelsReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.salesChannels.create({
-              name: 'App',
-              description: 'Mobile app'
-            })
-
-            .then(({ sales_channel }) => {
-              console.log(sales_channel.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/sales-channels' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "App"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  sales_channel:
-                    $ref: '#/components/schemas/SalesChannel'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetSalesChannels
-      summary: List Sales Channels
-      description: Retrieves a list of sales channels
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: id
-          description: ID of the sales channel
-          schema:
-            type: string
-        - in: query
-          name: name
-          description: Name of the sales channel
-          schema:
-            type: string
-        - in: query
-          name: description
-          description: Description of the sales channel
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: Query used for searching sales channels' names and descriptions.
-          schema:
-            type: string
-        - in: query
-          name: order
-          description: The field to order the results by.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: deleted_at
-          description: Date comparison for when resulting collections were deleted.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: offset
-          description: How many sales channels to skip in the result.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: Limit the number of sales channels returned.
-          schema:
-            type: integer
-            default: 20
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each sales
-            channel of the result.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated) Which fields should be included in each sales
-            channel of the result.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.salesChannels.list()
-
-            .then(({ sales_channels, limit, offset, count }) => {
-              console.log(sales_channels.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/sales-channels' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  sales_channels:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/SalesChannel'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/sales-channels/{id}':
-    delete:
-      operationId: DeleteSalesChannelsSalesChannel
-      summary: Delete a Sales Channel
-      description: Deletes the sales channel.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Sales channel.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.salesChannels.delete(sales_channel_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/sales-channels/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted sales channel
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: sales-channel
-                  deleted:
-                    type: boolean
-                    description: Whether or not the items were deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetSalesChannelsSalesChannel
-      summary: Get a Sales Channel
-      description: Retrieves the sales channel.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Sales channel.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.salesChannels.retrieve(sales_channel_id)
-
-            .then(({ sales_channel }) => {
-              console.log(sales_channel.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/sales-channels/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  sales_channel:
-                    $ref: '#/components/schemas/SalesChannel'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostSalesChannelsSalesChannel
-      summary: Update a Sales Channel
-      description: Updates a Sales Channel.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Sales Channel.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostSalesChannelsSalesChannelReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.salesChannels.update(sales_channel_id, {
-              name: 'App'
-            })
-
-            .then(({ sales_channel }) => {
-              console.log(sales_channel.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/sales-channels/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "App"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Sales Channel
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  sales_channel:
-                    $ref: '#/components/schemas/SalesChannel'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -17482,6 +17482,153 @@ paths:
                           type: string
                           description: The URL of the uploaded file.
                           format: uri
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: AdminDeleteUploads
+      summary: Delete an Uploaded File
+      description: Removes an uploaded file using the installed fileservice
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminDeleteUploadsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.uploads.delete({
+              file_key
+            })
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/uploads' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "file_key": "{file_key}"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Upload
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The file key of the upload deleted
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: file
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /uploads/download-url:
+    post:
+      operationId: PostUploadsDownloadUrl
+      summary: Get a File's Download URL
+      description: Creates a presigned download url for a file
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostUploadsDownloadUrlReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.uploads.getPresignedDownloadUrl({
+              file_key
+            })
+
+            .then(({ download_url }) => {
+              console.log(download_url);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/uploads/download-url' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "file_key": "{file_key}"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Upload
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  download_url:
+                    type: string
+                    description: The Download URL of the file
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -23831,12 +23978,43 @@ components:
           type: string
           description: The User's password.
           format: password
-    AdminPostCurrenciesCurrencyReq:
+    AdminPostBatchesReq:
       type: object
+      required:
+        - type
+        - context
       properties:
-        includes_tax:
+        type:
+          type: string
+          description: The type of batch job to start.
+          example: product-export
+        context:
+          type: object
+          description: >-
+            Additional infomration regarding the batch to be used for
+            processing.
+          example:
+            shape:
+              prices:
+                - region: null
+                  currency_code: eur
+              dynamicImageColumnCount: 4
+              dynamicOptionColumnCount: 2
+            list_config:
+              skip: 0
+              take: 50
+              order:
+                created_at: DESC
+              relations:
+                - variants
+                - variant.prices
+                - images
+        dry_run:
           type: boolean
-          description: '[EXPERIMENTAL] Tax included in prices of currency.'
+          description: >-
+            Set a batch job in dry_run mode to get some information on what will
+            be done without applying any modifications.
+          default: false
     AdminPostProductsToCollectionReq:
       type: object
       required:
@@ -23889,6 +24067,12 @@ components:
         metadata:
           description: An optional set of key-value pairs to hold additional information.
           type: object
+    AdminPostCurrenciesCurrencyReq:
+      type: object
+      properties:
+        includes_tax:
+          type: boolean
+          description: '[EXPERIMENTAL] Tax included in prices of currency.'
     AdminPostCustomerGroupsGroupCustomersBatchReq:
       type: object
       required:
@@ -23928,43 +24112,6 @@ components:
         metadata:
           description: Metadata for the customer.
           type: object
-    AdminPostBatchesReq:
-      type: object
-      required:
-        - type
-        - context
-      properties:
-        type:
-          type: string
-          description: The type of batch job to start.
-          example: product-export
-        context:
-          type: object
-          description: >-
-            Additional infomration regarding the batch to be used for
-            processing.
-          example:
-            shape:
-              prices:
-                - region: null
-                  currency_code: eur
-              dynamicImageColumnCount: 4
-              dynamicOptionColumnCount: 2
-            list_config:
-              skip: 0
-              take: 50
-              order:
-                created_at: DESC
-              relations:
-                - variants
-                - variant.prices
-                - images
-        dry_run:
-          type: boolean
-          description: >-
-            Set a batch job in dry_run mode to get some information on what will
-            be done without applying any modifications.
-          default: false
     AdminPostCustomersReq:
       type: object
       required:
@@ -25216,6 +25363,15 @@ components:
             A flag to indicate if no notifications should be emitted related to
             the updated order.
           type: boolean
+    AdminUpdatePaymentCollectionsReq:
+      type: object
+      properties:
+        description:
+          description: An optional description to create or update the payment collection.
+          type: string
+        metadata:
+          description: An optional set of key-value pairs to hold additional information.
+          type: object
     AdminPostPaymentRefundsReq:
       type: object
       required:
@@ -25441,15 +25597,6 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Tax included in prices of price list'
           type: boolean
-    AdminUpdatePaymentCollectionsReq:
-      type: object
-      properties:
-        description:
-          description: An optional description to create or update the payment collection.
-          type: string
-        metadata:
-          description: An optional set of key-value pairs to hold additional information.
-          type: object
     AdminPostProductsProductOptionsReq:
       type: object
       required:
@@ -26364,6 +26511,64 @@ components:
         refund:
           description: The amount to refund.
           type: number
+    AdminPostSalesChannelsChannelProductsBatchReq:
+      type: object
+      required:
+        - product_ids
+      properties:
+        product_ids:
+          description: The IDs of the products to add to the Sales Channel
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                description: The ID of the product
+    AdminPostSalesChannelsReq:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: The name of the Sales Channel
+          type: string
+        description:
+          description: The description of the Sales Channel
+          type: string
+        is_disabled:
+          description: Whether the Sales Channel is disabled or not.
+          type: boolean
+    AdminDeleteSalesChannelsChannelProductsBatchReq:
+      type: object
+      required:
+        - product_ids
+      properties:
+        product_ids:
+          description: The IDs of the products to delete from the Sales Channel.
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                description: The ID of a product
+                type: string
+    AdminPostSalesChannelsSalesChannelReq:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the sales channel.
+        description:
+          type: string
+          description: Sales Channel description.
+        is_disabled:
+          type: boolean
+          description: Indication of if the sales channel is active.
     AdminPostShippingOptionsReq:
       type: object
       required:
@@ -26488,64 +26693,6 @@ components:
         name:
           description: The name of the Shipping Profile
           type: string
-    AdminPostSalesChannelsChannelProductsBatchReq:
-      type: object
-      required:
-        - product_ids
-      properties:
-        product_ids:
-          description: The IDs of the products to add to the Sales Channel
-          type: array
-          items:
-            type: object
-            required:
-              - id
-            properties:
-              id:
-                type: string
-                description: The ID of the product
-    AdminPostSalesChannelsReq:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          description: The name of the Sales Channel
-          type: string
-        description:
-          description: The description of the Sales Channel
-          type: string
-        is_disabled:
-          description: Whether the Sales Channel is disabled or not.
-          type: boolean
-    AdminDeleteSalesChannelsChannelProductsBatchReq:
-      type: object
-      required:
-        - product_ids
-      properties:
-        product_ids:
-          description: The IDs of the products to delete from the Sales Channel.
-          type: array
-          items:
-            type: object
-            required:
-              - id
-            properties:
-              id:
-                description: The ID of a product
-                type: string
-    AdminPostSalesChannelsSalesChannelReq:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the sales channel.
-        description:
-          type: string
-          description: Sales Channel description.
-        is_disabled:
-          type: boolean
-          description: Indication of if the sales channel is active.
     AdminPostStoreReq:
       type: object
       properties:

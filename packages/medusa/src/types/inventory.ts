@@ -34,6 +34,7 @@ export type InventoryLevelDTO = {
   inventory_item_id: string
   location_id: string
   stocked_quantity: number
+  reserved_quantity: number
   incoming_quantity: number
   metadata: Record<string, unknown> | null
   created_at: string | Date
@@ -87,6 +88,7 @@ export type FilterableInventoryLevelProps = {
   inventory_item_id?: string | string[]
   location_id?: string | string[]
   stocked_quantity?: number | NumericalComparisonOperator
+  reserved_quantity?: number | NumericalComparisonOperator
   incoming_quantity?: number | NumericalComparisonOperator
 }
 
@@ -94,7 +96,8 @@ export type CreateInventoryLevelInput = {
   inventory_item_id: string
   location_id: string
   stocked_quantity: number
-  incoming_quantity: number
+  reserved_quantity?: number
+  incoming_quantity?: number
 }
 
 export type UpdateInventoryLevelInput = {

@@ -4,12 +4,11 @@ import { Order } from "../../../.."
 import {
   DeleteResponse,
   FindParams,
-  PaginatedResponse,
+  PaginatedResponse
 } from "../../../../types/common"
+import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
-import { FlagRouter } from "../../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 
 const route = Router()
 
@@ -17,9 +16,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/orders", route)
 
   const relations = [...defaultAdminOrdersRelations]
-  if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
-    relations.push("sales_channel")
-  }
 
   /**
    * List orders
@@ -286,6 +282,7 @@ export const defaultAdminOrdersRelations = [
   "swaps.additional_items",
   "swaps.fulfillments",
   "swaps.fulfillments.tracking_links",
+  "sales_channel",
 ]
 
 export const defaultAdminOrdersFields = [
@@ -297,6 +294,7 @@ export const defaultAdminOrdersFields = [
   "cart_id",
   "draft_order_id",
   "customer_id",
+  "sales_channel_id",
   "email",
   "region_id",
   "currency_code",
@@ -330,6 +328,7 @@ export const filterableAdminOrdersFields = [
   "customer_id",
   "email",
   "region_id",
+  "sales_channel_id",
   "currency_code",
   "tax_rate",
   "canceled_at",
@@ -362,3 +361,4 @@ export * from "./refund-payment"
 export * from "./request-return"
 export * from "./update-claim"
 export * from "./update-order"
+

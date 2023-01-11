@@ -4332,6 +4332,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@medusajs/inventory@workspace:packages/inventory":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/inventory@workspace:packages/inventory"
+  dependencies:
+    "@medusajs/medusa": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.2
+    ts-jest: ^25.5.1
+    typeorm: ^0.2.31
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": 1.x.x
+    medusa-interfaces: 1.x.x
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/medusa-cli@^1.3.5, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"

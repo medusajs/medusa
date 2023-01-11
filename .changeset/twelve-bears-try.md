@@ -1,7 +1,7 @@
 ---
 "@medusajs/medusa": patch
 "@medusajs/medusa-js": patch
-"@medusajs/stock-location": major
+"@medusajs/stock-location": patch
 ---
 
 Stock locations module added

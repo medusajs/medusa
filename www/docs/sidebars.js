@@ -249,6 +249,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/storefront/use-gift-cards",
+              label: "Use Gift Cards"
+            },
+            {
+              type: "doc",
               id: "guides/carts-in-medusa",
               label: "Implement Cart"
             },
@@ -322,6 +327,11 @@ module.exports = {
               type: "doc",
               id: "advanced/admin/manage-discounts",
               label: "Manage Discounts"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-gift-cards",
+              label: "Manage Gift Cards"
             },
             {
               type: "doc",
@@ -409,12 +419,21 @@ module.exports = {
           id: "advanced/ecommerce/handle-order-claim-event",
           label: "Handle Order Claim Event"
         },
+        {
+          type: "doc",
+          id: "advanced/ecommerce/send-gift-card-to-customer",
+          label: "Send Gift Card Code"
+        },
       ]
     },
     {
       type: "category",
       label: "Conceptual Guides",
       items: [
+        {
+          type: "doc",
+          id: "advanced/backend/dependency-container/index"
+        },
         {
           type: "doc",
           id: "advanced/backend/entities/overview",
@@ -480,6 +499,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/customer-groups/index"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/taxes/inclusive-pricing",
           label: "Tax Inclusive Pricing"
         },
@@ -497,11 +520,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "advanced/backend/customer-groups/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/dependency-container/index"
+          id: "advanced/backend/gift-cards/index"
         },
       ]
     },
