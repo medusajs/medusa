@@ -12,6 +12,8 @@ Only users who are part of the store’s team can access the Medusa admin. You c
 
 As an admin, you can manage the users’ roles and information. You can also invite or remove users.
 
+---
+
 ## Learn More About Users
 
 - [Manage Profile](./profile.md)
