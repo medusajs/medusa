@@ -8,6 +8,8 @@ By default, taxes are automatically calculated by Medusa during checkout. This b
 
 If you disable this behavior, you must manually trigger taxes calculation. When taxes are calculated, this means that requests will be sent to the tax provider to retrieve the tax rates.
 
+---
+
 ## How to Manually Calculate Taxes in Checkout
 
 This section explores different ways you can calculate taxes based on your purpose.
@@ -27,7 +29,7 @@ You can, however, force calculating the taxes of the cart by passing in the thir
 For example:
 
 ```jsx
-cartService.retrieve('cart_01G8Z...', { }, { force_taxes: true });
+cartService.retrieve("cart_01G8Z...", { }, { force_taxes: true })
 ```
 
 :::tip
@@ -43,20 +45,20 @@ Another way you can use the `CartService` to calculate taxes is using the method
 ```jsx
 
 export default () => {
-  //...
+  // ...
 
   router.get("/store/line-taxes", async (req, res) => {
-    //example of retrieving cart
-    const cartService = req.scope.resolve("cartService");
+    // example of retrieving cart
+    const cartService = req.scope.resolve("cartService")
     const cart = await cartService.retrieve(cart_id)
     
-    //...
-    //retrieve taxes of line items
+    // ...
+    // retrieve taxes of line items
     const data = await decorateTotals(cart, {
-      force_taxes: true
+      force_taxes: true,
     })
     
-    return res.status(200).json({ cart: data });
+    return res.status(200).json({ cart: data })
   })
 }
 ```
@@ -70,7 +72,7 @@ You can calculate and retrieve taxes of line items using the `getLineItemTotals`
 ```jsx
 const itemTotals = await totalsService
   .getLineItemTotals(item, cart, {
-    include_tax: true
+    include_tax: true,
   })
 ```
 
@@ -80,7 +82,9 @@ You can learn how to [retrieve and use services](../services/create-service.md#u
 
 :::
 
-## What’s Next
+---
 
-- Learn about [tax-inclusive pricing](inclusive-pricing.md).
-- Learn about available methods in [CartsService](../../../references/services/classes/CartService.md) and [TotalsService](../../../references/services/classes/TotalsService.md).
+## See Also
+
+- [Tax-Inclusive Pricing Overview](inclusive-pricing.md)
+- [CartsService](../../../references/services/classes/CartService.md) and [TotalsService](../../../references/services/classes/TotalsService.md)

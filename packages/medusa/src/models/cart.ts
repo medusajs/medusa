@@ -1,8 +1,7 @@
 /**
- * @schema cart
+ * @schema Cart
  * title: "Cart"
  * description: "Represents a user cart"
- * x-resourceId: cart
  * type: object
  * properties:
  *   id:
@@ -19,19 +18,19 @@
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
  *     description: Available if the relation `billing_address` is expanded.
- *     $ref: "#/components/schemas/address"
+ *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
  *     type: string
  *     description: The shipping address's ID
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
  *     description: Available if the relation `shipping_address` is expanded.
- *     $ref: "#/components/schemas/address"
+ *     $ref: "#/components/schemas/Address"
  *   items:
  *     description: Available if the relation `items` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/line_item"
+ *       $ref: "#/components/schemas/LineItem"
  *   region_id:
  *     type: string
  *     description: The region's ID
@@ -60,24 +59,24 @@
  *     type: object
  *   payment_session:
  *     description: The selected payment session in the cart.
- *     $ref: "#/components/schemas/payment_session"
+ *     $ref: "#/components/schemas/PaymentSession"
  *   payment_sessions:
  *     type: array
  *     description: The payment sessions created on the cart.
  *     items:
- *       $ref: "#/components/schemas/payment_session"
+ *       $ref: "#/components/schemas/PaymentSession"
  *   payment_id:
  *     type: string
  *     description: The payment's ID if available
  *     example: pay_01G8ZCC5W42ZNY842124G7P5R9
  *   payment:
  *     description: Available if the relation `payment` is expanded.
- *     $ref: "#/components/schemas/payment"
+ *     $ref: "#/components/schemas/Payment"
  *   shipping_methods:
  *     type: array
  *     description: The shipping methods added to the cart.
  *     items:
- *       $ref: "#/components/schemas/shipping_method"
+ *       $ref: "#/components/schemas/ShippingMethod"
  *   type:
  *     type: string
  *     description: The cart's type.

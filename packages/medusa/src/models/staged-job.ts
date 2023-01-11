@@ -14,6 +14,9 @@ export class StagedJob {
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>
 
+  @DbAwareColumn({ type: "jsonb", default: {} })
+  options: Record<string, unknown>
+
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "job")
@@ -21,10 +24,9 @@ export class StagedJob {
 }
 
 /**
- * @schema staged_job
+ * @schema StagedJob
  * title: "Staged Job"
  * description: "A staged job resource"
- * x-resourceId: staged_job
  * type: object
  * required:
  *   - event_name

@@ -12,9 +12,13 @@ On your storefront, you can add any necessary components that can render the Con
 
 As an example to explain this process, in this documentation, you’ll create a migration that creates a Rich Text content model in Contentful and edits the Page and Product content models to allow using Rich Text content as a tile in pages and products. Then, you’ll modify the Gatsby storefront to render the Rich Text content model.
 
+---
+
 ## Prerequisites
 
 It’s assumed you already have set up a Medusa server integrated with Contentful and have a Gatsby storefront integrated with Contentful. If not, [please follow this documentation first](index.md).
+
+---
 
 ## Create a Contentful Migration
 
@@ -25,32 +29,32 @@ Here’s an example of a migration created in a new file `contentful-migrations/
 ```jsx title=contentful-migrations/rich-text.js
 #! /usr/bin/env node
 
-require("dotenv").config();
+require("dotenv").config()
 
-const { runMigration } = require("contentful-migration");
+const { runMigration } = require("contentful-migration")
 
 const options = {
   spaceId: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
   environment: process.env.CONTENTFUL_ENVIRONMENT,
   yes: true,
-};
+}
 
 const migration = async () => {
   await runMigration({
     ...options,
     migrationFunction: function (migration, context) {
 
-      //create Rich Text content model
+      // create Rich Text content model
       const richText = migration
         .createContentType("richText")
         .name("Rich Text")
-        .displayField("title");
+        .displayField("title")
     
-      richText.createField("title").name("Title (Internal)").type("Symbol");
-      richText.createField("body").name("Body").type("RichText");
+      richText.createField("title").name("Title (Internal)").type("Symbol")
+      richText.createField("body").name("Body").type("RichText")
 
-      //edit Page content model
+      // edit Page content model
       const page = migration.editContentType("page")
 
       page.editField("contentModules").items({
@@ -63,7 +67,7 @@ const migration = async () => {
         ],
       })
 
-      //edit Product content model
+      // edit Product content model
       const product = migration.editContentType("product")
 
       product
@@ -79,11 +83,11 @@ const migration = async () => {
             },
           ],
         })
-    }
-  });
+    },
+  })
 }
 
-migration();
+migration()
 ```
 
 This example creates a new content model Rich Text that has two fields: title and body. It also edits the Page content model to allow using Rich Text content models on the page.
@@ -93,7 +97,19 @@ In addition, it edits the Product content model by adding a new field `contentMo
 You can also add other types of content models the `contentModules` should accept. For example, to accept `tileSection` add it to the `linkContentType` option:
 
 ```jsx
-linkContentType: ["tileSection", "richText"],
+product
+  .createField("contentModules")
+  .name("Content Modules")
+  .type("Array")
+  .items({
+    type: "Link",
+    linkType: "Entry",
+    validations: [
+      {
+        linkContentType: ["richText", "tileSection"],
+      },
+    ],
+  })
 ```
 
 ### Run a Contentful Migration
@@ -144,6 +160,8 @@ Similarly, you can add Rich Text content to any product page.
 
 ![A rich text content is added to a product](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001305/Medusa%20Docs/Contentful/wgI8mEB_wbukpd.png)
 
+---
+
 ## Render New Content Models in the Storefront
 
 After creating a new content model in your Contentful Space, you must add the necessary component to render it in your Gatsby storefront.
@@ -159,10 +177,10 @@ import { renderRichText } from "gatsby-source-contentful/rich-text"
 const RichText = ({ data }) => {
   return (
     <div style={{
-      maxWidth: '870px',
-      margin: '0 auto',
-      paddingTop: '20px',
-      paddingBottom: '20px'
+      maxWidth: "870px",
+      margin: "0 auto",
+      paddingTop: "20px",
+      paddingBottom: "20px",
     }}>
       {data.body ? renderRichText(data.body) : ""}
     </div>
@@ -188,7 +206,7 @@ Then, in the returned JSX add a new case to the switch statement:
 
 ```jsx title=src/pages/{ContentfulPage.slug}.js
 switch (cm.internal.type) {
-  //...
+  // ...
   case "ContentfulRichText":
       return <RichText key={cm.id} data={cm} />
   default:
@@ -308,7 +326,9 @@ Restart the Gatsby storefront then open a product that you added Rich Text conte
 
 ![Rich Text content you added to the product should be visible at the end of the page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001342/Medusa%20Docs/Contentful/LGiVMxx_rqsr2l.png)
 
-## What’s Next
+---
 
-- Learn how to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
-- Learn [how to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).
+## See Also
+
+- Deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
+- [How to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).

@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { IsOptional, IsString, IsObject } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import {
   OrderEditService,
   OrderService,
@@ -14,7 +14,7 @@ import { PaymentCollectionType } from "../../../../models"
 /**
  * @oas [post] /order-edits/{id}/request
  * operationId: "PostOrderEditsOrderEditRequest"
- * summary: "Request order edit confirmation"
+ * summary: "Request Confirmation"
  * description: "Request customer confirmation of an Order Edit"
  * x-authenticated: true
  * parameters:
@@ -49,7 +49,7 @@ import { PaymentCollectionType } from "../../../../models"
  *           type: object
  *           properties:
  *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *               $ref: "#/components/schemas/OrderEdit"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

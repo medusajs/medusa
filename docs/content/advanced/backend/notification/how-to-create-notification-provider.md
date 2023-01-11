@@ -10,9 +10,11 @@ If you’re unfamiliar with the Notification architecture in Medusa, it is recom
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to install a [Medusa server](../../../quickstart/quick-start.md).
+Before you start creating a Notification Provider, you need to install a [Medusa server](../../../quickstart/quick-start.mdx).
 
 You also need to [setup Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with the Medusa server](../../../usage/configurations.md#redis).
+
+---
 
 ## Create a Notification Provider
 
@@ -21,23 +23,39 @@ Creating a Notification Provider is as simple as creating a TypeScript or JavaS
 For example, create the file `src/services/email-sender.ts` with the following content:
 
 ```ts title=src/services/email-sender.ts
-import { AbstractNotificationService } from "@medusajs/medusa";
-import { EntityManager } from "typeorm";
+import { AbstractNotificationService } from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
 
 class EmailSenderService extends AbstractNotificationService {
-  protected manager_: EntityManager;
-  protected transactionManager_: EntityManager;
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
 
-  sendNotification(event: string, data: unknown, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
-    throw new Error("Method not implemented.");
+  sendNotification(
+    event: string, 
+    data: unknown, 
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    throw new Error("Method not implemented.")
   }
-  resendNotification(notification: unknown, config: unknown, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
-    throw new Error("Method not implemented.");
+  resendNotification(
+    notification: unknown,
+    config: unknown,
+    attachmentGenerator: unknown
+  ): Promise<{
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    throw new Error("Method not implemented.")
   }
 
 }
 
-export default EmailSenderService;
+export default EmailSenderService
 ```
 
 Where `EmailSenderService` is the name of your Notification Provider Service.
@@ -61,7 +79,10 @@ The value of this property is also used later when you want to subscribe the Not
 For example, in the class you created in the previous code snippet you can add the following property:
 
 ```ts
-static identifier = "email-sender";
+class EmailSenderService extends AbstractNotificationService {
+  static identifier = "email-sender"
+  // ...
+}
 ```
 
 ### constructor
@@ -81,23 +102,26 @@ You can learn more about plugins and how to create them in the [Plugins](../plug
 Continuing on with the previous example, if you want to use the [`OrderService`](../../../references/services/classes/OrderService.md) later when sending notifications, you can inject it into the constructor:
 
 ```ts
-import { AbstractNotificationService, OrderService } from "@medusajs/medusa";
+import { 
+  AbstractNotificationService, 
+  OrderService,
+} from "@medusajs/medusa"
 
 class EmailSenderService extends AbstractNotificationService {
-  protected manager_: EntityManager;
-  protected transactionManager_: EntityManager;
-  static identifier = "email-sender";
-  protected orderService: OrderService;
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
+  static identifier = "email-sender"
+  protected orderService: OrderService
 
   constructor(container, options) {
-    super(container);
-    //you can access options here in case you're
-    //using a plugin
+    super(container)
+    // you can access options here in case you're
+    // using a plugin
 
-    this.orderService = container.orderService;
+    this.orderService = container.orderService
   }
 
-  //...
+  // ...
 }
 ```
 
@@ -127,23 +151,34 @@ This method must return an object containing two properties:
 Continuing with the previous example you can have the following implementation of the `sendNotification` method:
 
 ```ts
-async sendNotification(event: string, data: any, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
-  if (event === 'order.placed') {
-    //retrieve order
-    const order = await this.orderService.retrieve(data.id);
-    //TODO send email
+class EmailSenderService extends AbstractNotificationService {
+  // ...
+  async sendNotification(
+    event: string,
+    data: any,
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    if (event === "order.placed") {
+      // retrieve order
+      const order = await this.orderService.retrieve(data.id)
+      // TODO send email
 
-    console.log('Notification sent');
-    return {
-      to: order.email,
-      status: 'done',
-      data: {
-        //any data necessary to send the email
-        //for example:
-        subject: 'You placed a new order!',
-        items: order.items
+      console.log("Notification sent")
+      return {
+        to: order.email,
+        status: "done",
+        data: {
+          // any data necessary to send the email
+          // for example:
+          subject: "You placed a new order!",
+          items: order.items,
+        },
       }
-    };
+    }
   }
 }
 ```
@@ -178,17 +213,29 @@ Similarly to the `sendNotification` method, this method must return an object co
 Continuing with the previous example you can have the following implementation of the `resendNotification` method:
 
 ```ts
-async resendNotification(notification: any, config: any, attachmentGenerator: unknown): Promise<{ to: string; status: string; data: Record<string, unknown>; }> {
-  //check if the receiver of the notification should be changed
-  const to: string = config.to ? config.to : notification.to;
+class EmailSenderService extends AbstractNotificationService {
+  // ...
+  async resendNotification(
+    notification: any,
+    config: any,
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    // check if the receiver of the notification should be changed
+    const to: string = config.to ? config.to : notification.to
 
-  //TODO resend the notification using the same data that is saved under notification.data
+    // TODO resend the notification using the same data
+    // that is saved under notification.data
 
-  console.log('Notification resent');
-  return {
-    to,
-    status: 'done',
-    data: notification.data //you can also make changes to the data
+    console.log("Notification resent")
+    return {
+      to,
+      status: "done",
+      data: notification.data, // you can also make changes to the data
+    }
   }
 }
 ```
@@ -205,6 +252,8 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 :::
 
+---
+
 ## Create a Subscriber
 
 After creating your Notification Provider Service, you must create a Subscriber that registers this Service as a notification handler of events.
@@ -220,11 +269,12 @@ Following the previous example, to make sure the `email-sender` Notification Pro
 ```ts title=src/subscribers/notification.js
 class NotificationSubscriber {
   constructor({ notificationService }) {
-    notificationService.subscribe('order.placed', 'email-sender');
+    notificationService.subscribe("order.placed", "email-sender")
   }
+  // ...
 }
 
-export default NotificationSubscriber;
+export default NotificationSubscriber
 ```
 
 This subscriber accesses the `notificationService` using dependency injection. The `notificationService` contains a `subscribe` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that is subscribing to that event.
@@ -234,6 +284,8 @@ This subscriber accesses the `notificationService` using dependency injection. T
 Notice that the value of the `identifier` static property defined in the `EmailSenderService` is used to register the Notification Provider to handle the `order.placed` event.
 
 :::
+
+---
 
 ## Test Sending Notifications with your Notification Provider
 
@@ -249,11 +301,13 @@ Then, place an order either using the [REST APIs](https://docs.medusajs.com/api/
 
 :::tip
 
-If you don’t have a storefront installed you can get started with either the [Next.js](../../../starters/nextjs-medusa-starter.md) or [Gatsby](../../../starters/gatsby-medusa-starter.md) starter storefronts in minutes.
+If you don’t have a storefront installed you can get started with either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) starter storefronts in minutes.
 
 :::
 
 After placing an order, you can see in your console the message “Notification Sent”. If you added your own notification sending logic, you should receive an email or alternatively the type of notification you’ve set up.
+
+---
 
 ## Test Resending Notifications with your Notification Provider
 
@@ -273,9 +327,12 @@ Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/
 
 This request returns the same notification object as the List Notifications endpoint, but it now has a new object in the `resends` array. This is the resent notification. If you supplied a `to` parameter in the request body, you should see its value in the `to` property of the resent notification object.
 
-## What’s Next
+---
 
-- Check out the [list of events](../subscribers/events-list.md) you can listen to.
-- Check out the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin for easy integration of email notifications.
-- Learn how to [create your own plugin](../plugins/create.md).
-- Learn more about [Subscribers](../subscribers/create-subscriber.md) and [Services](../services/create-service.md).
+## See Also
+
+- [Events reference](../subscribers/events-list.md)
+- [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
+- [Create a Subscriber](../subscribers/create-subscriber.md)
+- [Create a Service](../services/create-service.md)
+- [Create a Plugin](../plugins/create.md)

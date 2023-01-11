@@ -54,16 +54,16 @@ get:
             properties:
               product:
                 allOf:
-                  - $ref: ../components/schemas/product.yaml
+                  - $ref: ../components/schemas/Product.yaml
                   - type: object
                     properties:
                       variants:
                         type: array
                         items:
                           allOf:
-                            - $ref: ../components/schemas/product_variant.yaml
+                            - $ref: ../components/schemas/ProductVariant.yaml
                             - $ref: >-
-                                ../components/schemas/product_variant_prices_fields.yaml
+                                ../components/schemas/ProductVariantPricesFields.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

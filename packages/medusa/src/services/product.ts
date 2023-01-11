@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { IEventBusService, TransactionBaseService } from "../interfaces"
@@ -9,12 +9,12 @@ import {
   ProductTag,
   ProductType,
   ProductVariant,
-  SalesChannel
+  SalesChannel,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
   FindWithoutRelationsOptions,
-  ProductRepository
+  ProductRepository,
 } from "../repositories/product"
 import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
@@ -27,9 +27,9 @@ import {
   FindProductConfig,
   ProductOptionInput,
   ProductSelector,
-  UpdateProductInput
+  UpdateProductInput,
 } from "../types/product"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
@@ -180,6 +180,13 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<Product> {
+    if (!isDefined(productId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ id: productId }, config)
   }
 
@@ -194,6 +201,13 @@ class ProductService extends TransactionBaseService {
     productHandle: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
+    if (!isDefined(productHandle)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productHandle" must be defined`
+      )
+    }
+
     return await this.retrieve_({ handle: productHandle }, config)
   }
 
@@ -208,6 +222,13 @@ class ProductService extends TransactionBaseService {
     externalId: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
+    if (!isDefined(externalId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"externalId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ external_id: externalId }, config)
   }
 

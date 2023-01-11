@@ -1,22 +1,23 @@
 import { unionBy } from "lodash"
 import {
-  In,
-  Not,
   DeleteResult,
-  SelectQueryBuilder,
   EntityRepository,
   FindManyOptions,
   FindOptionsUtils,
+  In,
+  Not,
   Repository,
+  SelectQueryBuilder,
 } from "typeorm"
-import { TaxRate } from "../models/tax-rate"
-import { ProductTaxRate } from "../models/product-tax-rate"
-import { ProductTypeTaxRate } from "../models/product-type-tax-rate"
-import { ShippingTaxRate } from "../models/shipping-tax-rate"
-import { Product } from "../models/product"
-import { ShippingMethod } from "../models/shipping-method"
+import {
+  Product,
+  ProductTaxRate,
+  ProductTypeTaxRate,
+  ShippingTaxRate,
+  TaxRate,
+} from "../models"
 import { TaxRateListByConfig } from "../types/tax-rate"
-import { isDefined } from "../utils"
+import { isDefined } from "medusa-core-utils"
 
 const resolveableFields = [
   "product_count",

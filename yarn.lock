@@ -1826,7 +1826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-react@npm:^7.12.10, @babel/preset-react@npm:^7.14.0":
+"@babel/preset-react@npm:^7.12.10, @babel/preset-react@npm:^7.14.0, @babel/preset-react@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/preset-react@npm:7.18.6"
   dependencies:
@@ -1895,7 +1895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2, @babel/runtime@npm:^7.9.6":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2, @babel/runtime@npm:^7.9.6":
   version: 7.18.6
   resolution: "@babel/runtime@npm:7.18.6"
   dependencies:
@@ -4155,7 +4155,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:^1.4.10":
+"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.13":
   version: 1.4.14
   resolution: "@jridgewell/sourcemap-codec@npm:1.4.14"
   checksum: 3fbaff1387c1338b097eeb6ff92890d7838f7de0dde259e4983763b44540bfd5ca6a1f7644dc8ad003a57f7e80670d5b96a8402f1386ba9aee074743ae9bad51
@@ -4412,6 +4412,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/inventory@workspace:packages/inventory":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/inventory@workspace:packages/inventory"
+  dependencies:
+    "@medusajs/medusa": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.2
+    ts-jest: ^25.5.1
+    typeorm: ^0.2.31
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": 1.x.x
+    medusa-interfaces: 1.x.x
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/medusa-cli@^1.3.5, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
@@ -4457,25 +4473,30 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@^1.3.3, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@^1.3.5, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.7.0
+    "@medusajs/medusa": ^1.7.3
+    "@rollup/plugin-commonjs": ^24.0.0
+    "@rollup/plugin-node-resolve": ^15.0.1
     "@types/jest": ^26.0.19
-    axios: ^0.24.0
+    axios: 0.26.1
     cross-env: ^7.0.3
     form-data: ^4.0.0
     jest: ^26.6.3
     qs: ^6.10.3
     retry-axios: ^2.6.0
+    rollup: ^3.9.1
+    rollup-plugin-terser: ^7.0.2
+    rollup-plugin-typescript2: ^0.34.1
     typescript: ^4.1.3
   peerDependencies:
-    "@medusajs/medusa": ^1.7.0
+    "@medusajs/medusa": ^1.7.3
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.3.3, @medusajs/medusa@^1.6.5, @medusajs/medusa@^1.7.0, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.6.5, @medusajs/medusa@^1.7.1, @medusajs/medusa@^1.7.3, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -4511,10 +4532,10 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.2
     jsonwebtoken: ^8.5.1
-    medusa-core-utils: ^1.1.36
+    medusa-core-utils: ^1.1.37
     medusa-interfaces: ^1.3.3
     medusa-telemetry: ^0.0.15
-    medusa-test-utils: ^1.1.37
+    medusa-test-utils: ^1.1.38
     morgan: ^1.9.1
     multer: ^1.4.2
     node-schedule: ^2.1.0
@@ -4543,6 +4564,22 @@ __metadata:
     typeorm: 0.2.x
   bin:
     medusa: ./cli.js
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/stock-location@workspace:packages/stock-location":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/stock-location@workspace:packages/stock-location"
+  dependencies:
+    "@medusajs/medusa": ^1.7.3
+    cross-env: ^5.2.1
+    jest: ^25.5.2
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.3
+    medusa-interfaces: 1.3.3
+    typeorm: ^0.2.31
   languageName: unknown
   linkType: soft
 
@@ -5624,6 +5661,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/plugin-commonjs@npm:^24.0.0":
+  version: 24.0.0
+  resolution: "@rollup/plugin-commonjs@npm:24.0.0"
+  dependencies:
+    "@rollup/pluginutils": ^5.0.1
+    commondir: ^1.0.1
+    estree-walker: ^2.0.2
+    glob: ^8.0.3
+    is-reference: 1.2.1
+    magic-string: ^0.27.0
+  peerDependencies:
+    rollup: ^2.68.0||^3.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: ae2ed1d49722fad55f7ef7629baad5fb31bc389e6042912fb5cb9623c2c9c0def27c66bbd1aea72f1fcd65caa1410a9de80a0377f85d8cd8068f97c0adeaf3da
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-json@npm:^4.1.0":
   version: 4.1.0
   resolution: "@rollup/plugin-json@npm:4.1.0"
@@ -5667,6 +5723,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/plugin-node-resolve@npm:^15.0.1":
+  version: 15.0.1
+  resolution: "@rollup/plugin-node-resolve@npm:15.0.1"
+  dependencies:
+    "@rollup/pluginutils": ^5.0.1
+    "@types/resolve": 1.20.2
+    deepmerge: ^4.2.2
+    is-builtin-module: ^3.2.0
+    is-module: ^1.0.0
+    resolve: ^1.22.1
+  peerDependencies:
+    rollup: ^2.78.0||^3.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: 82af7876281e9459ea86cedf571816b61883055f98d3ecd9306e869674b344b5e38d57d589f409d255fe22021dd81f4a65702e9e8c859eded45bebccb8644e1b
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-replace@npm:^3.1.0":
   version: 3.1.0
   resolution: "@rollup/plugin-replace@npm:3.1.0"
@@ -5699,6 +5774,22 @@ __metadata:
     estree-walker: ^2.0.1
     picomatch: ^2.2.2
   checksum: 3ee56b2c8f1ed8dfd0a92631da1af3a2dfdd0321948f089b3752b4de1b54dc5076701eadd0e5fc18bd191b77af594ac1db6279e83951238ba16bf8a414c64c48
+  languageName: node
+  linkType: hard
+
+"@rollup/pluginutils@npm:^5.0.1":
+  version: 5.0.2
+  resolution: "@rollup/pluginutils@npm:5.0.2"
+  dependencies:
+    "@types/estree": ^1.0.0
+    estree-walker: ^2.0.2
+    picomatch: ^2.3.1
+  peerDependencies:
+    rollup: ^1.20.0||^2.0.0||^3.0.0
+  peerDependenciesMeta:
+    rollup:
+      optional: true
+  checksum: b06f73c15bb59418aa6fbfead5675bab2d6922e15663525ffc2eb8429530bc5add516600adb251cfbf9b60f3d12fb821cde155cb5103415154a476bd0f163432
   languageName: node
   linkType: hard
 
@@ -7406,6 +7497,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:4.22.0":
+  version: 4.22.0
+  resolution: "@tanstack/query-core@npm:4.22.0"
+  checksum: be3f870719ea9c53dfc3398725c92876448a2a5cd8253010226ad88e91b0586d3c5e9bb9366ca27a035d5855517b6883ec0a5d7d4437458ff5bd3acb5553974f
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^4.22.0":
+  version: 4.22.0
+  resolution: "@tanstack/react-query@npm:4.22.0"
+  dependencies:
+    "@tanstack/query-core": 4.22.0
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: aacb071935c20ec695adfce7594649b6a7683640b82b232727f1b000bb871b6e99bb98bf47b9617eb76829d6b5822a6c98d3cefb1ede90a69cc52c2c79488d14
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.0.0":
   version: 8.16.0
   resolution: "@testing-library/dom@npm:8.16.0"
@@ -7740,6 +7857,13 @@ __metadata:
   version: 0.0.51
   resolution: "@types/estree@npm:0.0.51"
   checksum: a70c60d5e634e752fcd45b58c9c046ef22ad59ede4bc93ad5193c7e3b736ebd6bcd788ade59d9c3b7da6eeb0939235f011d4c59bb4fc04d8c346b76035099dd1
+  languageName: node
+  linkType: hard
+
+"@types/estree@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/estree@npm:1.0.0"
+  checksum: 4e73ff606bf7c7ccdaa66092de650c410a4ad2ecc388fdbed8242cac9dbcad72407e1ceff041b7da691babb02ff74ab885d6231fb09368fdd1eabbf1b5253d49
   languageName: node
   linkType: hard
 
@@ -8261,6 +8385,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 6eeb9c27d99bf4b393bf168d43208f63e78cefca5644662a0bdb2bdbf8352386f4f3aca66add138fc41bce5f66fd48a0de430a1473f11b612fbed0375ae78031
+  languageName: node
+  linkType: hard
+
+"@types/resolve@npm:1.20.2":
+  version: 1.20.2
+  resolution: "@types/resolve@npm:1.20.2"
+  checksum: c5b7e1770feb5ccfb6802f6ad82a7b0d50874c99331e0c9b259e415e55a38d7a86ad0901c57665d93f75938be2a6a0bc9aa06c9749192cadb2e4512800bbc6e6
   languageName: node
   linkType: hard
 
@@ -9968,6 +10099,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"array-includes@npm:^3.1.6":
+  version: 3.1.6
+  resolution: "array-includes@npm:3.1.6"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+    get-intrinsic: ^1.1.3
+    is-string: ^1.0.7
+  checksum: d0caeaa57bea7d14b8480daee30cf8611899321006b15a6cd872b831bd7aaed7649f8764e060d01c5d33b8d9e998e5de5c87f4901874e1c1f467f429b7db2929
+  languageName: node
+  linkType: hard
+
 "array-union@npm:^1.0.2":
   version: 1.0.2
   resolution: "array-union@npm:1.0.2"
@@ -10022,6 +10166,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"array.prototype.flatmap@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "array.prototype.flatmap@npm:1.3.1"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+    es-shim-unscopables: ^1.0.0
+  checksum: 2bd58a0e79d5d90cb4f5ef0e287edf8b28e87c65428f54025ac6b7b4c204224b92811c266f296c53a2dbc93872117c0fcea2e51d3c9e8cecfd5024d4a4a57db4
+  languageName: node
+  linkType: hard
+
 "array.prototype.map@npm:^1.0.4":
   version: 1.0.4
   resolution: "array.prototype.map@npm:1.0.4"
@@ -10045,6 +10201,19 @@ __metadata:
     es-array-method-boxes-properly: ^1.0.0
     is-string: ^1.0.7
   checksum: 1a71487c9f1e75447b7abd97f1abadb39f6f6aecbb2073c35231574e9be6faee2588e828aca2ae302b5646f069b30cb5d80b4e3144c18f8f6bcc78fcadfee7e7
+  languageName: node
+  linkType: hard
+
+"array.prototype.tosorted@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "array.prototype.tosorted@npm:1.1.1"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+    es-shim-unscopables: ^1.0.0
+    get-intrinsic: ^1.1.3
+  checksum: fd5f57aca3c7ddcd1bb83965457b625f3a67d8f334f5cbdb8ac8ef33d5b0d38281524114db2936f8c08048115d5158af216c94e6ae1eb966241b9b6f4ab8a7e8
   languageName: node
   linkType: hard
 
@@ -10378,6 +10547,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:0.26.1, axios@npm:^0.26.0, axios@npm:^0.26.1":
+  version: 0.26.1
+  resolution: "axios@npm:0.26.1"
+  dependencies:
+    follow-redirects: ^1.14.8
+  checksum: 77ad7f1e6ca04fcd3fa8af1795b09d8b7c005b71a31f28d99ba40cda0bdcc12a4627801d7fac5efa62b9f667a8402bd54c669039694373bc8d44f6be611f785c
+  languageName: node
+  linkType: hard
+
 "axios@npm:^0.19.0, axios@npm:^0.19.2":
   version: 0.19.2
   resolution: "axios@npm:0.19.2"
@@ -10411,15 +10589,6 @@ __metadata:
   dependencies:
     follow-redirects: ^1.14.4
   checksum: d106561e761bf48633633073626eafb80289eb7c7c27f9fae4fb796939b6ecd2c9f63b596e3b3d872f7c0bec6b2fb117c58456d387e4ca2da7fc07c795a979c3
-  languageName: node
-  linkType: hard
-
-"axios@npm:^0.26.0, axios@npm:^0.26.1":
-  version: 0.26.1
-  resolution: "axios@npm:0.26.1"
-  dependencies:
-    follow-redirects: ^1.14.8
-  checksum: 77ad7f1e6ca04fcd3fa8af1795b09d8b7c005b71a31f28d99ba40cda0bdcc12a4627801d7fac5efa62b9f667a8402bd54c669039694373bc8d44f6be611f785c
   languageName: node
   linkType: hard
 
@@ -11102,7 +11271,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"big-integer@npm:^1.6.16, big-integer@npm:^1.6.7":
+"big-integer@npm:^1.6.7":
   version: 1.6.51
   resolution: "big-integer@npm:1.6.51"
   checksum: c8139662d57f8833a44802f4b65be911679c569535ea73c5cfd3c1c8994eaead1b84b6f63e1db63833e4d4cacb6b6a9e5522178113dfdc8e4c81ed8436f1e8cc
@@ -11319,22 +11488,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"broadcast-channel@npm:^3.4.1":
-  version: 3.7.0
-  resolution: "broadcast-channel@npm:3.7.0"
-  dependencies:
-    "@babel/runtime": ^7.7.2
-    detect-node: ^2.1.0
-    js-sha3: 0.8.0
-    microseconds: 0.2.0
-    nano-time: 1.0.0
-    oblivious-set: 1.0.0
-    rimraf: 3.0.2
-    unload: 2.2.0
-  checksum: 95978446f24c685be666f5508a91350bcd4075c08feda929d26c0c678fb24bd421901f19fa8d36cb6f5ed480a334072f3bdce48fa177a8cb29793d88693911cc
-  languageName: node
-  linkType: hard
-
 "brorand@npm:^1.0.1, brorand@npm:^1.1.0":
   version: 1.1.0
   resolution: "brorand@npm:1.1.0"
@@ -11538,7 +11691,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"builtin-modules@npm:^3.0.0, builtin-modules@npm:^3.1.0":
+"builtin-modules@npm:^3.0.0, builtin-modules@npm:^3.1.0, builtin-modules@npm:^3.3.0":
   version: 3.3.0
   resolution: "builtin-modules@npm:3.3.0"
   checksum: 2cb3448b4f7306dc853632a4fcddc95e8d4e4b9868c139400027b71938fc6806d4ff44007deffb362ac85724bd40c2c6452fb6a0aa4531650eeddb98d8e5ee8a
@@ -13836,7 +13989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4, debug@npm:~4.3.1":
+"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4, debug@npm:~4.3.1":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -14217,13 +14370,6 @@ __metadata:
   version: 1.1.0
   resolution: "detect-node-es@npm:1.1.0"
   checksum: e562f00de23f10c27d7119e1af0e7388407eb4b06596a25f6d79a360094a109ff285de317f02b090faae093d314cf6e73ac3214f8a5bb3a0def5bece94557fbe
-  languageName: node
-  linkType: hard
-
-"detect-node@npm:^2.0.4, detect-node@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "detect-node@npm:2.1.0"
-  checksum: f039f601790f2e9d4654e499913259a798b1f5246ae24f86ab5e8bd4aaf3bce50484234c494f11fb00aecb0c6e2733aa7b1cf3f530865640b65fbbd65b2c4e09
   languageName: node
   linkType: hard
 
@@ -14974,6 +15120,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"es-abstract@npm:^1.20.4":
+  version: 1.20.5
+  resolution: "es-abstract@npm:1.20.5"
+  dependencies:
+    call-bind: ^1.0.2
+    es-to-primitive: ^1.2.1
+    function-bind: ^1.1.1
+    function.prototype.name: ^1.1.5
+    get-intrinsic: ^1.1.3
+    get-symbol-description: ^1.0.0
+    gopd: ^1.0.1
+    has: ^1.0.3
+    has-property-descriptors: ^1.0.0
+    has-symbols: ^1.0.3
+    internal-slot: ^1.0.3
+    is-callable: ^1.2.7
+    is-negative-zero: ^2.0.2
+    is-regex: ^1.1.4
+    is-shared-array-buffer: ^1.0.2
+    is-string: ^1.0.7
+    is-weakref: ^1.0.2
+    object-inspect: ^1.12.2
+    object-keys: ^1.1.1
+    object.assign: ^4.1.4
+    regexp.prototype.flags: ^1.4.3
+    safe-regex-test: ^1.0.0
+    string.prototype.trimend: ^1.0.6
+    string.prototype.trimstart: ^1.0.6
+    unbox-primitive: ^1.0.2
+  checksum: c99f8a3e9ac15890cde5bf78d1910d72758d3e79c710bd1ad2ab6b595d39ad07209626befaa7c18591bd935a02f6a3bdba3a7e9c8dd6a01146e655df09dc4353
+  languageName: node
+  linkType: hard
+
 "es-array-method-boxes-properly@npm:^1.0.0":
   version: 1.0.0
   resolution: "es-array-method-boxes-properly@npm:1.0.0"
@@ -15345,6 +15524,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-markdown@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "eslint-plugin-markdown@npm:3.0.0"
+  dependencies:
+    mdast-util-from-markdown: ^0.8.5
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  checksum: 3424fd97b6990cbed7be3764ae8bec7eae9bd1cc03cd76d8d1cf38e088a9777ed4491921e7e1a8d3a146361bcd935e5ed1b2bfd4fd623bcdafdb824bccfdd2b2
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-prettier@npm:^4.2.1":
   version: 4.2.1
   resolution: "eslint-plugin-prettier@npm:4.2.1"
@@ -15390,6 +15580,31 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
   checksum: da8189b16723fca914756bc24f76c158fc24c19ba02574081e67d2349db19285747700ec7f6110c2d2f4b427b800f5eef78167f633354fde7895b45179075653
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react@npm:^7.31.11":
+  version: 7.31.11
+  resolution: "eslint-plugin-react@npm:7.31.11"
+  dependencies:
+    array-includes: ^3.1.6
+    array.prototype.flatmap: ^1.3.1
+    array.prototype.tosorted: ^1.1.1
+    doctrine: ^2.1.0
+    estraverse: ^5.3.0
+    jsx-ast-utils: ^2.4.1 || ^3.0.0
+    minimatch: ^3.1.2
+    object.entries: ^1.1.6
+    object.fromentries: ^2.0.6
+    object.hasown: ^1.1.2
+    object.values: ^1.1.6
+    prop-types: ^15.8.1
+    resolve: ^2.0.0-next.3
+    semver: ^6.3.0
+    string.prototype.matchall: ^4.0.8
+  peerDependencies:
+    eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
+  checksum: 2f8d27adbfe1b551a170cc1340dd8bbecf6c9fdbfcde04dd1097bbf198e99f0c981af84bc3c69f851af5736cc4d6520687a03dfb3271717079f88983d79cb9cd
   languageName: node
   linkType: hard
 
@@ -15803,7 +16018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"estree-walker@npm:^2.0.1":
+"estree-walker@npm:^2.0.1, estree-walker@npm:^2.0.2":
   version: 2.0.2
   resolution: "estree-walker@npm:2.0.2"
   checksum: 53a6c54e2019b8c914dc395890153ffdc2322781acf4bd7d1a32d7aedc1710807bdcd866ac133903d5629ec601fbb50abe8c2e5553c7f5a0afdd9b6af6c945af
@@ -17833,6 +18048,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-intrinsic@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "get-intrinsic@npm:1.1.3"
+  dependencies:
+    function-bind: ^1.1.1
+    has: ^1.0.3
+    has-symbols: ^1.0.3
+  checksum: 6f201d5f95ea0dd6c8d0dc2c265603aff0b9e15614cb70f8f4674bb3d2b2369d521efaa84d0b70451d2c00762ebd28402758bf46279c6f2a00d242ebac0d8442
+  languageName: node
+  linkType: hard
+
 "get-own-enumerable-property-symbols@npm:^3.0.0":
   version: 3.0.2
   resolution: "get-own-enumerable-property-symbols@npm:3.0.2"
@@ -18047,7 +18273,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^8.0.1":
+"glob@npm:^8.0.1, glob@npm:^8.0.3":
   version: 8.0.3
   resolution: "glob@npm:8.0.3"
   dependencies:
@@ -18229,6 +18455,15 @@ __metadata:
   dependencies:
     delegate: ^3.1.2
   checksum: 5c532f2e223f1f3a12504077d6d960986979a7923fb428a26bde012b88ac57ffba1b28507f95bd16a73c1ae805fdb38d26d9442d538dd559fad159a7f58243fe
+  languageName: node
+  linkType: hard
+
+"gopd@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "gopd@npm:1.0.1"
+  dependencies:
+    get-intrinsic: ^1.1.3
+  checksum: 505c05487f7944c552cee72087bf1567debb470d4355b1335f2c262d218ebbff805cd3715448fe29b4b380bae6912561d0467233e4165830efd28da241418c63
   languageName: node
   linkType: hard
 
@@ -19454,6 +19689,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"integration-tests-repositories@workspace:integration-tests/repositories":
+  version: 0.0.0-use.local
+  resolution: "integration-tests-repositories@workspace:integration-tests/repositories"
+  dependencies:
+    "@babel/cli": ^7.12.10
+    "@babel/core": ^7.12.10
+    "@babel/node": ^7.12.10
+    "@medusajs/medusa": "*"
+    babel-preset-medusa-package: "*"
+    jest: ^26.6.3
+    medusa-interfaces: "*"
+    typeorm: ^0.2.31
+  languageName: unknown
+  linkType: soft
+
 "internal-slot@npm:^1.0.3":
   version: 1.0.3
   resolution: "internal-slot@npm:1.0.3"
@@ -19700,10 +19950,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-builtin-module@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "is-builtin-module@npm:3.2.0"
+  dependencies:
+    builtin-modules: ^3.3.0
+  checksum: dd911ba5b5e9615d4da19fad3bbd839bcce8f279b28e094ff0883147a70e36fa4fd2d2aebc85886585106f8fc11d45ca60234afc4e3fa261ad58f013a26d3f1a
+  languageName: node
+  linkType: hard
+
 "is-callable@npm:^1.1.3, is-callable@npm:^1.1.4, is-callable@npm:^1.2.4":
   version: 1.2.4
   resolution: "is-callable@npm:1.2.4"
   checksum: bda3c67128741129d61e1cb7ca89025ca56b39bf3564657989567c9f6d1e20d6f5579750d3c1fa8887903c6dc669fbc695e33a1363e7c5ec944077e39d24f73d
+  languageName: node
+  linkType: hard
+
+"is-callable@npm:^1.2.7":
+  version: 1.2.7
+  resolution: "is-callable@npm:1.2.7"
+  checksum: ceebaeb9d92e8adee604076971dd6000d38d6afc40bb843ea8e45c5579b57671c3f3b50d7f04869618242c6cee08d1b67806a8cb8edaaaf7c0748b3720d6066f
   languageName: node
   linkType: hard
 
@@ -20126,7 +20392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-reference@npm:^1.2.1":
+"is-reference@npm:1.2.1, is-reference@npm:^1.2.1":
   version: 1.2.1
   resolution: "is-reference@npm:1.2.1"
   dependencies:
@@ -21995,13 +22261,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-sha3@npm:0.8.0":
-  version: 0.8.0
-  resolution: "js-sha3@npm:0.8.0"
-  checksum: 43a21dc7967c871bd2c46cb1c2ae97441a97169f324e509f382d43330d8f75cf2c96dba7c806ab08a425765a9c847efdd4bffbac2d99c3a4f3de6c0218f40533
-  languageName: node
-  linkType: hard
-
 "js-string-escape@npm:^1.0.1":
   version: 1.0.1
   resolution: "js-string-escape@npm:1.0.1"
@@ -23426,6 +23685,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"magic-string@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "magic-string@npm:0.27.0"
+  dependencies:
+    "@jridgewell/sourcemap-codec": ^1.4.13
+  checksum: cddacfea14441ca57ae8a307bc3cf90bac69efaa4138dd9a80804cffc2759bf06f32da3a293fb13eaa96334b7d45b7768a34f1d226afae25d2f05b05a3bb37d8
+  languageName: node
+  linkType: hard
+
 "mailchimp-api-v3@npm:^1.14.0":
   version: 1.15.0
   resolution: "mailchimp-api-v3@npm:1.15.0"
@@ -23640,16 +23908,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"match-sorter@npm:^6.0.2":
-  version: 6.3.1
-  resolution: "match-sorter@npm:6.3.1"
-  dependencies:
-    "@babel/runtime": ^7.12.5
-    remove-accents: 0.4.2
-  checksum: fb805e1f8cd1a41846dd5dcbba810a3bff3e1436a34a8226201d3f7518970171a7dbedb0d99677a6dce2a2925e4fc3cf1d0d82a1203ac9ef65d13d5d290b1dad
-  languageName: node
-  linkType: hard
-
 "math-random@npm:^1.0.1":
   version: 1.0.4
   resolution: "math-random@npm:1.0.4"
@@ -23718,6 +23976,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mdast-util-from-markdown@npm:^0.8.5":
+  version: 0.8.5
+  resolution: "mdast-util-from-markdown@npm:0.8.5"
+  dependencies:
+    "@types/mdast": ^3.0.0
+    mdast-util-to-string: ^2.0.0
+    micromark: ~2.11.0
+    parse-entities: ^2.0.0
+    unist-util-stringify-position: ^2.0.0
+  checksum: 86e7589e574378817c180f10ab602db844b6b71b7b1769314947a02ef42ac5c1435f5163d02a975ae8cdab8b6e6176acbd9188da1848ddd5f0d5e09d0291c870
+  languageName: node
+  linkType: hard
+
 "mdast-util-to-hast@npm:10.0.1":
   version: 10.0.1
   resolution: "mdast-util-to-hast@npm:10.0.1"
@@ -23738,6 +24009,13 @@ __metadata:
   version: 1.1.0
   resolution: "mdast-util-to-string@npm:1.1.0"
   checksum: 5dad9746ec0839792a8a35f504564e8d2b8c30013652410306c111963d33f1ee7b5477aa64ed77b64e13216363a29395809875ffd80e2031a08614657628a121
+  languageName: node
+  linkType: hard
+
+"mdast-util-to-string@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "mdast-util-to-string@npm:2.0.0"
+  checksum: a4231085133cdfec24644b694c13661e5a01d26716be0105b6792889faa04b8030e4abbf72d4be3363098b2b38b2b98f1f1f1f0858eb6580dc04e2aca1436a37
   languageName: node
   linkType: hard
 
@@ -23769,7 +24047,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.32, medusa-core-utils@^1.1.34, medusa-core-utils@^1.1.36, medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.32, medusa-core-utils@^1.1.37, medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
@@ -23831,7 +24109,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -23858,7 +24137,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.32
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -23885,7 +24165,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
@@ -23909,7 +24190,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
   peerDependencies:
     medusa-interfaces: 1.3.3
   languageName: unknown
@@ -23926,7 +24208,7 @@ __metadata:
     "@babel/plugin-transform-runtime": ^7.7.6
     "@babel/preset-env": ^7.7.5
     "@babel/runtime": ^7.9.6
-    "@medusajs/medusa": ^1.3.3
+    "@medusajs/medusa": ^1.7.1
     axios: ^0.20.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -23934,7 +24216,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
   peerDependencies:
     medusa-interfaces: 1.x
   languageName: unknown
@@ -23987,7 +24270,8 @@ __metadata:
     cross-env: ^7.0.2
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24015,7 +24299,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.32
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -24039,7 +24324,8 @@ __metadata:
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
     jest: ^25.5.2
-    medusa-test-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
+    medusa-test-utils: ^1.1.38
   peerDependencies:
     medusa-interfaces: 1.x
   languageName: unknown
@@ -24068,7 +24354,7 @@ __metadata:
     jest: ^25.5.2
     medusa-core-utils: ^1.1.32
     medusa-interfaces: ^1.3.3
-    medusa-test-utils: ^1.1.37
+    medusa-test-utils: ^1.1.38
   peerDependencies:
     medusa-interfaces: 1.3.3
   languageName: unknown
@@ -24094,7 +24380,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.36
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
@@ -24121,7 +24408,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     lodash: ^4.17.21
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
     medusa-interfaces: ^1.3.3
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -24151,7 +24438,7 @@ __metadata:
     cross-env: ^7.0.2
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.34
+    medusa-core-utils: ^1.1.37
     medusa-interfaces: ^1.3.1
     medusa-test-utils: ^1.1.37
     randomatic: ^3.1.1
@@ -24180,7 +24467,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     redis: ^3.0.2
   peerDependencies:
@@ -24207,7 +24495,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.34
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     randomatic: ^3.1.1
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24234,7 +24523,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
@@ -24257,6 +24547,7 @@ __metadata:
     axios: ^0.20.0
     cross-env: ^5.2.1
     jest: ^25.5.2
+    medusa-interfaces: ^1.3.3
   peerDependencies:
     medusa-interfaces: 1.x
   languageName: unknown
@@ -24283,7 +24574,8 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     mailchimp-api-v3: ^1.14.0
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24308,7 +24600,8 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     lodash: ^4.17.21
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     meilisearch: 0.27.0
   peerDependencies:
     medusa-interfaces: 1.3.3
@@ -24329,12 +24622,13 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.36
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     pg: ^8.5.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.0
+    "@medusajs/medusa": ^1.7.1
     medusa-interfaces: 1.x
   languageName: unknown
   linkType: soft
@@ -24360,7 +24654,8 @@ __metadata:
     eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24387,7 +24682,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24414,7 +24710,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
@@ -24439,7 +24736,8 @@ __metadata:
     body-parser: ^1.19.0
     cross-env: ^5.2.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
     twilio: ^3.49.1
   peerDependencies:
@@ -24466,7 +24764,8 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.2
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
+    medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.x
@@ -24478,7 +24777,8 @@ __metadata:
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
     "@babel/core": ^7.16.0
-    "@medusajs/medusa-js": ^1.3.3
+    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa-js": ^1.3.5
     "@size-limit/preset-small-lib": ^6.0.4
     "@storybook/addon-contexts": ^5.3.21
     "@storybook/addon-essentials": ^6.3.12
@@ -24486,6 +24786,7 @@ __metadata:
     "@storybook/addon-links": ^6.3.12
     "@storybook/addons": ^6.3.12
     "@storybook/react": ^6.3.12
+    "@tanstack/react-query": ^4.22.0
     "@testing-library/react": ^12.1.2
     "@testing-library/react-hooks": ^7.0.2
     "@types/jest": ^27.0.3
@@ -24504,14 +24805,13 @@ __metadata:
     react-dom: ^17.0.2
     react-is: ^17.0.2
     react-json-view: ^1.21.3
-    react-query: ^3.31.0
     size-limit: ^6.0.4
     ts-jest: ^27.1.4
     tslib: ^2.3.1
   peerDependencies:
-    "@medusajs/medusa": ^1.7.0
+    "@medusajs/medusa": ^1.7.1
+    "@tanstack/react-query": ">=4.22.0"
     react: ">=16"
-    react-query: ">= 3.29.0"
   languageName: unknown
   linkType: soft
 
@@ -24538,7 +24838,7 @@ __metadata:
     ioredis: ^4.27.9
     jest: ^26.6.3
     lodash: ^4.17.21
-    medusa-core-utils: ^1.1.31
+    medusa-core-utils: ^1.1.37
     medusa-interfaces: ^1.3.3
     medusa-test-utils: ^1.1.37
   peerDependencies:
@@ -24570,7 +24870,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.37, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
@@ -24795,6 +25095,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"micromark@npm:~2.11.0":
+  version: 2.11.4
+  resolution: "micromark@npm:2.11.4"
+  dependencies:
+    debug: ^4.0.0
+    parse-entities: ^2.0.0
+  checksum: 67307cbacae621ab1eb23e333a5addc7600cf97d3b40cad22fc1c2d03d734d6d9cbc3f5a7e5d655a8c0862a949abe590ab7cfa96be366bfe09e239a94e6eea55
+  languageName: node
+  linkType: hard
+
 "micromatch@npm:4.x, micromatch@npm:^4.0.2, micromatch@npm:^4.0.4, micromatch@npm:^4.0.5":
   version: 4.0.5
   resolution: "micromatch@npm:4.0.5"
@@ -24823,13 +25133,6 @@ __metadata:
     snapdragon: ^0.8.1
     to-regex: ^3.0.2
   checksum: 531a32e7ac92bef60657820202be71b63d0f945c08a69cc4c239c0b19372b751483d464a850a2e3a5ff6cc9060641e43d44c303af104c1a27493d137d8af017f
-  languageName: node
-  linkType: hard
-
-"microseconds@npm:0.2.0":
-  version: 0.2.0
-  resolution: "microseconds@npm:0.2.0"
-  checksum: 59dfae1c696c0bacd79603c4df7cd0dcc9e091b7c5556aaca9b0832017d3c0b40ad8f57ca25e0ee5709ef1973404448c4a2fea6c9c1fad7d9e197ff5c1c9c2d5
   languageName: node
   linkType: hard
 
@@ -25437,15 +25740,6 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: 95204e4ed2970c0411735d866b0a71f30625e9ce598d2f7c2dfc2145dcd4e8e48dda26fda2587657f91e96973044353d300a9a6d259079b342fa4b30548aa8fa
-  languageName: node
-  linkType: hard
-
-"nano-time@npm:1.0.0":
-  version: 1.0.0
-  resolution: "nano-time@npm:1.0.0"
-  dependencies:
-    big-integer: ^1.6.16
-  checksum: 3bd12e0bcd30867178afdbe8053b3dde5fdd1c665ecd348bf879863049344fbaf05cbb1d7806a825b91efbca011ee115eee52e76fb38b7da9c97931cd9e61f15
   languageName: node
   linkType: hard
 
@@ -26174,7 +26468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-inspect@npm:^1.12.0, object-inspect@npm:^1.9.0":
+"object-inspect@npm:^1.12.0, object-inspect@npm:^1.12.2, object-inspect@npm:^1.9.0":
   version: 1.12.2
   resolution: "object-inspect@npm:1.12.2"
   checksum: e1bd625f4c44a2f733bd69cfccce6469f71333fb09c6de151f4f346c16d658ef7555727b12652c108e20c2afb908ae7cd165f52ca53745a1d6cbf228cdb46ebe
@@ -26226,6 +26520,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"object.assign@npm:^4.1.4":
+  version: 4.1.4
+  resolution: "object.assign@npm:4.1.4"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    has-symbols: ^1.0.3
+    object-keys: ^1.1.1
+  checksum: 2f286118c023e557757620e647b02e7c88d3d417e0c568fca0820de8ec9cca68928304854d5b03e99763eddad6e78a6716e2930f7e6372e4b9b843f3fd3056f3
+  languageName: node
+  linkType: hard
+
 "object.entries@npm:^1.1.0, object.entries@npm:^1.1.5":
   version: 1.1.5
   resolution: "object.entries@npm:1.1.5"
@@ -26237,6 +26543,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"object.entries@npm:^1.1.6":
+  version: 1.1.6
+  resolution: "object.entries@npm:1.1.6"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+  checksum: 8782c71db3a068ccbae9e0541e6b4ac2c25dc67c63f97b7e6ad3c88271d7820197e7398e37747f96542ed47c27f0b81148cdf14c42df15dc22f64818ae7bb5bf
+  languageName: node
+  linkType: hard
+
 "object.fromentries@npm:^2.0.0 || ^1.0.0, object.fromentries@npm:^2.0.5":
   version: 2.0.5
   resolution: "object.fromentries@npm:2.0.5"
@@ -26245,6 +26562,17 @@ __metadata:
     define-properties: ^1.1.3
     es-abstract: ^1.19.1
   checksum: a1bedcdec0e1f15fc1f9dccecf7df18ae4678fc95deb42099b649a3660511f2d1dead3b09b8f7dcf15205b0f7ce69d74e3cc3368511abf85b021d86226aa77d4
+  languageName: node
+  linkType: hard
+
+"object.fromentries@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "object.fromentries@npm:2.0.6"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+  checksum: db6759ea68131cbdb70b1152f9984b49db03e81de4f6de079b39929bebd8b45501e5333ca2351991e07ee56f4651606c023396644e8f25c0806fa39a26c4c6e6
   languageName: node
   linkType: hard
 
@@ -26270,6 +26598,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"object.hasown@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "object.hasown@npm:1.1.2"
+  dependencies:
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+  checksum: 419fc1c74a2aea7ebb4d49b79d5b1599a010b26c18eae35bd061ccdd013ccb749c499d8dd6ee21a91e6d7264ccc592573d0f13562970f76e25fc844d8c1b02ce
+  languageName: node
+  linkType: hard
+
 "object.pick@npm:^1.3.0":
   version: 1.3.0
   resolution: "object.pick@npm:1.3.0"
@@ -26290,6 +26628,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"object.values@npm:^1.1.6":
+  version: 1.1.6
+  resolution: "object.values@npm:1.1.6"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+  checksum: 3381204390f10c9f653a4875a50d221c67b5c16cb80a6ac06c706fc82a7cad8400857d4c7a0731193b0abb56b84fe803eabcf7addcf32de76397bbf207e68c66
+  languageName: node
+  linkType: hard
+
 "objectFitPolyfill@npm:^2.3.5":
   version: 2.3.5
   resolution: "objectFitPolyfill@npm:2.3.5"
@@ -26301,13 +26650,6 @@ __metadata:
   version: 1.0.5
   resolution: "objectorarray@npm:1.0.5"
   checksum: 3d3db66e2052df85617ac31b98f8e51a7a883ebce24123018dacf286712aa513a0a84e82b4a6bef68889d5fc39cf08e630ee78df013023fc5161e1fdf3eaaa5a
-  languageName: node
-  linkType: hard
-
-"oblivious-set@npm:1.0.0":
-  version: 1.0.0
-  resolution: "oblivious-set@npm:1.0.0"
-  checksum: ca8640474ea1e1feb3b5c98d42f5649f114ac4513ef84774e724f22fc7e529f1de3e7f26a0d9593097ab8942ca0bb8c241f7c1bd63c3e33047dd49de3aca9805
   languageName: node
   linkType: hard
 
@@ -29010,24 +29352,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.31.0":
-  version: 3.39.1
-  resolution: "react-query@npm:3.39.1"
-  dependencies:
-    "@babel/runtime": ^7.5.5
-    broadcast-channel: ^3.4.1
-    match-sorter: ^6.0.2
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: 5a67610e7d1eb15b6137e939fa3670f5deb8e519338380d19fd7bd47ac7dbea33f15df93c717648160b3c4dc6c3885450ff22eda180cd636afdfc5ba42682384
-  languageName: node
-  linkType: hard
-
 "react-refresh@npm:^0.11.0":
   version: 0.11.0
   resolution: "react-refresh@npm:0.11.0"
@@ -29622,13 +29946,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remove-accents@npm:0.4.2":
-  version: 0.4.2
-  resolution: "remove-accents@npm:0.4.2"
-  checksum: 5cbc00efa52df29ce947a0c572ff975b011f5f197ebe7b4f6e527de26aba534cba12d502e3040b72e46ad01de3d4f2d5ef57a6593c964965e43ddb60438da0f8
-  languageName: node
-  linkType: hard
-
 "remove-trailing-separator@npm:^1.0.1":
   version: 1.1.0
   resolution: "remove-trailing-separator@npm:1.1.0"
@@ -29870,7 +30187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.17.0, resolve@npm:^1.18.1, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.22.0, resolve@npm:^1.3.2":
+"resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.17.0, resolve@npm:^1.18.1, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.22.0, resolve@npm:^1.22.1, resolve@npm:^1.3.2":
   version: 1.22.1
   resolution: "resolve@npm:1.22.1"
   dependencies:
@@ -29912,7 +30229,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.18.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.18.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>":
   version: 1.22.1
   resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
   dependencies:
@@ -30024,17 +30341,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:3.0.2, rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "rimraf@npm:3.0.2"
-  dependencies:
-    glob: ^7.1.3
-  bin:
-    rimraf: bin.js
-  checksum: 9cb7757acb489bd83757ba1a274ab545eafd75598a9d817e0c3f8b164238dd90eba50d6b848bd4dcc5f3040912e882dc7ba71653e35af660d77b25c381d402e8
-  languageName: node
-  linkType: hard
-
 "rimraf@npm:^2.5.4, rimraf@npm:^2.6.2, rimraf@npm:^2.6.3":
   version: 2.7.1
   resolution: "rimraf@npm:2.7.1"
@@ -30043,6 +30349,17 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 4eef73d406c6940927479a3a9dee551e14a54faf54b31ef861250ac815172bade86cc6f7d64a4dc5e98b65e4b18a2e1c9ff3b68d296be0c748413f092bb0dd40
+  languageName: node
+  linkType: hard
+
+"rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "rimraf@npm:3.0.2"
+  dependencies:
+    glob: ^7.1.3
+  bin:
+    rimraf: bin.js
+  checksum: 9cb7757acb489bd83757ba1a274ab545eafd75598a9d817e0c3f8b164238dd90eba50d6b848bd4dcc5f3040912e882dc7ba71653e35af660d77b25c381d402e8
   languageName: node
   linkType: hard
 
@@ -30187,6 +30504,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup-plugin-typescript2@npm:^0.34.1":
+  version: 0.34.1
+  resolution: "rollup-plugin-typescript2@npm:0.34.1"
+  dependencies:
+    "@rollup/pluginutils": ^4.1.2
+    find-cache-dir: ^3.3.2
+    fs-extra: ^10.0.0
+    semver: ^7.3.7
+    tslib: ^2.4.0
+  peerDependencies:
+    rollup: ">=1.26.3"
+    typescript: ">=2.4.0"
+  checksum: 957171f167e6bbefab68bd05ed2796aafd14c8d47bf544b92532bcea056b5a63fe300816a428c49361736160b2ffc7e8b1109bf4fa9de95e54a9fdd161e0bf62
+  languageName: node
+  linkType: hard
+
 "rollup-pluginutils@npm:^2.8.2":
   version: 2.8.2
   resolution: "rollup-pluginutils@npm:2.8.2"
@@ -30210,6 +30543,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup@npm:^3.9.1":
+  version: 3.9.1
+  resolution: "rollup@npm:3.9.1"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: 48875f9414b17dda1f3a8eea3a2cfffbe847451f986e0c4f6363f06cde05d508730f29486d3f25f27db28dc76bb411a23959b826b1054d3848bab0d84a471fdd
+  languageName: node
+  linkType: hard
+
 "root@workspace:.":
   version: 0.0.0-use.local
   resolution: "root@workspace:."
@@ -30222,6 +30569,7 @@ __metadata:
     "@babel/plugin-transform-instanceof": ^7.10.4
     "@babel/plugin-transform-runtime": ^7.11.5
     "@babel/preset-env": ^7.11.5
+    "@babel/preset-react": ^7.18.6
     "@babel/register": ^7.11.5
     "@babel/runtime": ^7.11.2
     "@changesets/changelog-github": ^0.4.5
@@ -30239,7 +30587,9 @@ __metadata:
     eslint: ^8.23.0
     eslint-config-google: ^0.14.0
     eslint-config-prettier: ^8.5.0
+    eslint-plugin-markdown: ^3.0.0
     eslint-plugin-prettier: ^4.2.1
+    eslint-plugin-react: ^7.31.11
     express: ^4.17.1
     get-port: ^5.1.1
     global: ^4.4.0
@@ -30364,6 +30714,17 @@ __metadata:
   version: 1.2.0
   resolution: "safe-json-stringify@npm:1.2.0"
   checksum: 9c21c7b63a35a9e52d248eea2ad7bc9e790dde5aa418f0d4eed3c0b4c866e15337425b0d973173d30dd70a9e422271619f17e13574e0c8371d0c240cf72b871f
+  languageName: node
+  linkType: hard
+
+"safe-regex-test@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "safe-regex-test@npm:1.0.0"
+  dependencies:
+    call-bind: ^1.0.2
+    get-intrinsic: ^1.1.3
+    is-regex: ^1.1.4
+  checksum: 14a81a7e683f97b2d6e9c8be61fddcf8ed7a02f4e64a825515f96bb1738eb007145359313741d2704d28b55b703a0f6300c749dde7c1dbc13952a2b85048ede2
   languageName: node
   linkType: hard
 
@@ -31886,6 +32247,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"string.prototype.matchall@npm:^4.0.8":
+  version: 4.0.8
+  resolution: "string.prototype.matchall@npm:4.0.8"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+    get-intrinsic: ^1.1.3
+    has-symbols: ^1.0.3
+    internal-slot: ^1.0.3
+    regexp.prototype.flags: ^1.4.3
+    side-channel: ^1.0.4
+  checksum: 644523d05c1ee93bab7474e999a5734ee5f6ad2d7ad24ed6ea8706c270dc92b352bde0f2a5420bfbeed54e28cb6a770c3800e1988a5267a70fd5e677c7750abc
+  languageName: node
+  linkType: hard
+
 "string.prototype.padend@npm:^3.0.0":
   version: 3.1.3
   resolution: "string.prototype.padend@npm:3.1.3"
@@ -31919,6 +32296,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"string.prototype.trimend@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "string.prototype.trimend@npm:1.0.6"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+  checksum: 51b663e3195a74b58620a250b3fc4efb58951000f6e7d572a9f671c038f2f37f24a2b8c6994500a882aeab2f1c383fac1e8c023c01eb0c8b4e52d2f13b6c4513
+  languageName: node
+  linkType: hard
+
 "string.prototype.trimstart@npm:^1.0.5":
   version: 1.0.5
   resolution: "string.prototype.trimstart@npm:1.0.5"
@@ -31927,6 +32315,17 @@ __metadata:
     define-properties: ^1.1.4
     es-abstract: ^1.19.5
   checksum: c42d2f7732a98d9402aabcfb6ac05e4e36bbc429f5aa98bd199b5e55162b19b87db941ed68382c68ec6527a200a3d01cb3d4c16f668296c383e63693d8493772
+  languageName: node
+  linkType: hard
+
+"string.prototype.trimstart@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "string.prototype.trimstart@npm:1.0.6"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+  checksum: 13b9970d4e234002dfc8069c655c1fe19e83e10ced208b54858c41bb0f7544e581ac0ce746e92b279563664ad63910039f7253f36942113fec413b2b4e7c1fcd
   languageName: node
   linkType: hard
 
@@ -33967,16 +34366,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unload@npm:2.2.0":
-  version: 2.2.0
-  resolution: "unload@npm:2.2.0"
-  dependencies:
-    "@babel/runtime": ^7.6.2
-    detect-node: ^2.0.4
-  checksum: 0a4f86b502e7aa35d39c27373ebeaad4f2b7da793fb3d6308e5337aab541885cfe7b339ea4a1963477bf73fddabd5d69f4f47023dad71224b4b4a25611ef7dd8
-  languageName: node
-  linkType: hard
-
 "unpipe@npm:1.0.0, unpipe@npm:~1.0.0":
   version: 1.0.0
   resolution: "unpipe@npm:1.0.0"
@@ -34213,6 +34602,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 89f0018fd9aee1fc17c85ac18c4bf8944d460d453d0d0e04ddbc8eaddf3fa591e9c74a1f8a438a1bff368a7a2417fab380bdb3df899d2194c4375b0982736de0
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: ac4814e5592524f242921157e791b022efe36e451fe0d4fd4d204322d5433a4fc300d63b0ade5185f8e0735ded044c70bcf6d2352db0f74d097a238cebd2da02
   languageName: node
   linkType: hard
 

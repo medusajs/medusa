@@ -1,20 +1,22 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { IEventBusService } from "../.."
 import { Order, Swap } from "../../models"
 import { SwapRepository } from "../../repositories/swap"
 import CartService from "../cart"
 import {
-  CustomShippingOptionService, FulfillmentService, IEventBusService, InventoryService,
+  CustomShippingOptionService, FulfillmentService,
   LineItemService,
   OrderService,
   PaymentProviderService,
+  ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
   TotalsService
 } from "../index"
 import LineItemAdjustmentService from "../line-item-adjustment"
 import SwapService from "../swap"
-import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 
 /* ******************** DEFAULT REPOSITORY MOCKS ******************** */
 
@@ -100,7 +102,8 @@ const paymentProviderService = {
 
 const orderService = {} as unknown as OrderService
 const returnService = {} as unknown as ReturnService
-const inventoryService = {} as unknown as InventoryService
+const productVariantInventoryService =
+  {} as unknown as ProductVariantInventoryService
 const fulfillmentService = {} as unknown as FulfillmentService
 const lineItemAdjustmentService = {} as unknown as LineItemAdjustmentService
 
@@ -115,7 +118,7 @@ const defaultProps = {
   totalsService: totalsService,
   eventBusService: eventBusService,
   lineItemService: lineItemService,
-  inventoryService: inventoryService,
+  productVariantInventoryService: productVariantInventoryService,
   fulfillmentService: fulfillmentService,
   shippingOptionService: shippingOptionService,
   paymentProviderService: paymentProviderService,
@@ -315,9 +318,14 @@ describe("SwapService", () => {
         expect(
           LineItemAdjustmentServiceMock.createAdjustmentForLineItem
         ).toHaveBeenCalledWith(
-          { id: "cart", items: [{
-            id: "test-item",
-          }] },
+          {
+            id: "cart",
+            items: [
+              {
+                id: "test-item",
+              },
+            ],
+          },
           {
             id: "test-item",
           }
@@ -848,12 +856,12 @@ describe("SwapService", () => {
       },
     } as unknown as PaymentProviderService
 
-    const inventoryService = {
-      ...InventoryServiceMock,
+    const productVariantInventoryService = {
+      ...ProductVariantInventoryServiceMock,
       withTransaction: function () {
         return this
       },
-    } as unknown as InventoryService
+    } as unknown as ProductVariantInventoryService
 
     describe("success", () => {
       const cart = {
@@ -885,7 +893,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        inventoryService,
+        productVariantInventoryService,
       })
 
       it("creates a shipment", async () => {
@@ -895,14 +903,12 @@ describe("SwapService", () => {
           good: "yes",
         })
 
-        expect(inventoryService.confirmInventory).toHaveBeenCalledWith(
-          "variant",
-          2
-        )
-        expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
-          "variant",
-          -2
-        )
+        expect(
+          productVariantInventoryService.reserveQuantity
+        ).toHaveBeenCalledWith("variant", 2, {
+          lineItemId: "1",
+          salesChannelId: undefined,
+        })
 
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing,
@@ -946,7 +952,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        inventoryService,
+        productVariantInventoryService,
       })
 
       it("fails to register cart completion when swap is canceled", async () => {

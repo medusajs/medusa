@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, ILike } from "typeorm"
 
 import { IEventBusService, TransactionBaseService } from "../interfaces"
@@ -10,13 +10,14 @@ import {
   CreatePublishableApiKeyInput,
   UpdatePublishableApiKeyInput,
 } from "../types/publishable-api-key"
-import { buildQuery, isDefined, isString } from "../utils"
+import { buildQuery, isString } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
 
   eventBusService: IEventBusService
   publishableApiKeyRepository: typeof PublishableApiKeyRepository
+  // eslint-disable-next-line max-len
   publishableApiKeySalesChannelRepository: typeof PublishableApiKeySalesChannelRepository
 }
 
@@ -33,7 +34,9 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly eventBusService_: IEventBusService
+  // eslint-disable-next-line max-len
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
+  // eslint-disable-next-line max-len
   protected readonly publishableApiKeySalesChannelRepository_: typeof PublishableApiKeySalesChannelRepository
 
   constructor({
@@ -42,6 +45,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     publishableApiKeyRepository,
     publishableApiKeySalesChannelRepository,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -93,6 +97,13 @@ class PublishableApiKeyService extends TransactionBaseService {
     publishableApiKeyId: string,
     config: FindConfig<PublishableApiKey> = {}
   ): Promise<PublishableApiKey | never> {
+    if (!isDefined(publishableApiKeyId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"publishableApiKeyId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ id: publishableApiKeyId }, config)
   }
 
@@ -301,16 +312,21 @@ class PublishableApiKeyService extends TransactionBaseService {
    * List SalesChannels associated with the PublishableKey
    *
    * @param publishableApiKeyId - id of the key SalesChannels are listed for
+   * @param config - querying params
    */
   async listSalesChannels(
-    publishableApiKeyId: string
+    publishableApiKeyId: string,
+    config?: { q?: string }
   ): Promise<SalesChannel[]> {
     const manager = this.manager_
     const pubKeySalesChannelRepo = manager.getCustomRepository(
       this.publishableApiKeySalesChannelRepository_
     )
 
-    return await pubKeySalesChannelRepo.findSalesChannels(publishableApiKeyId)
+    return await pubKeySalesChannelRepo.findSalesChannels(
+      publishableApiKeyId,
+      config
+    )
   }
 
   /**

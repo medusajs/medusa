@@ -1,34 +1,34 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import {
   IEventBusService,
-    IPriceSelectionStrategy,
-    PriceSelectionContext,
-    TransactionBaseService
+  IPriceSelectionStrategy,
+  PriceSelectionContext,
+  TransactionBaseService,
 } from "../interfaces"
 import {
-    MoneyAmount,
-    Product,
-    ProductOptionValue,
-    ProductVariant
+  MoneyAmount,
+  Product,
+  ProductOptionValue,
+  ProductVariant,
 } from "../models"
 import { CartRepository } from "../repositories/cart"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { ProductRepository } from "../repositories/product"
 import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import {
-    FindWithRelationsOptions,
-    ProductVariantRepository
+  FindWithRelationsOptions,
+  ProductVariantRepository,
 } from "../repositories/product-variant"
 import { FindConfig } from "../types/common"
 import {
-    CreateProductVariantInput,
-    FilterableProductVariantProps,
-    GetRegionPriceContext,
-    ProductVariantPrice,
-    UpdateProductVariantInput
+  CreateProductVariantInput,
+  FilterableProductVariantProps,
+  GetRegionPriceContext,
+  ProductVariantPrice,
+  UpdateProductVariantInput,
 } from "../types/product-variant"
-import { buildQuery, isDefined, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import RegionService from "./region"
 
 class ProductVariantService extends TransactionBaseService {
@@ -47,6 +47,7 @@ class ProductVariantService extends TransactionBaseService {
   protected readonly regionService_: RegionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly moneyAmountRepository_: typeof MoneyAmountRepository
+  // eslint-disable-next-line max-len
   protected readonly productOptionValueRepository_: typeof ProductOptionValueRepository
   protected readonly cartRepository_: typeof CartRepository
 
@@ -61,6 +62,7 @@ class ProductVariantService extends TransactionBaseService {
     cartRepository,
     priceSelectionStrategy,
   }) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager

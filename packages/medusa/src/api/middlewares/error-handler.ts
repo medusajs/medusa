@@ -79,9 +79,8 @@ export default () => {
 }
 
 /**
- * @schema error
+ * @schema Error
  * title: "Response Error"
- * x-resourceId: error
  * type: object
  * properties:
  *  code:

@@ -83,45 +83,6 @@ export const defaultStoreOrdersFields = [
   "total",
 ] as (keyof Order)[]
 
-export const allowedStoreOrdersRelations = [
-  "shipping_address",
-  "fulfillments",
-  "fulfillments.tracking_links",
-  "billing_address",
-  "items",
-  "items.variant",
-  "items.variant.product",
-  "shipping_methods",
-  "discounts",
-  "discounts.rule",
-  "customer",
-  "payments",
-  "region",
-]
-
-export const allowedStoreOrdersFields = [
-  "id",
-  "status",
-  "fulfillment_status",
-  "payment_status",
-  "display_id",
-  "cart_id",
-  "customer_id",
-  "email",
-  "region_id",
-  "currency_code",
-  "items.refundable",
-  "tax_rate",
-  "created_at",
-  "shipping_total",
-  "discount_total",
-  "tax_total",
-  "refunded_total",
-  "gift_card_total",
-  "subtotal",
-  "total",
-]
-
 export type StoreOrdersRes = {
   order: Order
 }

@@ -5,7 +5,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [get] /order-edits/{id}
  * operationId: "GetOrderEditsOrderEdit"
- * summary: "Retrieve an OrderEdit"
+ * summary: "Get an OrderEdit"
  * description: "Retrieves a OrderEdit."
  * x-authenticated: true
  * parameters:
@@ -42,7 +42,7 @@ import { FindParams } from "../../../../types/common"
  *           type: object
  *           properties:
  *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *               $ref: "#/components/schemas/OrderEdit"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

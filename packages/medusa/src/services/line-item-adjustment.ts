@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 
 import { Cart, DiscountRuleType, LineItem, LineItemAdjustment } from "../models"
@@ -51,24 +51,31 @@ class LineItemAdjustmentService extends TransactionBaseService {
 
   /**
    * Retrieves a line item adjustment by id.
-   * @param id - the id of the line item adjustment to retrieve
+   * @param lineItemAdjustmentId - the id of the line item adjustment to retrieve
    * @param config - the config to retrieve the line item adjustment by
    * @return the line item adjustment.
    */
   async retrieve(
-    id: string,
+    lineItemAdjustmentId: string,
     config: FindConfig<LineItemAdjustment> = {}
   ): Promise<LineItemAdjustment> {
+    if (!isDefined(lineItemAdjustmentId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"lineItemAdjustmentId" must be defined`
+      )
+    }
+
     const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
       this.manager_.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: lineItemAdjustmentId }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
 
     if (!lineItemAdjustment) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Line item adjustment with id: ${id} was not found`
+        `Line item adjustment with id: ${lineItemAdjustmentId} was not found`
       )
     }
 

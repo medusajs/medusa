@@ -1,6 +1,6 @@
 post:
   operationId: PostPublishableApiKysPublishableApiKey
-  summary: Updates a PublishableApiKey
+  summary: Update PublishableApiKey
   description: Updates a PublishableApiKey.
   x-authenticated: true
   parameters:
@@ -14,11 +14,8 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            title:
-              description: A title to update for the key.
-              type: string
+          $ref: >-
+            ../components/schemas/AdminPostPublishableApiKeysPublishableApiKeyReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -42,7 +39,7 @@ post:
             type: object
             properties:
               publishable_api_key:
-                $ref: ../components/schemas/publishable_api_key.yaml
+                $ref: ../components/schemas/PublishableApiKey.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

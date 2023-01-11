@@ -11,9 +11,16 @@ const {
   simpleRegionFactory,
   simpleShippingOptionFactory,
   simpleOrderFactory,
+  simpleProductFactory,
 } = require("../../../factories")
 
 jest.setTimeout(30000)
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
   let medusaProcess
@@ -83,11 +90,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
           option_id: includesTaxShippingOption.id,
           price: 10,
         },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(orderWithShippingMethodRes.status).toEqual(200)
@@ -99,6 +102,108 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/orders", () => {
           }),
         ])
       )
+    })
+  })
+
+  describe("POST /admin/orders/:id/swaps", () => {
+    const prodId = "prod_1234"
+    const variant1 = "variant_1234"
+    const variant2 = "variant_5678"
+    const regionId = "test-region"
+    const lineItemId = "litem_1234"
+    const orderId = "order_1234"
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      await simpleRegionFactory(dbConnection, {
+        id: regionId,
+        includes_tax: true,
+        currency_code: "usd",
+        tax_rate: 10,
+      })
+
+      await simpleProductFactory(dbConnection, {
+        id: prodId,
+        variants: [
+          {
+            id: variant1,
+            prices: [{ currency: "usd", amount: 1000, region_id: regionId }],
+          },
+          {
+            id: variant2,
+            prices: [{ currency: "usd", amount: 1000, region_id: regionId }],
+          },
+        ],
+      })
+
+      await simpleOrderFactory(dbConnection, {
+        id: orderId,
+        email: "test@testson.com",
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region: regionId,
+        currency_code: "usd",
+        line_items: [
+          {
+            id: lineItemId,
+            variant_id: variant1,
+            tax_lines: [
+              {
+                rate: 10,
+                name: "VAT",
+                code: "vat",
+              },
+            ],
+            unit_price: 1000,
+            includes_tax: true,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("creates a swap with tax inclusive return lines", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/orders/${orderId}/swaps`,
+        {
+          return_items: [
+            {
+              item_id: lineItemId,
+              quantity: 1,
+            },
+          ],
+          additional_items: [{ variant_id: variant2, quantity: 1 }],
+        },
+        adminReqConfig
+      )
+
+      let swap = response.data.order.swaps[0]
+      const order = response.data.order
+
+      swap = await api.get(`/admin/swaps/${swap.id}`, adminReqConfig)
+
+      swap = swap.data.swap
+
+      let swapCart = await api.get(`/store/carts/${swap.cart_id}`)
+
+      swapCart = swapCart.data.cart
+
+      const returnedItemOnSwap = swapCart.items.find((itm) => itm.is_return)
+      const returnedItemOnOrder = order.items[0]
+
+      expect(returnedItemOnSwap.total).toEqual(-1000)
+      expect(returnedItemOnOrder.total).toEqual(1000)
+      expect(response.status).toEqual(200)
     })
   })
 })

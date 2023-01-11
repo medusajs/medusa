@@ -7,19 +7,13 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [post] /publishable-api-keys
  * operationId: "PostPublishableApiKeys"
- * summary: "Create a PublishableApiKey"
+ * summary: "Create PublishableApiKey"
  * description: "Creates a PublishableApiKey."
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - title
- *         properties:
- *           title:
- *             description: A title for the publishable api key
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostPublishableApiKeysReq"
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: JavaScript
@@ -28,16 +22,21 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.publishableApiKey.create()
- *         .then(({ publishable_api_key }) => {
- *           console.log(publishable_api_key.id)
- *         })
+ *       medusa.admin.publishableApiKeys.create({
+ *        title
+ *       })
+ *       .then(({ publishable_api_key }) => {
+ *         console.log(publishable_api_key.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys' \
- *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "created_by": "user_123" }'
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{
+ *           "title": "Web API Key"
+ *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -52,7 +51,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *           type: object
  *           properties:
  *             publishable_api_key:
- *               $ref: "#/components/schemas/publishable_api_key"
+ *               $ref: "#/components/schemas/PublishableApiKey"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -85,6 +84,16 @@ export default async (req: Request, res: Response) => {
   return res.status(200).json({ publishable_api_key: pubKey })
 }
 
+/**
+ * @schema AdminPostPublishableApiKeysReq
+ * type: object
+ * required:
+ *   - title
+ * properties:
+ *   title:
+ *     description: A title for the publishable api key
+ *     type: string
+ */
 export class AdminPostPublishableApiKeysReq {
   @IsString()
   title: string

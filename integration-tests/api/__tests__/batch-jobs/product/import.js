@@ -9,7 +9,9 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 const batchJobSeeder = require("../../../helpers/batch-job-seeder")
 const userSeeder = require("../../../helpers/user-seeder")
 const { simpleProductFactory } = require("../../../factories")
-const { simpleProductCollectionFactory } = require("../../../factories/simple-product-collection-factory");
+const {
+  simpleProductCollectionFactory,
+} = require("../../../factories/simple-product-collection-factory")
 
 const adminReqConfig = {
   headers: {
@@ -50,8 +52,8 @@ describe("Product import batch job", () => {
   let medusaProcess
   let dbConnection
 
-  let collectionHandle1 = "test-collection1"
-  let collectionHandle2 = "test-collection2"
+  const collectionHandle1 = "test-collection1"
+  const collectionHandle2 = "test-collection2"
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -79,11 +81,14 @@ describe("Product import batch job", () => {
     await batchJobSeeder(dbConnection)
     await adminSeeder(dbConnection)
     await userSeeder(dbConnection)
-    await simpleProductCollectionFactory(dbConnection, [{
-      handle: collectionHandle1
-    }, {
-      handle: collectionHandle2
-    }])
+     await simpleProductCollectionFactory(dbConnection, [
+      {
+        handle: collectionHandle1,
+      },
+      {
+        handle: collectionHandle2,
+      },
+    ])
   })
 
   afterEach(async () => {
@@ -226,7 +231,7 @@ describe("Product import batch job", () => {
           ],
           collection: expect.objectContaining({
             handle: collectionHandle1,
-          })
+          }),
         }),
         expect.objectContaining({
           title: "Test product",
@@ -288,7 +293,7 @@ describe("Product import batch job", () => {
           tags: [],
           collection: expect.objectContaining({
             handle: collectionHandle1,
-          })
+          }),
         }),
         // UPDATED PRODUCT
         expect.objectContaining({
@@ -384,8 +389,8 @@ describe("Product import batch job", () => {
             }),
           ],
           collection: expect.objectContaining({
-            handle: collectionHandle2
-          })
+            handle: collectionHandle2,
+          }),
         }),
       ])
     )

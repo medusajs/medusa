@@ -50,61 +50,49 @@ info:
     `count` is the total number of available items of this entity. It can be used to determine how many pages are there.
     
     For example, if the `count` is 100 and the `limit` is 50, you can divide the `count` by the `limit` to get the number of pages: `100/50 = 2 pages`.
-    
+
   license:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
 tags:
-- name: Auth
-  description: Auth endpoints that allow authorization of customers and manages their
-    sessions.
-- name: Cart
-  description: Cart endpoints that allow handling carts in Medusa.
-  x-resourceId: cart
-- name: Collection
-  description: Collection endpoints that allow handling collections in Medusa.
-  x-resourceId: product_collection
-- name: Customer
-  description: Customer endpoints that allow handling customers in Medusa.
-  x-resourceId: customer
-- name: Gift Card
-  description: Gift Card endpoints that allow handling gift cards in Medusa.
-  x-resourceId: gift_card
-- name: Order
-  description: Order endpoints that allow handling orders in Medusa.
-  x-resourceId: order
-- name: Product
-  description: Product endpoints that allow handling products in Medusa.
-  x-resourceId: product
-- name: Product Variant
-  description: Product Variant endpoints that allow handling product variants in Medusa.
-  x-resourceId: product_variant
-- name: Region
-  description: Region endpoints that allow handling regions in Medusa.
-  x-resourceId: region
-- name: Return Reason
-  description: Return Reason endpoints that allow handling return reasons in Medusa.
-  x-resourceId: return_reason
-- name: Return
-  description: Return endpoints that allow handling returns in Medusa.
-  x-resourceId: return
-- name: Shipping Option
-  description: Shipping Option endpoints that allow handling shipping options in Medusa.
-  x-resourceId: shipping_option
-- name: Swap
-  description: Swap endpoints that allow handling swaps in Medusa.
-  x-resourceId: swap
+  - name: Auth
+    description: Auth endpoints that allow authorization of customers and manages their
+      sessions.
+  - name: Cart
+    description: Cart endpoints that allow handling carts in Medusa.
+  - name: Collection
+    description: Collection endpoints that allow handling collections in Medusa.
+  - name: Customer
+    description: Customer endpoints that allow handling customers in Medusa.
+  - name: Gift Card
+    description: Gift Card endpoints that allow handling gift cards in Medusa.
+  - name: Order
+    description: Order endpoints that allow handling orders in Medusa.
+  - name: Product
+    description: Product endpoints that allow handling products in Medusa.
+  - name: Product Variant
+    description: Product Variant endpoints that allow handling product variants in Medusa.
+  - name: Region
+    description: Region endpoints that allow handling regions in Medusa.
+  - name: Return Reason
+    description: Return Reason endpoints that allow handling return reasons in Medusa.
+  - name: Return
+    description: Return endpoints that allow handling returns in Medusa.
+  - name: Shipping Option
+    description: Shipping Option endpoints that allow handling shipping options in Medusa.
+  - name: Swap
+    description: Swap endpoints that allow handling swaps in Medusa.
 servers:
-- url: https://api.medusa-commerce.com/store
-paths: {}
+  - url: https://api.medusa-commerce.com/store
+paths: { }
 components:
-  responses: 
+  responses:
     default_error:
       description: Default Error
       content:
         application/json:
-          schema: 
-            $ref: "#/components/schemas/error"
+          schema:
+            $ref: "#/components/schemas/Error"
           example:
             code: "unknown_error"
             message: "An unknown error occurred."
@@ -113,8 +101,8 @@ components:
       description: Invalid State Error
       content:
         application/json:
-          schema: 
-            $ref: "#/components/schemas/error"
+          schema:
+            $ref: "#/components/schemas/Error"
           example:
             code: "unknown_error"
             message: "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
@@ -123,8 +111,8 @@ components:
       description: Invalid Request Error
       content:
         application/json:
-          schema: 
-            $ref: "#/components/schemas/error"
+          schema:
+            $ref: "#/components/schemas/Error"
           example:
             code: "invalid_request_error"
             message: "Discount with code TEST already exists."
@@ -133,8 +121,8 @@ components:
       description: Not Found Error
       content:
         application/json:
-          schema: 
-            $ref: "#/components/schemas/error"
+          schema:
+            $ref: "#/components/schemas/Error"
           example:
             message: "Entity with id 1 was not found"
             type: "not_found"
@@ -143,23 +131,23 @@ components:
       content:
         application/json:
           schema:
-            oneOf: 
-              - $ref: "#/components/schemas/error"
-              - $ref: "#/components/schemas/multiple_errors"
-          examples: 
+            oneOf:
+              - $ref: "#/components/schemas/Error"
+              - $ref: "#/components/schemas/MultipleErrors"
+          examples:
             not_allowed:
               $ref: "#/components/examples/not_allowed_error"
             invalid_data:
               $ref: "#/components/examples/invalid_data_error"
-            multiple_errors:
+            MultipleErrors:
               $ref: "#/components/examples/multiple_errors"
     500_error:
       description: Server Error
       content:
         application/json:
-          schema: 
-            $ref: "#/components/schemas/error"
-          examples: 
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
             database:
               $ref: "#/components/examples/database_error"
             unexpected_state:
@@ -170,17 +158,17 @@ components:
               $ref: "#/components/examples/default_error"
     unauthorized:
       description: 'User is not authorized. Must log in first'
-      content: 
+      content:
         text/plain:
-          schema: 
+          schema:
             type: string
             default: Unauthorized
             example: Unauthorized
     incorrect_credentials:
       description: 'User does not exist or incorrect credentials'
-      content: 
+      content:
         text/plain:
-          schema: 
+          schema:
             type: string
             default: Unauthorized
             example: Unauthorized

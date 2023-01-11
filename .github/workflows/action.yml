@@ -179,3 +179,51 @@ jobs:
         run: yarn test:integration:plugins
         env:
           DB_PASSWORD: postgres
+
+  integration-tests-repositories:
+    needs: setup
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 1s
+          --health-timeout 10s
+          --health-retries 10
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+      - name: Run repository integration tests
+        run: yarn test:integration:repositories
+        env:
+          DB_PASSWORD: postgres

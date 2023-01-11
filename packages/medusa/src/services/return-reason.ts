@@ -1,7 +1,7 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { Return, ReturnReason } from "../models"
+import { ReturnReason } from "../models"
 import { ReturnReasonRepository } from "../repositories/return-reason"
 import { FindConfig, Selector } from "../types/common"
 import { CreateReturnReason, UpdateReturnReason } from "../types/return-reason"
@@ -84,23 +84,30 @@ class ReturnReasonService extends TransactionBaseService {
 
   /**
    * Gets an order by id.
-   * @param {string} id - id of order to retrieve
+   * @param {string} returnReasonId - id of order to retrieve
    * @param {Object} config - config object
    * @return {Promise<Order>} the order document
    */
   async retrieve(
-    id: string,
+    returnReasonId: string,
     config: FindConfig<ReturnReason> = {}
   ): Promise<ReturnReason | never> {
+    if (!isDefined(returnReasonId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"returnReasonId" must be defined`
+      )
+    }
+
     const rrRepo = this.manager_.getCustomRepository(this.retReasonRepo_)
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: returnReasonId }, config)
     const item = await rrRepo.findOne(query)
 
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Return Reason with id: ${id} was not found.`
+        `Return Reason with id: ${returnReasonId} was not found.`
       )
     }
 

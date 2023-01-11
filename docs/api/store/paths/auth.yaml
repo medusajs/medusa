@@ -25,7 +25,7 @@ post:
             type: object
             properties:
               customer:
-                $ref: ../components/schemas/customer.yaml
+                $ref: ../components/schemas/Customer.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -109,7 +109,7 @@ get:
             type: object
             properties:
               customer:
-                $ref: ../components/schemas/customer.yaml
+                $ref: ../components/schemas/Customer.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

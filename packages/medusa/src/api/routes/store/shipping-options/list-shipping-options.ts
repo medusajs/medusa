@@ -35,7 +35,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *             shipping_options:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/shipping_option"
+ *                 $ref: "#/components/schemas/ShippingOption"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

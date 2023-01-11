@@ -5,7 +5,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /payment-collections/{id}/sessions/{session_id}/authorize
  * operationId: "PostPaymentCollectionsSessionsSessionAuthorize"
- * summary: "Authorize a Payment Session of a Payment Collection"
+ * summary: "Authorize Payment Session"
  * description: "Authorizes a Payment Session of a Payment Collection."
  * x-authenticated: false
  * parameters:
@@ -30,7 +30,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Payment
+ *   - PaymentCollection
  * responses:
  *   200:
  *     description: OK
@@ -39,7 +39,7 @@ import { PaymentCollectionService } from "../../../../services"
  *         schema:
  *           properties:
  *             payment_session:
- *               $ref: "#/components/schemas/payment_session"
+ *               $ref: "#/components/schemas/PaymentSession"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

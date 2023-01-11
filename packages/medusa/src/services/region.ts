@@ -1,6 +1,6 @@
 import { DeepPartial, EntityManager } from "typeorm"
 
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { IEventBusService, TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
@@ -494,6 +494,13 @@ class RegionService extends TransactionBaseService {
     regionId: string,
     config: FindConfig<Region> = {}
   ): Promise<Region | never> {
+    if (!isDefined(regionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"regionId" must be defined`
+      )
+    }
+
     const regionRepository = this.manager_.getCustomRepository(
       this.regionRepository_
     )

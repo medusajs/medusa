@@ -10,6 +10,7 @@ import {
 } from "@medusajs/medusa"
 import Bull from "bull"
 import Redis from "ioredis"
+import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { sleep } from "../utils/sleep"
 
@@ -122,6 +123,7 @@ export default class RedisEventBusService extends TransactionBaseService impleme
    * Adds a function to a list of event subscribers.
    * @param event - the event that the subscriber will listen for.
    * @param subscriber - the function to be called when a certain event
+   * @param context - context to use when attaching subscriber
    * happens. Subscribers must return a Promise.
    * @return this
    */
@@ -148,15 +150,12 @@ export default class RedisEventBusService extends TransactionBaseService impleme
       throw new Error("Subscriber must be a function")
     }
 
-    if (this.observers_.get(event)?.length) {
-      const index = this.observers_.get(event)?.indexOf(subscriber)
-      if (index !== -1) {
-        this.observers_.get(event)?.splice(index as number, 1)
-      }
-    }
+    const existingSubscribers = this.eventToSubscribersMap_.get(event)
 
-    return this
-  }
+    if (existingSubscribers?.length) {
+      const subIndex = existingSubscribers?.findIndex(
+        (sub) => sub.subscriber === subscriber
+      )
 
   /**
    * Adds a function to a list of event subscribers.
@@ -173,9 +172,6 @@ export default class RedisEventBusService extends TransactionBaseService impleme
       throw new Error("Handler must be a function")
     }
 
-    const cronHandlers = this.cronHandlers_.get(event) ?? []
-    this.cronHandlers_.set(event, [...cronHandlers, subscriber])
-
     return this
   }
 
@@ -191,6 +187,29 @@ export default class RedisEventBusService extends TransactionBaseService impleme
     data: T,
     options: { delay?: number } = {}
   ): Promise<StagedJob | void> {
+    const opts: { removeOnComplete: boolean } & EmitOptions = {
+      removeOnComplete: true,
+      attempts: 1,
+    }
+    if (typeof options.attempts === "number") {
+      opts.attempts = options.attempts
+      if (isDefined(options.backoff)) {
+        opts.backoff = options.backoff
+      }
+    }
+    if (typeof options.delay === "number") {
+      opts.delay = options.delay
+    }
+
+    /**
+     * If we are in an ongoing transaction, we store the jobs in the database
+     * instead of processing them immediately. We only want to process those
+     * events, if the transaction successfully commits. This is to avoid jobs
+     * being processed if the transaction fails.
+     *
+     * In case of a failing transaction, kobs stored in the database are removed
+     * as part of the rollback.
+     */
     if (this.transactionManager_) {
       return await this.stagedJobService_
         .withTransaction(this.transactionManager_)
@@ -208,6 +227,8 @@ export default class RedisEventBusService extends TransactionBaseService impleme
       }
       this.queue_.add({ eventName, data }, opts)
     }
+
+    this.queue_.add({ eventName, data }, opts)
   }
 
   startEnqueuer(): void {
@@ -235,7 +256,7 @@ export default class RedisEventBusService extends TransactionBaseService impleme
           this.queue_
             .add(
               { eventName: job.event_name, data: job.data },
-              { removeOnComplete: true }
+              job.options ?? { removeOnComplete: true }
             )
             .then(async () => {
               await this.stagedJobService_.remove(job)
@@ -252,58 +273,101 @@ export default class RedisEventBusService extends TransactionBaseService impleme
    * @param job The job object
    * @return resolves to the results of the subscriber calls.
    */
-  worker_ = async <T>(job: {
-    data: { eventName: string; data: T }
-  }): Promise<unknown[]> => {
+  worker_ = async <T>(job: BullJob<T>): Promise<unknown> => {
     const { eventName, data } = job.data
-    const eventObservers = this.observers_.get(eventName) || []
-    const wildcardObservers = this.observers_.get("*") || []
+    const eventSubscribers = this.eventToSubscribersMap_.get(eventName) || []
+    const wildcardSubscribers = this.eventToSubscribersMap_.get("*") || []
 
-    const observers = eventObservers.concat(wildcardObservers)
+    const allSubscribers = eventSubscribers.concat(wildcardSubscribers)
 
-    this.logger_.info(
-      `Processing ${eventName} which has ${eventObservers.length} subscribers`
+    // Pull already completed subscribers from the job data
+    const completedSubscribers = job.data.completedSubscriberIds || []
+
+    // Filter out already completed subscribers from the all subscribers
+    const subscribersInCurrentAttempt = allSubscribers.filter(
+      (subscriber) =>
+        subscriber.id && !completedSubscribers.includes(subscriber.id)
     )
 
-    return await Promise.all(
-      observers.map(async (subscriber) => {
-        return subscriber(data, eventName).catch((err) => {
-          this.logger_.warn(
-            `An error occurred while processing ${eventName}: ${err}`
-          )
-          console.error(err)
-          return err
-        })
+    const isRetry = job.attemptsMade > 0
+    const currentAttempt = job.attemptsMade + 1
+
+    const isFinalAttempt = job?.opts?.attempts === currentAttempt
+
+    if (isRetry) {
+      if (isFinalAttempt) {
+        this.logger_.info(`Final retry attempt for ${eventName}`)
+      }
+
+      this.logger_.info(
+        `Retrying ${eventName} which has ${eventSubscribers.length} subscribers (${subscribersInCurrentAttempt.length} of them failed)`
+      )
+    } else {
+      this.logger_.info(
+        `Processing ${eventName} which has ${eventSubscribers.length} subscribers`
+      )
+    }
+
+    const completedSubscribersInCurrentAttempt: string[] = []
+
+    const subscribersResult = await Promise.all(
+      subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
+        return subscriber(data, eventName)
+          .then((data) => {
+            // For every subscriber that completes successfully, add their id to the list of completed subscribers
+            completedSubscribersInCurrentAttempt.push(id)
+            return data
+          })
+          .catch((err) => {
+            this.logger_.warn(
+              `An error occurred while processing ${eventName}: ${err}`
+            )
+            return err
+          })
       })
     )
-  }
 
-  /**
-   * Handles incoming jobs.
-   * @param job The job object
-   * @return resolves to the results of the subscriber calls.
-   */
-  cronWorker_ = async <T>(job: {
-    data: { eventName: string; data: T }
-  }): Promise<unknown[]> => {
-    const { eventName, data } = job.data
-    const observers = this.cronHandlers_.get(eventName) || []
-    this.logger_.info(`Processing cron job: ${eventName}`)
+    // If the number of completed subscribers is different from the number of subcribers to process in current attempt, some of them failed
+    const didSubscribersFail =
+      completedSubscribersInCurrentAttempt.length !==
+      subscribersInCurrentAttempt.length
 
-    return await Promise.all(
-      observers.map(async (subscriber) => {
-        return subscriber(data, eventName).catch((err) => {
-          this.logger_.warn(
-            `An error occured while processing ${eventName}: ${err}`
-          )
-          return err
-        })
-      })
-    )
+    const isRetriesConfigured = job?.opts?.attempts > 1
+
+    // Therefore, if retrying is configured, we try again
+    const shouldRetry =
+      didSubscribersFail && isRetriesConfigured && !isFinalAttempt
+
+    if (shouldRetry) {
+      const updatedCompletedSubscribers = [
+        ...completedSubscribers,
+        ...completedSubscribersInCurrentAttempt,
+      ]
+
+      job.data.completedSubscriberIds = updatedCompletedSubscribers
+
+      job.update(job.data)
+
+      const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
+
+      this.logger_.warn(errorMessage)
+
+      return Promise.reject(Error(errorMessage))
+    }
+
+    if (didSubscribersFail && !isFinalAttempt) {
+      // If retrying is not configured, we log a warning to allow server admins to recover manually
+      this.logger_.warn(
+        `One or more subscribers of ${eventName} failed. Retrying is not configured. Use 'attempts' option when emitting events.`
+      )
+    }
+
+    return Promise.resolve(subscribersResult)
   }
 
   /**
    * Registers a cron job.
+   * @deprecated All cron job logic has been refactored to the `JobSchedulerService`. This method will be removed in a future release.
    * @param eventName - the name of the event
    * @param data - the data to be sent with the event
    * @param cron - the cron pattern
@@ -316,14 +380,6 @@ export default class RedisEventBusService extends TransactionBaseService impleme
     cron: string,
     handler: EventHandler
   ): void {
-    this.logger_.info(`Registering ${eventName}`)
-    this.registerCronHandler_(eventName, handler)
-    return this.cronQueue_.add(
-      {
-        eventName,
-        data,
-      },
-      { repeat: { cron } }
-    )
+    this.jobSchedulerService_.create(eventName, data, cron, handler)
   }
 }

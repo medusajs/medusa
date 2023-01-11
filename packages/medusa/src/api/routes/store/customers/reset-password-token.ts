@@ -12,14 +12,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - email
- *         properties:
- *           email:
- *             description: "The email of the customer."
- *             type: string
- *             format: email
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerPasswordTokenReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -86,6 +79,17 @@ export default async (req, res) => {
   res.sendStatus(204)
 }
 
+/**
+ * @schema StorePostCustomersCustomerPasswordTokenReq
+ * type: object
+ * required:
+ *   - email
+ * properties:
+ *   email:
+ *     description: "The email of the customer."
+ *     type: string
+ *     format: email
+ */
 export class StorePostCustomersCustomerPasswordTokenReq {
   @IsEmail()
   email: string

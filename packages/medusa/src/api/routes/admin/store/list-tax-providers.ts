@@ -38,7 +38,7 @@ import { TaxProviderService } from "../../../../services"
  *             tax_providers:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/tax_provider"
+ *                 $ref: "#/components/schemas/TaxProvider"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

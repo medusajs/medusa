@@ -87,10 +87,9 @@ export class ShippingOption extends SoftDeletableEntity {
 }
 
 /**
- * @schema shipping_option
+ * @schema ShippingOption
  * title: "Shipping Option"
  * description: "Shipping Options represent a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information."
- * x-resourceId: shipping_option
  * type: object
  * required:
  *   - name
@@ -120,14 +119,14 @@ export class ShippingOption extends SoftDeletableEntity {
  *     example: sp_01G1G5V239ENSZ5MV4JAR737BM
  *   profile:
  *     description: Available if the relation `profile` is expanded.
- *     $ref: "#/components/schemas/shipping_profile"
+ *     $ref: "#/components/schemas/ShippingProfile"
  *   provider_id:
  *     description: "The id of the Fulfillment Provider, that will be used to process Fulfillments from the Shipping Option."
  *     type: string
  *     example: manual
  *   provider:
  *     description: Available if the relation `provider` is expanded.
- *     $ref: "#/components/schemas/fulfillment_provider"
+ *     $ref: "#/components/schemas/FulfillmentProvider"
  *   price_type:
  *     description: "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations."
  *     type: string
@@ -147,7 +146,7 @@ export class ShippingOption extends SoftDeletableEntity {
  *     description: The requirements that must be satisfied for the Shipping Option to be available for a Cart. Available if the relation `requirements` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/shipping_option_requirement"
+ *       $ref: "#/components/schemas/ShippingOptionRequirement"
  *   data:
  *     description: "The data needed for the Fulfillment Provider to identify the Shipping Option."
  *     type: object

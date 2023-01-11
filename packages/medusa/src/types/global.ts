@@ -38,23 +38,15 @@ export type Logger = _Logger & {
 }
 
 export type ModuleResolution = {
-  resolutionPath: string
+  resolutionPath: string | false
   definition: ModuleDefinition
-}
-
-export type ModuleDefinition = {
-  key: string
-  registrationName: string
-  defaultPackage: string
-  label: string
-  canOverride?: boolean
-  isRequired?: boolean
+  options?: Record<string, unknown>
 }
 
 export type LoaderOptions = {
   container: MedusaContainer
   configModule: ConfigModule
-  logger?: Logger
+  logger: Logger
 }
 
 export type Constructor<T> = new (...args: any[]) => T
@@ -62,6 +54,20 @@ export type Constructor<T> = new (...args: any[]) => T
 export type ModuleExports = {
   loaders: ((options: LoaderOptions) => Promise<void>)[]
   services: Constructor<any>[]
+}
+
+export type ConfigurableModuleDeclaration = {
+  resolve?: string
+  options?: Record<string, unknown>
+}
+
+export type ModuleDefinition = {
+  key: string
+  registrationName: string
+  defaultPackage: string | false
+  label: string
+  canOverride?: boolean
+  isRequired?: boolean
 }
 
 export type ConfigModule = {
@@ -74,6 +80,7 @@ export type ConfigModule = {
     database_url?: string
     database_type: string
     database_database?: string
+    database_schema?: string
     database_logging: LoggerOptions
 
     database_extra?: Record<string, unknown> & {
@@ -83,7 +90,7 @@ export type ConfigModule = {
     admin_cors?: string
   }
   featureFlags: Record<string, boolean | string>
-  modules?: Record<string, string>
+  modules?: Record<string, false | string | ConfigurableModuleDeclaration>
   moduleResolutions?: Record<string, ModuleResolution>
   plugins: (
     | {

@@ -1,7 +1,10 @@
-import jwt, { JwtPayload } from "jsonwebtoken"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import {
+  IEventBusService,
+  IInventoryService,
+  TransactionBaseService,
+} from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -10,6 +13,7 @@ import {
   Fulfillment,
   FulfillmentItem,
   FulfillmentStatus,
+  GiftCard,
   LineItem,
   Order,
   OrderStatus,
@@ -17,36 +21,38 @@ import {
   PaymentStatus,
   Return,
   Swap,
-  TrackingLink
+  TrackingLink,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
-  FulFillmentItemType
+  FulFillmentItemType,
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import { buildQuery, isDefined, isString, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import CartService from "./cart"
-import CustomerService from "./customer"
-import DiscountService from "./discount"
-import DraftOrderService from "./draft-order"
-import FulfillmentService from "./fulfillment"
-import FulfillmentProviderService from "./fulfillment-provider"
-import GiftCardService from "./gift-card"
-import InventoryService from "./inventory"
-import LineItemService from "./line-item"
-import PaymentProviderService from "./payment-provider"
-import RegionService from "./region"
-import ShippingOptionService from "./shipping-option"
-import ShippingProfileService from "./shipping-profile"
-import TotalsService from "./totals"
-import { NewTotalsService, TaxProviderService } from "./index"
-import { ConfigModule } from "../types/global"
-import logger from "../loaders/logger"
+
+import {
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService,
+} from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -69,9 +75,10 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
-  inventoryService: InventoryService
+  inventoryService: IInventoryService
   eventBusService: IEventBusService
   featureFlagRouter: FlagRouter
+  productVariantInventoryService: ProductVariantInventoryService
 }
 
 type TotalsConfig = {
@@ -118,9 +125,11 @@ class OrderService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
-  protected readonly inventoryService_: InventoryService
+  protected readonly inventoryService_: IInventoryService
   protected readonly eventBus_: IEventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  // eslint-disable-next-line max-len
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
     manager,
@@ -141,9 +150,9 @@ class OrderService extends TransactionBaseService {
     addressRepository,
     giftCardService,
     draftOrderService,
-    inventoryService,
     eventBusService,
     featureFlagRouter,
+    productVariantInventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -167,8 +176,8 @@ class OrderService extends TransactionBaseService {
     this.cartService_ = cartService
     this.addressRepository_ = addressRepository
     this.draftOrderService_ = draftOrderService
-    this.inventoryService_ = inventoryService
     this.featureFlagRouter_ = featureFlagRouter
+    this.productVariantInventoryService_ = productVariantInventoryService
   }
 
   /**
@@ -221,6 +230,7 @@ class OrderService extends TransactionBaseService {
         alias: "order",
         innerJoin: {
           shipping_address: "order.shipping_address",
+          customer: "order.customer",
         },
       }
 
@@ -234,6 +244,9 @@ class OrderService extends TransactionBaseService {
             })
               .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
               .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+              .orWhere(`customer.first_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.last_name ILIKE :q`, { q: `%${q}%` })
+              .orWhere(`customer.phone ILIKE :q`, { q: `%${q}%` })
           })
         )
       }
@@ -304,6 +317,7 @@ class OrderService extends TransactionBaseService {
       relationSet.add("discounts.rule")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
+      relationSet.add("gift_card_transactions.gift_card")
       relationSet.add("refunds")
       relationSet.add("shipping_methods")
       relationSet.add("shipping_methods.tax_lines")
@@ -335,6 +349,13 @@ class OrderService extends TransactionBaseService {
     orderId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
+    if (!isDefined(orderId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"orderId" must be defined`
+      )
+    }
+
     const { totalsToSelect } = this.transformQueryForTotals(config)
 
     if (totalsToSelect?.length) {
@@ -529,7 +550,6 @@ class OrderService extends TransactionBaseService {
   async createFromCart(cartOrId: string | Cart): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
       const cartServiceTx = this.cartService_.withTransaction(manager)
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
       const exists = !!(await this.retrieveByCartId(
         isString(cartOrId) ? cartOrId : cartOrId?.id,
@@ -547,7 +567,7 @@ class OrderService extends TransactionBaseService {
 
       const cart = isString(cartOrId)
         ? await cartServiceTx.retrieveWithTotals(cartOrId, {
-            relations: ["region", "payment"],
+            relations: ["region", "payment", "items"],
           })
         : cartOrId
 
@@ -559,23 +579,6 @@ class OrderService extends TransactionBaseService {
       }
 
       const { payment, region, total } = cart
-
-      await Promise.all(
-        cart.items.map(async (item) => {
-          return await inventoryServiceTx.confirmInventory(
-            item.variant_id,
-            item.quantity
-          )
-        })
-      ).catch(async (err) => {
-        if (payment) {
-          await this.paymentProviderService_
-            .withTransaction(manager)
-            .cancelPayment(payment)
-        }
-        await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-        throw err
-      })
 
       // Would be the case if a discount code is applied that covers the item
       // total
@@ -658,31 +661,36 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      let gcBalance =
+      const giftCardableAmount =
         (cart.region?.gift_cards_taxable
           ? cart.subtotal! - cart.discount_total!
-          : cart.total! + cart.gift_card_total!) || 0
-      const gcService = this.giftCardService_.withTransaction(manager)
+          : cart.total! + cart.gift_card_total!) || 0 // we re add the gift card total to compensate the fact that the decorate total already removed this amount from the total
 
-      for (const g of cart.gift_cards) {
-        const newBalance = Math.max(0, g.balance - gcBalance)
-        const usage = g.balance - newBalance
-        await gcService.update(g.id, {
-          balance: newBalance,
-          is_disabled: newBalance === 0,
+      let giftCardableAmountBalance = giftCardableAmount
+      const giftCardService = this.giftCardService_.withTransaction(manager)
+
+      for (const giftCard of cart.gift_cards) {
+        const newGiftCardBalance = Math.max(
+          0,
+          giftCard.balance - giftCardableAmountBalance
+        )
+        const giftCardBalanceUsed = giftCard.balance - newGiftCardBalance
+
+        await giftCardService.update(giftCard.id, {
+          balance: newGiftCardBalance,
+          is_disabled: newGiftCardBalance === 0,
         })
 
-        await gcService.createTransaction({
-          gift_card_id: g.id,
+        await giftCardService.createTransaction({
+          gift_card_id: giftCard.id,
           order_id: order.id,
-          amount: usage,
-          is_taxable: cart.region.gift_cards_taxable,
-          tax_rate: cart.region.gift_cards_taxable
-            ? cart.region.tax_rate
-            : null,
+          amount: giftCardBalanceUsed,
+          is_taxable: !!giftCard.tax_rate,
+          tax_rate: giftCard.tax_rate,
         })
 
-        gcBalance = gcBalance - usage
+        giftCardableAmountBalance =
+          giftCardableAmountBalance - giftCardBalanceUsed
       }
 
       const shippingOptionServiceTx =
@@ -691,16 +699,20 @@ class OrderService extends TransactionBaseService {
 
       await Promise.all(
         [
-          cart.items.map((item) => {
-            return [
-              lineItemServiceTx.update(item.id, { order_id: order.id }),
-              inventoryServiceTx.adjustInventory(
-                item.variant_id,
-                -item.quantity
-              ),
+          cart.items.map((lineItem): unknown[] => {
+            const toReturn: unknown[] = [
+              lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
             ]
+
+            if (lineItem.is_giftcard) {
+              toReturn.push(
+                this.createGiftCardsFromLineItem_(order, lineItem, manager)
+              )
+            }
+
+            return toReturn
           }),
-          cart.shipping_methods.map((method) => {
+          cart.shipping_methods.map(async (method) => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
@@ -723,6 +735,49 @@ class OrderService extends TransactionBaseService {
 
       return order
     })
+  }
+
+  protected createGiftCardsFromLineItem_(
+    order: Order,
+    lineItem: LineItem,
+    manager: EntityManager
+  ): Promise<GiftCard>[] {
+    const createGiftCardPromises: Promise<GiftCard>[] = []
+
+    // LineItem type doesn't promise either the subtotal or quantity. Adding a check here provides
+    // additional type safety/strictness
+    if (!lineItem.subtotal || !lineItem.quantity) {
+      return createGiftCardPromises
+    }
+
+    // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
+    // We divide here by quantity to get the value of the product/variant as a lineItem
+    // contains quantity. The subtotal is multiplicative of pure price per product and quantity
+    const taxExclusivePrice = lineItem.subtotal / lineItem.quantity
+    // The tax_lines contains all the taxes that is applicable on the purchase of the gift card
+    // On utilizing the gift card, the same set of taxRate will apply to gift card
+    // We calculate the summation of all taxes and add that as a snapshot in the giftcard.tax_rate column
+    const giftCardTaxRate = lineItem.tax_lines.reduce(
+      (sum, taxLine) => sum + taxLine.rate,
+      0
+    )
+
+    const giftCardTxnService = this.giftCardService_.withTransaction(manager)
+
+    for (let qty = 0; qty < lineItem.quantity; qty++) {
+      const createGiftCardPromise = giftCardTxnService.create({
+        region_id: order.region_id,
+        order_id: order.id,
+        value: taxExclusivePrice,
+        balance: taxExclusivePrice,
+        metadata: lineItem.metadata,
+        tax_rate: giftCardTaxRate || null,
+      })
+
+      createGiftCardPromises.push(createGiftCardPromise)
+    }
+
+    return createGiftCardPromises
   }
 
   /**
@@ -1052,6 +1107,7 @@ class OrderService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         relations: [
+          "refunds",
           "fulfillments",
           "payments",
           "returns",
@@ -1092,10 +1148,30 @@ class OrderService extends TransactionBaseService {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
-      for (const item of order.items) {
-        await inventoryServiceTx.adjustInventory(item.variant_id, item.quantity)
-      }
+      const inventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
+
+      const previouslyFulfilledQuantities = order.fulfillments.reduce(
+        (acc, f) => {
+          return f.items.reduce((acc, item) => {
+            acc[item.item_id] = (acc[item.item_id] || 0) + item.quantity
+            return acc
+          }, acc)
+        },
+        {}
+      )
+
+      await Promise.all(
+        order.items.map(async (item) => {
+          if (item.variant_id) {
+            return await inventoryServiceTx.deleteReservationsByLineItem(
+              item.id,
+              item.variant_id,
+              item.quantity - (previouslyFulfilledQuantities[item.id] || 0)
+            )
+          }
+        })
+      )
 
       const paymentProviderServiceTx =
         this.paymentProviderService_.withTransaction(manager)
@@ -1209,7 +1285,7 @@ class OrderService extends TransactionBaseService {
       return null
     }
 
-    if (quantity > item.quantity - item.fulfilled_quantity) {
+    if (quantity > item.quantity - item.fulfilled_quantity!) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Cannot fulfill more items than have been purchased"
@@ -1236,13 +1312,11 @@ class OrderService extends TransactionBaseService {
     itemsToFulfill: FulFillmentItemType[],
     config: {
       no_notification?: boolean
+      location_id?: string
       metadata?: Record<string, unknown>
-    } = {
-      no_notification: undefined,
-      metadata: {},
-    }
+    } = {}
   ): Promise<Order> {
-    const { metadata, no_notification } = config
+    const { metadata, no_notification, location_id } = config
 
     return await this.atomicPhase_(async (manager) => {
       // NOTE: we are telling the service to calculate all totals for us which
@@ -1295,9 +1369,12 @@ class OrderService extends TransactionBaseService {
           order as unknown as CreateFulfillmentOrder,
           itemsToFulfill,
           {
-            metadata,
+            metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
+          },
+          {
+            locationId: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []
@@ -1879,6 +1956,7 @@ class OrderService extends TransactionBaseService {
     relationSet.add("items")
     relationSet.add("items.tax_lines")
     relationSet.add("items.adjustments")
+    relationSet.add("items.variant")
     relationSet.add("swaps")
     relationSet.add("swaps.additional_items")
     relationSet.add("swaps.additional_items.tax_lines")
