@@ -45,10 +45,6 @@ export class PaymentProcessor extends AbstractPaymentProcessor {
     return Promise.resolve(undefined);
   }
 
-  capturePayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
-  }
-
   deletePayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | void> {
     return Promise.resolve(undefined);
   }
@@ -65,16 +61,20 @@ export class PaymentProcessor extends AbstractPaymentProcessor {
     return Promise.resolve({ } as PaymentProcessorSessionResponse);
   }
 
-  refundPayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
-  }
-
   retrievePayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
     return Promise.resolve({ });
   }
 
   updatePayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | void> {
     return Promise.resolve(undefined);
+  }
+
+  capturePayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
+    return Promise.resolve({ });
+  }
+
+  refundPayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
+    return Promise.resolve({});
   }
 }
 
