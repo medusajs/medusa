@@ -9,6 +9,14 @@ export type CreateProductCategoryInput = {
   parent_category_id?: string | null
 }
 
+export type UpdateProductCategoryInput = {
+  name?: string
+  handle?: string
+  is_internal?: boolean
+  is_active?: boolean
+  parent_category_id?: string | null
+}
+
 export class AdminProductCategoriesReqBase {
   @IsOptional()
   @IsString()
