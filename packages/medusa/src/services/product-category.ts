@@ -5,7 +5,10 @@ import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { FindConfig, Selector, QuerySelector } from "../types/common"
 import { buildQuery } from "../utils"
-import { CreateProductCategoryInput } from "../types/product-category"
+import {
+  CreateProductCategoryInput,
+  UpdateProductCategoryInput,
+} from "../types/product-category"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -113,6 +116,33 @@ class ProductCategoryService extends TransactionBaseService {
       const productCategoryRecord = pcRepo.create(productCategory)
 
       return await pcRepo.save(productCategoryRecord)
+    })
+  }
+
+  /**
+   * Updates a product category
+   * @param productCategoryId - id of product category to update
+   * @param productCategoryInput - parameters to update in product category
+   * @return updated product category
+   */
+  async update(
+    productCategoryId: string,
+    productCategoryInput: UpdateProductCategoryInput
+  ): Promise<ProductCategory> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepo = manager.getCustomRepository(
+        this.productCategoryRepo_
+      )
+
+      const productCategory = await this.retrieve(productCategoryId)
+
+      for (const key in productCategoryInput) {
+        if (isDefined(productCategoryInput[key])) {
+          productCategory[key] = productCategoryInput[key]
+        }
+      }
+
+      return await productCategoryRepo.save(productCategory)
     })
   }
 
