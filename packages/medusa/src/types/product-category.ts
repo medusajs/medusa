@@ -8,6 +8,14 @@ export type CreateProductCategory = {
   is_active?: boolean
 }
 
+export type UpdateProductCategory = {
+  name?: string
+  handle?: string
+  is_internal?: boolean
+  is_active?: boolean
+  parent_category_id?: string | null
+}
+
 export class AdminProductCategoriesReqBase {
   @IsBoolean()
   @IsOptional()
