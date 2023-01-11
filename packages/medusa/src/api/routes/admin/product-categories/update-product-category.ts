@@ -97,6 +97,8 @@ export default async (req: Request, res: Response) => {
 
 /**
  * @schema AdminPostProductCategoriesCategoryReq
+ * type: object
+ * properties:
  *   name:
  *     type: string
  *     description:  The name to identify the Product Category by.

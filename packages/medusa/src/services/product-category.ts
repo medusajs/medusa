@@ -136,7 +136,11 @@ class ProductCategoryService extends TransactionBaseService {
 
       const productCategory = await this.retrieve(productCategoryId)
 
-      productCategoryRepo.merge(productCategory, productCategoryInput)
+      for (const key in productCategoryInput) {
+        if (isDefined(productCategoryInput[key])) {
+          productCategory[key] = productCategoryInput[key]
+        }
+      }
 
       return await productCategoryRepo.save(productCategory)
     })
