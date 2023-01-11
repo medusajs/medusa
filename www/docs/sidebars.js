@@ -26,13 +26,25 @@ module.exports = {
           label: "Introduction",
         },
         {
-          type: "doc",
-          id: "quickstart/quick-start",
-          label: "Quickstart Guide",
-        },
-        {
-          type:"doc",
-          id: "quickstart/quick-start-docker",
+          type: "category",
+          label: "Install Medusa Server",
+          collapsed: false,
+          items: [
+            {
+              type: "doc",
+              id: "quickstart/quick-start",
+              label: "Quickstart Guide",
+            },
+            {
+              type: "doc",
+              id: "usage/create-medusa-app",
+              label: 'Use create-medusa-app'
+            },
+            {
+              type:"doc",
+              id: "quickstart/quick-start-docker",
+            },
+          ]
         },
         {
           type: "doc",
@@ -73,10 +85,6 @@ module.exports = {
         {
           type: "doc",
           id: "admin/quickstart",
-        },
-        {
-          type: "doc",
-          id: "usage/create-medusa-app",
         },
         {
           type: "category",
@@ -174,6 +182,11 @@ module.exports = {
             id: 'advanced/backend/upgrade-guides/index'
           },
           items: [
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-7-3",
+              label: "v1.7.3"
+            },
             {
               type: "doc",
               id: "advanced/backend/upgrade-guides/1-7-1",
@@ -342,6 +355,11 @@ module.exports = {
               type: "doc",
               id: "advanced/backend/sales-channels/manage-admin",
               label: "Manage Sales Channels"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-publishable-api-keys",
+              label: "Manage PublishableApiKeys"
             },
           ]
         },
@@ -521,6 +539,11 @@ module.exports = {
         {
           type: "doc",
           id: "advanced/backend/gift-cards/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/publishable-api-keys/index",
+          label: "Publishable API Keys"
         },
       ]
     },
