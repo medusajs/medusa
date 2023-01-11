@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class multiLocation1671711415179 implements MigrationInterface {
-  name = "multiLocation1666251508718"
+  name = "multiLocation1671711415179"
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
