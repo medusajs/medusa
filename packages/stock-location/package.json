@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/stock-location",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Stock Location Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -14,7 +14,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.7.1",
+    "@medusajs/medusa": "^1.7.3",
     "cross-env": "^5.2.1",
     "jest": "^25.5.2",
     "ts-jest": "^25.5.1",
@@ -28,7 +28,7 @@
     "test:unit": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.7.1",
+    "@medusajs/medusa": "^1.7.3",
     "medusa-interfaces": "1.3.3",
     "typeorm": "^0.2.31"
   }

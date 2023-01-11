@@ -1,9 +1,10 @@
 /* eslint-disable valid-jsdoc */
-import { EntityManager } from "typeorm"
 import { computerizeAmount, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
-import CsvParser from "../../../services/csv-parser"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
+import { BatchJob, SalesChannel } from "../../../models"
 import {
   BatchJobService,
   ProductCollectionService,
@@ -11,29 +12,28 @@ import {
   ProductVariantService,
   RegionService,
   SalesChannelService,
-  ShippingProfileService,
+  ShippingProfileService
 } from "../../../services"
+import CsvParser from "../../../services/csv-parser"
 import { CreateProductInput } from "../../../types/product"
 import {
   CreateProductVariantInput,
-  UpdateProductVariantInput,
+  UpdateProductVariantInput
 } from "../../../types/product-variant"
-import { BatchJob, SalesChannel } from "../../../models"
 import { FlagRouter } from "../../../utils/flag-router"
-import { transformProductData, transformVariantData } from "./utils"
-import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import {
   OperationType,
   ProductImportBatchJob,
   ProductImportCsvSchema,
   ProductImportInjectedProps,
   ProductImportJobContext,
-  TParsedProductImportRowData,
+  TParsedProductImportRowData
 } from "./types"
 import {
   productImportColumnsDefinition,
-  productImportSalesChannelsColumnsDefinition,
+  productImportSalesChannelsColumnsDefinition
 } from "./types/columns-definition"
+import { transformProductData, transformVariantData } from "./utils"
 
 /**
  * Process this many variant rows before reporting progress.
@@ -462,7 +462,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     for (const productOp of productOps) {
       const productData = transformProductData(productOp)
       try {
-        if (isSalesChannelsFeatureOn) {
+        if (isSalesChannelsFeatureOn && productOp["product.sales_channels"]) {
           productData["sales_channels"] = await this.processSalesChannels(
             productOp["product.sales_channels"] as Pick<
               SalesChannel,

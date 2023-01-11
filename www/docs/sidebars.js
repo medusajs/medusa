@@ -26,13 +26,25 @@ module.exports = {
           label: "Introduction",
         },
         {
-          type: "doc",
-          id: "quickstart/quick-start",
-          label: "Quickstart Guide",
-        },
-        {
-          type:"doc",
-          id: "quickstart/quick-start-docker",
+          type: "category",
+          label: "Install Medusa Server",
+          collapsed: false,
+          items: [
+            {
+              type: "doc",
+              id: "quickstart/quick-start",
+              label: "Quickstart Guide",
+            },
+            {
+              type: "doc",
+              id: "usage/create-medusa-app",
+              label: 'Use create-medusa-app'
+            },
+            {
+              type:"doc",
+              id: "quickstart/quick-start-docker",
+            },
+          ]
         },
         {
           type: "doc",
@@ -73,10 +85,6 @@ module.exports = {
         {
           type: "doc",
           id: "admin/quickstart",
-        },
-        {
-          type: "doc",
-          id: "usage/create-medusa-app",
         },
         {
           type: "category",
@@ -176,6 +184,11 @@ module.exports = {
           items: [
             {
               type: "doc",
+              id: "advanced/backend/upgrade-guides/1-7-3",
+              label: "v1.7.3"
+            },
+            {
+              type: "doc",
               id: "advanced/backend/upgrade-guides/1-7-1",
               label: "v1.7.1"
             },
@@ -246,6 +259,11 @@ module.exports = {
               type: "doc",
               id: "advanced/storefront/customer-profiles",
               label: "Add Customer Profiles"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-gift-cards",
+              label: "Use Gift Cards"
             },
             {
               type: "doc",
@@ -325,6 +343,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/admin/manage-gift-cards",
+              label: "Manage Gift Cards"
+            },
+            {
+              type: "doc",
               id: "advanced/admin/manage-regions",
               label: "Manage Regions"
             },
@@ -332,6 +355,11 @@ module.exports = {
               type: "doc",
               id: "advanced/backend/sales-channels/manage-admin",
               label: "Manage Sales Channels"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-publishable-api-keys",
+              label: "Manage PublishableApiKeys"
             },
           ]
         },
@@ -409,12 +437,21 @@ module.exports = {
           id: "advanced/ecommerce/handle-order-claim-event",
           label: "Handle Order Claim Event"
         },
+        {
+          type: "doc",
+          id: "advanced/ecommerce/send-gift-card-to-customer",
+          label: "Send Gift Card Code"
+        },
       ]
     },
     {
       type: "category",
       label: "Conceptual Guides",
       items: [
+        {
+          type: "doc",
+          id: "advanced/backend/dependency-container/index"
+        },
         {
           type: "doc",
           id: "advanced/backend/entities/overview",
@@ -480,6 +517,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/customer-groups/index"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/taxes/inclusive-pricing",
           label: "Tax Inclusive Pricing"
         },
@@ -497,11 +538,12 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "advanced/backend/customer-groups/index"
+          id: "advanced/backend/gift-cards/index"
         },
         {
           type: "doc",
-          id: "advanced/backend/dependency-container/index"
+          id: "advanced/backend/publishable-api-keys/index",
+          label: "Publishable API Keys"
         },
       ]
     },

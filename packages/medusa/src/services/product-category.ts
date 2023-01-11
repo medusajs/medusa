@@ -1,10 +1,14 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, DeepPartial } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { FindConfig, Selector, QuerySelector } from "../types/common"
 import { buildQuery } from "../utils"
+import {
+  CreateProductCategoryInput,
+  UpdateProductCategoryInput,
+} from "../types/product-category"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -100,6 +104,49 @@ class ProductCategoryService extends TransactionBaseService {
   }
 
   /**
+   * Creates a product category
+   * @param productCategory - params used to create
+   * @return created product category
+   */
+  async create(
+    productCategory: CreateProductCategoryInput
+  ): Promise<ProductCategory> {
+    return await this.atomicPhase_(async (manager) => {
+      const pcRepo = manager.getCustomRepository(this.productCategoryRepo_)
+      const productCategoryRecord = pcRepo.create(productCategory)
+
+      return await pcRepo.save(productCategoryRecord)
+    })
+  }
+
+  /**
+   * Updates a product category
+   * @param productCategoryId - id of product category to update
+   * @param productCategoryInput - parameters to update in product category
+   * @return updated product category
+   */
+  async update(
+    productCategoryId: string,
+    productCategoryInput: UpdateProductCategoryInput
+  ): Promise<ProductCategory> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepo = manager.getCustomRepository(
+        this.productCategoryRepo_
+      )
+
+      const productCategory = await this.retrieve(productCategoryId)
+
+      for (const key in productCategoryInput) {
+        if (isDefined(productCategoryInput[key])) {
+          productCategory[key] = productCategoryInput[key]
+        }
+      }
+
+      return await productCategoryRepo.save(productCategory)
+    })
+  }
+
+  /**
    * Deletes a product category
    *
    * @param productCategoryId is the id of the product category to delete
@@ -115,7 +162,7 @@ class ProductCategoryService extends TransactionBaseService {
       }).catch((err) => void 0)
 
       if (!productCategory) {
-        return Promise.resolve()
+        return
       }
 
       if (productCategory.category_children.length > 0) {
@@ -126,8 +173,6 @@ class ProductCategoryService extends TransactionBaseService {
       }
 
       await productCategoryRepository.delete(productCategory.id)
-
-      return Promise.resolve()
     })
   }
 }
