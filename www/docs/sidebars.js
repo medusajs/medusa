@@ -184,6 +184,11 @@ module.exports = {
           items: [
             {
               type: "doc",
+              id: "advanced/backend/upgrade-guides/1-7-3",
+              label: "v1.7.3"
+            },
+            {
+              type: "doc",
               id: "advanced/backend/upgrade-guides/1-7-1",
               label: "v1.7.1"
             },
