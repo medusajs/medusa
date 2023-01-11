@@ -699,7 +699,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
     const container = createContainer({}, defaultContainer)
 
     const mockPaymentProcessor = new PaymentProcessor(container)
-    mockPaymentProcessor.retrievePayment = jest.fn()
+    mockPaymentProcessor.retrievePayment = jest.fn().mockReturnValue(Promise.resolve({}))
 
     container
       .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
@@ -748,17 +748,28 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
     const externalId = "external-id"
     const paymentSession = {
       id: "test-session",
-      data: { id: externalId }
+      data: { id: externalId },
+      provider_id: paymentProviderId
     }
     const context = { ip: "0.0.0.0" }
 
     const container = createContainer({}, defaultContainer)
 
     const mockPaymentProcessor = new PaymentProcessor(container)
-    mockPaymentProcessor.authorizePayment = jest.fn()
+    mockPaymentProcessor.authorizePayment = jest.fn().mockReturnValue(Promise.resolve({}))
 
     container
       .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
+      .register(
+          "paymentSessionRepository",
+          asValue(
+            MockRepository({
+              findOne: jest
+                .fn()
+                .mockImplementation(async () => ({ data: {} })),
+            })
+          )
+        )
 
     const providerService = container.resolve(paymentServiceResolutionKey)
 
@@ -768,7 +779,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const provider = container.resolve(paymentProcessorResolutionKey)
 
       expect(provider.authorizePayment).toBeCalledTimes(1)
-      expect(provider.authorizePayment).toBeCalledWith(paymentSession, context)
+      expect(provider.authorizePayment).toBeCalledWith(paymentSession.data, context)
     })
 
     it("throw an error using the provider error response", async () => {
