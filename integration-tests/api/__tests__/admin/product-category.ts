@@ -234,6 +234,71 @@ describe("/admin/product-categories", () => {
     })
   })
 
+  describe("POST /admin/product-categories", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("throws an error if required fields are missing", async () => {
+      const api = useApi()
+
+      const error = await api.post(
+        `/admin/product-categories`,
+        {},
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data.type).toEqual("invalid_data")
+      expect(error.response.data.message).toEqual(
+        "name should not be empty, name must be a string"
+      )
+    })
+
+    it("successfully creates a product category", async () => {
+      productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
+        name: "category parent",
+        handle: "category-parent",
+      })
+
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/product-categories`,
+        {
+          name: "test",
+          handle: "test",
+          is_internal: true,
+          parent_category_id: productCategoryParent.id,
+        },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product_category: expect.objectContaining({
+            name: "test",
+            handle: "test",
+            is_internal: true,
+            is_active: false,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            parent_category: expect.objectContaining({
+              id: productCategoryParent.id
+            }),
+            category_children: []
+          }),
+        })
+      )
+    })
+  })
+
   describe("DELETE /admin/product-categories/:id", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
