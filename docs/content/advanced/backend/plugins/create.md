@@ -60,27 +60,7 @@ A basic Medusa server installed with the `medusa new` command has dependencies s
 }
 ```
 
-For a plugin, a lot of these dependencies are not necessary or should be labeled as [peer dependencies](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#peerdependencies). Therefore, it’s important to make changes to the dependencies of your plugin.
-
-The recommended change is the following:
-
-```json title=package.json
-"peerDependencies": {
-  "@medusajs/medusa": "^1.3.1",
-  "medusa-interfaces": "^1.3.0",
-  "typeorm": "^0.2.36"
-},
-"devDependencies": {
-  "@babel/cli": "^7.14.3",
-  "@babel/core": "^7.14.3",
-  "@babel/preset-typescript": "^7.14.5",
-  "babel-preset-medusa-package": "^1.1.19",
-}
-```
-
-The packages `@medusajs/medusa` and `medusa-interfaces` act as peer dependencies. They’ll be installed while you develop your package, and they are required when your plugin is installed in another NPM project.
-
-You remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa server, but not for a plugin.
+For a plugin, some dependencies are not necessary. You can remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa server, but not for a plugin.
 
 Additionally, you remove `@medusajs/medusa-cli` as you don’t need to use the Medusa CLI while developing a plugin.
 
