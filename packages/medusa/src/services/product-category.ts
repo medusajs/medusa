@@ -5,6 +5,7 @@ import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { FindConfig, Selector, QuerySelector } from "../types/common"
 import { buildQuery } from "../utils"
+import { CreateProductCategory } from "../types/product-category"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -97,6 +98,22 @@ class ProductCategoryService extends TransactionBaseService {
     )
 
     return productCategoryTree
+  }
+
+  /**
+   * Creates a product category
+   * @param productCategory - params used to create
+   * @return created product category
+   */
+  async create(
+    productCategory: CreateProductCategory
+  ): Promise<ProductCategory> {
+    return await this.atomicPhase_(async (manager) => {
+      const pcRepo = manager.getCustomRepository(this.productCategoryRepo_)
+      const productCategoryRecord = pcRepo.create(productCategory)
+
+      return await pcRepo.save(productCategoryRecord)
+    })
   }
 
   /**

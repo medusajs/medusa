@@ -97,6 +97,31 @@ describe("ProductCategoryService", () => {
     })
   })
 
+  describe("create", () => {
+    const productCategoryRepository = MockRepository({
+      findOne: query => Promise.resolve({ id: IdMap.getId("jeans") }),
+    })
+
+    const productCategoryService = new ProductCategoryService({
+      manager: MockManager,
+      productCategoryRepository,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully creates a product collection", async () => {
+      await productCategoryService.create({ name: "jeans", handle: "jeans" })
+
+      expect(productCategoryRepository.create).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.create).toHaveBeenCalledWith({
+        name: "jeans",
+        handle: "jeans"
+      })
+    })
+  })
+
   describe("delete", () => {
     const productCategoryRepository = MockRepository({
       findOne: query => {
