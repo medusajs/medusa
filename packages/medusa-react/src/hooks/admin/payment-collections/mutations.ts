@@ -1,5 +1,9 @@
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { Response } from "@medusajs/medusa-js"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 
 import {
   AdminPaymentCollectionDeleteRes,
@@ -7,9 +11,9 @@ import {
   AdminUpdatePaymentCollectionsReq,
 } from "@medusajs/medusa"
 
-import { buildOptions } from "../../utils/buildOptions"
-import { useMedusa } from "../../../contexts"
 import { adminPaymentCollectionQueryKeys } from "."
+import { useMedusa } from "../../../contexts"
+import { buildOptions } from "../../utils/buildOptions"
 
 export const useAdminDeletePaymentCollection = (
   id: string,
