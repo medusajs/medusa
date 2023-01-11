@@ -97,6 +97,30 @@ describe("ProductCategoryService", () => {
     })
   })
 
+  describe("create", () => {
+    const productCategoryRepository = MockRepository({
+      findOne: query => Promise.resolve({ id: IdMap.getId("jeans") }),
+    })
+
+    const productCategoryService = new ProductCategoryService({
+      manager: MockManager,
+      productCategoryRepository,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully creates a product category", async () => {
+      await productCategoryService.create({ name: "jeans" })
+
+      expect(productCategoryRepository.create).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.create).toHaveBeenCalledWith({
+        name: "jeans",
+      })
+    })
+  })
+
   describe("delete", () => {
     const productCategoryRepository = MockRepository({
       findOne: query => {
@@ -153,6 +177,52 @@ describe("ProductCategoryService", () => {
 
       expect(categoryResponse.message).toBe(
         `Deleting ProductCategory (with-children) with category children is not allowed`
+      )
+    })
+  })
+
+  describe("update", () => {
+    const productCategoryRepository = MockRepository({
+      findOne: query => {
+        if (query.where.id === IdMap.getId(invalidProdCategoryId)) {
+          return null
+        }
+
+        return Promise.resolve({ id: IdMap.getId(validProdCategoryId) })
+      },
+      findDescendantsTree: (productCategory) => {
+        return Promise.resolve(productCategory)
+      },
+    })
+
+    const productCategoryService = new ProductCategoryService({
+      manager: MockManager,
+      productCategoryRepository,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully updates a product category", async () => {
+      await productCategoryService.update(IdMap.getId(validProdCategoryId), {
+        name: "bathrobes",
+      })
+
+      expect(productCategoryRepository.save).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId(validProdCategoryId),
+        name: "bathrobes",
+      })
+    })
+
+    it("fails on not-found Id product category", async () => {
+      const error = await productCategoryService.update(IdMap.getId(invalidProdCategoryId), {
+        name: "bathrobes",
+      }).catch(e => e)
+
+      expect(error.message).toBe(
+        `ProductCategory with id: ${IdMap.getId(invalidProdCategoryId)} was not found`
       )
     })
   })
