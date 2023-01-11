@@ -3,7 +3,7 @@ import { IsNotEmpty, IsOptional, IsString, IsBoolean } from "class-validator"
 
 export type CreateProductCategoryInput = {
   name: string
-  handle: string
+  handle?: string
   is_internal?: boolean
   is_active?: boolean
   parent_category_id?: string | null
@@ -18,6 +18,11 @@ export type UpdateProductCategoryInput = {
 }
 
 export class AdminProductCategoriesReqBase {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  handle?: string
+
   @IsBoolean()
   @IsOptional()
   is_internal?: boolean
@@ -26,6 +31,7 @@ export class AdminProductCategoriesReqBase {
   @IsOptional()
   is_active?: boolean
 
+  @IsString()
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value

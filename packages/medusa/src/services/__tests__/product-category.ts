@@ -112,12 +112,11 @@ describe("ProductCategoryService", () => {
     })
 
     it("successfully creates a product category", async () => {
-      await productCategoryService.create({ name: "jeans", handle: "jeans" })
+      await productCategoryService.create({ name: "jeans" })
 
       expect(productCategoryRepository.create).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.create).toHaveBeenCalledWith({
         name: "jeans",
-        handle: "jeans"
       })
     })
   })
