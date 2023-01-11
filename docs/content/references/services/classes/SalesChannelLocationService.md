@@ -1,16 +1,18 @@
-# Class: AnalyticsConfigService
+# Class: SalesChannelLocationService
+
+Service for managing the stock locations of sales channels
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`AnalyticsConfigService`**
+  ↳ **`SalesChannelLocationService`**
 
 ## Constructors
 
 ### constructor
 
-• **new AnalyticsConfigService**(`__namedParameters`)
+• **new SalesChannelLocationService**(`__namedParameters`)
 
 #### Parameters
 
@@ -24,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:24](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L24)
+[packages/medusa/src/services/sales-channel-location.ts:26](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L26)
 
 ## Properties
 
@@ -56,13 +58,13 @@ TransactionBaseService.\_\_container\_\_
 
 ___
 
-### analyticsConfigRepository\_
+### eventBusService
 
-• `Protected` `Readonly` **analyticsConfigRepository\_**: typeof `AnalyticsConfigRepository`
+• `Protected` `Readonly` **eventBusService**: [`EventBusService`](EventBusService.md)
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:21](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L21)
+[packages/medusa/src/services/sales-channel-location.ts:23](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L23)
 
 ___
 
@@ -76,7 +78,27 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:18](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L18)
+[packages/medusa/src/services/sales-channel-location.ts:19](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L19)
+
+___
+
+### salesChannelService\_
+
+• `Protected` `Readonly` **salesChannelService\_**: [`SalesChannelService`](SalesChannelService.md)
+
+#### Defined in
+
+[packages/medusa/src/services/sales-channel-location.ts:22](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L22)
+
+___
+
+### stockLocationService
+
+• `Protected` `Readonly` **stockLocationService**: `IStockLocationService`
+
+#### Defined in
+
+[packages/medusa/src/services/sales-channel-location.ts:24](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L24)
 
 ___
 
@@ -90,19 +112,34 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:19](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L19)
+[packages/medusa/src/services/sales-channel-location.ts:20](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L20)
 
-___
+## Methods
 
-### userService\_
+### associateLocation
 
-• `Protected` `Readonly` **userService\_**: [`UserService`](UserService.md)
+▸ **associateLocation**(`salesChannelId`, `locationId`): `Promise`<`void`\>
+
+Associates a sales channel with a stock location.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `salesChannelId` | `string` | The ID of the sales channel. |
+| `locationId` | `string` | The ID of the stock location. |
+
+#### Returns
+
+`Promise`<`void`\>
+
+A promise that resolves when the association has been created.
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:22](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L22)
+[packages/medusa/src/services/sales-channel-location.ts:64](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L64)
 
-## Methods
+___
 
 ### atomicPhase\_
 
@@ -143,68 +180,52 @@ TransactionBaseService.atomicPhase\_
 
 ___
 
-### create
+### listLocations
 
-▸ **create**(`userId`, `data`): `Promise`<`AnalyticsConfig`\>
+▸ **listLocations**(`salesChannelId`): `Promise`<`string`[]\>
 
-Creates an analytics config.
+Lists the stock locations associated with a sales channel.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `userId` | `string` |
-| `data` | `CreateAnalyticsConfig` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `salesChannelId` | `string` | The ID of the sales channel. |
 
 #### Returns
 
-`Promise`<`AnalyticsConfig`\>
+`Promise`<`string`[]\>
+
+A promise that resolves with an array of location IDs.
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:56](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L56)
+[packages/medusa/src/services/sales-channel-location.ts:87](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L87)
 
 ___
 
-### delete
+### removeLocation
 
-▸ **delete**(`userId`): `Promise`<`void`\>
+▸ **removeLocation**(`salesChannelId`, `locationId`): `Promise`<`void`\>
 
-Deletes an analytics config.
+Removes an association between a sales channel and a stock location.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `userId` | `string` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `salesChannelId` | `string` | The ID of the sales channel. |
+| `locationId` | `string` | The ID of the stock location. |
 
 #### Returns
 
 `Promise`<`void`\>
 
-#### Defined in
-
-[packages/medusa/src/services/analytics-config.ts:103](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L103)
-
-___
-
-### retrieve
-
-▸ **retrieve**(`userId`): `Promise`<`AnalyticsConfig`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `userId` | `string` |
-
-#### Returns
-
-`Promise`<`AnalyticsConfig`\>
+A promise that resolves when the association has been removed.
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:32](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L32)
+[packages/medusa/src/services/sales-channel-location.ts:47](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/sales-channel-location.ts#L47)
 
 ___
 
@@ -232,32 +253,9 @@ TransactionBaseService.shouldRetryTransaction\_
 
 ___
 
-### update
-
-▸ **update**(`userId`, `update`): `Promise`<`AnalyticsConfig`\>
-
-Updates an analytics config. If the config does not exist, it will be created instead.
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `userId` | `string` |
-| `update` | `UpdateAnalyticsConfig` |
-
-#### Returns
-
-`Promise`<`AnalyticsConfig`\>
-
-#### Defined in
-
-[packages/medusa/src/services/analytics-config.ts:72](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/analytics-config.ts#L72)
-
-___
-
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`AnalyticsConfigService`](AnalyticsConfigService.md)
+▸ **withTransaction**(`transactionManager?`): [`SalesChannelLocationService`](SalesChannelLocationService.md)
 
 #### Parameters
 
@@ -267,7 +265,7 @@ ___
 
 #### Returns
 
-[`AnalyticsConfigService`](AnalyticsConfigService.md)
+[`SalesChannelLocationService`](SalesChannelLocationService.md)
 
 #### Inherited from
 
