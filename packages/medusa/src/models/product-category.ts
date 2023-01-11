@@ -1,5 +1,6 @@
 import { generateEntityId } from "../utils/generate-entity-id"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { kebabCase } from "lodash"
 import {
   BeforeInsert,
   Index,
@@ -49,6 +50,10 @@ export class ProductCategory extends SoftDeletableEntity {
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "pcat")
+
+    if (!this.handle) {
+      this.handle = kebabCase(this.name)
+    }
   }
 }
 
@@ -60,7 +65,6 @@ export class ProductCategory extends SoftDeletableEntity {
  * type: object
  * required:
  *   - name
- *   - handle
  * properties:
  *   id:
  *     type: string

@@ -29,7 +29,6 @@ import { FindParams } from "../../../../types/common"
  *       // must be previously logged in or use api token
  *       medusa.admin.productCategories.create({
  *         name: 'Jeans',
- *         handle: 'jeans',
  *       })
  *       .then(({ productCategory }) => {
  *         console.log(productCategory.id);
@@ -42,7 +41,6 @@ import { FindParams } from "../../../../types/common"
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Jeans",
-*            "handle": "jeans",
  *       }'
  * security:
  *   - api_token: []
@@ -101,7 +99,6 @@ export default async (req: Request, res: Response) => {
  * type: object
  * required:
  *   - name
- *   - handle
  * properties:
  *   name:
  *     type: string
@@ -124,10 +121,6 @@ export class AdminPostProductCategoriesReq extends AdminProductCategoriesReqBase
   @IsString()
   @IsNotEmpty()
   name: string
-
-  @IsString()
-  @IsNotEmpty()
-  handle: string
 }
 
 export class AdminPostProductCategoriesParams extends FindParams {}

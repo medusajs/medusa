@@ -256,7 +256,7 @@ describe("/admin/product-categories", () => {
       expect(error.response.status).toEqual(400)
       expect(error.response.data.type).toEqual("invalid_data")
       expect(error.response.data.message).toEqual(
-        "name should not be empty, name must be a string, handle should not be empty, handle must be a string"
+        "name should not be empty, name must be a string"
       )
     })
 
