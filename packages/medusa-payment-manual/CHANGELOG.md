@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.19
+
+### Patch Changes
+
+- [#2979](https://github.com/medusajs/medusa/pull/2979) [`a2df11fc1`](https://github.com/medusajs/medusa/commit/a2df11fc10c5f91d492233fe094a65022d2590aa) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-manual): Correct wrongly used input data
+
 ## 1.0.18
 
 ### Patch Changes

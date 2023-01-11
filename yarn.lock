@@ -4397,7 +4397,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.3
     "@rollup/plugin-commonjs": ^24.0.0
     "@rollup/plugin-node-resolve": ^15.0.1
     "@types/jest": ^26.0.19
@@ -4412,11 +4412,11 @@ __metadata:
     rollup-plugin-typescript2: ^0.34.1
     typescript: ^4.1.3
   peerDependencies:
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.3
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.1, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.1, @medusajs/medusa@^1.7.3, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -4455,7 +4455,7 @@ __metadata:
     medusa-core-utils: ^1.1.37
     medusa-interfaces: ^1.3.3
     medusa-telemetry: ^0.0.15
-    medusa-test-utils: ^1.1.37
+    medusa-test-utils: ^1.1.38
     morgan: ^1.9.1
     multer: ^1.4.2
     node-schedule: ^2.1.0
@@ -4491,13 +4491,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.3
     cross-env: ^5.2.1
     jest: ^25.5.2
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.3
     medusa-interfaces: 1.3.3
     typeorm: ^0.2.31
   languageName: unknown
@@ -24245,7 +24245,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     medusa-interfaces: ^1.3.3
-    medusa-test-utils: ^1.1.37
+    medusa-test-utils: ^1.1.38
   peerDependencies:
     medusa-interfaces: 1.x
   languageName: unknown
@@ -24274,7 +24274,7 @@ __metadata:
     jest: ^25.5.2
     medusa-core-utils: ^1.1.32
     medusa-interfaces: ^1.3.3
-    medusa-test-utils: ^1.1.37
+    medusa-test-utils: ^1.1.38
   peerDependencies:
     medusa-interfaces: 1.3.3
   languageName: unknown
@@ -24790,7 +24790,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.37, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
