@@ -237,11 +237,6 @@ describe("/admin/product-categories", () => {
   describe("POST /admin/product-categories", () => {
     beforeEach(async () => {
       await adminSeeder(dbConnection)
-
-      productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
-        name: "category parent",
-        handle: "category-parent",
-      })
     })
 
     afterEach(async () => {
@@ -266,6 +261,11 @@ describe("/admin/product-categories", () => {
     })
 
     it("successfully creates a product category", async () => {
+      productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
+        name: "category parent",
+        handle: "category-parent",
+      })
+
       const api = useApi()
 
       const response = await api.post(

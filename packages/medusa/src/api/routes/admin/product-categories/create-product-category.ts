@@ -1,14 +1,8 @@
-import {
-  IsNotEmpty,
-  IsObject,
-  IsOptional,
-  IsString,
-  IsBoolean,
-} from "class-validator"
-import { ProductCategoryService } from "../../../../services"
+import { IsNotEmpty, IsOptional, IsString, IsBoolean } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
+import { ProductCategoryService } from "../../../../services"
 import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
 
 /**

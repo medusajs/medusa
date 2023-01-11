@@ -111,7 +111,7 @@ describe("ProductCategoryService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully creates a product collection", async () => {
+    it("successfully creates a product category", async () => {
       await productCategoryService.create({ name: "jeans", handle: "jeans" })
 
       expect(productCategoryRepository.create).toHaveBeenCalledTimes(1)
