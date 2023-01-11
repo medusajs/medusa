@@ -66,7 +66,9 @@ import { IInventoryService } from "../../../../interfaces"
  */
 export default async (req, res) => {
   const { id } = req.params
-  const { validatedBody } = req
+  const { validatedBody } = req as {
+    validatedBody: AdminPostReservationsReservationReq
+  }
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
@@ -96,7 +98,7 @@ export class AdminPostReservationsReservationReq {
 
   @IsString()
   @IsOptional()
-  location_id?: number
+  location_id?: string
 
   @IsObject()
   @IsOptional()

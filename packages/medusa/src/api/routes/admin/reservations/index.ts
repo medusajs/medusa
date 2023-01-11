@@ -5,11 +5,19 @@ import middlewares, { transformBody } from "../../../middlewares"
 import "reflect-metadata"
 import { AdminPostReservationsReq } from "./create-reservation"
 import { AdminPostReservationsReservationReq } from "./update-reservation"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
 export default (app) => {
-  app.use("/reservations", route)
+  app.use(
+    "/reservations",
+    checkRegisteredModules({
+      inventoryService:
+        "Inventory is not enabled. Please add an Inventory module to enable this functionality.",
+    }),
+    route
+  )
 
   route.get("/:id", middlewares.wrap(require("./get-reservation").default))
 

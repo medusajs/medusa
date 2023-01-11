@@ -63,6 +63,7 @@ export type ReservationItemDTO = {
   location_id: string
   inventory_item_id: string
   quantity: number
+  line_item_id?: string
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date

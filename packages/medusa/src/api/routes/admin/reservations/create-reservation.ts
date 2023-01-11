@@ -64,7 +64,7 @@ import { IInventoryService } from "../../../../interfaces"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const { validatedBody } = req
+  const { validatedBody } = req as { validatedBody: AdminPostReservationsReq }
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
@@ -102,7 +102,7 @@ export default async (req, res) => {
  */
 export class AdminPostReservationsReq {
   @IsString()
-  line_item_id: string
+  line_item_id?: string
 
   @IsString()
   location_id: string
