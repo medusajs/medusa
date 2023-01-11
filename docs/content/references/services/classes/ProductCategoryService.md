@@ -1,22 +1,24 @@
-# Class: ProductTypeService
+# Class: ProductCategoryService
+
+Provides layer to manipulate product categories.
 
 ## Hierarchy
 
 - `TransactionBaseService`
 
-  ↳ **`ProductTypeService`**
+  ↳ **`ProductCategoryService`**
 
 ## Constructors
 
 ### constructor
 
-• **new ProductTypeService**(`__namedParameters`)
+• **new ProductCategoryService**(`__namedParameters`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
 
@@ -24,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:15](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-type.ts#L15)
+[packages/medusa/src/services/product-category.ts:23](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-category.ts#L23)
 
 ## Properties
 
@@ -66,7 +68,17 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:10](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-type.ts#L10)
+[packages/medusa/src/services/product-category.ts:19](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-category.ts#L19)
+
+___
+
+### productCategoryRepo\_
+
+• `Protected` `Readonly` **productCategoryRepo\_**: typeof `ProductCategoryRepository`
+
+#### Defined in
+
+[packages/medusa/src/services/product-category.ts:20](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-category.ts#L20)
 
 ___
 
@@ -80,17 +92,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:11](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-type.ts#L11)
-
-___
-
-### typeRepository\_
-
-• `Protected` `Readonly` **typeRepository\_**: typeof `ProductTypeRepository`
-
-#### Defined in
-
-[packages/medusa/src/services/product-type.ts:13](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-type.ts#L13)
+[packages/medusa/src/services/product-category.ts:21](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-category.ts#L21)
 
 ## Methods
 
@@ -133,79 +135,104 @@ TransactionBaseService.atomicPhase\_
 
 ___
 
-### list
+### create
 
-▸ **list**(`selector?`, `config?`): `Promise`<`ProductType`[]\>
+▸ **create**(`productCategory`): `Promise`<`ProductCategory`\>
 
-Lists product types
+Creates a product category
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `Selector`<`ProductType`\> & { `discount_condition_id?`: `string` ; `q?`: `string`  } | the query object for find |
-| `config` | `FindConfig`<`ProductType`\> | the config to be used for find |
+| `productCategory` | `CreateProductCategoryInput` | params used to create |
 
 #### Returns
 
-`Promise`<`ProductType`[]\>
+`Promise`<`ProductCategory`\>
 
-the result of the find operation
+created product category
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:55](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-type.ts#L55)
+[packages/medusa/src/services/product-category.ts:108](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-category.ts#L108)
+
+___
+
+### delete
+
+▸ **delete**(`productCategoryId`): `Promise`<`void`\>
+
+Deletes a product category
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productCategoryId` | `string` | is the id of the product category to delete |
+
+#### Returns
+
+`Promise`<`void`\>
+
+a promise
+
+#### Defined in
+
+[packages/medusa/src/services/product-category.ts:125](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-category.ts#L125)
 
 ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector?`, `config?`): `Promise`<[`ProductType`[], `number`]\>
+▸ **listAndCount**(`selector`, `config?`): `Promise`<[`ProductCategory`[], `number`]\>
 
-Lists product types and adds count.
+Lists product category based on the provided parameters and includes the count of
+product category that match the query.
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `selector` | `Selector`<`ProductType`\> & { `discount_condition_id?`: `string` ; `q?`: `string`  } | the query object for find |
-| `config` | `FindConfig`<`ProductType`\> | the config to be used for find |
+| Name | Type |
+| :------ | :------ |
+| `selector` | `QuerySelector`<`ProductCategory`\> |
+| `config` | `FindConfig`<`ProductCategory`\> |
 
 #### Returns
 
-`Promise`<[`ProductType`[], `number`]\>
+`Promise`<[`ProductCategory`[], `number`]\>
 
-the result of the find operation
+an array containing the product category as
+  the first element and the total count of product category that matches the query
+  as the second element.
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:72](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-type.ts#L72)
+[packages/medusa/src/services/product-category.ts:38](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-category.ts#L38)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<`ProductType`\>
+▸ **retrieve**(`productCategoryId`, `config?`): `Promise`<`ProductCategory`\>
 
-Gets a product type by id.
-Throws in case of DB Error and if product was not found.
+Retrieves a product category by id.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | id of the product to get. |
-| `config` | `FindConfig`<`ProductType`\> | object that defines what should be included in the   query response |
+| `productCategoryId` | `string` | the id of the product category to retrieve. |
+| `config` | `FindConfig`<`ProductCategory`\> | the config of the product category to retrieve. |
 
 #### Returns
 
-`Promise`<`ProductType`\>
+`Promise`<`ProductCategory`\>
 
-the result of the find one operation.
+the product category.
 
 #### Defined in
 
-[packages/medusa/src/services/product-type.ts:30](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-type.ts#L30)
+[packages/medusa/src/services/product-category.ts:70](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/product-category.ts#L70)
 
 ___
 
@@ -235,7 +262,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ProductTypeService`](ProductTypeService.md)
+▸ **withTransaction**(`transactionManager?`): [`ProductCategoryService`](ProductCategoryService.md)
 
 #### Parameters
 
@@ -245,7 +272,7 @@ ___
 
 #### Returns
 
-[`ProductTypeService`](ProductTypeService.md)
+[`ProductCategoryService`](ProductCategoryService.md)
 
 #### Inherited from
 
