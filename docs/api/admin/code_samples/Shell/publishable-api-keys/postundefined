@@ -1,3 +1,6 @@
 curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys' \
---header 'Authorization: Bearer {api_token}'
--d '{ "created_by": "user_123" }'
+--header 'Authorization: Bearer {api_token}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "title": "Web API Key"
+}'
