@@ -1,6 +1,9 @@
-import React from "react"
-import { QueryClientProvider, QueryClientProviderProps } from "react-query"
 import Medusa from "@medusajs/medusa-js"
+import {
+  QueryClientProvider,
+  QueryClientProviderProps,
+} from "@tanstack/react-query"
+import React from "react"
 
 interface MedusaContextState {
   client: Medusa

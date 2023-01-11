@@ -14,7 +14,7 @@ export class multiLocation1671711415179 implements MigrationInterface {
       `CREATE INDEX "IDX_c2203162ca946a71aeb98390b0" ON "sales_channel_location" ("location_id") `
     )
     await queryRunner.query(
-      `CREATE TABLE "product_variant_inventory_item" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "inventory_item_id" text NOT NULL, "variant_id" text NOT NULL, "quantity" integer NOT NULL DEFAULT '1', CONSTRAINT "UQ_c9be7c1b11a1a729eb51d1b6bca" UNIQUE ("variant_id", "inventory_item_id"), CONSTRAINT "PK_9a1188b8d36f4d198303b4f7efa" PRIMARY KEY ("id"))`
+      `CREATE TABLE "product_variant_inventory_item" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "inventory_item_id" text NOT NULL, "variant_id" text NOT NULL, "required_quantity" integer NOT NULL DEFAULT '1', CONSTRAINT "UQ_c9be7c1b11a1a729eb51d1b6bca" UNIQUE ("variant_id", "inventory_item_id"), CONSTRAINT "PK_9a1188b8d36f4d198303b4f7efa" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_c74e8c2835094a37dead376a3b" ON "product_variant_inventory_item" ("inventory_item_id") `

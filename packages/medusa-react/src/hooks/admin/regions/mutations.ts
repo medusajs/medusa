@@ -1,17 +1,21 @@
-import { adminRegionKeys } from "./queries"
 import {
-  AdminRegionsDeleteRes,
-  AdminRegionsRes,
-  AdminPostRegionsRegionReq,
-  AdminPostRegionsReq,
   AdminPostRegionsRegionCountriesReq,
   AdminPostRegionsRegionFulfillmentProvidersReq,
   AdminPostRegionsRegionPaymentProvidersReq,
+  AdminPostRegionsRegionReq,
+  AdminPostRegionsReq,
+  AdminRegionsDeleteRes,
+  AdminRegionsRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminRegionKeys } from "./queries"
 
 export const useAdminCreateRegion = (
   options?: UseMutationOptions<

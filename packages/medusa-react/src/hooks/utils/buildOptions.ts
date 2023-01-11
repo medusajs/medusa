@@ -1,14 +1,18 @@
-import { QueryClient, QueryKey, UseMutationOptions } from "react-query"
+import {
+  QueryClient,
+  QueryKey,
+  UseMutationOptions,
+} from "@tanstack/react-query"
 
 export const buildOptions = <
   TData,
   TError,
   TVariables,
   TContext,
-  TKey extends Array<QueryKey>
+  TKey extends QueryKey
 >(
   queryClient: QueryClient,
-  queryKey?: TKey[] | TKey,
+  queryKey?: TKey,
   options?: UseMutationOptions<TData, TError, TVariables, TContext>
 ): UseMutationOptions<TData, TError, TVariables, TContext> => {
   return {
@@ -19,11 +23,7 @@ export const buildOptions = <
       }
 
       if (queryKey !== undefined) {
-        if (queryKey.filter(Array.isArray).length > 0) {
-          queryKey.forEach(key => queryClient.invalidateQueries(key))
-        } else {
-          queryClient.invalidateQueries(queryKey)
-        }
+        queryClient.invalidateQueries(queryKey)
       }
     },
   }
