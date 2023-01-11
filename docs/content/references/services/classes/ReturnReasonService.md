@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:21](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L21)
+[packages/medusa/src/services/return-reason.ts:21](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L21)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -66,7 +66,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:18](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L18)
+[packages/medusa/src/services/return-reason.ts:18](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L18)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L16)
+[packages/medusa/src/services/return-reason.ts:16](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L16)
 
 ___
 
@@ -90,7 +90,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:19](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L19)
+[packages/medusa/src/services/return-reason.ts:19](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L19)
 
 ## Methods
 
@@ -129,7 +129,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
@@ -149,7 +149,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L29)
+[packages/medusa/src/services/return-reason.ts:29](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L29)
 
 ___
 
@@ -169,7 +169,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:110](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L110)
+[packages/medusa/src/services/return-reason.ts:117](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L117)
 
 ___
 
@@ -192,13 +192,13 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:72](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L72)
+[packages/medusa/src/services/return-reason.ts:72](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L72)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<`ReturnReason`\>
+▸ **retrieve**(`returnReasonId`, `config?`): `Promise`<`ReturnReason`\>
 
 Gets an order by id.
 
@@ -206,7 +206,7 @@ Gets an order by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | id of order to retrieve |
+| `returnReasonId` | `string` | id of order to retrieve |
 | `config` | `FindConfig`<`ReturnReason`\> | config object |
 
 #### Returns
@@ -217,7 +217,7 @@ the order document
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:91](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L91)
+[packages/medusa/src/services/return-reason.ts:91](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L91)
 
 ___
 
@@ -241,7 +241,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -262,7 +262,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/return-reason.ts:50](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/services/return-reason.ts#L50)
+[packages/medusa/src/services/return-reason.ts:50](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/return-reason.ts#L50)
 
 ___
 
@@ -286,4 +286,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

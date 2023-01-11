@@ -75,7 +75,7 @@ export default async (req, res) => {
     result = await claimService.retrieve(result.claim_order_id)
   }
 
-  const order = await orderService.retrieve(result.order_id, {
+  const order = await orderService.retrieve(result.order_id!, {
     select: defaultAdminOrdersFields,
     relations: defaultAdminOrdersRelations,
   })

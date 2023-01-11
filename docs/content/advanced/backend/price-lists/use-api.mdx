@@ -15,7 +15,7 @@ This document doesn't cover what price lists are and their basics. If you’re i
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
 
 ### JS Client
 
@@ -36,6 +36,8 @@ You can learn more about [authenticating as an admin user in the API reference](
 When you create a price list, you can specify different conditions to control when the price list can be applied.
 
 In the body of your request, aside from the required fields, you can send the following fields to apply different conditions:
+
+<!-- eslint-skip -->
 
 ```js noReport
 {
@@ -70,28 +72,28 @@ For example, sending the following request creates a price list with two prices:
 import { PriceListType } from "@medusajs/medusa"
 
 medusa.admin.priceLists.create({
-  name: 'New Price List',
-  description: 'A new price list',
+  name: "New Price List",
+  description: "A new price list",
   type: PriceListType.SALE,
-  status: 'active',
+  status: "active",
   prices: [
     {
       amount: 1000,
       variant_id,
-      currency_code: 'eur',
-      max_quantity: 3
+      currency_code: "eur",
+      max_quantity: 3,
     },
     {
       amount: 1500,
       variant_id,
-      currency_code: 'eur',
-      min_quantity: 4
-    }
-  ]
+      currency_code: "eur",
+      min_quantity: 4,
+    },
+  ],
 })
 .then(({ price_list }) => {
-  console.log(price_list.id);
-});
+  console.log(price_list.id)
+})
 ```
 
 </TabItem>
@@ -99,31 +101,31 @@ medusa.admin.priceLists.create({
 
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    name: 'New Price List',
-    description: 'A new price list',
-    type: 'sale',
-		status: 'active',
+    name: "New Price List",
+    description: "A new price list",
+    type: "sale",
+		status: "active",
     prices: [
       {
         amount: 1000,
         variant_id,
-        currency_code: 'eur',
-        max_quantity: 3
+        currency_code: "eur",
+        max_quantity: 3,
       },
       {
         amount: 1500,
         variant_id,
-        currency_code: 'eur',
-        min_quantity: 4
-      }
-    ]
-  })
+        currency_code: "eur",
+        min_quantity: 4,
+      },
+    ],
+  }),
 })
 .then((response) => response.json())
 .then(({ price_list }) => {
@@ -179,8 +181,8 @@ You can retrieve all of a price list’s details using the Get a Price List endp
 ```jsx
 medusa.admin.priceLists.retrieve(priceListId)
 .then(({ price_list }) => {
-  console.log(price_list.id);
-});
+  console.log(price_list.id)
+})
 ```
 
 </TabItem>
@@ -188,7 +190,7 @@ medusa.admin.priceLists.retrieve(priceListId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
-  credentials: 'include',
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ price_list }) => {
@@ -199,7 +201,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```jsx
+```bash
 curl -L -X GET '<SERVER_URL>/admin/price-lists/{id}' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
@@ -220,11 +222,11 @@ For example, by sending the following request the end date of the price list wil
 
 ```jsx
 medusa.admin.priceLists.update(priceListId, {
-  ends_at: '2022-10-11'
+  ends_at: "2022-10-11",
 })
 .then(({ price_list }) => {
-  console.log(price_list.id);
-});
+  console.log(price_list.id)
+})
 ```
 
 </TabItem>
@@ -232,14 +234,14 @@ medusa.admin.priceLists.update(priceListId, {
 
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    ends_at: '2022-10-11'
-  })
+    ends_at: "2022-10-11",
+  }),
 })
 .then((response) => response.json())
 .then(({ price_list }) => {
@@ -287,13 +289,13 @@ medusa.admin.priceLists.addPrices(priceListId, {
     {
       amount: 1200,
       variant_id,
-      currency_code: 'eur'
-    }
-  ]
+      currency_code: "eur",
+    },
+  ],
 })
 .then(({ price_list }) => {
-  console.log(price_list.id);
-});
+  console.log(price_list.id)
+})
 ```
 
 </TabItem>
@@ -301,20 +303,20 @@ medusa.admin.priceLists.addPrices(priceListId, {
 
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/prices/batch`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
     prices: [
 	    {
 	      amount: 1200,
 	      variant_id,
-	      currency_code: 'eur'
-	    }
-	  ]
-  })
+	      currency_code: "eur",
+	    },
+	  ],
+  }),
 })
 .then((response) => response.json())
 .then(({ price_list }) => {
@@ -357,18 +359,23 @@ You can delete all the prices of a product’s variants using the [Delete Produc
 ```jsx
 medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
 .then(({ ids, object, deleted }) => {
-  console.log(ids.length);
-});
+  console.log(ids.length)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```jsx
-fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`, {
-  method: 'DELETE',
-  credentials: 'include',
-})
+fetch(
+  `<SERVER_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`,
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ ids, object, deleted }) => {
   console.log(ids.length)
@@ -398,18 +405,23 @@ You can delete all the prices of a variant using the [Delete Variant Prices](htt
 ```jsx
 medusa.admin.priceLists.deleteVariantPrices(priceListId, variantId)
 .then(({ ids, object, deleted }) => {
-  console.log(ids);
-});
+  console.log(ids)
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
+<!-- eslint-disable max-len -->
+
 ```jsx
-fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`, {
-  method: 'DELETE',
-  credentials: 'include',
-})
+fetch(
+  `<SERVER_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`,
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+)
 .then((response) => response.json())
 .then(({ ids, object, deleted }) => {
   console.log(ids.length)
@@ -419,7 +431,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}/variants/${variantId}/price
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```jsx
+```bash
 curl -L -X DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
@@ -441,8 +453,8 @@ You can delete a price list, and subsequently all prices defined in it, using th
 ```jsx
 medusa.admin.priceLists.delete(priceListId)
 .then(({ id, object, deleted }) => {
-  console.log(id);
-});
+  console.log(id)
+})
 ```
 
 </TabItem>
@@ -450,8 +462,8 @@ medusa.admin.priceLists.delete(priceListId)
 
 ```jsx
 fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
-  method: 'DELETE',
-  credentials: 'include',
+  method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ id, object, deleted }) => {
@@ -462,7 +474,7 @@ fetch(`<SERVER_URL>/admin/price-lists/${priceListId}`, {
 </TabItem>
 <TabItem value="curl" label="cURL">
 
-```jsx
+```bash
 curl -L -X DELETE '<SERVER_URL>/admin/price-lists/<PRICE_LIST_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>'
 ```
@@ -474,7 +486,7 @@ This request returns the ID of the deleted price list.
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn more about [price lists](./index.md).
-- Learn how the [price selection strategy works](../price-selection-strategy/index.md).
+- [Price Lists Overview](./index.md).
+- [Price Selection Strategy Overview](../price-selection-strategy/index.md).

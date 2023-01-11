@@ -118,7 +118,7 @@ get:
               variants:
                 type: array
                 items:
-                  $ref: ../components/schemas/product_variant.yaml
+                  $ref: ../components/schemas/ProductVariant.yaml
               count:
                 type: integer
                 description: The total number of items available

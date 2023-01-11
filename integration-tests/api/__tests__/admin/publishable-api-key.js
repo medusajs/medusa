@@ -647,10 +647,10 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: product1.id,
+            id: product2.id,
           }),
           expect.objectContaining({
-            id: product2.id,
+            id: product1.id,
           }),
         ])
       )

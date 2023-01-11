@@ -1,6 +1,6 @@
 post:
   operationId: PostDiscountsDiscountConditionsConditionBatch
-  summary: Add a batch of resources to a discount condition
+  summary: Add Batch Resources
   description: Add a batch of resources to a discount condition.
   x-authenticated: true
   parameters:
@@ -34,20 +34,8 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - resources
-          properties:
-            resources:
-              description: The resources to be added to the discount condition
-              type: array
-              items:
-                required:
-                  - id
-                properties:
-                  id:
-                    description: The id of the item
-                    type: string
+          $ref: >-
+            ../components/schemas/AdminPostDiscountsDiscountConditionsConditionBatchReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -73,7 +61,7 @@ post:
             type: object
             properties:
               discount:
-                $ref: ../components/schemas/discount.yaml
+                $ref: ../components/schemas/Discount.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -88,7 +76,7 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteDiscountsDiscountConditionsConditionBatch
-  summary: Delete a batch of resources from a discount condition
+  summary: Delete Batch Resources
   description: Delete a batch of resources from a discount condition.
   x-authenticated: true
   parameters:
@@ -122,20 +110,8 @@ delete:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - resources
-          properties:
-            resources:
-              description: The resources to be deleted from the discount condition
-              type: array
-              items:
-                required:
-                  - id
-                properties:
-                  id:
-                    description: The id of the item
-                    type: string
+          $ref: >-
+            ../components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -161,7 +137,7 @@ delete:
             type: object
             properties:
               discount:
-                $ref: ../components/schemas/discount.yaml
+                $ref: ../components/schemas/Discount.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

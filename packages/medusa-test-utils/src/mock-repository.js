@@ -5,6 +5,7 @@ class MockRepo {
     remove,
     softRemove,
     find,
+    findDescendantsTree,
     findOne,
     findOneWithRelations,
     findOneOrFail,
@@ -18,6 +19,7 @@ class MockRepo {
     this.delete_ = del;
     this.softRemove_ = softRemove;
     this.find_ = find;
+    this.findDescendantsTree_ = findDescendantsTree;
     this.findOne_ = findOne;
     this.findOneOrFail_ = findOneOrFail;
     this.save_ = save;
@@ -65,6 +67,11 @@ class MockRepo {
   findOne = jest.fn().mockImplementation((...args) => {
     if (this.findOne_) {
       return this.findOne_(...args);
+    }
+  });
+  findDescendantsTree = jest.fn().mockImplementation((...args) => {
+    if (this.findDescendantsTree_) {
+      return this.findDescendantsTree_(...args);
     }
   });
   findOneOrFail = jest.fn().mockImplementation((...args) => {

@@ -11,7 +11,7 @@ After installing it, make sure to configure your Medusa server to use Redis:
 ```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
-    //...
+    // ...
     redis_url: REDIS_URL,
   },
 }
@@ -23,7 +23,9 @@ By default, Medusa connects to Redis over the URL `redis://localhost:6379`. If y
 REDIS_URL=<YOUR_REDIS_URL>
 ```
 
-## Additional Resources
+---
 
-- Learn how to [set up your development environment](../tutorial/0-set-up-your-development-environment.mdx).
-- Learn how to [configure your server](../usage/configurations.md).
+## See Also
+
+- [Set up your development environment](../tutorial/0-set-up-your-development-environment.mdx)
+- [Configure your server](../usage/configurations.md)

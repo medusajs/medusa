@@ -1,6 +1,6 @@
 delete:
   operationId: DeletePublishableApiKeysPublishableApiKey
-  summary: Delete a PublishableApiKey
+  summary: Delete PublishableApiKey
   description: Deletes a PublishableApiKeys
   x-authenticated: true
   parameters:
@@ -47,7 +47,7 @@ delete:
       $ref: ../components/responses/400_error.yaml
 get:
   operationId: GetPublishableApiKeysPublishableApiKey
-  summary: Get a Publishable API Key
+  summary: Get a PublishableApiKey
   description: Retrieve the Publishable Api Key.
   parameters:
     - in: path
@@ -80,7 +80,7 @@ get:
             type: object
             properties:
               publishable_api_key:
-                $ref: ../components/schemas/publishable_api_key.yaml
+                $ref: ../components/schemas/PublishableApiKey.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

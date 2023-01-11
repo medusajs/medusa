@@ -193,7 +193,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       ) as Cart | PaymentSessionInput
 
       const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
-      const context = this.buildPaymentContext(data)
+      const context = this.buildPaymentProcessorContext(data)
 
       if (!isDefined(context.currency_code) || !isDefined(context.amount)) {
         throw new MedusaError(
@@ -215,17 +215,15 @@ export default class PaymentProviderService extends TransactionBaseService {
         paymentResponse
       )
 
-      const amount = this.featureFlagRouter_.isFeatureEnabled(
-        OrderEditingFeatureFlag.key
-      )
-        ? context.amount
-        : undefined
-
       return await this.saveSession(providerId, {
+        payment_session_id: !isString(providerIdOrSessionInput)
+          ? providerIdOrSessionInput.payment_session_id
+          : undefined,
         cartId: context.id,
         sessionData,
         status: PaymentSessionStatus.PENDING,
-        amount,
+        isInitiated: true,
+        amount: context.amount,
       })
     })
   }
@@ -279,22 +277,26 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await this.atomicPhase_(async (transactionManager) => {
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
-      const context = this.buildPaymentContext(sessionInput)
+      const context = this.buildPaymentProcessorContext(sessionInput)
 
-      const sessionData = await provider
+      const paymentResponse = await provider
         .withTransaction(transactionManager)
         .updatePayment(paymentSession.data, context)
 
-      const amount = this.featureFlagRouter_.isFeatureEnabled(
-        OrderEditingFeatureFlag.key
+      const sessionData = paymentResponse.session_data ?? paymentResponse
+
+      await this.processUpdateRequestsData(
+        {
+          customer: { id: context.customer?.id },
+        },
+        paymentResponse
       )
-        ? context.amount
-        : undefined
 
       return await this.saveSession(paymentSession.provider_id, {
         payment_session_id: paymentSession.id,
         sessionData,
-        amount,
+        isInitiated: true,
+        amount: context.amount,
       })
     })
   }
@@ -640,7 +642,7 @@ export default class PaymentProviderService extends TransactionBaseService {
    * @param cartOrData
    * @protected
    */
-  protected buildPaymentContext(
+  protected buildPaymentProcessorContext(
     cartOrData: Cart | PaymentSessionInput
   ): Cart & PaymentContext {
     const cart =
@@ -687,44 +689,40 @@ export default class PaymentProviderService extends TransactionBaseService {
       amount?: number
       sessionData: Record<string, unknown>
       isSelected?: boolean
+      isInitiated?: boolean
       status?: PaymentSessionStatus
     }
   ): Promise<PaymentSession> {
     const manager = this.transactionManager_ ?? this.manager_
 
-    if (
-      data.amount != null &&
-      !this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key)
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Amount on payment sessions is only available with the OrderEditing API currently guarded by feature flag `MEDUSA_FF_ORDER_EDITING`.  Read more about feature flags here: https://docs.medusajs.com/advanced/backend/feature-flags/toggle/"
-      )
-    }
-
     const sessionRepo = manager.getCustomRepository(
       this.paymentSessionRepository_
     )
 
+    // Update an existing session
     if (data.payment_session_id) {
       const session = await this.retrieveSession(data.payment_session_id)
       session.data = data.sessionData ?? session.data
       session.status = data.status ?? session.status
       session.amount = data.amount ?? session.amount
+      session.is_initiated = data.isInitiated ?? session.is_initiated
+      session.is_selected = data.isSelected ?? session.is_selected
       return await sessionRepo.save(session)
-    } else {
-      const toCreate: Partial<PaymentSession> = {
-        cart_id: data.cartId || null,
-        provider_id: providerId,
-        data: data.sessionData,
-        is_selected: data.isSelected,
-        status: data.status,
-        amount: data.amount,
-      }
-
-      const created = sessionRepo.create(toCreate)
-      return await sessionRepo.save(created)
     }
+
+    // Create a new session
+    const toCreate: Partial<PaymentSession> = {
+      cart_id: data.cartId || null,
+      provider_id: providerId,
+      data: data.sessionData,
+      is_selected: data.isSelected,
+      is_initiated: data.isInitiated,
+      status: data.status,
+      amount: data.amount,
+    }
+
+    const created = sessionRepo.create(toCreate)
+    return await sessionRepo.save(created)
   }
 
   /**

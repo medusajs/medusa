@@ -153,7 +153,7 @@ import { isDefined } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Price List
  * responses:
  *   200:
  *     description: OK
