@@ -113,6 +113,7 @@ export default async (req: Request, res: Response) => {
  *     type: string
  *     description: The ID of the parent product category
  */
+// eslint-disable-next-line max-len
 export class AdminPostProductCategoriesCategoryReq extends AdminProductCategoriesReqBase {
   @IsString()
   @IsOptional()
