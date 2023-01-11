@@ -592,7 +592,7 @@ class SendGridService extends NotificationService {
       ...giftCard,
       locale,
       email,
-      display_value: (giftCard.value * (1 + taxRate) / 100).toFixed(2),
+      display_value: `${this.humanPrice_((giftCard.value * 1+ taxRate), giftCard.region.currency_code)} ${giftCard.region.currency_code}`,
       message: giftCard.metadata?.message || giftCard.metadata?.personal_message
     }
   }
