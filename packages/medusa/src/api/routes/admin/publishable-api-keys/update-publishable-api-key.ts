@@ -24,20 +24,20 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.publishableApiKey.update(publishable_key_id, {
+ *       medusa.admin.publishableApiKeys.update(publishableApiKeyId, {
  *         title: "new title"
  *       })
- *         .then(({ publishable_api_key }) => {
- *           console.log(publishable_api_key.id)
- *         })
+ *       .then(({ publishable_api_key }) => {
+ *         console.log(publishable_api_key.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-key/{id}' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-key/{pka_id}' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "title": "updated title"
+ *           "title": "new title"
  *       }'
  * security:
  *   - api_token: []

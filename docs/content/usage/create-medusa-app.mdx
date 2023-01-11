@@ -1,23 +1,50 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Feedback from '@site/src/components/Feedback';
 
-# Use create-medusa-app
+# Install Medusa with create-medusa-app
 
 In this document, you’ll learn how to use `create-medusa-app` to create a Medusa project with the three main components of Medusa.
 
 ## Overview
 
-As explained in the [Introduction guide](../introduction.md), Medusa is composed of three different components: the headless server, the storefront, and the admin dashboard.
+Medusa is composed of three different components: the headless server, the storefront, and the admin dashboard.
 
 Medusa provides the necessary tools and resources to set up the three components separately. This ensures that developers have full freedom to choose their tech stack, as they can choose any framework for the storefront and admin dashboard.
 
-However, if you’re interested in using Medusa’s starters for the three components, you can easily make use of the `create-medusa-app` command instead of creating each separately.
+However, if you’re interested in using Medusa’s starters for the three components, you can make use of the `create-medusa-app` command instead of creating each separately.
 
 When you run the `create-medusa-app` command, you’ll install a Medusa server, a Medusa admin, and optionally a storefront at the same time.
+
+:::note
+
+If you instead want to quickly install and setup only a Medusa server, follow [this quickstart guide](../quickstart/quick-start.mdx).
+
+:::
+
+---
+
+## Prerequisites
+
+### Node.js
+
+Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
+
+```bash noReport
+node -v
+```
+
+You can install Node from the [official website](https://nodejs.org/en/).
+
+### Git
+
+Git is required for this setup. You can find instructions on how to install it from the [Set up your dev environment documentation](../tutorial/0-set-up-your-development-environment.mdx#git).
 
 ---
 
 ## How to Create a Medusa Project
+
+A Medusa project is composed of the server, storefront, and admin.
 
 In your terminal, run the following command:
 
@@ -44,9 +71,9 @@ You’ll then be asked to enter the name of the directory you want the project t
 
 ### Choose Medusa Server Starter
 
-Next, you’ll be asked to choose the Medusa starter. The Medusa Server is created from a starter template. By default, it is created from the `medusa-starter-default` template.
+Next, you’ll be asked to choose the Medusa server starter. The Medusa Server is created from a starter template. By default, it is created from the `medusa-starter-default` template.
 
-You can either pick the default Medusa starter, the Contentful starter or enter a starter URL by choosing `Other`:
+You can either pick the default Medusa server starter, the Contentful starter or enter a starter URL by choosing `Other`:
 
 ```bash noReport
 ? Which Medusa starter would you like to install? …
@@ -56,12 +83,6 @@ You can either pick the default Medusa starter, the Contentful starter or enter 
 ```
 
 The server will be installed under the `backend` directory under the project directory. An SQLite database will be created inside that directory as well with demo data seeded into it.
-
-:::tip
-
-You can learn more about the Contentful starter in the [Contentful Integration documentation](../add-plugins/contentful/index.md).
-
-:::
 
 ### Choose Storefront Starter
 
@@ -107,6 +128,13 @@ yarn start
 
 The commands will differ based on your choices in previous prompts.
 
+<Feedback 
+   event="survey_create-medusa-app"
+   question="Did you set up Medusa successfully?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="Please describe the issue you faced."
+/>
+
 ---
 
 ## Project Directory Structure
@@ -116,14 +144,14 @@ Inside the root project directory which was specified at the beginning of the in
 ```bash noReport
 /my-medusa-store
   /storefront // Medusa storefront starter
-  /backend // Medusa starter as a backend option 
-  /admin // Medusa admin panel
+  /backend // Medusa server
+  /admin // Medusa admin
 ```
 
 ---
 
 ## What’s Next
 
-- [Deploy the Medusa server](../deployments/server/index.mdx)
-- [Deploy the Medusa admin](../deployments/admin/index.mdx)
-- [Deploy the storefront](../deployments/storefront/index.mdx)
+- [Check out Medusa's features](../introduction.md#features)
+- [Learn about server configurations](./configurations.md)
+- [Set up your environment for advanced development](../tutorial/0-set-up-your-development-environment.mdx)
