@@ -60,7 +60,7 @@ A basic Medusa server installed with the `medusa new` command has dependencies s
 }
 ```
 
-For a plugin, some dependencies are not necessary.  You can remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa server, but not for a plugin.
+For a plugin, some dependencies are not necessary. You can remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa server, but not for a plugin.
 
 Additionally, you remove `@medusajs/medusa-cli` as you don’t need to use the Medusa CLI while developing a plugin.
 
