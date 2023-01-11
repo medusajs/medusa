@@ -24,7 +24,7 @@ describe("Gift Card - Tax calculations", () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: {}
+      env: {},
     })
     dbConnection = connection
     medusaProcess = process
@@ -51,7 +51,9 @@ describe("Gift Card - Tax calculations", () => {
         name: "region test",
       })
 
-      customer = await simpleCustomerFactory(dbConnection, { password: 'medusatest' })
+      customer = await simpleCustomerFactory(dbConnection, {
+        password: "medusatest",
+      })
 
       customerData = {
         email: customer.email,
@@ -64,19 +66,25 @@ describe("Gift Card - Tax calculations", () => {
         is_giftcard: true,
         discountable: false,
         options: [{ id: "denom", title: "Denomination" }],
-        variants: [{
-          title: "Gift Card",
-          prices: [{ currency: "usd", amount: 30000, region_id: region.id }],
-          options: [{ option_id: "denom", value: "Denomination" }],
-        }]
+        variants: [
+          {
+            title: "Gift Card",
+            prices: [{ currency: "usd", amount: 30000, region_id: region.id }],
+            options: [{ option_id: "denom", value: "Denomination" }],
+          },
+        ],
       })
     })
 
     it("adding a gift card purchase to cart treats it like buying a product", async () => {
       const api = useApi()
-      const customerResponse = await api.post("/store/customers", customerData, {
-        withCredentials: true,
-      })
+      const customerResponse = await api.post(
+        "/store/customers",
+        customerData,
+        {
+          withCredentials: true,
+        }
+      )
 
       const createCartResponse = await api.post("/store/carts", {
         region_id: region.id,
@@ -110,8 +118,8 @@ describe("Gift Card - Tax calculations", () => {
               id: product.variants[0].id,
               product: expect.objectContaining({
                 is_giftcard: true,
-              })
-            })
+              }),
+            }),
           }),
         ])
       )
@@ -119,11 +127,18 @@ describe("Gift Card - Tax calculations", () => {
 
     it("purchasing a gift card via an order creates a gift card entity", async () => {
       const api = useApi()
-      const customerResponse = await api.post("/store/customers", customerData, {
-        withCredentials: true,
-      })
+      const customerResponse = await api.post(
+        "/store/customers",
+        customerData,
+        {
+          withCredentials: true,
+        }
+      )
 
-      const cartFactory = await simpleCartFactory(dbConnection, { customer, region })
+      const cartFactory = await simpleCartFactory(dbConnection, {
+        customer,
+        region,
+      })
 
       const response = await api.post(
         `/store/carts/${cartFactory.id}/line-items`,
@@ -140,9 +155,11 @@ describe("Gift Card - Tax calculations", () => {
 
       await api.post(`/store/carts/${cart.id}/payment-sessions`)
 
-      const createdOrderResponse = await api.post(`/store/carts/${cart.id}/complete-cart`)
+      const createdOrderResponse = await api.post(
+        `/store/carts/${cart.id}/complete-cart`
+      )
       const createdGiftCards = await dbConnection.manager.find(GiftCard, {
-        where: { order_id: createdOrderResponse.data.data.id }
+        where: { order_id: createdOrderResponse.data.data.id },
       })
       const createdGiftCard = createdGiftCards[0]
 
@@ -163,14 +180,18 @@ describe("Gift Card - Tax calculations", () => {
         tax_rate: region.tax_rate,
       })
       const expensiveProduct = await simpleProductFactory(dbConnection, {
-        variants: [{
-          title: "Product cost higher than gift card balance",
-          prices: [{
-            amount: 50000,
-            currency: "usd",
-            region_id: region.id,
-          }],
-        }]
+        variants: [
+          {
+            title: "Product cost higher than gift card balance",
+            prices: [
+              {
+                amount: 50000,
+                currency: "usd",
+                region_id: region.id,
+              },
+            ],
+          },
+        ],
       })
 
       const customerRes = await api.post("/store/customers", customerData, {
@@ -200,7 +221,9 @@ describe("Gift Card - Tax calculations", () => {
       const getCartResponse = await api.get(`/store/carts/${cartFactory.id}`)
       const cart = getCartResponse.data.cart
       await api.post(`/store/carts/${cart.id}/payment-sessions`)
-      const createdOrder = await api.post(`/store/carts/${cart.id}/complete-cart`)
+      const createdOrder = await api.post(
+        `/store/carts/${cart.id}/complete-cart`
+      )
 
       expect(createdOrder.data.data).toEqual(
         expect.objectContaining({
@@ -228,12 +251,12 @@ describe("Gift Card - Tax calculations", () => {
               refundable: 59500,
               tax_lines: expect.arrayContaining([
                 expect.objectContaining({
-                  rate: 19
-                })
+                  rate: 19,
+                }),
               ]),
-            })
+            }),
           ]),
-        }),
+        })
       )
     })
   })

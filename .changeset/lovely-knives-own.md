@@ -1,5 +1,5 @@
 ---
-"@medusajs/medusa": minor
+"@medusajs/medusa": patch
 "medusa-test-utils": patch
 ---
 

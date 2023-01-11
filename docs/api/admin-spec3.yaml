@@ -1573,6 +1573,147 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /currencies:
+    get:
+      operationId: GetCurrencies
+      summary: List Currency
+      description: Retrieves a list of Currency
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: code
+          description: Code of the currency to search for.
+          schema:
+            type: string
+        - in: query
+          name: includes_tax
+          description: Search for tax inclusive currencies.
+          schema:
+            type: boolean
+        - in: query
+          name: order
+          description: order to retrieve products in.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many products to skip in the result.
+          schema:
+            type: number
+            default: '0'
+        - in: query
+          name: limit
+          description: Limit the number of products returned.
+          schema:
+            type: number
+            default: '20'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.currencies.list()
+
+            .then(({ currencies, count, offset, limit }) => {
+              console.log(currencies.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/currencies' \
+
+            --header 'Authorization: Bearer {api_token}'
+      tags:
+        - Currency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currencies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Currency'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/currencies/{code}':
+    post:
+      operationId: PostCurrenciesCurrency
+      summary: Update a Currency
+      description: Update a Currency
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The code of the Currency.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostCurrenciesCurrencyReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.currencies.update(code, {
+              includes_tax: true
+            })
+
+            .then(({ currency }) => {
+              console.log(currency.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/currencies/{code}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "includes_tax": true
+            }'
+      tags:
+        - Currency
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    $ref: '#/components/schemas/Currency'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -2305,147 +2446,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /currencies:
-    get:
-      operationId: GetCurrencies
-      summary: List Currency
-      description: Retrieves a list of Currency
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: code
-          description: Code of the currency to search for.
-          schema:
-            type: string
-        - in: query
-          name: includes_tax
-          description: Search for tax inclusive currencies.
-          schema:
-            type: boolean
-        - in: query
-          name: order
-          description: order to retrieve products in.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many products to skip in the result.
-          schema:
-            type: number
-            default: '0'
-        - in: query
-          name: limit
-          description: Limit the number of products returned.
-          schema:
-            type: number
-            default: '20'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.currencies.list()
-
-            .then(({ currencies, count, offset, limit }) => {
-              console.log(currencies.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/currencies' \
-
-            --header 'Authorization: Bearer {api_token}'
-      tags:
-        - Currency
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  currencies:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Currency'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/currencies/{code}':
-    post:
-      operationId: PostCurrenciesCurrency
-      summary: Update a Currency
-      description: Update a Currency
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The code of the Currency.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostCurrenciesCurrencyReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.currencies.update(code, {
-              includes_tax: true
-            })
-
-            .then(({ currency }) => {
-              console.log(currency.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/currencies/{code}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "includes_tax": true
-            }'
-      tags:
-        - Currency
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  currency:
-                    $ref: '#/components/schemas/Currency'
   /customers:
     post:
       operationId: PostCustomers
@@ -4170,372 +4170,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /gift-cards:
-    post:
-      operationId: PostGiftCards
-      summary: Create a Gift Card
-      description: >-
-        Creates a Gift Card that can redeemed by its unique code. The Gift Card
-        is only valid within 1 region.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostGiftCardsReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.giftCards.create({
-              region_id
-            })
-
-            .then(({ gift_card }) => {
-              console.log(gift_card.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/gift-cards' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "region_id": "{region_id}"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/GiftCard'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetGiftCards
-      summary: List Gift Cards
-      description: Retrieves a list of Gift Cards.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: offset
-          description: The number of items to skip before the results.
-          schema:
-            type: number
-            default: '0'
-        - in: query
-          name: limit
-          description: Limit the number of items returned.
-          schema:
-            type: number
-            default: '50'
-        - in: query
-          name: q
-          description: a search term to search by code or display ID
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.giftCards.list()
-
-            .then(({ gift_cards, limit, offset, count }) => {
-              console.log(gift_cards.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/gift-cards' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  gift_cards:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/GiftCard'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/gift-cards/{id}':
-    delete:
-      operationId: DeleteGiftCardsGiftCard
-      summary: Delete a Gift Card
-      description: Deletes a Gift Card
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Gift Card to delete.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.giftCards.delete(gift_card_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/gift-cards/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Gift Card
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: gift-card
-                  deleted:
-                    type: boolean
-                    description: Whether the gift card was deleted successfully or not.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetGiftCardsGiftCard
-      summary: Get a Gift Card
-      description: Retrieves a Gift Card.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Gift Card.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.giftCards.retrieve(gift_card_id)
-
-            .then(({ gift_card }) => {
-              console.log(gift_card.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/gift-cards/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/GiftCard'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostGiftCardsGiftCard
-      summary: Update a Gift Card
-      description: >-
-        Update a Gift Card that can redeemed by its unique code. The Gift Card
-        is only valid within 1 region.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Gift Card.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostGiftCardsGiftCardReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.giftCards.update(gift_card_id, {
-              region_id
-            })
-
-            .then(({ gift_card }) => {
-              console.log(gift_card.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/gift-cards/{id}' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "region_id": "{region_id}"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/GiftCard'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -5203,6 +4837,372 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/DraftOrder'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /gift-cards:
+    post:
+      operationId: PostGiftCards
+      summary: Create a Gift Card
+      description: >-
+        Creates a Gift Card that can redeemed by its unique code. The Gift Card
+        is only valid within 1 region.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostGiftCardsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.giftCards.create({
+              region_id
+            })
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/gift-cards' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "region_id": "{region_id}"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/GiftCard'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetGiftCards
+      summary: List Gift Cards
+      description: Retrieves a list of Gift Cards.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: offset
+          description: The number of items to skip before the results.
+          schema:
+            type: number
+            default: '0'
+        - in: query
+          name: limit
+          description: Limit the number of items returned.
+          schema:
+            type: number
+            default: '50'
+        - in: query
+          name: q
+          description: a search term to search by code or display ID
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.giftCards.list()
+
+            .then(({ gift_cards, limit, offset, count }) => {
+              console.log(gift_cards.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/gift-cards' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gift_cards:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GiftCard'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/gift-cards/{id}':
+    delete:
+      operationId: DeleteGiftCardsGiftCard
+      summary: Delete a Gift Card
+      description: Deletes a Gift Card
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Gift Card to delete.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.giftCards.delete(gift_card_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/gift-cards/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Gift Card
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: gift-card
+                  deleted:
+                    type: boolean
+                    description: Whether the gift card was deleted successfully or not.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetGiftCardsGiftCard
+      summary: Get a Gift Card
+      description: Retrieves a Gift Card.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Gift Card.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.giftCards.retrieve(gift_card_id)
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/gift-cards/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/GiftCard'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostGiftCardsGiftCard
+      summary: Update a Gift Card
+      description: >-
+        Update a Gift Card that can redeemed by its unique code. The Gift Card
+        is only valid within 1 region.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Gift Card.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostGiftCardsGiftCardReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.giftCards.update(gift_card_id, {
+              region_id
+            })
+
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/gift-cards/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "region_id": "{region_id}"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gift_card:
+                    $ref: '#/components/schemas/GiftCard'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -9317,6 +9317,212 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/payments/{id}/capture':
+    post:
+      operationId: PostPaymentsPaymentCapture
+      summary: Capture a Payment
+      description: Captures a Payment.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.payments.capturePayment(payment_id)
+
+            .then(({ payment }) => {
+              console.log(payment.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/payments/{id}/capture' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment:
+                    $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payments/{id}':
+    get:
+      operationId: GetPaymentsPayment
+      summary: Get Payment details
+      description: Retrieves the Payment details
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.payments.retrieve(payment_id)
+
+            .then(({ payment }) => {
+              console.log(payment.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/payments/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payment:
+                    $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payments/{id}/refund':
+    post:
+      operationId: PostPaymentsPaymentRefunds
+      summary: Create a Refund
+      description: Issues a Refund.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostPaymentRefundsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.payments.refundPayment(payment_id, {
+              amount: 1000,
+              reason: 'return',
+              note: 'Do not like it',
+            })
+
+            .then(({ payment }) => {
+              console.log(payment.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/payments/pay_123/refund' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "amount": 1000,
+                "reason": "return",
+                "note": "Do not like it"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refund:
+                    $ref: '#/components/schemas/Refund'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/price-lists/{id}/prices/batch':
     post:
       operationId: PostPriceListsPriceListPricesBatch
@@ -10376,7 +10582,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Product
+        - Price List
       responses:
         '200':
           description: OK
@@ -10389,161 +10595,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Product'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /product-types:
-    get:
-      operationId: GetProductTypes
-      summary: List Product Types
-      description: Retrieve a list of Product Types.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of types to return.
-          schema:
-            type: integer
-            default: 20
-        - in: query
-          name: offset
-          description: The number of items to skip before the results.
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: order
-          description: The field to sort items by.
-          schema:
-            type: string
-        - in: query
-          name: discount_condition_id
-          description: The discount condition id on which to filter the product types.
-          schema:
-            type: string
-        - in: query
-          name: value
-          style: form
-          explode: false
-          description: The type values to search for
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: id
-          style: form
-          explode: false
-          description: The type IDs to search for
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: q
-          description: A query string to search values for
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting product types were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting product types were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.productTypes.list()
-
-            .then(({ product_types }) => {
-              console.log(product_types.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/product-types' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Product Type
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  product_types:
-                    $ref: '#/components/schemas/ProductType'
                   count:
                     type: integer
                     description: The total number of items available
@@ -10699,6 +10750,161 @@ paths:
                 properties:
                   product_tags:
                     $ref: '#/components/schemas/ProductTag'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /product-types:
+    get:
+      operationId: GetProductTypes
+      summary: List Product Types
+      description: Retrieve a list of Product Types.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of types to return.
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: offset
+          description: The number of items to skip before the results.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: order
+          description: The field to sort items by.
+          schema:
+            type: string
+        - in: query
+          name: discount_condition_id
+          description: The discount condition id on which to filter the product types.
+          schema:
+            type: string
+        - in: query
+          name: value
+          style: form
+          explode: false
+          description: The type values to search for
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: id
+          style: form
+          explode: false
+          description: The type IDs to search for
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: q
+          description: A query string to search values for
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting product types were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting product types were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productTypes.list()
+
+            .then(({ product_types }) => {
+              console.log(product_types.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/product-types' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_types:
+                    $ref: '#/components/schemas/ProductType'
                   count:
                     type: integer
                     description: The total number of items available
@@ -12066,212 +12272,6 @@ paths:
                 properties:
                   product:
                     $ref: '#/components/schemas/Product'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/payments/{id}/capture':
-    post:
-      operationId: PostPaymentsPaymentCapture
-      summary: Capture a Payment
-      description: Captures a Payment.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Payment.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.payments.capturePayment(payment_id)
-
-            .then(({ payment }) => {
-              console.log(payment.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/payments/{id}/capture' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Payment
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payment:
-                    $ref: '#/components/schemas/Payment'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/payments/{id}':
-    get:
-      operationId: GetPaymentsPayment
-      summary: Get Payment details
-      description: Retrieves the Payment details
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Payment.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.payments.retrieve(payment_id)
-
-            .then(({ payment }) => {
-              console.log(payment.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/payments/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Payment
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  payment:
-                    $ref: '#/components/schemas/Payment'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/payments/{id}/refund':
-    post:
-      operationId: PostPaymentsPaymentRefunds
-      summary: Create a Refund
-      description: Issues a Refund.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Payment.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostPaymentRefundsReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.payments.refundPayment(payment_id, {
-              amount: 1000,
-              reason: 'return',
-              note: 'Do not like it',
-            })
-
-            .then(({ payment }) => {
-              console.log(payment.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/payments/pay_123/refund' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "amount": 1000,
-                "reason": "return",
-                "note": "Do not like it"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Payment
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  refund:
-                    $ref: '#/components/schemas/Refund'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -14190,6 +14190,234 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/returns/{id}/cancel':
+    post:
+      operationId: PostReturnsReturnCancel
+      summary: Cancel a Return
+      description: Registers a Return as canceled.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Return.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.cancel(return_id)
+
+            .then(({ order }) => {
+              console.log(order.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/returns/{id}/cancel' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order:
+                    $ref: '#/components/schemas/Order'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /returns:
+    get:
+      operationId: GetReturns
+      summary: List Returns
+      description: Retrieves a list of Returns
+      parameters:
+        - in: query
+          name: limit
+          description: The upper limit for the amount of responses returned.
+          schema:
+            type: number
+            default: '50'
+        - in: query
+          name: offset
+          description: The offset of the list returned.
+          schema:
+            type: number
+            default: '0'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.list()
+
+            .then(({ returns, limit, offset, count }) => {
+              console.log(returns.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET 'https://medusa-url.com/admin/returns'
+            \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  returns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Return'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/returns/{id}/receive':
+    post:
+      operationId: PostReturnsReturnReceive
+      summary: Receive a Return
+      description: >-
+        Registers a Return as received. Updates statuses on Orders and Swaps
+        accordingly.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Return.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostReturnsReturnReceiveReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.returns.receive(return_id, {
+              items: [
+                {
+                  item_id,
+                  quantity: 1
+                }
+              ]
+            })
+
+            .then((data) => {
+              console.log(data.return.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/returns/{id}/receive' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "items": [
+                  {
+                    "item_id": "asafg",
+                    "quantity": 1
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  return:
+                    $ref: '#/components/schemas/Return'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   '/sales-channels/{id}/products/batch':
     post:
       operationId: PostSalesChannelsChannelProductsBatch
@@ -14822,234 +15050,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/returns/{id}/cancel':
-    post:
-      operationId: PostReturnsReturnCancel
-      summary: Cancel a Return
-      description: Registers a Return as canceled.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Return.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.cancel(return_id)
-
-            .then(({ order }) => {
-              console.log(order.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/returns/{id}/cancel' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  order:
-                    $ref: '#/components/schemas/Order'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /returns:
-    get:
-      operationId: GetReturns
-      summary: List Returns
-      description: Retrieves a list of Returns
-      parameters:
-        - in: query
-          name: limit
-          description: The upper limit for the amount of responses returned.
-          schema:
-            type: number
-            default: '50'
-        - in: query
-          name: offset
-          description: The offset of the list returned.
-          schema:
-            type: number
-            default: '0'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.list()
-
-            .then(({ returns, limit, offset, count }) => {
-              console.log(returns.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET 'https://medusa-url.com/admin/returns'
-            \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  returns:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Return'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/returns/{id}/receive':
-    post:
-      operationId: PostReturnsReturnReceive
-      summary: Receive a Return
-      description: >-
-        Registers a Return as received. Updates statuses on Orders and Swaps
-        accordingly.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Return.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostReturnsReturnReceiveReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.returns.receive(return_id, {
-              items: [
-                {
-                  item_id,
-                  quantity: 1
-                }
-              ]
-            })
-
-            .then((data) => {
-              console.log(data.return.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/returns/{id}/receive' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "items": [
-                  {
-                    "item_id": "asafg",
-                    "quantity": 1
-                  }
-                ]
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Return
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  return:
-                    $ref: '#/components/schemas/Return'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /shipping-options:
     post:
       operationId: PostShippingOptions
@@ -15413,6 +15413,340 @@ paths:
                 properties:
                   shipping_option:
                     $ref: '#/components/schemas/ShippingOption'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /shipping-profiles:
+    post:
+      operationId: PostShippingProfiles
+      summary: Create a Shipping Profile
+      description: Creates a Shipping Profile
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostShippingProfilesReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.create({
+              name: 'Large Products'
+            })
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/shipping-profiles' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "Large Products"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_profile:
+                    $ref: '#/components/schemas/ShippingProfile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetShippingProfiles
+      summary: List Shipping Profiles
+      description: Retrieves a list of Shipping Profile.
+      x-authenticated: true
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.list()
+
+            .then(({ shipping_profiles }) => {
+              console.log(shipping_profiles.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/shipping-profiles' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_profiles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShippingProfile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/shipping-profiles/{id}':
+    delete:
+      operationId: DeleteShippingProfilesProfile
+      summary: Delete a Shipping Profile
+      description: Deletes a Shipping Profile.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Profile.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.delete(profile_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/shipping-profiles/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Shipping Profile.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: shipping_profile
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetShippingProfilesProfile
+      summary: Get a Shipping Profile
+      description: Retrieves a Shipping Profile.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Profile.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.retrieve(profile_id)
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/shipping-profiles/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_profile:
+                    $ref: '#/components/schemas/ShippingProfile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostShippingProfilesProfile
+      summary: Update a Shipping Profile
+      description: Updates a Shipping Profile
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Shipping Profile.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostShippingProfilesProfileReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.shippingProfiles.update(shipping_profile_id, {
+              name: 'Large Products'
+            })
+
+            .then(({ shipping_profile }) => {
+              console.log(shipping_profile.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/shipping-profiles/{id} \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "Large Products"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Shipping Profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_profile:
+                    $ref: '#/components/schemas/ShippingProfile'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -17000,340 +17334,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /shipping-profiles:
-    post:
-      operationId: PostShippingProfiles
-      summary: Create a Shipping Profile
-      description: Creates a Shipping Profile
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostShippingProfilesReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.create({
-              name: 'Large Products'
-            })
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/shipping-profiles' \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "Large Products"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/ShippingProfile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetShippingProfiles
-      summary: List Shipping Profiles
-      description: Retrieves a list of Shipping Profile.
-      x-authenticated: true
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.list()
-
-            .then(({ shipping_profiles }) => {
-              console.log(shipping_profiles.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/shipping-profiles' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_profiles:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ShippingProfile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  '/shipping-profiles/{id}':
-    delete:
-      operationId: DeleteShippingProfilesProfile
-      summary: Delete a Shipping Profile
-      description: Deletes a Shipping Profile.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.delete(profile_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request DELETE
-            'https://medusa-url.com/admin/shipping-profiles/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted Shipping Profile.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: shipping_profile
-                  deleted:
-                    type: boolean
-                    description: Whether or not the items were deleted.
-                    default: true
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    get:
-      operationId: GetShippingProfilesProfile
-      summary: Get a Shipping Profile
-      description: Retrieves a Shipping Profile.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.retrieve(profile_id)
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request GET
-            'https://medusa-url.com/admin/shipping-profiles/{id}' \
-
-            --header 'Authorization: Bearer {api_token}'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/ShippingProfile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-    post:
-      operationId: PostShippingProfilesProfile
-      summary: Update a Shipping Profile
-      description: Updates a Shipping Profile
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The ID of the Shipping Profile.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AdminPostShippingProfilesProfileReq'
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.shippingProfiles.update(shipping_profile_id, {
-              name: 'Large Products'
-            })
-
-            .then(({ shipping_profile }) => {
-              console.log(shipping_profile.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/shipping-profiles/{id} \
-
-            --header 'Authorization: Bearer {api_token}' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "name": "Large Products"
-            }'
-      security:
-        - api_token: []
-        - cookie_auth: []
-      tags:
-        - Shipping Profile
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  shipping_profile:
-                    $ref: '#/components/schemas/ShippingProfile'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '401':
-          $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
   /uploads/protected:
     post:
       operationId: PostUploadsProtected
@@ -17482,6 +17482,153 @@ paths:
                           type: string
                           description: The URL of the uploaded file.
                           format: uri
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: AdminDeleteUploads
+      summary: Delete an Uploaded File
+      description: Removes an uploaded file using the installed fileservice
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminDeleteUploadsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.uploads.delete({
+              file_key
+            })
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/uploads' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "file_key": "{file_key}"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Upload
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The file key of the upload deleted
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: file
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /uploads/download-url:
+    post:
+      operationId: PostUploadsDownloadUrl
+      summary: Get a File's Download URL
+      description: Creates a presigned download url for a file
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostUploadsDownloadUrlReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.uploads.getPresignedDownloadUrl({
+              file_key
+            })
+
+            .then(({ download_url }) => {
+              console.log(download_url);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/uploads/download-url' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "file_key": "{file_key}"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Upload
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  download_url:
+                    type: string
+                    description: The Download URL of the file
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -23920,6 +24067,12 @@ components:
         metadata:
           description: An optional set of key-value pairs to hold additional information.
           type: object
+    AdminPostCurrenciesCurrencyReq:
+      type: object
+      properties:
+        includes_tax:
+          type: boolean
+          description: '[EXPERIMENTAL] Tax included in prices of currency.'
     AdminPostCustomerGroupsGroupCustomersBatchReq:
       type: object
       required:
@@ -23959,12 +24112,6 @@ components:
         metadata:
           description: Metadata for the customer.
           type: object
-    AdminPostCurrenciesCurrencyReq:
-      type: object
-      properties:
-        includes_tax:
-          type: boolean
-          description: '[EXPERIMENTAL] Tax included in prices of currency.'
     AdminPostCustomersReq:
       type: object
       required:
@@ -24380,50 +24527,6 @@ components:
         metadata:
           description: An object containing metadata of the discount
           type: object
-    AdminPostGiftCardsReq:
-      type: object
-      required:
-        - region_id
-      properties:
-        value:
-          type: integer
-          description: The value (excluding VAT) that the Gift Card should represent.
-        is_disabled:
-          type: boolean
-          description: >-
-            Whether the Gift Card is disabled on creation. You will have to
-            enable it later to make it available to Customers.
-        ends_at:
-          type: string
-          format: date-time
-          description: The time at which the Gift Card should no longer be available.
-        region_id:
-          description: The ID of the Region in which the Gift Card can be used.
-          type: string
-        metadata:
-          description: An optional set of key-value pairs to hold additional information.
-          type: object
-    AdminPostGiftCardsGiftCardReq:
-      type: object
-      properties:
-        balance:
-          type: integer
-          description: The value (excluding VAT) that the Gift Card should represent.
-        is_disabled:
-          type: boolean
-          description: >-
-            Whether the Gift Card is disabled on creation. You will have to
-            enable it later to make it available to Customers.
-        ends_at:
-          type: string
-          format: date-time
-          description: The time at which the Gift Card should no longer be available.
-        region_id:
-          description: The ID of the Region in which the Gift Card can be used.
-          type: string
-        metadata:
-          description: An optional set of key-value pairs to hold additional information.
-          type: object
     AdminPostDraftOrdersReq:
       type: object
       required:
@@ -24605,6 +24708,50 @@ components:
           description: >-
             The optional key-value map with additional details about the Line
             Item.
+          type: object
+    AdminPostGiftCardsReq:
+      type: object
+      required:
+        - region_id
+      properties:
+        value:
+          type: integer
+          description: The value (excluding VAT) that the Gift Card should represent.
+        is_disabled:
+          type: boolean
+          description: >-
+            Whether the Gift Card is disabled on creation. You will have to
+            enable it later to make it available to Customers.
+        ends_at:
+          type: string
+          format: date-time
+          description: The time at which the Gift Card should no longer be available.
+        region_id:
+          description: The ID of the Region in which the Gift Card can be used.
+          type: string
+        metadata:
+          description: An optional set of key-value pairs to hold additional information.
+          type: object
+    AdminPostGiftCardsGiftCardReq:
+      type: object
+      properties:
+        balance:
+          type: integer
+          description: The value (excluding VAT) that the Gift Card should represent.
+        is_disabled:
+          type: boolean
+          description: >-
+            Whether the Gift Card is disabled on creation. You will have to
+            enable it later to make it available to Customers.
+        ends_at:
+          type: string
+          format: date-time
+          description: The time at which the Gift Card should no longer be available.
+        region_id:
+          description: The ID of the Region in which the Gift Card can be used.
+          type: string
+        metadata:
+          description: An optional set of key-value pairs to hold additional information.
           type: object
     AdminPostInvitesInviteAcceptReq:
       type: object
@@ -25225,6 +25372,21 @@ components:
         metadata:
           description: An optional set of key-value pairs to hold additional information.
           type: object
+    AdminPostPaymentRefundsReq:
+      type: object
+      required:
+        - amount
+        - reason
+      properties:
+        amount:
+          description: The amount to refund.
+          type: integer
+        reason:
+          description: The reason for the Refund.
+          type: string
+        note:
+          description: A note with additional details about the Refund.
+          type: string
     AdminPostPriceListPricesPricesReq:
       type: object
       properties:
@@ -26109,21 +26271,6 @@ components:
               value:
                 description: The value to give for the Product Option.
                 type: string
-    AdminPostPaymentRefundsReq:
-      type: object
-      required:
-        - amount
-        - reason
-      properties:
-        amount:
-          description: The amount to refund.
-          type: integer
-        reason:
-          description: The reason for the Refund.
-          type: string
-        note:
-          description: A note with additional details about the Refund.
-          type: string
     AdminPostPublishableApiKeySalesChannelsBatchReq:
       type: object
       required:
@@ -26342,6 +26489,28 @@ components:
         metadata:
           description: An optional set of key-value pairs with additional information.
           type: object
+    AdminPostReturnsReturnReceiveReq:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          description: The Line Items that have been received.
+          type: array
+          items:
+            required:
+              - item_id
+              - quantity
+            properties:
+              item_id:
+                description: The ID of the Line Item.
+                type: string
+              quantity:
+                description: The quantity of the Line Item.
+                type: integer
+        refund:
+          description: The amount to refund.
+          type: number
     AdminPostSalesChannelsChannelProductsBatchReq:
       type: object
       required:
@@ -26400,28 +26569,6 @@ components:
         is_disabled:
           type: boolean
           description: Indication of if the sales channel is active.
-    AdminPostReturnsReturnReceiveReq:
-      type: object
-      required:
-        - items
-      properties:
-        items:
-          description: The Line Items that have been received.
-          type: array
-          items:
-            required:
-              - item_id
-              - quantity
-            properties:
-              item_id:
-                description: The ID of the Line Item.
-                type: string
-              quantity:
-                description: The quantity of the Line Item.
-                type: integer
-        refund:
-          description: The amount to refund.
-          type: number
     AdminPostShippingOptionsReq:
       type: object
       required:
@@ -26532,6 +26679,20 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Tax included in prices of shipping option'
           type: boolean
+    AdminPostShippingProfilesReq:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: The name of the Shipping Profile
+          type: string
+    AdminPostShippingProfilesProfileReq:
+      type: object
+      properties:
+        name:
+          description: The name of the Shipping Profile
+          type: string
     AdminPostStoreReq:
       type: object
       properties:
@@ -26695,20 +26856,6 @@ components:
           description: The IDs of the types of products associated with this tax rate
           items:
             type: string
-    AdminPostShippingProfilesReq:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          description: The name of the Shipping Profile
-          type: string
-    AdminPostShippingProfilesProfileReq:
-      type: object
-      properties:
-        name:
-          description: The name of the Shipping Profile
-          type: string
     AdminDeleteUploadsReq:
       type: object
       required:
