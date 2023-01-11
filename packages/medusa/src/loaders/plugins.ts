@@ -376,8 +376,8 @@ export async function registerServices(
 
       const context = { container, pluginDetails, registrationName: name }
 
-      registerPaymentServiceFromClass(loaded.prototype, context)
-      registerPaymentProcessorFromClass(loaded.prototype, context)
+      registerPaymentServiceFromClass(loaded, context)
+      registerPaymentProcessorFromClass(loaded, context)
 
       if (loaded.prototype instanceof OauthService) {
         const appDetails = loaded.getAppDetails(pluginDetails.options)

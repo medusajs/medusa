@@ -17,7 +17,7 @@ export function registerPaymentServiceFromClass(
   klass: ClassConstructor<AbstractPaymentService>,
   { container, pluginDetails, registrationName }: Context
 ): void {
-  if (!isPaymentService(klass)) {
+  if (!isPaymentService(klass.prototype)) {
     return
   }
 
