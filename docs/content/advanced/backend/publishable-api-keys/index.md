@@ -8,7 +8,7 @@ While using Medusa’s APIs, you might have to pass some query parameters for ce
 
 Taking Sales Channels as an example, you have to pass the Sales Channel’s ID as a query parameter to all the necessary endpoints, such as the List Products endpoint.
 
-As this approach can be error-prone, Publishable API Keys solve this problem.
+This is a tedious and error-prone process. This is where Publishable API Keys are useful.
 
 Publishable API Keys can be used to scope API calls with an API key, determining what resources are retrieved when querying the API. Currently, they can be associated only with Sales Channels.
 
@@ -56,7 +56,7 @@ const medusa = new Medusa({
 })
 ```
 
-Then, the API key will be passed in the header parameter `x-publishable-api-key` of every request.
+This will add the API key as in the header parameter `x-publishable-api-key` on all requests.
 
 You can also use the `setPublishableKey` method to set it at a later point:
 
