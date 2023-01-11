@@ -4,10 +4,15 @@ import { Order } from "../../../.."
 import {
   DeleteResponse,
   FindParams,
-  PaginatedResponse
+  PaginatedResponse,
 } from "../../../../types/common"
 import { FlagRouter } from "../../../../utils/flag-router"
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import { AdminOrdersOrderLineItemReservationReq } from "./create-reservation-for-line-item"
 import { AdminGetOrdersParams } from "./list-orders"
 
 const route = Router()
@@ -227,6 +232,28 @@ export default (app, featureFlagRouter: FlagRouter) => {
     middlewares.wrap(require("./create-claim-shipment").default)
   )
 
+  route.get(
+    "/:id/reservations",
+    checkRegisteredModules({
+      inventoryService:
+        "Inventory is not enabled. Please add an Inventory module to enable this functionality.",
+    }),
+    middlewares.wrap(require("./get-reservations").default)
+  )
+
+  route.post(
+    "/:id/line-items/:line_item_id/reserve",
+    checkRegisteredModules({
+      inventoryService:
+        "Inventory is not enabled. Please add an Inventory module to enable this functionality.",
+    }),
+    transformBody(AdminOrdersOrderLineItemReservationReq),
+    middlewares.wrap(require("./create-reservation-for-line-item").default)
+  )
+
+  // post /:id/line-items/:li_id/reserve {location: string, quantity?: number}
+  // get  /:id/reservations
+
   return app
 }
 
@@ -361,4 +388,3 @@ export * from "./refund-payment"
 export * from "./request-return"
 export * from "./update-claim"
 export * from "./update-order"
-
