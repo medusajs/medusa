@@ -291,7 +291,10 @@ describe("/admin/product-categories", () => {
             is_active: false,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            parent_category_id: productCategoryParent.id,
+            parent_category: expect.objectContaining({
+              id: productCategoryParent.id
+            }),
+            category_children: []
           }),
         })
       )
