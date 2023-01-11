@@ -356,6 +356,11 @@ module.exports = {
               id: "advanced/backend/sales-channels/manage-admin",
               label: "Manage Sales Channels"
             },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-publishable-api-keys",
+              label: "Manage PublishableApiKeys"
+            },
           ]
         },
         {
@@ -529,6 +534,11 @@ module.exports = {
         {
           type: "doc",
           id: "advanced/backend/gift-cards/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/publishable-api-keys/index",
+          label: "Publishable API Keys"
         },
       ]
     },

@@ -17,14 +17,14 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.publishableApiKey.delete(key_id)
- *         .then(({ id, object, deleted }) => {
- *           console.log(id)
- *         })
+ *       medusa.admin.publishableApiKeys.delete(publishableApiKeyId)
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-key/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-key/{pka_id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

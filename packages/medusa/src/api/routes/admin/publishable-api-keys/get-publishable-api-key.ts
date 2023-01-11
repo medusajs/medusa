@@ -17,16 +17,15 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.publishableApiKey.retrieve(pubKeyId)
- *         .then(({ publishable_api_key }) => {
- *           console.log(publishable_api_key.id)
- *         })
+ *       medusa.admin.publishableApiKeys.retrieve(publishableApiKeyId)
+ *       .then(({ publishable_api_key }) => {
+ *         console.log(publishable_api_key.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/pubkey_123' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}' \
  *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "created_by": "user_123" }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
