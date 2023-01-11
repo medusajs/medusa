@@ -142,7 +142,7 @@ class ProductCategoryService extends TransactionBaseService {
         }
       }
 
-      return productCategoryRepo.save(productCategory)
+      return await productCategoryRepo.save(productCategory)
     })
   }
 
