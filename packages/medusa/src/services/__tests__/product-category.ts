@@ -1,5 +1,13 @@
 import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
 import ProductCategoryService from "../product-category"
+import { EventBusService } from "../"
+
+const eventBusService = {
+  emit: jest.fn(),
+  withTransaction: function () {
+    return this
+  },
+} as unknown as EventBusService
 
 describe("ProductCategoryService", () => {
   const validProdCategoryId = "skinny-jeans"
@@ -22,6 +30,7 @@ describe("ProductCategoryService", () => {
     const productCategoryService = new ProductCategoryService({
       manager: MockManager,
       productCategoryRepository,
+      eventBusService,
     })
 
     beforeEach(async () => { jest.clearAllMocks() })
@@ -65,6 +74,7 @@ describe("ProductCategoryService", () => {
     const productCategoryService = new ProductCategoryService({
       manager: MockManager,
       productCategoryRepository,
+      eventBusService,
     })
 
     beforeEach(async () => { jest.clearAllMocks() })
@@ -99,12 +109,15 @@ describe("ProductCategoryService", () => {
 
   describe("create", () => {
     const productCategoryRepository = MockRepository({
-      findOne: query => Promise.resolve({ id: IdMap.getId("jeans") }),
+      findOne: (query) => Promise.resolve({ id: IdMap.getId("jeans") }),
+      create: () => Promise.resolve({ id: IdMap.getId("jeans") }),
+      save: (record) => Promise.resolve(record),
     })
 
     const productCategoryService = new ProductCategoryService({
       manager: MockManager,
       productCategoryRepository,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -118,6 +131,17 @@ describe("ProductCategoryService", () => {
       expect(productCategoryRepository.create).toHaveBeenCalledWith({
         name: "jeans",
       })
+    })
+
+    it("emits a message on successful create", async () => {
+      await productCategoryService.create({ name: "jeans" })
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-category.created", {
+          "id": IdMap.getId("jeans")
+        }
+      )
     })
   })
 
@@ -150,6 +174,7 @@ describe("ProductCategoryService", () => {
     const productCategoryService = new ProductCategoryService({
       manager: MockManager,
       productCategoryRepository,
+      eventBusService,
     })
 
     beforeEach(async () => { jest.clearAllMocks() })
@@ -179,6 +204,19 @@ describe("ProductCategoryService", () => {
         `Deleting ProductCategory (with-children) with category children is not allowed`
       )
     })
+
+    it("emits a message on successful delete", async () => {
+      const result = await productCategoryService.delete(
+        IdMap.getId("jeans")
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-category.deleted", {
+          "id": IdMap.getId("jeans")
+        }
+      )
+    })
   })
 
   describe("update", () => {
@@ -198,6 +236,7 @@ describe("ProductCategoryService", () => {
     const productCategoryService = new ProductCategoryService({
       manager: MockManager,
       productCategoryRepository,
+      eventBusService,
     })
 
     beforeEach(async () => {
@@ -205,9 +244,11 @@ describe("ProductCategoryService", () => {
     })
 
     it("successfully updates a product category", async () => {
-      await productCategoryService.update(IdMap.getId(validProdCategoryId), {
-        name: "bathrobes",
-      })
+      await productCategoryService.update(
+        IdMap.getId(validProdCategoryId), {
+          name: "bathrobes",
+        }
+      )
 
       expect(productCategoryRepository.save).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.save).toHaveBeenCalledWith({
@@ -217,12 +258,29 @@ describe("ProductCategoryService", () => {
     })
 
     it("fails on not-found Id product category", async () => {
-      const error = await productCategoryService.update(IdMap.getId(invalidProdCategoryId), {
-        name: "bathrobes",
-      }).catch(e => e)
+      const error = await productCategoryService.update(
+        IdMap.getId(invalidProdCategoryId), {
+          name: "bathrobes",
+        }
+      ).catch(e => e)
 
       expect(error.message).toBe(
         `ProductCategory with id: ${IdMap.getId(invalidProdCategoryId)} was not found`
+      )
+    })
+
+    it("emits a message on successful update", async () => {
+      const result = await productCategoryService.update(
+        IdMap.getId(validProdCategoryId), {
+          name: "bathrobes",
+        }
+      )
+
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "product-category.updated", {
+          "id": IdMap.getId(validProdCategoryId)
+        }
       )
     })
   })
