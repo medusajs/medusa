@@ -10616,6 +10616,325 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /product-categories:
+    post:
+      operationId: PostProductCategories
+      summary: Create a Product Category
+      description: Creates a Product Category.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each product
+            category.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be retrieved in each product
+            category.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostProductCategoriesReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.create({
+              name: 'Jeans',
+            })
+
+            .then(({ productCategory }) => {
+              console.log(productCategory.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/product-categories' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "Jeans",
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productCategory:
+                    $ref: '#/components/schemas/ProductCategory'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetProductCategories
+      summary: List Product Categories
+      description: Retrieve a list of product categories.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching product category names orhandles.
+          schema:
+            type: string
+        - in: query
+          name: is_internal
+          description: Search for only internal categories.
+          schema:
+            type: boolean
+        - in: query
+          name: is_active
+          description: Search for only active categories
+          schema:
+            type: boolean
+        - in: query
+          name: parent_category_id
+          description: Returns categories scoped by parent
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many product categories to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: Limit the number of product categories returned.
+          schema:
+            type: integer
+            default: 100
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.list()
+
+            .then(({ product_category, limit, offset, count }) => {
+              console.log(product_category.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/product-categories' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Categories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_category:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductCategory'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/product-categories/{id}':
+    delete:
+      operationId: DeleteProductCategoriesCategory
+      summary: Delete a Product Category
+      description: Deletes a ProductCategory.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Product Category
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.delete(product_category_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/product-categories/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted product category.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    default: product_category
+                  deleted:
+                    type: boolean
+                    description: >-
+                      Whether the product category was deleted successfully or
+                      not.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetProductCategoriesCategory
+      summary: Get a Product Category
+      description: Retrieves a Product Category.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Product Category
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.retrieve("pcat-id")
+
+            .then(({ productCategory }) => {
+              console.log(productCategory.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/product-categories/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productCategory:
+                    $ref: '#/components/schemas/ProductCategory'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /product-tags:
     get:
       operationId: GetProductTags
@@ -14593,6 +14912,168 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/sales-channels/{id}/stock-locations':
+    post:
+      operationId: PostSalesChannelsSalesChannelStockLocation
+      summary: Associate a stock location to a Sales Channel
+      description: Associates a stock location to a Sales Channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Sales Channel.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/AdminPostSalesChannelsChannelStockLocationsReq
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.addLocation(sales_channel_id, {
+              location_id: 'App'
+            })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "locaton_id": "stock_location_id"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/SalesChannel'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteSalesChannelsSalesChannelStockLocation
+      summary: Remove a stock location from a Sales Channel
+      description: Removes a stock location from a Sales Channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Sales Channel.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/AdminDeleteSalesChannelsChannelStockLocationsReq
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.salesChannels.removeLocation(sales_channel_id, {
+              location_id: 'App'
+            })
+
+            .then(({ sales_channel }) => {
+              console.log(sales_channel.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "locaton_id": "stock_location_id"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the removed stock location from a sales channel
+                  object:
+                    type: string
+                    description: The type of the object that was removed.
+                    default: stock-location
+                  deleted:
+                    type: boolean
+                    description: Whether or not the items were deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /sales-channels:
     post:
       operationId: PostSalesChannels
@@ -15753,6 +16234,407 @@ paths:
                 properties:
                   shipping_profile:
                     $ref: '#/components/schemas/ShippingProfile'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /stock-locations:
+    post:
+      operationId: PostStockLocations
+      summary: Create a Stock Location
+      description: Creates a Stock Location.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostStockLocationsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.stockLocations.create({
+              name: 'Main Warehouse',
+              location_id: 'sloc'
+            })
+
+            .then(({ stock_location }) => {
+              console.log(stock_location.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/stock-locations' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "App"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Stock Location
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stock_location:
+                    $ref: '#/components/schemas/StockLocationDTO'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetStockLocations
+      summary: List Stock Locations
+      description: Retrieves a list of stock locations
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: id
+          description: ID of the stock location
+          schema:
+            type: string
+        - in: query
+          name: name
+          description: Name of the stock location
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: The field to order the results by.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: deleted_at
+          description: Date comparison for when resulting collections were deleted.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: offset
+          description: How many stock locations to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: Limit the number of stock locations returned.
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each stock
+            location of the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each stock
+            location of the result.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.stockLocations.list()
+
+            .then(({ stock_locations, limit, offset, count }) => {
+              console.log(stock_locations.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/stock-locations' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stock_locations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StockLocationDTO'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/stock-locations/{id}':
+    get:
+      operationId: GetStockLocationsStockLocation
+      summary: Get a Stock Location
+      description: Retrieves the Stock Location.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Stock Location.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.stockLocations.retrieve(stock_location_id)
+
+            .then(({ stock_location }) => {
+              console.log(stock_location.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/stock-locations/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Stock Location
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stock_location:
+                    $ref: '#/components/schemas/StockLocationDTO'
+    post:
+      operationId: PostStockLocationsStockLocation
+      summary: Update a Stock Location
+      description: Updates a Stock Location.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Stock Location.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostStockLocationsLocationReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.stockLocations.update(stock_location_id, {
+              name: 'App'
+            })
+
+            .then(({ stock_location }) => {
+              console.log(stock_location.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/stock-locations/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "App"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Stock Location
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  stock_location:
+                    $ref: '#/components/schemas/StockLocationDTO'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -20157,6 +21039,10 @@ components:
             fulfillment
           type: string
           example: manual
+        location_id:
+          description: The id of the stock location the fulfillment will be shipped from
+          type: string
+          example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
         provider:
           description: Available if the relation `provider` is expanded.
           $ref: '#/components/schemas/FulfillmentProvider'
@@ -21698,6 +22584,13 @@ components:
             method that will be used to complete the purchase.
           type: boolean
           example: true
+        is_initiated:
+          description: >-
+            A flag to indicate if a communication with the third party provider
+            has been initiated.
+          type: boolean
+          example: true
+          default: false
         status:
           description: >-
             Indicates the status of the Payment Session. Will default to
@@ -21900,6 +22793,65 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Does the price list prices include tax'
           type: boolean
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    ProductCategory:
+      title: ProductCategory
+      description: Represents a product category
+      x-resourceId: ProductCategory
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          description: The product category's ID
+          example: pcat_01G2SG30J8C85S4A5CHM2S1NS2
+        name:
+          type: string
+          description: The product category's name
+          example: Regular Fit
+        handle:
+          description: >-
+            A unique string that identifies the Category - example: slug
+            structures.
+          type: string
+          example: regular-fit
+        mpath:
+          type: string
+          description: >-
+            A string for Materialized Paths - used for finding ancestors and
+            descendents
+          example: pcat_id1.pcat_id2.pcat_id3
+        is_internal:
+          type: boolean
+          description: A flag to make product category an internal category for admins
+          default: false
+        is_active:
+          type: boolean
+          description: A flag to make product category visible/hidden in the store front
+          default: false
+        category_children:
+          description: Available if the relation `category_children` are expanded.
+          type: array
+          items:
+            type: object
+            description: A product category object.
+        parent_category:
+          description: >-
+            A product category object. Available if the relation
+            `parent_category` is expanded.
+          type: object
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -23927,6 +24879,195 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
+    StockLocationAddressDTO:
+      title: Stock Location Address
+      description: Represents a Stock Location Address
+      type: object
+      required:
+        - address_1
+        - country_code
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: The stock location address' ID
+          example: laddr_51G4ZW853Y6TFXWPG5ENJ81X42
+        address_1:
+          type: string
+          description: Stock location address
+          example: '35, Jhon Doe Ave'
+        address_2:
+          type: string
+          description: Stock location address' complement
+          example: apartment 4432
+        city:
+          type: string
+          description: Stock location address' city
+          example: Mexico city
+        country_code:
+          type: string
+          description: Stock location address' country
+          example: MX
+        phone:
+          type: string
+          description: Stock location address' phone number
+          example: +1 555 61646
+        postal_code:
+          type: string
+          description: Stock location address' postal code
+          example: HD3-1G8
+        province:
+          type: string
+          description: Stock location address' province
+          example: Sinaloa
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    StockLocationDTO:
+      title: Stock Location
+      description: Represents a Stock Location
+      type: object
+      required:
+        - id
+        - name
+        - address_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: The stock location's ID
+          example: sloc_51G4ZW853Y6TFXWPG5ENJ81X42
+        address_id:
+          type: string
+          description: Stock location address' ID
+          example: laddr_05B2ZE853Y6FTXWPW85NJ81A44
+        name:
+          type: string
+          description: The name of the stock location
+          example: Main Warehouse
+        address:
+          description: The Address of the Stock Location
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressDTO'
+            - type: object
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    StockLocationAddressInput:
+      title: Stock Location Address Input
+      description: Represents a Stock Location Address Input
+      type: object
+      required:
+        - address_1
+        - country_code
+      properties:
+        address_1:
+          type: string
+          description: Stock location address
+          example: '35, Jhon Doe Ave'
+        address_2:
+          type: string
+          description: Stock location address' complement
+          example: apartment 4432
+        city:
+          type: string
+          description: Stock location address' city
+          example: Mexico city
+        country_code:
+          type: string
+          description: Stock location address' country
+          example: MX
+        phone:
+          type: string
+          description: Stock location address' phone number
+          example: +1 555 61646
+        postal_code:
+          type: string
+          description: Stock location address' postal code
+          example: HD3-1G8
+        province:
+          type: string
+          description: Stock location address' province
+          example: Sinaloa
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    CreateStockLocationInput:
+      title: Create Stock Location Input
+      description: Represents the Input to create a Stock Location
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The stock location name
+        address_id:
+          type: string
+          description: The Stock location address ID
+        address:
+          description: Stock location address object
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressInput'
+            - type: object
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    UpdateStockLocationInput:
+      title: Update Stock Location Input
+      description: Represents the Input to update a Stock Location
+      type: object
+      properties:
+        name:
+          type: string
+          description: The stock location name
+        address_id:
+          type: string
+          description: The Stock location address ID
+        address:
+          description: Stock location address object
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressInput'
+            - type: object
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
     MultipleErrors:
       title: Multiple Errors
       type: object
@@ -25603,6 +26744,28 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Tax included in prices of price list'
           type: boolean
+    AdminPostProductCategoriesReq:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name to identify the Product Category by.
+        handle:
+          type: string
+          description: >-
+            An optional handle to be used in slugs, if none is provided we will
+            kebab-case the title.
+        is_internal:
+          type: boolean
+          description: A flag to make product category an internal category for admins
+        is_active:
+          type: boolean
+          description: A flag to make product category visible/hidden in the store front
+        parent_category_id:
+          type: string
+          description: The ID of the parent product category
     AdminPostProductsProductOptionsReq:
       type: object
       required:
@@ -26533,6 +27696,14 @@ components:
               id:
                 type: string
                 description: The ID of the product
+    AdminPostSalesChannelsChannelStockLocationsReq:
+      type: object
+      required:
+        - location_id
+      properties:
+        location_id:
+          description: The ID of the stock location
+          type: string
     AdminPostSalesChannelsReq:
       type: object
       required:
@@ -26563,6 +27734,14 @@ components:
               id:
                 description: The ID of a product
                 type: string
+    AdminDeleteSalesChannelsChannelStockLocationsReq:
+      type: object
+      required:
+        - location_id
+      properties:
+        location_id:
+          description: The ID of the stock location
+          type: string
     AdminPostSalesChannelsSalesChannelReq:
       type: object
       properties:
@@ -26699,6 +27878,40 @@ components:
         name:
           description: The name of the Shipping Profile
           type: string
+    AdminPostStockLocationsReq:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: the name of the stock location
+          type: string
+        address_id:
+          description: the stock location address ID
+          type: string
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+        address:
+          $ref: '#/components/schemas/StockLocationAddressInput'
+    AdminPostStockLocationsLocationReq:
+      type: object
+      properties:
+        name:
+          description: the name of the stock location
+          type: string
+        address_id:
+          description: the stock location address ID
+          type: string
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+        address:
+          $ref: '#/components/schemas/StockLocationAddressInput'
     AdminPostStoreReq:
       type: object
       properties:
