@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.7
+
+### Patch Changes
+
+- [`9cf971c6b`](https://github.com/medusajs/medusa/commit/9cf971c6bdcee89098e455f02be5539d963f896f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-payment-paypal): PaymentCollection support
+
 ## 1.2.6
 
 ### Patch Changes
