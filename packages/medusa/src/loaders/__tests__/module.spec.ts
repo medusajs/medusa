@@ -6,13 +6,13 @@ import {
   createContainer,
   Resolver,
 } from "awilix"
-import { mkdirSync, rmSync, writeFileSync } from "fs"
 import Logger from "../logger"
-import { resolve } from "path"
 import {
   ConfigModule,
   MedusaContainer,
   ModuleResolution,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
 } from "../../types/global"
 import registerModules from "../module"
 import { trackInstallation } from "../__mocks__/medusa-telemetry"
@@ -90,6 +90,10 @@ describe("modules loader", () => {
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+            resources: MODULE_RESOURCE_TYPE.SHARED,
+          },
         },
       },
     }
@@ -114,6 +118,10 @@ describe("modules loader", () => {
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+            resources: MODULE_RESOURCE_TYPE.SHARED,
+          },
         },
       },
     }
@@ -149,6 +157,10 @@ describe("modules loader", () => {
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+            resources: MODULE_RESOURCE_TYPE.SHARED,
+          },
         },
       },
     }
@@ -177,6 +189,10 @@ describe("modules loader", () => {
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+            resources: MODULE_RESOURCE_TYPE.SHARED,
+          },
         },
       },
     }
@@ -207,6 +223,10 @@ describe("modules loader", () => {
           defaultPackage: "testService",
           label: "TestService",
           isRequired: true,
+          defaultModuleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+            resources: MODULE_RESOURCE_TYPE.SHARED,
+          },
         },
       },
     }

@@ -1,14 +1,22 @@
-import { ConfigModule } from "@medusajs/medusa"
+import {
+  ConfigurableModuleDeclaration,
+  LoaderOptions,
+  MODULE_RESOURCE_TYPE,
+} from "@medusajs/medusa"
 import { ConnectionOptions, createConnection } from "typeorm"
 import { CONNECTION_NAME } from "../config"
 
 import { StockLocation, StockLocationAddress } from "../models"
 
-export default async ({
-  configModule,
-}: {
-  configModule: ConfigModule
-}): Promise<void> => {
+export default async (
+  { configModule }: LoaderOptions,
+  moduleDeclaration?: ConfigurableModuleDeclaration
+): Promise<void> => {
+  // Do not connect to the database if using shared resources with the Core
+  if (moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.SHARED) {
+    return
+  }
+
   await createConnection({
     name: CONNECTION_NAME,
     type: configModule.projectConfig.database_type,

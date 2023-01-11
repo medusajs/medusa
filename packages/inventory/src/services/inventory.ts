@@ -14,6 +14,9 @@ import {
   InventoryItemDTO,
   ReservationItemDTO,
   InventoryLevelDTO,
+  TransactionBaseService,
+  ConfigurableModuleDeclaration,
+  MODULE_RESOURCE_TYPE,
 } from "@medusajs/medusa"
 
 import {
@@ -21,26 +24,55 @@ import {
   ReservationItemService,
   InventoryLevelService,
 } from "./"
+import { EntityManager, getConnection } from "typeorm"
+import { CONNECTION_NAME } from "../config"
 
 type InjectedDependencies = {
+  manager: EntityManager
   eventBusService: IEventBusService
 }
 
-export default class InventoryService implements IInventoryService {
+export default class InventoryService
+  extends TransactionBaseService
+  implements IInventoryService
+{
   protected readonly eventBusService_: IEventBusService
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
   protected readonly inventoryLevelService_: InventoryLevelService
 
-  constructor({ eventBusService }: InjectedDependencies) {
+  constructor(
+    { eventBusService, manager }: InjectedDependencies,
+    options?: unknown,
+    moduleDeclaration?: ConfigurableModuleDeclaration
+  ) {
+    super(arguments[0])
+
     this.eventBusService_ = eventBusService
 
-    this.inventoryItemService_ = new InventoryItemService({ eventBusService })
+    if (
+      moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.SHARED &&
+      manager
+    ) {
+      this.manager_ = manager
+    } else {
+      const connection = getConnection(CONNECTION_NAME)
+      this.manager_ = connection.manager
+    }
+
+    this.inventoryItemService_ = new InventoryItemService({
+      eventBusService,
+      manager,
+    })
     this.inventoryLevelService_ = new InventoryLevelService({
       eventBusService,
+      manager,
     })
     this.reservationItemService_ = new ReservationItemService({
       eventBusService,
+      manager,
       inventoryLevelService: this.inventoryLevelService_,
     })
   }
