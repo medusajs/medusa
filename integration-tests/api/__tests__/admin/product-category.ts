@@ -28,7 +28,6 @@ describe("/admin/product-categories", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
-      verbose: true
     })
     dbConnection = connection
     medusaProcess = process
@@ -454,7 +453,10 @@ describe("/admin/product-categories", () => {
             is_active: true,
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            parent_category_id: productCategory2.id,
+            parent_category: expect.objectContaining({
+              id: productCategory2.id,
+            }),
+            category_children: []
           }),
         })
       )

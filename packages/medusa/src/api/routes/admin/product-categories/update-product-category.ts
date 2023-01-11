@@ -1,9 +1,10 @@
 import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+
 import { ProductCategoryService } from "../../../../services"
 import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
-
+import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /product-categories/{id}
  * operationId: "PostProductCategoriesCategory"
@@ -12,6 +13,8 @@ import { AdminProductCategoriesReqBase } from "../../../../types/product-categor
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.
+ *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each product category.
  * requestBody:
  *   content:
  *     application/json:
@@ -84,24 +87,31 @@ export default async (req: Request, res: Response) => {
       .update(id, validatedBody)
   })
 
-  const productCategory = await productCategoryService.retrieve(updated.id)
+  const productCategory = await productCategoryService.retrieve(
+    updated.id,
+    req.retrieveConfig,
+  )
 
   res.status(200).json({ product_category: productCategory })
 }
 
 /**
  * @schema AdminPostProductCategoriesCategoryReq
- * type: object
- * properties:
  *   name:
  *     type: string
  *     description:  The name to identify the Product Category by.
  *   handle:
  *     type: string
- *     description:  An optional handle to be used in slugs, if none is provided we will kebab-case the name.
- *   metadata:
- *     description: An optional set of key-value pairs to hold additional information.
- *     type: object
+ *     description:  A handle to be used in slugs.
+ *   is_internal:
+ *     type: boolean
+ *     description: A flag to make product category an internal category for admins
+ *   is_active:
+ *     type: boolean
+ *     description: A flag to make product category visible/hidden in the store front
+ *   parent_category_id:
+ *     type: string
+ *     description: The ID of the parent product category
  */
 export class AdminPostProductCategoriesCategoryReq extends AdminProductCategoriesReqBase {
   @IsString()
@@ -112,3 +122,5 @@ export class AdminPostProductCategoriesCategoryReq extends AdminProductCategorie
   @IsOptional()
   handle?: string
 }
+
+export class AdminPostProductCategoriesCategoryParams extends FindParams {}

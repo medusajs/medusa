@@ -9,7 +9,7 @@ export type CreateProductCategoryInput = {
   parent_category_id?: string | null
 }
 
-export type UpdateProductCategory = {
+export type UpdateProductCategoryInput = {
   name?: string
   handle?: string
   is_internal?: boolean

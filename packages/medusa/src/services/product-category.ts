@@ -7,7 +7,7 @@ import { FindConfig, Selector, QuerySelector } from "../types/common"
 import { buildQuery } from "../utils"
 import {
   CreateProductCategoryInput,
-  UpdateProductCategory,
+  UpdateProductCategoryInput,
 } from "../types/product-category"
 
 type InjectedDependencies = {
@@ -122,12 +122,12 @@ class ProductCategoryService extends TransactionBaseService {
   /**
    * Updates a product category
    * @param productCategoryId - id of product category to update
-   * @param productCategoryUpdate - parameters to update in product category
+   * @param productCategoryInput - parameters to update in product category
    * @return updated product category
    */
   async update(
     productCategoryId: string,
-    productCategoryUpdate: UpdateProductCategory
+    productCategoryInput: UpdateProductCategoryInput
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
       const productCategoryRepo = manager.getCustomRepository(
@@ -136,9 +136,9 @@ class ProductCategoryService extends TransactionBaseService {
 
       const productCategory = await this.retrieve(productCategoryId)
 
-      for (const key in productCategoryUpdate) {
-        if (isDefined(productCategoryUpdate[key])) {
-          productCategory[key] = productCategoryUpdate[key]
+      for (const key in productCategoryInput) {
+        if (isDefined(productCategoryInput[key])) {
+          productCategory[key] = productCategoryInput[key]
         }
       }
 

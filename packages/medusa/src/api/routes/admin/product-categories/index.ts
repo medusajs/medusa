@@ -22,6 +22,7 @@ import createProductCategory, {
 
 import updateProductCategory, {
   AdminPostProductCategoriesCategoryReq,
+  AdminPostProductCategoriesCategoryParams,
 } from "./update-product-category"
 
 const route = Router()
@@ -65,6 +66,11 @@ export default (app) => {
 
   route.post(
     "/:id",
+    transformQuery(AdminPostProductCategoriesCategoryParams, {
+      defaultFields: defaultProductCategoryFields,
+      defaultRelations: defaultAdminProductCategoryRelations,
+      isList: false,
+    }),
     transformBody(AdminPostProductCategoriesCategoryReq),
     middlewares.wrap(updateProductCategory)
   )
