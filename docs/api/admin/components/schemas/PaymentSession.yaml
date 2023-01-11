@@ -33,6 +33,13 @@ properties:
       that will be used to complete the purchase.
     type: boolean
     example: true
+  is_initiated:
+    description: >-
+      A flag to indicate if a communication with the third party provider has
+      been initiated.
+    type: boolean
+    example: true
+    default: false
   status:
     description: >-
       Indicates the status of the Payment Session. Will default to `pending`,
