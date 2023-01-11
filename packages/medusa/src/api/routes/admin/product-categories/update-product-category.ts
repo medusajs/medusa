@@ -117,10 +117,6 @@ export class AdminPostProductCategoriesCategoryReq extends AdminProductCategorie
   @IsString()
   @IsOptional()
   name?: string
-
-  @IsString()
-  @IsOptional()
-  handle?: string
 }
 
 export class AdminPostProductCategoriesCategoryParams extends FindParams {}
