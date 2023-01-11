@@ -12314,7 +12314,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.publishableApiKeys.addSalesChannels(publishableApiKeyId,
+            medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId,
             {
               sales_channel_ids: [
                 {
@@ -12330,7 +12330,7 @@ paths:
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/publishable-api-keys/afasf/batch' \
+            'https://medusa-url.com/admin/publishable-api-keys/{pak_id}/batch' \
 
             --header 'Authorization: Bearer {api_token}' \
 
@@ -12398,7 +12398,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.publishableApiKeys.removeSalesChannels(publishableApiKeyId,
+            medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId,
             {
               sales_channel_ids: [
                 {
@@ -12414,7 +12414,7 @@ paths:
           label: cURL
           source: >
             curl --location --request DELETE
-            'https://medusa-url.com/admin/publishable-api-keys/afasf/batch' \
+            'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/batch' \
 
             --header 'Authorization: Bearer {api_token}' \
 
@@ -12475,19 +12475,26 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.publishableApiKey.create()
-              .then(({ publishable_api_key }) => {
-                console.log(publishable_api_key.id)
-              })
+            medusa.admin.publishableApiKeys.create({
+             title
+            })
+
+            .then(({ publishable_api_key }) => {
+              console.log(publishable_api_key.id)
+            })
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
             'https://medusa-url.com/admin/publishable-api-keys' \
 
-            --header 'Authorization: Bearer {api_token}'
+            --header 'Authorization: Bearer {api_token}' \
 
-            -d '{ "created_by": "user_123" }'
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "title": "Web API Key"
+            }'
       security:
         - api_token: []
         - cookie_auth: []
@@ -12560,7 +12567,7 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.publishableApiKeys.list()
-              .then(({ publishable_api_keys }) => {
+              .then(({ publishable_api_keys, count, limit, offset }) => {
                 console.log(publishable_api_keys)
               })
         - lang: Shell
@@ -12622,15 +12629,16 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.publishableApiKey.delete(key_id)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
+            medusa.admin.publishableApiKeys.delete(publishableApiKeyId)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id)
+            })
         - lang: Shell
           label: cURL
           source: >
             curl --location --request DELETE
-            'https://medusa-url.com/admin/publishable-api-key/{id}' \
+            'https://medusa-url.com/admin/publishable-api-key/{pka_id}' \
 
             --header 'Authorization: Bearer {api_token}'
       security:
@@ -12682,19 +12690,18 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.publishableApiKey.retrieve(pubKeyId)
-              .then(({ publishable_api_key }) => {
-                console.log(publishable_api_key.id)
-              })
+            medusa.admin.publishableApiKeys.retrieve(publishableApiKeyId)
+
+            .then(({ publishable_api_key }) => {
+              console.log(publishable_api_key.id)
+            })
         - lang: Shell
           label: cURL
           source: >
             curl --location --request GET
-            'https://medusa-url.com/admin/publishable-api-keys/pubkey_123' \
+            'https://medusa-url.com/admin/publishable-api-keys/{pka_id}' \
 
             --header 'Authorization: Bearer {api_token}'
-
-            -d '{ "created_by": "user_123" }'
       security:
         - api_token: []
         - cookie_auth: []
@@ -12752,14 +12759,14 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.publishableApiKeys.listSalesChannels()
-              .then(({ sales_channels, limit, offset, count }) => {
-                console.log(sales_channels)
+              .then(({ sales_channels }) => {
+                console.log(sales_channels.length)
               })
         - lang: Shell
           label: cURL
           source: >
             curl --location --request GET
-            'https://medusa-url.com/admin/publishable-api-keys/pk_123/sales-channels'
+            'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/sales-channels'
             \
 
             --header 'Authorization: Bearer {api_token}'
@@ -12815,7 +12822,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.publishableApiKey.revoke()
+            medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
               .then(({ publishable_api_key }) => {
                 console.log(publishable_api_key.id)
               })
@@ -12823,12 +12830,10 @@ paths:
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/publishable-api-keys/pubkey_123/revoke'
+            'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/revoke'
             \
 
             --header 'Authorization: Bearer {api_token}'
-
-            -d '{ "created_by": "user_123", "revoked_by": "user_123" }'
       security:
         - api_token: []
         - cookie_auth: []
@@ -12886,24 +12891,25 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.publishableApiKey.update(publishable_key_id, {
+            medusa.admin.publishableApiKeys.update(publishableApiKeyId, {
               title: "new title"
             })
-              .then(({ publishable_api_key }) => {
-                console.log(publishable_api_key.id)
-              })
+
+            .then(({ publishable_api_key }) => {
+              console.log(publishable_api_key.id)
+            })
         - lang: Shell
           label: cURL
           source: >
             curl --location --request POST
-            'https://medusa-url.com/admin/publishable-api-key/{id}' \
+            'https://medusa-url.com/admin/publishable-api-key/{pka_id}' \
 
             --header 'Authorization: Bearer {api_token}' \
 
             --header 'Content-Type: application/json' \
 
             --data-raw '{
-                "title": "updated title"
+                "title": "new title"
             }'
       security:
         - api_token: []
