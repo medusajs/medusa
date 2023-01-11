@@ -636,6 +636,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         if ("error" in res) {
           this.throwFromPaymentProcessorError(res as PaymentProcessorError)
         } else {
+          // Use else to avoid casting the object and infer the type instead
           payment.data = res
         }
       } else {
@@ -701,9 +702,20 @@ export default class PaymentProviderService extends TransactionBaseService {
         const refundAmount = Math.min(currentRefundable, balance)
 
         const provider = this.retrieveProvider(paymentToRefund.provider_id)
-        paymentToRefund.data = await provider
-          .withTransaction(transactionManager)
-          .refundPayment(paymentToRefund, refundAmount)
+
+        if (provider instanceof AbstractPaymentProcessor) {
+          const res = await provider.refundPayment(paymentToRefund.data)
+          if ("error" in res) {
+            this.throwFromPaymentProcessorError(res as PaymentProcessorError)
+          } else {
+            // Use else to avoid casting the object and infer the type instead
+            paymentToRefund.data = res
+          }
+        } else {
+          paymentToRefund.data = await provider
+            .withTransaction(transactionManager)
+            .refundPayment(paymentToRefund, refundAmount)
+        }
 
         paymentToRefund.amount_refunded += refundAmount
         await paymentRepo.save(paymentToRefund)
@@ -756,9 +768,20 @@ export default class PaymentProviderService extends TransactionBaseService {
       }
 
       const provider = this.retrieveProvider(payment.provider_id)
-      payment.data = await provider
-        .withTransaction(manager)
-        .refundPayment(payment, amount)
+
+      if (provider instanceof AbstractPaymentProcessor) {
+        const res = await provider.refundPayment(payment.data)
+        if ("error" in res) {
+          this.throwFromPaymentProcessorError(res as PaymentProcessorError)
+        } else {
+          // Use else to avoid casting the object and infer the type instead
+          payment.data = res
+        }
+      } else {
+        payment.data = await provider
+          .withTransaction(manager)
+          .refundPayment(payment, amount)
+      }
 
       payment.amount_refunded += amount
 

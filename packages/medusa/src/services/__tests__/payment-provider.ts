@@ -4,143 +4,7 @@ import PaymentProviderService from "../payment-provider"
 import { defaultContainer, defaultPaymentSessionInputData, PaymentProcessor, } from "../__fixtures__/payment-provider"
 import { testPayServiceMock } from "../__mocks__/test-pay"
 import { EOL } from "os"
-import { PaymentSessionStatus } from "../../models";
-
-describe("PaymentProviderService", () => {
-  describe("retrieveProvider", () => {
-    const container = createContainer({}, defaultContainer)
-    container.register("pp_default_provider", asValue("good"))
-
-    const providerService = container.resolve("paymentProviderService")
-
-    it("successfully retrieves payment provider", () => {
-      const provider = providerService.retrieveProvider("default_provider")
-      expect(provider).toEqual("good")
-    })
-
-    it("fails when payment provider not found", () => {
-      try {
-        providerService.retrieveProvider("unregistered")
-      } catch (err) {
-        expect(err.message).toEqual(
-          "Could not find a payment provider with id: unregistered"
-        )
-      }
-    })
-  })
-
-  describe("createSession", () => {
-    const container = createContainer({}, defaultContainer)
-    container.register(
-      "pp_default_provider",
-      asValue({
-        withTransaction: function () {
-          return this
-        },
-        createPayment: jest.fn().mockReturnValue(Promise.resolve({})),
-      })
-    )
-
-    const providerService = container.resolve("paymentProviderService")
-
-    it("successfully creates session", async () => {
-      await providerService.createSession("default_provider", {
-        object: "cart",
-        region: {
-          currency_code: "usd",
-        },
-        total: 100,
-      })
-
-      const defaultProvider = container.resolve("pp_default_provider")
-
-      expect(defaultProvider.createPayment).toBeCalledTimes(1)
-      expect(defaultProvider.createPayment).toBeCalledWith({
-        amount: 100,
-        object: "cart",
-        total: 100,
-        region: {
-          currency_code: "usd",
-        },
-        cart: {
-          context: undefined,
-          email: undefined,
-          id: undefined,
-          shipping_address: undefined,
-          shipping_methods: undefined,
-        },
-        currency_code: "usd",
-      })
-    })
-  })
-
-  describe("updateSession", () => {
-    const container = createContainer({}, defaultContainer)
-    container
-      .register(
-        "paymentSessionRepository",
-        asValue(
-          MockRepository({
-            findOne: () =>
-              Promise.resolve({
-                id: "session",
-                provider_id: "default_provider",
-                data: {
-                  id: "1234",
-                },
-              }),
-          })
-        )
-      )
-      .register(
-        "pp_default_provider",
-        asValue({
-          withTransaction: function () {
-            return this
-          },
-          updatePayment: jest.fn().mockReturnValue(Promise.resolve({})),
-        })
-      )
-
-    const providerService = container.resolve("paymentProviderService")
-
-    it("successfully creates session", async () => {
-      await providerService.updateSession(
-        {
-          id: "session",
-          provider_id: "default_provider",
-          data: {
-            id: "1234",
-          },
-        },
-        {
-          object: "cart",
-          total: 100,
-        }
-      )
-
-      const defaultProvider = container.resolve("pp_default_provider")
-
-      expect(defaultProvider.updatePayment).toBeCalledTimes(1)
-      expect(defaultProvider.updatePayment).toBeCalledWith(
-        { id: "1234" },
-        {
-          object: "cart",
-          amount: 100,
-          total: 100,
-          cart: {
-            context: undefined,
-            email: undefined,
-            id: undefined,
-            shipping_address: undefined,
-            shipping_methods: undefined,
-          },
-          currency_code: undefined,
-        }
-      )
-    })
-  })
-})
+import { PaymentSessionStatus, RefundReason } from "../../models";
 
 describe(`PaymentProviderService`, () => {
   const container = createContainer({}, defaultContainer)
@@ -974,6 +838,160 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
 
       const err = await providerService
         .capturePayment(payment)
+        .catch((e) => e)
+
+      expect(err.message).toBe(
+        `${errResponse.error}:${EOL}${errResponse.details}`
+      )
+    })
+  })
+
+  describe("refundPayment", () => {
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    const payments = [{
+      id: "p1",
+      captured_at: new Date(),
+      data: { id: "id1" },
+      amount: 1000,
+      amount_refunded: 0,
+      provider_id: paymentProviderId,
+    }, {
+      id: "p2",
+      captured_at: new Date(),
+      data: { id: "id2" },
+      amount: 1000,
+      amount_refunded: 0,
+      provider_id: paymentProviderId,
+    }, {
+      id: "p3",
+      captured_at: new Date(),
+      data: { id: "id3" },
+      amount: 1000,
+      amount_refunded: 1000, // already fully refunded
+      provider_id: paymentProviderId,
+    }]
+
+    const container = createContainer({}, defaultContainer)
+
+    const mockPaymentProcessor = new PaymentProcessor(container)
+    mockPaymentProcessor.refundPayment = jest.fn().mockImplementation(async (data) => data)
+
+    container
+      .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
+      .register(
+          "paymentRepository",
+          asValue(
+            MockRepository({
+              find: jest
+                .fn()
+                .mockImplementation(async () => payments),
+            })
+          )
+        )
+
+    const providerService = container.resolve(paymentServiceResolutionKey)
+    const paymentRepo = container.resolve("paymentRepository")
+
+    it("successfully refund the payments", async () => {
+      await providerService.refundPayment(payments, 1500, RefundReason.OTHER, "note")
+
+      const provider = container.resolve(paymentProcessorResolutionKey)
+
+      expect(provider.refundPayment).toBeCalledTimes(2)
+      expect(provider.refundPayment).toHaveBeenNthCalledWith(1, payments[0].data)
+      expect(provider.refundPayment).toHaveBeenNthCalledWith(2, payments[1].data)
+
+      expect(paymentRepo.save).toBeCalledTimes(2)
+      expect(paymentRepo.save).toHaveBeenNthCalledWith(1, expect.objectContaining({ amount_refunded: 1000 }))
+      expect(paymentRepo.save).toHaveBeenNthCalledWith(2, expect.objectContaining({ amount_refunded: 500 }))
+    })
+
+    it("throw an error using the provider error response", async () => {
+      const errResponse = {
+        error: "Error",
+        code: 400,
+        details: "Error details",
+      }
+
+      const mockPaymentProcessor = new PaymentProcessor(container)
+      mockPaymentProcessor.refundPayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(errResponse))
+
+      container.register(
+        paymentProcessorResolutionKey,
+        asValue(mockPaymentProcessor)
+      )
+
+      const providerService = container.resolve(paymentServiceResolutionKey)
+
+      const err = await providerService
+        .refundPayment(payments)
+        .catch((e) => e)
+
+      expect(err.message).toBe(
+        `${errResponse.error}:${EOL}${errResponse.details}`
+      )
+    })
+  })
+
+  describe("refundFromPayment", () => {
+    const payment = {
+      id: "p1",
+      captured_at: new Date(),
+      data: { id: "id1" },
+      amount: 1000,
+      amount_refunded: 0,
+      provider_id: paymentProviderId,
+    }
+
+    const container = createContainer({}, defaultContainer)
+
+    const mockPaymentProcessor = new PaymentProcessor(container)
+    mockPaymentProcessor.refundPayment = jest.fn().mockImplementation(async (data) => data)
+
+    container
+      .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
+
+    const providerService = container.resolve(paymentServiceResolutionKey)
+    const paymentRepo = container.resolve("paymentRepository")
+
+    it("successfully refund the payments", async () => {
+      await providerService.refundFromPayment(payment, 500, RefundReason.OTHER, "note")
+
+      const provider = container.resolve(paymentProcessorResolutionKey)
+
+      expect(provider.refundPayment).toBeCalledTimes(1)
+      expect(provider.refundPayment).toBeCalledWith(payment.data)
+
+      expect(paymentRepo.save).toBeCalledTimes(1)
+      expect(paymentRepo.save).toBeCalledWith(expect.objectContaining({ amount_refunded: 500 }))
+    })
+
+    it("throw an error using the provider error response", async () => {
+      const errResponse = {
+        error: "Error",
+        code: 400,
+        details: "Error details",
+      }
+
+      const mockPaymentProcessor = new PaymentProcessor(container)
+      mockPaymentProcessor.refundPayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(errResponse))
+
+      container.register(
+        paymentProcessorResolutionKey,
+        asValue(mockPaymentProcessor)
+      )
+
+      const providerService = container.resolve(paymentServiceResolutionKey)
+
+      const err = await providerService
+        .refundFromPayment(payment)
         .catch((e) => e)
 
       expect(err.message).toBe(
