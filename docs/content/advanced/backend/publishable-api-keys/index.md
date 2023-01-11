@@ -1,6 +1,6 @@
 # Publishable API Keys Overview
 
-In this document, you’ll learn about what Publishable API Keys are and how they work.
+In this document, you’ll learn about Publishable API Keys and their usage.
 
 ## Introduction
 
