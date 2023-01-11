@@ -108,7 +108,7 @@ export default async (req: Request, res: Response) => {
  *     description:  The name to identify the Product Category by.
  *   handle:
  *     type: string
- *     description:  An optional handle to be used in slugs, if none is provided we will kebab-case the name.
+ *     description:  A handle to be used in slugs.
  *   is_internal:
  *     type: boolean
  *     description: A flag to make product category an internal category for admins
