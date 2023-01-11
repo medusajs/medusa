@@ -54,7 +54,11 @@ const registerModule = async (
     const moduleModels = loadedModule?.models || null
     if (moduleModels) {
       moduleModels.map((val: ClassConstructor<unknown> | EntitySchema) => {
-        const name = val.constructor.name
+        const name = /function (\w+)/.exec(val.toString())?.[1]
+        if (!name) {
+          return
+        }
+
         container.register({
           [name]: asClass(val as ClassConstructor<unknown>),
         })

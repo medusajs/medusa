@@ -1,4 +1,4 @@
-import { getConnection, EntityManager } from "typeorm"
+import { EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   FindConfig,
@@ -15,7 +15,6 @@ import {
 } from "@medusajs/medusa"
 
 import { StockLocation, StockLocationAddress } from "../models"
-import { CONNECTION_NAME } from "../config"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -52,8 +51,10 @@ export default class StockLocationService extends TransactionBaseService {
     ) {
       this.manager_ = manager
     } else {
-      const connection = getConnection(CONNECTION_NAME)
-      this.manager_ = connection.manager
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "At the moment this module can only be used with shared resources"
+      )
     }
   }
 

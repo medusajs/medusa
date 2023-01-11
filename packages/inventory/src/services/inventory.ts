@@ -24,8 +24,7 @@ import {
   ReservationItemService,
   InventoryLevelService,
 } from "./"
-import { EntityManager, getConnection } from "typeorm"
-import { CONNECTION_NAME } from "../config"
+import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -58,8 +57,10 @@ export default class InventoryService
     ) {
       this.manager_ = manager
     } else {
-      const connection = getConnection(CONNECTION_NAME)
-      this.manager_ = connection.manager
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "At the moment this module can only be used with shared resources"
+      )
     }
 
     this.inventoryItemService_ = new InventoryItemService({
