@@ -53,6 +53,7 @@ const getOASFromCodebase = async (apiType: ApiType): Promise<OpenAPIObject> => {
   const gen = await swaggerInline(
     [
       path.resolve(basePath, "models"),
+      path.resolve(basePath, "types"),
       path.resolve(basePath, "api/middlewares"),
       path.resolve(basePath, `api/routes/${apiType}`),
     ],
@@ -80,6 +81,7 @@ const loadTransformClassValidatorsAsSchemas = async (): Promise<
 
   await import("../../api")
   await import("../../models")
+  // await import("../../types") // missing index.ts for discovery
   return validationMetadatasToSchemas(getJSONSchemaOptions())
 }
 
