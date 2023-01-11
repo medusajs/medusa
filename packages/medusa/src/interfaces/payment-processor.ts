@@ -63,11 +63,19 @@ export interface PaymentProcessor {
 
   /**
    * Authorize an existing session if it is not already authorized
+   * @param paymentSessionData
    * @param context
    */
   authorizePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<
+    | PaymentProcessorError
+    | {
+        status: PaymentSessionStatus
+        data: PaymentProcessorSessionResponse["session_data"]
+      }
+  >
 
   /**
    * Capture an existing session
@@ -136,8 +144,15 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   ): Promise<PaymentProcessorError | void>
 
   abstract authorizePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<
+    | PaymentProcessorError
+    | {
+        status: PaymentSessionStatus
+        data: PaymentProcessorSessionResponse["session_data"]
+      }
+  >
 
   abstract cancelPayment(
     paymentSessionData: Record<string, unknown>

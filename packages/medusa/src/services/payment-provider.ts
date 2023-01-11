@@ -58,6 +58,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly paymentProviderRepository_: typeof PaymentProviderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
+  protected readonly paymentService_: PaymentService
   protected readonly refundRepository_: typeof RefundRepository
   protected readonly customerService_: CustomerService
   protected readonly logger_: Logger
@@ -75,6 +76,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     this.refundRepository_ = container.refundRepository
     this.customerService_ = container.customerService
     this.featureFlagRouter_ = container.featureFlagRouter
+    this.paymentService_ = container.paymentService
     this.logger_ = container.logger
   }
 
@@ -467,10 +469,25 @@ export default class PaymentProviderService extends TransactionBaseService {
       const { payment_session, currency_code, amount, provider_id } = data
       const providerId = provider_id ?? payment_session.provider_id
 
-      const provider = this.retrieveProvider<AbstractPaymentService>(providerId)
-      const paymentData = await provider
-        .withTransaction(transactionManager)
-        .getPaymentData(payment_session)
+      const provider = this.retrieveProvider<
+        AbstractPaymentService | AbstractPaymentProcessor
+      >(providerId)
+
+      let paymentData: Record<string, unknown> = {}
+
+      if (provider instanceof AbstractPaymentProcessor) {
+        const res = await provider.retrievePayment(payment_session.data)
+        if ("error" in res) {
+          this.throwFromPaymentProcessorError(res as PaymentProcessorError)
+        } else {
+          // Use else to avoid casting the object and infer the type instead
+          paymentData = res
+        }
+      } else {
+        paymentData = await provider
+          .withTransaction(transactionManager)
+          .getPaymentData(payment_session)
+      }
 
       const paymentRepo = transactionManager.getCustomRepository(
         this.paymentRepository_
@@ -493,8 +510,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     data: { order_id?: string; swap_id?: string }
   ): Promise<Payment> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const paymentService = this.container_.paymentService
-      return await paymentService
+      return await this.paymentService_
         .withTransaction(transactionManager)
         .update(paymentId, data)
     })
@@ -514,14 +530,28 @@ export default class PaymentProviderService extends TransactionBaseService {
       }
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
-      const { status, data } = await provider
-        .withTransaction(transactionManager)
-        .authorizePayment(session, context)
 
-      session.data = data
-      session.status = status
+      if (provider instanceof AbstractPaymentProcessor) {
+        const res = await provider.authorizePayment(
+          paymentSession.data,
+          context
+        )
+        if ("error" in res) {
+          this.throwFromPaymentProcessorError(res)
+        } else {
+          // Use else to avoid casting the object and infer the type instead
+          session.data = res.data
+          session.status = res.status
+        }
+      } else {
+        const { status, data } = await provider
+          .withTransaction(transactionManager)
+          .authorizePayment(session, context)
+        session.data = data
+        session.status = status
+      }
 
-      if (status === PaymentSessionStatus.AUTHORIZED) {
+      if (session.status === PaymentSessionStatus.AUTHORIZED) {
         session.payment_authorized_at = new Date()
       }
 

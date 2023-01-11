@@ -1,11 +1,7 @@
 import { asValue, createContainer } from "awilix"
 import { MockRepository } from "medusa-test-utils"
 import PaymentProviderService from "../payment-provider"
-import {
-  defaultContainer,
-  defaultPaymentSessionInputData,
-  PaymentProcessor,
-} from "../__fixtures__/payment-provider"
+import { defaultContainer, defaultPaymentSessionInputData, PaymentProcessor, } from "../__fixtures__/payment-provider"
 import { testPayServiceMock } from "../__mocks__/test-pay"
 import { EOL } from "os"
 
@@ -678,6 +674,124 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
           data: paymentSessionData,
           provider_id: paymentProviderId,
         })
+        .catch((e) => e)
+
+      expect(err.message).toBe(
+        `${errResponse.error}:${EOL}${errResponse.details}`
+      )
+    })
+  })
+
+  describe("createPayment", () => {
+    const sessionId = "test-session"
+    const externalId = "external-id"
+    const paymentInput = {
+      cart_id: defaultPaymentSessionInputData.cart.id,
+      amount: defaultPaymentSessionInputData.amount,
+      currency_code: defaultPaymentSessionInputData.currency_code,
+      provider_id: defaultPaymentSessionInputData.provider_id,
+      payment_session: {
+        id: sessionId,
+        data: { id: externalId }
+      }
+    }
+
+    const container = createContainer({}, defaultContainer)
+
+    const mockPaymentProcessor = new PaymentProcessor(container)
+    mockPaymentProcessor.retrievePayment = jest.fn()
+
+    container
+      .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
+
+    const providerService = container.resolve(paymentServiceResolutionKey)
+
+    it("successfully create a payment", async () => {
+      await providerService.createPayment(paymentInput)
+
+      const provider = container.resolve(paymentProcessorResolutionKey)
+
+      expect(provider.retrievePayment).toBeCalledTimes(1)
+      expect(provider.retrievePayment).toBeCalledWith(paymentInput.payment_session.data)
+    })
+
+    it("throw an error using the provider error response", async () => {
+      const errResponse = {
+        error: "Error",
+        code: 400,
+        details: "Error details",
+      }
+
+      const mockPaymentProcessor = new PaymentProcessor(container)
+      mockPaymentProcessor.retrievePayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(errResponse))
+
+      container.register(
+        paymentProcessorResolutionKey,
+        asValue(mockPaymentProcessor)
+      )
+
+      const providerService = container.resolve(paymentServiceResolutionKey)
+
+      const err = await providerService
+        .createPayment(paymentInput)
+        .catch((e) => e)
+
+      expect(err.message).toBe(
+        `${errResponse.error}:${EOL}${errResponse.details}`
+      )
+    })
+  })
+
+  describe("authorizePayment", () => {
+    const externalId = "external-id"
+    const paymentSession = {
+      id: "test-session",
+      data: { id: externalId }
+    }
+    const context = { ip: "0.0.0.0" }
+
+    const container = createContainer({}, defaultContainer)
+
+    const mockPaymentProcessor = new PaymentProcessor(container)
+    mockPaymentProcessor.authorizePayment = jest.fn()
+
+    container
+      .register(paymentProcessorResolutionKey, asValue(mockPaymentProcessor))
+
+    const providerService = container.resolve(paymentServiceResolutionKey)
+
+    it("successfully authorize a payment", async () => {
+      await providerService.authorizePayment(paymentSession, context)
+
+      const provider = container.resolve(paymentProcessorResolutionKey)
+
+      expect(provider.authorizePayment).toBeCalledTimes(1)
+      expect(provider.authorizePayment).toBeCalledWith(paymentSession, context)
+    })
+
+    it("throw an error using the provider error response", async () => {
+      const errResponse = {
+        error: "Error",
+        code: 400,
+        details: "Error details",
+      }
+
+      const mockPaymentProcessor = new PaymentProcessor(container)
+      mockPaymentProcessor.authorizePayment = jest
+        .fn()
+        .mockReturnValue(Promise.resolve(errResponse))
+
+      container.register(
+        paymentProcessorResolutionKey,
+        asValue(mockPaymentProcessor)
+      )
+
+      const providerService = container.resolve(paymentServiceResolutionKey)
+
+      const err = await providerService
+        .authorizePayment(paymentSession, context)
         .catch((e) => e)
 
       expect(err.message).toBe(

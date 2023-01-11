@@ -12,9 +12,11 @@ import {
   PaymentProcessorSessionResponse
 } from "../../interfaces";
 import { PaymentSessionStatus } from "../../models";
+import { PaymentServiceMock } from "../__mocks__/payment";
 
 export const defaultContainer = createContainer()
 defaultContainer.register("paymentProviderService", asClass(PaymentProviderService))
+defaultContainer.register("paymentService", asValue(PaymentServiceMock))
 defaultContainer.register("manager", asValue(MockManager))
 defaultContainer.register("paymentSessionRepository", asValue(MockRepository()))
 defaultContainer.register("paymentProviderRepository", asValue(PaymentProviderServiceMock))
@@ -29,8 +31,14 @@ export class PaymentProcessor extends AbstractPaymentProcessor {
   constructor(container) {
     super(container);
   }
-  authorizePayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
+  authorizePayment(context: PaymentProcessorContext): Promise<
+    | PaymentProcessorError
+    | {
+        status: PaymentSessionStatus
+        data: PaymentProcessorSessionResponse["session_data"]
+      }
+  > {
+    return Promise.resolve({ } as any);
   }
 
   cancelPayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | void> {
