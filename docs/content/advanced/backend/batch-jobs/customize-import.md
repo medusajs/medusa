@@ -44,9 +44,12 @@ The batch job strategy class must extend the `AbstractBatchJobStrategy` class wh
 
 For example, you can define the following class in the file you created:
 
-```typescript title=src/strategies/import.ts
-import { AbstractBatchJobStrategy, BatchJobService } from '@medusajs/medusa'
-import { EntityManager } from 'typeorm'
+```ts title=src/strategies/import.ts
+import { 
+  AbstractBatchJobStrategy, 
+  BatchJobService,
+} from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
 
 class MyImportStrategy extends AbstractBatchJobStrategy {
   protected batchJobService_: BatchJobService
@@ -54,10 +57,10 @@ class MyImportStrategy extends AbstractBatchJobStrategy {
   protected transactionManager_: EntityManager
 
   processJob(batchJobId: string): Promise<void> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   buildTemplate(): Promise<string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
 }
 
@@ -78,10 +81,10 @@ Since only one batch job strategy can handle a batch job type, you can overwrite
 
 So, for example, to overwrite the product import strategy set the `batchType` property in your strategy to `product-import`:
 
-```typescript
+```ts
 class MyImportStrategy extends AbstractBatchJobStrategy {
-  static batchType = 'product-import'
-  //...
+  static batchType = "product-import"
+  // ...
 }
 ```
 
