@@ -79,11 +79,13 @@ export interface PaymentProcessor {
 
   /**
    * Capture an existing session
-   * @param context
+   * @param paymentSessionData
    */
   capturePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   /**
    * Delete an existing session
@@ -140,8 +142,10 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   abstract init(): Promise<void>
 
   abstract capturePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   abstract authorizePayment(
     paymentSessionData: Record<string, unknown>,

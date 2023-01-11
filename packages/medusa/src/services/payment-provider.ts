@@ -316,9 +316,9 @@ export default class PaymentProviderService extends TransactionBaseService {
       >(paymentSession.provider_id)
 
       if (provider instanceof AbstractPaymentProcessor) {
-        const res = await provider.deletePayment(session.data)
-        if (res) {
-          this.throwFromPaymentProcessorError(res)
+        const error = await provider.deletePayment(session.data)
+        if (error) {
+          this.throwFromPaymentProcessorError(error)
         }
       } else {
         await provider
@@ -414,9 +414,9 @@ export default class PaymentProviderService extends TransactionBaseService {
       >(paymentSession.provider_id)
 
       if (provider instanceof AbstractPaymentProcessor) {
-        const res = await provider.deletePayment(paymentSession.data)
-        if (res) {
-          this.throwFromPaymentProcessorError(res)
+        const error = await provider.deletePayment(paymentSession.data)
+        if (error) {
+          this.throwFromPaymentProcessorError(error)
         }
       } else {
         await provider
@@ -573,6 +573,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
+      // TODO: Waiting discussion output before taking care of the processor support
       session.data = await provider
         .withTransaction(transactionManager)
         .updatePaymentData(paymentSession.data, data)
@@ -591,9 +592,17 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await this.atomicPhase_(async (transactionManager) => {
       const payment = await this.retrievePayment(paymentObj.id)
       const provider = this.retrieveProvider(payment.provider_id)
-      payment.data = await provider
-        .withTransaction(transactionManager)
-        .cancelPayment(payment)
+
+      if (provider instanceof AbstractPaymentProcessor) {
+        const error = await provider.cancelPayment(payment.data)
+        if (error) {
+          this.throwFromPaymentProcessorError(error)
+        }
+      } else {
+        payment.data = await provider
+          .withTransaction(transactionManager)
+          .cancelPayment(payment)
+      }
 
       const now = new Date()
       payment.canceled_at = now.toISOString()
@@ -607,6 +616,11 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   async getStatus(payment: Payment): Promise<PaymentSessionStatus> {
     const provider = this.retrieveProvider(payment.provider_id)
+
+    if (provider instanceof AbstractPaymentProcessor) {
+      return await provider.getPaymentStatus(payment.data)
+    }
+
     return await provider.withTransaction(this.manager_).getStatus(payment.data)
   }
 
@@ -616,9 +630,19 @@ export default class PaymentProviderService extends TransactionBaseService {
     return await this.atomicPhase_(async (transactionManager) => {
       const payment = await this.retrievePayment(paymentObj.id)
       const provider = this.retrieveProvider(payment.provider_id)
-      payment.data = await provider
-        .withTransaction(transactionManager)
-        .capturePayment(payment)
+
+      if (provider instanceof AbstractPaymentProcessor) {
+        const res = await provider.capturePayment(payment.data)
+        if ("error" in res) {
+          this.throwFromPaymentProcessorError(res as PaymentProcessorError)
+        } else {
+          payment.data = res
+        }
+      } else {
+        payment.data = await provider
+          .withTransaction(transactionManager)
+          .capturePayment(payment)
+      }
 
       const now = new Date()
       payment.captured_at = now.toISOString()
