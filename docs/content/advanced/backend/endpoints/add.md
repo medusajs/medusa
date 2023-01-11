@@ -295,6 +295,7 @@ npm run build
 
 ## See Also
 
+- [Add a Middleware](./add-middleware.md)
 - [Storefront API Reference](/api/store)
 - [Admin API Reference](/api/admin)
 - [Create a Service](./../services/create-service.md).
