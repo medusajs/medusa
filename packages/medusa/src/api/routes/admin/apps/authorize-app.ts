@@ -37,10 +37,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            apps:
- *              $ref: "#/components/schemas/OAuth"
+ *          $ref: "#/components/schemas/AdminAppsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
