@@ -137,10 +137,6 @@ paths:
     $ref: paths/auth.yaml
   /auth/{email}:
     $ref: paths/auth_{email}.yaml
-  /collections/{id}:
-    $ref: paths/collections_{id}.yaml
-  /collections:
-    $ref: paths/collections.yaml
   /carts/{id}/shipping-methods:
     $ref: paths/carts_{id}_shipping-methods.yaml
   /carts/{id}/taxes:
@@ -163,6 +159,10 @@ paths:
     $ref: paths/carts_{id}_payment-sessions_{provider_id}_refresh.yaml
   /carts/{id}/payment-session:
     $ref: paths/carts_{id}_payment-session.yaml
+  /collections/{id}:
+    $ref: paths/collections_{id}.yaml
+  /collections:
+    $ref: paths/collections.yaml
   /customers/me/addresses:
     $ref: paths/customers_me_addresses.yaml
   /customers:
