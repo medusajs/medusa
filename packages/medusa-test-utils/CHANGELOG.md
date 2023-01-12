@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.38
+
+### Patch Changes
+
+- [#2961](https://github.com/medusajs/medusa/pull/2961) [`47d075351`](https://github.com/medusajs/medusa/commit/47d075351fa4fdeaf32d48f2bd7e72943a293d9b) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa): Admin API endpoint to fetch a Product Category
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,28 +13,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-test-utils
 
-
-
-
-
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.35...medusa-test-utils@1.1.36) (2021-12-29)
 
 **Note:** Version bump only for package medusa-test-utils
 
-
-
-
-
 ## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.34...medusa-test-utils@1.1.35) (2021-12-17)
-
 
 ### Features
 
-* add medusa-react ([#913](https://github.com/medusajs/medusa/issues/913)) ([d0d8dd7](https://github.com/medusajs/medusa/commit/d0d8dd7bf62eaac71df8714c2dfb4f204d192f51))
-
-
-
-
+- add medusa-react ([#913](https://github.com/medusajs/medusa/issues/913)) ([d0d8dd7](https://github.com/medusajs/medusa/commit/d0d8dd7bf62eaac71df8714c2dfb4f204d192f51))
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-test-utils@1.1.33...medusa-test-utils@1.1.34) (2021-12-08)
 

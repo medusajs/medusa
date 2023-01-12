@@ -90,7 +90,7 @@ get:
             type: object
             properties:
               user:
-                $ref: ../components/schemas/user.yaml
+                $ref: ../components/schemas/User.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -119,27 +119,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            first_name:
-              description: The name of the User.
-              type: string
-            last_name:
-              description: The name of the User.
-              type: string
-            role:
-              description: Userrole assigned to the user.
-              type: string
-              enum:
-                - admin
-                - member
-                - developer
-            api_token:
-              description: The api token of the User.
-              type: string
-            metadata:
-              description: An optional set of key-value pairs with additional information.
-              type: object
+          $ref: ../components/schemas/AdminUpdateUserRequest.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -163,7 +143,7 @@ post:
             type: object
             properties:
               user:
-                $ref: ../components/schemas/user.yaml
+                $ref: ../components/schemas/User.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

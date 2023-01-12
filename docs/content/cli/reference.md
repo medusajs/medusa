@@ -8,6 +8,8 @@ The Medusa CLI serves as a tool that allows you to perform important commands wh
 
 To use Medusa, it is required to install the CLI tool as it is used to create a new Medusa server.
 
+---
+
 ## How to Install CLI Tool
 
 To install the CLI tool, run the following command in your terminal:
@@ -27,6 +29,8 @@ The CLI tool is then available under the `medusa` command. You can see all comma
 ```bash
 medusa --help
 ```
+
+---
 
 ## Common Options
 
@@ -83,6 +87,8 @@ If used inside a Medusa project, the version of the Medusa CLI and Medusa projec
 ```bash
 medusa --version
 ```
+
+---
 
 ## Available Commands
 
@@ -206,7 +212,9 @@ medusa telemetry
 | `--enable` | Enable telemetry (default) |
 | `--disable` | Disable telemetry |
 
-## What’s Next
+---
 
-- Learn more about [anonymous usage data collection](../usage.md).
-- Learn how to [configure your Medusa server](../usage/configurations.md).
+## See Also
+
+- [Configure your Medusa server](../usage/configurations.md)
+- [Set up your development environment](../tutorial/0-set-up-your-development-environment.mdx)

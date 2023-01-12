@@ -1,0 +1,7 @@
+type: object
+required:
+  - provider_id
+properties:
+  provider_id:
+    description: The ID of the Fulfillment Provider to add.
+    type: string

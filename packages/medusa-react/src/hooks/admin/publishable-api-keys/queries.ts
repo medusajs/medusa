@@ -5,12 +5,12 @@ import {
   GetPublishableApiKeySalesChannelsParams,
   GetPublishableApiKeysParams,
 } from "@medusajs/medusa"
-import { useQuery } from "react-query"
 import { Response } from "@medusajs/medusa-js"
+import { useQuery } from "@tanstack/react-query"
 
-import { queryKeysFactory } from "../../utils"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
+import { queryKeysFactory } from "../../utils"
 
 const ADMIN_PUBLISHABLE_API_KEYS_QUERY_KEY =
   `admin_publishable_api_keys` as const

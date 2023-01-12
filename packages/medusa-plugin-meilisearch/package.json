@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-meilisearch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A starter for Medusa projects.",
   "main": "index.js",
   "repository": {
@@ -22,7 +22,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",
-    "medusa-core-utils": "^1.1.31",
+    "medusa-core-utils": "^1.1.37",
     "meilisearch": "0.27.0"
   },
   "devDependencies": {

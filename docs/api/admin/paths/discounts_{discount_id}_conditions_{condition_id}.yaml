@@ -65,7 +65,7 @@ delete:
                 default: true
               discount:
                 description: The Discount to which the condition used to belong
-                $ref: ../components/schemas/discount.yaml
+                $ref: ../components/schemas/Discount.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -131,7 +131,7 @@ get:
             type: object
             properties:
               discount_condition:
-                $ref: ../components/schemas/discount_condition.yaml
+                $ref: ../components/schemas/DiscountCondition.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -183,41 +183,8 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            products:
-              type: array
-              description: list of product IDs if the condition is applied on products.
-              items:
-                type: string
-            product_types:
-              type: array
-              description: >-
-                list of product type IDs if the condition is applied on product
-                types.
-              items:
-                type: string
-            product_collections:
-              type: array
-              description: >-
-                list of product collection IDs if the condition is applied on
-                product collections.
-              items:
-                type: string
-            product_tags:
-              type: array
-              description: >-
-                list of product tag IDs if the condition is applied on product
-                tags.
-              items:
-                type: string
-            customer_groups:
-              type: array
-              description: >-
-                list of customer group IDs if the condition is applied on
-                customer groups.
-              items:
-                type: string
+          $ref: >-
+            ../components/schemas/AdminPostDiscountsDiscountConditionsCondition.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -243,7 +210,7 @@ post:
             type: object
             properties:
               discount:
-                $ref: ../components/schemas/discount.yaml
+                $ref: ../components/schemas/Discount.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

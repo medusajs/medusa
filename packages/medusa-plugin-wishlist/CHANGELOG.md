@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.1.38
+
+### Patch Changes
+
+- [#2808](https://github.com/medusajs/medusa/pull/2808) [`0a9c89185`](https://github.com/medusajs/medusa/commit/0a9c891853c4d16b553d38268a3408ca1daa71f0) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - chore: explicitly add devDependencies for monorepo peerDependencies
+
+- Updated dependencies [[`7cced6006`](https://github.com/medusajs/medusa/commit/7cced6006a9a6f9108009e9f3e191e9f3ba1b168)]:
+  - medusa-core-utils@1.1.37
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,25 +16,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-plugin-wishlist
 
-
-
-
-
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.35...medusa-plugin-wishlist@1.1.36) (2021-12-29)
 
 **Note:** Version bump only for package medusa-plugin-wishlist
 
-
-
-
-
 ## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.34...medusa-plugin-wishlist@1.1.35) (2021-12-17)
 
 **Note:** Version bump only for package medusa-plugin-wishlist
-
-
-
-
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-plugin-wishlist@1.1.33...medusa-plugin-wishlist@1.1.34) (2021-12-08)
 

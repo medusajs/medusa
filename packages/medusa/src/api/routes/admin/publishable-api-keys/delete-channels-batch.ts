@@ -9,7 +9,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [delete] /publishable-api-keys/{id}/sales-channels/batch
  * operationId: "DeletePublishableApiKeySalesChannelsChannelsBatch"
- * summary: "Remove sales channel from a publishable api key scope"
+ * summary: "Delete SalesChannels"
  * description: "Remove a batch of sales channels from a publishable api key."
  * x-authenticated: true
  * parameters:
@@ -26,7 +26,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.publishableApiKeys.removeSalesChannels(publishableApiKeyId, {
+ *       medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId, {
  *         sales_channel_ids: [
  *           {
  *             id: channel_id
@@ -39,7 +39,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-keys/afasf/batch' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{

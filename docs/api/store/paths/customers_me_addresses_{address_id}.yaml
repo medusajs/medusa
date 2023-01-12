@@ -34,7 +34,7 @@ delete:
             type: object
             properties:
               customer:
-                $ref: ../components/schemas/customer.yaml
+                $ref: ../components/schemas/Customer.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -63,8 +63,8 @@ post:
     content:
       application/json:
         schema:
-          anyOf:
-            - $ref: ../components/schemas/address_fields.yaml
+          $ref: >-
+            ../components/schemas/StorePostCustomersCustomerAddressesAddressReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -89,7 +89,7 @@ post:
             type: object
             properties:
               customer:
-                $ref: ../components/schemas/customer.yaml
+                $ref: ../components/schemas/Customer.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

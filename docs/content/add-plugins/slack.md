@@ -17,6 +17,8 @@ The plugin registers a subscriber to the `order.placed` event. When an order is 
 
 Then, the order notificaiton is sent to Slack using Webhooks. So, you'll need to create a Slack App, add it into your workspace, and activate Incoming Webhooks.
 
+---
+
 ## Prerequisites
 
 ### Slack Account
@@ -25,7 +27,7 @@ To follow along with this guide, you need to have a Slack account with a connect
 
 ### Medusa Server
 
-This tutorial assumes you already have a Medusa server installed. If you don’t, please follow along with the [quickstart guide](../quickstart/quick-start.md).
+This tutorial assumes you already have a Medusa server installed. If you don’t, please follow along with the [quickstart guide](../quickstart/quick-start.mdx).
 
 ### Redis
 
@@ -34,6 +36,8 @@ Medusa's event system works by pushing data into a queue that is based on [Redis
 As the Slack plugin will listen to the `order.placed` event to know when to send notifications, you'll need to have Redis installed and configured with your Medusa server.
 
 You can read the [Set up your development enviornment guideline](../tutorial/0-set-up-your-development-environment.mdx#redis) to learn more about how you can install and setup Redis.
+
+---
 
 ## Create Slack App
 
@@ -63,6 +67,8 @@ After that, choose the channel to send the notifications to. You can also choose
 
 This will create a new Webhook with a URL which you can see in the table at the end of the Incoming Webhooks page. Copy the URL as you’ll use it in the next section.
 
+---
+
 ## Install Slack Plugin
 
 The next step is to install Medusa’s [Slack plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-slack-notification) into your Medusa server.
@@ -77,16 +83,16 @@ After that, open `medusa-config.js` and add the new plugin with its configuratio
 
 ```jsx title=medusa-config.js
 const plugins = [
-  ...,
+  // ...,
   {
     resolve: `medusa-plugin-slack-notification`,
     options: {
       show_discount_code: false,
       slack_url: `<WEBHOOK_URL>`,
-      admin_orders_url: `http://localhost:7001/a/orders`
-    }
-  }
-];
+      admin_orders_url: `http://localhost:7001/a/orders`,
+    },
+  },
+]
 ```
 
 - Make sure to change `<WEBHOOK_URL>` with the Webhook URL you copied after creating the Slack app.
@@ -95,7 +101,9 @@ const plugins = [
 
 That’s all you need to do to integrate Slack into Medusa!
 
-## What's Next
+---
 
-- Install [Medusa's Admin](https://github.com/medusajs/admin) for the full order-management experience.
-- Add a Storefront to your Medusa server using [the Next.js starter](https://docs.medusajs.com/starters/nextjs-medusa-starter) or [the Gatsby starter](https://docs.medusajs.com/starters/gatsby-medusa-starter).
+## See Also
+
+- Install [Medusa's Admin](../admin/quickstart.mdx) for the full order-management experience.
+- Install the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) starter storefronts.

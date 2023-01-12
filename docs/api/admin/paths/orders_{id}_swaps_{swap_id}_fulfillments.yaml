@@ -20,18 +20,8 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            metadata:
-              description: >-
-                An optional set of key-value pairs to hold additional
-                information.
-              type: object
-            no_notification:
-              description: >-
-                If set to true no notification will be send related to this
-                Claim.
-              type: boolean
+          $ref: >-
+            ../components/schemas/AdminPostOrdersOrderSwapsSwapFulfillmentsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -57,7 +47,7 @@ post:
             type: object
             properties:
               order:
-                $ref: ../components/schemas/order.yaml
+                $ref: ../components/schemas/Order.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

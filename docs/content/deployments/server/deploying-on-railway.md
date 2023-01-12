@@ -12,11 +12,13 @@ In this document, you’ll learn how to deploy your Medusa server to Railway.
 
 Railway provides a free plan that allows you to deploy your Medusa server along with PostgreSQL and Redis databases. This is useful mainly for development and demo purposes.
 
+---
+
 ## Prerequisites
 
 ### Medusa Server
 
-It is assumed that you already have a Medusa server installed locally. If you don’t, please follow the [quickstart guide](../../quickstart/quick-start.md).
+It is assumed that you already have a Medusa server installed locally. If you don’t, please follow the [quickstart guide](../../quickstart/quick-start.mdx).
 
 Furthermore, your Medusa server should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Server documentation](./../../usage/configurations.md) to learn how to do that.
 
@@ -29,11 +31,15 @@ Furthermore, your Medusa server should be configured to work with PostgreSQL and
 
 - Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](./../../tutorial/0-set-up-your-development-environment.mdx#git).
 
+---
+
 ## Changes to Medusa Server Codebase
 
 By default, Railway looks for a Dockerfile in the root of the codebase. If there is one, it will try to deploy your server using it.
 
 As this guide doesn't use Docker, make sure to delete `Dockerfile` from the root of your Medusa server.
+
+---
 
 ## Create GitHub Repository
 
@@ -73,6 +79,8 @@ git push origin master
 ```
 
 After pushing the changes, you can find the files in your GitHub repository.
+
+---
 
 ## Deploy to Railway
 
@@ -172,6 +180,8 @@ The last step is to add a domain name to your Medusa server. To do that:
 2. Click on the Settings tab and scroll down to the Domains section.
 3. Either click on the Custom Domain button to enter your own domain or the Generate Domain button to generate a random domain.
 
+---
+
 ## Test your Server
 
 Every change you make to the settings redeploys the server. You can check the Deployments of the server by clicking on the GitHub repository’s card and choosing the Deployments tab.
@@ -184,6 +194,8 @@ If you generated a random domain, you can find it by clicking on the GitHub repo
 
 :::
 
+---
+
 ## Troubleshooting
 
 If you run into any issues or a problem with your deployed server, you can check the logs in your Railway container instance by:
@@ -192,13 +204,17 @@ If you run into any issues or a problem with your deployed server, you can check
 2. Click on the Deployments tab.
 3. Click on the View Logs button.
 
+---
+
 ## Run Commands on Server
 
 To run commands on your server, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
 
 For example, you can run commands on the server to seed the database or create a new user using [Medusa’s CLI tool](../../cli/reference.md).
 
-## What’s Next
+---
 
-- Learn [how to deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md).
-- Learn [how to deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md).
+## See Also
+
+- [Deploy the Medusa Admin to Netlify](../admin/deploying-on-netlify.md)
+- [Deploy the Gatsby Storefront to Netlify](../storefront/deploying-gatsby-on-netlify.md)

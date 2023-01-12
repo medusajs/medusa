@@ -2,17 +2,6 @@
 
 In this document, you’ll learn about Sales Channels and how they can be used in Medusa.
 
-:::note
-
-The Sales Channels feature is currently in beta mode and guarded by a feature flag. To use Sales Channels either:
-
-1. Enable the `MEDUSA_FF_SALES_CHANNELS` environment variable;
-2. Or enable the `sales_channels` key in the Medusa server's settings.
-
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
-
-:::
-
 ## Introduction
 
 Sales Channels allow you to separate between the different channels you sell products in. For example, you can have a sales channel for your website and another for your mobile apps.
@@ -68,7 +57,7 @@ The relation is implemented in the [Order](../../../references/entities/classes/
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn how to [manage Sales Channels using the Admin APIs](./manage-admin.mdx).
-- Check out the [Sales Channel’s Admin APIs](https://docs.medusajs.com/api/admin/#tag/Sales-Channel).
+- [Manage Sales Channels using the Admin APIs](./manage-admin.mdx)
+- [Sales Channel’s Admin APIs Reference](/api/admin/#tag/Sales-Channel)

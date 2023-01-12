@@ -71,6 +71,7 @@ export default class NewTotalsService extends TransactionBaseService {
     featureFlagRouter,
     taxCalculationStrategy,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -490,23 +491,34 @@ export default class NewTotalsService extends TransactionBaseService {
     }
 
     // If a gift card is not taxable, the tax_rate for the giftcard will be null
-    const { totalGiftCardBalance, totalTaxFromGiftCards } = giftCards.reduce((acc, giftCard) => {
-      let taxableAmount = 0
+    const { totalGiftCardBalance, totalTaxFromGiftCards } = giftCards.reduce(
+      (acc, giftCard) => {
+        let taxableAmount = 0
 
-      acc.totalGiftCardBalance += giftCard.balance
+        acc.totalGiftCardBalance += giftCard.balance
 
-      taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
-      // skip tax, if the taxable amount is not a positive number or tax rate is not set
-      if (taxableAmount <= 0 || !giftCard.tax_rate) return acc
+        taxableAmount = Math.min(acc.giftCardableBalance, giftCard.balance)
+        // skip tax, if the taxable amount is not a positive number or tax rate is not set
+        if (taxableAmount <= 0 || !giftCard.tax_rate) {
+          return acc
+        }
 
-      let taxAmountFromGiftCard = Math.round(taxableAmount * (giftCard.tax_rate / 100))
+        const taxAmountFromGiftCard = Math.round(
+          taxableAmount * (giftCard.tax_rate / 100)
+        )
 
-      acc.totalTaxFromGiftCards += taxAmountFromGiftCard
-      // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
-      acc.giftCardableBalance -= taxableAmount
+        acc.totalTaxFromGiftCards += taxAmountFromGiftCard
+        // Update the balance, pass it over to the next gift card (if any) for calculating tax on balance.
+        acc.giftCardableBalance -= taxableAmount
 
-      return acc
-    }, { totalGiftCardBalance: 0, totalTaxFromGiftCards: 0, giftCardableBalance: giftCardableAmount })
+        return acc
+      },
+      {
+        totalGiftCardBalance: 0,
+        totalTaxFromGiftCards: 0,
+        giftCardableBalance: giftCardableAmount,
+      }
+    )
 
     result.tax_total = Math.round(totalTaxFromGiftCards)
     result.total = Math.min(giftCardableAmount, totalGiftCardBalance)

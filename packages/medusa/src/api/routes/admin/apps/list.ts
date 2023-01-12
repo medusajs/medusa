@@ -23,12 +23,7 @@ import { OauthService } from "../../../../services"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            apps:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/OAuth"
+ *          $ref: "#/components/schemas/AdminAppsListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

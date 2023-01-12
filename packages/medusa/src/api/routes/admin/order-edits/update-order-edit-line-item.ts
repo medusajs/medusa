@@ -10,7 +10,7 @@ import {
 /**
  * @oas [post] /order-edits/{id}/items/{item_id}
  * operationId: "PostOrderEditsEditLineItemsLineItem"
- * summary: "Create or update the order edit change holding the line item changes"
+ * summary: "Upsert Line Item Change"
  * description: "Create or update the order edit change holding the line item changes"
  * x-authenticated: true
  * parameters:

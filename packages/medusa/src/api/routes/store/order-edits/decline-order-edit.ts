@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
 import {
   defaultStoreOrderEditFields,
-  defaultStoreOrderEditRelations,
+  defaultStoreOrderEditRelations
 } from "../../../../types/order-edit"
 
 /**
@@ -70,7 +70,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (manager) => {
     await orderEditService.withTransaction(manager).decline(id, {
       declinedReason: validatedBody.declined_reason,
-      loggedInUserId: userId,
+      declinedBy: userId,
     })
   })
 

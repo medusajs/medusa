@@ -1,0 +1,5 @@
+type: object
+properties:
+  to:
+    description: A new address or user identifier that the Notification should be sent to
+    type: string

@@ -41,7 +41,7 @@ get:
               swaps:
                 type: array
                 items:
-                  $ref: ../components/schemas/swap.yaml
+                  $ref: ../components/schemas/Swap.yaml
               count:
                 type: integer
                 description: The total number of items available

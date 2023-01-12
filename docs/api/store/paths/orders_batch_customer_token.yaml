@@ -1,6 +1,6 @@
 post:
   operationId: PostOrdersCustomerOrderClaim
-  summary: Claim orders for signed in account
+  summary: Claim an Order
   description: >-
     Sends an email to emails registered to orders provided with link to transfer
     order ownership
@@ -8,14 +8,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - order_ids
-          properties:
-            order_ids:
-              description: The ids of the orders to claim
-              type: array
-              items:
-                type: string
+          $ref: ../components/schemas/StorePostCustomersCustomerOrderClaimReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

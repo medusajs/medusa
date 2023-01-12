@@ -14,13 +14,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - title
-          properties:
-            title:
-              description: The title the Product Option will be identified by i.e. "Size"
-              type: string
+          $ref: ../components/schemas/AdminPostProductsProductOptionsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -44,7 +38,7 @@ post:
             type: object
             properties:
               product:
-                $ref: ../components/schemas/product.yaml
+                $ref: ../components/schemas/Product.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
