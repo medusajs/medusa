@@ -4,9 +4,8 @@ import {
   AdminPostUploadsDownloadUrlReq,
   AdminUploadsDownloadUrlRes,
   AdminUploadsRes,
-  IAdminPostUploadsFileReq,
 } from "@medusajs/medusa"
-import { ResponsePromise } from "../../typings"
+import { AdminCreateUploadPayload, ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminUploadsResource extends BaseResource {
@@ -14,22 +13,30 @@ class AdminUploadsResource extends BaseResource {
     "Content-Type": "multipart/form-data",
   }
 
-  create(file: IAdminPostUploadsFileReq): ResponsePromise<AdminUploadsRes> {
+  /**
+   * @description Uploads at least one file to the specific fileservice that is installed in Medusa.
+   * @param file File or array of files to upload.
+   * @returns Uploaded file or files.
+   */
+  create(file: AdminCreateUploadPayload): ResponsePromise<AdminUploadsRes> {
     const path = `/admin/uploads`
 
-    const payload = new FormData()
-    payload.append(file.originalName, file.path)
+    const payload = this._createPayload(file)
 
     return this.client.request("POST", path, payload, {}, this.headers)
   }
 
+  /**
+   * @description Uploads at least one file with ACL or a non-public bucket to the specific fileservice that is installed in Medusa.
+   * @param file File or array of files to upload.
+   * @returns Uploaded file or files.
+   */
   createProtected(
-    file: IAdminPostUploadsFileReq
+    file: AdminCreateUploadPayload
   ): ResponsePromise<AdminUploadsRes> {
     const path = `/admin/uploads/protected`
 
-    const payload = new FormData()
-    payload.append(file.originalName, file.path)
+    const payload = this._createPayload(file)
 
     return this.client.request("POST", path, payload, {}, this.headers)
   }
@@ -50,6 +57,18 @@ class AdminUploadsResource extends BaseResource {
     const path = `/admin/uploads/download-url`
 
     return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  private _createPayload(file: AdminCreateUploadPayload) {
+    const payload = new FormData()
+
+    if (Array.isArray(file)) {
+      file.forEach((f) => payload.append("files", f))
+    } else {
+      payload.append("files", file)
+    }
+
+    return payload
   }
 }
 

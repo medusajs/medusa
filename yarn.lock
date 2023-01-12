@@ -4401,7 +4401,7 @@ __metadata:
     "@rollup/plugin-commonjs": ^24.0.0
     "@rollup/plugin-node-resolve": ^15.0.1
     "@types/jest": ^26.0.19
-    axios: ^0.26.1
+    axios: ^0.24.0
     cross-env: ^7.0.3
     jest: ^26.6.3
     qs: ^6.10.3
