@@ -47,7 +47,7 @@ class KlarnaProviderService extends PaymentService {
   async lineItemsToOrderLines_(cart) {
     let order_lines = []
 
-    for (const item of cart.items) {
+    for (const item of cart.items ?? []) {
       // Withdraw discount from the total item amount
       const quantity = item.quantity
 
@@ -64,7 +64,7 @@ class KlarnaProviderService extends PaymentService {
       })
     }
 
-    if (cart.shipping_methods.length) {
+    if (cart.shipping_methods?.length) {
       const name = []
       let total = 0
       let tax = 0
