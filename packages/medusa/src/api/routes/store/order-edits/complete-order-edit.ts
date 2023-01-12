@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { OrderEditStatus, PaymentCollectionStatus } from "../../../../models"
 import { OrderEditService, PaymentProviderService } from "../../../../services"
 import {
   defaultStoreOrderEditFields,
-  defaultStoreOrderEditRelations,
+  defaultStoreOrderEditRelations
 } from "../../../../types/order-edit"
-import { OrderEditStatus, PaymentCollectionStatus } from "../../../../models"
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /order-edits/{id}/complete
@@ -111,7 +111,7 @@ export default async (req: Request, res: Response) => {
     }
 
     const returned = await orderEditServiceTx.confirm(id, {
-      loggedInUserId: userId,
+      confirmedBy: userId,
     })
 
     return returned
