@@ -1,10 +1,10 @@
 import {
-  AdminTaxProvidersList,
   AdminPaymentProvidersList,
   AdminStoresRes,
+  AdminTaxProvidersList,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useQuery } from "react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils/index"

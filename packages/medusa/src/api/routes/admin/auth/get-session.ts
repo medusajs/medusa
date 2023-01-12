@@ -34,10 +34,7 @@ import _ from "lodash"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            user:
- *              $ref: "#/components/schemas/User"
+ *          $ref: "#/components/schemas/AdminAuthRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

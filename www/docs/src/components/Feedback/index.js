@@ -29,27 +29,34 @@ export default function Feedback ({
   const location = useLocation();
 
   function handleFeedback (e) {
+    submitFeedback()
     setPositiveFeedbac(e.target.classList.contains('positive'));
     setShowForm(true);
   }
 
-  function submitFeedback (e) {
+  function submitFeedback () {
     if (isBrowser) {
       if (window.analytics) {
-        setLoading(true);
+        if (showForm) {
+          setLoading(true);
+        }
         window.analytics.track(event, {
           url: location.pathname,
           label: document.title,
           feedback: positiveFeedback ? 'yes' : 'no',
           message
         }, function () {
-          setLoading(false);
-          setShowForm(false);
-          setSubmittedFeedback(true);
+          if (showForm) {
+            setLoading(false);
+            setShowForm(false);
+            setSubmittedFeedback(true);
+          }
         })
       } else {
-        setShowForm(false);
-        setSubmittedFeedback(true);
+        if (showForm) {
+          setShowForm(false);
+          setSubmittedFeedback(true);
+        }
       }
     }
   }

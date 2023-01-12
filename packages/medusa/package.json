@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "bin": "./cli.js",
@@ -69,7 +69,7 @@
     "jsonwebtoken": "^8.5.1",
     "medusa-core-utils": "^1.1.37",
     "medusa-telemetry": "^0.0.15",
-    "medusa-test-utils": "^1.1.37",
+    "medusa-test-utils": "^1.1.38",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "node-schedule": "^2.1.0",

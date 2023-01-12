@@ -1,10 +1,10 @@
+import { QueryClient } from "@tanstack/react-query"
 import * as React from "react"
-import { QueryClient } from "react-query"
 import {
-  SessionCartProvider,
-  SessionCartState,
   CartProvider,
   MedusaProvider,
+  SessionCartProvider,
+  SessionCartState,
 } from "../src"
 import { Cart } from "../src/types"
 

@@ -3,7 +3,7 @@ import {
   Region,
   StoreCartsRes,
 } from "@medusajs/medusa"
-import { QueryKey, UseQueryOptions } from "react-query"
+import { QueryKey, UseQueryOptions } from "@tanstack/react-query"
 
 export type UseQueryOptionsWrapper<
   // Return type of queryFn
