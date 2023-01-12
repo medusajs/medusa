@@ -171,7 +171,6 @@ class ProductCategoryService extends TransactionBaseService {
           id: productCategory.id,
         })
 
-
       return productCategory
     })
   }

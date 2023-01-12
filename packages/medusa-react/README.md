@@ -24,7 +24,7 @@ In addition, because medusa-react is built on top of react-query, you can pass a
 // App.tsx
 
 import * as React from "react"
-import { QueryClient } from "react-query"
+import { QueryClient } from "@tanstack/react-query"
 import { MedusaProvider } from "medusa-react"
 import MyStorefront from "./my-storefront"
 
@@ -80,7 +80,7 @@ In general, the queries will return everything react-query returns from [`useQue
 So, in other words, we can express what the above query returns as the following:
 
 ```typescript
-import { UseQueryResult } from "react-query"
+import { UseQueryResult } from "@tanstack/react-query"
 
 // This is what a Medusa server returns when you hit the GET /store/products endpoint
 type ProductsResponse = {
@@ -237,7 +237,7 @@ The first step to using the `SessionCartProvider` is by inserting it somewhere u
 // App.tsx
 
 import * as React from "react"
-import { QueryClient } from "react-query"
+import { QueryClient } from "@tanstack/react-query"
 import { MedusaProvider, SessionCartProvider } from "medusa-react"
 import MyStorefront from "./my-storefront"
 
@@ -274,7 +274,7 @@ export default App
 // App.tsx
 
 import * as React from "react"
-import { QueryClient } from "react-query"
+import { QueryClient } from "@tanstack/react-query"
 import { MedusaProvider, CartProvider } from "medusa-react"
 import MyStorefront from "./my-storefront"
 
