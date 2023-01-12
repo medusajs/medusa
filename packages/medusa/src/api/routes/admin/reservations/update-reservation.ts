@@ -7,6 +7,8 @@ import { IInventoryService } from "../../../../interfaces"
  * summary: "Updates a Reservation"
  * description: "Updates a Reservation which can be associated with any resource as required."
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The ID of the Reservation to update.
  * requestBody:
  *  content:
  *    application/json:
