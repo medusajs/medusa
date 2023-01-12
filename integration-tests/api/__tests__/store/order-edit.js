@@ -25,7 +25,7 @@ const { OrderEditItemChangeType } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
 
-describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
+describe("/store/order-edits", () => {
   let medusaProcess
   let dbConnection
 
@@ -33,7 +33,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_ORDER_EDITING: true },
     })
     dbConnection = connection
     medusaProcess = process
