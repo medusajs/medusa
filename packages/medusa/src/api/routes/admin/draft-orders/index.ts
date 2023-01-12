@@ -96,7 +96,7 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
  * type: object
  * properties:
  *   order:
- *     $ref: "#/components/schemas/DraftOrder"
+ *     $ref: "#/components/schemas/Order"
  */
 export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
   order: Order
