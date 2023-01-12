@@ -22,10 +22,8 @@ export default defineConfig({
     },
   ],
   plugins: [
+    resolve({ preferBuiltins: true }),
     terser(),
-    resolve({
-      browser: true,
-    }),
     commonjs(),
     typescript({
       useTsconfigDeclarationDir: true,

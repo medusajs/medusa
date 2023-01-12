@@ -1,12 +1,11 @@
 import {
   AdminDeleteUploadsReq,
-  IAdminPostUploadsFileReq,
   AdminDeleteUploadsRes,
   AdminPostUploadsDownloadUrlReq,
   AdminUploadsDownloadUrlRes,
   AdminUploadsRes,
+  IAdminPostUploadsFileReq,
 } from "@medusajs/medusa"
-import FormData from "form-data"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -19,16 +18,18 @@ class AdminUploadsResource extends BaseResource {
     const path = `/admin/uploads`
 
     const payload = new FormData()
-    payload.append("files", file)
+    payload.append(file.originalName, file.path)
 
     return this.client.request("POST", path, payload, {}, this.headers)
   }
- 
-  createProtected(file: IAdminPostUploadsFileReq): ResponsePromise<AdminUploadsRes> {
+
+  createProtected(
+    file: IAdminPostUploadsFileReq
+  ): ResponsePromise<AdminUploadsRes> {
     const path = `/admin/uploads/protected`
 
     const payload = new FormData()
-    payload.append("files", file)
+    payload.append(file.originalName, file.path)
 
     return this.client.request("POST", path, payload, {}, this.headers)
   }
