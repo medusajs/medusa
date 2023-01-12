@@ -15,6 +15,7 @@ describe("/store/product-categories", () => {
   let productCategoryChild = null
   let productCategoryParent = null
   let productCategoryChild2 = null
+  let productCategoryChild3 = null
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
@@ -38,24 +39,36 @@ describe("/store/product-categories", () => {
       productCategoryParent = await simpleProductCategoryFactory(dbConnection, {
         name: "category parent",
         handle: "category-parent",
+        is_active: true,
       })
 
       productCategory = await simpleProductCategoryFactory(dbConnection, {
         name: "category",
         handle: "category",
         parent_category: productCategoryParent,
+        is_active: true,
       })
 
       productCategoryChild = await simpleProductCategoryFactory(dbConnection, {
         name: "category child",
         handle: "category-child",
         parent_category: productCategory,
+        is_active: true,
       })
 
       productCategoryChild2 = await simpleProductCategoryFactory(dbConnection, {
         name: "category child 2",
         handle: "category-child-2",
-        parent_category: productCategoryChild,
+        parent_category: productCategory,
+        is_internal: true,
+        is_active: true,
+      })
+
+      productCategoryChild3 = await simpleProductCategoryFactory(dbConnection, {
+        name: "category child 3",
+        handle: "category-child-3",
+        parent_category: productCategory,
+        is_active: false,
       })
     })
 
@@ -86,7 +99,7 @@ describe("/store/product-categories", () => {
               id: productCategoryChild.id,
               handle: productCategoryChild.handle,
               name: productCategoryChild.name,
-            })
+            }),
           ]
         })
       )
@@ -104,6 +117,34 @@ describe("/store/product-categories", () => {
       expect(error.response.status).toEqual(400)
       expect(error.response.data.type).toEqual('invalid_data')
       expect(error.response.data.message).toEqual('Fields [mpath] are not valid')
+    })
+
+    it("throws error on querying for internal product category", async () => {
+      const api = useApi()
+
+      const error = await api.get(
+        `/store/product-categories/${productCategoryChild2.id}`,
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(404)
+      expect(error.response.data.type).toEqual('not_found')
+      expect(error.response.data.message).toEqual(
+        `ProductCategory with id: ${productCategoryChild2.id} was not found`
+      )
+    })
+
+    it("throws error on querying for inactive product category", async () => {
+      const api = useApi()
+
+      const error = await api.get(
+        `/store/product-categories/${productCategoryChild3.id}`,
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(404)
+      expect(error.response.data.type).toEqual('not_found')
+      expect(error.response.data.message).toEqual(
+        `ProductCategory with id: ${productCategoryChild3.id} was not found`
+      )
     })
   })
 })

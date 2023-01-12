@@ -63,13 +63,18 @@ export default async (req: Request, res: Response) => {
   const { id } = req.params
   const { retrieveConfig } = req
 
+  const scopes = {
+    is_internal: false,
+    is_active: true,
+  }
   const productCategoryService: ProductCategoryService = req.scope.resolve(
     "productCategoryService"
   )
 
   const productCategory = await productCategoryService.retrieve(
     id,
-    retrieveConfig
+    retrieveConfig,
+    scopes,
   )
 
   res.status(200).json({
@@ -78,7 +83,8 @@ export default async (req: Request, res: Response) => {
     // onto its children nodes. As an alternative, we are transforming the data post query.
     product_category: transformTreeNodesWithConfig(
       productCategory,
-      retrieveConfig
+      retrieveConfig,
+      scopes,
     ),
   })
 }
