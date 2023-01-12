@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import ProductCategoryService from "../../../../services/product-category"
 import { FindParams } from "../../../../types/common"
 import { transformTreeNodesWithConfig } from "../../../../utils/transformers/tree"
-import { defaultStoreProductCategoryRelations } from "."
+import { defaultStoreProductCategoryRelations, defaultStoreScope } from "."
 
 /**
  * @oas [get] /product-categories/{id}
@@ -63,10 +63,6 @@ export default async (req: Request, res: Response) => {
   const { id } = req.params
   const { retrieveConfig } = req
 
-  const scopes = {
-    is_internal: false,
-    is_active: true,
-  }
   const productCategoryService: ProductCategoryService = req.scope.resolve(
     "productCategoryService"
   )
@@ -74,7 +70,7 @@ export default async (req: Request, res: Response) => {
   const productCategory = await productCategoryService.retrieve(
     id,
     retrieveConfig,
-    scopes,
+    defaultStoreScope,
   )
 
   res.status(200).json({
@@ -84,7 +80,7 @@ export default async (req: Request, res: Response) => {
     product_category: transformTreeNodesWithConfig(
       productCategory,
       retrieveConfig,
-      scopes,
+      defaultStoreScope,
     ),
   })
 }

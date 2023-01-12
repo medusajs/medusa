@@ -8,7 +8,7 @@ import { filter, isNull } from "lodash"
 export function transformTreeNodesWithConfig(
   object,
   config,
-  scopes = {},
+  scope = {},
   isParentNode = false
 ) {
   const selects = (config.select || []) as string[]
@@ -16,7 +16,7 @@ export function transformTreeNodesWithConfig(
   const selectsAndRelations = selects.concat(relations)
 
 
-  for (const [key, value] of Object.entries(scopes)) {
+  for (const [key, value] of Object.entries(scope)) {
     const modelValue = object[key]
 
     if (isDefined(modelValue) && modelValue !== value) {
@@ -29,14 +29,14 @@ export function transformTreeNodesWithConfig(
     object.parent_category = transformTreeNodesWithConfig(
       object.parent_category,
       config,
-      scopes,
+      scope,
       true
     )
   }
 
   if (!isParentNode && (object.category_children || []).length > 0) {
     object.category_children = object.category_children.map((child) => {
-      return transformTreeNodesWithConfig(child, config, scopes)
+      return transformTreeNodesWithConfig(child, config, scope)
     })
 
     object.category_children = filter(
