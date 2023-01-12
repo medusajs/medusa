@@ -10,8 +10,6 @@ import { IInventoryService } from "../../../../interfaces"
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
  *   - (path) location_id=* {string} The ID of the location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -19,7 +17,7 @@ import { IInventoryService } from "../../../../interfaces"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.inventoryItems.delete(inventoryItemId)
+ *       medusa.admin.inventoryItems.deleteLocationLevel(inventoryItemId, locationId)
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
  *       });

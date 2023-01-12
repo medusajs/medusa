@@ -11,6 +11,8 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
+ *   - (query) offset=0 {integer} How many stock locations levels to skip in the result.
+ *   - (query) limit=20 {integer} Limit the number of stock locations levels returned.
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codeSamples:

@@ -27,6 +27,8 @@ import {
  * description: "Retrives inventory items."
  * x-authenticated: true
  * parameters:
+ *   - (query) offset=0 {integer} How many inventory items to skip in the result.
+ *   - (query) limit=20 {integer} Limit the number of inventory items returned.
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  *   - (query) q {string} Query used for searching product inventory items and their properties.
