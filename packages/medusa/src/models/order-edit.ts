@@ -6,14 +6,14 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
+  OneToOne
 } from "typeorm"
 
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
-import { resolveDbType } from "../utils/db-aware-column"
 import { BaseEntity } from "../interfaces"
+import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { generateEntityId } from "../utils"
+import { resolveDbType } from "../utils/db-aware-column"
+import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 
 import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
@@ -44,7 +44,7 @@ export class OrderEdit extends BaseEntity {
   internal_note?: string
 
   @Column()
-  created_by: string // customer or user ID
+  created_by: string // customer, user, third party, etc.
 
   @Column({ nullable: true })
   requested_by?: string // customer or user ID
