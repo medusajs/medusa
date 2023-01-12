@@ -21,7 +21,7 @@ import { IInventoryService } from "../../../../interfaces"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.reservations.update('test-id', {
+ *       medusa.admin.reservations.update(reservation.id, {
  *         quantity: 3
  *       })
  *       .then(({ reservations }) => {
@@ -34,9 +34,7 @@ import { IInventoryService } from "../../../../interfaces"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "resource_id": "{resource_id}",
- *           "resource_type": "order",
- *           "value": "We delivered this order"
+ *          "quantity": 3,
  *       }'
  * security:
  *   - api_token: []
