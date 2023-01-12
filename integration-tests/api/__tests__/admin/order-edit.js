@@ -701,7 +701,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       return await db.teardown()
     })
 
-    it("creates an order edit with user as creator", async () => {
+    it("creates an order edit", async () => {
       const api = useApi()
 
       const response = await api.post(
@@ -742,65 +742,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
             expect.objectContaining({
               id: expect.not.stringContaining(lineItemId2),
               order_id: null,
-              order_edit_id: expect.any(String),
-              original_item_id: lineItemId2,
-              quantity: 1,
-              fulfilled_quantity: 1,
-              shipped_quantity: 1,
-              unit_price: 1000,
-              tax_lines: expect.arrayContaining([
-                expect.objectContaining({
-                  rate: 10,
-                }),
-              ]),
-            }),
-          ]),
-          shipping_total: 0,
-          gift_card_total: 0,
-          gift_card_tax_total: 0,
-          discount_total: 0,
-          tax_total: 200,
-          subtotal: 2000,
-          total: 2200,
-        })
-      )
-    })
-
-    it("creates an order edit with custom creator", async () => {
-      const api = useApi()
-
-      const response = await api.post(
-        `/admin/order-edits/`,
-        {
-          order_id: orderId,
-          created_by: "custom_service",
-        },
-        adminHeaders
-      )
-
-      expect(response.status).toEqual(200)
-      expect(response.data.order_edit).toEqual(
-        expect.objectContaining({
-          order_id: orderId,
-          created_by: "custom_service",
-          // The items are cloned from the items of the order
-          items: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.not.stringContaining(lineItemId1),
-              order_edit_id: expect.any(String),
-              original_item_id: lineItemId1,
-              quantity: 1,
-              fulfilled_quantity: 1,
-              shipped_quantity: 1,
-              unit_price: 1000,
-              tax_lines: expect.arrayContaining([
-                expect.objectContaining({
-                  rate: 10,
-                }),
-              ]),
-            }),
-            expect.objectContaining({
-              id: expect.not.stringContaining(lineItemId2),
               order_edit_id: expect.any(String),
               original_item_id: lineItemId2,
               quantity: 1,

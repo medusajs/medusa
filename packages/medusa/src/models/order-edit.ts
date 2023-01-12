@@ -6,7 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
+  OneToOne
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
@@ -43,7 +43,7 @@ export class OrderEdit extends BaseEntity {
   @Column({ nullable: true })
   internal_note?: string
 
-  @Column()
+  @Column({ nullable: true })
   created_by: string // customer, user, third party, etc.
 
   @Column({ nullable: true })

@@ -7,13 +7,13 @@ import {
   Order,
   OrderEdit,
   OrderEditItemChangeType,
-  OrderEditStatus,
+  OrderEditStatus
 } from "../models"
 import { OrderEditRepository } from "../repositories/order-edit"
 import { FindConfig, Selector } from "../types/common"
 import {
   AddOrderEditLineItemInput,
-  CreateOrderEditInput,
+  CreateOrderEditInput
 } from "../types/order-edit"
 import { buildQuery, isString } from "../utils"
 import {
@@ -23,7 +23,7 @@ import {
   OrderEditItemChangeService,
   OrderService,
   TaxProviderService,
-  TotalsService,
+  TotalsService
 } from "./index"
 
 type InjectedDependencies = {
@@ -317,7 +317,7 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     context: {
       declinedReason?: string
-      loggedInUserId?: string
+      declinedBy?: string
     }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
@@ -325,7 +325,7 @@ export default class OrderEditService extends TransactionBaseService {
         this.orderEditRepository_
       )
 
-      const { loggedInUserId, declinedReason } = context
+      const { declinedBy, declinedReason } = context
 
       const orderEdit = await this.retrieve(orderEditId)
 
@@ -341,7 +341,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.declined_at = new Date()
-      orderEdit.declined_by = loggedInUserId
+      orderEdit.declined_by = declinedBy
       orderEdit.declined_reason = declinedReason
 
       const result = await orderEditRepo.save(orderEdit)
@@ -658,7 +658,7 @@ export default class OrderEditService extends TransactionBaseService {
   async requestConfirmation(
     orderEditId: string,
     context: {
-      loggedInUserId?: string
+      requestedBy?: string
     } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
@@ -683,7 +683,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.requested_at = new Date()
-      orderEdit.requested_by = context.loggedInUserId
+      orderEdit.requested_by = context.requestedBy
 
       orderEdit = await orderEditRepo.save(orderEdit)
 
@@ -697,7 +697,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async cancel(
     orderEditId: string,
-    context: { loggedInUserId?: string } = {}
+    context: { canceledBy?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepository = manager.getCustomRepository(
@@ -722,7 +722,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.canceled_at = new Date()
-      orderEdit.canceled_by = context.loggedInUserId
+      orderEdit.canceled_by = context.canceledBy
 
       const saved = await orderEditRepository.save(orderEdit)
 
@@ -736,7 +736,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async confirm(
     orderEditId: string,
-    context: { loggedInUserId?: string } = {}
+    context: { confirmedBy?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepository = manager.getCustomRepository(
@@ -774,7 +774,7 @@ export default class OrderEditService extends TransactionBaseService {
       ])
 
       orderEdit.confirmed_at = new Date()
-      orderEdit.confirmed_by = context.loggedInUserId
+      orderEdit.confirmed_by = context.confirmedBy
 
       orderEdit = await orderEditRepository.save(orderEdit)
 
