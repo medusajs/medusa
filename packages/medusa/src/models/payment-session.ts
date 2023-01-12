@@ -22,8 +22,10 @@ export enum PaymentSessionStatus {
 }
 
 @Unique("OneSelected", ["cart_id", "is_selected"])
-// TODO: This uniq constraint should be updated once the order edit flag is dropped and should add a where clause on cart_id is not null
-@Unique("UniqPaymentSessionCartIdProviderId", ["cart_id", "provider_id"])
+@Index("UniqPaymentSessionCartIdProviderId", ["cart_id", "provider_id"], {
+  unique: true,
+  where: "cart_id IS NOT NULL",
+})
 @Entity()
 export class PaymentSession extends BaseEntity {
   @Index()
