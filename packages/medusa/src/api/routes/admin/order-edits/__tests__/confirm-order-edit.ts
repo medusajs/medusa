@@ -1,6 +1,5 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 
 describe("POST /admin/order-edits/:id/confirm", () => {
@@ -18,7 +17,6 @@ describe("POST /admin/order-edits/:id/confirm", () => {
               userId: "admin_user",
             },
           },
-          flags: [OrderEditingFeatureFlag],
         }
       )
     })

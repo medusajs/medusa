@@ -1,11 +1,17 @@
-import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, Unique, } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  Unique,
+} from "typeorm"
 
 import { BaseEntity } from "../interfaces"
-import { Cart } from "./cart"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
-import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {
   AUTHORIZED = "authorized",
@@ -47,14 +53,10 @@ export class PaymentSession extends BaseEntity {
   @Column({ nullable: true })
   idempotency_key: string
 
-  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
-    Column({ type: "integer", nullable: true }),
-  ])
+  @Column({ type: "integer", nullable: true })
   amount: number
 
-  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
-    Column({ type: resolveDbType("timestamptz"), nullable: true }),
-  ])
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   payment_authorized_at: Date
 
   @BeforeInsert()
