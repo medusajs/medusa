@@ -154,7 +154,7 @@ describe("/store/carts", () => {
       expect(response.data).toEqual({
         swap: expect.objectContaining({
           id: expect.stringMatching(/^swap_*/),
-          additional_items: expect.objectContaining([
+          additional_items: expect.arrayContaining([
             expect.objectContaining({
               id: expect.stringMatching(/^item_*/),
               cart_id: expect.stringMatching(/^cart_*/),
