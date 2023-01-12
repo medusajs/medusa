@@ -4,6 +4,7 @@ import { EntityManager } from "typeorm"
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { defaultStoreCustomersRelations } from "../customers"
 
 /**
  * @oas [post] /auth
@@ -90,7 +91,7 @@ export default async (req, res) => {
 
   const customerService: CustomerService = req.scope.resolve("customerService")
   const customer = await customerService.retrieve(result.customer?.id || "", {
-    relations: ["orders", "orders.items"],
+    relations: ["orders", "orders.items", ...defaultStoreCustomersRelations],
   })
 
   res.json({ customer })
