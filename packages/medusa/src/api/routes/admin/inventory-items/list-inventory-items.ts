@@ -88,7 +88,20 @@ import {
  *             inventory_items:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/ResponseInventoryItemWithVariantsAndLocationLevels"
+ *                 allOf:
+ *                   - $ref: "#/components/schemas/InventoryItemDTO"
+ *                    - type: object
+ *                      properties:
+ *                        location_levels:
+ *                          type: array
+ *                          items:
+ *                            allOf:
+ *                              - $ref: "#/components/schemas/InventoryLevelDTO"
+ *                        variants:
+ *                          type: array
+ *                          items:
+ *                            allOf:
+ *                              - $ref: "#/components/schemas/ProductVariant"
  *             count:
  *               type: integer
  *               description: The total number of items available
@@ -112,24 +125,7 @@ import {
  *     $ref: "#/components/responses/500_error"
  */
 
-/**
- * @schema ResponseInventoryItemWithVariantsAndLocationLevels
- * allOf
- *   - $ref: "#/components/schemas/InventoryItemDTO"
- *   - type: object
- *     properties:
- *       location_levels:
- *         description: the location levels associated with the inventory item
- *         type: array
- *           items:
- *             $ref: "#/components/schemas/InventoryLevelDTO"
- *       variants:
- *         description: the variants associated with the inventory item
- *         type: array
- *           items:
- *             $ref: "#/components/schemas/ProductVariant"
- */
-export type ResponseInventoryItemWithVariantsAndLocationLevels =
+type ResponseInventoryItemWithVariantsAndLocationLevels =
   Partial<InventoryItemDTO> & {
     location_levels?: InventoryLevelDTO[]
     variants?: ProductVariant[]
