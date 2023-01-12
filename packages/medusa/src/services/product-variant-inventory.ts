@@ -109,7 +109,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     const hasInventory = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
-        const itemQuantity = inventoryPart.quantity * quantity
+        const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_.confirmInventory(
           inventoryPart.inventory_item_id,
           locations,
@@ -288,7 +288,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     const variantInventory = variantInventoryRepo.create({
       variant_id: variantId,
       inventory_item_id: inventoryItemId,
-      quantity: quantityToStore,
+      required_quantity: quantityToStore,
     })
 
     return await variantInventoryRepo.save(variantInventory)
@@ -377,7 +377,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     return await Promise.all(
       variantInventory.map(async (inventoryPart) => {
-        const itemQuantity = inventoryPart.quantity * quantity
+        const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_.createReservationItem({
           ...toReserve,
           location_id: locationId as string,
@@ -442,7 +442,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
 
       const reservationQtyUpdate =
-        reservation.quantity - quantity * productVariantInventory.quantity
+        reservation.quantity -
+        quantity * productVariantInventory.required_quantity
 
       if (reservationQtyUpdate === 0) {
         await this.inventoryService_.deleteReservationItem(reservation.id)
@@ -568,7 +569,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
       await Promise.all(
         variantInventory.map(async (inventoryPart) => {
-          const itemQuantity = inventoryPart.quantity * quantity
+          const itemQuantity = inventoryPart.required_quantity * quantity
           return await this.inventoryService_.adjustInventory(
             inventoryPart.inventory_item_id,
             locationId,
