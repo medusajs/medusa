@@ -54,21 +54,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             ids:
- *               type: array
- *               items:
- *                 type: string
- *                 description: The IDs of the deleted Money Amounts (Prices).
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: money-amount
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminPriceListDeleteBatchRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
