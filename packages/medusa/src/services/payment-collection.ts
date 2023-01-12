@@ -4,9 +4,18 @@ import { isDefined, MedusaError } from "medusa-core-utils"
 import { FindConfig } from "../types/common"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { PaymentCollectionRepository } from "../repositories/payment-collection"
-import { PaymentCollection, PaymentCollectionStatus, PaymentSession, PaymentSessionStatus, } from "../models"
+import {
+  PaymentCollection,
+  PaymentCollectionStatus,
+  PaymentSession,
+  PaymentSessionStatus,
+} from "../models"
 import { TransactionBaseService } from "../interfaces"
-import { CustomerService, EventBusService, PaymentProviderService, } from "./index"
+import {
+  CustomerService,
+  EventBusService,
+  PaymentProviderService,
+} from "./index"
 
 import {
   CreatePaymentCollectionInput,
@@ -296,7 +305,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
             context: {},
             shipping_methods: [],
             shipping_address: null,
-            id: "payCol.id",
+            id: "",
             region_id: payCol.region_id,
             total: session.amount,
           },
