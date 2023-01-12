@@ -6,7 +6,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany,
+  OneToMany
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
@@ -32,7 +32,7 @@ import { Swap } from "./swap"
   ["order_edit_id", "original_item_id"],
   {
     unique: true,
-    where: "WHERE original_item_id IS NOT NULL AND order_edit_id IS NOT NULL",
+    where: "original_item_id IS NOT NULL AND order_edit_id IS NOT NULL",
   }
 )
 @Entity()
