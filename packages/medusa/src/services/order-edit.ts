@@ -1,9 +1,7 @@
-import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
 
-import { FindConfig, Selector } from "../types/common"
-import { buildQuery, isString } from "../utils"
-import { OrderEditRepository } from "../repositories/order-edit"
+import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
   Order,
@@ -11,7 +9,13 @@ import {
   OrderEditItemChangeType,
   OrderEditStatus,
 } from "../models"
-import { TransactionBaseService } from "../interfaces"
+import { OrderEditRepository } from "../repositories/order-edit"
+import { FindConfig, Selector } from "../types/common"
+import {
+  AddOrderEditLineItemInput,
+  CreateOrderEditInput,
+} from "../types/order-edit"
+import { buildQuery, isString } from "../utils"
 import {
   EventBusService,
   LineItemAdjustmentService,
@@ -21,10 +25,6 @@ import {
   TaxProviderService,
   TotalsService,
 } from "./index"
-import {
-  AddOrderEditLineItemInput,
-  CreateOrderEditInput,
-} from "../types/order-edit"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -213,7 +213,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async create(
     data: CreateOrderEditInput,
-    context: { loggedInUserId: string }
+    context: { createdBy: string }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (transactionManager) => {
       const activeOrderEdit = await this.retrieveActive(data.order_id)
@@ -231,7 +231,7 @@ export default class OrderEditService extends TransactionBaseService {
       const orderEditToCreate = orderEditRepository.create({
         order_id: data.order_id,
         internal_note: data.internal_note,
-        created_by: context.loggedInUserId,
+        created_by: context.createdBy,
       })
 
       const orderEdit = await orderEditRepository.save(orderEditToCreate)

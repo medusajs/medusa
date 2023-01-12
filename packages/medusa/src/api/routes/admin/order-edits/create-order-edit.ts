@@ -1,7 +1,7 @@
-import { Request, Response } from "express"
-import { OrderEditService } from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { OrderEditService } from "../../../../services"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
@@ -73,11 +73,14 @@ export default async (req: Request, res: Response) => {
   const data = req.validatedBody as AdminPostOrderEditsReq
   const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
 
+  // Passing created_by takes precedence over loggedInUserId
+  const createdBy = data.created_by ?? loggedInUserId
+
   const createdOrderEdit = await manager.transaction(
     async (transactionManager) => {
       return await orderEditService
         .withTransaction(transactionManager)
-        .create(data, { loggedInUserId })
+        .create(data, { createdBy })
     }
   )
 
@@ -110,4 +113,8 @@ export class AdminPostOrderEditsReq {
   @IsOptional()
   @IsString()
   internal_note?: string
+
+  @IsOptional()
+  @IsString()
+  created_by?: string
 }
