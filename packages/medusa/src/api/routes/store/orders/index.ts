@@ -24,6 +24,7 @@ export default (app) => {
     transformQuery(StoreGetOrdersParams, {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
       isList: true,
     }),
     middlewares.wrap(require("./lookup-order").default)
@@ -37,6 +38,7 @@ export default (app) => {
     transformQuery(StoreGetOrderParams, {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
     }),
     middlewares.wrap(require("./get-order").default)
   )
@@ -102,6 +104,8 @@ export const defaultStoreOrdersFields = [
   "subtotal",
   "total",
 ] as (keyof Order)[]
+
+export const allowedStoreOrdersFields = defaultStoreOrdersFields
 
 /**
  * @schema StoreOrdersRes
