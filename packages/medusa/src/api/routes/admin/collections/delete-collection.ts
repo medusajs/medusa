@@ -38,19 +38,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            id:
- *              type: string
- *              description: The ID of the deleted Collection
- *            object:
- *              type: string
- *              description: The type of the object that was deleted.
- *              default: product-collection
- *            deleted:
- *              type: boolean
- *              description: Whether the collection was deleted successfully or not.
- *              default: true
+ *          $ref: "#/components/schemas/AdminCollectionsDeleteRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
