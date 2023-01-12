@@ -15,7 +15,6 @@ export function transformTreeNodesWithConfig(
   const relations = (config.relations || []) as string[]
   const selectsAndRelations = selects.concat(relations)
 
-
   for (const [key, value] of Object.entries(scope)) {
     const modelValue = object[key]
 
@@ -23,7 +22,6 @@ export function transformTreeNodesWithConfig(
       return null
     }
   }
-
 
   if (object.parent_category) {
     object.parent_category = transformTreeNodesWithConfig(
@@ -41,7 +39,7 @@ export function transformTreeNodesWithConfig(
 
     object.category_children = filter(
       object.category_children,
-      el => !isNull(el)
+      (el) => !isNull(el)
     )
   }
 

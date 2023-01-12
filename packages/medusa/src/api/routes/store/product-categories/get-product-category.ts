@@ -70,7 +70,7 @@ export default async (req: Request, res: Response) => {
   const productCategory = await productCategoryService.retrieve(
     id,
     retrieveConfig,
-    defaultStoreScope,
+    defaultStoreScope
   )
 
   res.status(200).json({
@@ -80,7 +80,7 @@ export default async (req: Request, res: Response) => {
     product_category: transformTreeNodesWithConfig(
       productCategory,
       retrieveConfig,
-      defaultStoreScope,
+      defaultStoreScope
     ),
   })
 }
