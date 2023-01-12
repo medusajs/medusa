@@ -388,7 +388,6 @@ class PayPalProviderService extends PaymentService {
     }
     const webhookRes = await this.paypal_.execute(webhookReq)
 
-    console.log(webhookRes.result.webhooks)
     let found
     if (webhookRes.result && webhookRes.result.webhooks) {
       found = webhookRes.result.webhooks.find((w) => {
