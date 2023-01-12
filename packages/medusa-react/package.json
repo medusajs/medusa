@@ -23,8 +23,8 @@
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.7.1",
-    "react": ">=16",
-    "react-query": ">= 3.29.0"
+    "@tanstack/react-query": ">=4.22.0",
+    "react": ">=16"
   },
   "husky": {
     "hooks": {
@@ -54,6 +54,7 @@
     "@storybook/addon-links": "^6.3.12",
     "@storybook/addons": "^6.3.12",
     "@storybook/react": "^6.3.12",
+    "@tanstack/react-query": "^4.22.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/jest": "^27.0.3",
@@ -77,8 +78,7 @@
   "dependencies": {
     "@medusajs/medusa-js": "^1.3.5",
     "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21",
-    "react-query": "^3.31.0"
+    "lodash-es": "^4.17.21"
   },
   "msw": {
     "workerDirectory": "public"

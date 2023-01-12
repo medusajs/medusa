@@ -1,9 +1,9 @@
-import { queryKeysFactory } from "../../utils/index"
 import { StoreGiftCardsRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useQuery } from "react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
+import { queryKeysFactory } from "../../utils/index"
 
 const GIFT_CARDS_QUERY_KEY = `gift_cards` as const
 
