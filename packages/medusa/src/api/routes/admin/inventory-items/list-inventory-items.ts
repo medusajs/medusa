@@ -90,18 +90,18 @@ import {
  *               items:
  *                 allOf:
  *                   - $ref: "#/components/schemas/InventoryItemDTO"
- *                    - type: object
- *                      properties:
- *                        location_levels:
- *                          type: array
- *                          items:
- *                            allOf:
- *                              - $ref: "#/components/schemas/InventoryLevelDTO"
- *                        variants:
- *                          type: array
- *                          items:
- *                            allOf:
- *                              - $ref: "#/components/schemas/ProductVariant"
+ *                   - type: object
+ *                     properties:
+ *                       location_levels:
+ *                         type: array
+ *                         items:
+ *                           allOf:
+ *                             - $ref: "#/components/schemas/InventoryLevelDTO"
+ *                       variants:
+ *                         type: array
+ *                         items:
+ *                           allOf:
+ *                             - $ref: "#/components/schemas/ProductVariant"
  *             count:
  *               type: integer
  *               description: The total number of items available
