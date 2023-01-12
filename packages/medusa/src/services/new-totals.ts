@@ -119,9 +119,6 @@ export default class NewTotalsService extends TransactionBaseService {
           )
         }
 
-        // Custom items are not necessarely link to a variant. In that case, the variant_id is null. If it is the case
-        // Those item can't have tax lines has we have no information about the product
-        /* const taxableItems = items.filter((item) => item.variant_id)*/
         const { lineItemsTaxLines } = await this.taxProviderService_
           .withTransaction(manager)
           .getTaxLinesMap(items, calculationContext)
