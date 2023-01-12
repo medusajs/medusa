@@ -35,7 +35,7 @@ describe("GET /admin/order-edits/:id", () => {
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledTimes(1)
       expect(orderEditServiceMock.requestConfirmation).toHaveBeenCalledWith(
         orderEditId,
-        { loggedInUserId: IdMap.getId("admin_user") }
+        { requestedBy: IdMap.getId("admin_user") }
       )
 
       expect(orderEditServiceMock.update).toHaveBeenCalledTimes(1)
