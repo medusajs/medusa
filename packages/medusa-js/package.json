@@ -16,7 +16,6 @@
   "author": "Oliver Juhl",
   "license": "MIT",
   "dependencies": {
-    "@rollup/plugin-json": "^6.0.0",
     "axios": "^0.26.1",
     "qs": "^6.10.3",
     "retry-axios": "^2.6.0"

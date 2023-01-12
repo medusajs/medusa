@@ -4399,7 +4399,6 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.7.3
     "@rollup/plugin-commonjs": ^24.0.0
-    "@rollup/plugin-json": ^6.0.0
     "@rollup/plugin-node-resolve": ^15.0.1
     "@types/jest": ^26.0.19
     axios: ^0.26.1
@@ -5608,20 +5607,6 @@ __metadata:
   peerDependencies:
     rollup: ^1.20.0 || ^2.0.0
   checksum: 9fc4a3ee60929afcb5269ebda602914d1cf5dc020808f85be90c0a5a2ba9ca26136b0284a1935984861f0549a1e1db30fc372906c14425f5da4909f0fd21e5ea
-  languageName: node
-  linkType: hard
-
-"@rollup/plugin-json@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@rollup/plugin-json@npm:6.0.0"
-  dependencies:
-    "@rollup/pluginutils": ^5.0.1
-  peerDependencies:
-    rollup: ^1.20.0||^2.0.0||^3.0.0
-  peerDependenciesMeta:
-    rollup:
-      optional: true
-  checksum: acdfc51a58c228452d40ba7db076ed463d6828f4b517dc259ef8fa6ffdb7841c9eaef805070fc9360356d82895ce7e4cbca568808e6e1c13fb1f746f15033ebf
   languageName: node
   linkType: hard
 
