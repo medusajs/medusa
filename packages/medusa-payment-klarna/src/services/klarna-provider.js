@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class KlarnaProviderService extends PaymentService {
   static identifier = "klarna"
 
-  constructor({ logger, shippingProfileService, totalsService }, options) {
+  constructor({ logger, shippingProfileService }, options) {
     super()
 
     /**
@@ -42,9 +42,6 @@ class KlarnaProviderService extends PaymentService {
 
     /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
   }
 
   async lineItemsToOrderLines_(cart) {
@@ -103,7 +100,7 @@ class KlarnaProviderService extends PaymentService {
   async cartToKlarnaOrder(cart) {
     let order = {
       // Cart id is stored, such that we can use it for hooks
-      merchant_data: cart.id,
+      merchant_data: cart.resource_id ?? cart.id,
       locale: "en-US",
     }
 
@@ -147,8 +144,8 @@ class KlarnaProviderService extends PaymentService {
     }
 
     order.order_amount = total
-    order.order_tax_amount = tax_total - cart.gift_card_tax_total
-    order.purchase_currency = region.currency_code.toUpperCase()
+    order.order_tax_amount = tax_total - cart.gift_card_tax_total ?? 0
+    order.purchase_currency = region?.currency_code?.toUpperCase() ?? "SE"
 
     order.merchant_urls = {
       terms: this.options_.merchant_urls.terms,
