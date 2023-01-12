@@ -251,9 +251,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     middlewares.wrap(require("./create-reservation-for-line-item").default)
   )
 
-  // post /:id/line-items/:li_id/reserve {location: string, quantity?: number}
-  // get  /:id/reservations
-
   return app
 }
 

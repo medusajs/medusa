@@ -38,7 +38,7 @@ import {
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "location_id": "{location_id}"
+ *           "location_id": "loc_1"
  *       }'
  * security:
  *   - api_token: []
@@ -51,10 +51,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             reservation:
- *               $ref: "#/components/schemas/ReservationItemDTO"
+ *           $ref: "#/components/schemas/AdminPostReservationsReq"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

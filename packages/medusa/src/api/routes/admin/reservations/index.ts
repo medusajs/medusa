@@ -41,8 +41,32 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema AdminPostReservationsReq
+ * type: object
+ * required:
+ *   - reservation
+ * properties:
+ *   reservation:
+ *     $ref: "#/components/schemas/ReservationItemDTO"
+ */
 export type AdminReservationsRes = {
   reservation: ReservationItemDTO
+}
+
+/**
+ * @schema AdminGetReservationReservationsReq
+ * type: object
+ * required:
+ *   - reservation
+ * properties:
+ *   reservations:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ReservationItemDTO"
+ */
+export type AdminReservationsListRes = PaginatedResponse & {
+  reservations: ReservationItemDTO[]
 }
 
 export type AdminReservationsDeleteRes = DeleteResponse

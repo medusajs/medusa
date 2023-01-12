@@ -49,10 +49,7 @@ import { IInventoryService } from "../../../../interfaces"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             reservation:
- *               $ref: "#/components/schemas/ReservationItemDTO"
+ *           $ref: "#/components/schemas/AdminPostReservationsReq"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

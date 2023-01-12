@@ -36,12 +36,7 @@ import { OrderService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             reservations:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/ReservationItemDTO"
+ *           $ref: "#/components/schemas/AdminGetReservationReservationsReq"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
