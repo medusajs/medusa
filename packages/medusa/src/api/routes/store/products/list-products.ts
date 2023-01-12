@@ -22,6 +22,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { IsType } from "../../../../utils/validators/is-type"
 import { FlagRouter } from "../../../../utils/flag-router"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [get] /products
@@ -231,7 +232,7 @@ export default async (req, res) => {
   )
 
   res.json({
-    products,
+    products: cleanResponseData(products, req.allowedProperties || []),
     count,
     offset: validated.offset,
     limit: validated.limit,

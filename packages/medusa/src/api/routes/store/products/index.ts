@@ -30,6 +30,8 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/",
     transformQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
+      defaultFields: defaultStoreProductsFields,
+      allowedFields: allowedStoreProductsFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-products").default)
@@ -40,6 +42,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(StoreGetProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
+      allowedFields: allowedStoreProductsFields,
     }),
     middlewares.wrap(require("./get-product").default)
   )
@@ -79,6 +82,8 @@ export const defaultStoreProductsFields: (keyof Product)[] = [
   "created_at",
   "metadata",
 ]
+
+export const allowedStoreProductsFields = defaultStoreProductsFields
 
 export * from "./list-products"
 export * from "./search"
