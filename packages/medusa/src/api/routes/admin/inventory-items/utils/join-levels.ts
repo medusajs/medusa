@@ -9,22 +9,16 @@ type LevelWithAvailability = InventoryLevelDTO & {
 }
 
 export const buildLevelsByInventoryItemId = (
-  inventoryLevels: (LevelWithAvailability | InventoryLevelDTO)[],
+  inventoryLevels: InventoryLevelDTO[],
   locationIds: string[]
 ) => {
-  return inventoryLevels.reduce((acc, level) => {
-    if (locationIds.length) {
-      if (!locationIds.includes(level.location_id)) {
-        return acc
-      }
-    }
+  const filteredLevels = inventoryLevels.filter((level) =>
+    locationIds?.includes(level.location_id)
+  )
 
-    if (level.inventory_item_id in acc) {
-      acc[level.inventory_item_id].push(level)
-    } else {
-      acc[level.inventory_item_id] = [level]
-    }
-
+  return filteredLevels.reduce((acc, level) => {
+    acc[level.inventory_item_id] = acc[level.inventory_item_id] ?? []
+    acc[level.inventory_item_id].push(level)
     return acc
   }, {})
 }
@@ -35,7 +29,7 @@ export const getLevelsByInventoryItemId = async (
   inventoryService: IInventoryService
 ) => {
   const [levels] = await inventoryService.listInventoryLevels({
-    inventory_item_id: items.map((i) => i.id),
+    inventory_item_id: items.map((inventoryItem) => inventoryItem.id),
   })
 
   const levelsWithAvailability: LevelWithAvailability[] = await Promise.all(
@@ -64,15 +58,8 @@ export const joinLevels = async (
     locationIds,
     inventoryService
   )
-
-  const responseItems = inventoryItems.map((i) => {
-    const responseItem: ResponseInventoryItem = { ...i }
-    responseItem.location_levels = levelsByItemId[i.id] || []
-    return responseItem
-  })
-  return responseItems
-}
-
-type ResponseInventoryItem = Partial<InventoryItemDTO> & {
-  location_levels?: InventoryLevelDTO[]
+  return inventoryItems.map((inventoryItem) => ({
+    ...inventoryItem,
+    location_levels: levelsByItemId[inventoryItem.id] || [],
+  }))
 }

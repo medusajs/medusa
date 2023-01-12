@@ -3,7 +3,10 @@ import { IsString, IsBoolean, IsOptional } from "class-validator"
 import { Transform } from "class-transformer"
 import { IsType } from "../../../../utils/validators/is-type"
 import { getLevelsByInventoryItemId } from "./utils/join-levels"
-import { getVariantsByInventoryItemId } from "./utils/join-variants"
+import {
+  getVariantsByInventoryItemId,
+  InventoryItemsWithVariants,
+} from "./utils/join-variants"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
@@ -85,7 +88,7 @@ import {
  *             inventory_items:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/InventoryItemDTO"
+ *                 $ref: "#/components/schemas/ResponseInventoryItemWithVariantsAndLocationLevels"
  *             count:
  *               type: integer
  *               description: The total number of items available
@@ -108,6 +111,30 @@ import {
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
+
+/**
+ * @schema ResponseInventoryItemWithVariantsAndLocationLevels
+ * allOf
+ *   - $ref: "#/components/schemas/InventoryItemDTO"
+ *   - type: object
+ *     properties:
+ *       location_levels:
+ *         description: the location levels associated with the inventory item
+ *         type: array
+ *           items:
+ *             $ref: "#/components/schemas/InventoryLevelDTO"
+ *       variants:
+ *         description: the variants associated with the inventory item
+ *         type: array
+ *           items:
+ *             $ref: "#/components/schemas/ProductVariant"
+ */
+export type ResponseInventoryItemWithVariantsAndLocationLevels =
+  Partial<InventoryItemDTO> & {
+    location_levels?: InventoryLevelDTO[]
+    variants?: ProductVariant[]
+  }
+
 export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
@@ -128,40 +155,40 @@ export default async (req: Request, res: Response) => {
       : [filterableFields.location_id]
   }
 
-  const [items, count] = await inventoryService.listInventoryItems(
+  const [inventoryItems, count] = await inventoryService.listInventoryItems(
     filterableFields,
     listConfig
   )
 
   const levelsByItemId = await getLevelsByInventoryItemId(
-    items,
+    inventoryItems,
     locationIds,
     inventoryService
   )
 
-  const variantsByItemId = await getVariantsByInventoryItemId(
-    items,
-    productVariantInventoryService,
-    productVariantService
+  const variantsByInventoryItemId: InventoryItemsWithVariants =
+    await getVariantsByInventoryItemId(
+      inventoryItems,
+      productVariantInventoryService,
+      productVariantService
+    )
+
+  const inventoryItemsWithVariantsAndLocationLevels = inventoryItems.map(
+    (inventoryItem): ResponseInventoryItemWithVariantsAndLocationLevels => {
+      return {
+        ...inventoryItem,
+        variants: variantsByInventoryItemId[inventoryItem.id] ?? [],
+        location_levels: levelsByItemId[inventoryItem.id] ?? [],
+      }
+    }
   )
 
-  const responseItems = items.map((i) => {
-    const responseItem: ResponseInventoryItem = { ...i }
-    responseItem.variant = variantsByItemId[i.id] || {}
-    responseItem.location_levels = levelsByItemId[i.id] || []
-    return responseItem
-  })
-
   res.status(200).json({
-    inventory_items: responseItems,
+    inventory_items: inventoryItemsWithVariantsAndLocationLevels,
     count,
     offset: skip,
     limit: take,
   })
-}
-type ResponseInventoryItem = Partial<InventoryItemDTO> & {
-  location_levels?: InventoryLevelDTO[]
-  variant?: ProductVariant
 }
 
 export class AdminGetInventoryItemsParams extends extendedFindParamsMixin({
