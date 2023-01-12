@@ -49,19 +49,15 @@ export default class InventoryService
   ) {
     super(arguments[0])
 
-    this.eventBusService_ = eventBusService
-
-    if (
-      moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.SHARED &&
-      manager
-    ) {
-      this.manager_ = manager
-    } else {
+    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
         "At the moment this module can only be used with shared resources"
       )
     }
+
+    this.eventBusService_ = eventBusService
+    this.manager_ = manager
 
     this.inventoryItemService_ = new InventoryItemService({
       eventBusService,
