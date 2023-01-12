@@ -43,7 +43,7 @@ export class OrderEdit extends BaseEntity {
   internal_note?: string
 
   @Column()
-  created_by: string // customer or user ID
+  created_by: string // customer, user, third party, etc.
 
   @Column({ nullable: true })
   requested_by?: string // customer or user ID
