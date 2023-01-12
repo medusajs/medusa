@@ -1,30 +1,52 @@
 import {
-  ConfigModule,
-  EventHandler,
-  IEventBusService,
-  Logger,
-  MedusaContainer,
-  StagedJob,
-  StagedJobService,
-  TransactionBaseService
+  ConfigModule, IEventBusService,
+  Logger, StagedJob, TransactionBaseService
 } from "@medusajs/medusa"
+import { StagedJobRepository } from "@medusajs/medusa/dist/repositories/staged-job"
 import Bull from "bull"
 import Redis from "ioredis"
 import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { ulid } from "ulid"
 import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
   manager: EntityManager
   logger: Logger
-  stagedJobService: StagedJobService
+  stagedJobRepository: typeof StagedJobRepository
   redisClient: Redis.Redis
   redisSubscriber: Redis.Redis
 }
 
-type RedisCreateConnectionOptions = {
-  client: Redis.Redis
-  subscriber: Redis.Redis
+type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
+
+type SubscriberContext = {
+  subscriberId: string
+}
+
+type BullJob<T> = {
+  update: (data: unknown) => void
+  attemptsMade: number
+  opts: EmitOptions
+  data: {
+    eventName: string
+    data: T
+    completedSubscriberIds: string[] | undefined
+  }
+}
+
+type SubscriberDescriptor = {
+  id: string
+  subscriber: Subscriber
+}
+
+type EmitOptions = {
+  delay?: number
+  attempts: number
+  backoff?: {
+    type: "fixed" | "exponential"
+    delay: number
+  }
 }
 
 /**
@@ -32,91 +54,88 @@ type RedisCreateConnectionOptions = {
  * subscribers when events happen. Events will run asynchronously.
  */
 export default class RedisEventBusService extends TransactionBaseService implements IEventBusService {
-  protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager
   protected readonly logger_: Logger
-  protected readonly stagedJobService_: StagedJobService
-
-  protected observers_: Map<string | symbol, EventHandler[]>
-  protected cronHandlers_: Map<string | symbol, EventHandler[]>
-  protected redisClient_: Redis.Redis
-  protected redisSubscriber_: Redis.Redis
-  protected cronQueue_: Bull
+  protected readonly stagedJobRepository_: typeof StagedJobRepository
+  protected readonly eventToSubscribersMap_: Map<
+    string | symbol,
+    SubscriberDescriptor[]
+  >
+  protected readonly redisClient_: Redis.Redis
+  protected readonly redisSubscriber_: Redis.Redis
   protected queue_: Bull
   protected shouldEnqueuerRun: boolean
   protected transactionManager_: EntityManager | undefined
   protected enqueue_: Promise<void>
 
   constructor(
-    container: MedusaContainer & InjectedDependencies,
+    {
+      manager,
+      logger,
+      stagedJobRepository,
+      redisClient,
+      redisSubscriber,
+    }: InjectedDependencies,
     config: ConfigModule,
     singleton = true
   ) {
-    // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
-    
-    this.container_ = container
     this.config_ = config
-    this.manager_ = container.manager
-    this.logger_ = container.logger
-    this.stagedJobService_ = container.stagedJobService
+    this.manager_ = manager
+    this.logger_ = logger
+    this.stagedJobRepository_ = stagedJobRepository
 
     if (singleton) {
-      this.connect({
-        client: container.redisClient,
-        subscriber: container.redisSubscriber,
-      }, config)
+      const opts = {
+        createClient: (type: string): Redis.Redis => {
+          switch (type) {
+            case "client":
+              return redisClient
+            case "subscriber":
+              return redisSubscriber
+            default:
+              if (config.projectConfig.redis_url) {
+                return new Redis(config.projectConfig.redis_url)
+              }
+              return redisClient
+          }
+        },
+      }
+
+      this.eventToSubscribersMap_ = new Map()
+      this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
+      this.redisClient_ = redisClient
+      this.redisSubscriber_ = redisSubscriber
+      // Register our worker to handle emit calls
+      this.queue_.process(this.worker_)
+
+      if (process.env.NODE_ENV !== "test") {
+        this.startEnqueuer()
+      }
     }
   }
 
-  // To be economical about the use of Redis connections, we reuse existing connection whenever possible
-  // https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md#reusing-redis-connections
-  private reuseConnections(
-    client: Redis.Redis,
-    subscriber: Redis.Redis,
-    config: ConfigModule
-  ): { createClient: (type: string) => Redis.Redis } {
-    return {
-      createClient: (type: string): Redis.Redis => {
-        switch (type) {
-          case "client":
-            return client
-          case "subscriber":
-            return subscriber
-          default:
-            if (config?.projectConfig?.redis_url) {
-              return new Redis(this.config_.projectConfig.redis_url)
-            }
-            return client
-        }
+  withTransaction(transactionManager) {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new RedisEventBusService(
+      {
+        manager: transactionManager,
+        stagedJobRepository: this.stagedJobRepository_,
+        logger: this.logger_,
+        redisClient: this.redisClient_,
+        redisSubscriber: this.redisSubscriber_,
       },
-    }
-  }
-
-  connect(options: RedisCreateConnectionOptions, config: ConfigModule): void {
-    const { client, subscriber } = options
-
-    this.observers_ = new Map()
-    this.queue_ = new Bull(
-      `${this.constructor.name}:queue`,
-      this.reuseConnections(client, subscriber, config)
+      this.config_,
+      false
     )
-    this.cronHandlers_ = new Map()
-    this.redisClient_ = client
-    this.redisSubscriber_ = subscriber
-    this.cronQueue_ = new Bull(
-      `cron-jobs:queue`,
-      this.reuseConnections(client, subscriber, config)
-    )
-    // Register our worker to handle emit calls
-    this.queue_.process(this.worker_)
-    // Register cron worker
-    this.cronQueue_.process(this.cronWorker_)
 
-    if (process.env.NODE_ENV !== "test") {
-      this.startEnqueuer()
-    }
+    cloned.transactionManager_ = transactionManager
+    cloned.queue_ = this.queue_
+
+    return cloned
   }
 
   /**
@@ -127,13 +146,38 @@ export default class RedisEventBusService extends TransactionBaseService impleme
    * happens. Subscribers must return a Promise.
    * @return this
    */
-  subscribe(event: string | symbol, handler: EventHandler): this {
-    if (typeof handler !== "function") {
+  subscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context?: SubscriberContext
+  ): this {
+    if (typeof subscriber !== "function") {
       throw new Error("Subscriber must be a function")
     }
 
-    const observers = this.observers_.get(event) ?? []
-    this.observers_.set(event, [...observers, handler])
+    /**
+     * If context is provided, we use the subscriberId from it
+     * otherwise we generate a random using a ulid
+     */
+    const subscriberId =
+      context?.subscriberId ?? `${event.toString()}-${ulid()}`
+
+    const newSubscriberDescriptor = { subscriber, id: subscriberId }
+
+    const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
+
+    const subscriberAlreadyExists = existingSubscribers.find(
+      (sub) => sub.id === subscriberId
+    )
+
+    if (subscriberAlreadyExists) {
+      throw Error(`Subscriber with id ${subscriberId} already exists`)
+    }
+
+    this.eventToSubscribersMap_.set(event, [
+      ...existingSubscribers,
+      newSubscriberDescriptor,
+    ])
 
     return this
   }
@@ -145,7 +189,7 @@ export default class RedisEventBusService extends TransactionBaseService impleme
    * happens. Subscribers must return a Promise.
    * @return this
    */
-  unsubscribe(event: string | symbol, subscriber: EventHandler): this {
+  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
     if (typeof subscriber !== "function") {
       throw new Error("Subscriber must be a function")
     }
@@ -157,19 +201,9 @@ export default class RedisEventBusService extends TransactionBaseService impleme
         (sub) => sub.subscriber === subscriber
       )
 
-  /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * happens. Subscribers must return a Promise.
-   * @return this
-   */
-  protected registerCronHandler_(
-    event: string | symbol,
-    subscriber: EventHandler
-  ): this {
-    if (typeof subscriber !== "function") {
-      throw new Error("Handler must be a function")
+      if (subIndex !== -1) {
+        this.eventToSubscribersMap_.get(event)?.splice(subIndex as number, 1)
+      }
     }
 
     return this
@@ -185,7 +219,7 @@ export default class RedisEventBusService extends TransactionBaseService impleme
   async emit<T>(
     eventName: string,
     data: T,
-    options: { delay?: number } = {}
+    options: Record<string, unknown> & EmitOptions = { attempts: 1 }
   ): Promise<StagedJob | void> {
     const opts: { removeOnComplete: boolean } & EmitOptions = {
       removeOnComplete: true,
@@ -211,21 +245,19 @@ export default class RedisEventBusService extends TransactionBaseService impleme
      * as part of the rollback.
      */
     if (this.transactionManager_) {
-      return await this.stagedJobService_
-        .withTransaction(this.transactionManager_)
-        .create({
-          event_name: eventName,
-          data,
-        } as StagedJob)
-    } else {
-      // should be replaced by a generic event bus
-      const opts: { removeOnComplete: boolean; delay?: number } = {
-        removeOnComplete: true,
-      }
-      if (typeof options.delay === "number") {
-        opts.delay = options.delay
-      }
-      this.queue_.add({ eventName, data }, opts)
+      const stagedJobRepository = this.transactionManager_.getCustomRepository(
+        this.stagedJobRepository_
+      )
+
+      const jobToCreate = {
+        event_name: eventName,
+        data: data as unknown as Record<string, unknown>,
+        options: opts,
+      } as Partial<StagedJob>
+
+      const stagedJobInstance = stagedJobRepository.create(jobToCreate)
+
+      return await stagedJobRepository.save(stagedJobInstance)
     }
 
     this.queue_.add({ eventName, data }, opts)
@@ -249,7 +281,10 @@ export default class RedisEventBusService extends TransactionBaseService impleme
         take: 1000,
       }
 
-      const jobs = await this.stagedJobService_.list(listConfig)
+      const stagedJobRepo = this.manager_.getCustomRepository(
+        this.stagedJobRepository_
+      )
+      const jobs = await stagedJobRepo.find(listConfig)
 
       await Promise.all(
         jobs.map((job) => {
@@ -259,7 +294,7 @@ export default class RedisEventBusService extends TransactionBaseService impleme
               job.options ?? { removeOnComplete: true }
             )
             .then(async () => {
-              await this.stagedJobService_.remove(job)
+              await stagedJobRepo.remove(job)
             })
         })
       )
@@ -363,23 +398,5 @@ export default class RedisEventBusService extends TransactionBaseService impleme
     }
 
     return Promise.resolve(subscribersResult)
-  }
-
-  /**
-   * Registers a cron job.
-   * @deprecated All cron job logic has been refactored to the `JobSchedulerService`. This method will be removed in a future release.
-   * @param eventName - the name of the event
-   * @param data - the data to be sent with the event
-   * @param cron - the cron pattern
-   * @param handler - the handler to call on each cron job
-   * @return void
-   */
-  createCronJob<T>(
-    eventName: string,
-    data: T,
-    cron: string,
-    handler: EventHandler
-  ): void {
-    this.jobSchedulerService_.create(eventName, data, cron, handler)
   }
 }

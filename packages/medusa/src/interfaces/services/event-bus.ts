@@ -1,3 +1,4 @@
+import { StagedJob } from "../../models"
 import { TransactionBaseService } from "../transaction-base-service"
 
 export type EventHandler<T = unknown> = (
@@ -9,8 +10,9 @@ export interface IEventBusService extends TransactionBaseService {
   emit<T>(
     eventName: string,
     data: T,
-    options?: Record<string, unknown>
-  ): Promise<void | unknown>
+    options?: unknown
+  ): Promise<StagedJob | void>
+
   subscribe<T>(
     eventName: string,
     handler: EventHandler
