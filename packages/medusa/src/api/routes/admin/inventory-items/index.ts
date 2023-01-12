@@ -53,6 +53,11 @@ export default (app) => {
     middlewares.wrap(require("./update-inventory-item").default)
   )
 
+  route.delete(
+    "/:id",
+    middlewares.wrap(require("./delete-inventory-item").default)
+  )
+
   route.post(
     "/:id/location-levels",
     transformQuery(AdminPostInventoryItemsItemLocationLevelsParams, {

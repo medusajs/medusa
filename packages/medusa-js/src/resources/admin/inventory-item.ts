@@ -5,13 +5,16 @@ import {
   AdminPostInventoryItemsInventoryItemReq,
   AdminGetInventoryItemsItemLocationLevelsParams,
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
+  AdminInventoryItemsDeleteRes,
+  AdminGetInventoryItemsItemParams,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 import qs from "qs"
 
 class AdminInventoryItemsResource extends BaseResource {
-  /** retrieve an inventory item
+  /**
+   * Retrieve an inventory item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
    * @description gets an inventory item
@@ -19,13 +22,21 @@ class AdminInventoryItemsResource extends BaseResource {
    */
   retrieve(
     inventoryItemId: string,
+    query?: AdminGetInventoryItemsItemParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
-    const path = `/admin/inventory-items/${inventoryItemId}`
+    let path = `/admin/inventory-items/${inventoryItemId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
-  /** update an inventory item
+  /**
+   * Update an inventory item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
    * @description updates an inventory item
@@ -34,13 +45,21 @@ class AdminInventoryItemsResource extends BaseResource {
   update(
     inventoryItemId: string,
     payload: AdminPostInventoryItemsInventoryItemReq,
+    query?: AdminGetInventoryItemsItemParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
-    const path = `/admin/inventory-items/${inventoryItemId}`
+    let path = `/admin/inventory-items/${inventoryItemId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  /** delete an inventory item
+  /**
+   * Delete an inventory item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
    * @description deletes an inventory item
@@ -49,7 +68,7 @@ class AdminInventoryItemsResource extends BaseResource {
   delete(
     inventoryItemId: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminInventoryItemsRes> {
+  ): ResponsePromise<AdminInventoryItemsDeleteRes> {
     const path = `/admin/inventory-items/${inventoryItemId}`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
@@ -75,7 +94,8 @@ class AdminInventoryItemsResource extends BaseResource {
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
-  /** update an inventory item
+  /**
+   * Update an inventory item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
    * @description updates an inventory item
@@ -91,7 +111,8 @@ class AdminInventoryItemsResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  /** delete a location level of an inventory item
+  /**
+   * Delete a location level of an inventory item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
    * @description deletes a location level of an inventory item

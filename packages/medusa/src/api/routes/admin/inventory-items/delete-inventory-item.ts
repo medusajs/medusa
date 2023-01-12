@@ -1,13 +1,14 @@
-import { IStockLocationService } from "../../../../interfaces"
+import { Request, Response } from "express"
+import { IInventoryService } from "../../../../interfaces"
 
 /**
- * @oas [delete] /stock-locations/{id}
- * operationId: "DeleteStockLocationsStockLocation"
- * summary: "Delete a Stock Location"
- * description: "Delete a Stock Location"
+ * @oas [delete] /inventory-itemss/{id}
+ * operationId: "DeleteInventoryItemsInventoryItem"
+ * summary: "Delete an Inventory Item"
+ * description: "Delete an Inventory Item"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Stock Location to delete.
+ *   - (path) id=* {string} The ID of the Inventory Item to delete.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -15,20 +16,20 @@ import { IStockLocationService } from "../../../../interfaces"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.stockLocations.delete(stock_location_id)
+ *       medusa.admin.inventoryItems.delete(inventory_item_id)
  *         .then(({ id, object, deleted }) => {
  *           console.log(id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/stock-locations/{id}' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-itemss/{id}' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - StockLocation
+ *   - InventoryItem
  * responses:
  *   200:
  *     description: OK
@@ -39,30 +40,29 @@ import { IStockLocationService } from "../../../../interfaces"
  *           properties:
  *             id:
  *               type: string
- *               description: The ID of the deleted Stock Location.
+ *               description: The ID of the deleted Inventory Item.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
- *               format: stock_location
+ *               format: inventory_item
  *             deleted:
  *               type: boolean
- *               description: Whether or not the Stock Location was deleted.
+ *               description: Whether or not the Inventory Item was deleted.
  *               default: true
  *   "400":
  *     $ref: "#/components/responses/400_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
 
-  const stockLocationService: IStockLocationService = req.scope.resolve(
-    "stockLocationService"
-  )
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
 
-  await stockLocationService.delete(id)
+  await inventoryService.deleteInventoryItem(id)
 
   res.status(200).send({
     id,
-    object: "stock_location",
+    object: "inventory_item",
     deleted: true,
   })
 }

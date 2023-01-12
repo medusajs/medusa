@@ -3,7 +3,7 @@ import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [delete] /inventory-items/{id}/location-levels/{location_id}
- * operationId: "DeleteInventoryItemsInventoryItem"
+ * operationId: "DeleteInventoryItemsInventoryIteLocationLevelsLocation"
  * summary: "Delete a location level of an Inventory Item."
  * description: "Delete a location level of an Inventory Item."
  * x-authenticated: true

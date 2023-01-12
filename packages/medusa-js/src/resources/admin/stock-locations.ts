@@ -11,7 +11,8 @@ import BaseResource from "../base"
 import qs from "qs"
 
 class AdminStockLocationsResource extends BaseResource {
-  /** create a stock location
+  /**
+   * Create an stock location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
    * @description gets a medusa stock location
@@ -25,7 +26,8 @@ class AdminStockLocationsResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  /** retrieve a stock location
+  /**
+   * Retrieve an stock location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
    * @description gets a medusa stock location
@@ -39,7 +41,8 @@ class AdminStockLocationsResource extends BaseResource {
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
-  /** update a stock location
+  /**
+   * Update an stock location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
    * @description updates a stock location
@@ -54,7 +57,8 @@ class AdminStockLocationsResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  /** delete a stock location
+  /**
+   * Delete a stock location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
    * @description deletes a stock location
