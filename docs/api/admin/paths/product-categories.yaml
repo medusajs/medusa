@@ -24,10 +24,6 @@ post:
         schema:
           $ref: ../components/schemas/AdminPostProductCategoriesReq.yaml
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/product-categories/postundefined
     - lang: Shell
       label: cURL
       source:
@@ -45,7 +41,7 @@ post:
           schema:
             type: object
             properties:
-              productCategory:
+              product_category:
                 $ref: ../components/schemas/ProductCategory.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
@@ -98,10 +94,6 @@ get:
         type: integer
         default: 100
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/product-categories/getundefined
     - lang: Shell
       label: cURL
       source:
@@ -110,7 +102,7 @@ get:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Product Categories
+    - Product Category
   responses:
     '200':
       description: OK
@@ -119,7 +111,7 @@ get:
           schema:
             type: object
             properties:
-              product_category:
+              product_categories:
                 type: array
                 items:
                   $ref: ../components/schemas/ProductCategory.yaml

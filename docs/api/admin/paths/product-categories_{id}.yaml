@@ -11,10 +11,6 @@ delete:
       schema:
         type: string
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/product-categories_{id}/deleteundefined
     - lang: Shell
       label: cURL
       source:
@@ -68,10 +64,6 @@ get:
       schema:
         type: string
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/product-categories_{id}/getundefined
     - lang: Shell
       label: cURL
       source:
@@ -80,7 +72,7 @@ get:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Category
+    - Product Category
   responses:
     '200':
       description: OK
@@ -89,7 +81,7 @@ get:
           schema:
             type: object
             properties:
-              productCategory:
+              product_category:
                 $ref: ../components/schemas/ProductCategory.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
