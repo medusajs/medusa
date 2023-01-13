@@ -5235,7 +5235,6 @@ __metadata:
     jest: ^26.6.3
     qs: ^6.10.3
     retry-axios: ^2.6.0
-    rimraf: ^4.0.4
     size-limit: ^8.1.1
     tslib: ^2.4.1
     typescript: ^4.9.4
@@ -31811,15 +31810,6 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 4eef73d406c6940927479a3a9dee551e14a54faf54b31ef861250ac815172bade86cc6f7d64a4dc5e98b65e4b18a2e1c9ff3b68d296be0c748413f092bb0dd40
-  languageName: node
-  linkType: hard
-
-"rimraf@npm:^4.0.4":
-  version: 4.0.4
-  resolution: "rimraf@npm:4.0.4"
-  bin:
-    rimraf: dist/cjs/src/bin.js
-  checksum: 7f8a8bd0b6ddaaa67e09e629d714f278d0dc657963643cf9939bab1de06a63796e3cdff6b11681e0c7ab5028400cd3e33b4ab9ecc229ae485bb3ec2eed0261d3
   languageName: node
   linkType: hard
 
