@@ -7,7 +7,7 @@ import middlewares, {
   transformQuery,
 } from "../../../middlewares"
 import { GetPublishableApiKeysParams } from "./list-publishable-api-keys"
-import { PublishableApiKey } from "../../../../models"
+import { PublishableApiKey, SalesChannel } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import { AdminPostPublishableApiKeysReq } from "./create-publishable-api-key"
 import { AdminPostPublishableApiKeysPublishableApiKeyReq } from "./update-publishable-api-key"
@@ -121,6 +121,19 @@ export type AdminPublishableApiKeysListRes = PaginatedResponse & {
  *     default: true
  */
 export type AdminPublishableApiKeyDeleteRes = DeleteResponse
+
+/**
+ * @schema AdminPublishableApiKeysListSalesChannelsRes
+ * type: object
+ * properties:
+ *   sales_channels:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/SalesChannel"
+ */
+export type AdminPublishableApiKeysListSalesChannelsRes = {
+  sales_channels: SalesChannel[]
+}
 
 export * from "./add-channels-batch"
 export * from "./delete-channels-batch"

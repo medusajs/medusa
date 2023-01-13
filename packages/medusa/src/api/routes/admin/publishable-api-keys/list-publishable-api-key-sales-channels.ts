@@ -40,7 +40,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminSalesChannelsListRes"
+ *           $ref: "#/components/schemas/AdminPublishableApiKeysListSalesChannelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
