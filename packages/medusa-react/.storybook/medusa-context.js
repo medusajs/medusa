@@ -1,5 +1,5 @@
+import { QueryClient } from "@tanstack/react-query"
 import React from "react"
-import { QueryClient } from "react-query"
 import { MedusaProvider } from "../src"
 
 const queryClient = new QueryClient({

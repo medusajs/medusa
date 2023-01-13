@@ -96,6 +96,10 @@ export class ProductCategory extends SoftDeletableEntity {
  *     items:
  *       type: object
  *       description: A product category object.
+ *   parent_category_id:
+ *     description: The ID of the parent category.
+ *     type: string
+ *     default: null
  *   parent_category:
  *     description: A product category object. Available if the relation `parent_category` is expanded.
  *     type: object
