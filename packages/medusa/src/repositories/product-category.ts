@@ -1,6 +1,6 @@
 import { EntityRepository, TreeRepository, Brackets, ILike } from "typeorm"
 import { ProductCategory } from "../models/product-category"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig, Selector, QuerySelector } from "../types/common"
 
 @EntityRepository(ProductCategory)
 export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
@@ -8,13 +8,26 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
     options: ExtendedFindConfig<ProductCategory, Selector<ProductCategory>> = {
       where: {},
     },
-    q: string | undefined
+    q: string | undefined,
+    treeSelector: QuerySelector<ProductCategory> = {},
   ): Promise<[ProductCategory[], number]> {
-    const options_ = { ...options }
     const entityName = "product_category"
+    const options_ = { ...options }
+
+    const selectStatements = (relationName: string): string[] => {
+      return (options_.select || []).map((column) => {
+        return `${relationName}.${column}`
+      })
+    }
+
+    const treeWhereStatements = (relationName: string): string => {
+      return Object.entries(treeSelector).map((entry) => {
+        return `${relationName}.${entry[0]} = :${entry[0]}`
+      }).join(" AND ")
+    }
 
     const queryBuilder = this.createQueryBuilder(entityName)
-      .select()
+      .select(selectStatements(entityName))
       .skip(options_.skip)
       .take(options_.take)
 
@@ -33,14 +46,23 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
 
     queryBuilder.andWhere(options_.where)
 
-    if (options_.withDeleted) {
-      queryBuilder.withDeleted()
-    }
-
     if (options_.relations?.length) {
       options_.relations.forEach((rel) => {
-        queryBuilder.leftJoinAndSelect(`${entityName}.${rel}`, rel)
+        const whereQuery = treeWhereStatements(rel)
+
+        queryBuilder
+          .leftJoin(
+            `${entityName}.${rel}`,
+            rel,
+            whereQuery,
+            treeSelector,
+          )
+          .addSelect(selectStatements(rel))
       })
+    }
+
+    if (options_.withDeleted) {
+      queryBuilder.withDeleted()
     }
 
     return await queryBuilder.getManyAndCount()
