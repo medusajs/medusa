@@ -223,15 +223,13 @@ export default class StockLocationService extends TransactionBaseService {
    * Updates an address for a stock location.
    * @param {string} addressId - The ID of the address to update.
    * @param {StockLocationAddressInput} address - The update data for the address.
-   * @param {Object} context - Context for the update.
    * @param {EntityManager} context.manager - The entity manager to use for the update.
    * @returns {Promise<StockLocationAddress>} - The updated stock location address.
    */
 
   protected async updateAddress(
     addressId: string,
-    address: StockLocationAddressInput,
-    context: { manager?: EntityManager } = {}
+    address: StockLocationAddressInput
   ): Promise<StockLocationAddress> {
     if (!isDefined(addressId)) {
       throw new MedusaError(
