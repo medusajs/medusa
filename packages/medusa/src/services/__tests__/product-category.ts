@@ -62,7 +62,7 @@ describe("ProductCategoryService", () => {
   describe("listAndCount", () => {
     const productCategoryRepository = {
       ...MockRepository({}),
-      getFreeTextSearchResultsAndCount: jest.fn().mockImplementation((query, q) => {
+      getFreeTextSearchResultsAndCount: jest.fn().mockImplementation((query, q, treeSelector = {}) => {
         if (q == "not-found") {
           return Promise.resolve([[], 0])
         }
@@ -87,14 +87,18 @@ describe("ProductCategoryService", () => {
       expect(result.length).toEqual(1)
       expect(result[0].id).toEqual(IdMap.getId(validProdCategoryId))
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
-      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith({
-        order: {
-          created_at: "DESC",
+      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith(
+        {
+          order: {
+            created_at: "DESC",
+          },
+          skip: 0,
+          take: 100,
+          where: {},
         },
-        skip: 0,
-        take: 100,
-        where: {},
-      }, validProdCategoryId)
+        validProdCategoryId,
+        {}
+      )
     })
 
     it("returns empty array if query doesn't match database results", async () => {
