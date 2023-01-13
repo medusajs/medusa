@@ -10643,23 +10643,6 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminPostProductCategoriesReq'
       x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.productCategories.create({
-              name: 'Jeans',
-            })
-
-            .then(({ productCategory }) => {
-              console.log(productCategory.id);
-            });
         - lang: Shell
           label: cURL
           source: >
@@ -10686,7 +10669,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  productCategory:
+                  product_category:
                     $ref: '#/components/schemas/ProductCategory'
         '400':
           $ref: '#/components/responses/400_error'
@@ -10739,21 +10722,6 @@ paths:
             type: integer
             default: 100
       x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.productCategories.list()
-
-            .then(({ product_category, limit, offset, count }) => {
-              console.log(product_category.length);
-            });
         - lang: Shell
           label: cURL
           source: >
@@ -10765,7 +10733,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Product Categories
+        - Product Category
       responses:
         '200':
           description: OK
@@ -10774,7 +10742,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  product_category:
+                  product_categories:
                     type: array
                     items:
                       $ref: '#/components/schemas/ProductCategory'
@@ -10813,21 +10781,6 @@ paths:
           schema:
             type: string
       x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.productCategories.delete(product_category_id)
-
-            .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
         - lang: Shell
           label: cURL
           source: >
@@ -10886,21 +10839,6 @@ paths:
           schema:
             type: string
       x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            // must be previously logged in or use api token
-
-            medusa.admin.productCategories.retrieve("pcat-id")
-
-            .then(({ productCategory }) => {
-              console.log(productCategory.id);
-            });
         - lang: Shell
           label: cURL
           source: >
@@ -10912,7 +10850,7 @@ paths:
         - api_token: []
         - cookie_auth: []
       tags:
-        - Category
+        - Product Category
       responses:
         '200':
           description: OK
@@ -10921,7 +10859,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  productCategory:
+                  product_category:
                     $ref: '#/components/schemas/ProductCategory'
         '400':
           $ref: '#/components/responses/400_error'
@@ -22847,6 +22785,10 @@ components:
           items:
             type: object
             description: A product category object.
+        parent_category_id:
+          description: The ID of the parent category.
+          type: string
+          default: null
         parent_category:
           description: >-
             A product category object. Available if the relation
