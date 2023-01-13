@@ -112,13 +112,6 @@ export default class NewTotalsService extends TransactionBaseService {
           lineItemsTaxLinesMap[item.id] = item.tax_lines ?? []
         })
       } else {
-        if (items.some((item) => item.variant_id && !item.variant)) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "Unable to fetch tax lines to compute line item totals as one of the item variant is missing but required for the tax lines to be computed. Might be due to a missing relation items.variant"
-          )
-        }
-
         const { lineItemsTaxLines } = await this.taxProviderService_
           .withTransaction(manager)
           .getTaxLinesMap(items, calculationContext)
@@ -208,7 +201,7 @@ export default class NewTotalsService extends TransactionBaseService {
     }
 
     if (item.is_return) {
-      if (!isDefined(item.tax_lines)) {
+      if (!isDefined(item.tax_lines) && item.variant_id) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
           "Return Line Items must join tax lines"

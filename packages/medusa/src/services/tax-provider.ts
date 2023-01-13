@@ -263,7 +263,14 @@ class TaxProviderService extends TransactionBaseService {
           return null
         }
 
-        if (l.variant && l.variant.product_id) {
+        if (l.variant_id && !l.variant) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Unable to get tax lines. The item ${l.id} contains a variant_id but the variant is not join.`
+          )
+        }
+
+        if (l.variant?.product_id) {
           return {
             item: l,
             rates: await this.getRegionRatesForProduct(
