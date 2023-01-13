@@ -1,4 +1,10 @@
-import { EntityRepository, TreeRepository, Brackets, ILike } from "typeorm"
+import {
+  EntityRepository,
+  TreeRepository,
+  Brackets,
+  ILike,
+  getConnection,
+} from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, Selector, QuerySelector } from "../types/common"
 
@@ -9,21 +15,26 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
       where: {},
     },
     q: string | undefined,
-    treeSelector: QuerySelector<ProductCategory> = {},
+    treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
     const entityName = "product_category"
     const options_ = { ...options }
+    const modelColumns = this.manager.connection
+      .getMetadata(ProductCategory)
+      .ownColumns.map((column) => column.propertyName)
 
     const selectStatements = (relationName: string): string[] => {
-      return (options_.select || []).map((column) => {
+      return (options_.select || modelColumns).map((column) => {
         return `${relationName}.${column}`
       })
     }
 
     const treeWhereStatements = (relationName: string): string => {
-      return Object.entries(treeSelector).map((entry) => {
-        return `${relationName}.${entry[0]} = :${entry[0]}`
-      }).join(" AND ")
+      return Object.entries(treeSelector)
+        .map((entry) => {
+          return `${relationName}.${entry[0]} = :${entry[0]}`
+        })
+        .join(" AND ")
     }
 
     const queryBuilder = this.createQueryBuilder(entityName)
@@ -51,12 +62,7 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
         const whereQuery = treeWhereStatements(rel)
 
         queryBuilder
-          .leftJoin(
-            `${entityName}.${rel}`,
-            rel,
-            whereQuery,
-            treeSelector,
-          )
+          .leftJoin(`${entityName}.${rel}`, rel, whereQuery, treeSelector)
           .addSelect(selectStatements(rel))
       })
     }
