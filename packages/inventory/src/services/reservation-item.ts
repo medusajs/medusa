@@ -1,4 +1,4 @@
-import { getConnection, DeepPartial, EntityManager } from "typeorm"
+import { EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   FindConfig,
@@ -16,6 +16,7 @@ import { InventoryLevelService } from "."
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
+  manager: EntityManager
   inventoryLevelService: InventoryLevelService
 }
 
@@ -34,22 +35,18 @@ export default class ReservationItemService extends TransactionBaseService {
 
   constructor({
     eventBusService,
+    manager,
     inventoryLevelService,
   }: InjectedDependencies) {
     super(arguments[0])
 
-    this.manager_ = this.getManager()
+    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.inventoryLevelService_ = inventoryLevelService
   }
 
   private getManager(): EntityManager {
-    if (this.manager_) {
-      return this.transactionManager_ ?? this.manager_
-    }
-
-    const connection = getConnection(CONNECTION_NAME)
-    return connection.manager
+    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -126,7 +123,7 @@ export default class ReservationItemService extends TransactionBaseService {
    * @return The created reservation item.
    */
   async create(data: CreateReservationItemInput): Promise<ReservationItem> {
-    const result = await this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const itemRepository = manager.getRepository(ReservationItem)
 
       const inventoryItem = itemRepository.create({
@@ -148,14 +145,14 @@ export default class ReservationItemService extends TransactionBaseService {
           ),
       ])
 
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ReservationItemService.Events.CREATED, {
+          id: newInventoryItem.id,
+        })
+
       return newInventoryItem
     })
-
-    await this.eventBusService_.emit(ReservationItemService.Events.CREATED, {
-      id: result.id,
-    })
-
-    return result
   }
 
   /**
@@ -168,7 +165,7 @@ export default class ReservationItemService extends TransactionBaseService {
     reservationItemId: string,
     data: UpdateReservationItemInput
   ): Promise<ReservationItem> {
-    const updatedItem = await this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const itemRepository = manager.getRepository(ReservationItem)
 
       const item = await this.retrieve(reservationItemId)
@@ -196,14 +193,14 @@ export default class ReservationItemService extends TransactionBaseService {
 
       await Promise.all(ops)
 
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ReservationItemService.Events.UPDATED, {
+          id: mergedItem.id,
+        })
+
       return mergedItem
     })
-
-    await this.eventBusService_.emit(ReservationItemService.Events.UPDATED, {
-      id: updatedItem.id,
-    })
-
-    return updatedItem
   }
 
   /**
@@ -230,14 +227,13 @@ export default class ReservationItemService extends TransactionBaseService {
         )
       }
       await Promise.all(ops)
-    })
 
-    await this.eventBusService_.emit(
-      ReservationItemService.Events.DELETED_BY_LINE_ITEM,
-      {
-        line_item_id: lineItemId,
-      }
-    )
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ReservationItemService.Events.DELETED_BY_LINE_ITEM, {
+          line_item_id: lineItemId,
+        })
+    })
   }
 
   /**
