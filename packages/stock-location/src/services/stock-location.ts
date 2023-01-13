@@ -223,7 +223,6 @@ export default class StockLocationService extends TransactionBaseService {
    * Updates an address for a stock location.
    * @param {string} addressId - The ID of the address to update.
    * @param {StockLocationAddressInput} address - The update data for the address.
-   * @param {EntityManager} context.manager - The entity manager to use for the update.
    * @returns {Promise<StockLocationAddress>} - The updated stock location address.
    */
 
