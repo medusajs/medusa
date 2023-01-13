@@ -5,7 +5,7 @@ import InviteService from "../../../../services/invite"
  * @oas [delete] /invites/{invite_id}
  * operationId: "DeleteInvitesInvite"
  * summary: "Delete an Invite"
- * description: "Creates an Invite and triggers an 'invite' created event"
+ * description: "Deletes an Invite"
  * x-authenticated: true
  * parameters:
  *   - (path) invite_id=* {string} The ID of the Invite
