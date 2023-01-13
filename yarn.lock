@@ -5226,16 +5226,16 @@ __metadata:
     "@medusajs/medusa": ^1.7.3
     "@size-limit/preset-small-lib": ^8.1.1
     "@tsconfig/recommended": ^1.0.1
-    "@types/jest": ^26.0.19
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^7.0.3
     dts-cli: ^1.6.3
     husky: ^8.0.3
-    jest: ^26.6.3
+    jest: ^27.4.7
     qs: ^6.10.3
     retry-axios: ^2.6.0
     size-limit: ^8.1.1
+    ts-jest: ^27.1.5
     tslib: ^2.4.1
     typescript: ^4.9.4
     uuid: ^9.0.0
@@ -8737,16 +8737,6 @@ __metadata:
   dependencies:
     "@types/istanbul-lib-report": "*"
   checksum: e147f0db9346a0cae9a359220bc76f7c78509fb6979a2597feb24d64b6e8328d2d26f9d152abbd59c6bca721e4ea2530af20116d01df50815efafd1e151fd777
-  languageName: node
-  linkType: hard
-
-"@types/jest@npm:^26.0.19":
-  version: 26.0.24
-  resolution: "@types/jest@npm:26.0.24"
-  dependencies:
-    jest-diff: ^26.0.0
-    pretty-format: ^26.0.0
-  checksum: 1085ac96af43566518daf3aca60cb7881bfe2ffe1f5343738933e386ebf909095fde15273c3e99c685854dfc833b05b156fb5daf68707c0daa1c0c0db13a665b
   languageName: node
   linkType: hard
 
@@ -22347,7 +22337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:^26.0.0, jest-diff@npm:^26.6.2":
+"jest-diff@npm:^26.6.2":
   version: 26.6.2
   resolution: "jest-diff@npm:26.6.2"
   dependencies:
@@ -29908,7 +29898,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^26.0.0, pretty-format@npm:^26.6.2":
+"pretty-format@npm:^26.6.2":
   version: 26.6.2
   resolution: "pretty-format@npm:26.6.2"
   dependencies:
