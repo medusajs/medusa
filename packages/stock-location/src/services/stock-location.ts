@@ -116,7 +116,7 @@ export default class StockLocationService extends TransactionBaseService {
     const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery({ id: stockLocationId }, config)
-    const loc = await locationRepo.findOne(query)
+    const [loc] = await locationRepo.find(query)
 
     if (!loc) {
       throw new MedusaError(
@@ -233,10 +233,19 @@ export default class StockLocationService extends TransactionBaseService {
     address: StockLocationAddressInput,
     context: { manager?: EntityManager } = {}
   ): Promise<StockLocationAddress> {
+    if (!isDefined(addressId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"addressId" must be defined`
+      )
+    }
+
     return await this.atomicPhase_(async (manager) => {
       const locationAddressRepo = manager.getRepository(StockLocationAddress)
 
-      const existingAddress = await locationAddressRepo.findOne(addressId)
+      const existingAddress = await locationAddressRepo.findOne({
+        id: addressId,
+      })
       if (!existingAddress) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
