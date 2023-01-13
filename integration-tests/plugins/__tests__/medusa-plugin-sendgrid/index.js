@@ -104,6 +104,8 @@ describe("medusa-plugin-sendgrid", () => {
         {
           adjustments: [],
           created_at: expect.any(Date),
+          order_edit_id: null,
+          original_item_id: null,
           updated_at: expect.any(Date),
           order_id: expect.any(String),
           tax_lines: [
@@ -225,6 +227,8 @@ describe("medusa-plugin-sendgrid", () => {
             adjustments: [],
             created_at: expect.any(Date),
             updated_at: expect.any(Date),
+            order_edit_id: null,
+            original_item_id: null,
             order_id: expect.any(String),
             tax_lines: [
               {
@@ -285,6 +289,8 @@ describe("medusa-plugin-sendgrid", () => {
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           order_id: expect.any(String),
+          order_edit_id: null,
+          original_item_id: null,
           tax_lines: [
             {
               id: expect.any(String),
@@ -473,6 +479,8 @@ describe("medusa-plugin-sendgrid", () => {
         {
           id: expect.any(String),
           order_id: expect.any(String),
+          order_edit_id: null,
+          original_item_id: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           variant: {
@@ -577,6 +585,8 @@ describe("medusa-plugin-sendgrid", () => {
       id: expect.any(String),
       created_at: expect.any(Date),
       updated_at: expect.any(Date),
+      order_edit_id: null,
+      original_item_id: null,
       variant: {
         created_at: expect.any(Date),
         updated_at: expect.any(Date),
@@ -762,6 +772,8 @@ const getReturnSnap = (received = false) => {
   const itemSnap = {
     id: expect.any(String),
     order_id: expect.any(String),
+    order_edit_id: null,
+    original_item_id: null,
     created_at: expect.any(Date),
     updated_at: expect.any(Date),
     variant: {

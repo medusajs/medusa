@@ -1,4 +1,4 @@
-import { ILike, In, getConnection, DeepPartial, EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   FindConfig,
@@ -6,16 +6,19 @@ import {
   IEventBusService,
   FilterableInventoryItemProps,
   CreateInventoryItemInput,
+  InventoryItemDTO,
+  TransactionBaseService,
 } from "@medusajs/medusa"
 
 import { InventoryItem } from "../models"
-import { CONNECTION_NAME } from "../config"
+import { getListQuery } from "../utils/query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
+  manager: EntityManager
 }
 
-export default class InventoryItemService {
+export default class InventoryItemService extends TransactionBaseService {
   static Events = {
     CREATED: "inventory-item.created",
     UPDATED: "inventory-item.updated",
@@ -23,14 +26,18 @@ export default class InventoryItemService {
   }
 
   protected readonly eventBusService_: IEventBusService
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
 
-  constructor({ eventBusService }: InjectedDependencies) {
+  constructor({ eventBusService, manager }: InjectedDependencies) {
+    super(arguments[0])
+
     this.eventBusService_ = eventBusService
+    this.manager_ = manager
   }
 
   private getManager(): EntityManager {
-    const connection = getConnection(CONNECTION_NAME)
-    return connection.manager
+    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -41,71 +48,9 @@ export default class InventoryItemService {
   async list(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ): Promise<InventoryItem[]> {
-    const queryBuilder = this.getListQuery(selector, config)
+  ): Promise<InventoryItemDTO[]> {
+    const queryBuilder = getListQuery(this.getManager(), selector, config)
     return await queryBuilder.getMany()
-  }
-
-  private getListQuery(
-    selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ) {
-    const manager = this.getManager()
-    const inventoryItemRepository = manager.getRepository(InventoryItem)
-    const query = buildQuery(selector, config)
-
-    const queryBuilder = inventoryItemRepository.createQueryBuilder("inv_item")
-
-    if (query.where.q) {
-      query.where.sku = ILike(`%${query.where.q as string}%`)
-
-      delete query.where.q
-    }
-
-    if ("location_id" in query.where) {
-      const locationIds = Array.isArray(selector.location_id)
-        ? selector.location_id
-        : [selector.location_id]
-
-      queryBuilder.innerJoin(
-        "inventory_level",
-        "level",
-        "level.inventory_item_id = inv_item.id AND level.location_id IN (:...locationIds)",
-        { locationIds }
-      )
-
-      delete query.where.location_id
-    }
-
-    if (query.take) {
-      queryBuilder.take(query.take)
-    }
-
-    if (query.skip) {
-      queryBuilder.skip(query.skip)
-    }
-
-    if (query.where) {
-      queryBuilder.where(query.where)
-    }
-
-    if (query.select) {
-      queryBuilder.select(query.select.map((s) => "inv_item." + s))
-    }
-
-    if (query.order) {
-      const toSelect: string[] = []
-      const parsed = Object.entries(query.order).reduce((acc, [k, v]) => {
-        const key = `inv_item.${k}`
-        toSelect.push(key)
-        acc[key] = v
-        return acc
-      }, {})
-      queryBuilder.addSelect(toSelect)
-      queryBuilder.orderBy(parsed)
-    }
-
-    return queryBuilder
   }
 
   /**
@@ -116,8 +61,8 @@ export default class InventoryItemService {
   async listAndCount(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ): Promise<[InventoryItem[], number]> {
-    const queryBuilder = this.getListQuery(selector, config)
+  ): Promise<[InventoryItemDTO[], number]> {
+    const queryBuilder = getListQuery(this.getManager(), selector, config)
     return await queryBuilder.getManyAndCount()
   }
 
@@ -160,30 +105,33 @@ export default class InventoryItemService {
    * @return The newly created inventory item.
    */
   async create(data: CreateInventoryItemInput): Promise<InventoryItem> {
-    const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    return await this.atomicPhase_(async (manager) => {
+      const itemRepository = manager.getRepository(InventoryItem)
 
-    const inventoryItem = itemRepository.create({
-      sku: data.sku,
-      origin_country: data.origin_country,
-      metadata: data.metadata,
-      hs_code: data.hs_code,
-      mid_code: data.mid_code,
-      material: data.material,
-      weight: data.weight,
-      length: data.length,
-      height: data.height,
-      width: data.width,
-      requires_shipping: data.requires_shipping,
+      const inventoryItem = itemRepository.create({
+        sku: data.sku,
+        origin_country: data.origin_country,
+        metadata: data.metadata,
+        hs_code: data.hs_code,
+        mid_code: data.mid_code,
+        material: data.material,
+        weight: data.weight,
+        length: data.length,
+        height: data.height,
+        width: data.width,
+        requires_shipping: data.requires_shipping,
+      })
+
+      const result = await itemRepository.save(inventoryItem)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(InventoryItemService.Events.CREATED, {
+          id: result.id,
+        })
+
+      return result
     })
-
-    const result = await itemRepository.save(inventoryItem)
-
-    await this.eventBusService_.emit(InventoryItemService.Events.CREATED, {
-      id: result.id,
-    })
-
-    return result
   }
 
   /**
@@ -198,38 +146,44 @@ export default class InventoryItemService {
       "id" | "created_at" | "metadata" | "deleted_at"
     >
   ): Promise<InventoryItem> {
-    const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    return await this.atomicPhase_(async (manager) => {
+      const itemRepository = manager.getRepository(InventoryItem)
 
-    const item = await this.retrieve(inventoryItemId)
+      const item = await this.retrieve(inventoryItemId)
 
-    const shouldUpdate = Object.keys(data).some((key) => {
-      return item[key] !== data[key]
-    })
-
-    if (shouldUpdate) {
-      itemRepository.merge(item, data)
-      await itemRepository.save(item)
-
-      await this.eventBusService_.emit(InventoryItemService.Events.UPDATED, {
-        id: item.id,
+      const shouldUpdate = Object.keys(data).some((key) => {
+        return item[key] !== data[key]
       })
-    }
 
-    return item
+      if (shouldUpdate) {
+        itemRepository.merge(item, data)
+        await itemRepository.save(item)
+
+        await this.eventBusService_
+          .withTransaction(manager)
+          .emit(InventoryItemService.Events.UPDATED, {
+            id: item.id,
+          })
+      }
+
+      return item
+    })
   }
 
   /**
    * @param inventoryItemId - The id of the inventory item to delete.
    */
   async delete(inventoryItemId: string): Promise<void> {
-    const manager = this.getManager()
-    const itemRepository = manager.getRepository(InventoryItem)
+    await this.atomicPhase_(async (manager) => {
+      const itemRepository = manager.getRepository(InventoryItem)
 
-    await itemRepository.softRemove({ id: inventoryItemId })
+      await itemRepository.softRemove({ id: inventoryItemId })
 
-    await this.eventBusService_.emit(InventoryItemService.Events.DELETED, {
-      id: inventoryItemId,
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(InventoryItemService.Events.DELETED, {
+          id: inventoryItemId,
+        })
     })
   }
 }

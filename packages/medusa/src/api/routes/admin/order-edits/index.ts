@@ -1,33 +1,27 @@
 import { Router } from "express"
 
-import middlewares, {
-  transformBody,
-  transformQuery,
-} from "../../../middlewares"
+import { OrderEdit } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
-import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
-import { OrderEdit } from "../../../../models"
-import { AdminPostOrderEditsOrderEditReq } from "./update-order-edit"
-import { AdminPostOrderEditsReq } from "./create-order-edit"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import { AdminPostOrderEditsEditLineItemsReq } from "./add-line-item"
-import { AdminPostOrderEditsEditLineItemsLineItemReq } from "./update-order-edit-line-item"
-import { GetOrderEditsParams } from "./list-order-edit"
+import { AdminPostOrderEditsReq } from "./create-order-edit"
 import { GetOrderEditsOrderEditParams } from "./get-order-edit"
+import { GetOrderEditsParams } from "./list-order-edit"
 import { AdminPostOrderEditsRequestConfirmationReq } from "./request-confirmation"
+import { AdminPostOrderEditsOrderEditReq } from "./update-order-edit"
+import { AdminPostOrderEditsEditLineItemsLineItemReq } from "./update-order-edit-line-item"
 
 const route = Router()
 
 export default (app) => {
-  app.use(
-    "/order-edits",
-    isFeatureFlagEnabled(OrderEditingFeatureFlag.key),
-    route
-  )
+  app.use("/order-edits", route)
 
   route.post(
     "/",
@@ -117,10 +111,10 @@ export type AdminOrderEditItemChangeDeleteRes = {
   deleted: boolean
 }
 
-export * from "./update-order-edit"
-export * from "./update-order-edit-line-item"
+export * from "./add-line-item"
 export * from "./create-order-edit"
 export * from "./get-order-edit"
 export * from "./list-order-edit"
-export * from "./add-line-item"
 export * from "./request-confirmation"
+export * from "./update-order-edit"
+export * from "./update-order-edit-line-item"
