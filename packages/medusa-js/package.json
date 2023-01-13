@@ -4,7 +4,7 @@
   "description": "Client for Medusa Commerce Rest API",
   "main": "dist/index.js",
   "module": "dist/medusa-js.esm.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
