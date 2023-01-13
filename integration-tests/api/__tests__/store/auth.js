@@ -57,9 +57,10 @@ describe("/store/auth", () => {
       last_name: "testesen",
       phone: null,
       email: "test@testesen.dk",
+      shipping_addresses: [],
+      billing_address: null,
     })
   })
-
   describe("Store session management", () => {
     beforeEach(async () => {
       await dbConnection.manager.insert(Customer, {
