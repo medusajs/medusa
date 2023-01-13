@@ -185,7 +185,7 @@ Object {
           "metadata": null,
           "option_id": Any<String>,
           "updated_at": Any<String>,
-          "value": "Handcrafted",
+          "value": "Practical",
           "variant_id": Any<String>,
         },
       ],

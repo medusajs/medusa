@@ -2,20 +2,30 @@
 
 ## Classes
 
-- [StoreGetShippingOptionsParams](../classes/internal-45.StoreGetShippingOptionsParams.md)
+- [StoreGetVariantsParams](../classes/internal-45.StoreGetVariantsParams.md)
 
 ## Type Aliases
 
-### StoreShippingOptionsListRes
+### StoreVariantsListRes
 
-Ƭ **StoreShippingOptionsListRes**: `Object`
+Ƭ **StoreVariantsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `variants`: [`ProductVariant`](../classes/internal.ProductVariant.md)[]  }
+
+#### Defined in
+
+medusa/dist/api/routes/store/variants/index.d.ts:9
+
+___
+
+### StoreVariantsRes
+
+Ƭ **StoreVariantsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `shipping_options` | [`ShippingOption`](../classes/internal.ShippingOption.md)[] |
+| `variant` | [`ProductVariant`](../classes/internal.ProductVariant.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/store/shipping-options/index.d.ts:4
+medusa/dist/api/routes/store/variants/index.d.ts:6

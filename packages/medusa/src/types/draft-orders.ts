@@ -9,13 +9,14 @@ export type DraftOrderCreateProps = {
   billing_address?: Partial<AddressPayload>
   shipping_address_id?: string
   shipping_address?: Partial<AddressPayload>
-  items: Item[]
+  items?: Item[]
   region_id: string
   discounts?: Discount[]
   customer_id?: string
   no_notification_order?: boolean
   shipping_methods: ShippingMethod[]
   metadata?: Record<string, unknown>
+  idempotency_key?: string
 }
 
 type ShippingMethod = {

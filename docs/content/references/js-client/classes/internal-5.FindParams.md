@@ -8,6 +8,20 @@
 
   ↳ [`AdminGetCustomerGroupsGroupParams`](internal-5.AdminGetCustomerGroupsGroupParams.md)
 
+  ↳ [`AdminPostDiscountsDiscountConditionsParams`](internal-7.AdminPostDiscountsDiscountConditionsParams.md)
+
+  ↳ [`AdminPostDiscountsDiscountConditionsConditionParams`](internal-7.AdminPostDiscountsDiscountConditionsConditionParams.md)
+
+  ↳ [`AdminGetDiscountsDiscountConditionsConditionParams`](internal-7.AdminGetDiscountsDiscountConditionsConditionParams.md)
+
+  ↳ [`AdminPostDiscountsDiscountConditionsConditionBatchParams`](internal-7.AdminPostDiscountsDiscountConditionsConditionBatchParams.md)
+
+  ↳ [`GetOrderEditsOrderEditParams`](internal-13.GetOrderEditsOrderEditParams.md)
+
+  ↳ [`GetPaymentCollectionsParams`](internal-15.GetPaymentCollectionsParams.md)
+
+  ↳ [`GetPaymentsParams`](internal-16.GetPaymentsParams.md)
+
 ## Properties
 
 ### expand

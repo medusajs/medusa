@@ -30,9 +30,10 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               order:
-                $ref: ../components/schemas/draft-order.yaml
+                $ref: ../components/schemas/DraftOrder.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

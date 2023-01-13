@@ -1,7 +1,10 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import middlewares from "../../../middlewares"
+import middlewares, { transformBody } from "../../../middlewares"
+import requireCustomerAuthentication from "../../../middlewares/require-customer-authentication"
+import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
+import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-order-request"
 
 const route = Router()
 
@@ -24,6 +27,19 @@ export default (app) => {
   route.get(
     "/cart/:cart_id",
     middlewares.wrap(require("./get-order-by-cart").default)
+  )
+
+  route.post(
+    "/customer/confirm",
+    transformBody(StorePostCustomersCustomerAcceptClaimReq),
+    middlewares.wrap(require("./confirm-order-request").default)
+  )
+
+  route.post(
+    "/batch/customer/token",
+    requireCustomerAuthentication(),
+    transformBody(StorePostCustomersCustomerOrderClaimReq),
+    middlewares.wrap(require("./request-order").default)
   )
 
   return app
@@ -67,47 +83,10 @@ export const defaultStoreOrdersFields = [
   "total",
 ] as (keyof Order)[]
 
-export const allowedStoreOrdersRelations = [
-  "shipping_address",
-  "fulfillments",
-  "fulfillments.tracking_links",
-  "billing_address",
-  "items",
-  "items.variant",
-  "items.variant.product",
-  "shipping_methods",
-  "discounts",
-  "discounts.rule",
-  "customer",
-  "payments",
-  "region",
-]
-
-export const allowedStoreOrdersFields = [
-  "id",
-  "status",
-  "fulfillment_status",
-  "payment_status",
-  "display_id",
-  "cart_id",
-  "customer_id",
-  "email",
-  "region_id",
-  "currency_code",
-  "items.refundable",
-  "tax_rate",
-  "created_at",
-  "shipping_total",
-  "discount_total",
-  "tax_total",
-  "refunded_total",
-  "gift_card_total",
-  "subtotal",
-  "total",
-]
-
 export type StoreOrdersRes = {
   order: Order
 }
 
 export * from "./lookup-order"
+export * from "./confirm-order-request"
+export * from "./request-order"

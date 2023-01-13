@@ -46,9 +46,10 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/draft-order"
+ *               $ref: "#/components/schemas/DraftOrder"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -83,16 +84,7 @@ export default async (req, res) => {
 
     const cart = await cartService
       .withTransaction(manager)
-      .retrieve(draftOrder.cart_id, {
-        select: ["total"],
-        relations: [
-          "discounts",
-          "discounts.rule",
-          "shipping_methods",
-          "region",
-          "items",
-        ],
-      })
+      .retrieveWithTotals(draftOrder.cart_id)
 
     await paymentProviderService
       .withTransaction(manager)
@@ -111,9 +103,11 @@ export default async (req, res) => {
     await draftOrderService
       .withTransaction(manager)
       .registerCartCompletion(draftOrder.id, result.id)
+
+    await orderService.withTransaction(manager).capturePayment(result.id)
   })
 
-  const order = await orderService.retrieve(result.id, {
+  const order = await orderService.retrieveWithTotals(result.id, {
     relations: defaultOrderRelations,
     select: defaultOrderFields,
   })

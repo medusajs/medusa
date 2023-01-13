@@ -42,11 +42,12 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             notes:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/note"
+ *                 $ref: "#/components/schemas/Note"
  *             count:
  *               type: integer
  *               description: The total number of items available

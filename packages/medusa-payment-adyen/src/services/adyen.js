@@ -201,6 +201,10 @@ class AdyenService extends BaseService {
     return { cart_id: cart.id }
   }
 
+  async createPaymentNew(paymentInput) {
+    return { resource_id: paymentInput.resource_id }
+  }
+
   /**
    * Retrieves Adyen payment. This is not supported by adyen, so we simply
    * return the current payment method data
@@ -319,6 +323,10 @@ class AdyenService extends BaseService {
    * @returns {Promise} result of the update operation
    */
   async updatePayment(paymentData, details) {
+    return paymentData
+  }
+
+  async updatePaymentNew(paymentData, details) {
     return paymentData
   }
 

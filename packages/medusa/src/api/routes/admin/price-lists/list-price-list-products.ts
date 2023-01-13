@@ -17,7 +17,7 @@ import { ProductStatus } from "../../../../models"
 import { Request } from "express"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /price-lists/{id}/products
@@ -153,18 +153,19 @@ import { isDefined } from "../../../../utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Price List
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             products:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/product"
+ *                 $ref: "#/components/schemas/Product"
  *             count:
  *               type: integer
  *               description: The total number of items available

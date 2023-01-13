@@ -25,42 +25,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - order_id
- *           - items
- *         properties:
- *           order_id:
- *             type: string
- *             description: The ID of the Order to create the Return from.
- *           items:
- *             description: "The items to include in the Return."
- *             type: array
- *             items:
- *               required:
- *                 - item_id
- *                 - quantity
- *               properties:
- *                 item_id:
- *                   description: The ID of the Line Item from the Order.
- *                   type: string
- *                 quantity:
- *                   description: The quantity to return.
- *                   type: integer
- *                 reason_id:
- *                   description: The ID of the return reason.
- *                   type: string
- *                 note:
- *                   description: A note to add to the item returned.
- *                   type: string
- *           return_shipping:
- *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
- *             type: object
- *             required:
- *               - option_id
- *             properties:
- *               option_id:
- *                 type: string
- *                 description: The ID of the Shipping Option to create the Shipping Method from.
+ *         $ref: "#/components/schemas/StorePostReturnsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -76,8 +41,8 @@ import { validator } from "../../../../utils/validator"
  *           }
  *         ]
  *       })
- *       .then(({ return }) => {
- *         console.log(return.id);
+ *       .then((data) => {
+ *         console.log(data.return.id);
  *       });
  *   - lang: Shell
  *     label: cURL
@@ -101,9 +66,10 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             return:
- *               $ref: "#/components/schemas/return"
+ *               $ref: "#/components/schemas/Return"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -285,6 +251,46 @@ class Item {
   note?: string
 }
 
+/**
+ * @schema StorePostReturnsReq
+ * type: object
+ * required:
+ *   - order_id
+ *   - items
+ * properties:
+ *   order_id:
+ *     type: string
+ *     description: The ID of the Order to create the Return from.
+ *   items:
+ *     description: "The items to include in the Return."
+ *     type: array
+ *     items:
+ *       required:
+ *         - item_id
+ *         - quantity
+ *       properties:
+ *         item_id:
+ *           description: The ID of the Line Item from the Order.
+ *           type: string
+ *         quantity:
+ *           description: The quantity to return.
+ *           type: integer
+ *         reason_id:
+ *           description: The ID of the return reason.
+ *           type: string
+ *         note:
+ *           description: A note to add to the item returned.
+ *           type: string
+ *   return_shipping:
+ *     description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
+ *     type: object
+ *     required:
+ *       - option_id
+ *     properties:
+ *       option_id:
+ *         type: string
+ *         description: The ID of the Shipping Option to create the Shipping Method from.
+ */
 export class StorePostReturnsReq {
   @IsString()
   @IsNotEmpty()

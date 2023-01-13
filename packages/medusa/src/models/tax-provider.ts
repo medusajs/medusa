@@ -10,10 +10,10 @@ export class TaxProvider {
 }
 
 /**
- * @schema tax_provider
+ * @schema TaxProvider
  * title: "Tax Provider"
  * description: "The tax service used to calculate taxes"
- * x-resourceId: tax_provider
+ * type: object
  * properties:
  *   id:
  *     description: "The id of the tax provider as given by the plugin."

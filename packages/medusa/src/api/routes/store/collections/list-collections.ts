@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import { IsArray, IsInt, IsOptional, ValidateNested } from "class-validator"
 
 import { DateComparisonOperator } from "../../../../types/common"
 import ProductCollectionService from "../../../../services/product-collection"
@@ -78,11 +78,12 @@ import { Type } from "class-transformer"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            collections:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/product_collection"
+ *                 $ref: "#/components/schemas/ProductCollection"
  *            count:
  *               type: integer
  *               description: The total number of items available
@@ -120,6 +121,10 @@ export default async (req, res) => {
 }
 
 export class StoreGetCollectionsParams {
+  @IsOptional()
+  @IsArray()
+  handle?: string[]
+
   @IsOptional()
   @IsInt()
   @Type(() => Number)

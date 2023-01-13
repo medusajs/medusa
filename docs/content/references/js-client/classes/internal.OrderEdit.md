@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:26
+medusa/dist/models/order-edit.d.ts:24
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:25
+medusa/dist/models/order-edit.d.ts:23
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:15
+medusa/dist/models/order-edit.d.ts:13
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:21
+medusa/dist/models/order-edit.d.ts:19
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:20
+medusa/dist/models/order-edit.d.ts:18
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:17
+medusa/dist/models/order-edit.d.ts:15
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:24
+medusa/dist/models/order-edit.d.ts:22
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:22
+medusa/dist/models/order-edit.d.ts:20
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:23
+medusa/dist/models/order-edit.d.ts:21
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:16
+medusa/dist/models/order-edit.d.ts:14
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:27
+medusa/dist/models/order-edit.d.ts:25
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:14
+medusa/dist/models/order-edit.d.ts:12
 
 ___
 
@@ -220,7 +220,27 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:13
+medusa/dist/models/order-edit.d.ts:11
+
+___
+
+### payment\_collection
+
+• **payment\_collection**: [`PaymentCollection`](internal.PaymentCollection.md)
+
+#### Defined in
+
+medusa/dist/models/order-edit.d.ts:27
+
+___
+
+### payment\_collection\_id
+
+• **payment\_collection\_id**: `string`
+
+#### Defined in
+
+medusa/dist/models/order-edit.d.ts:26
 
 ___
 
@@ -230,7 +250,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:19
+medusa/dist/models/order-edit.d.ts:17
 
 ___
 
@@ -240,7 +260,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order-edit.d.ts:18
+medusa/dist/models/order-edit.d.ts:16
 
 ___
 

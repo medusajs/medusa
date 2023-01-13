@@ -9,11 +9,34 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 const batchJobSeeder = require("../../../helpers/batch-job-seeder")
 const userSeeder = require("../../../helpers/user-seeder")
 const { simpleProductFactory } = require("../../../factories")
+const {
+  simpleProductCollectionFactory,
+} = require("../../../factories/simple-product-collection-factory")
 
 const adminReqConfig = {
   headers: {
     Authorization: "Bearer test_token",
   },
+}
+
+function getImportFile() {
+  return path.resolve(
+    "__tests__",
+    "batch-jobs",
+    "product",
+    "product-import.csv"
+  )
+}
+
+function copyTemplateFile() {
+  const csvTemplate = path.resolve(
+    "__tests__",
+    "batch-jobs",
+    "product",
+    "product-import-template.csv"
+  )
+  const destination = getImportFile()
+  fs.copyFileSync(csvTemplate, destination)
 }
 
 jest.setTimeout(1000000)
@@ -29,6 +52,9 @@ describe("Product import batch job", () => {
   let medusaProcess
   let dbConnection
 
+  const collectionHandle1 = "test-collection1"
+  const collectionHandle2 = "test-collection2"
+
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
@@ -39,7 +65,6 @@ describe("Product import batch job", () => {
       cwd,
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
     })
   })
 
@@ -53,14 +78,17 @@ describe("Product import batch job", () => {
   })
 
   beforeEach(async () => {
-    try {
-      await batchJobSeeder(dbConnection)
-      await adminSeeder(dbConnection)
-      await userSeeder(dbConnection)
-    } catch (e) {
-      console.log(e)
-      throw e
-    }
+    await batchJobSeeder(dbConnection)
+    await adminSeeder(dbConnection)
+    await userSeeder(dbConnection)
+     await simpleProductCollectionFactory(dbConnection, [
+      {
+        handle: collectionHandle1,
+      },
+      {
+        handle: collectionHandle2,
+      },
+    ])
   })
 
   afterEach(async () => {
@@ -71,6 +99,8 @@ describe("Product import batch job", () => {
   it("should import a csv file", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
+
+    copyTemplateFile()
 
     const existingProductToBeUpdated = await simpleProductFactory(
       dbConnection,
@@ -133,7 +163,7 @@ describe("Product import batch job", () => {
     expect(batchJob.status).toBe("completed")
 
     const productsResponse = await api.get("/admin/products", adminReqConfig)
-    expect(productsResponse.data.count).toBe(2)
+    expect(productsResponse.data.count).toBe(3)
     expect(productsResponse.data.products).toEqual(
       expect.arrayContaining([
         // NEW PRODUCT
@@ -199,6 +229,71 @@ describe("Product import batch job", () => {
               value: "123_1",
             }),
           ],
+          collection: expect.objectContaining({
+            handle: collectionHandle1,
+          }),
+        }),
+        expect.objectContaining({
+          title: "Test product",
+          description:
+            "Hopper Stripes Bedding, available as duvet cover, pillow sham and sheet.\\n100% organic cotton, soft and crisp to the touch. Made in Portugal.",
+          handle: "test-product-product-1-1",
+          is_giftcard: false,
+          status: "draft",
+          thumbnail: "test-image.png",
+          variants: [
+            // NEW VARIANT
+            expect.objectContaining({
+              title: "Test variant",
+              sku: "test-sku-1-1",
+              barcode: "test-barcode-1-1",
+              ean: null,
+              upc: null,
+              inventory_quantity: 10,
+              prices: [
+                expect.objectContaining({
+                  currency_code: "eur",
+                  amount: 100,
+                  region_id: "region-product-import-0",
+                }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 110,
+                }),
+                expect.objectContaining({
+                  currency_code: "dkk",
+                  amount: 130,
+                  region_id: "region-product-import-1",
+                }),
+              ],
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  value: "option 1 value red",
+                }),
+                expect.objectContaining({
+                  value: "option 2 value 1",
+                }),
+              ]),
+            }),
+          ],
+          type: null,
+          images: [
+            expect.objectContaining({
+              url: "test-image.png",
+            }),
+          ],
+          options: [
+            expect.objectContaining({
+              title: "test-option-1",
+            }),
+            expect.objectContaining({
+              title: "test-option-2",
+            }),
+          ],
+          tags: [],
+          collection: expect.objectContaining({
+            handle: collectionHandle1,
+          }),
         }),
         // UPDATED PRODUCT
         expect.objectContaining({
@@ -293,6 +388,9 @@ describe("Product import batch job", () => {
               value: "123",
             }),
           ],
+          collection: expect.objectContaining({
+            handle: collectionHandle2,
+          }),
         }),
       ])
     )

@@ -43,6 +43,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             variant_id:
  *               type: string
@@ -56,7 +57,7 @@ import { EntityManager } from "typeorm"
  *               description: Whether or not the items were deleted.
  *               default: true
  *             product:
- *               $ref: "#/components/schemas/product"
+ *               $ref: "#/components/schemas/Product"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

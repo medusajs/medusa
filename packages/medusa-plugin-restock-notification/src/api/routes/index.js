@@ -1,7 +1,7 @@
 import { Router } from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
-import { getConfigFile } from "medusa-core-utils"
+import { getConfigFile, parseCorsOrigins } from "medusa-core-utils"
 
 import middlewares from "../middleware"
 
@@ -14,7 +14,7 @@ export default (app, rootDirectory) => {
   const { projectConfig } = configModule
 
   const corsOptions = {
-    origin: projectConfig.store_cors.split(","),
+    origin: parseCorsOrigins(projectConfig.store_cors),
     credentials: true,
   }
 

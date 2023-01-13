@@ -3,7 +3,7 @@ const path = require("path")
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { useDb, initDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const {
   simpleOrderEditFactory,
@@ -21,8 +21,9 @@ const {
   simpleRegionFactory,
 } = require("../../factories")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
+const setupServer = require("../../../helpers/setup-server")
 
-jest.setTimeout(50000)
+jest.setTimeout(30000)
 
 const adminHeaders = {
   headers: {
@@ -30,20 +31,17 @@ const adminHeaders = {
   },
 }
 
-describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
+describe("/admin/order-edits", () => {
   let medusaProcess
   let dbConnection
   const adminUserId = "admin_user"
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [process, connection] = await startServerWithEnvironment({
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({
       cwd,
-      env: { MEDUSA_FF_ORDER_EDITING: true },
-      verbose: false,
     })
-    dbConnection = connection
-    medusaProcess = process
   })
 
   afterAll(async () => {
@@ -869,23 +867,82 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
       await adminSeeder(dbConnection)
 
       const product1 = await simpleProductFactory(dbConnection)
+      const product2 = await simpleProductFactory(dbConnection)
 
-      const { id, order_id } = await simpleOrderEditFactory(dbConnection, {
+      const order = await simpleOrderFactory(dbConnection, {
+        id: IdMap.getId("order-test-2"),
+        email: "test@testson.com",
+        tax_rate: null,
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: 0,
+        },
+        line_items: [
+          {
+            id: "lineItemId1",
+            variant_id: product2.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 10,
+                code: "code1",
+                name: "code1",
+              },
+            ],
+          },
+        ],
+        shipping_methods: [
+          {
+            shipping_option: {
+              name: "random",
+              region_id: "test-region",
+            },
+            price: 10,
+            tax_lines: [
+              {
+                rate: 0,
+                code: "code1",
+                name: "code1",
+              },
+            ],
+          },
+        ],
+      })
+
+      const { id } = await simpleOrderEditFactory(dbConnection, {
         created_by: "admin_user",
+        order_id: order.id,
       })
 
       const noChangesEdit = await simpleOrderEditFactory(dbConnection, {
         created_by: "admin_user",
       })
 
-      await simpleLineItemFactory(dbConnection, {
-        order_id: order_id,
+      const lineItemAdded = await simpleLineItemFactory(dbConnection, {
+        order_id: null,
+        order_edit_id: id,
         variant_id: product1.variants[0].id,
+        unit_price: 2000,
+        quantity: 1,
+        tax_lines: [
+          {
+            rate: 0,
+            code: "code1",
+            name: "code1",
+          },
+        ],
       })
 
       await simpleOrderItemChangeFactory(dbConnection, {
         order_edit_id: id,
-        type: "item_add",
+        type: OrderEditItemChangeType.ITEM_ADD,
+        line_item_id: lineItemAdded.id,
       })
 
       orderEditId = id
@@ -902,6 +959,28 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
 
       const result = await api.post(
         `/admin/order-edits/${orderEditId}/request`,
+        {
+          payment_collection_description: "Payment collection description",
+        },
+        adminHeaders
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          requested_at: expect.any(String),
+          requested_by: "admin_user",
+          status: "requested",
+        })
+      )
+    })
+
+    it("creates payment collection if difference_due > 0", async () => {
+      const api = useApi()
+
+      const result = await api.post(
+        `/admin/order-edits/${orderEditId}/request`,
         {},
         adminHeaders
       )
@@ -913,6 +992,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
           requested_at: expect.any(String),
           requested_by: "admin_user",
           status: "requested",
+          payment_collection_id: expect.any(String),
         })
       )
     })
@@ -934,6 +1014,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         )
       }
     })
+
     it("requests order edit", async () => {
       const api = useApi()
 
@@ -2635,7 +2716,6 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
     const lineItemId2Discount = IdMap.getId("line-item-2-discount")
 
     beforeEach(async () => {
-      const api = useApi()
       await adminSeeder(dbConnection)
 
       product = await simpleProductFactory(dbConnection, {
@@ -2646,7 +2726,7 @@ describe("[MEDUSA_FF_ORDER_EDITING] /admin/order-edits", () => {
         id: prodId2,
       })
 
-      const reagion = await simpleRegionFactory(dbConnection, {
+      const region = await simpleRegionFactory(dbConnection, {
         id: "test-region",
         name: "Test region",
         tax_rate: 12.5,

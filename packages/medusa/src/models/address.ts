@@ -67,10 +67,10 @@ export class Address extends SoftDeletableEntity {
 }
 
 /**
- * @schema address_fields
+ * @schema AddressFields
  * title: "Address Fields"
  * description: "Address fields used when creating/updating an address."
- * x-resourceId: address
+ * type: object
  * properties:
  *  company:
  *    type: string
@@ -122,10 +122,10 @@ export class Address extends SoftDeletableEntity {
  */
 
 /**
- * @schema address
+ * @schema Address
  * title: "Address"
  * description: "An address."
- * x-resourceId: address
+ * type: object
  * properties:
  *  id:
  *    type: string

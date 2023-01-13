@@ -8,11 +8,32 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 const userSeeder = require("../../../helpers/user-seeder")
 const { simpleSalesChannelFactory } = require("../../../factories")
 const batchJobSeeder = require("../../../helpers/batch-job-seeder")
+const { simpleProductCollectionFactory } = require("../../../factories/simple-product-collection-factory");
 
 const startServerWithEnvironment =
   require("../../../../helpers/start-server-with-environment").default
 
 jest.setTimeout(30000)
+
+function getImportFile() {
+  return path.resolve(
+    "__tests__",
+    "batch-jobs",
+    "product",
+    "product-import-ss.csv"
+  )
+}
+
+function copyTemplateFile() {
+  const csvTemplate = path.resolve(
+    "__tests__",
+    "batch-jobs",
+    "product",
+    "product-import-ss-template.csv"
+  )
+  const destination = getImportFile()
+  fs.copyFileSync(csvTemplate, destination)
+}
 
 const adminReqConfig = {
   headers: {
@@ -31,6 +52,8 @@ describe("Product import - Sales Channel", () => {
   let dbConnection
   let medusaProcess
 
+  let collectionHandle1 = "test-collection1"
+
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
 
@@ -41,7 +64,6 @@ describe("Product import - Sales Channel", () => {
       env: { MEDUSA_FF_SALES_CHANNELS: true },
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
@@ -67,6 +89,9 @@ describe("Product import - Sales Channel", () => {
       await simpleSalesChannelFactory(dbConnection, {
         name: "Import Sales Channel 2",
       })
+      await simpleProductCollectionFactory(dbConnection, {
+        handle: collectionHandle1
+      })
     } catch (e) {
       console.log(e)
       throw e
@@ -81,6 +106,8 @@ describe("Product import - Sales Channel", () => {
   it("Import products to an existing sales channel", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
+
+    copyTemplateFile()
 
     const response = await api.post(
       "/admin/batch-jobs",
@@ -141,6 +168,9 @@ describe("Product import - Sales Channel", () => {
             is_disabled: false,
           }),
         ],
+        collection: expect.objectContaining({
+          handle: collectionHandle1
+        })
       }),
     ])
   })

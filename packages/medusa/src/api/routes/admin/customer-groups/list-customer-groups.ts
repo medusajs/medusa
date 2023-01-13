@@ -127,20 +127,7 @@ import { Type } from "class-transformer"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer_groups:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/customer_group"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminCustomerGroupsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

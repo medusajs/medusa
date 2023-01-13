@@ -2,30 +2,16 @@
 
 ## Classes
 
-- [StoreGetCollectionsParams](../classes/internal-33.StoreGetCollectionsParams.md)
+- [AdminGetVariantsParams](../classes/internal-33.AdminGetVariantsParams.md)
+- [AdminPriceSelectionParams](../classes/internal-33.AdminPriceSelectionParams.md)
+- [PriceSelectionParams](../classes/internal-33.PriceSelectionParams.md)
 
 ## Type Aliases
 
-### StoreCollectionsListRes
+### AdminVariantsListRes
 
-Ƭ **StoreCollectionsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `collections`: [`ProductCollection`](../classes/internal.ProductCollection.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/store/collections/index.d.ts:7
-
-___
-
-### StoreCollectionsRes
-
-Ƭ **StoreCollectionsRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `collection` | [`ProductCollection`](../classes/internal.ProductCollection.md) |
+Ƭ **AdminVariantsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `variants`: [`PricedVariant`](internal-20.md#pricedvariant)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/store/collections/index.d.ts:10
+medusa/dist/api/routes/admin/variants/index.d.ts:10

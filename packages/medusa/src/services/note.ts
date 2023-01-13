@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { NoteRepository } from "../repositories/note"
@@ -40,24 +40,31 @@ class NoteService extends TransactionBaseService {
 
   /**
    * Retrieves a specific note.
-   * @param id - the id of the note to retrieve.
+   * @param noteId - the id of the note to retrieve.
    * @param config - any options needed to query for the result.
    * @return which resolves to the requested note.
    */
   async retrieve(
-    id: string,
+    noteId: string,
     config: FindConfig<Note> = {}
   ): Promise<Note | never> {
+    if (!isDefined(noteId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"noteId" must be defined`
+      )
+    }
+
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: noteId }, config)
 
     const note = await noteRepo.findOne(query)
 
     if (!note) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Note with id: ${id} was not found.`
+        `Note with id: ${noteId} was not found.`
       )
     }
 
