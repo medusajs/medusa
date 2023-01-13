@@ -47,10 +47,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             shipping_profile:
- *               $ref: "#/components/schemas/ShippingProfile"
+ *           $ref: "#/components/schemas/AdminShippingProfilesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
