@@ -14,8 +14,8 @@
     "size": "size-limit",
     "lint": "dts lint",
     "build": "dts build",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
-    "test": "jest --passWithNoTests"
+    "prepare": "dts build",
+    "test": "dts test --passWithNoTests"
   },
   "author": "Oliver Juhl",
   "license": "MIT",
