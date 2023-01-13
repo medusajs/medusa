@@ -1,11 +1,17 @@
 import {
-  ConfigModule, IEventBusService,
-  Logger, StagedJob
+  ConfigModule,
+  ConfigurableModuleDeclaration,
+  IEventBusService,
+  Logger,
+  MedusaContainer,
+  MODULE_RESOURCE_TYPE,
+  StagedJob,
+  StagedJobService,
+  TransactionBaseService
 } from "@medusajs/medusa"
-import { StagedJobRepository } from "@medusajs/medusa/dist/repositories/staged-job"
 import Bull from "bull"
 import Redis from "ioredis"
-import { isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
 import { sleep } from "../utils/sleep"
@@ -13,9 +19,9 @@ import { sleep } from "../utils/sleep"
 type InjectedDependencies = {
   manager: EntityManager
   logger: Logger
-  stagedJobRepository: typeof StagedJobRepository
-  redisClient: Redis.Redis
-  redisSubscriber: Redis.Redis
+  stagedJobService: StagedJobService
+  redisClient: Redis
+  redisSubscriber: Redis
 }
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
@@ -49,93 +55,104 @@ type EmitOptions = {
   }
 }
 
+type RedisCreateConnectionOptions = {
+  client: Redis
+  subscriber: Redis
+}
+
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class RedisEventBusService implements IEventBusService {
+export default class RedisEventBusService
+  extends TransactionBaseService
+  implements IEventBusService
+{
   protected readonly config_: ConfigModule
-  protected readonly manager_: EntityManager
   protected readonly logger_: Logger
-  protected readonly stagedJobRepository_: typeof StagedJobRepository
+  protected readonly stagedJobService_: StagedJobService
   protected readonly eventToSubscribersMap_: Map<
     string | symbol,
     SubscriberDescriptor[]
   >
-  protected readonly redisClient_: Redis.Redis
-  protected readonly redisSubscriber_: Redis.Redis
-  protected queue_: Bull
+
+  protected redisClient_: Redis
+  protected redisSubscriber_: Redis
+  protected queue_: Bull.Queue
   protected shouldEnqueuerRun: boolean
-  protected transactionManager_: EntityManager | undefined
   protected enqueue_: Promise<void>
 
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   constructor(
-    {
-      manager,
-      logger,
-      stagedJobRepository,
-      redisClient,
-      redisSubscriber,
-    }: InjectedDependencies,
+    container: MedusaContainer & InjectedDependencies,
     config: ConfigModule,
+    moduleDeclaration?: ConfigurableModuleDeclaration,
     singleton = true
   ) {
+    super(arguments[0])
+
+    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "At the moment this module can only be used with shared resources"
+      )
+    }
+
     this.config_ = config
-    this.manager_ = manager
-    this.logger_ = logger
-    this.stagedJobRepository_ = stagedJobRepository
+    this.manager_ = container.manager
+
+    this.logger_ = container.logger
+    this.stagedJobService_ = container.stagedJobService
 
     if (singleton) {
-      const opts = {
-        createClient: (type: string): Redis.Redis => {
-          switch (type) {
-            case "client":
-              return redisClient
-            case "subscriber":
-              return redisSubscriber
-            default:
-              if (config.projectConfig.redis_url) {
-                return new Redis(config.projectConfig.redis_url)
-              }
-              return redisClient
-          }
+      this.connect(
+        {
+          client: container.redisClient,
+          subscriber: container.redisSubscriber,
         },
-      }
-
-      this.eventToSubscribersMap_ = new Map()
-      this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
-      this.redisClient_ = redisClient
-      this.redisSubscriber_ = redisSubscriber
-      // Register our worker to handle emit calls
-      this.queue_.process(this.worker_)
-
-      if (process.env.NODE_ENV !== "test") {
-        this.startEnqueuer()
-      }
+        config
+      )
     }
   }
 
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new RedisEventBusService(
-      {
-        manager: transactionManager,
-        stagedJobRepository: this.stagedJobRepository_,
-        logger: this.logger_,
-        redisClient: this.redisClient_,
-        redisSubscriber: this.redisSubscriber_,
+  // To be economical about the use of Redis connections, we reuse existing connection whenever possible
+  // https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md#reusing-redis-connections
+  protected reuseConnections(
+    client: Redis,
+    subscriber: Redis,
+    config: ConfigModule
+  ): { createClient: (type: string) => Redis } {
+    return {
+      createClient: (type: string): Redis => {
+        switch (type) {
+          case "client":
+            return client
+          case "subscriber":
+            return subscriber
+          default:
+            if (config?.projectConfig?.redis_url) {
+              return new Redis(this.config_.projectConfig.redis_url!)
+            }
+            return client
+        }
       },
-      this.config_,
-      false
-    )
+    }
+  }
 
-    cloned.transactionManager_ = transactionManager
-    cloned.queue_ = this.queue_
+  connect(options: RedisCreateConnectionOptions, config: ConfigModule): void {
+    const { client, subscriber } = options
 
-    return cloned
+    const bullOptions = this.reuseConnections(client, subscriber, config)
+
+    this.queue_ = new Bull(`${this.constructor.name}:queue`, bullOptions)
+    this.redisClient_ = client
+    this.redisSubscriber_ = subscriber
+
+    if (process.env.NODE_ENV !== "test") {
+      this.startEnqueuer()
+    }
   }
 
   /**
@@ -245,19 +262,15 @@ export default class RedisEventBusService implements IEventBusService {
      * as part of the rollback.
      */
     if (this.transactionManager_) {
-      const stagedJobRepository = this.transactionManager_.getCustomRepository(
-        this.stagedJobRepository_
-      )
-
       const jobToCreate = {
         event_name: eventName,
         data: data as unknown as Record<string, unknown>,
         options: opts,
       } as Partial<StagedJob>
 
-      const stagedJobInstance = stagedJobRepository.create(jobToCreate)
-
-      return await stagedJobRepository.save(stagedJobInstance)
+      return await this.stagedJobService_
+        .withTransaction(this.transactionManager_)
+        .create(jobToCreate)
     }
 
     this.queue_.add({ eventName, data }, opts)
@@ -281,10 +294,7 @@ export default class RedisEventBusService implements IEventBusService {
         take: 1000,
       }
 
-      const stagedJobRepo = this.manager_.getCustomRepository(
-        this.stagedJobRepository_
-      )
-      const jobs = await stagedJobRepo.find(listConfig)
+      const jobs = await this.stagedJobService_.list(listConfig)
 
       await Promise.all(
         jobs.map((job) => {
@@ -294,7 +304,7 @@ export default class RedisEventBusService implements IEventBusService {
               job.options ?? { removeOnComplete: true }
             )
             .then(async () => {
-              await stagedJobRepo.remove(job)
+              await this.stagedJobService_.remove(job)
             })
         })
       )

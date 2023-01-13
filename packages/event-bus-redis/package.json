@@ -24,15 +24,15 @@
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "test": "jest",
-    "test:unit": "jest"
+    "test": "jest"
   },
   "peerDependencies": {
     "@medusajs/medusa": "1.x.x",
     "medusa-interfaces": "1.x.x"
   },
   "dependencies": {
-    "ioredis-mock": "^8.2.2",
-    "typeorm": "^0.2.45"
+    "bull": "^4.10.2",
+    "ioredis": "^5.2.4",
+    "typeorm": "^0.2.31"
   }
 }

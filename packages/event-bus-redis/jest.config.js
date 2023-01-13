@@ -10,5 +10,4 @@ module.exports = {
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
-  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
 }

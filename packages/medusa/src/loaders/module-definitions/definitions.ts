@@ -18,18 +18,6 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     },
   },
   {
-    key: "backgroundJob",
-    registrationName: "backgroundJobService",
-    defaultPackage: "@medusajs/background-job-local",
-    label: "BackgroundJobService",
-    canOverride: true,
-    isRequired: false,
-    defaultModuleDeclaration: {
-      scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.SHARED,
-    },
-  },
-  {
     key: "stockLocationService",
     registrationName: "stockLocationService",
     defaultPackage: false,

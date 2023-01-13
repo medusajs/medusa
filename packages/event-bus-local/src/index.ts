@@ -2,10 +2,10 @@ import { ModuleExports } from "@medusajs/medusa"
 import Loader from "./loaders"
 import LocalEventBus from "./services/event-bus-local"
 
-export const services = [LocalEventBus]
+export const service = LocalEventBus
 export const loaders = [Loader]
 
 export default {
-  services,
+  service,
   loaders,
 } as ModuleExports

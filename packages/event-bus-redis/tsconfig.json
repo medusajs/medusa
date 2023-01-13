@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "lib": [
-      "es5",
-      "es6",
+      "es5", 
+      "es6", 
       "es2019"
     ],
     "target": "es5",
@@ -19,14 +19,12 @@
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true,
-    "downlevelIteration": true // to use ES5 specific tooling
+    "skipLibCheck": true
   },
-  "include": ["./src/**/*", "index.d.ts"],
+  "include": ["./src/**/*"],
   "exclude": [
     "./dist/**/*",
     "./src/**/__tests__",
-    "./src/**/__mocks__",
     "node_modules"
   ]
 }
