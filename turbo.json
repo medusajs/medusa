@@ -7,7 +7,7 @@
       ],
       "outputs": [
         "!node_modules/**",
-        "!src/([^__]mocks)",
+        "!src/**",
         "/*/**"
       ]
     },
