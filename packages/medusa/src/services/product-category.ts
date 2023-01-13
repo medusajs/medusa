@@ -5,6 +5,7 @@ import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { FindConfig, Selector, QuerySelector } from "../types/common"
 import { buildQuery } from "../utils"
+import { EventBusService } from "."
 import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
@@ -12,6 +13,7 @@ import {
 
 type InjectedDependencies = {
   manager: EntityManager
+  eventBusService: EventBusService
   productCategoryRepository: typeof ProductCategoryRepository
 }
 
@@ -19,15 +21,27 @@ type InjectedDependencies = {
  * Provides layer to manipulate product categories.
  */
 class ProductCategoryService extends TransactionBaseService {
-  protected manager_: EntityManager
   protected readonly productCategoryRepo_: typeof ProductCategoryRepository
+  protected readonly eventBusService_: EventBusService
   protected transactionManager_: EntityManager | undefined
+  protected manager_: EntityManager
 
-  constructor({ manager, productCategoryRepository }: InjectedDependencies) {
+  static Events = {
+    CREATED: "product-category.created",
+    UPDATED: "product-category.updated",
+    DELETED: "product-category.deleted",
+  }
+
+  constructor({
+    manager,
+    productCategoryRepository,
+    eventBusService,
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-    this.manager_ = manager
 
+    this.manager_ = manager
+    this.eventBusService_ = eventBusService
     this.productCategoryRepo_ = productCategoryRepository
   }
 
@@ -109,13 +123,20 @@ class ProductCategoryService extends TransactionBaseService {
    * @return created product category
    */
   async create(
-    productCategory: CreateProductCategoryInput
+    productCategoryInput: CreateProductCategoryInput
   ): Promise<ProductCategory> {
     return await this.atomicPhase_(async (manager) => {
       const pcRepo = manager.getCustomRepository(this.productCategoryRepo_)
-      const productCategoryRecord = pcRepo.create(productCategory)
+      let productCategory = pcRepo.create(productCategoryInput)
+      productCategory = await pcRepo.save(productCategory)
 
-      return await pcRepo.save(productCategoryRecord)
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ProductCategoryService.Events.CREATED, {
+          id: productCategory.id
+        })
+
+      return productCategory
     })
   }
 
@@ -134,7 +155,7 @@ class ProductCategoryService extends TransactionBaseService {
         this.productCategoryRepo_
       )
 
-      const productCategory = await this.retrieve(productCategoryId)
+      let productCategory = await this.retrieve(productCategoryId)
 
       for (const key in productCategoryInput) {
         if (isDefined(productCategoryInput[key])) {
@@ -142,7 +163,15 @@ class ProductCategoryService extends TransactionBaseService {
         }
       }
 
-      return await productCategoryRepo.save(productCategory)
+      productCategory = await productCategoryRepo.save(productCategory)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ProductCategoryService.Events.UPDATED, {
+          id: productCategory.id,
+        })
+
+      return productCategory
     })
   }
 
@@ -173,6 +202,12 @@ class ProductCategoryService extends TransactionBaseService {
       }
 
       await productCategoryRepository.delete(productCategory.id)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(ProductCategoryService.Events.DELETED, {
+          id: productCategory.id
+        })
     })
   }
 }
