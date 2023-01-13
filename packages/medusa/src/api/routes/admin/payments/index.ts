@@ -4,17 +4,15 @@ import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import OrderEditingFeatureFlag from "../../../../loaders/feature-flags/order-editing"
-import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
+import { Payment, Refund } from "../../../../models"
 import { GetPaymentsParams } from "./get-payment"
 import { AdminPostPaymentRefundsReq } from "./refund-payment"
-import { Payment, Refund } from "../../../../models"
 
 const route = Router()
 
 export default (app, container) => {
-  app.use("/payments", isFeatureFlagEnabled(OrderEditingFeatureFlag.key), route)
+  app.use("/payments", route)
 
   route.get(
     "/:id",

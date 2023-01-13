@@ -1,7 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
-import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 
 describe("GET /store/order-edits/:id/complete", () => {
   describe("successfully complete an order edit", () => {
@@ -12,9 +11,6 @@ describe("GET /store/order-edits/:id/complete", () => {
       subject = await request(
         "POST",
         `/store/order-edits/${orderEditId}/complete`,
-        {
-          flags: [OrderEditingFeatureFlag],
-        }
       )
     })
 
@@ -44,7 +40,6 @@ describe("GET /store/order-edits/:id/complete", () => {
         "POST",
         `/store/order-edits/${orderEditId}/complete`,
         {
-          flags: [OrderEditingFeatureFlag],
           clientSession: {
             jwt: {
               user: IdMap.getId("lebron"),
