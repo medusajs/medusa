@@ -266,7 +266,7 @@ class TaxProviderService extends TransactionBaseService {
         if (l.variant_id && !l.variant) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Unable to get tax lines. The item ${l.id} contains a variant_id but the variant is not join.`
+            `Unable to get the tax lines for the item ${l.id}, it contains a variant_id but the variant is missing.`
           )
         }
 
