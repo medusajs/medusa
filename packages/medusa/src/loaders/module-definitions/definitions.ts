@@ -1,4 +1,8 @@
-import { ModuleDefinition } from "../../types/global"
+import {
+  ModuleDefinition,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
+} from "../../types/global"
 
 export const MODULE_DEFINITIONS: ModuleDefinition[] = [
   {
@@ -24,6 +28,10 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     label: "StockLocationService",
     isRequired: false,
     canOverride: true,
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
   },
   {
     key: "inventoryService",
@@ -32,6 +40,10 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     label: "InventoryService",
     isRequired: false,
     canOverride: true,
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
   },
 ]
 

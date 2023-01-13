@@ -38,19 +38,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted customer group.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: customer_group
- *             deleted:
- *               type: boolean
- *               description: Whether the customer group was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminCustomerGroupsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

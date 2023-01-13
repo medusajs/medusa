@@ -1,15 +1,25 @@
 import { asFunction, asValue } from "awilix"
 import { trackInstallation } from "medusa-telemetry"
-import { LoaderOptions } from "../types/global"
+import {
+  ClassConstructor,
+  ConfigModule,
+  LoaderOptions,
+  Logger,
+  MedusaContainer,
+  ModuleExports,
+  ModuleResolution,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
+} from "../types/global"
 import { ModulesHelper } from "../utils/module-helper"
 
 export const moduleHelper = new ModulesHelper()
 
 const registerModule = async (
-  container,
-  resolution,
-  configModule,
-  logger
+  container: MedusaContainer,
+  resolution: ModuleResolution,
+  configModule: ConfigModule,
+  logger: Logger
 ): Promise<{ error?: Error } | void> => {
   if (!resolution.resolutionPath) {
     container.register({
@@ -19,9 +29,9 @@ const registerModule = async (
     return
   }
 
-  let loadedModule
+  let loadedModule: ModuleExports
   try {
-    loadedModule = await import(resolution.resolutionPath!)
+    loadedModule = (await import(resolution.resolutionPath!)).default
   } catch (error) {
     return { error }
   }
@@ -36,15 +46,41 @@ const registerModule = async (
     }
   }
 
+  if (
+    resolution.moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
+    resolution.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.SHARED
+  ) {
+    const moduleModels = loadedModule?.models || null
+    if (moduleModels) {
+      moduleModels.map((val: ClassConstructor<unknown>) => {
+        container.registerAdd("db_entities", asValue(val))
+      })
+    }
+  }
+
+  // TODO: "cradle" should only contain dependent Modules and the EntityManager if module scope is shared
+  container.register({
+    [resolution.definition.registrationName]: asFunction((cradle) => {
+      return new moduleService(
+        cradle,
+        resolution.options,
+        resolution.moduleDeclaration
+      )
+    }).singleton(),
+  })
+
   const moduleLoaders = loadedModule?.loaders || []
   try {
     for (const loader of moduleLoaders) {
-      await loader({
-        container,
-        configModule,
-        logger,
-        options: resolution.options,
-      })
+      await loader(
+        {
+          container,
+          configModule,
+          logger,
+          options: resolution.options,
+        },
+        resolution.moduleDeclaration
+      )
     }
   } catch (err) {
     return {
@@ -53,12 +89,6 @@ const registerModule = async (
       ),
     }
   }
-
-  container.register({
-    [resolution.definition.registrationName]: asFunction(
-      (cradle) => new moduleService(cradle, resolution.options)
-    ).singleton(),
-  })
 
   trackInstallation(
     {
@@ -81,18 +111,18 @@ export default async ({
       container,
       resolution,
       configModule,
-      logger
+      logger!
     )
     if (registrationResult?.error) {
       const { error } = registrationResult
       if (resolution.definition.isRequired) {
-        logger.warn(
+        logger?.warn(
           `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}`
         )
         throw error
       }
 
-      logger.warn(
+      logger?.warn(
         `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}`
       )
     }
