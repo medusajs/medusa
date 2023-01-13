@@ -1,13 +1,13 @@
 import { EntityManager } from "typeorm"
 
-import { IInventoryService } from "../interfaces/services"
+import { IEventBusService, IInventoryService } from "../interfaces/services"
 
-import { SalesChannelLocationService, EventBusService } from "./"
+import { SalesChannelLocationService } from "./"
 
 type InjectedDependencies = {
   inventoryService: IInventoryService
   salesChannelLocationService: SalesChannelLocationService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   manager: EntityManager
 }
 
@@ -15,7 +15,7 @@ class SalesChannelInventoryService {
   protected manager_: EntityManager
 
   protected readonly salesChannelLocationService_: SalesChannelLocationService
-  protected readonly eventBusService_: EventBusService
+  protected readonly eventBusService_: IEventBusService
   protected readonly inventoryService_: IInventoryService
 
   constructor({

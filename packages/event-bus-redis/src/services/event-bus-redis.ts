@@ -1,6 +1,6 @@
 import {
   ConfigModule, IEventBusService,
-  Logger, StagedJob, TransactionBaseService
+  Logger, StagedJob
 } from "@medusajs/medusa"
 import { StagedJobRepository } from "@medusajs/medusa/dist/repositories/staged-job"
 import Bull from "bull"
@@ -53,7 +53,7 @@ type EmitOptions = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class RedisEventBusService extends TransactionBaseService implements IEventBusService {
+export default class RedisEventBusService implements IEventBusService {
   protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager
   protected readonly logger_: Logger

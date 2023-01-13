@@ -1,19 +1,18 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, DeepPartial } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { EntityManager } from "typeorm"
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import { FindConfig, Selector, QuerySelector } from "../types/common"
-import { buildQuery } from "../utils"
-import { EventBusService } from "."
+import { FindConfig, QuerySelector } from "../types/common"
 import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
 } from "../types/product-category"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   productCategoryRepository: typeof ProductCategoryRepository
 }
 
@@ -22,7 +21,7 @@ type InjectedDependencies = {
  */
 class ProductCategoryService extends TransactionBaseService {
   protected readonly productCategoryRepo_: typeof ProductCategoryRepository
-  protected readonly eventBusService_: EventBusService
+  protected readonly eventBusService_: IEventBusService
   protected transactionManager_: EntityManager | undefined
   protected manager_: EntityManager
 
@@ -133,7 +132,7 @@ class ProductCategoryService extends TransactionBaseService {
       await this.eventBusService_
         .withTransaction(manager)
         .emit(ProductCategoryService.Events.CREATED, {
-          id: productCategory.id
+          id: productCategory.id,
         })
 
       return productCategory
@@ -206,7 +205,7 @@ class ProductCategoryService extends TransactionBaseService {
       await this.eventBusService_
         .withTransaction(manager)
         .emit(ProductCategoryService.Events.DELETED, {
-          id: productCategory.id
+          id: productCategory.id,
         })
     })
   }

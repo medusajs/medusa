@@ -13,8 +13,5 @@ export interface IEventBusService extends TransactionBaseService {
     options?: unknown
   ): Promise<StagedJob | void>
 
-  subscribe<T>(
-    eventName: string,
-    handler: EventHandler
-  ): this | Promise<void | unknown>
+  subscribe<T>(eventName: string, handler: EventHandler): this
 }

@@ -12,6 +12,10 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     label: "EventBusService",
     canOverride: true,
     isRequired: true,
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
   },
   {
     key: "backgroundJob",
@@ -20,6 +24,10 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     label: "BackgroundJobService",
     canOverride: true,
     isRequired: false,
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
   },
   {
     key: "stockLocationService",
