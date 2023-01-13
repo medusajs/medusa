@@ -14,6 +14,9 @@ import {
   InventoryItemDTO,
   ReservationItemDTO,
   InventoryLevelDTO,
+  TransactionBaseService,
+  ConfigurableModuleDeclaration,
+  MODULE_RESOURCE_TYPE,
 } from "@medusajs/medusa"
 
 import {
@@ -21,26 +24,52 @@ import {
   ReservationItemService,
   InventoryLevelService,
 } from "./"
+import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
+  manager: EntityManager
   eventBusService: IEventBusService
 }
 
-export default class InventoryService implements IInventoryService {
+export default class InventoryService
+  extends TransactionBaseService
+  implements IInventoryService
+{
   protected readonly eventBusService_: IEventBusService
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
   protected readonly inventoryLevelService_: InventoryLevelService
 
-  constructor({ eventBusService }: InjectedDependencies) {
-    this.eventBusService_ = eventBusService
+  constructor(
+    { eventBusService, manager }: InjectedDependencies,
+    options?: unknown,
+    moduleDeclaration?: ConfigurableModuleDeclaration
+  ) {
+    super(arguments[0])
 
-    this.inventoryItemService_ = new InventoryItemService({ eventBusService })
+    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "At the moment this module can only be used with shared resources"
+      )
+    }
+
+    this.eventBusService_ = eventBusService
+    this.manager_ = manager
+
+    this.inventoryItemService_ = new InventoryItemService({
+      eventBusService,
+      manager,
+    })
     this.inventoryLevelService_ = new InventoryLevelService({
       eventBusService,
+      manager,
     })
     this.reservationItemService_ = new ReservationItemService({
       eventBusService,
+      manager,
       inventoryLevelService: this.inventoryLevelService_,
     })
   }

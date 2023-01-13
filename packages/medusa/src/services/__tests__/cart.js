@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { asClass, asValue, createContainer } from "awilix"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { FlagRouter } from "../../utils/flag-router"
@@ -8,6 +9,18 @@ import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { PaymentSessionStatus } from "../../models"
+import { NewTotalsService, TaxProviderService } from "../index"
+import { cacheServiceMock } from "../__mocks__/cache"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import { ProductServiceMock } from "../__mocks__/product"
+import { ProductVariantServiceMock } from "../__mocks__/product-variant"
+import { RegionServiceMock } from "../__mocks__/region"
+import { LineItemServiceMock } from "../__mocks__/line-item"
+import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
+import { CustomerServiceMock } from "../__mocks__/customer"
+import TaxCalculationStrategy from "../../strategies/tax-calculation"
+import SystemTaxService from "../system-tax"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -2510,6 +2523,98 @@ describe("CartService", () => {
           },
         ],
       })
+    })
+  })
+
+  describe("decorateTotals integration", () => {
+    const legacyTotalServiceMock = {
+      ...totalsService,
+      getCalculationContext: () => ({
+        shipping_methods: [],
+        region: {
+          tax_rate: 10,
+          currency_code: "eur",
+        },
+        allocation_map: {},
+      }),
+    }
+    // TODO: extract that to a fixture to be used in this file in the rest of the tests. Needs some update on the registration
+    // as it is for now adapted to this case
+    const container = createContainer()
+    container
+      .register("manager", asValue(MockManager))
+      .register("paymentSessionRepository", asValue(MockRepository({})))
+      .register("addressRepository", asValue(MockRepository({})))
+      .register("cartRepository", asValue(MockRepository({})))
+      .register("lineItemRepository", asValue(MockRepository({})))
+      .register("shippingMethodRepository", asValue(MockRepository({})))
+      .register("paymentProviderService", asValue(PaymentProviderServiceMock))
+      .register("productService", asValue(ProductServiceMock))
+      .register("productVariantService", asValue(ProductVariantServiceMock))
+      .register("regionService", asValue(RegionServiceMock))
+      .register("lineItemService", asValue(LineItemServiceMock))
+      .register("shippingOptionService", asValue(ShippingOptionServiceMock))
+      .register("customerService", asValue(CustomerServiceMock))
+      .register("discountService", asValue({}))
+      .register("giftCardService", asValue({}))
+      .register("totalsService", asValue(legacyTotalServiceMock))
+      .register("customShippingOptionService", asValue({}))
+      .register("lineItemAdjustmentService", asValue({}))
+      .register("priceSelectionStrategy", asValue({}))
+      .register("productVariantInventoryService", asValue({}))
+      .register("salesChannelService", asValue({}))
+      .register("storeService", asValue({}))
+      .register("featureFlagRouter", asValue(new FlagRouter({})))
+      .register("taxRateService", asValue({}))
+      .register("systemTaxService", asValue(new SystemTaxService()))
+      .register("tp_test", asValue("good"))
+      .register("cacheService", asValue(cacheServiceMock))
+      .register("taxProviderRepository", asValue(MockRepository))
+      .register(
+        "lineItemTaxLineRepository",
+        asValue(MockRepository({ create: (d) => d }))
+      )
+      .register("shippingMethodTaxLineRepository", asValue(MockRepository))
+      .register("eventBusService", asValue(EventBusServiceMock))
+      // Register the real class for the service below to do the integration tests
+      .register("taxCalculationStrategy", asClass(TaxCalculationStrategy))
+      .register("taxProviderService", asClass(TaxProviderService))
+      .register("newTotalsService", asClass(NewTotalsService))
+      .register("cartService", asClass(CartService))
+
+    const cartService = container.resolve("cartService")
+
+    it("should decorate totals with a cart containing custom items", async () => {
+      const cart = {
+        id: IdMap.getId("cartWithPaySessions"),
+        region_id: IdMap.getId("testRegion"),
+        items: [
+          {
+            id: IdMap.getId("existingLine"),
+            title: "merge line",
+            description: "This is a new line",
+            thumbnail: "test-img-yeah.com/thumb",
+            variant_id: null,
+            unit_price: 100,
+            quantity: 10,
+          },
+        ],
+        shipping_address: {},
+        billing_address: {},
+        discounts: [],
+        region: {
+          tax_rate: 10,
+          currency_code: "eur",
+        },
+        gift_cards: [],
+      }
+
+      const totals = await cartService.decorateTotals(cart, {
+        force_taxes: true,
+      })
+
+      expect(totals.total).toEqual(1000)
+      expect(totals.subtotal).toEqual(1000)
     })
   })
 })
