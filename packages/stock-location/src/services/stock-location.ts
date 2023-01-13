@@ -202,13 +202,11 @@ export default class StockLocationService extends TransactionBaseService {
         }
       }
 
-      const metadata = updateData.metadata
-        ? setMetadata(item, updateData.metadata)
-        : null
+      const { metadata, ...fields } = updateData
 
-      const toSave = locationRepo.merge(item, data)
+      const toSave = locationRepo.merge(item, fields)
       if (metadata) {
-        toSave.metadata = metadata
+        toSave.metadata = setMetadata(toSave, metadata)
       }
 
       await locationRepo.save(toSave)
@@ -254,13 +252,11 @@ export default class StockLocationService extends TransactionBaseService {
         )
       }
 
-      const metadata = address.metadata
-        ? setMetadata(existingAddress, address.metadata)
-        : null
+      const { metadata, ...fields } = address
 
-      const toSave = locationAddressRepo.merge(existingAddress, address)
+      const toSave = locationAddressRepo.merge(existingAddress, fields)
       if (metadata) {
-        toSave.metadata = metadata
+        toSave.metadata = setMetadata(toSave, metadata)
       }
 
       return await locationAddressRepo.save(toSave)
