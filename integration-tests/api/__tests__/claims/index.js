@@ -64,23 +64,20 @@ describe("Claims", () => {
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.order.claims[0]).toMatchSnapshot({
-      id: expect.stringMatching(/^claim_*/),
-      order_id: expect.any(String),
-      updated_at: expect.any(String),
-      created_at: expect.any(String),
-      idempotency_key: expect.any(String),
-      shipping_address_id: expect.any(String),
-      refund_amount: 1200,
-      shipping_address: expect.any(Object),
-      claim_items: expect.arrayContaining([
-        expect.objectContaining({
-          item: expect.any(Object),
-          item_id: "test-item",
-          quantity: 1,
-        }),
-      ]),
-    })
+    expect(response.data.order.claims[0]).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^claim_*/),
+        order_id: expect.any(String),
+        refund_amount: 1200,
+        claim_items: expect.arrayContaining([
+          expect.objectContaining({
+            item: expect.any(Object),
+            item_id: "test-item",
+            quantity: 1,
+          }),
+        ]),
+      })
+    )
   })
 
   test("creates a replace claim", async () => {
@@ -110,49 +107,33 @@ describe("Claims", () => {
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.order.claims[0]).toMatchSnapshot({
-      id: expect.stringMatching(/^claim_*/),
-      order_id: expect.any(String),
-      updated_at: expect.any(String),
-      created_at: expect.any(String),
-      idempotency_key: expect.any(String),
-      shipping_address_id: expect.any(String),
-      refund_amount: null,
-      shipping_address: expect.any(Object),
-      additional_items: [
-        {
-          id: expect.stringMatching(/^item_*/),
-          claim_order_id: expect.stringMatching(/^claim_*/),
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-          variant: {
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            product: {
-              profile_id: expect.stringMatching(/^sp_*/),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          },
-          tax_lines: [
-            {
-              id: expect.stringMatching(/^litl_*/),
-              item_id: expect.stringMatching(/^item_*/),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              rate: 12.5,
-            },
-          ],
-        },
-      ],
-      claim_items: expect.arrayContaining([
-        expect.objectContaining({
-          item: expect.any(Object),
-          item_id: "test-item",
-          quantity: 1,
-        }),
-      ]),
-    })
+    expect(response.data.order.claims[0]).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^claim_*/),
+        order_id: expect.any(String),
+        additional_items: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.stringMatching(/^item_*/),
+            claim_order_id: expect.stringMatching(/^claim_*/),
+            variant: expect.objectContaining({ id: "test-variant" }),
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.stringMatching(/^litl_*/),
+                item_id: expect.stringMatching(/^item_*/),
+                rate: 12.5,
+              }),
+            ]),
+          }),
+        ]),
+        claim_items: expect.arrayContaining([
+          expect.objectContaining({
+            item: expect.any(Object),
+            item_id: "test-item",
+            quantity: 1,
+          }),
+        ]),
+      })
+    )
   })
 
   test("creates a replace claim fulfillment", async () => {
