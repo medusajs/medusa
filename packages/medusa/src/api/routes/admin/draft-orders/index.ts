@@ -91,16 +91,64 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
   "no_notification_order",
 ]
 
+/**
+ * @schema AdminPostDraftOrdersDraftOrderRegisterPaymentRes
+ * type: object
+ * properties:
+ *   order:
+ *     $ref: "#/components/schemas/Order"
+ */
 export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
   order: Order
 }
 
+/**
+ * @schema AdminDraftOrdersRes
+ * type: object
+ * properties:
+ *   draft_order:
+ *     $ref: "#/components/schemas/DraftOrder"
+ */
 export type AdminDraftOrdersRes = {
   draft_order: DraftOrder
 }
 
+/**
+ * @schema AdminDraftOrdersDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Draft Order.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: draft-order
+ *   deleted:
+ *     type: boolean
+ *     description: Whether the draft order was deleted successfully or not.
+ *     default: true
+ */
 export type AdminDraftOrdersDeleteRes = DeleteResponse
 
+/**
+ * @schema AdminDraftOrdersListRes
+ * type: object
+ * properties:
+ *   draft_orders:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/DraftOrder"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminDraftOrdersListRes = PaginatedResponse & {
   draft_orders: DraftOrder[]
 }

@@ -17,6 +17,7 @@ import shippingOptionRoutes from "./shipping-options"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
 import paymentCollectionRoutes from "./payment-collections"
+import productCategoryRoutes from "./product-categories"
 import { parseCorsOrigins } from "medusa-core-utils"
 
 const route = Router()
@@ -52,6 +53,7 @@ export default (app, container, config) => {
   giftCardRoutes(route)
   returnReasonRoutes(route)
   paymentCollectionRoutes(route)
+  productCategoryRoutes(route)
 
   return app
 }

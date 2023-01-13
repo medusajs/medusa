@@ -37,21 +37,7 @@ import PriceListService from "../../../../services/price-list"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *              ids:
- *               type: array
- *               description: The price ids that have been deleted.
- *               items:
- *                 type: string
- *              object:
- *                type: string
- *                description: The type of the object that was deleted.
- *                default: money-amount
- *              deleted:
- *                type: boolean
- *                description: Whether or not the items were deleted.
- *                default: true
+ *           $ref: "#/components/schemas/AdminPriceListDeleteVariantPricesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
