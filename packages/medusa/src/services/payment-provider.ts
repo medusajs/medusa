@@ -1,18 +1,12 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
+import { EntityManager } from "typeorm"
 import {
   AbstractPaymentService,
   PaymentContext,
   PaymentSessionResponse,
   TransactionBaseService,
 } from "../interfaces"
-import { EntityManager } from "typeorm"
-import { PaymentSessionRepository } from "../repositories/payment-session"
-import { PaymentRepository } from "../repositories/payment"
-import { RefundRepository } from "../repositories/refund"
-import { PaymentProviderRepository } from "../repositories/payment-provider"
-import { buildQuery, isString } from "../utils"
-import { FindConfig, Selector } from "../types/common"
 import {
   Cart,
   Payment,
@@ -21,12 +15,17 @@ import {
   PaymentSessionStatus,
   Refund,
 } from "../models"
-import { FlagRouter } from "../utils/flag-router"
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
-import PaymentService from "./payment"
+import { PaymentRepository } from "../repositories/payment"
+import { PaymentProviderRepository } from "../repositories/payment-provider"
+import { PaymentSessionRepository } from "../repositories/payment-session"
+import { RefundRepository } from "../repositories/refund"
+import { FindConfig, Selector } from "../types/common"
 import { Logger } from "../types/global"
 import { CreatePaymentInput, PaymentSessionInput } from "../types/payment"
+import { buildQuery, isString } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import { CustomerService } from "./index"
+import PaymentService from "./payment"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -414,10 +413,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       session.data = data
       session.status = status
 
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(OrderEditingFeatureFlag.key) &&
-        status === PaymentSessionStatus.AUTHORIZED
-      ) {
+      if (status === PaymentSessionStatus.AUTHORIZED) {
         session.payment_authorized_at = new Date()
       }
 

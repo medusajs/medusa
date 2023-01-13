@@ -1,9 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
-
-export const featureFlag = OrderEditingFeatureFlag.key
-
 export class paymentCollection1664880666982 implements MigrationInterface {
   name = "paymentCollection1664880666982"
 
