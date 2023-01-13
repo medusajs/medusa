@@ -121,7 +121,8 @@ export type AdminOrderEditsRes = {
  * properties:
  *   order_edits:
  *     type: array
- *     $ref: "#/components/schemas/OrderEdit"
+ *     items:
+ *       $ref: "#/components/schemas/OrderEdit"
  *   count:
  *     type: integer
  *     description: The total number of items available
