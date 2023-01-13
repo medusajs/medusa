@@ -189,7 +189,7 @@ export default class StockLocationService extends TransactionBaseService {
 
       const item = await this.retrieve(stockLocationId)
 
-      const { address, metadata, ...data } = updateData
+      const { address, ...data } = updateData
 
       if (address) {
         if (item.address_id) {
@@ -202,11 +202,15 @@ export default class StockLocationService extends TransactionBaseService {
         }
       }
 
-      if (metadata) {
-        item.metadata = setMetadata(item, metadata)
-      }
+      const metadata = updateData.metadata
+        ? setMetadata(item, updateData.metadata)
+        : null
 
       const toSave = locationRepo.merge(item, data)
+      if (metadata) {
+        toSave.metadata = metadata
+      }
+
       await locationRepo.save(toSave)
 
       await this.eventBusService_
@@ -250,11 +254,13 @@ export default class StockLocationService extends TransactionBaseService {
         )
       }
 
-      const toSave = locationAddressRepo.merge(existingAddress, address)
+      const metadata = address.metadata
+        ? setMetadata(existingAddress, address.metadata)
+        : null
 
-      const { metadata } = address
+      const toSave = locationAddressRepo.merge(existingAddress, address)
       if (metadata) {
-        toSave.metadata = setMetadata(toSave, metadata)
+        toSave.metadata = metadata
       }
 
       return await locationAddressRepo.save(toSave)
