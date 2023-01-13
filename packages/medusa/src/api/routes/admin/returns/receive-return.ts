@@ -5,7 +5,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { OrderService, ReturnService, SwapService } from "../../../../services"
+import {
+  OrderService,
+  ProductVariantInventoryService,
+  ReturnService,
+  SwapService,
+} from "../../../../services"
 
 import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
@@ -23,27 +28,7 @@ import { isDefined } from "medusa-core-utils"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - items
- *         properties:
- *           items:
- *             description: The Line Items that have been received.
- *             type: array
- *             items:
- *               required:
- *                 - item_id
- *                 - quantity
- *               properties:
- *                 item_id:
- *                   description: The ID of the Line Item.
- *                   type: string
- *                 quantity:
- *                   description: The quantity of the Line Item.
- *                   type: integer
- *           refund:
- *             description: The amount to refund.
- *             type: number
+ *         $ref: "#/components/schemas/AdminPostReturnsReturnReceiveReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -118,13 +103,15 @@ export default async (req, res) => {
   await entityManager.transaction(async (manager) => {
     let refundAmount = validated.refund
 
-    if (isDefined(validated.refund) && validated.refund < 0) {
+    if (isDefined(validated.refund) && validated.refund! < 0) {
       refundAmount = 0
     }
 
     receivedReturn = await returnService
       .withTransaction(manager)
-      .receive(id, validated.items, refundAmount, true)
+      .receive(id, validated.items, refundAmount, true, {
+        locationId: validated.location_id,
+      })
 
     if (receivedReturn.order_id) {
       await orderService
@@ -156,6 +143,30 @@ class Item {
   quantity: number
 }
 
+/**
+ * @schema AdminPostReturnsReturnReceiveReq
+ * type: object
+ * required:
+ *   - items
+ * properties:
+ *   items:
+ *     description: The Line Items that have been received.
+ *     type: array
+ *     items:
+ *       required:
+ *         - item_id
+ *         - quantity
+ *       properties:
+ *         item_id:
+ *           description: The ID of the Line Item.
+ *           type: string
+ *         quantity:
+ *           description: The quantity of the Line Item.
+ *           type: integer
+ *   refund:
+ *     description: The amount to refund.
+ *     type: number
+ */
 export class AdminPostReturnsReturnReceiveReq {
   @IsArray()
   @ValidateNested({ each: true })
@@ -165,4 +176,8 @@ export class AdminPostReturnsReturnReceiveReq {
   @IsOptional()
   @IsNumber()
   refund?: number
+
+  @IsOptional()
+  @IsString()
+  location_id?: string
 }

@@ -11,7 +11,7 @@ import {
 /**
  * @oas [post] /order-edits/{id}
  * operationId: "PostOrderEditsOrderEdit"
- * summary: "Updates an OrderEdit"
+ * summary: "Update an OrderEdit"
  * description: "Updates a OrderEdit."
  * x-authenticated: true
  * parameters:
@@ -20,11 +20,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           internal_note:
- *             description: An optional note to create or update for the order edit.
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostOrderEditsOrderEditReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -103,6 +99,14 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ order_edit: orderEdit })
 }
 
+/**
+ * @schema AdminPostOrderEditsOrderEditReq
+ * type: object
+ * properties:
+ *   internal_note:
+ *     description: An optional note to create or update for the order edit.
+ *     type: string
+ */
 export class AdminPostOrderEditsOrderEditReq {
   @IsOptional()
   @IsString()

@@ -115,6 +115,18 @@ export default async ({
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
+  const stratActivity = Logger.activity(`Initializing strategies${EOL}`)
+  track("STRATEGIES_INIT_STARTED")
+  strategiesLoader({ container, configModule, isTest })
+  const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
+  track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
+
+  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
+  track("MODULES_INIT_STARTED")
+  await moduleLoader({ container, configModule, logger: Logger })
+  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
+  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
+
   const dbActivity = Logger.activity(`Initializing database${EOL}`)
   track("DATABASE_INIT_STARTED")
   const dbConnection = await databaseLoader({
@@ -125,12 +137,6 @@ export default async ({
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
 
   container.register({ manager: asValue(dbConnection.manager) })
-
-  const stratActivity = Logger.activity(`Initializing strategies${EOL}`)
-  track("STRATEGIES_INIT_STARTED")
-  strategiesLoader({ container, configModule, isTest })
-  const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
-  track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
@@ -190,12 +196,6 @@ export default async ({
   const searchAct =
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
-
-  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
-  track("MODULES_INIT_STARTED")
-  await moduleLoader({ container, configModule, logger: Logger })
-  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
-  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
   return { container, dbConnection, app: expressApp }
 }

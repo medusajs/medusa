@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
 import {
   defaultStoreOrderEditFields,
-  defaultStoreOrderEditRelations,
+  defaultStoreOrderEditRelations
 } from "../../../../types/order-edit"
 
 /**
@@ -18,11 +18,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           declined_reason:
- *             type: string
- *             description: The reason for declining the OrderEdit.
+ *         $ref: "#/components/schemas/StorePostOrderEditsOrderEditDecline"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -74,7 +70,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (manager) => {
     await orderEditService.withTransaction(manager).decline(id, {
       declinedReason: validatedBody.declined_reason,
-      loggedInUserId: userId,
+      declinedBy: userId,
     })
   })
 
@@ -87,6 +83,14 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ order_edit: orderEdit })
 }
 
+/**
+ * @schema StorePostOrderEditsOrderEditDecline
+ * type: object
+ * properties:
+ *   declined_reason:
+ *     type: string
+ *     description: The reason for declining the OrderEdit.
+ */
 export class StorePostOrderEditsOrderEditDecline {
   @IsOptional()
   @IsString()

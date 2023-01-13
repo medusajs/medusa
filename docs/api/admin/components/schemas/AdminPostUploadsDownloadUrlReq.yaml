@@ -1,0 +1,7 @@
+type: object
+required:
+  - file_key
+properties:
+  file_key:
+    description: key of the file to obtain the download link for
+    type: string

@@ -1,16 +1,12 @@
 import { Request, Response } from "express"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import {
-  OrderEditService,
-  OrderService,
-  PaymentProviderService,
-} from "../../../../services"
+import { OrderEditStatus, PaymentCollectionStatus } from "../../../../models"
+import { OrderEditService, PaymentProviderService } from "../../../../services"
 import {
   defaultStoreOrderEditFields,
-  defaultStoreOrderEditRelations,
+  defaultStoreOrderEditRelations
 } from "../../../../types/order-edit"
-import { OrderEditStatus, PaymentCollectionStatus } from "../../../../models"
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /order-edits/{id}/complete
@@ -60,8 +56,6 @@ export default async (req: Request, res: Response) => {
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
 
-  const orderService: OrderService = req.scope.resolve("orderService")
-
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
   )
@@ -72,13 +66,38 @@ export default async (req: Request, res: Response) => {
 
   await manager.transaction(async (manager) => {
     const orderEditServiceTx = orderEditService.withTransaction(manager)
-    const orderServiceTx = orderService.withTransaction(manager)
     const paymentProviderServiceTx =
       paymentProviderService.withTransaction(manager)
 
     const orderEdit = await orderEditServiceTx.retrieve(id, {
       relations: ["payment_collection", "payment_collection.payments"],
     })
+
+    const allowedStatus = [OrderEditStatus.REQUESTED, OrderEditStatus.CONFIRMED]
+    if (
+      orderEdit.payment_collection &&
+      allowedStatus.includes(orderEdit.status)
+    ) {
+      if (
+        orderEdit.payment_collection.status !==
+        PaymentCollectionStatus.AUTHORIZED
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Unable to complete an order edit if the payment is not authorized"
+        )
+      }
+
+      if (orderEdit.payment_collection) {
+        for (const payment of orderEdit.payment_collection.payments) {
+          if (payment.order_id !== orderEdit.order_id) {
+            await paymentProviderServiceTx.updatePayment(payment.id, {
+              order_id: orderEdit.order_id,
+            })
+          }
+        }
+      }
+    }
 
     if (orderEdit.status === OrderEditStatus.CONFIRMED) {
       return orderEdit
@@ -91,29 +110,9 @@ export default async (req: Request, res: Response) => {
       )
     }
 
-    if (orderEdit.payment_collection) {
-      if (
-        orderEdit.payment_collection.status !==
-        PaymentCollectionStatus.AUTHORIZED
-      ) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Unable to complete an order edit if the payment is not authorized"
-        )
-      }
-    }
-
     const returned = await orderEditServiceTx.confirm(id, {
-      loggedInUserId: userId,
+      confirmedBy: userId,
     })
-
-    if (orderEdit.payment_collection) {
-      for (const payment of orderEdit.payment_collection.payments) {
-        await paymentProviderServiceTx.updatePayment(payment.id, {
-          order_id: orderEdit.order_id,
-        })
-      }
-    }
 
     return returned
   })

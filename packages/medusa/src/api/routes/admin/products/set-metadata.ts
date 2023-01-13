@@ -16,17 +16,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - key
- *           - value
- *         properties:
- *           key:
- *             description: The metadata key
- *             type: string
- *           value:
- *             description: The metadata value
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostProductsProductMetadataReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -103,6 +93,20 @@ export default async (req, res) => {
   res.status(200).json({ product })
 }
 
+/**
+ * @schema AdminPostProductsProductMetadataReq
+ * type: object
+ * required:
+ *   - key
+ *   - value
+ * properties:
+ *   key:
+ *     description: The metadata key
+ *     type: string
+ *   value:
+ *     description: The metadata value
+ *     type: string
+ */
 export class AdminPostProductsProductMetadataReq {
   @IsString()
   key: string

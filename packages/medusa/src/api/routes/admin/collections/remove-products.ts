@@ -16,16 +16,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - product_ids
- *         properties:
- *           product_ids:
- *             description: "An array of Product IDs to remove from the Product Collection."
- *             type: array
- *             items:
- *               description: "The ID of a Product to add to the Product Collection."
- *               type: string
+ *         $ref: "#/components/schemas/AdminDeleteProductsFromCollectionReq"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -49,21 +40,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            id:
- *              type: string
- *              description: "The ID of the collection"
- *            object:
- *              type: string
- *              description: "The type of object the removal was executed on"
- *              default: product-collection
- *            removed_products:
- *              description: "The IDs of the products removed from the collection"
- *              type: array
- *              items:
- *                description: "The ID of a Product to add to the Product Collection."
- *                type: string
+ *          $ref: "#/components/schemas/AdminDeleteProductsFromCollectionRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -101,6 +78,19 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * @schema AdminDeleteProductsFromCollectionReq
+ * type: object
+ * required:
+ *   - product_ids
+ * properties:
+ *   product_ids:
+ *     description: "An array of Product IDs to remove from the Product Collection."
+ *     type: array
+ *     items:
+ *       description: "The ID of a Product to add to the Product Collection."
+ *       type: string
+ */
 export class AdminDeleteProductsFromCollectionReq {
   @ArrayNotEmpty()
   @IsString({ each: true })

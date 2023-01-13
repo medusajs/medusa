@@ -4,34 +4,19 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /payment-collections/{id}/sessions/{session_id}
  * operationId: PostPaymentCollectionsPaymentCollectionPaymentSessionsSession
- * summary: Refresh a Payment Session
+ * summary: "Refresh a Payment Session"
  * description: "Refreshes a Payment Session to ensure that it is in sync with the Payment Collection."
  * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The id of the PaymentCollection.
  *   - (path) session_id=* {string} The id of the Payment Session to be refreshed.
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         required:
- *           - provider_id
- *           - customer_id
- *         properties:
- *           provider_id:
- *             description: The Payment Provider id.
- *             type: string
- *           customer_id:
- *             description: The Customer id.
- *             type: string
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.paymentCollections.refreshPaymentSession(payment_collection_id, session_id, payload)
+ *       medusa.paymentCollections.refreshPaymentSession(payment_collection_id, session_id)
  *       .then(({ payment_session }) => {
  *         console.log(payment_session.id);
  *       });

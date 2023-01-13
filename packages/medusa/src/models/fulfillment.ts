@@ -51,6 +51,9 @@ export class Fulfillment extends BaseEntity {
   @Column()
   provider_id: string
 
+  @Column({ nullable: true, type: "text" })
+  location_id: string | null
+
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
   provider: FulfillmentProvider
@@ -127,6 +130,10 @@ export class Fulfillment extends BaseEntity {
  *     description: "The id of the Fulfillment Provider responsible for handling the fulfillment"
  *     type: string
  *     example: manual
+ *   location_id:
+ *     description: "The id of the stock location the fulfillment will be shipped from"
+ *     type: string
+ *     example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   provider:
  *     description: Available if the relation `provider` is expanded.
  *     $ref: "#/components/schemas/FulfillmentProvider"

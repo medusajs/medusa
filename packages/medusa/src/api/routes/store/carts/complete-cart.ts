@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm"
 import { AbstractCartCompletionStrategy } from "../../../../interfaces"
-import { IdempotencyKey } from "../../../../models/idempotency-key"
+import { IdempotencyKey } from "../../../../models"
 import { IdempotencyKeyService } from "../../../../services"
 
 /**

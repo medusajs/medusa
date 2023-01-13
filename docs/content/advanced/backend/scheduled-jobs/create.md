@@ -8,15 +8,19 @@ Medusa allows you to create scheduled jobs that run at specific times during you
 
 This guide explains how to create a scheduled job on your Medusa server. The scheduled job in this example will simply change the status of draft products to `published`.
 
+---
+
 ## Prerequisites
 
 ### Medusa Components
 
-It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../../quickstart/quick-start.md) to get started.
+It is assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../../quickstart/quick-start.mdx) to get started.
 
 ### Redis
 
 Redis is required for scheduled jobs to work. Make sure you [install Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with your Medusa server](../../../usage/configurations.md#redis).
+
+---
 
 ## 1. Create a File
 
@@ -26,29 +30,33 @@ Start by creating the `src/loaders` directory. Then, inside that directory, crea
 
 For the example in this tutorial, you can create the file `src/loaders/publish.ts`.
 
+---
+
 ## 2. Create Cron Job
 
 To create a scheduled job, add the following code in the file you created, which is `src/loaders/publish.ts` in this example:
 
 ```ts title=src/loaders/publish.ts
 const publishJob = async (container, options) => {
-  const jobSchedulerService = container.resolve("jobSchedulerService");
-  jobSchedulerService.create("publish-products", {}, "0 0 * * *", async () => {
-    //job to execute
-    const productService = container.resolve("productService");
-    const draftProducts = await productService.list({
-      status: 'draft'
-    });
+  const jobSchedulerService = container.resolve("jobSchedulerService")
+  jobSchedulerService.create("publish-products", {}, "0 0 * * *", 
+    async () => {
+      // job to execute
+      const productService = container.resolve("productService")
+      const draftProducts = await productService.list({
+        status: "draft",
+      })
 
-    for (const product of draftProducts) {
-      await productService.update(product.id, {
-        status: 'published'
-      });
+      for (const product of draftProducts) {
+        await productService.update(product.id, {
+          status: "published",
+        })
+      }
     }
-  })
+  )
 }
 
-export default publishJob;
+export default publishJob
 ```
 
 :::info
@@ -81,13 +89,15 @@ For example:
 ```ts
 jobSchedulerService.create("publish-products", {
     data: {
-      productId
-    }
+      productId,
+    },
   }, "0 0 * * *", async (job) => {
-    console.log(job.data); // {productId: 'prod_124...'}
-    //...
-});
+    console.log(job.data) // {productId: 'prod_124...'}
+    // ...
+})
 ```
+
+---
 
 ## 3. Run Medusa Server
 
@@ -129,6 +139,8 @@ To test the previous example out instantly, you can change the scheduled job exp
 
 :::
 
-## What’s Next
+---
 
-- Learn more about [services and how you can use them](../services/overview.md).
+## See Also
+
+- [Services Overview](../services/overview.md).

@@ -1,6 +1,6 @@
 delete:
   operationId: DeleteOrderEditsOrderEditItemChange
-  summary: Delete an Order Edit Item Change
+  summary: Delete a Line Item Change
   description: Deletes an Order Edit Item Change
   x-authenticated: true
   parameters:

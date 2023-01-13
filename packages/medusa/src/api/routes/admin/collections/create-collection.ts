@@ -13,19 +13,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - title
- *         properties:
- *           title:
- *             type: string
- *             description:  The title to identify the Collection by.
- *           handle:
- *             type: string
- *             description:  An optional handle to be used in slugs, if none is provided we will kebab-case the title.
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostCollectionsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -59,10 +47,7 @@ import { EntityManager } from "typeorm"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            collection:
- *              $ref: "#/components/schemas/ProductCollection"
+ *          $ref: "#/components/schemas/AdminCollectionsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -95,6 +80,22 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ collection })
 }
 
+/**
+ * @schema AdminPostCollectionsReq
+ * type: object
+ * required:
+ *   - title
+ * properties:
+ *   title:
+ *     type: string
+ *     description:  The title to identify the Collection by.
+ *   handle:
+ *     type: string
+ *     description:  An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostCollectionsReq {
   @IsString()
   @IsNotEmpty()

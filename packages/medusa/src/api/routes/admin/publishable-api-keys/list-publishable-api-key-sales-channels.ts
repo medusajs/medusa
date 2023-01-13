@@ -7,7 +7,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
 /**
  * @oas [get] /publishable-api-keys/{id}/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
- * summary: "List PublishableApiKey's SalesChannels"
+ * summary: "List SalesChannels"
  * description: "List PublishableApiKey's SalesChannels"
  * x-authenticated: true
  * parameters:
@@ -21,13 +21,13 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.listSalesChannels()
- *         .then(({ sales_channels, limit, offset, count }) => {
- *           console.log(sales_channels)
+ *         .then(({ sales_channels }) => {
+ *           console.log(sales_channels.length)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/pk_123/sales-channels' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/sales-channels' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

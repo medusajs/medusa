@@ -82,7 +82,7 @@ get:
               notifications:
                 type: array
                 items:
-                  $ref: ../components/schemas/notification.yaml
+                  $ref: ../components/schemas/Notification.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

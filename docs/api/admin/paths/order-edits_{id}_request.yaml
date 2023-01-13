@@ -1,6 +1,6 @@
 post:
   operationId: PostOrderEditsOrderEditRequest
-  summary: Request order edit confirmation
+  summary: Request Confirmation
   description: Request customer confirmation of an Order Edit
   x-authenticated: true
   parameters:
@@ -33,7 +33,7 @@ post:
             type: object
             properties:
               order_edit:
-                $ref: ../components/schemas/order_edit.yaml
+                $ref: ../components/schemas/OrderEdit.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

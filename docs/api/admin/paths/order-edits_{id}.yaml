@@ -1,7 +1,7 @@
 delete:
   operationId: DeleteOrderEditsOrderEdit
   summary: Delete an Order Edit
-  description: Deletes an Order Edit
+  description: Delete an Order Edit
   x-authenticated: true
   parameters:
     - in: path
@@ -47,7 +47,7 @@ delete:
       $ref: ../components/responses/400_error.yaml
 get:
   operationId: GetOrderEditsOrderEdit
-  summary: Retrieve an OrderEdit
+  summary: Get an OrderEdit
   description: Retrieves a OrderEdit.
   x-authenticated: true
   parameters:
@@ -90,7 +90,7 @@ get:
             type: object
             properties:
               order_edit:
-                $ref: ../components/schemas/order_edit.yaml
+                $ref: ../components/schemas/OrderEdit.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -105,7 +105,7 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostOrderEditsOrderEdit
-  summary: Updates an OrderEdit
+  summary: Update an OrderEdit
   description: Updates a OrderEdit.
   x-authenticated: true
   parameters:
@@ -119,11 +119,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            internal_note:
-              description: An optional note to create or update for the order edit.
-              type: string
+          $ref: ../components/schemas/AdminPostOrderEditsOrderEditReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -147,7 +143,7 @@ post:
             type: object
             properties:
               order_edit:
-                $ref: ../components/schemas/order_edit.yaml
+                $ref: ../components/schemas/OrderEdit.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

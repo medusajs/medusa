@@ -1,0 +1,16 @@
+type: object
+required:
+  - user
+  - role
+properties:
+  user:
+    description: The email for the user to be created.
+    type: string
+    format: email
+  role:
+    description: The role of the user to be created.
+    type: string
+    enum:
+      - admin
+      - member
+      - developer

@@ -10,7 +10,7 @@ import {
 /**
  * @oas [post] /order-edits/{id}/items/{item_id}
  * operationId: "PostOrderEditsEditLineItemsLineItem"
- * summary: "Create or update the order edit change holding the line item changes"
+ * summary: "Upsert Line Item Change"
  * description: "Create or update the order edit change holding the line item changes"
  * x-authenticated: true
  * parameters:
@@ -20,13 +20,7 @@ import {
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - quantity
- *         properties:
- *           quantity:
- *             description: The quantity to update
- *             type: number
+ *         $ref: "#/components/schemas/AdminPostOrderEditsEditLineItemsLineItemReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -103,6 +97,16 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * @schema AdminPostOrderEditsEditLineItemsLineItemReq
+ * type: object
+ * required:
+ *   - quantity
+ * properties:
+ *   quantity:
+ *     description: The quantity to update
+ *     type: number
+ */
 export class AdminPostOrderEditsEditLineItemsLineItemReq {
   @IsNumber()
   quantity: number

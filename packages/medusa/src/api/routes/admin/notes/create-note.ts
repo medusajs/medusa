@@ -14,21 +14,7 @@ import { EntityManager } from "typeorm"
  *  content:
  *    application/json:
  *      schema:
- *        type: object
- *        required:
- *          - resource_id
- *          - resource_type
- *          - value
- *        properties:
- *          resource_id:
- *            type: string
- *            description: The ID of the resource which the Note relates to.
- *          resource_type:
- *            type: string
- *            description: The type of resource which the Note relates to.
- *          value:
- *            type: string
- *            description: The content of the Note to create.
+ *        $ref: "#/components/schemas/AdminPostNotesReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -104,6 +90,24 @@ export default async (req, res) => {
   res.status(200).json({ note: result })
 }
 
+/**
+ * @schema AdminPostNotesReq
+ * type: object
+ * required:
+ *   - resource_id
+ *   - resource_type
+ *   - value
+ * properties:
+ *   resource_id:
+ *     type: string
+ *     description: The ID of the resource which the Note relates to.
+ *   resource_type:
+ *     type: string
+ *     description: The type of resource which the Note relates to.
+ *   value:
+ *     type: string
+ *     description: The content of the Note to create.
+ */
 export class AdminPostNotesReq {
   @IsString()
   @IsNotEmpty()
