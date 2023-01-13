@@ -36,19 +36,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Discount
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: discount
- *             deleted:
- *               type: boolean
- *               description: Whether the discount was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminDiscountsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

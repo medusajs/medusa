@@ -13,16 +13,6 @@ import { defaultAdminProductCategoryRelations } from "."
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category
  * x-codeSamples:
- *   - lang: JavaScript
- *     label: JS Client
- *     source: |
- *       import Medusa from "@medusajs/medusa-js"
- *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.retrieve("pcat-id")
- *       .then(({ productCategory }) => {
- *         console.log(productCategory.id);
- *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -32,7 +22,7 @@ import { defaultAdminProductCategoryRelations } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Category
+ *   - Product Category
  * responses:
  *  "200":
  *    description: OK
@@ -41,7 +31,7 @@ import { defaultAdminProductCategoryRelations } from "."
  *        schema:
  *          type: object
  *          properties:
- *            productCategory:
+ *            product_category:
  *              $ref: "#/components/schemas/ProductCategory"
  *  "400":
  *    $ref: "#/components/responses/400_error"
