@@ -1,10 +1,9 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
-import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 import {
   defaultStoreOrderEditFields,
-  defaultStoreOrderEditRelations,
+  defaultStoreOrderEditRelations
 } from "../../../../../types/order-edit"
 
 describe("GET /store/order-edits/:id", () => {
@@ -13,9 +12,7 @@ describe("GET /store/order-edits/:id", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request("GET", `/store/order-edits/${orderEditId}`, {
-        flags: [OrderEditingFeatureFlag],
-      })
+      subject = await request("GET", `/store/order-edits/${orderEditId}`)
     })
 
     afterAll(() => {

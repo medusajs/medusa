@@ -6,42 +6,35 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany,
+  OneToMany
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { generateEntityId } from "../utils"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItemAdjustment } from "./line-item-adjustment"
 import { LineItemTaxLine } from "./line-item-tax-line"
 import { Order } from "./order"
+import { OrderEdit } from "./order-edit"
 import { ProductVariant } from "./product-variant"
 import { Swap } from "./swap"
-import { generateEntityId } from "../utils"
-import {
-  FeatureFlagClassDecorators,
-  FeatureFlagColumn,
-  FeatureFlagDecorators,
-} from "../utils/feature-flag-decorators"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
-import { OrderEdit } from "./order-edit"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
 @Check(`"returned_quantity" <= "quantity"`)
 @Check(`"quantity" > 0`)
-@FeatureFlagClassDecorators(OrderEditingFeatureFlag.key, [
-  Index(
-    "unique_li_original_item_id_order_edit_id",
-    ["order_edit_id", "original_item_id"],
-    {
-      unique: true,
-      where: "WHERE original_item_id IS NOT NULL AND order_edit_id IS NOT NULL",
-    }
-  ),
-])
+@Index(
+  "unique_li_original_item_id_order_edit_id",
+  ["order_edit_id", "original_item_id"],
+  {
+    unique: true,
+    where: "original_item_id IS NOT NULL AND order_edit_id IS NOT NULL",
+  }
+)
 @Entity()
 export class LineItem extends BaseEntity {
   @Index()
@@ -84,25 +77,14 @@ export class LineItem extends BaseEntity {
   })
   adjustments: LineItemAdjustment[]
 
-  @FeatureFlagColumn(OrderEditingFeatureFlag.key, {
-    nullable: true,
-    type: "varchar",
-  })
+  @Column({ nullable: true, type: "varchar" })
   original_item_id?: string | null
 
-  @FeatureFlagColumn(OrderEditingFeatureFlag.key, {
-    nullable: true,
-    type: "varchar",
-  })
+  @Column({ nullable: true, type: "varchar" })
   order_edit_id?: string | null
 
-  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
-    ManyToOne(
-      () => OrderEdit,
-      (orderEdit) => orderEdit.items
-    ),
-    JoinColumn({ name: "order_edit_id" }),
-  ])
+  @ManyToOne(() => OrderEdit, (orderEdit) => orderEdit.items)
+  @JoinColumn({ name: "order_edit_id" })
   order_edit?: OrderEdit | null
 
   @Column()
