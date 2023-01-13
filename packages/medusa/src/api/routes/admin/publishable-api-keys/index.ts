@@ -80,12 +80,46 @@ export default (app) => {
   )
 }
 
+/**
+ * @schema AdminPublishableApiKeysRes
+ * type: object
+ * properties:
+ *   publishable_api_key:
+ *     $ref: "#/components/schemas/PublishableApiKey"
+ */
 export type AdminPublishableApiKeysRes = {
   publishable_api_key: PublishableApiKey
 }
+
+/**
+ * @schema AdminPublishableApiKeysListRes
+ * type: object
+ * properties:
+ *   publishable_api_keys:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/PublishableApiKey"
+ */
 export type AdminPublishableApiKeysListRes = PaginatedResponse & {
   publishable_api_keys: PublishableApiKey[]
 }
+
+/**
+ * @schema AdminPublishableApiKeyDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted PublishableApiKey.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: publishable_api_key
+ *   deleted:
+ *     type: boolean
+ *     description: Whether the PublishableApiKeys was deleted.
+ *     default: true
+ */
 export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 
 export * from "./add-channels-batch"

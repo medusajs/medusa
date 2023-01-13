@@ -37,22 +37,7 @@ import RegionService from "../../../../services/region"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             fulfillment_options:
- *               type: array
- *               items:
- *                 properties:
- *                   provider_id:
- *                     type: string
- *                     description: ID of the fulfillment provider
- *                   options:
- *                     type: array
- *                     description: fulfillment provider options
- *                     example:
- *                       - id: "manual-fulfillment"
- *                       - id: "manual-fulfillment-return"
- *                         is_return: true
+ *           $ref: "#/components/schemas/AdminGetRegionsRegionFulfillmentOptionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
