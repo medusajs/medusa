@@ -4,11 +4,11 @@ import { PaymentCollectionType } from "../../../../models"
 import {
   OrderEditService,
   OrderService,
-  PaymentCollectionService
+  PaymentCollectionService,
 } from "../../../../services"
 import {
   defaultOrderEditFields,
-  defaultOrderEditRelations
+  defaultOrderEditRelations,
 } from "../../../../types/order-edit"
 
 /**
@@ -46,10 +46,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/OrderEdit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
