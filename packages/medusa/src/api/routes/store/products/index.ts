@@ -31,7 +31,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
       // defaultFields: defaultStoreProductsFields,
-      // allowedFields: allowedStoreProductsFields,
+      allowedFields: allowedStoreProductsFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-products").default)

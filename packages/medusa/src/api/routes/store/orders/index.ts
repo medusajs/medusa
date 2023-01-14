@@ -37,8 +37,8 @@ export default (app) => {
     "/:id",
     transformQuery(StoreGetOrderParams, {
       defaultFields: defaultStoreOrdersFields,
-      defaultRelations: defaultStoreOrdersRelations,
-      allowedFields: allowedStoreOrdersFields,
+      // defaultRelations: defaultStoreOrdersRelations,
+      // allowedFields: allowedStoreOrdersFields,
     }),
     middlewares.wrap(require("./get-order").default)
   )
