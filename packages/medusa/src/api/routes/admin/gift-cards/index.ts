@@ -2,9 +2,12 @@ import { Router } from "express"
 import "reflect-metadata"
 import { GiftCard } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformQuery, transformBody } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import { AdminGetGiftCardsParams } from "./list-gift-cards"
-import { AdminPostGiftCardsReq } from './create-gift-card'
+import { AdminPostGiftCardsReq } from "./create-gift-card"
 
 const route = Router()
 
@@ -53,12 +56,53 @@ export const defaultAdminGiftCardFields: (keyof GiftCard)[] = [
 
 export const defaultAdminGiftCardRelations = ["region", "order"]
 
+/**
+ * @schema AdminGiftCardsRes
+ * type: object
+ * properties:
+ *   gift_card:
+ *     $ref: "#/components/schemas/GiftCard"
+ */
 export type AdminGiftCardsRes = {
   gift_card: GiftCard
 }
 
+/**
+ * @schema AdminGiftCardsDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Gift Card
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: gift-card
+ *   deleted:
+ *     type: boolean
+ *     description: Whether the gift card was deleted successfully or not.
+ *     default: true
+ */
 export type AdminGiftCardsDeleteRes = DeleteResponse
 
+/**
+ * @schema AdminGiftCardsListRes
+ * type: object
+ * properties:
+ *   gift_cards:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/GiftCard"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminGiftCardsListRes = PaginatedResponse & {
   gift_cards: GiftCard[]
 }

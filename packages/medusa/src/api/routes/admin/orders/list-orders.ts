@@ -180,21 +180,7 @@ import { pick } from "lodash"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             orders:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Order"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminOrdersListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

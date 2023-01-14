@@ -2,18 +2,17 @@ import {
   AfterLoad,
   BeforeInsert,
   Column,
+  Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne
+  OneToOne,
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 import { generateEntityId } from "../utils"
 import { resolveDbType } from "../utils/db-aware-column"
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 
 import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
@@ -25,7 +24,7 @@ export enum OrderEditStatus {
   CANCELED = "canceled",
 }
 
-@FeatureFlagEntity(OrderEditingFeatureFlag.key)
+@Entity()
 export class OrderEdit extends BaseEntity {
   @Index()
   @Column()

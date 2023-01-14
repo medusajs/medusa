@@ -1,8 +1,5 @@
 import PayPalProviderService from "../paypal-provider"
-import {
-  PayPalMock,
-  PayPalClientMock,
-} from "../../__mocks__/@paypal/checkout-server-sdk"
+import { PayPalClientMock, PayPalMock, } from "../../__mocks__/@paypal/checkout-server-sdk"
 
 const TotalsServiceMock = {
   getTotal: jest.fn().mockImplementation((c) => c.total),
@@ -65,6 +62,40 @@ describe("PaypalProviderService", () => {
 
       expect(result.id).toEqual("test")
     })
+
+    it("creates paypal order using new API", async () => {
+      result = await paypalProviderService.createPayment({
+        id: "",
+        region_id: "fr",
+        total: 1000,
+        resource_id: "resource_id"
+      })
+
+      expect(PayPalMock.orders.OrdersCreateRequest).toHaveBeenCalledTimes(1)
+      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(1)
+      expect(PayPalClientMock.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: true,
+          body: {
+            intent: "AUTHORIZE",
+            application_context: {
+              shipping_preference: "NO_SHIPPING",
+            },
+            purchase_units: [
+              {
+                custom_id: "resource_id",
+                amount: {
+                  currency_code: "EUR",
+                  value: "10.00",
+                },
+              },
+            ],
+          },
+        })
+      )
+
+      expect(result.id).toEqual("test")
+    })
   })
 
   describe("retrievePayment", () => {
@@ -114,6 +145,41 @@ describe("PaypalProviderService", () => {
           id: "test_cart",
           region_id: "fr",
           total: 1000,
+        }
+      )
+
+      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalledTimes(1)
+      expect(PayPalMock.orders.OrdersPatchRequest).toHaveBeenCalledWith("test")
+      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(1)
+      expect(PayPalClientMock.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: true,
+          body: [
+            {
+              op: "replace",
+              path: "/purchase_units/@reference_id=='default'",
+              value: {
+                amount: {
+                  currency_code: "EUR",
+                  value: "10.00",
+                },
+              },
+            },
+          ],
+        })
+      )
+
+      expect(result.id).toEqual("test")
+    })
+
+    it("updates paypal order using new API", async () => {
+      result = await paypalProviderService.updatePayment(
+        { id: "test" },
+        {
+          id: "",
+          region_id: "fr",
+          total: 1000,
+          resource_id: "resource_id"
         }
       )
 
