@@ -126,21 +126,20 @@ export class TransactionOrchestrator extends EventEmitter {
     remaining: number
     completed: number
   } {
-    let allSteps: string[]
     let hasSkipped = false
     let hasIgnoredFailure = false
     let hasFailed = false
     let hasWaiting = false
     let hasReverted = false
     let completedSteps = 0
-    const nextSteps: TransactionStep[] = []
 
     const flow = transaction.getFlow()
-    if (flow.state === TransactionState.COMPENSATING) {
-      allSteps = this.getCompensationSteps(flow)
-    } else {
-      allSteps = this.getSteps(flow)
-    }
+
+    const nextSteps: TransactionStep[] = []
+    const allSteps =
+      flow.state === TransactionState.COMPENSATING
+        ? this.getCompensationSteps(flow)
+        : this.getSteps(flow)
 
     for (const step of allSteps) {
       if (
@@ -188,7 +187,9 @@ export class TransactionOrchestrator extends EventEmitter {
     ) {
       flow.state = TransactionState.COMPENSATING
       this.flagStepsToRevert(flow)
+
       this.emit("compensate", transaction)
+
       return this.checkAllSteps(transaction)
     } else if (completedSteps === totalSteps) {
       if (hasSkipped) {
@@ -204,7 +205,9 @@ export class TransactionOrchestrator extends EventEmitter {
           ? TransactionState.REVERTED
           : TransactionState.DONE
       }
+
       this.emit("finish", transaction)
+
       void transaction.deleteCheckpoint()
     }
 
