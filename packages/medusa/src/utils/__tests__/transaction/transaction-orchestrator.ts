@@ -49,7 +49,7 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler,
       {
         prop: 123,
@@ -58,7 +58,7 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    expect(transaction.idempotencyKey).toBe("idempotency_key_123")
+    expect(transaction.transactionId).toBe("transaction_id_123")
     expect(transaction.getState()).toBe(TransactionState.DONE)
 
     expect(mocks.one).toBeCalledWith(
@@ -66,7 +66,7 @@ describe("Transaction Orchestrator", () => {
         metadata: {
           producer: "transaction-name",
           reply_to_topic: "trans:transaction-name",
-          idempotency_key: "idempotency_key_123:firstMethod:invoke",
+          idempotency_key: "transaction_id_123:firstMethod:invoke",
           action: "firstMethod",
           action_type: "invoke",
           attempt: 1,
@@ -81,7 +81,7 @@ describe("Transaction Orchestrator", () => {
         metadata: {
           producer: "transaction-name",
           reply_to_topic: "trans:transaction-name",
-          idempotency_key: "idempotency_key_123:secondMethod:invoke",
+          idempotency_key: "transaction_id_123:secondMethod:invoke",
           action: "secondMethod",
           action_type: "invoke",
           attempt: 1,
@@ -128,7 +128,7 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler
     )
 
@@ -179,7 +179,7 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler
     )
 
@@ -243,7 +243,7 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler,
       {
         prop: 123,
@@ -303,7 +303,7 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler
     )
 
@@ -371,13 +371,13 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler
     )
 
     await strategy.resume(transaction)
 
-    expect(transaction.idempotencyKey).toBe("idempotency_key_123")
+    expect(transaction.transactionId).toBe("transaction_id_123")
     expect(mocks.one).toBeCalledTimes(1)
     expect(mocks.two).toBeCalledTimes(1 + strategy.DEFAULT_RETRIES)
     expect(transaction.getState()).toBe(TransactionState.REVERTED)
@@ -434,7 +434,7 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler
     )
 
@@ -489,13 +489,13 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler
     )
 
     await strategy.resume(transaction)
 
-    expect(transaction.idempotencyKey).toBe("idempotency_key_123")
+    expect(transaction.transactionId).toBe("transaction_id_123")
     expect(mocks.one).toBeCalledTimes(1)
     expect(mocks.two).toBeCalledTimes(2)
     expect(transaction.getState()).toBe(TransactionState.DONE)
@@ -546,7 +546,7 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler
     )
 
@@ -556,13 +556,13 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.two).toBeCalledTimes(0)
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
 
-    const mockIdempotencyKey = TransactionOrchestrator.getKeyName(
-      transaction.idempotencyKey,
+    const mocktransactionId = TransactionOrchestrator.getKeyName(
+      transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.INVOKE
     )
     await strategy.registerStepSuccess(
-      mockIdempotencyKey,
+      mocktransactionId,
       undefined,
       transaction
     )
@@ -620,18 +620,18 @@ describe("Transaction Orchestrator", () => {
     const strategy = new TransactionOrchestrator("transaction-name", flow)
 
     const transaction = await strategy.beginTransaction(
-      "idempotency_key_123",
+      "transaction_id_123",
       handler
     )
 
-    const mockIdempotencyKey = TransactionOrchestrator.getKeyName(
-      transaction.idempotencyKey,
+    const mocktransactionId = TransactionOrchestrator.getKeyName(
+      transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.INVOKE
     )
 
     const registerBeforeAllowed = await strategy
-      .registerStepFailure(mockIdempotencyKey, handler)
+      .registerStepFailure(mocktransactionId, null, handler)
       .catch((e) => e.message)
 
     await strategy.resume(transaction)
@@ -645,20 +645,21 @@ describe("Transaction Orchestrator", () => {
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
 
     const resumedTransaction = await strategy.registerStepFailure(
-      mockIdempotencyKey,
+      mocktransactionId,
+      null,
       handler
     )
 
     expect(resumedTransaction.getState()).toBe(TransactionState.COMPENSATING)
     expect(mocks.compensateOne).toBeCalledTimes(1)
 
-    const mockIdempotencyKeyCompensate = TransactionOrchestrator.getKeyName(
-      transaction.idempotencyKey,
+    const mocktransactionIdCompensate = TransactionOrchestrator.getKeyName(
+      transaction.transactionId,
       "firstMethod",
       TransactionHandlerType.COMPENSATE
     )
     await strategy.registerStepSuccess(
-      mockIdempotencyKeyCompensate,
+      mocktransactionIdCompensate,
       undefined,
       resumedTransaction
     )
