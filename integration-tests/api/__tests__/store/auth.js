@@ -50,17 +50,22 @@ describe("/store/auth", () => {
     expect(response.status).toEqual(200)
     expect(response.data.customer.password_hash).toEqual(undefined)
     expect(response.data.customer).toMatchSnapshot({
-      id: expect.any(String),
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
-      first_name: "test",
-      last_name: "testesen",
-      phone: null,
-      email: "test@testesen.dk",
-      shipping_addresses: [],
       billing_address: null,
+      billing_address_id: null,
+      created_at: expect.any(String),
+      deleted_at: null,
+      email: "test@testesen.dk",
+      first_name: "test",
+      id: expect.any(String),
+      last_name: "testesen",
+      metadata: null,
+      orders: [],
+      phone: null,
+      shipping_addresses: [],
+      updated_at: expect.any(String),
     })
   })
+
   describe("Store session management", () => {
     beforeEach(async () => {
       await dbConnection.manager.insert(Customer, {
