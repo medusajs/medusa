@@ -47,7 +47,8 @@ export default class InventoryService
     options?: unknown,
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    super(arguments[0], arguments[1], arguments[2])
+    // @ts-ignore
+    super(...arguments)
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(
