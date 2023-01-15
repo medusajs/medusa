@@ -123,15 +123,13 @@ export default async (req, res) => {
     const pvInventoryServiceTx =
       pvInventoryService.withTransaction(transactionManager)
 
-    if (validated.location_id) {
-      await updateInventoryAndReservations(
-        fulfillments.filter((f) => !existingFulfillmentMap[f.id]),
-        {
-          inventoryService: pvInventoryServiceTx,
-          locationId: validated.location_id,
-        }
-      )
-    }
+    await updateInventoryAndReservations(
+      fulfillments.filter((f) => !existingFulfillmentMap.has(f.id)),
+      {
+        inventoryService: pvInventoryServiceTx,
+        locationId: validated.location_id ?? null,
+      }
+    )
   })
 
   const order = await orderService.retrieve(id, {
@@ -146,7 +144,7 @@ const updateInventoryAndReservations = async (
   fulfillments: Fulfillment[],
   context: {
     inventoryService: ProductVariantInventoryService
-    locationId: string
+    locationId: string | null
   }
 ) => {
   const { inventoryService, locationId } = context
@@ -165,12 +163,6 @@ const updateInventoryAndReservations = async (
 
         await inventoryService.adjustReservationsQuantityByLineItem(
           item.id,
-          item.variant_id,
-          locationId,
-          -quantity
-        )
-
-        await inventoryService.adjustInventory(
           item.variant_id,
           locationId,
           -quantity

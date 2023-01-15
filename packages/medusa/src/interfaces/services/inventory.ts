@@ -81,7 +81,7 @@ export interface IInventoryService {
 
   adjustInventory(
     inventoryItemId: string,
-    locationId: string,
+    locationId: string | null,
     adjustment: number
   ): Promise<InventoryLevelDTO>
 

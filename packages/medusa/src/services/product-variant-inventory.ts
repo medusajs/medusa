@@ -394,23 +394,28 @@ class ProductVariantInventoryService extends TransactionBaseService {
   async adjustReservationsQuantityByLineItem(
     lineItemId: string,
     variantId: string,
-    locationId: string,
+    locationId: string | null,
     quantity: number
   ): Promise<void> {
     if (!this.inventoryService_) {
       return this.atomicPhase_(async (manager) => {
-        const variantServiceTx =
-          this.productVariantService_.withTransaction(manager)
-        const variant = await variantServiceTx.retrieve(variantId, {
+        const variant = await manager.findOne(ProductVariant, variantId, {
           select: ["id", "inventory_quantity", "manage_inventory"],
         })
+
+        if (!variant) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Could not find variant with id: ${variantId}`
+          )
+        }
 
         if (!variant.manage_inventory) {
           return
         }
 
-        await variantServiceTx.update(variantId, {
-          inventory_quantity: variant.inventory_quantity - quantity,
+        await manager.update(ProductVariant, variantId, {
+          inventory_quantity: variant.inventory_quantity + quantity,
         })
       })
     }
@@ -457,7 +462,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param locationId Location to validate stock at
    * @returns nothing if successful, throws error if not
    */
-  async validateInventoryAtLocation(items: LineItem[], locationId: string) {
+  async validateInventoryAtLocation(
+    items: LineItem[],
+    locationId: string | null
+  ) {
     if (!this.inventoryService_) {
       return
     }
@@ -470,7 +478,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       const [inventoryLevels] =
         await this.inventoryService_.listInventoryLevels({
           inventory_item_id: pvInventoryItems.map((i) => i.inventory_item_id),
-          location_id: locationId,
+          location_id: locationId ?? undefined,
         })
 
       const pviMap: Map<string, ProductVariantInventoryItem> = new Map(
@@ -534,22 +542,27 @@ class ProductVariantInventoryService extends TransactionBaseService {
    */
   async adjustInventory(
     variantId: string,
-    locationId: string,
+    locationId: string | null,
     quantity: number
   ): Promise<void> {
     if (!this.inventoryService_) {
       return this.atomicPhase_(async (manager) => {
-        const productVariantServiceTx =
-          this.productVariantService_.withTransaction(manager)
-        const variant = await productVariantServiceTx.retrieve(variantId, {
+        const variant = await manager.findOne(ProductVariant, variantId, {
           select: ["id", "inventory_quantity", "manage_inventory"],
         })
+
+        if (!variant) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Could not find variant with id: ${variantId}`
+          )
+        }
 
         if (!variant.manage_inventory) {
           return
         }
 
-        await productVariantServiceTx.update(variantId, {
+        await manager.update(ProductVariant, variantId, {
           inventory_quantity: variant.inventory_quantity + quantity,
         })
       })

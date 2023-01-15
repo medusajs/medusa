@@ -1421,7 +1421,18 @@ class OrderService extends TransactionBaseService {
         })
       }
 
-      return result
+      const finalOrder = await orderRepo.findOne({
+        where: {
+          id: result.id,
+        },
+        relations: [
+          "fulfillments",
+          "fulfillments.items",
+          "fulfillments.items.item",
+        ],
+      })
+
+      return finalOrder as Order
     })
   }
 
