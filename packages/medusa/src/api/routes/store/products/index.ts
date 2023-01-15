@@ -30,7 +30,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/",
     transformQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
-      // defaultFields: defaultStoreProductsFields,
+      defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
       isList: true,
     }),
@@ -92,7 +92,11 @@ export const defaultStoreProductsFields: (keyof Product)[] = [
   "metadata",
 ]
 
-export const allowedStoreProductsFields = defaultStoreProductsFields
+export const allowedStoreProductsFields = [
+  ...defaultStoreProductsFields,
+  "variants.title",
+  "variants.prices.amount",
+]
 
 export * from "./list-products"
 export * from "./search"
