@@ -7,7 +7,7 @@ import {
   MODULE_RESOURCE_TYPE,
   StagedJob,
   StagedJobService,
-  TransactionBaseService
+  TransactionBaseService,
 } from "@medusajs/medusa"
 import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
@@ -83,7 +83,7 @@ export default class RedisEventBusService
     moduleDeclaration?: ConfigurableModuleDeclaration,
     singleton = true
   ) {
-    super(arguments[0])
+    super(arguments[0], arguments[1], arguments[2])
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(

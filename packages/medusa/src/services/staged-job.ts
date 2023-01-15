@@ -32,8 +32,6 @@ class StagedJobService extends TransactionBaseService {
       )
 
       const stagedJob = stagedJobRepo.create(data)
-
-      console.log("Staged job", stagedJob)
       return await stagedJobRepo.save(stagedJob)
     })
   }
