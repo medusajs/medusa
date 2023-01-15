@@ -5,15 +5,6 @@ import registerModuleDefinitions from "./module-definitions"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
 
-type ModuleDefinition = {
-  registration: string
-  defaultPackage: string
-  label: string
-  validation: (proto: any) => boolean
-  required: boolean
-  canOverride: boolean
-}
-
 const errorHandler = isProduction
   ? (msg: string): never => {
       throw new Error(msg)

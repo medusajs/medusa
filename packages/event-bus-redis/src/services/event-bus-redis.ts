@@ -9,7 +9,7 @@ import {
   StagedJobService,
   TransactionBaseService
 } from "@medusajs/medusa"
-import Bull from "bull"
+import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -31,15 +31,12 @@ type SubscriberContext = {
 }
 
 type BullJob<T> = {
-  update: (data: unknown) => void
-  attemptsMade: number
-  opts: EmitOptions
   data: {
     eventName: string
     data: T
     completedSubscriberIds: string[] | undefined
   }
-}
+} & Job
 
 type SubscriberDescriptor = {
   id: string
@@ -53,11 +50,6 @@ type EmitOptions = {
     type: "fixed" | "exponential"
     delay: number
   }
-}
-
-type RedisCreateConnectionOptions = {
-  client: Redis
-  subscriber: Redis
 }
 
 /**
@@ -74,11 +66,11 @@ export default class RedisEventBusService
   protected readonly eventToSubscribersMap_: Map<
     string | symbol,
     SubscriberDescriptor[]
-  >
+  > = new Map()
 
   protected redisClient_: Redis
   protected redisSubscriber_: Redis
-  protected queue_: Bull.Queue
+  protected queue_: Queue
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
 
@@ -106,49 +98,24 @@ export default class RedisEventBusService
     this.logger_ = container.logger
     this.stagedJobService_ = container.stagedJobService
 
-    if (singleton) {
-      this.connect(
-        {
-          client: container.redisClient,
-          subscriber: container.redisSubscriber,
-        },
-        config
-      )
+    if (singleton && config?.projectConfig?.redis_url) {
+      this.connect()
     }
   }
 
-  // To be economical about the use of Redis connections, we reuse existing connection whenever possible
-  // https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md#reusing-redis-connections
-  protected reuseConnections(
-    client: Redis,
-    subscriber: Redis,
-    config: ConfigModule
-  ): { createClient: (type: string) => Redis } {
-    return {
-      createClient: (type: string): Redis => {
-        switch (type) {
-          case "client":
-            return client
-          case "subscriber":
-            return subscriber
-          default:
-            if (config?.projectConfig?.redis_url) {
-              return new Redis(this.config_.projectConfig.redis_url!)
-            }
-            return client
-        }
-      },
-    }
-  }
+  connect(): void {
+    const connection = new Redis(this.config_?.projectConfig?.redis_url!)
 
-  connect(options: RedisCreateConnectionOptions, config: ConfigModule): void {
-    const { client, subscriber } = options
+    this.queue_ = new Queue(`:events-queue`, {
+      connection,
+      prefix: `${this.constructor.name}`,
+    })
 
-    const bullOptions = this.reuseConnections(client, subscriber, config)
-
-    this.queue_ = new Bull(`${this.constructor.name}:queue`, bullOptions)
-    this.redisClient_ = client
-    this.redisSubscriber_ = subscriber
+    // Register our worker to handle emit calls
+    new Worker("events-worker", this.worker_, {
+      connection,
+      prefix: `${this.constructor.name}`,
+    })
 
     if (process.env.NODE_ENV !== "test") {
       this.startEnqueuer()
@@ -273,7 +240,7 @@ export default class RedisEventBusService
         .create(jobToCreate)
     }
 
-    this.queue_.add({ eventName, data }, opts)
+    this.queue_.add(eventName, { eventName, data }, opts)
   }
 
   startEnqueuer(): void {
@@ -300,6 +267,7 @@ export default class RedisEventBusService
         jobs.map((job) => {
           this.queue_
             .add(
+              job.event_name,
               { eventName: job.event_name, data: job.data },
               job.options ?? { removeOnComplete: true }
             )
@@ -377,7 +345,7 @@ export default class RedisEventBusService
       completedSubscribersInCurrentAttempt.length !==
       subscribersInCurrentAttempt.length
 
-    const isRetriesConfigured = job?.opts?.attempts > 1
+    const isRetriesConfigured = job?.opts?.attempts! > 1
 
     // Therefore, if retrying is configured, we try again
     const shouldRetry =

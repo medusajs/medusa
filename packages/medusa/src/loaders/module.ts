@@ -1,4 +1,4 @@
-import { asFunction, asValue } from "awilix"
+import { asFunction, asValue, Lifetime } from "awilix"
 import { trackInstallation } from "medusa-telemetry"
 import {
   ClassConstructor,
@@ -60,13 +60,16 @@ const registerModule = async (
 
   // TODO: "cradle" should only contain dependent Modules and the EntityManager if module scope is shared
   container.register({
-    [resolution.definition.registrationName]: asFunction((cradle) => {
-      return new moduleService(
-        cradle,
-        resolution.options,
-        resolution.moduleDeclaration
-      )
-    }).singleton(),
+    [resolution.definition.registrationName]: asFunction(
+      (cradle) => {
+        return new moduleService(
+          cradle,
+          resolution.options,
+          resolution.moduleDeclaration
+        )
+      },
+      { lifetime: Lifetime.SINGLETON }
+    ),
   })
 
   const moduleLoaders = loadedModule?.loaders || []

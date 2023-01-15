@@ -1,11 +1,9 @@
-import Bull from "bull"
+import { Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
 
 type InjectedDependencies = {
   logger: Logger
-  redisClient: Redis.Redis
-  redisSubscriber: Redis.Redis
 }
 
 type ScheduledJobHandler<T = unknown> = (
@@ -18,36 +16,28 @@ export default class JobSchedulerService {
   protected readonly logger_: Logger
   protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]> =
     new Map()
-  protected readonly queue_: Bull
+  protected readonly queue_: Queue
 
   constructor(
-    { logger, redisClient, redisSubscriber }: InjectedDependencies,
+    { logger }: InjectedDependencies,
     config: ConfigModule,
     singleton = true
   ) {
     this.config_ = config
     this.logger_ = logger
 
-    if (singleton) {
-      const opts = {
-        createClient: (type: string): Redis.Redis => {
-          switch (type) {
-            case "client":
-              return redisClient
-            case "subscriber":
-              return redisSubscriber
-            default:
-              if (config.projectConfig.redis_url) {
-                return new Redis(config.projectConfig.redis_url)
-              }
-              return redisClient
-          }
-        },
-      }
+    if (singleton && config?.projectConfig?.redis_url) {
+      const connection = new Redis(config.projectConfig.redis_url)
 
-      this.queue_ = new Bull(`scheduled-jobs:queue`, opts)
+      this.queue_ = new Queue(`:scheduled-jobs-queue`, {
+        connection,
+        prefix: `${this.constructor.name}`,
+      })
       // Register scheduled job worker
-      this.queue_.process(this.scheduledJobsWorker)
+      new Worker("scheduled-jobs-worker", this.scheduledJobsWorker, {
+        connection,
+        prefix: `${this.constructor.name}`,
+      })
     }
   }
 
@@ -102,21 +92,22 @@ export default class JobSchedulerService {
    * @param handler - the handler to call on the job
    * @return void
    */
-  create<T>(
+  async create<T>(
     eventName: string,
     data: T,
     schedule: string,
     handler: ScheduledJobHandler
-  ): void {
+  ): Promise<void> {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler(eventName, handler)
 
-    this.queue_.add(
+    await this.queue_.add(
+      eventName,
       {
         eventName,
         data,
       },
-      { repeat: { cron: schedule } }
+      { repeat: { pattern: schedule } }
     )
   }
 }

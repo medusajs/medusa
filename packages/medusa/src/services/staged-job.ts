@@ -26,12 +26,16 @@ class StagedJobService extends TransactionBaseService {
   }
 
   async create(data: Partial<StagedJob>) {
-    const stagedJobRepo = this.manager_.getCustomRepository(
-      this.stagedJobRepository_
-    )
+    return this.atomicPhase_(async (manager) => {
+      const stagedJobRepo = manager.getCustomRepository(
+        this.stagedJobRepository_
+      )
 
-    const stagedJob = stagedJobRepo.create(data)
-    return await stagedJobRepo.save(stagedJob)
+      const stagedJob = stagedJobRepo.create(data)
+
+      console.log("Staged job", stagedJob)
+      return await stagedJobRepo.save(stagedJob)
+    })
   }
 
   async list(config: FindConfig<StagedJob>) {
