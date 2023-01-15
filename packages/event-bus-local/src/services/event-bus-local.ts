@@ -3,7 +3,7 @@ import {
   IEventBusService,
   Logger,
   MedusaContainer,
-  TransactionBaseService
+  TransactionBaseService,
 } from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
 
@@ -11,10 +11,6 @@ type InjectedDependencies = {
   logger: Logger
 }
 
-/**
- * Can keep track of multiple subscribers to different events and run the
- * subscribers when events happen. Events will run asynchronously.
- */
 export default class LocalEventBus
   extends TransactionBaseService
   implements IEventBusService
@@ -24,11 +20,10 @@ export default class LocalEventBus
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
 
-  constructor(container, manager) {
+  constructor(container: MedusaContainer & InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.logger_ = container.logger
   }
 
@@ -64,5 +59,4 @@ export default class LocalEventBus
       `[${eventName}] Local Event Bus installed. Emitting events has no effect.`
     )
   }
-
 }
