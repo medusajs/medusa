@@ -31,7 +31,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -153,6 +153,26 @@ describe("/store/carts", () => {
           paid_total: 100,
         })
       )
+    })
+
+    it("order contain only fields defined with `fields` param", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/orders?display_id=111&email=test@email.com&fields=object")
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          object: expect.any(String),
+          items: expect.any(Array), // default relations are not filtered out
+        })
+      )
+
+      expect(response.data.order).not.toHaveProperty("id")
+      expect(response.data.order).not.toHaveProperty("created_at")
     })
 
     it("looks up order", async () => {
