@@ -36,10 +36,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             payment:
- *               $ref: "#/components/schemas/Payment"
+ *           $ref: "#/components/schemas/AdminPaymentRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

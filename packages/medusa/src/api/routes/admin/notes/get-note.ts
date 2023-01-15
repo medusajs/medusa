@@ -35,10 +35,7 @@ import NoteService from "../../../../services/note"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             note:
- *               $ref: "#/components/schemas/Note"
+ *           $ref: "#/components/schemas/AdminNotesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
