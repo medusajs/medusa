@@ -1,11 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import {
-  DeleteResponse,
-  FindParams,
-  PaginatedResponse
-} from "../../../../types/common"
+import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
@@ -230,12 +226,35 @@ export default (app, featureFlagRouter: FlagRouter) => {
   return app
 }
 
+/**
+ * @schema AdminOrdersRes
+ * type: object
+ * properties:
+ *   order:
+ *     $ref: "#/components/schemas/Order"
+ */
 export type AdminOrdersRes = {
   order: Order
 }
 
-export type AdminDeleteRes = DeleteResponse
-
+/**
+ * @schema AdminOrdersListRes
+ * type: object
+ * properties:
+ *   orders:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Order"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminOrdersListRes = PaginatedResponse & {
   orders: Order[]
 }
@@ -361,4 +380,3 @@ export * from "./refund-payment"
 export * from "./request-return"
 export * from "./update-claim"
 export * from "./update-order"
-

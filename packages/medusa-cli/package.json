@@ -15,10 +15,10 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest",
-    "build": "babel src --out-dir dist/ --ignore **/__tests__",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
+    "test": "jest --passWithNoTests src",
+    "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
+    "watch": "babel -w src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
+    "prepare": "cross-env NODE_ENV=production yarn run build"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",
