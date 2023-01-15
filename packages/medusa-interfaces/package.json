@@ -9,10 +9,10 @@
     "directory": "packages/medusa-interfaces"
   },
   "scripts": {
-    "build": "tsc --build",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__",
-    "test": "jest"
+    "test": "jest --passWithNoTests src",
+    "build": "babel src --out-dir dist --ignore '**/__tests__','**/__mocks__'",
+    "watch": "babel -w src --out-dir dist --ignore '**/__tests__','**/__mocks__'"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",
