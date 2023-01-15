@@ -140,7 +140,7 @@ export default async ({
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
-  await servicesLoader({ container, configModule, isTest })
+  servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 

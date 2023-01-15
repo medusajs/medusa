@@ -20,8 +20,6 @@ type InjectedDependencies = {
   manager: EntityManager
   logger: Logger
   stagedJobService: StagedJobService
-  redisClient: Redis
-  redisSubscriber: Redis
 }
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
@@ -68,8 +66,6 @@ export default class RedisEventBusService
     SubscriberDescriptor[]
   > = new Map()
 
-  protected redisClient_: Redis
-  protected redisSubscriber_: Redis
   protected queue_: Queue
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
