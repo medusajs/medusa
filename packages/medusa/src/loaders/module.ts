@@ -1,4 +1,4 @@
-import { asFunction, asValue, Lifetime } from "awilix"
+import { asFunction, asValue } from "awilix"
 import { trackInstallation } from "medusa-telemetry"
 import {
   ClassConstructor,
@@ -21,9 +21,27 @@ const registerModule = async (
   configModule: ConfigModule,
   logger: Logger
 ): Promise<{ error?: Error } | void> => {
+  const constainerName = resolution.definition.registrationName
+
+  const { scope, resources } = resolution.moduleDeclaration ?? {}
+  if (!scope || (scope === MODULE_SCOPE.INTERNAL && !resources)) {
+    let message = `The module ${resolution.definition.label} has to define its scope (internal | external)`
+    if (scope && !resources) {
+      message = `The module ${resolution.definition.label} is missing its resources config`
+    }
+
+    container.register({
+      [constainerName]: asValue(false),
+    })
+
+    return {
+      error: new Error(message),
+    }
+  }
+
   if (!resolution.resolutionPath) {
     container.register({
-      [resolution.definition.registrationName]: asValue(false),
+      [constainerName]: asValue(false),
     })
 
     return
@@ -47,8 +65,8 @@ const registerModule = async (
   }
 
   if (
-    resolution.moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    resolution.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.SHARED
+    scope === MODULE_SCOPE.INTERNAL &&
+    resources === MODULE_RESOURCE_TYPE.SHARED
   ) {
     const moduleModels = loadedModule?.models || null
     if (moduleModels) {
@@ -60,16 +78,13 @@ const registerModule = async (
 
   // TODO: "cradle" should only contain dependent Modules and the EntityManager if module scope is shared
   container.register({
-    [resolution.definition.registrationName]: asFunction(
-      (cradle) => {
-        return new moduleService(
-          cradle,
-          resolution.options,
-          resolution.moduleDeclaration
-        )
-      },
-      { lifetime: Lifetime.SINGLETON }
-    ),
+    [constainerName]: asFunction((cradle) => {
+      return new moduleService(
+        cradle,
+        resolution.options,
+        resolution.moduleDeclaration
+      )
+    }).singleton(),
   })
 
   const moduleLoaders = loadedModule?.loaders || []

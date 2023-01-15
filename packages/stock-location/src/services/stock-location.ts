@@ -1,18 +1,18 @@
-import { EntityManager } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
   buildQuery,
-  FilterableStockLocationProps,
-  CreateStockLocationInput,
-  UpdateStockLocationInput,
-  StockLocationAddressInput,
-  IEventBusService,
-  setMetadata,
-  TransactionBaseService,
   ConfigurableModuleDeclaration,
+  CreateStockLocationInput,
+  FilterableStockLocationProps,
+  FindConfig,
+  IEventBusService,
   MODULE_RESOURCE_TYPE,
+  setMetadata,
+  StockLocationAddressInput,
+  TransactionBaseService,
+  UpdateStockLocationInput,
 } from "@medusajs/medusa"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
 import { StockLocation, StockLocationAddress } from "../models"
 
@@ -42,7 +42,8 @@ export default class StockLocationService extends TransactionBaseService {
     options?: unknown,
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    super(arguments[0])
+    // @ts-ignore
+    super(...arguments)
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(
@@ -116,7 +117,7 @@ export default class StockLocationService extends TransactionBaseService {
     const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery({ id: stockLocationId }, config)
-    const loc = await locationRepo.findOne(query)
+    const [loc] = await locationRepo.find(query)
 
     if (!loc) {
       throw new MedusaError(
@@ -189,7 +190,7 @@ export default class StockLocationService extends TransactionBaseService {
 
       const item = await this.retrieve(stockLocationId)
 
-      const { address, metadata, ...data } = updateData
+      const { address, ...data } = updateData
 
       if (address) {
         if (item.address_id) {
@@ -202,11 +203,13 @@ export default class StockLocationService extends TransactionBaseService {
         }
       }
 
+      const { metadata, ...fields } = updateData
+
+      const toSave = locationRepo.merge(item, fields)
       if (metadata) {
-        item.metadata = setMetadata(item, metadata)
+        toSave.metadata = setMetadata(toSave, metadata)
       }
 
-      const toSave = locationRepo.merge(item, data)
       await locationRepo.save(toSave)
 
       await this.eventBusService_
@@ -223,20 +226,26 @@ export default class StockLocationService extends TransactionBaseService {
    * Updates an address for a stock location.
    * @param {string} addressId - The ID of the address to update.
    * @param {StockLocationAddressInput} address - The update data for the address.
-   * @param {Object} context - Context for the update.
-   * @param {EntityManager} context.manager - The entity manager to use for the update.
    * @returns {Promise<StockLocationAddress>} - The updated stock location address.
    */
 
   protected async updateAddress(
     addressId: string,
-    address: StockLocationAddressInput,
-    context: { manager?: EntityManager } = {}
+    address: StockLocationAddressInput
   ): Promise<StockLocationAddress> {
+    if (!isDefined(addressId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"addressId" must be defined`
+      )
+    }
+
     return await this.atomicPhase_(async (manager) => {
       const locationAddressRepo = manager.getRepository(StockLocationAddress)
 
-      const existingAddress = await locationAddressRepo.findOne(addressId)
+      const existingAddress = await locationAddressRepo.findOne({
+        id: addressId,
+      })
       if (!existingAddress) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
@@ -244,9 +253,9 @@ export default class StockLocationService extends TransactionBaseService {
         )
       }
 
-      const toSave = locationAddressRepo.merge(existingAddress, address)
+      const { metadata, ...fields } = address
 
-      const { metadata } = address
+      const toSave = locationAddressRepo.merge(existingAddress, fields)
       if (metadata) {
         toSave.metadata = setMetadata(toSave, metadata)
       }

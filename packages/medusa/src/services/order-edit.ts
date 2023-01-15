@@ -1,7 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
 
+import { IEventBusService, TransactionBaseService } from "../interfaces"
 import {
   Cart,
   Order,
@@ -212,7 +212,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async create(
     data: CreateOrderEditInput,
-    context: { loggedInUserId: string }
+    context: { createdBy: string }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (transactionManager) => {
       const activeOrderEdit = await this.retrieveActive(data.order_id)
@@ -230,7 +230,7 @@ export default class OrderEditService extends TransactionBaseService {
       const orderEditToCreate = orderEditRepository.create({
         order_id: data.order_id,
         internal_note: data.internal_note,
-        created_by: context.loggedInUserId,
+        created_by: context.createdBy,
       })
 
       const orderEdit = await orderEditRepository.save(orderEditToCreate)
@@ -316,7 +316,7 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     context: {
       declinedReason?: string
-      loggedInUserId?: string
+      declinedBy?: string
     }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
@@ -324,7 +324,7 @@ export default class OrderEditService extends TransactionBaseService {
         this.orderEditRepository_
       )
 
-      const { loggedInUserId, declinedReason } = context
+      const { declinedBy, declinedReason } = context
 
       const orderEdit = await this.retrieve(orderEditId)
 
@@ -340,7 +340,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.declined_at = new Date()
-      orderEdit.declined_by = loggedInUserId
+      orderEdit.declined_by = declinedBy
       orderEdit.declined_reason = declinedReason
 
       const result = await orderEditRepo.save(orderEdit)
@@ -657,7 +657,7 @@ export default class OrderEditService extends TransactionBaseService {
   async requestConfirmation(
     orderEditId: string,
     context: {
-      loggedInUserId?: string
+      requestedBy?: string
     } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
@@ -682,7 +682,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.requested_at = new Date()
-      orderEdit.requested_by = context.loggedInUserId
+      orderEdit.requested_by = context.requestedBy
 
       orderEdit = await orderEditRepo.save(orderEdit)
 
@@ -696,7 +696,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async cancel(
     orderEditId: string,
-    context: { loggedInUserId?: string } = {}
+    context: { canceledBy?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepository = manager.getCustomRepository(
@@ -721,7 +721,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.canceled_at = new Date()
-      orderEdit.canceled_by = context.loggedInUserId
+      orderEdit.canceled_by = context.canceledBy
 
       const saved = await orderEditRepository.save(orderEdit)
 
@@ -735,7 +735,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async confirm(
     orderEditId: string,
-    context: { loggedInUserId?: string } = {}
+    context: { confirmedBy?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
       const orderEditRepository = manager.getCustomRepository(
@@ -773,7 +773,7 @@ export default class OrderEditService extends TransactionBaseService {
       ])
 
       orderEdit.confirmed_at = new Date()
-      orderEdit.confirmed_by = context.loggedInUserId
+      orderEdit.confirmed_by = context.confirmedBy
 
       orderEdit = await orderEditRepository.save(orderEdit)
 

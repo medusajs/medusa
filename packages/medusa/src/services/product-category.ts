@@ -85,7 +85,8 @@ class ProductCategoryService extends TransactionBaseService {
    */
   async retrieve(
     productCategoryId: string,
-    config: FindConfig<ProductCategory> = {}
+    config: FindConfig<ProductCategory> = {},
+    selector: Selector<ProductCategory> = {}
   ): Promise<ProductCategory> {
     if (!isDefined(productCategoryId)) {
       throw new MedusaError(
@@ -94,7 +95,8 @@ class ProductCategoryService extends TransactionBaseService {
       )
     }
 
-    const query = buildQuery({ id: productCategoryId }, config)
+    const selectors = Object.assign({ id: productCategoryId }, selector)
+    const query = buildQuery(selectors, config)
     const productCategoryRepo = this.manager_.getCustomRepository(
       this.productCategoryRepo_
     )

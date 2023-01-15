@@ -1,5 +1,6 @@
 import { DraftOrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
+
 /**
  * @oas [delete] /draft-orders/{id}
  * operationId: DeleteDraftOrdersDraftOrder
@@ -35,19 +36,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Draft Order.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: draft-order
- *             deleted:
- *               type: boolean
- *               description: Whether the draft order was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminDraftOrdersDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

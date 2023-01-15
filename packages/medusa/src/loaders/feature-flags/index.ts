@@ -1,10 +1,10 @@
 import glob from "glob"
 import path from "path"
 
+import { isDefined } from "medusa-core-utils"
 import { trackFeatureFlag } from "medusa-telemetry"
 import { FlagSettings } from "../../types/feature-flags"
 import { Logger } from "../../types/global"
-import { isDefined } from "medusa-core-utils"
 import { FlagRouter } from "../../utils/flag-router"
 
 const isTruthy = (val: string | boolean | undefined): boolean => {

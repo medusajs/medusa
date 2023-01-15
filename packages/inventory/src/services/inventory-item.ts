@@ -1,16 +1,17 @@
-import { ILike, DeepPartial, EntityManager } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
   buildQuery,
-  IEventBusService,
-  FilterableInventoryItemProps,
   CreateInventoryItemInput,
+  FilterableInventoryItemProps,
+  FindConfig,
+  IEventBusService,
   InventoryItemDTO,
   TransactionBaseService,
 } from "@medusajs/medusa"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager } from "typeorm"
 
 import { InventoryItem } from "../models"
+import { getListQuery } from "../utils/query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -48,70 +49,8 @@ export default class InventoryItemService extends TransactionBaseService {
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
   ): Promise<InventoryItemDTO[]> {
-    const queryBuilder = this.getListQuery(selector, config)
+    const queryBuilder = getListQuery(this.getManager(), selector, config)
     return await queryBuilder.getMany()
-  }
-
-  private getListQuery(
-    selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ) {
-    const manager = this.getManager()
-    const inventoryItemRepository = manager.getRepository(InventoryItem)
-    const query = buildQuery(selector, config)
-
-    const queryBuilder = inventoryItemRepository.createQueryBuilder("inv_item")
-
-    if (query.where.q) {
-      query.where.sku = ILike(`%${query.where.q as string}%`)
-
-      delete query.where.q
-    }
-
-    if ("location_id" in query.where) {
-      const locationIds = Array.isArray(selector.location_id)
-        ? selector.location_id
-        : [selector.location_id]
-
-      queryBuilder.innerJoin(
-        "inventory_level",
-        "level",
-        "level.inventory_item_id = inv_item.id AND level.location_id IN (:...locationIds)",
-        { locationIds }
-      )
-
-      delete query.where.location_id
-    }
-
-    if (query.take) {
-      queryBuilder.take(query.take)
-    }
-
-    if (query.skip) {
-      queryBuilder.skip(query.skip)
-    }
-
-    if (query.where) {
-      queryBuilder.where(query.where)
-    }
-
-    if (query.select) {
-      queryBuilder.select(query.select.map((s) => "inv_item." + s))
-    }
-
-    if (query.order) {
-      const toSelect: string[] = []
-      const parsed = Object.entries(query.order).reduce((acc, [k, v]) => {
-        const key = `inv_item.${k}`
-        toSelect.push(key)
-        acc[key] = v
-        return acc
-      }, {})
-      queryBuilder.addSelect(toSelect)
-      queryBuilder.orderBy(parsed)
-    }
-
-    return queryBuilder
   }
 
   /**
@@ -122,8 +61,8 @@ export default class InventoryItemService extends TransactionBaseService {
   async listAndCount(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
-  ): Promise<[InventoryItem[], number]> {
-    const queryBuilder = this.getListQuery(selector, config)
+  ): Promise<[InventoryItemDTO[], number]> {
+    const queryBuilder = getListQuery(this.getManager(), selector, config)
     return await queryBuilder.getManyAndCount()
   }
 
