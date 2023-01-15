@@ -109,6 +109,7 @@ export const defaultStoreOrdersFields = [
 
 export const allowedStoreOrdersFields = [
   ...defaultStoreOrdersFields,
+  "object",
   "shipping_total",
   "discount_total",
   "tax_total",

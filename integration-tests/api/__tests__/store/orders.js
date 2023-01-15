@@ -155,18 +155,42 @@ describe("/store/carts", () => {
       )
     })
 
-    it("order contain only fields defined with `fields` param", async () => {
+    it("lookup order response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
       const response = await api
-        .get("/store/orders?display_id=111&email=test@email.com&fields=object")
+        .get(
+          "/store/orders?display_id=111&email=test@email.com&fields=status,object"
+        )
         .catch((err) => {
           return err.response
         })
 
       expect(response.data.order).toEqual(
         expect.objectContaining({
-          object: expect.any(String),
+          object: "order",
+          status: expect.any(String),
+          items: expect.any(Array), // default relations are not filtered out
+        })
+      )
+
+      expect(response.data.order).not.toHaveProperty("id")
+      expect(response.data.order).not.toHaveProperty("created_at")
+    })
+
+    it("get order response contains only fields defined with `fields` param", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/orders/order_test?fields=status,object")
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          object: "order",
+          status: expect.any(String),
           items: expect.any(Array), // default relations are not filtered out
         })
       )
