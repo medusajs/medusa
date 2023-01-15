@@ -25,6 +25,7 @@ export default (app) => {
       defaultFields: defaultStoreOrdersFields,
       defaultRelations: defaultStoreOrdersRelations,
       allowedFields: allowedStoreOrdersFields,
+      allowedRelations: allowedStoreOrdersRelations,
       isList: true,
     }),
     middlewares.wrap(require("./lookup-order").default)
@@ -37,8 +38,9 @@ export default (app) => {
     "/:id",
     transformQuery(StoreGetOrderParams, {
       defaultFields: defaultStoreOrdersFields,
-      // defaultRelations: defaultStoreOrdersRelations,
-      // allowedFields: allowedStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
+      allowedRelations: allowedStoreOrdersRelations,
     }),
     middlewares.wrap(require("./get-order").default)
   )
@@ -105,7 +107,21 @@ export const defaultStoreOrdersFields = [
   "total",
 ] as (keyof Order)[]
 
-export const allowedStoreOrdersFields = defaultStoreOrdersFields
+export const allowedStoreOrdersFields = [
+  ...defaultStoreOrdersFields,
+  "shipping_total",
+  "discount_total",
+  "tax_total",
+  "refunded_total",
+  "total",
+  "subtotal",
+  "paid_total",
+  "refundable_amount",
+  "gift_card_total",
+  "gift_card_tax_total",
+]
+
+export const allowedStoreOrdersRelations = [...defaultStoreOrdersRelations]
 
 /**
  * @schema StoreOrdersRes

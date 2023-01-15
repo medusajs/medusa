@@ -32,6 +32,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
+      allowedRelations: allowedStoreProductsRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-products").default)
@@ -43,6 +44,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
+      allowedRelations: allowedStoreProductsRelations,
     }),
     middlewares.wrap(require("./get-product").default)
   )
@@ -94,6 +96,13 @@ export const defaultStoreProductsFields: (keyof Product)[] = [
 
 export const allowedStoreProductsFields = [
   ...defaultStoreProductsFields,
+  // TODO: order prop validation
+  "variants.title",
+  "variants.prices.amount",
+]
+
+export const allowedStoreProductsRelations = [
+  ...defaultStoreProductsRelations,
   "variants.title",
   "variants.prices.amount",
 ]

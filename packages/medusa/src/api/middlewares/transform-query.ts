@@ -46,10 +46,10 @@ export function transformQuery<
         req.allowedProperties = [
           ...(validated.fields
             ? validated.fields.split(",")
-            : queryConfig?.defaultFields)!,
+            : queryConfig?.allowedFields || [])!,
           ...(validated.expand
             ? validated.expand.split(",")
-            : queryConfig?.defaultRelations)!,
+            : queryConfig?.allowedRelations || [])!,
         ] as unknown as string[]
       }
 
