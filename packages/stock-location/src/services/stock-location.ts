@@ -1,18 +1,18 @@
-import { EntityManager } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
   buildQuery,
-  FilterableStockLocationProps,
-  CreateStockLocationInput,
-  UpdateStockLocationInput,
-  StockLocationAddressInput,
-  IEventBusService,
-  setMetadata,
-  TransactionBaseService,
   ConfigurableModuleDeclaration,
+  CreateStockLocationInput,
+  FilterableStockLocationProps,
+  FindConfig,
+  IEventBusService,
   MODULE_RESOURCE_TYPE,
+  setMetadata,
+  StockLocationAddressInput,
+  TransactionBaseService,
+  UpdateStockLocationInput,
 } from "@medusajs/medusa"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
 import { StockLocation, StockLocationAddress } from "../models"
 
@@ -42,7 +42,7 @@ export default class StockLocationService extends TransactionBaseService {
     options?: unknown,
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    super(arguments[0])
+    super(arguments[0], arguments[1], arguments[2])
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(

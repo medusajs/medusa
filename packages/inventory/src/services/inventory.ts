@@ -1,30 +1,30 @@
-import { MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
-  IInventoryService,
-  FilterableInventoryItemProps,
-  FilterableReservationItemProps,
+  ConfigurableModuleDeclaration,
   CreateInventoryItemInput,
-  CreateReservationItemInput,
-  FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
+  CreateReservationItemInput,
+  FilterableInventoryItemProps,
+  FilterableInventoryLevelProps,
+  FilterableReservationItemProps,
+  FindConfig,
+  IEventBusService,
+  IInventoryService,
+  InventoryItemDTO,
+  InventoryLevelDTO,
+  MODULE_RESOURCE_TYPE,
+  ReservationItemDTO,
+  TransactionBaseService,
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,
-  IEventBusService,
-  InventoryItemDTO,
-  ReservationItemDTO,
-  InventoryLevelDTO,
-  TransactionBaseService,
-  ConfigurableModuleDeclaration,
-  MODULE_RESOURCE_TYPE,
 } from "@medusajs/medusa"
+import { MedusaError } from "medusa-core-utils"
 
+import { EntityManager } from "typeorm"
 import {
   InventoryItemService,
-  ReservationItemService,
   InventoryLevelService,
+  ReservationItemService,
 } from "./"
-import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -47,7 +47,7 @@ export default class InventoryService
     options?: unknown,
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    super(arguments[0])
+    super(arguments[0], arguments[1], arguments[2])
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(
