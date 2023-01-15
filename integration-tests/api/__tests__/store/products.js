@@ -190,6 +190,24 @@ describe("/store/products", () => {
       expect(testProduct2Index).toBe(2) // 200
     })
 
+    it("products contain only fields defined with `fields` param", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?fields=handle")
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.products[0]).toEqual(
+        expect.objectContaining({
+          handle: expect.any(String),
+          variants: expect.any(Array), // default relations are not filtered out
+        })
+      )
+
+      expect(response.data.products[0]).not.toHaveProperty("id")
+      expect(response.data.products[0]).not.toHaveProperty("created_at")
+    })
+
     it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
       const api = useApi()
 
@@ -954,7 +972,7 @@ describe("/store/products", () => {
       )
     })
 
-    it("filter fields", async () => {
+    it("response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
       const response = await api.get(
@@ -969,6 +987,9 @@ describe("/store/products", () => {
           variants: expect.any(Array), // default relations are not filtered out
         })
       )
+
+      expect(response.data.product).not.toHaveProperty("id")
+      expect(response.data.product).not.toHaveProperty("created_at")
     })
   })
 })
