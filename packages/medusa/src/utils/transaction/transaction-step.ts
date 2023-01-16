@@ -4,7 +4,24 @@ import {
   TransactionState,
 } from "."
 
+/**
+ * @class TransactionStep
+ * @classdesc A class representing a single step in a transaction flow
+ */
 export class TransactionStep {
+  /**
+   * @member id - The id of the step
+   * @member depth - The depth of the step in the flow
+   * @member definition - The definition of the step
+   * @member invoke - The current state and status of the invoke action of the step
+   * @member compensate - The current state and status of the compensate action of the step
+   * @member attempts - The number of attempts made to execute the step
+   * @member failures - The number of failures encountered while executing the step
+   * @member lastAttempt - The timestamp of the last attempt made to execute the step
+   * @member next - The ids of the next steps in the flow
+   * @member response - The response from the last successful execution of the step
+   * @member forwardResponse - A flag indicating if the response from the previous step should be passed to this step as payload
+   */
   private stepFailed = false
   id: string
   depth: number
@@ -19,7 +36,7 @@ export class TransactionStep {
   }
   attempts: number
   failures: number
-  last_attempt: number | null
+  lastAttempt: number | null
   next: string[]
   response: unknown
   forwardResponse: boolean
@@ -36,7 +53,7 @@ export class TransactionStep {
     this.stepFailed = true
     this.attempts = 0
     this.failures = 0
-    this.last_attempt = null
+    this.lastAttempt = null
   }
 
   public isCompensating() {
@@ -116,9 +133,9 @@ export class TransactionStep {
 
   canRetry(): boolean {
     return !!(
-      this.last_attempt &&
+      this.lastAttempt &&
       this.definition.retryInterval &&
-      Date.now() - this.last_attempt > this.definition.retryInterval * 1e3
+      Date.now() - this.lastAttempt > this.definition.retryInterval * 1e3
     )
   }
 

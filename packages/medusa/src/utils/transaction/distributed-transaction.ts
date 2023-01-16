@@ -1,5 +1,15 @@
 import { TransactionFlow, TransactionHandlerType, TransactionState } from "."
 
+/**
+ * @typedef {Object} TransactionMetadata
+ * @property {string} producer - The id of the producer that created the transaction (transactionModelId).
+ * @property {string} reply_to_topic - The topic to reply to for the transaction.
+ * @property {string} idempotency_key - The idempotency key of the transaction.
+ * @property {string} action - The action of the transaction.
+ * @property {TransactionHandlerType} action_type - The type of the transaction.
+ * @property {number} attempt - The number of attempts for the transaction.
+ * @property {number} timestamp - The timestamp of the transaction.
+ */
 export type TransactionMetadata = {
   producer: string
   reply_to_topic: string
@@ -11,6 +21,10 @@ export type TransactionMetadata = {
 }
 
 export class TransactionPayload {
+  /**
+   * @param metadata - The metadata of the transaction.
+   * @param data - The payload data of the transaction and the response of the previous step if forwardResponse is true.
+   */
   constructor(
     public metadata: TransactionMetadata,
     public data: Record<string, unknown> & {
@@ -18,6 +32,10 @@ export class TransactionPayload {
     }
   ) {}
 }
+
+/**
+ * DistributedTransaction represents a distributed transaction, which is a transaction that is composed of multiple steps that are executed in a specific order.
+ */
 
 export class DistributedTransaction {
   public modelId: string
@@ -37,8 +55,8 @@ export class DistributedTransaction {
     ) => Promise<unknown>,
     public payload?: any
   ) {
-    this.transactionId = flow.transaction_id
-    this.modelId = flow.transaction_model_id
+    this.transactionId = flow.transactionId
+    this.modelId = flow.transactionModelId
   }
 
   public getFlow() {
