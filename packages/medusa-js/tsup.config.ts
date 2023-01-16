@@ -1,7 +1,5 @@
 import type { Options } from "tsup"
 
-const env = process.env.NODE_ENV
-
 const config: Options = {
   entry: ["src/**/*.ts"],
   dts: true,
