@@ -1,13 +1,13 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { IEventBusService } from "../.."
 import ProductCategoryService from "../product-category"
-import { EventBusService } from "../"
 
 const eventBusService = {
   emit: jest.fn(),
   withTransaction: function () {
     return this
   },
-} as unknown as EventBusService
+} as unknown as IEventBusService
 
 describe("ProductCategoryService", () => {
   const validProdCategoryId = "skinny-jeans"
@@ -15,16 +15,16 @@ describe("ProductCategoryService", () => {
 
   describe("retrieve", () => {
     const productCategoryRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === invalidProdCategoryId) {
           return Promise.resolve(undefined)
         }
 
         return Promise.resolve({ id: IdMap.getId(validProdCategoryId) })
       },
-      findDescendantsTree: productCategory => {
+      findDescendantsTree: (productCategory) => {
         return Promise.resolve(productCategory)
-      }
+      },
     })
 
     const productCategoryService = new ProductCategoryService({
@@ -33,7 +33,9 @@ describe("ProductCategoryService", () => {
       eventBusService,
     })
 
-    beforeEach(async () => { jest.clearAllMocks() })
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
 
     it("successfully retrieves a product category", async () => {
       const result = await productCategoryService.retrieve(
@@ -42,7 +44,9 @@ describe("ProductCategoryService", () => {
 
       expect(result.id).toEqual(IdMap.getId(validProdCategoryId))
       expect(productCategoryRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(productCategoryRepository.findDescendantsTree).toHaveBeenCalledTimes(1)
+      expect(
+        productCategoryRepository.findDescendantsTree
+      ).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId(validProdCategoryId) },
       })
@@ -62,13 +66,18 @@ describe("ProductCategoryService", () => {
   describe("listAndCount", () => {
     const productCategoryRepository = {
       ...MockRepository({}),
-      getFreeTextSearchResultsAndCount: jest.fn().mockImplementation((query, q) => {
-        if (q == "not-found") {
-          return Promise.resolve([[], 0])
-        }
+      getFreeTextSearchResultsAndCount: jest
+        .fn()
+        .mockImplementation((query, q) => {
+          if (q == "not-found") {
+            return Promise.resolve([[], 0])
+          }
 
-        return Promise.resolve([[{ id: IdMap.getId(validProdCategoryId) }], 1])
-      })
+          return Promise.resolve([
+            [{ id: IdMap.getId(validProdCategoryId) }],
+            1,
+          ])
+        }),
     }
 
     const productCategoryService = new ProductCategoryService({
@@ -77,31 +86,44 @@ describe("ProductCategoryService", () => {
       eventBusService,
     })
 
-    beforeEach(async () => { jest.clearAllMocks() })
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
 
     it("successfully retrieves an array of product category", async () => {
-      const [result, count] = await productCategoryService
-        .listAndCount({ q: validProdCategoryId })
+      const [result, count] = await productCategoryService.listAndCount({
+        q: validProdCategoryId,
+      })
 
       expect(count).toEqual(1)
       expect(result.length).toEqual(1)
       expect(result[0].id).toEqual(IdMap.getId(validProdCategoryId))
-      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
-      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith({
-        order: {
-          created_at: "DESC",
+      expect(
+        productCategoryRepository.getFreeTextSearchResultsAndCount
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        productCategoryRepository.getFreeTextSearchResultsAndCount
+      ).toHaveBeenCalledWith(
+        {
+          order: {
+            created_at: "DESC",
+          },
+          skip: 0,
+          take: 100,
+          where: {},
         },
-        skip: 0,
-        take: 100,
-        where: {},
-      }, validProdCategoryId)
+        validProdCategoryId
+      )
     })
 
     it("returns empty array if query doesn't match database results", async () => {
-      const [result, count] = await productCategoryService
-        .listAndCount({ q: "not-found" })
+      const [result, count] = await productCategoryService.listAndCount({
+        q: "not-found",
+      })
 
-      expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
+      expect(
+        productCategoryRepository.getFreeTextSearchResultsAndCount
+      ).toHaveBeenCalledTimes(1)
       expect(result).toEqual([])
       expect(count).toEqual(0)
     })
@@ -109,7 +131,8 @@ describe("ProductCategoryService", () => {
 
   describe("create", () => {
     const productCategoryRepository = MockRepository({
-      findOne: (query) => Promise.resolve({ id: IdMap.getId(validProdCategoryId) }),
+      findOne: (query) =>
+        Promise.resolve({ id: IdMap.getId(validProdCategoryId) }),
       create: () => Promise.resolve({ id: IdMap.getId(validProdCategoryId) }),
       save: (record) => Promise.resolve(record),
     })
@@ -138,8 +161,9 @@ describe("ProductCategoryService", () => {
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-category.created", {
-          "id": IdMap.getId(validProdCategoryId)
+        "product-category.created",
+        {
+          id: IdMap.getId(validProdCategoryId),
         }
       )
     })
@@ -147,7 +171,7 @@ describe("ProductCategoryService", () => {
 
   describe("delete", () => {
     const productCategoryRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "not-found") {
           return Promise.resolve(undefined)
         }
@@ -155,15 +179,17 @@ describe("ProductCategoryService", () => {
         if (query.where.id === "with-children") {
           return Promise.resolve({
             id: IdMap.getId("with-children"),
-            category_children: [{
-              id: IdMap.getId("skinny-jeans"),
-            }]
+            category_children: [
+              {
+                id: IdMap.getId("skinny-jeans"),
+              },
+            ],
           })
         }
 
         return Promise.resolve({
           id: IdMap.getId(validProdCategoryId),
-          category_children: []
+          category_children: [],
         })
       },
       findDescendantsTree: (productCategory) => {
@@ -177,7 +203,9 @@ describe("ProductCategoryService", () => {
       eventBusService,
     })
 
-    beforeEach(async () => { jest.clearAllMocks() })
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
 
     it("successfully deletes a product category", async () => {
       const result = await productCategoryService.delete(
@@ -185,12 +213,13 @@ describe("ProductCategoryService", () => {
       )
 
       expect(productCategoryRepository.delete).toBeCalledTimes(1)
-      expect(productCategoryRepository.delete).toBeCalledWith(IdMap.getId(validProdCategoryId))
+      expect(productCategoryRepository.delete).toBeCalledWith(
+        IdMap.getId(validProdCategoryId)
+      )
     })
 
     it("returns without failure on not-found product category id", async () => {
-      const categoryResponse = await productCategoryService
-        .delete("not-found")
+      const categoryResponse = await productCategoryService.delete("not-found")
 
       expect(categoryResponse).toBe(undefined)
     })
@@ -212,8 +241,9 @@ describe("ProductCategoryService", () => {
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-category.deleted", {
-          "id": IdMap.getId(validProdCategoryId)
+        "product-category.deleted",
+        {
+          id: IdMap.getId(validProdCategoryId),
         }
       )
     })
@@ -221,7 +251,7 @@ describe("ProductCategoryService", () => {
 
   describe("update", () => {
     const productCategoryRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId(invalidProdCategoryId)) {
           return null
         }
@@ -244,11 +274,9 @@ describe("ProductCategoryService", () => {
     })
 
     it("successfully updates a product category", async () => {
-      await productCategoryService.update(
-        IdMap.getId(validProdCategoryId), {
-          name: "bathrobes",
-        }
-      )
+      await productCategoryService.update(IdMap.getId(validProdCategoryId), {
+        name: "bathrobes",
+      })
 
       expect(productCategoryRepository.save).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.save).toHaveBeenCalledWith({
@@ -258,28 +286,32 @@ describe("ProductCategoryService", () => {
     })
 
     it("fails on not-found Id product category", async () => {
-      const error = await productCategoryService.update(
-        IdMap.getId(invalidProdCategoryId), {
+      const error = await productCategoryService
+        .update(IdMap.getId(invalidProdCategoryId), {
           name: "bathrobes",
-        }
-      ).catch(e => e)
+        })
+        .catch((e) => e)
 
       expect(error.message).toBe(
-        `ProductCategory with id: ${IdMap.getId(invalidProdCategoryId)} was not found`
+        `ProductCategory with id: ${IdMap.getId(
+          invalidProdCategoryId
+        )} was not found`
       )
     })
 
     it("emits a message on successful update", async () => {
       const result = await productCategoryService.update(
-        IdMap.getId(validProdCategoryId), {
+        IdMap.getId(validProdCategoryId),
+        {
           name: "bathrobes",
         }
       )
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
       expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-category.updated", {
-          "id": IdMap.getId(validProdCategoryId)
+        "product-category.updated",
+        {
+          id: IdMap.getId(validProdCategoryId),
         }
       )
     })

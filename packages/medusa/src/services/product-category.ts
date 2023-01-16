@@ -3,7 +3,7 @@ import { EntityManager } from "typeorm"
 import { IEventBusService, TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import { FindConfig, QuerySelector } from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,

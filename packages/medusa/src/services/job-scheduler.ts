@@ -1,4 +1,4 @@
-import { Queue, Worker } from "bullmq"
+import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
 
@@ -29,12 +29,13 @@ export default class JobSchedulerService {
     if (singleton && config?.projectConfig?.redis_url) {
       const connection = new Redis(config.projectConfig.redis_url)
 
-      this.queue_ = new Queue(`:scheduled-jobs-queue`, {
+      this.queue_ = new Queue(`scheduled-jobs:queue`, {
         connection,
         prefix: `${this.constructor.name}`,
       })
+
       // Register scheduled job worker
-      new Worker("scheduled-jobs-worker", this.scheduledJobsWorker, {
+      new Worker("scheduled-jobs:worker", this.scheduledJobsWorker, {
         connection,
         prefix: `${this.constructor.name}`,
       })
@@ -97,11 +98,11 @@ export default class JobSchedulerService {
     data: T,
     schedule: string,
     handler: ScheduledJobHandler
-  ): Promise<void> {
+  ): Promise<Job> {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler(eventName, handler)
 
-    await this.queue_.add(
+    return await this.queue_.add(
       eventName,
       {
         eventName,

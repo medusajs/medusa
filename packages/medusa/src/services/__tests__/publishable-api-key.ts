@@ -1,8 +1,8 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 
-import { EventBusService } from "../index"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { IEventBusService } from "../../interfaces"
 import PublishableApiKeyService from "../publishable-api-key"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 
 const pubKeyToRetrieve = {
   id: IdMap.getId("pub-key-to-retrieve"),
@@ -34,7 +34,7 @@ describe("PublishableApiKeyService", () => {
     publishableApiKeySalesChannelRepository:
       publishableApiKeySalesChannelRepository,
     publishableApiKeyRepository: publishableApiKeyRepository,
-    eventBusService: EventBusServiceMock as unknown as EventBusService,
+    eventBusService: EventBusServiceMock as unknown as IEventBusService,
   })
 
   it("should retrieve a publishable api key and call the repository with the right arguments", async () => {

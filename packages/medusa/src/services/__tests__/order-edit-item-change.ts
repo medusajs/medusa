@@ -1,10 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { FindManyOptions, In } from "typeorm"
+import { IEventBusService } from "../.."
 import {
-    IEventBusService,
-    LineItemService,
-    OrderEditItemChangeService,
-    TaxProviderService
+  LineItemService,
+  OrderEditItemChangeService,
+  TaxProviderService,
 } from "../index"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
