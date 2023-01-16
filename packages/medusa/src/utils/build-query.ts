@@ -243,6 +243,19 @@ function buildRelationsOrSelect<TEntity>(
   return output
 }
 
+/**
+ * Convert an order of dot string into a nested object
+ * @example
+ * input: { id: "ASC", "items.title": "ASC", "items.variant.title": "ASC" }
+ * output: {
+ *   "id": "ASC",
+ *   "items": {
+ *     "id": "ASC",
+ *     "variant": "ASC"
+ *   },
+ * }
+ * @param orderBy
+ */
 function buildOrder<TEntity>(orderBy: {
   [k: string]: "ASC" | "DESC"
 }): FindOptionsOrder<TEntity> {
