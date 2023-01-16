@@ -50,10 +50,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/Customer"
+ *           $ref: "#/components/schemas/StoreCustomersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

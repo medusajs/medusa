@@ -19,10 +19,25 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema StoreAuthRes
+ * type: object
+ * properties:
+ *   customer:
+ *     $ref: "#/components/schemas/Customer"
+ */
 export type StoreAuthRes = {
   customer: Customer
 }
 
+/**
+ * @schema StoreGetAuthEmailRes
+ * type: object
+ * properties:
+ *   exists:
+ *     type: boolean
+ *     description: Whether email exists or not.
+ */
 export type StoreGetAuthEmailRes = {
   exists: boolean
 }
