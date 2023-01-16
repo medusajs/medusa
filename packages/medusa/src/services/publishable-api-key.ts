@@ -114,15 +114,13 @@ class PublishableApiKeyService extends TransactionBaseService {
     selector: Selector<PublishableApiKey>,
     config: FindConfig<PublishableApiKey> = {}
   ): Promise<PublishableApiKey | never> {
-    const repo = this.manager_.withRepository(
-      this.publishableApiKeyRepository_
-    )
+    const repo = this.manager_.withRepository(this.publishableApiKeyRepository_)
 
     const { relations, ...query } = buildQuery(selector, config)
-    const publishableApiKey = await repo.findOneWithRelations(
-      relations as (keyof PublishableApiKey)[],
-      query
-    )
+    const publishableApiKey = await repo.findOne({
+      ...query,
+      relationLoadStrategy: "query",
+    })
 
     if (!publishableApiKey) {
       const selectorConstraints = Object.entries(selector)
@@ -151,9 +149,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     }
   ): Promise<[PublishableApiKey[], number]> {
     const manager = this.manager_
-    const pubKeyRepo = manager.withRepository(
-      this.publishableApiKeyRepository_
-    )
+    const pubKeyRepo = manager.withRepository(this.publishableApiKeyRepository_)
 
     let q
     if (isString(selector.q)) {
@@ -200,9 +196,7 @@ class PublishableApiKeyService extends TransactionBaseService {
    */
   async delete(publishableApiKeyId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const repo = manager.withRepository(
-        this.publishableApiKeyRepository_
-      )
+      const repo = manager.withRepository(this.publishableApiKeyRepository_)
 
       const publishableApiKey = await this.retrieve(publishableApiKeyId).catch()
 
@@ -225,9 +219,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     }
   ): Promise<void | never> {
     return await this.atomicPhase_(async (manager) => {
-      const repo = manager.withRepository(
-        this.publishableApiKeyRepository_
-      )
+      const repo = manager.withRepository(this.publishableApiKeyRepository_)
 
       const pubKey = await this.retrieve(publishableApiKeyId)
 
