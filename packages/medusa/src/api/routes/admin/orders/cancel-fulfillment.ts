@@ -88,10 +88,12 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .retrieve(fulfillment_id, { relations: ["items", "items.item"] })
 
-    await adjustInventoryForCancelledFulfillment(fulfillment, {
-      productVariantInventoryService:
-        productVariantInventoryService.withTransaction(transactionManager),
-    })
+    if (fulfillment.location_id) {
+      await adjustInventoryForCancelledFulfillment(fulfillment, {
+        productVariantInventoryService:
+          productVariantInventoryService.withTransaction(transactionManager),
+      })
+    }
   })
 
   const order = await orderService.retrieve(id, {
