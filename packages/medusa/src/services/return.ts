@@ -19,9 +19,9 @@ import { buildQuery, setMetadata } from "../utils"
 
 import {
   FulfillmentProviderService,
-  ProductVariantInventoryService,
   LineItemService,
   OrderService,
+  ProductVariantInventoryService,
   ReturnReasonService,
   ShippingOptionService,
   TaxProviderService,
@@ -348,9 +348,7 @@ class ReturnService extends TransactionBaseService {
    */
   async create(data: CreateReturnInput): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
-      const returnRepository = manager.withRepository(
-        this.returnRepository_
-      )
+      const returnRepository = manager.withRepository(this.returnRepository_)
 
       const orderId = data.order_id
       if (data.swap_id) {
@@ -571,9 +569,7 @@ class ReturnService extends TransactionBaseService {
     context: { locationId?: string } = {}
   ): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
-      const returnRepository = manager.withRepository(
-        this.returnRepository_
-      )
+      const returnRepository = manager.withRepository(this.returnRepository_)
 
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],

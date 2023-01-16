@@ -43,6 +43,11 @@ describe("buildQuery", () => {
             "return_order.shipping_method",
             "return_order.shipping_method.tax_lines",
           ],
+          order: {
+            id: "ASC",
+            "items.id": "ASC",
+            "items.variant.id": "ASC"
+          }
         }
       )
 
@@ -98,6 +103,13 @@ describe("buildQuery", () => {
             },
           },
         },
+        order: {
+          id: "ASC",
+          items: {
+            id: "ASC",
+            variant: "ASC"
+          }
+        }
       })
     })
   })

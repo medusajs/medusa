@@ -403,7 +403,7 @@ class CustomerService extends TransactionBaseService {
     addressOrId: string | DeepPartial<Address> | undefined
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const addrRepo: AddressRepository = manager.withRepository(
+      const addrRepo: typeof AddressRepository = manager.withRepository(
         this.addressRepository_
       )
 
@@ -500,9 +500,7 @@ class CustomerService extends TransactionBaseService {
     address: AddressCreatePayload
   ): Promise<Customer | Address> {
     return await this.atomicPhase_(async (manager) => {
-      const addressRepository = manager.withRepository(
-        this.addressRepository_
-      )
+      const addressRepository = manager.withRepository(this.addressRepository_)
 
       address.country_code = address.country_code.toLowerCase()
 

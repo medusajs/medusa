@@ -12,6 +12,7 @@ import {
   MoreThan,
   MoreThanOrEqual,
 } from "typeorm"
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 
 /**
  * Used to build TypeORM queries.
@@ -39,16 +40,16 @@ export function buildQuery<TWhereKeys, TEntity = unknown>(
     ;(query as FindManyOptions<TEntity>).take = config.take
   }
 
-  if ("relations" in config && config.relations) {
+  if (config.relations) {
     query.relations = buildRelations<TEntity>(config.relations)
   }
 
-  if ("select" in config && config.select) {
+  if (config.select) {
     query.select = buildSelects(config.select as string[])
   }
 
-  if ("order" in config) {
-    query.order = config.order
+  if (config.order) {
+    query.order = buildOrder(config.order)
   }
 
   return query
@@ -214,7 +215,7 @@ export function buildRelations<TEntity>(
 function buildRelationsOrSelect<TEntity>(
   collection: string[]
 ): FindOptionsRelations<TEntity> | FindOptionsSelect<TEntity> {
-  let output: FindOptionsRelations<TEntity> = {}
+  const output: FindOptionsRelations<TEntity> = {}
 
   for (const relation of collection) {
     if (relation.indexOf(".") > -1) {
@@ -237,6 +238,35 @@ function buildRelationsOrSelect<TEntity>(
     }
 
     output[relation] = true
+  }
+
+  return output
+}
+
+function buildOrder<TEntity>(orderBy: {
+  [k: string]: "ASC" | "DESC"
+}): FindOptionsOrder<TEntity> {
+  const output: FindOptionsOrder<TEntity> = {}
+
+  const orderKeys = Object.keys(orderBy)
+
+  for (const order of orderKeys) {
+    if (order.indexOf(".") > -1) {
+      const nestedOrder = order.split(".")
+
+      let parent = output
+
+      while (nestedOrder.length > 1) {
+        const nestedRelation = nestedOrder.shift() as string
+        parent = parent[nestedRelation] = parent[nestedRelation] ?? {}
+      }
+
+      parent[nestedOrder[0]] = orderBy[order]
+
+      continue
+    }
+
+    output[order] = true
   }
 
   return output

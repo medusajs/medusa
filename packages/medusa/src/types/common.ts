@@ -17,7 +17,6 @@ import {
 import { transformDate } from "../utils/validators/date-transform"
 import { BaseEntity } from "../interfaces"
 import { ClassConstructor } from "./global"
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 
 /**
@@ -45,7 +44,7 @@ export interface FindConfig<Entity> {
   skip?: number
   take?: number
   relations?: string[]
-  order?: FindOptionsOrder<Entity>
+  order?: { [K: string]: "ASC" | "DESC" }
 }
 
 export type ExtendedFindConfig<TEntity> = (

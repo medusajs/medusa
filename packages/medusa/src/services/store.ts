@@ -64,7 +64,9 @@ class StoreService extends TransactionBaseService {
         const newStore = storeRepository.create()
         // Add default currency (USD) to store currencies
         const usd = await currencyRepository.findOne({
-          code: "usd",
+          where: {
+            code: "usd",
+          },
         })
 
         if (usd) {
@@ -180,7 +182,9 @@ class StoreService extends TransactionBaseService {
           }
 
           const curr = (await currencyRepository.findOne({
-            code: default_currency_code.toLowerCase(),
+            where: {
+              code: default_currency_code.toLowerCase(),
+            },
           })) as Currency
 
           store.default_currency = curr
