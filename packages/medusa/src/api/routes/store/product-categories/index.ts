@@ -5,10 +5,25 @@ import getProductCategory, {
 } from "./get-product-category"
 import { ProductCategory } from "../../../../models"
 
+import listProductCategories, {
+  StoreGetProductCategoriesParams,
+} from "./list-product-categories"
+
 const route = Router()
 
 export default (app) => {
   app.use("/product-categories", route)
+
+  route.get(
+    "/",
+    transformQuery(StoreGetProductCategoriesParams, {
+      defaultFields: defaultStoreProductCategoryFields,
+      allowedFields: allowedStoreProductCategoryFields,
+      defaultRelations: defaultStoreProductCategoryRelations,
+      isList: true,
+    }),
+    middlewares.wrap(listProductCategories)
+  )
 
   route.get(
     "/:id",
@@ -38,6 +53,7 @@ export const defaultStoreProductCategoryFields = [
   "id",
   "name",
   "handle",
+  "parent_category_id",
   "created_at",
   "updated_at",
 ]
@@ -46,6 +62,7 @@ export const allowedStoreProductCategoryFields = [
   "id",
   "name",
   "handle",
+  "parent_category_id",
   "created_at",
   "updated_at",
 ]
@@ -62,3 +79,4 @@ export type StoreGetProductCategoryRes = {
 }
 
 export * from "./get-product-category"
+export * from "./list-product-categories"
