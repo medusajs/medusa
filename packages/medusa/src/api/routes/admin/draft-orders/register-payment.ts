@@ -78,7 +78,6 @@ export default async (req, res) => {
     req.scope.resolve("productVariantInventoryService")
   const entityManager: EntityManager = req.scope.resolve("manager")
 
-  let result
   const order = await entityManager.transaction(async (manager) => {
     const draftOrderServiceTx = draftOrderService.withTransaction(manager)
     const orderServiceTx = orderService.withTransaction(manager)
@@ -101,15 +100,15 @@ export default async (req, res) => {
 
     await cartServiceTx.authorizePayment(cart.id)
 
-    result = await orderServiceTx.createFromCart(cart.id)
+    let order = await orderServiceTx.createFromCart(cart.id)
 
-    await draftOrderServiceTx.registerCartCompletion(draftOrder.id, result.id)
+    await draftOrderServiceTx.registerCartCompletion(draftOrder.id, order.id)
 
-    await orderServiceTx.capturePayment(result.id)
+    await orderServiceTx.capturePayment(order.id)
 
-    const order = await orderService
+    order = await orderService
       .withTransaction(manager)
-      .retrieveWithTotals(result.id, {
+      .retrieveWithTotals(order.id, {
         relations: defaultOrderRelations,
         select: defaultOrderFields,
       })
