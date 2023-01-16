@@ -251,7 +251,9 @@ function buildRelationsOrSelect<TEntity>(
  *   "id": "ASC",
  *   "items": {
  *     "id": "ASC",
- *     "variant": "ASC"
+ *     "variant": {
+ *        "title": "ASC"
+ *     }
  *   },
  * }
  * @param orderBy
