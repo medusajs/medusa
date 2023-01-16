@@ -809,7 +809,7 @@ class ProductService extends TransactionBaseService {
   async retrieveOptionByTitle(
     title: string,
     productId: string
-  ): Promise<ProductOption | undefined> {
+  ): Promise<ProductOption | null> {
     const productOptionRepo = this.manager_.withRepository(
       this.productOptionRepository_
     )

@@ -10,7 +10,7 @@ class ProductTypeService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly typeRepository_: typeof ProductTypeRepository
+  protected readonly typeRepository_: ProductTypeRepository
 
   constructor({ manager, productTypeRepository }) {
     super(arguments[0])

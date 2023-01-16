@@ -253,7 +253,7 @@ class InviteService extends TransactionBaseService {
   async resend(id): Promise<void> {
     const inviteRepo = this.manager_.withRepository(InviteRepository)
 
-    const invite = await inviteRepo.findOne({ id })
+    const invite = await inviteRepo.findOne({ where: { id } })
 
     if (!invite) {
       throw new MedusaError(
