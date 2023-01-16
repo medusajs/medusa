@@ -74,7 +74,11 @@ export default class RedisEventBusService
   protected transactionManager_: EntityManager | undefined
 
   constructor(
-    container: MedusaContainer & InjectedDependencies,
+    {
+      manager,
+      logger,
+      stagedJobService,
+    }: MedusaContainer & InjectedDependencies,
     config: ConfigModule,
     moduleDeclaration?: ConfigurableModuleDeclaration,
     singleton = true
@@ -90,10 +94,10 @@ export default class RedisEventBusService
     }
 
     this.config_ = config
-    this.manager_ = container.manager
+    this.manager_ = manager
 
-    this.logger_ = container.logger
-    this.stagedJobService_ = container.stagedJobService
+    this.logger_ = logger
+    this.stagedJobService_ = stagedJobService
 
     if (singleton && config?.projectConfig?.redis_url) {
       this.connect()

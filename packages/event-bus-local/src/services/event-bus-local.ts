@@ -20,11 +20,11 @@ export default class LocalEventBus
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
 
-  constructor(container: MedusaContainer & InjectedDependencies) {
+  constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.logger_ = container.logger
+    this.logger_ = logger
   }
 
   /**
