@@ -15,26 +15,20 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
       where: {},
     },
     q: string | undefined,
-    treeSelector: QuerySelector<ProductCategory> = {}
+    treeScope: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
     const entityName = "product_category"
     const options_ = { ...options }
-    const modelColumns = this.manager.connection
-      .getMetadata(ProductCategory)
-      .ownColumns.map((column) => column.propertyName)
+    const relations = options_.relations || []
 
     const selectStatements = (relationName: string): string[] => {
+      const modelColumns = this.manager.connection
+        .getMetadata(ProductCategory)
+        .ownColumns.map((column) => column.propertyName)
+
       return (options_.select || modelColumns).map((column) => {
         return `${relationName}.${column}`
       })
-    }
-
-    const treeWhereStatements = (relationName: string): string => {
-      return Object.entries(treeSelector)
-        .map((entry) => {
-          return `${relationName}.${entry[0]} = :${entry[0]}`
-        })
-        .join(" AND ")
     }
 
     const queryBuilder = this.createQueryBuilder(entityName)
@@ -57,15 +51,32 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
 
     queryBuilder.andWhere(options_.where)
 
-    if (options_.relations?.length) {
-      options_.relations.forEach((rel) => {
-        const whereQuery = treeWhereStatements(rel)
+    const includedTreeRelations: string[] = relations.filter((rel) =>
+      ProductCategory.treeRelations.includes(rel)
+    )
 
-        queryBuilder
-          .leftJoin(`${entityName}.${rel}`, rel, whereQuery, treeSelector)
-          .addSelect(selectStatements(rel))
-      })
-    }
+    includedTreeRelations.forEach((treeRelation) => {
+      const treeWhere = Object.entries(treeScope)
+        .map((entry) => `${treeRelation}.${entry[0]} = :${entry[0]}`)
+        .join(" AND ")
+
+      queryBuilder
+        .leftJoin(
+          `${entityName}.${treeRelation}`,
+          treeRelation,
+          treeWhere,
+          treeScope
+        )
+        .addSelect(selectStatements(treeRelation))
+    })
+
+    const nonTreeRelations: string[] = relations.filter(
+      (rel) => !ProductCategory.treeRelations.includes(rel)
+    )
+
+    nonTreeRelations.forEach((relation) => {
+      queryBuilder.leftJoinAndSelect(`${entityName}.${relation}`, relation)
+    })
 
     if (options_.withDeleted) {
       queryBuilder.withDeleted()
