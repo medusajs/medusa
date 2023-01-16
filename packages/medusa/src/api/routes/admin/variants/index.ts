@@ -49,6 +49,24 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
   "metadata",
 ]
 
+/**
+ * @schema AdminVariantsListRes
+ * type: object
+ * properties:
+ *   variants:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ProductVariant"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminVariantsListRes = PaginatedResponse & {
   variants: PricedVariant[]
 }
