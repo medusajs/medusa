@@ -1,10 +1,17 @@
 import type { Options } from "tsup"
 
+const env = process.env.NODE_ENV
+
 const config: Options = {
-  entry: ["src/index.ts"],
+  entry: ["src/**/*.ts"],
   dts: true,
+  clean: true,
+  minify: true,
+  bundle: true,
   sourcemap: true,
-  format: ["esm", "cjs", "iife"],
+  format: ["cjs", "esm"],
+  target: "es2020",
+  skipNodeModulesBundle: true,
   tsconfig: "./tsconfig.json",
 }
 

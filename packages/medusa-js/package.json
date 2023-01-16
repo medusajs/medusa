@@ -2,15 +2,16 @@
   "name": "@medusajs/medusa-js",
   "version": "1.3.6",
   "description": "Client for Medusa Commerce Rest API",
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "exports": {
-    "default": "./dist/index.cjs",
-    "require": "./dist/index.cjs",
-    "import": "./dist/index.mjs",
-    "node": "./dist/index.cjs"
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
   },
-  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts",
     "prepare": "cross-env NODE_ENV=production yarn run build",
