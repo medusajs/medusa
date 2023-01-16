@@ -79,7 +79,7 @@ module.exports = {
 
 Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
 
-You can optionally set the `database_schema` option. By default, its value is `public`.
+You can optionally set the `database_schema` option. By default, its value is `public`. When you set the `database_schema` option, you must add the `search_path` option to the database URL. For example, the value of `database_url` is `postgres://localhost/store?options=-c search_path=test` if `database_schema` is `test`.
 
 It's recommended to set the Database URL as an environment variable:
 
