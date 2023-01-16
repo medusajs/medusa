@@ -277,7 +277,6 @@ export default async (req, res) => {
     await createVariantStrategy.resume(transaction)
 
     if (transaction.getState() !== TransactionState.DONE) {
-      console.log(transaction.errors)
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         transaction.errors.map((err) => err.error?.message).join("\n")
