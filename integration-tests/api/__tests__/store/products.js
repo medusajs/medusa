@@ -197,15 +197,20 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.products[0]).toEqual(
-        expect.objectContaining({
-          handle: expect.any(String),
-          variants: expect.any(Array), // default relations are not filtered out
-        })
+      expect(Object.keys(response.data.products[0])).toEqual(
+        expect.arrayContaining([
+          // fields
+          "handle",
+          // relations
+          "variants",
+          "options",
+          "images",
+          "tags",
+          "collection",
+          "type",
+        ])
       )
-
-      expect(response.data.products[0]).not.toHaveProperty("id")
-      expect(response.data.products[0]).not.toHaveProperty("created_at")
+      expect(Object.keys(response.data.products[0]).length).toEqual(7)
     })
 
     it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
@@ -981,15 +986,20 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          handle: expect.any(String),
-          variants: expect.any(Array), // default relations are not filtered out
-        })
+      expect(Object.keys(response.data.product)).toEqual(
+        expect.arrayContaining([
+          // fields
+          "handle",
+          // relations
+          "variants",
+          "options",
+          "images",
+          "tags",
+          "collection",
+          "type",
+        ])
       )
-
-      expect(response.data.product).not.toHaveProperty("id")
-      expect(response.data.product).not.toHaveProperty("created_at")
+      expect(Object.keys(response.data.product).length).toEqual(7)
     })
   })
 })

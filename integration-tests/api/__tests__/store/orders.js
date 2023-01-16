@@ -166,16 +166,23 @@ describe("/store/carts", () => {
           return err.response
         })
 
-      expect(response.data.order).toEqual(
-        expect.objectContaining({
-          object: "order",
-          status: expect.any(String),
-          items: expect.any(Array), // default relations are not filtered out
-        })
+      expect(Object.keys(response.data.order)).toEqual(
+        expect.arrayContaining([
+          // fields
+          "status",
+          "object",
+          // relations
+          "shipping_address",
+          "fulfillments",
+          "items",
+          "shipping_methods",
+          "discounts",
+          "customer",
+          "payments",
+          "region",
+        ])
       )
-
-      expect(response.data.order).not.toHaveProperty("id")
-      expect(response.data.order).not.toHaveProperty("created_at")
+      expect(Object.keys(response.data.order).length).toEqual(10)
     })
 
     it("get order response contains only fields defined with `fields` param", async () => {
@@ -187,16 +194,23 @@ describe("/store/carts", () => {
           return err.response
         })
 
-      expect(response.data.order).toEqual(
-        expect.objectContaining({
-          object: "order",
-          status: expect.any(String),
-          items: expect.any(Array), // default relations are not filtered out
-        })
+      expect(Object.keys(response.data.order)).toEqual(
+        expect.arrayContaining([
+          // fields
+          "status",
+          "object",
+          // relations
+          "shipping_address",
+          "fulfillments",
+          "items",
+          "shipping_methods",
+          "discounts",
+          "customer",
+          "payments",
+          "region",
+        ])
       )
-
-      expect(response.data.order).not.toHaveProperty("id")
-      expect(response.data.order).not.toHaveProperty("created_at")
+      expect(Object.keys(response.data.order).length).toEqual(10)
     })
 
     it("looks up order", async () => {
