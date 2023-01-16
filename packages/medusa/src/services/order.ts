@@ -253,7 +253,7 @@ class OrderService extends TransactionBaseService {
         },
         {
           ...query.where,
-          display_id: ILike(`%${q}%`),
+          display_id: ILike(`%${q}%`) as any,
         },
         {
           ...query.where,

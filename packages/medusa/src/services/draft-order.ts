@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
+import { EntityManager, FindManyOptions, ILike, UpdateResult } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
@@ -96,9 +96,7 @@ class DraftOrderService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const draftOrderRepo = manager.withRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery({ id: draftOrderId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
@@ -123,9 +121,7 @@ class DraftOrderService extends TransactionBaseService {
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
     const manager = this.manager_
-    const draftOrderRepo = manager.withRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery({ cart_id: cartId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
@@ -198,19 +194,18 @@ class DraftOrderService extends TransactionBaseService {
         },
       }
 
-      query.where = (qb): void => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where(`cart.email ILIKE :q`, {
-              q: `%${q}%`,
-            }).orWhere(`draft_order.display_id::TEXT ILIKE :displayId`, {
-              displayId: `${q}`,
-            })
-          })
-        )
-      }
+      query.where = [
+        {
+          ...query.where,
+          cart: {
+            email: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...query.where,
+          display_id: ILike(`%${q}%`) as any,
+        },
+      ]
     }
 
     return await draftOrderRepository.findAndCount(query)
@@ -231,9 +226,7 @@ class DraftOrderService extends TransactionBaseService {
     }
   ): Promise<DraftOrder[]> {
     const manager = this.manager_
-    const draftOrderRepo = manager.withRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery(selector, config)
 
@@ -303,7 +296,7 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of (items || [])) {
+        for (const item of items || []) {
           if (item.variant_id) {
             const line = await lineItemServiceTx.generate(
               item.variant_id,

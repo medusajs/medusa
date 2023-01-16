@@ -213,7 +213,7 @@ class CustomerGroupService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery<CustomerGroup, any>(selector, config)
+    const query = buildQuery<Selector<CustomerGroup>, any>(selector, config)
 
     if (q) {
       query.where.name = ILike(`%${q}%`)
