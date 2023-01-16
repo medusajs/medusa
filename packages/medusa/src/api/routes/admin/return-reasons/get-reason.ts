@@ -40,10 +40,7 @@ import { ReturnReasonService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             return_reason:
- *               $ref: "#/components/schemas/ReturnReason"
+ *           $ref: "#/components/schemas/AdminReturnReasonsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

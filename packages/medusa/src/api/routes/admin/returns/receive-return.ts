@@ -5,12 +5,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import {
-  OrderService,
-  ProductVariantInventoryService,
-  ReturnService,
-  SwapService,
-} from "../../../../services"
+import { OrderService, ReturnService, SwapService } from "../../../../services"
 
 import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
@@ -72,10 +67,7 @@ import { isDefined } from "medusa-core-utils"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             return:
- *               $ref: "#/components/schemas/Return"
+ *           $ref: "#/components/schemas/AdminReturnsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

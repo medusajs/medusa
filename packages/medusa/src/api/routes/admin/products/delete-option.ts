@@ -39,21 +39,7 @@ import { ProductService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             option_id:
- *               type: string
- *               description: The ID of the deleted Product Option
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: option
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
- *             product:
- *               $ref: "#/components/schemas/Product"
+ *           $ref: "#/components/schemas/AdminProductsDeleteOptionRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
