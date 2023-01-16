@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
+    "form-data": "^4.0.0",
     "qs": "^6.10.3",
     "retry-axios": "^2.6.0",
     "uuid": "^9.0.0"
