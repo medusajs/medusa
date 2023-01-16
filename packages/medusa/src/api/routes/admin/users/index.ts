@@ -34,14 +34,47 @@ export default (app) => {
 
   return app
 }
+
+/**
+ * @schema AdminUserRes
+ * type: object
+ * properties:
+ *   user:
+ *     $ref: "#/components/schemas/User"
+ */
 export type AdminUserRes = {
   user: Omit<User, "password_hash">
 }
 
+/**
+ * @schema AdminUsersListRes
+ * type: object
+ * properties:
+ *   users:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/User"
+ */
 export type AdminUsersListRes = {
   users: Omit<User, "password_hash">[]
 }
 
+/**
+ * @schema AdminDeleteUserRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted user.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: user
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
 export type AdminDeleteUserRes = DeleteResponse
 
 export * from "./reset-password"
