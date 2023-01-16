@@ -98,21 +98,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             tax_rates:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/TaxRate"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminTaxRatesListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
