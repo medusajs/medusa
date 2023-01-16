@@ -4415,7 +4415,6 @@ __metadata:
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^7.0.3
-    form-data: ^4.0.0
     jest: ^27.4.7
     qs: ^6.10.3
     retry-axios: ^2.6.0
@@ -17258,7 +17257,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:4.0.0, form-data@npm:^4.0.0":
+"form-data@npm:4.0.0":
   version: 4.0.0
   resolution: "form-data@npm:4.0.0"
   dependencies:
