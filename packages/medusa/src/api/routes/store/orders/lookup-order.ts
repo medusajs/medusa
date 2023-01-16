@@ -12,6 +12,7 @@ import { validator } from "../../../../utils/validator"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /orders
@@ -20,6 +21,8 @@ import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
  * description: "Look up an order using filters."
  * parameters:
  *   - (query) display_id=* {number} The display id given to the Order.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the result.
  *   - in: query
  *     name: email
  *     style: form
@@ -112,17 +115,13 @@ export class ShippingAddressPayload {
   postal_code?: string
 }
 
-export class StoreGetOrdersParams {
+export class StoreGetOrdersParams extends FindParams {
   @IsNumber()
   @Type(() => Number)
   display_id: number
 
   @IsEmail()
   email: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
 
   @IsOptional()
   @ValidateNested()
