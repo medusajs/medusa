@@ -293,10 +293,10 @@ class SwapService extends TransactionBaseService {
     const swapRepo = this.manager_.withRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
 
-    const relations = query.relations as (keyof Swap)[]
-    delete query.relations
-
-    return await swapRepo.findWithRelations(relations, query)
+    return await swapRepo.find({
+      ...query,
+      relationLoadStrategy: "query"
+    })
   }
 
   /**

@@ -33,8 +33,8 @@ type PriceListConstructorProps = {
   productService: ProductService
   productVariantService: ProductVariantService
   priceListRepository: typeof PriceListRepository
-  moneyAmountRepository: typeof MoneyAmountRepository
-  productVariantRepository: typeof ProductVariantRepository
+  moneyAmountRepository: MoneyAmountRepository
+  productVariantRepository: ProductVariantRepository
   featureFlagRouter: FlagRouter
 }
 
@@ -50,8 +50,8 @@ class PriceListService extends TransactionBaseService {
   protected readonly productService_: ProductService
   protected readonly variantService_: ProductVariantService
   protected readonly priceListRepo_: typeof PriceListRepository
-  protected readonly moneyAmountRepo_: typeof MoneyAmountRepository
-  protected readonly productVariantRepo_: typeof ProductVariantRepository
+  protected readonly moneyAmountRepo_: MoneyAmountRepository
+  protected readonly productVariantRepo_: ProductVariantRepository
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({

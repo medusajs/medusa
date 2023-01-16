@@ -14,14 +14,14 @@ import {
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: EventBusService
-  productCategoryRepository: typeof ProductCategoryRepository
+  productCategoryRepository: ProductCategoryRepository
 }
 
 /**
  * Provides layer to manipulate product categories.
  */
 class ProductCategoryService extends TransactionBaseService {
-  protected readonly productCategoryRepo_: typeof ProductCategoryRepository
+  protected readonly productCategoryRepo_: ProductCategoryRepository
   protected readonly eventBusService_: EventBusService
   protected transactionManager_: EntityManager | undefined
   protected manager_: EntityManager

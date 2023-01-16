@@ -5,7 +5,7 @@ import { ExtendedFindConfig, Selector } from "../types/common"
 @EntityRepository(ProductCategory)
 export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
   public async getFreeTextSearchResultsAndCount(
-    options: ExtendedFindConfig<ProductCategory, Selector<ProductCategory>> = {
+    options: ExtendedFindConfig<ProductCategory> = {
       where: {},
     },
     q: string | undefined

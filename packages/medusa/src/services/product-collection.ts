@@ -15,8 +15,8 @@ import EventBusService from "./event-bus"
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: EventBusService
-  productRepository: typeof ProductRepository
-  productCollectionRepository: typeof ProductCollectionRepository
+  productRepository: ProductRepository
+  productCollectionRepository: ProductCollectionRepository
 }
 
 /**
@@ -28,8 +28,8 @@ class ProductCollectionService extends TransactionBaseService {
 
   protected readonly eventBus_: EventBusService
   // eslint-disable-next-line max-len
-  protected readonly productCollectionRepository_: typeof ProductCollectionRepository
-  protected readonly productRepository_: typeof ProductRepository
+  protected readonly productCollectionRepository_: ProductCollectionRepository
+  protected readonly productRepository_: ProductRepository
 
   constructor({
     manager,
@@ -276,10 +276,7 @@ class ProductCollectionService extends TransactionBaseService {
     if (query.where.discount_condition_id) {
       const discountConditionId = query.where.discount_condition_id as string
       delete query.where.discount_condition_id
-      return await productCollectionRepo.findAndCountByDiscountConditionId(
-        discountConditionId,
-        query
-      )
+      return await productCollectionRepo.findAndCountBy(query)
     }
 
     return await productCollectionRepo.findAndCount(query)

@@ -66,12 +66,12 @@ class SalesChannelService extends TransactionBaseService {
       this.salesChannelRepository_
     )
 
-    const { relations, ...query } = buildQuery(selector, config)
+    const query = buildQuery(selector, config)
 
-    const salesChannel = await salesChannelRepo.findOneWithRelations(
-      relations as (keyof SalesChannel)[],
-      query
-    )
+    const salesChannel = await salesChannelRepo.findOne({
+      ...query,
+      relationLoadStrategy: "query"
+    })
 
     if (!salesChannel) {
       const selectorConstraints = Object.entries(selector)

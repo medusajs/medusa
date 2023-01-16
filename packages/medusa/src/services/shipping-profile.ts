@@ -161,7 +161,7 @@ class ShippingProfileService extends TransactionBaseService {
     return profile
   }
 
-  async retrieveDefault(): Promise<ShippingProfile | undefined> {
+  async retrieveDefault(): Promise<ShippingProfile | null> {
     const profileRepository = this.manager_.withRepository(
       this.shippingProfileRepository_
     )
@@ -204,7 +204,7 @@ class ShippingProfileService extends TransactionBaseService {
    * Retrieves the default gift card profile
    * @return the shipping profile for gift cards
    */
-  async retrieveGiftCardDefault(): Promise<ShippingProfile | undefined> {
+  async retrieveGiftCardDefault(): Promise<ShippingProfile | null> {
     const profileRepository = this.manager_.withRepository(
       this.shippingProfileRepository_
     )

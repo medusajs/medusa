@@ -55,7 +55,7 @@ export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
 type InjectedDependencies = {
   manager: EntityManager
-  orderRepository: typeof OrderRepository
+  orderRepository: OrderRepository
   customerService: CustomerService
   paymentProviderService: PaymentProviderService
   shippingOptionService: ShippingOptionService
@@ -104,7 +104,7 @@ class OrderService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
 
-  protected readonly orderRepository_: typeof OrderRepository
+  protected readonly orderRepository_: OrderRepository
   protected readonly customerService_: CustomerService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly shippingOptionService_: ShippingOptionService

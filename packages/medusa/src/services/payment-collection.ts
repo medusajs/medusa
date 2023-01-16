@@ -26,7 +26,7 @@ import { CreatePaymentInput, PaymentSessionInput } from "../types/payment"
 
 type InjectedDependencies = {
   manager: EntityManager
-  paymentCollectionRepository: typeof PaymentCollectionRepository
+  paymentCollectionRepository: PaymentCollectionRepository
   paymentProviderService: PaymentProviderService
   eventBusService: EventBusService
   customerService: CustomerService
@@ -46,7 +46,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly customerService_: CustomerService
   // eslint-disable-next-line max-len
-  protected readonly paymentCollectionRepository_: typeof PaymentCollectionRepository
+  protected readonly paymentCollectionRepository_: PaymentCollectionRepository
 
   constructor({
     manager,
