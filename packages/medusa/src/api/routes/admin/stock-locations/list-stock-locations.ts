@@ -112,21 +112,7 @@ import { Request, Response } from "express"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             stock_locations:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/StockLocationDTO"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminStockLocationsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

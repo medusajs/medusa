@@ -25,11 +25,11 @@
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "watch": "babel -w src --out-dir dist/ --extensions \".ts,.js\"",
-    "build": "babel src -d dist --extensions \".ts,.js\"",
+    "watch": "babel -w src --out-dir dist/ --extensions \".ts,.js\" --ignore '**/__tests__','**/__mocks__'",
+    "build": "babel src -d dist --extensions \".ts,.js\" --ignore '**/__tests__','**/__mocks__'",
     "serve": "node dist/app.js",
     "postinstall": "node dist/postinstall.js || true",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests src"
   },
   "dependencies": {
     "axios": "^0.21.1",

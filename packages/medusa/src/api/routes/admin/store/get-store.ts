@@ -42,10 +42,7 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             store:
- *               $ref: "#/components/schemas/Store"
+ *           $ref: "#/components/schemas/AdminStoresRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
