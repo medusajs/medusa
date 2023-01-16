@@ -1,6 +1,7 @@
 import { ExtendedFindConfig, FindConfig } from "../types/common"
 import {
   FindManyOptions,
+  FindOneOptions,
   FindOperator,
   FindOptionsRelations,
   FindOptionsSelect,
@@ -23,7 +24,9 @@ import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 export function buildQuery<TWhereKeys, TEntity = unknown>(
   selector: TWhereKeys,
   config: FindConfig<TEntity> = {}
-): ExtendedFindConfig<TEntity> {
+): (Omit<FindOneOptions, "where"> | Omit<FindManyOptions, "where">) & {
+  where?: FindOptionsWhere<TEntity>
+} {
   const query: ExtendedFindConfig<TEntity> = {
     where: buildWhere<TWhereKeys, TEntity>(selector),
   }
@@ -45,17 +48,19 @@ export function buildQuery<TWhereKeys, TEntity = unknown>(
   }
 
   if (config.select) {
-    query.select = buildSelects(config.select as string[])
+    query.select = buildSelects<TEntity>(config.select as string[])
   }
 
   if (config.order) {
-    query.order = buildOrder(config.order)
+    query.order = buildOrder<TEntity>(config.order)
   }
 
   return query
 }
 
-function buildWhere<TWhereKeys, TEntity>(constraints: TWhereKeys): any {
+function buildWhere<TWhereKeys, TEntity>(
+  constraints: TWhereKeys
+): FindOptionsWhere<TEntity> {
   const where: FindOptionsWhere<TEntity> = {}
   for (const [key, value] of Object.entries(constraints)) {
     if (value === undefined) {

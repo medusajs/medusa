@@ -18,6 +18,7 @@ import { transformDate } from "../utils/validators/date-transform"
 import { BaseEntity } from "../interfaces"
 import { ClassConstructor } from "./global"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
+import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -53,6 +54,7 @@ export type ExtendedFindConfig<TEntity> = (
 ) & {
   relations?: FindOptionsRelations<TEntity>
   where: FindOptionsWhere<TEntity>
+  order?: FindOptionsOrder<TEntity>
   skip?: number
   take?: number
 }
