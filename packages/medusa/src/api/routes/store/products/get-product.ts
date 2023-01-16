@@ -24,6 +24,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - (query) cart_id {string} The ID of the customer's cart.
  *   - (query) region_id {string} The ID of the region the customer is using. This is helpful to ensure correct prices are retrieved for a region.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - in: query
  *     name: currency_code
  *     style: form
@@ -138,4 +139,8 @@ export class StoreGetProductsProductParams extends PriceSelectionParams {
   @IsString()
   @IsOptional()
   fields?: string
+
+  @IsString()
+  @IsOptional()
+  expand?: string
 }
