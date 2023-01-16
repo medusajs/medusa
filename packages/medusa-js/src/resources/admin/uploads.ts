@@ -5,6 +5,7 @@ import {
   AdminUploadsDownloadUrlRes,
   AdminUploadsRes,
 } from "@medusajs/medusa"
+import envFormData from "../../env/form-data"
 import { AdminCreateUploadPayload, ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -60,7 +61,7 @@ class AdminUploadsResource extends BaseResource {
   }
 
   private _createPayload(file: AdminCreateUploadPayload) {
-    const payload = new FormData()
+    const payload = new (envFormData || FormData)()
 
     if (Array.isArray(file)) {
       file.forEach((f) => payload.append("files", f))

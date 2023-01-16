@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "dts watch",
-    "build": "tsc && dts build",
+    "build": "dts build",
     "prepare": "dts build",
     "test": "dts test --passWithNoTests",
     "lint": "dts lint",
