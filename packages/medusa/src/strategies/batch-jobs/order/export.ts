@@ -319,7 +319,10 @@ class OrderExportStrategy extends AbstractBatchJobStrategy {
       fieldName: "sales_channel",
       title: ["Sales channel name", "Sales channel description"].join(";"),
       accessor: (order: Order): string =>
-        [order.sales_channel.name, order.sales_channel.description].join(";"),
+        [
+          order.sales_channel?.name || "",
+          order.sales_channel?.description || "",
+        ].join(";"),
     })
   }
 }
