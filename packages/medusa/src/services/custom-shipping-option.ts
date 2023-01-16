@@ -11,7 +11,6 @@ type InjectedDependencies = {
   manager: EntityManager
   customShippingOptionRepository: typeof CustomShippingOptionRepository
 }
-
 class CustomShippingOptionService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -40,7 +39,7 @@ class CustomShippingOptionService extends TransactionBaseService {
     config: FindConfig<CustomShippingOption> = {}
   ): Promise<CustomShippingOption> {
     const manager = this.manager_
-    const customShippingOptionRepo = manager.withRepository(
+    const customShippingOptionRepo = manager.getCustomRepository(
       this.customShippingOptionRepository_
     )
 
@@ -72,7 +71,7 @@ class CustomShippingOptionService extends TransactionBaseService {
     }
   ): Promise<CustomShippingOption[]> {
     const manager = this.manager_
-    const customShippingOptionRepo = manager.withRepository(
+    const customShippingOptionRepo = manager.getCustomRepository(
       this.customShippingOptionRepository_
     )
 
@@ -93,7 +92,7 @@ class CustomShippingOptionService extends TransactionBaseService {
     const { cart_id, shipping_option_id, price, metadata } = data
 
     const manager = this.manager_
-    const customShippingOptionRepo = manager.withRepository(
+    const customShippingOptionRepo = manager.getCustomRepository(
       this.customShippingOptionRepository_
     )
 

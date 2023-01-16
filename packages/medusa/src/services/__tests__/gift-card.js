@@ -27,6 +27,7 @@ describe("GiftCardService", () => {
       retrieve: () => {
         return Promise.resolve({
           id: IdMap.getId("region-id"),
+          tax_rate: 19,
         })
       },
     }
@@ -57,13 +58,14 @@ describe("GiftCardService", () => {
         order_id: IdMap.getId("order-id"),
         is_disabled: true,
         code: expect.any(String),
+        tax_rate: null
       })
     })
   })
 
   describe("retrieve", () => {
     const giftCardRepo = MockRepository({
-      findOne: () => {
+      findOneWithRelations: () => {
         return Promise.resolve({})
       },
     })
@@ -83,21 +85,22 @@ describe("GiftCardService", () => {
         select: ["id"],
       })
 
-      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
-      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
-        where: {
-          id: IdMap.getId("gift-card"),
-        },
-        relations: { region: true },
-        select: { id: true },
-        relationLoadStrategy: "query",
-      })
+      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
+        ["region"],
+        {
+          where: {
+            id: IdMap.getId("gift-card"),
+          },
+          select: ["id"],
+        }
+      )
     })
   })
 
   describe("retrieveByCode", () => {
     const giftCardRepo = MockRepository({
-      findOne: () => {
+      findOneWithRelations: () => {
         return Promise.resolve({})
       },
     })
@@ -117,15 +120,16 @@ describe("GiftCardService", () => {
         select: ["id"],
       })
 
-      expect(giftCardRepo.findOne).toHaveBeenCalledTimes(1)
-      expect(giftCardRepo.findOne).toHaveBeenCalledWith({
-        relationLoadStrategy: "query",
-        where: {
-          code: "1234-1234-1234-1234",
-        },
-        select: { id: true },
-        relations: { region: true },
-      })
+      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
+      expect(giftCardRepo.findOneWithRelations).toHaveBeenCalledWith(
+        ["region"],
+        {
+          where: {
+            code: "1234-1234-1234-1234",
+          },
+          select: ["id"],
+        }
+      )
     })
   })
 
@@ -138,7 +142,7 @@ describe("GiftCardService", () => {
     }
 
     const giftCardRepo = MockRepository({
-      findOne: (s) => {
+      findOneWithRelations: (s) => {
         return Promise.resolve(giftCard)
       },
       save: (s) => {

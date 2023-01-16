@@ -1,16 +1,6 @@
-import ClaimItemService from "./claim-item"
-import EventBusService from "./event-bus"
-import FulfillmentProviderService from "./fulfillment-provider"
-import FulfillmentService from "./fulfillment"
-import InventoryService from "./inventory"
-import LineItemService from "./line-item"
-import PaymentProviderService from "./payment-provider"
-import RegionService from "./region"
-import ReturnService from "./return"
-import ShippingOptionService from "./shipping-option"
-import TaxProviderService from "./tax-provider"
-import TotalsService from "./totals"
-import { AddressRepository } from "../repositories/address"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import {
   ClaimFulfillmentStatus,
   ClaimOrder,
@@ -20,15 +10,25 @@ import {
   LineItem,
   ReturnItem,
 } from "../models"
+import { AddressRepository } from "../repositories/address"
 import { ClaimRepository } from "../repositories/claim"
-import { DeepPartial, EntityManager } from "typeorm"
 import { LineItemRepository } from "../repositories/line-item"
-import { MedusaError } from "medusa-core-utils"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, isDefined, setMetadata } from "../utils"
-import { FindConfig } from "../types/common"
 import { CreateClaimInput, UpdateClaimInput } from "../types/claim"
+import { FindConfig } from "../types/common"
+import { buildQuery, setMetadata } from "../utils"
+import ClaimItemService from "./claim-item"
+import EventBusService from "./event-bus"
+import FulfillmentService from "./fulfillment"
+import FulfillmentProviderService from "./fulfillment-provider"
+import LineItemService from "./line-item"
+import PaymentProviderService from "./payment-provider"
+import ProductVariantInventoryService from "./product-variant-inventory"
+import RegionService from "./region"
+import ReturnService from "./return"
+import ShippingOptionService from "./shipping-option"
+import TaxProviderService from "./tax-provider"
+import TotalsService from "./totals"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -40,7 +40,7 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   fulfillmentProviderService: FulfillmentProviderService
   fulfillmentService: FulfillmentService
-  inventoryService: InventoryService
+  productVariantInventoryService: ProductVariantInventoryService
   lineItemService: LineItemService
   paymentProviderService: PaymentProviderService
   regionService: RegionService
@@ -71,7 +71,6 @@ export default class ClaimService extends TransactionBaseService {
   protected readonly eventBus_: EventBusService
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
   protected readonly fulfillmentService_: FulfillmentService
-  protected readonly inventoryService_: InventoryService
   protected readonly lineItemService_: LineItemService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly regionService_: RegionService
@@ -79,6 +78,8 @@ export default class ClaimService extends TransactionBaseService {
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly totalsService_: TotalsService
+  // eslint-disable-next-line max-len
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
     manager,
@@ -90,7 +91,7 @@ export default class ClaimService extends TransactionBaseService {
     eventBusService,
     fulfillmentProviderService,
     fulfillmentService,
-    inventoryService,
+    productVariantInventoryService,
     lineItemService,
     paymentProviderService,
     regionService,
@@ -112,7 +113,7 @@ export default class ClaimService extends TransactionBaseService {
     this.eventBus_ = eventBusService
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.fulfillmentService_ = fulfillmentService
-    this.inventoryService_ = inventoryService
+    this.productVariantInventoryService_ = productVariantInventoryService
     this.lineItemService_ = lineItemService
     this.paymentProviderService_ = paymentProviderService
     this.regionService_ = regionService
@@ -125,7 +126,7 @@ export default class ClaimService extends TransactionBaseService {
   async update(id: string, data: UpdateClaimInput): Promise<ClaimOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const claimRepo = transactionManager.withRepository(
+        const claimRepo = transactionManager.getCustomRepository(
           this.claimRepository_
         )
         const claim = await this.retrieve(id, {
@@ -213,7 +214,7 @@ export default class ClaimService extends TransactionBaseService {
   async create(data: CreateClaimInput): Promise<ClaimOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const claimRepo = transactionManager.withRepository(
+        const claimRepo = transactionManager.getCustomRepository(
           this.claimRepository_
         )
 
@@ -253,7 +254,7 @@ export default class ClaimService extends TransactionBaseService {
 
         let addressId = shipping_address_id || order.shipping_address_id
         if (shipping_address) {
-          const addressRepo = transactionManager.withRepository(
+          const addressRepo = transactionManager.getCustomRepository(
             this.addressRepository_
           )
           const created = addressRepo.create(shipping_address)
@@ -331,19 +332,9 @@ export default class ClaimService extends TransactionBaseService {
             lines as LineItem[]
           )
         }
-
         let newItems: LineItem[] = []
+
         if (isDefined(additional_items)) {
-          const inventoryServiceTx =
-            this.inventoryService_.withTransaction(transactionManager)
-
-          for (const item of additional_items) {
-            await inventoryServiceTx.confirmInventory(
-              item.variant_id,
-              item.quantity
-            )
-          }
-
           newItems = await Promise.all(
             additional_items.map(async (i) =>
               lineItemServiceTx.generate(
@@ -354,12 +345,20 @@ export default class ClaimService extends TransactionBaseService {
             )
           )
 
-          for (const newItem of newItems) {
-            await inventoryServiceTx.adjustInventory(
-              newItem.variant_id,
-              -newItem.quantity
-            )
-          }
+          await Promise.all(
+            newItems.map(async (newItem) => {
+              if (newItem.variant_id) {
+                await this.productVariantInventoryService_.reserveQuantity(
+                  newItem.variant_id,
+                  newItem.quantity,
+                  {
+                    lineItemId: newItem.id,
+                    salesChannelId: order.sales_channel_id,
+                  }
+                )
+              }
+            })
+          )
         }
 
         const evaluatedNoNotification =
@@ -586,7 +585,7 @@ export default class ClaimService extends TransactionBaseService {
           }
         }
 
-        const claimRepo = transactionManager.withRepository(
+        const claimRepo = transactionManager.getCustomRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -624,7 +623,7 @@ export default class ClaimService extends TransactionBaseService {
 
         claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
 
-        const claimRepo = transactionManager.withRepository(
+        const claimRepo = transactionManager.getCustomRepository(
           this.claimRepository_
         )
         return claimRepo.save(claim)
@@ -661,7 +660,7 @@ export default class ClaimService extends TransactionBaseService {
 
         claim.payment_status = ClaimPaymentStatus.REFUNDED
 
-        const claimRepo = transactionManager.withRepository(
+        const claimRepo = transactionManager.getCustomRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -740,7 +739,7 @@ export default class ClaimService extends TransactionBaseService {
           }
         }
 
-        const claimRepo = transactionManager.withRepository(
+        const claimRepo = transactionManager.getCustomRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -792,7 +791,7 @@ export default class ClaimService extends TransactionBaseService {
         claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
         claim.canceled_at = new Date()
 
-        const claimRepo = transactionManager.withRepository(
+        const claimRepo = transactionManager.getCustomRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -823,31 +822,38 @@ export default class ClaimService extends TransactionBaseService {
     }
   ): Promise<ClaimOrder[]> {
     const manager = this.manager_
-    const claimRepo = manager.withRepository(this.claimRepository_)
+    const claimRepo = manager.getCustomRepository(this.claimRepository_)
     const query = buildQuery(selector, config)
     return await claimRepo.find(query)
   }
 
   /**
    * Gets an order by id.
-   * @param id - id of the claim order to retrieve
+   * @param claimId - id of the claim order to retrieve
    * @param config - the config object containing query settings
    * @return the order document
    */
   async retrieve(
-    id: string,
+    claimId: string,
     config: FindConfig<ClaimOrder> = {}
   ): Promise<ClaimOrder> {
-    const manager = this.manager_
-    const claimRepo = manager.withRepository(this.claimRepository_)
+    if (!isDefined(claimId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"claimId" must be defined`
+      )
+    }
 
-    const query = buildQuery({ id }, config)
+    const manager = this.manager_
+    const claimRepo = manager.getCustomRepository(this.claimRepository_)
+
+    const query = buildQuery({ id: claimId }, config)
     const claim = await claimRepo.findOne(query)
 
     if (!claim) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Claim with ${id} was not found`
+        `Claim with ${claimId} was not found`
       )
     }
 

@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 
 export const orderEdit = {
   id: IdMap.getId("testCreatedOrder"),
-  order_id: "empty-id",
+  order_id: IdMap.getId("test-order"),
   internal_note: "internal note",
   declined_reason: null,
   declined_at: null,
@@ -93,6 +93,9 @@ export const orderEditServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
+  listAndCount: jest.fn().mockImplementation(() => {
+    return Promise.resolve([[orderEdit], 1])
+  }),
   computeLineItems: jest.fn().mockImplementation((orderEdit) => {
     return Promise.resolve(computeLineItems(orderEdit))
   }),
@@ -103,6 +106,9 @@ export const orderEditServiceMock = {
       created_by: context.loggedInUserId,
     })
   }),
+  update: jest.fn().mockImplementation((id, data) => {
+    return Promise.resolve(data)
+  }),
   decline: jest.fn().mockImplementation((id, reason, userId) => {
     return Promise.resolve({
       id,
@@ -111,8 +117,17 @@ export const orderEditServiceMock = {
       declined_at: new Date(),
     })
   }),
-  getTotals: jest.fn().mockImplementation(() => {
-    return Promise.resolve({})
+  getTotals: jest.fn().mockImplementation((id) => {
+    return Promise.resolve({
+      shipping_total: 10,
+      gift_card_total: 0,
+      gift_card_tax_total: 0,
+      discount_total: 0,
+      tax_total: 1,
+      subtotal: 2000,
+      difference_due: 1000,
+      total: 1000,
+    })
   }),
   delete: jest.fn().mockImplementation((_) => {
     return Promise.resolve()

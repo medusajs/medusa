@@ -1,8 +1,9 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
+  CustomShippingOption,
   ShippingOption,
   ShippingProfile,
   ShippingProfileType,
@@ -71,7 +72,7 @@ class ShippingProfileService extends TransactionBaseService {
     selector: Selector<ShippingProfile> = {},
     config: FindConfig<ShippingProfile> = { relations: [], skip: 0, take: 10 }
   ): Promise<ShippingProfile[]> {
-    const shippingProfileRepo = this.manager_.withRepository(
+    const shippingProfileRepo = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
@@ -135,7 +136,14 @@ class ShippingProfileService extends TransactionBaseService {
     profileId: string,
     options: FindConfig<ShippingProfile> = {}
   ): Promise<ShippingProfile> {
-    const profileRepository = this.manager_.withRepository(
+    if (!isDefined(profileId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"profileId" must be defined`
+      )
+    }
+
+    const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
@@ -153,14 +161,16 @@ class ShippingProfileService extends TransactionBaseService {
     return profile
   }
 
-  async retrieveDefault(): Promise<ShippingProfile | null> {
-    const profileRepository = this.manager_.withRepository(
+  async retrieveDefault(): Promise<ShippingProfile | undefined> {
+    const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
-    return await profileRepository.findOne({
-      where: { type: ShippingProfileType.DEFAULT },
+    const profile = await profileRepository.findOne({
+      where: { type: "default" },
     })
+
+    return profile
   }
 
   /**
@@ -172,7 +182,7 @@ class ShippingProfileService extends TransactionBaseService {
       let profile = await this.retrieveDefault()
 
       if (!profile) {
-        const profileRepository = manager.withRepository(
+        const profileRepository = manager.getCustomRepository(
           this.shippingProfileRepository_
         )
 
@@ -194,14 +204,16 @@ class ShippingProfileService extends TransactionBaseService {
    * Retrieves the default gift card profile
    * @return the shipping profile for gift cards
    */
-  async retrieveGiftCardDefault(): Promise<ShippingProfile | null> {
-    const profileRepository = this.manager_.withRepository(
+  async retrieveGiftCardDefault(): Promise<ShippingProfile | undefined> {
+    const profileRepository = this.manager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
-    return await profileRepository.findOne({
-      where: { type: ShippingProfileType.GIFT_CARD },
+    const giftCardProfile = await profileRepository.findOne({
+      where: { type: "gift_card" },
     })
+
+    return giftCardProfile
   }
 
   /**
@@ -214,7 +226,7 @@ class ShippingProfileService extends TransactionBaseService {
       let profile = await this.retrieveGiftCardDefault()
 
       if (!profile) {
-        const profileRepository = manager.withRepository(
+        const profileRepository = manager.getCustomRepository(
           this.shippingProfileRepository_
         )
 
@@ -237,7 +249,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async create(profile: CreateShippingProfile): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepository = manager.withRepository(
+      const profileRepository = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
 
@@ -268,7 +280,7 @@ class ShippingProfileService extends TransactionBaseService {
     update: UpdateShippingProfile
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepository = manager.withRepository(
+      const profileRepository = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
 
@@ -322,7 +334,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async delete(profileId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepo = manager.withRepository(
+      const profileRepo = manager.getCustomRepository(
         this.shippingProfileRepository_
       )
 
@@ -418,10 +430,14 @@ class ShippingProfileService extends TransactionBaseService {
 
       // if there are custom shipping options associated with the cart, return cart shipping options with custom price
       if (hasCustomShippingOptions) {
+        const customShippingOptionsMap = new Map<string, CustomShippingOption>()
+
+        customShippingOptions.forEach((option) => {
+          customShippingOptionsMap.set(option.shipping_option_id, option)
+        })
+
         return rawOpts.map((so) => {
-          const customOption = customShippingOptions.find(
-            (cso) => cso.shipping_option_id === so.id
-          )
+          const customOption = customShippingOptionsMap.get(so.id)
 
           return {
             ...so,
@@ -430,24 +446,16 @@ class ShippingProfileService extends TransactionBaseService {
         }) as ShippingOption[]
       }
 
-      const options = await Promise.all(
-        rawOpts.map(async (so) => {
-          try {
-            const option = await this.shippingOptionService_
+      return (
+        await Promise.all(
+          rawOpts.map(async (so) => {
+            return await this.shippingOptionService_
               .withTransaction(manager)
               .validateCartOption(so, cart)
-            if (option) {
-              return option
-            }
-            return null
-          } catch (err) {
-            // if validateCartOption fails it means the option is not valid
-            return null
-          }
-        })
-      )
-
-      return options.filter(Boolean) as ShippingOption[]
+              .catch(() => null) // if validateCartOption fails it means the option is not valid
+          })
+        )
+      ).filter((option): option is ShippingOption => !!option)
     })
   }
 
@@ -457,16 +465,15 @@ class ShippingProfileService extends TransactionBaseService {
    * @return a list of product ids
    */
   protected getProfilesInCart(cart: Cart): string[] {
-    return cart.items.reduce((acc, next) => {
-      // We may have line items that are not associated with a product
-      if (next.variant && next.variant.product) {
-        if (!acc.includes(next.variant.product.profile_id)) {
-          acc.push(next.variant.product.profile_id)
-        }
-      }
+    const profileIds = new Set<string>()
 
-      return acc
-    }, [] as string[])
+    cart.items.forEach((item) => {
+      if (item.variant?.product) {
+        profileIds.add(item.variant.product.profile_id)
+      }
+    })
+
+    return [...profileIds]
   }
 }
 

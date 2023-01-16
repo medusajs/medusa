@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { NoteRepository } from "../repositories/note"
@@ -40,24 +40,31 @@ class NoteService extends TransactionBaseService {
 
   /**
    * Retrieves a specific note.
-   * @param id - the id of the note to retrieve.
+   * @param noteId - the id of the note to retrieve.
    * @param config - any options needed to query for the result.
    * @return which resolves to the requested note.
    */
   async retrieve(
-    id: string,
+    noteId: string,
     config: FindConfig<Note> = {}
   ): Promise<Note | never> {
-    const noteRepo = this.manager_.withRepository(this.noteRepository_)
+    if (!isDefined(noteId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"noteId" must be defined`
+      )
+    }
 
-    const query = buildQuery({ id }, config)
+    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
+
+    const query = buildQuery({ id: noteId }, config)
 
     const note = await noteRepo.findOne(query)
 
     if (!note) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Note with id: ${id} was not found.`
+        `Note with id: ${noteId} was not found.`
       )
     }
 
@@ -80,7 +87,7 @@ class NoteService extends TransactionBaseService {
       relations: [],
     }
   ): Promise<Note[]> {
-    const noteRepo = this.manager_.withRepository(this.noteRepository_)
+    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
     const query = buildQuery(selector, config)
 
@@ -102,7 +109,7 @@ class NoteService extends TransactionBaseService {
     const { resource_id, resource_type, value, author_id } = data
 
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.withRepository(this.noteRepository_)
+      const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const toCreate = {
         resource_id,
@@ -131,7 +138,7 @@ class NoteService extends TransactionBaseService {
    */
   async update(noteId: string, value: string): Promise<Note> {
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.withRepository(this.noteRepository_)
+      const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId, { relations: ["author"] })
 
@@ -153,7 +160,7 @@ class NoteService extends TransactionBaseService {
    */
   async delete(noteId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.withRepository(this.noteRepository_)
+      const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId)
 

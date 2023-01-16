@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ReturnReason } from "../models"
@@ -28,7 +28,7 @@ class ReturnReasonService extends TransactionBaseService {
 
   async create(data: CreateReturnReason): Promise<ReturnReason | never> {
     return await this.atomicPhase_(async (manager) => {
-      const rrRepo = manager.withRepository(this.retReasonRepo_)
+      const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
 
       if (data.parent_return_reason_id && data.parent_return_reason_id !== "") {
         const parentReason = await this.retrieve(data.parent_return_reason_id)
@@ -49,7 +49,7 @@ class ReturnReasonService extends TransactionBaseService {
 
   async update(id: string, data: UpdateReturnReason): Promise<ReturnReason> {
     return await this.atomicPhase_(async (manager) => {
-      const rrRepo = manager.withRepository(this.retReasonRepo_)
+      const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
       const reason = await this.retrieve(id)
 
       for (const key of Object.keys(data).filter(
@@ -77,30 +77,37 @@ class ReturnReasonService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<ReturnReason[]> {
-    const rrRepo = this.manager_.withRepository(this.retReasonRepo_)
+    const rrRepo = this.manager_.getCustomRepository(this.retReasonRepo_)
     const query = buildQuery(selector, config)
     return rrRepo.find(query)
   }
 
   /**
    * Gets an order by id.
-   * @param {string} id - id of order to retrieve
+   * @param {string} returnReasonId - id of order to retrieve
    * @param {Object} config - config object
    * @return {Promise<Order>} the order document
    */
   async retrieve(
-    id: string,
+    returnReasonId: string,
     config: FindConfig<ReturnReason> = {}
   ): Promise<ReturnReason | never> {
-    const rrRepo = this.manager_.withRepository(this.retReasonRepo_)
+    if (!isDefined(returnReasonId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"returnReasonId" must be defined`
+      )
+    }
 
-    const query = buildQuery({ id }, config)
+    const rrRepo = this.manager_.getCustomRepository(this.retReasonRepo_)
+
+    const query = buildQuery({ id: returnReasonId }, config)
     const item = await rrRepo.findOne(query)
 
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Return Reason with id: ${id} was not found.`
+        `Return Reason with id: ${returnReasonId} was not found.`
       )
     }
 
@@ -109,7 +116,7 @@ class ReturnReasonService extends TransactionBaseService {
 
   async delete(returnReasonId: string): Promise<void> {
     return this.atomicPhase_(async (manager) => {
-      const rrRepo = manager.withRepository(this.retReasonRepo_)
+      const rrRepo = manager.getCustomRepository(this.retReasonRepo_)
 
       // We include the relation 'return_reason_children' to enable cascading deletes of return reasons if a parent is removed
       const reason = await this.retrieve(returnReasonId, {

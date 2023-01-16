@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { Oauth as OAuthModel } from "../models"
@@ -39,9 +39,9 @@ class Oauth extends TransactionBaseService {
   }
 
   async retrieveByName(appName: string): Promise<OAuthModel> {
-    const repo = this.manager.withRepository(this.oauthRepository_)
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
     const oauth = await repo.findOne({
-      where: { application_name: appName },
+      application_name: appName,
     })
 
     if (!oauth) {
@@ -55,9 +55,16 @@ class Oauth extends TransactionBaseService {
   }
 
   async retrieve(oauthId: string): Promise<OAuthModel> {
-    const repo = this.manager.withRepository(this.oauthRepository_)
+    if (!isDefined(oauthId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"oauthId" must be defined`
+      )
+    }
+
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
     const oauth = await repo.findOne({
-      where: { id: oauthId },
+      id: oauthId,
     })
 
     if (!oauth) {
@@ -71,7 +78,7 @@ class Oauth extends TransactionBaseService {
   }
 
   async list(selector: Selector<OAuthModel>): Promise<OAuthModel[]> {
-    const repo = this.manager.withRepository(this.oauthRepository_)
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
 
     const query = buildQuery(selector, {})
 
@@ -79,7 +86,7 @@ class Oauth extends TransactionBaseService {
   }
 
   async create(data: CreateOauthInput): Promise<OAuthModel> {
-    const repo = this.manager.withRepository(this.oauthRepository_)
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
 
     const application = repo.create({
       display_name: data.display_name,
@@ -92,7 +99,7 @@ class Oauth extends TransactionBaseService {
   }
 
   async update(id: string, update: UpdateOauthInput): Promise<OAuthModel> {
-    const repo = this.manager.withRepository(this.oauthRepository_)
+    const repo = this.manager.getCustomRepository(this.oauthRepository_)
     const oauth = await this.retrieve(id)
 
     if ("data" in update) {

@@ -1,16 +1,15 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-
 import SwapService from "../swap"
-import { InventoryServiceMock } from "../__mocks__/inventory"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 import {
   CustomShippingOptionService,
   EventBusService,
   FulfillmentService,
-  InventoryService,
   LineItemService,
   OrderService,
   PaymentProviderService,
+  ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
   TotalsService,
@@ -19,12 +18,11 @@ import CartService from "../cart"
 import { Order, Swap } from "../../models"
 import { SwapRepository } from "../../repositories/swap"
 import LineItemAdjustmentService from "../line-item-adjustment"
-import { buildRelations } from "../../utils"
 
 /* ******************** DEFAULT REPOSITORY MOCKS ******************** */
 
 const swapRepo = MockRepository({
-  findOne: (existing) => Promise.resolve(existing),
+  findOneWithRelations: (existing) => Promise.resolve(existing),
   create: jest.fn().mockImplementation((data) => {
     return Object.assign(new Swap(), data)
   }),
@@ -50,6 +48,9 @@ const cartService = {
   withTransaction: function () {
     return this
   },
+  retrieveWithTotals: jest
+    .fn()
+    .mockReturnValue(Promise.resolve({ id: "cart" })),
 } as unknown as CartService
 
 const customShippingOptionService = {
@@ -102,7 +103,8 @@ const paymentProviderService = {
 
 const orderService = {} as unknown as OrderService
 const returnService = {} as unknown as ReturnService
-const inventoryService = {} as unknown as InventoryService
+const productVariantInventoryService =
+  {} as unknown as ProductVariantInventoryService
 const fulfillmentService = {} as unknown as FulfillmentService
 const lineItemAdjustmentService = {} as unknown as LineItemAdjustmentService
 
@@ -117,7 +119,7 @@ const defaultProps = {
   totalsService: totalsService,
   eventBusService: eventBusService,
   lineItemService: lineItemService,
-  inventoryService: inventoryService,
+  productVariantInventoryService: productVariantInventoryService,
   fulfillmentService: fulfillmentService,
   shippingOptionService: shippingOptionService,
   paymentProviderService: paymentProviderService,
@@ -205,7 +207,7 @@ describe("SwapService", () => {
           refund_amount: 11,
           items: [{ item_id: IdMap.getId("line"), quantity: 1 }],
         },
-        additional_items: [{ data: "lines", id: "test" }],
+        additional_items: [{ id: "test" }],
         other: "data",
       }
 
@@ -223,7 +225,7 @@ describe("SwapService", () => {
       } as unknown as CartService
 
       const swapRepo = MockRepository({
-        findOne: () => Promise.resolve(existing),
+        findOneWithRelations: () => Promise.resolve(existing),
       })
 
       const customShippingOptionService = {
@@ -261,10 +263,9 @@ describe("SwapService", () => {
           { option_id: "test-option", price: 10 },
         ])
 
-        expect(swapRepo.findOne).toHaveBeenCalledTimes(1)
-        expect(swapRepo.findOne).toHaveBeenCalledWith({
-          where: { id: IdMap.getId("swap-1") },
-          relations: buildRelations([
+        expect(swapRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
+        expect(swapRepo.findOneWithRelations).toHaveBeenCalledWith(
+          [
             "order",
             "order.items",
             "order.swaps",
@@ -279,8 +280,11 @@ describe("SwapService", () => {
             "return_order.items",
             "return_order.shipping_method",
             "return_order.shipping_method.tax_lines",
-          ]),
-        })
+          ],
+          {
+            where: { id: IdMap.getId("swap-1") },
+          }
+        )
 
         expect(lineItemService.createReturnLines).toHaveBeenCalledTimes(1)
         expect(lineItemService.createReturnLines).toHaveBeenCalledWith(
@@ -315,10 +319,16 @@ describe("SwapService", () => {
         expect(
           LineItemAdjustmentServiceMock.createAdjustmentForLineItem
         ).toHaveBeenCalledWith(
-          { id: "cart" },
           {
-            id: "test",
-            data: "lines",
+            id: "cart",
+            items: [
+              {
+                id: "test-item",
+              },
+            ],
+          },
+          {
+            id: "test-item",
           }
         )
 
@@ -342,7 +352,7 @@ describe("SwapService", () => {
       }
 
       const swapRepo = MockRepository({
-        findOne: (query) => {
+        findOneWithRelations: (_, query) => {
           switch (query.where.id) {
             case IdMap.getId("canceled"):
               return Promise.resolve({
@@ -534,7 +544,7 @@ describe("SwapService", () => {
       } as unknown as LineItemService
 
       const swapRepo = MockRepository({
-        findOne: () => Promise.resolve({ ...existing }),
+        findOneWithRelations: () => Promise.resolve({ ...existing }),
       })
       const swapService = new SwapService({
         ...defaultProps,
@@ -583,7 +593,7 @@ describe("SwapService", () => {
 
     describe("failure", () => {
       const swapRepo = MockRepository({
-        findOne: () =>
+        findOneWithRelations: () =>
           Promise.resolve({
             canceled_at: new Date(),
           }),
@@ -605,7 +615,7 @@ describe("SwapService", () => {
 
   describe("cancelFulfillment", () => {
     const swapRepo = MockRepository({
-      findOne: () => Promise.resolve({}),
+      findOneWithRelations: () => Promise.resolve({}),
       save: (f) => Promise.resolve(f),
     })
 
@@ -726,7 +736,7 @@ describe("SwapService", () => {
       } as unknown as CartService
 
       const swapRepo = MockRepository({
-        findOne: () => Promise.resolve(existing),
+        findOneWithRelations: () => Promise.resolve(existing),
       })
 
       const swapService = new SwapService({
@@ -769,7 +779,8 @@ describe("SwapService", () => {
 
     describe("failure", () => {
       const swapRepo = MockRepository({
-        findOne: () => Promise.resolve({ canceled_at: new Date() }),
+        findOneWithRelations: () =>
+          Promise.resolve({ canceled_at: new Date() }),
       })
 
       const swapService = new SwapService({
@@ -823,6 +834,12 @@ describe("SwapService", () => {
       withTransaction: function () {
         return this
       },
+      retrieveWithTotals: jest.fn().mockReturnValue(
+        Promise.resolve({
+          id: "cart",
+          items: [{ id: "test-item", variant_id: "variant" }],
+        })
+      ),
     } as unknown as CartService
 
     const paymentProviderService = {
@@ -840,12 +857,12 @@ describe("SwapService", () => {
       },
     } as unknown as PaymentProviderService
 
-    const inventoryService = {
-      ...InventoryServiceMock,
+    const productVariantInventoryService = {
+      ...ProductVariantInventoryServiceMock,
       withTransaction: function () {
         return this
       },
-    } as unknown as InventoryService
+    } as unknown as ProductVariantInventoryService
 
     describe("success", () => {
       const cart = {
@@ -861,10 +878,11 @@ describe("SwapService", () => {
         other: "data",
       }
 
-      cartService.retrieve = (() => cart) as unknown as CartService["retrieve"]
+      cartService.retrieveWithTotals = (() =>
+        cart) as unknown as CartService["retrieveWithTotals"]
 
       const swapRepo = MockRepository({
-        findOne: () => Promise.resolve(existing),
+        findOneWithRelations: () => Promise.resolve(existing),
       })
 
       const swapService = new SwapService({
@@ -876,7 +894,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        inventoryService,
+        productVariantInventoryService,
       })
 
       it("creates a shipment", async () => {
@@ -886,14 +904,12 @@ describe("SwapService", () => {
           good: "yes",
         })
 
-        expect(inventoryService.confirmInventory).toHaveBeenCalledWith(
-          "variant",
-          2
-        )
-        expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
-          "variant",
-          -2
-        )
+        expect(
+          productVariantInventoryService.reserveQuantity
+        ).toHaveBeenCalledWith("variant", 2, {
+          lineItemId: "1",
+          salesChannelId: undefined,
+        })
 
         expect(swapRepo.save).toHaveBeenCalledWith({
           ...existing,
@@ -918,7 +934,7 @@ describe("SwapService", () => {
       }
 
       const swapRepo = MockRepository({
-        findOne: (q) => {
+        findOneWithRelations: (rels, q) => {
           switch (q.where.id) {
             case IdMap.getId("canceled"):
               return Promise.resolve({ canceled_at: new Date() })
@@ -937,7 +953,7 @@ describe("SwapService", () => {
         cartService,
         paymentProviderService,
         shippingOptionService,
-        inventoryService,
+        productVariantInventoryService,
       })
 
       it("fails to register cart completion when swap is canceled", async () => {
@@ -985,7 +1001,7 @@ describe("SwapService", () => {
       })
 
       const swapRepo = MockRepository({
-        findOne: (q) => {
+        findOneWithRelations: (rels, q) => {
           switch (q.where.id) {
             case "refund":
               return Promise.resolve(existing(-1, false))
@@ -1107,7 +1123,7 @@ describe("SwapService", () => {
       })
 
       const swapRepo = MockRepository({
-        findOne: (q) => {
+        findOneWithRelations: (rels, q) => {
           switch (q.where.id) {
             case "requested":
               return Promise.resolve({
@@ -1164,7 +1180,7 @@ describe("SwapService", () => {
     const fulfillment = { canceled_at: now }
 
     const swapRepo = MockRepository({
-      findOne: (q) => {
+      findOneWithRelations: (_, q) => {
         const swap: any = {
           payment: { ...payment },
           return_order: { ...return_order },

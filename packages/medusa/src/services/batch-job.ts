@@ -12,7 +12,7 @@ import {
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EventBusService, StrategyResolverService } from "./index"
 import { Request } from "express"
 
@@ -96,6 +96,7 @@ class BatchJobService extends TransactionBaseService {
     eventBusService,
     strategyResolverService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -108,8 +109,15 @@ class BatchJobService extends TransactionBaseService {
     batchJobId: string,
     config: FindConfig<BatchJob> = {}
   ): Promise<BatchJob | never> {
+    if (!isDefined(batchJobId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"batchJobId" must be defined`
+      )
+    }
+
     const manager = this.manager_
-    const batchJobRepo = manager.withRepository(this.batchJobRepository_)
+    const batchJobRepo = manager.getCustomRepository(this.batchJobRepository_)
 
     const query = buildQuery({ id: batchJobId }, config)
     const batchJob = await batchJobRepo.findOne(query)
@@ -129,7 +137,7 @@ class BatchJobService extends TransactionBaseService {
     config: FindConfig<BatchJob> = { skip: 0, take: 20 }
   ): Promise<[BatchJob[], number]> {
     const manager = this.manager_
-    const batchJobRepo = manager.withRepository(this.batchJobRepository_)
+    const batchJobRepo = manager.getCustomRepository(this.batchJobRepository_)
 
     const query = buildQuery(selector, config)
     return await batchJobRepo.findAndCount(query)
@@ -137,7 +145,9 @@ class BatchJobService extends TransactionBaseService {
 
   async create(data: BatchJobCreateProps): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo = manager.withRepository(this.batchJobRepository_)
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
 
       const batchJob = batchJobRepo.create(data)
       const result = await batchJobRepo.save(batchJob)
@@ -157,7 +167,9 @@ class BatchJobService extends TransactionBaseService {
     data: BatchJobUpdateProps
   ): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo = manager.withRepository(this.batchJobRepository_)
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
 
       let batchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
@@ -213,7 +225,7 @@ class BatchJobService extends TransactionBaseService {
 
     batchJob[entityColumnName] = new Date()
 
-    const batchJobRepo = transactionManager.withRepository(
+    const batchJobRepo = transactionManager.getCustomRepository(
       this.batchJobRepository_
     )
     batchJob = await batchJobRepo.save(batchJob)
@@ -335,7 +347,7 @@ class BatchJobService extends TransactionBaseService {
 
   async setFailed(
     batchJobOrId: string | BatchJob,
-    error?: BatchJobResultError
+    error?: BatchJobResultError | string
   ): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob = batchJobOrId as BatchJob

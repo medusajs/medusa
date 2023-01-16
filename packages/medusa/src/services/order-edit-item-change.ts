@@ -1,6 +1,6 @@
 import { TransactionBaseService } from "../interfaces"
 import { OrderItemChangeRepository } from "../repositories/order-item-change"
-import { EntityManager, In } from "typeorm"
+import { DeepPartial, EntityManager, In } from "typeorm"
 import { EventBusService, LineItemService } from "./index"
 import { FindConfig, Selector } from "../types/common"
 import { OrderItemChange } from "../models"
@@ -53,7 +53,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     config: FindConfig<OrderItemChange> = {}
   ): Promise<OrderItemChange | never> {
     const manager = this.transactionManager_ ?? this.manager_
-    const orderItemChangeRepo = manager.withRepository(
+    const orderItemChangeRepo = manager.getCustomRepository(
       this.orderItemChangeRepository_
     )
 
@@ -75,7 +75,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     config: FindConfig<OrderItemChange> = {}
   ): Promise<OrderItemChange[]> {
     const manager = this.transactionManager_ ?? this.manager_
-    const orderItemChangeRepo = manager.withRepository(
+    const orderItemChangeRepo = manager.getCustomRepository(
       this.orderItemChangeRepository_
     )
 
@@ -85,7 +85,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
 
   async create(data: CreateOrderEditItemChangeInput): Promise<OrderItemChange> {
     return await this.atomicPhase_(async (manager) => {
-      const orderItemChangeRepo = manager.withRepository(
+      const orderItemChangeRepo = manager.getCustomRepository(
         this.orderItemChangeRepository_
       )
       const changeEntity = orderItemChangeRepo.create(data)
@@ -105,7 +105,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
       : [itemChangeIds]
 
     return await this.atomicPhase_(async (manager) => {
-      const orderItemChangeRepo = manager.withRepository(
+      const orderItemChangeRepo = manager.getCustomRepository(
         this.orderItemChangeRepository_
       )
 

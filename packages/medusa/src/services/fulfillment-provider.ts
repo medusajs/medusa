@@ -28,6 +28,11 @@ type FulfillmentProviderContainer = MedusaContainer & {
   [key in `${FulfillmentProviderKey}`]: typeof BaseFulfillmentService
 }
 
+type CalculateOptionPriceInput = {
+  provider_id: string
+  data: Record<string, unknown>
+}
+
 /**
  * Helps retrive fulfillment providers
  */
@@ -51,7 +56,7 @@ class FulfillmentProviderService extends TransactionBaseService {
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const fulfillmentProviderRepo = manager.withRepository(
+      const fulfillmentProviderRepo = manager.getCustomRepository(
         this.fulfillmentProviderRepository_
       )
       await fulfillmentProviderRepo.update({}, { is_installed: false })
@@ -64,7 +69,7 @@ class FulfillmentProviderService extends TransactionBaseService {
   }
 
   async list(): Promise<FulfillmentProvider[]> {
-    const fpRepo = this.manager_.withRepository(
+    const fpRepo = this.manager_.getCustomRepository(
       this.fulfillmentProviderRepository_
     )
 
@@ -118,7 +123,7 @@ class FulfillmentProviderService extends TransactionBaseService {
     ) as unknown as Record<string, unknown>
   }
 
-  async canCalculate(option: ShippingOption): Promise<boolean> {
+  async canCalculate(option: CalculateOptionPriceInput): Promise<boolean> {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.canCalculate(option.data) as unknown as boolean
   }
@@ -149,7 +154,11 @@ class FulfillmentProviderService extends TransactionBaseService {
     cart?: Order | Cart
   ): Promise<number> {
     const provider = this.retrieveProvider(option.provider_id)
-    return provider.calculatePrice(option.data, data, cart) as unknown as number
+    return (await provider.calculatePrice(
+      option.data,
+      data,
+      cart
+    )) as unknown as number
   }
 
   async validateOption(option: ShippingOption): Promise<boolean> {

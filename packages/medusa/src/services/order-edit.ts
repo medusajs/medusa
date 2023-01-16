@@ -1,17 +1,21 @@
-import { DeepPartial, EntityManager, IsNull } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
 
-import { FindConfig } from "../types/common"
-import { buildQuery, isDefined } from "../utils"
-import { OrderEditRepository } from "../repositories/order-edit"
+import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
   Order,
   OrderEdit,
   OrderEditItemChangeType,
-  OrderEditStatus,
+  OrderEditStatus
 } from "../models"
-import { TransactionBaseService } from "../interfaces"
+import { OrderEditRepository } from "../repositories/order-edit"
+import { FindConfig, Selector } from "../types/common"
+import {
+  AddOrderEditLineItemInput,
+  CreateOrderEditInput
+} from "../types/order-edit"
+import { buildQuery, isString } from "../utils"
 import {
   EventBusService,
   LineItemAdjustmentService,
@@ -19,12 +23,8 @@ import {
   OrderEditItemChangeService,
   OrderService,
   TaxProviderService,
-  TotalsService,
+  TotalsService
 } from "./index"
-import {
-  AddOrderEditLineItemInput,
-  CreateOrderEditInput,
-} from "../types/order-edit"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -91,8 +91,15 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     config: FindConfig<OrderEdit> = {}
   ): Promise<OrderEdit> {
+    if (!isDefined(orderEditId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"orderEditId" must be defined`
+      )
+    }
+
     const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.withRepository(
+    const orderEditRepository = manager.getCustomRepository(
       this.orderEditRepository_
     )
 
@@ -109,6 +116,38 @@ export default class OrderEditService extends TransactionBaseService {
     return orderEdit
   }
 
+  async listAndCount(
+    selector: Selector<OrderEdit> & { q?: string },
+    config?: FindConfig<OrderEdit>
+  ): Promise<[OrderEdit[], number]> {
+    const manager = this.transactionManager_ ?? this.manager_
+    const orderEditRepository = manager.getCustomRepository(
+      this.orderEditRepository_
+    )
+
+    let q
+    if (isString(selector.q)) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = buildQuery(selector, config)
+
+    if (q) {
+      query.where.internal_note = ILike(`%${q}%`)
+    }
+
+    return await orderEditRepository.findAndCount(query)
+  }
+
+  async list(
+    selector: Selector<OrderEdit>,
+    config?: FindConfig<OrderEdit>
+  ): Promise<OrderEdit[]> {
+    const [orderEdits] = await this.listAndCount(selector, config)
+    return orderEdits
+  }
+
   /**
    * Compute and return the different totals from the order edit id
    * @param orderEditId
@@ -120,6 +159,7 @@ export default class OrderEditService extends TransactionBaseService {
     discount_total: number
     tax_total: number | null
     subtotal: number
+    difference_due: number
     total: number
   }> {
     const manager = this.transactionManager_ ?? this.manager_
@@ -127,6 +167,7 @@ export default class OrderEditService extends TransactionBaseService {
       select: ["id", "order_id", "items"],
       relations: ["items", "items.tax_lines", "items.adjustments"],
     })
+
     const order = await this.orderService_
       .withTransaction(manager)
       .retrieve(order_id, {
@@ -135,6 +176,9 @@ export default class OrderEditService extends TransactionBaseService {
           "discounts.rule",
           "gift_cards",
           "region",
+          "items",
+          "items.tax_lines",
+          "items.adjustments",
           "region.tax_rates",
           "shipping_methods",
           "shipping_methods.tax_lines",
@@ -152,6 +196,9 @@ export default class OrderEditService extends TransactionBaseService {
     const subtotal = await totalsServiceTx.getSubtotal(computedOrder)
     const total = await totalsServiceTx.getTotal(computedOrder)
 
+    const orderTotal = await totalsServiceTx.getTotal(order)
+    const difference_due = total - orderTotal
+
     return {
       shipping_total,
       gift_card_total,
@@ -160,12 +207,13 @@ export default class OrderEditService extends TransactionBaseService {
       tax_total,
       subtotal,
       total,
+      difference_due,
     }
   }
 
   async create(
     data: CreateOrderEditInput,
-    context: { loggedInUserId: string }
+    context: { createdBy: string }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (transactionManager) => {
       const activeOrderEdit = await this.retrieveActive(data.order_id)
@@ -176,14 +224,14 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      const orderEditRepository = transactionManager.withRepository(
+      const orderEditRepository = transactionManager.getCustomRepository(
         this.orderEditRepository_
       )
 
       const orderEditToCreate = orderEditRepository.create({
         order_id: data.order_id,
         internal_note: data.internal_note,
-        created_by: context.loggedInUserId,
+        created_by: context.createdBy,
       })
 
       const orderEdit = await orderEditRepository.save(orderEditToCreate)
@@ -217,7 +265,9 @@ export default class OrderEditService extends TransactionBaseService {
     data: DeepPartial<OrderEdit>
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
 
       const orderEdit = await this.retrieve(orderEditId)
 
@@ -241,7 +291,9 @@ export default class OrderEditService extends TransactionBaseService {
 
   async delete(id: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
 
       const edit = await this.retrieve(id).catch(() => void 0)
 
@@ -265,13 +317,15 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     context: {
       declinedReason?: string
-      loggedInUserId?: string
+      declinedBy?: string
     }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
 
-      const { loggedInUserId, declinedReason } = context
+      const { declinedBy, declinedReason } = context
 
       const orderEdit = await this.retrieve(orderEditId)
 
@@ -287,7 +341,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.declined_at = new Date()
-      orderEdit.declined_by = loggedInUserId
+      orderEdit.declined_by = declinedBy
       orderEdit.declined_reason = declinedReason
 
       const result = await orderEditRepo.save(orderEdit)
@@ -492,6 +546,7 @@ export default class OrderEditService extends TransactionBaseService {
     orderEdit.subtotal = totals.subtotal
     orderEdit.tax_total = totals.tax_total
     orderEdit.total = totals.total
+    orderEdit.difference_due = totals.difference_due
 
     return orderEdit
   }
@@ -603,15 +658,17 @@ export default class OrderEditService extends TransactionBaseService {
   async requestConfirmation(
     orderEditId: string,
     context: {
-      loggedInUserId?: string
+      requestedBy?: string
     } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
+      const orderEditRepo = manager.getCustomRepository(
+        this.orderEditRepository_
+      )
 
       let orderEdit = await this.retrieve(orderEditId, {
         relations: ["changes"],
-        select: ["id", "requested_at"],
+        select: ["id", "order_id", "requested_at"],
       })
 
       if (!orderEdit.changes?.length) {
@@ -626,7 +683,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.requested_at = new Date()
-      orderEdit.requested_by = context.loggedInUserId
+      orderEdit.requested_by = context.requestedBy
 
       orderEdit = await orderEditRepo.save(orderEdit)
 
@@ -640,10 +697,10 @@ export default class OrderEditService extends TransactionBaseService {
 
   async cancel(
     orderEditId: string,
-    context: { loggedInUserId?: string } = {}
+    context: { canceledBy?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepository = manager.withRepository(
+      const orderEditRepository = manager.getCustomRepository(
         this.orderEditRepository_
       )
 
@@ -665,7 +722,7 @@ export default class OrderEditService extends TransactionBaseService {
       }
 
       orderEdit.canceled_at = new Date()
-      orderEdit.canceled_by = context.loggedInUserId
+      orderEdit.canceled_by = context.canceledBy
 
       const saved = await orderEditRepository.save(orderEdit)
 
@@ -679,10 +736,10 @@ export default class OrderEditService extends TransactionBaseService {
 
   async confirm(
     orderEditId: string,
-    context: { loggedInUserId?: string } = {}
+    context: { confirmedBy?: string } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepository = manager.withRepository(
+      const orderEditRepository = manager.getCustomRepository(
         this.orderEditRepository_
       )
 
@@ -717,7 +774,7 @@ export default class OrderEditService extends TransactionBaseService {
       ])
 
       orderEdit.confirmed_at = new Date()
-      orderEdit.confirmed_by = context.loggedInUserId
+      orderEdit.confirmed_by = context.confirmedBy
 
       orderEdit = await orderEditRepository.save(orderEdit)
 
@@ -732,9 +789,9 @@ export default class OrderEditService extends TransactionBaseService {
   protected async retrieveActive(
     orderId: string,
     config: FindConfig<OrderEdit> = {}
-  ): Promise<OrderEdit | null> {
+  ): Promise<OrderEdit | undefined> {
     const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.withRepository(
+    const orderEditRepository = manager.getCustomRepository(
       this.orderEditRepository_
     )
 
@@ -768,6 +825,15 @@ export default class OrderEditService extends TransactionBaseService {
       }
     )
     const clonedItemIds = clonedLineItems.map((item) => item.id)
+
+    const orderEdit = await this.retrieve(orderEditId, {
+      select: ["id", "changes"],
+      relations: ["changes"],
+    })
+
+    await this.orderEditItemChangeService_.delete(
+      orderEdit.changes.map((change) => change.id)
+    )
 
     await Promise.all(
       [

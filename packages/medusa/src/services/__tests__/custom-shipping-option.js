@@ -1,5 +1,5 @@
 import CustomShippingOptionService from "../custom-shipping-option"
-import { MockManager, MockRepository } from "medusa-test-utils"
+import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
 
 describe("CustomShippingOptionService", () => {
   describe("list", () => {
@@ -37,7 +37,7 @@ describe("CustomShippingOptionService", () => {
         where: {
           cart_id: "test-cso-cart",
         },
-        relations: { shipping_option: true },
+        relations: ["shipping_option"],
       })
     })
   })
@@ -73,7 +73,7 @@ describe("CustomShippingOptionService", () => {
       expect(customShippingOptionRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customShippingOptionRepository.findOne).toHaveBeenCalledWith({
         where: { id: "cso-test" },
-        relations: { shipping_option: true, cart: true },
+        relations: ["shipping_option", "cart"],
       })
     })
 

@@ -6,7 +6,7 @@ import {
   TaxProviderService,
 } from "../index"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { In } from "typeorm"
+import { FindManyOptions, In } from "typeorm"
 import { LineItemServiceMock } from "../__mocks__/line-item"
 
 const taxProviderServiceMock = {
@@ -25,7 +25,7 @@ describe("OrderEditItemChangeService", () => {
     delete: jest.fn().mockImplementation(() => {
       return Promise.resolve()
     }),
-    find: jest.fn().mockImplementation((conditions) => {
+    find: jest.fn().mockImplementation((conditions: FindManyOptions) => {
       return Promise.resolve(
         conditions.where?.id?.value?.map((id) => ({
           id,

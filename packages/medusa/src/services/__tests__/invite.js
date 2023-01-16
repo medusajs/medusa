@@ -1,7 +1,7 @@
+import InviteService from "../invite"
 import { MockManager, MockRepository } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { MedusaError } from "medusa-core-utils"
-import InviteService from "../invite"
 
 // const _MockManager
 
@@ -13,18 +13,15 @@ describe("InviteService", () => {
       },
     })
 
-    const inviteService = new InviteService(
-      {
-        manager: { withRepository: jest.fn(() => inviteRepo) },
-        userService: {},
-        userRepository: {},
-        inviteRepository: inviteRepo,
-        eventBusService: EventBusServiceMock,
-      },
-      {
-        projectConfig: { jwt_secret: "superSecret" },
-      }
-    )
+    const inviteService = new InviteService({
+      manager: { getCustomRepository: jest.fn(() => inviteRepo) },
+      userService: {},
+      userRepository: {},
+      inviteRepository: inviteRepo,
+      eventBusService: EventBusServiceMock,
+    }, {
+      projectConfig: { jwt_secret: 'superSecret' }
+    })
 
     it("calls invite repository find", async () => {
       await inviteService.list({ id: "test" })
@@ -39,18 +36,15 @@ describe("InviteService", () => {
   })
 
   describe("token generation and validation", () => {
-    const inviteService = new InviteService(
-      {
-        manager: MockManager,
-        userService: {},
-        userRepository: {},
-        inviteRepository: {},
-        eventBusService: EventBusServiceMock,
-      },
-      {
-        projectConfig: { jwt_secret: "superSecret" },
-      }
-    )
+    const inviteService = new InviteService({
+      manager: MockManager,
+      userService: {},
+      userRepository: {},
+      inviteRepository: {},
+      eventBusService: EventBusServiceMock,
+    }, {
+      projectConfig: { jwt_secret: 'superSecret' }
+    })
 
     it("validating a signed token succeeds", () => {
       const res = inviteService.verifyToken(
@@ -112,18 +106,15 @@ describe("InviteService", () => {
       }),
     }
 
-    const inviteService = new InviteService(
-      {
-        manager: MockManager,
-        userService: userServiceMock,
-        userRepository: userRepo,
-        inviteRepository: inviteRepo,
-        eventBusService: EventBusServiceMock,
-      },
-      {
-        projectConfig: { jwt_secret: "superSecret" },
-      }
-    )
+    const inviteService = new InviteService({
+      manager: MockManager,
+      userService: userServiceMock,
+      userRepository: userRepo,
+      inviteRepository: inviteRepo,
+      eventBusService: EventBusServiceMock,
+    }, {
+      projectConfig: { jwt_secret: 'superSecret' }
+    })
 
     beforeEach(() => jest.clearAllMocks())
 
@@ -201,25 +192,22 @@ describe("InviteService", () => {
     const inviteRepo = MockRepository({
       findOne: (q) => {
         return Promise.resolve({
-          id: q.where.id,
+          id: q.id,
           role: "admin",
           user_email: "test@test.com",
         })
       },
     })
 
-    const inviteService = new InviteService(
-      {
-        manager: { withRepository: jest.fn(() => inviteRepo) },
-        userService: {},
-        userRepository: {},
-        inviteRepository: inviteRepo,
-        eventBusService: EventBusServiceMock,
-      },
-      {
-        projectConfig: { jwt_secret: "superSecret" },
-      }
-    )
+    const inviteService = new InviteService({
+      manager: { getCustomRepository: jest.fn(() => inviteRepo) },
+      userService: {},
+      userRepository: {},
+      inviteRepository: inviteRepo,
+      eventBusService: EventBusServiceMock,
+    }, {
+      projectConfig: { jwt_secret: 'superSecret' }
+    })
 
     inviteService.generateToken = jest.fn()
 
