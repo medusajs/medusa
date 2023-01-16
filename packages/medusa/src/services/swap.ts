@@ -223,14 +223,9 @@ class SwapService extends TransactionBaseService {
       this.transformQueryForCart(config)
 
     const query = buildQuery({ id: swapId }, newConfig)
+    query.relationLoadStrategy = "query"
 
-    const relations = query.relations as (keyof Swap)[]
-    delete query.relations
-
-    const swap = await swapRepo.findOneWithRelations(
-      relations,
-      query as FindConfig<Swap>
-    )
+    const swap = await swapRepo.findOne(query)
 
     if (!swap) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
@@ -292,11 +287,9 @@ class SwapService extends TransactionBaseService {
   ): Promise<Swap[]> {
     const swapRepo = this.manager_.withRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
+    query.relationLoadStrategy = "query"
 
-    return await swapRepo.find({
-      ...query,
-      relationLoadStrategy: "query"
-    })
+    return await swapRepo.find(query)
   }
 
   /**
@@ -1153,9 +1146,7 @@ class SwapService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const validatedId = validateId(swapId)
 
-        const swapRepo = transactionManager.withRepository(
-          this.swapRepository_
-        )
+        const swapRepo = transactionManager.withRepository(this.swapRepository_)
 
         const swap = await swapRepo.findOne({ where: { id: validatedId } })
 

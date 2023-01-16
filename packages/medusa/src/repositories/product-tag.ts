@@ -1,6 +1,7 @@
 import { EntityRepository, In, Repository } from "typeorm"
 import { ProductTag } from "../models/product-tag"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig } from "../types/common"
+import { buildLegacySelectOrRelationsFrom } from "../utils"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
@@ -12,7 +13,7 @@ type ProductTagSelector = Partial<ProductTag> & {
 }
 
 export type DefaultWithoutRelations = Omit<
-  ExtendedFindConfig<ProductTag, ProductTagSelector>,
+  ExtendedFindConfig<ProductTag>,
   "relations"
 >
 
@@ -67,12 +68,16 @@ export class ProductTagRepository extends Repository<ProductTag> {
 
   async findAndCountByDiscountConditionId(
     conditionId: string,
-    query: ExtendedFindConfig<ProductTag, Selector<ProductTag>>
+    query: ExtendedFindConfig<ProductTag>
   ) {
     const qb = this.createQueryBuilder("pt")
 
     if (query?.select) {
-      qb.select(query.select.map((select) => `pt.${select}`))
+      qb.select(
+        buildLegacySelectOrRelationsFrom(query.select).map(
+          (select) => `pt.${select}`
+        )
+      )
     }
 
     if (query.skip) {

@@ -70,7 +70,7 @@ class SalesChannelService extends TransactionBaseService {
 
     const salesChannel = await salesChannelRepo.findOne({
       ...query,
-      relationLoadStrategy: "query"
+      relationLoadStrategy: "query",
     })
 
     if (!salesChannel) {

@@ -100,15 +100,20 @@ class ProductTagService extends TransactionBaseService {
       delete selector.q
     }
 
+    let discount_condition_id
+    if (selector.discount_condition_id) {
+      discount_condition_id = selector.discount_condition_id
+      delete selector.discount_condition_id
+    }
+
     const query = buildQuery(selector, config)
 
     if (q) {
       query.where.value = ILike(`%${q}%`)
     }
 
-    if (query.where.discount_condition_id) {
-      const discountConditionId = query.where.discount_condition_id as string
-      delete query.where.discount_condition_id
+    if (discount_condition_id) {
+      const discountConditionId = discount_condition_id as string
       return await tagRepo.findAndCountByDiscountConditionId(
         discountConditionId,
         query

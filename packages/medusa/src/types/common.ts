@@ -11,6 +11,7 @@ import {
   FindManyOptions,
   FindOneOptions,
   FindOperator,
+  FindOptionsSelect,
   FindOptionsWhere,
   OrderByCondition,
 } from "typeorm"
@@ -49,9 +50,10 @@ export interface FindConfig<Entity> {
 }
 
 export type ExtendedFindConfig<TEntity> = (
-  | Omit<FindOneOptions<TEntity>, "where" | "relations">
-  | Omit<FindManyOptions<TEntity>, "where" | "relations">
+  | Omit<FindOneOptions<TEntity>, "where" | "relations" | "select">
+  | Omit<FindManyOptions<TEntity>, "where" | "relations" | "select">
 ) & {
+  select?: FindOptionsSelect<TEntity>
   relations?: FindOptionsRelations<TEntity>
   where: FindOptionsWhere<TEntity>
   order?: FindOptionsOrder<TEntity>

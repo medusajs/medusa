@@ -76,7 +76,10 @@ class ShippingProfileService extends TransactionBaseService {
       this.shippingProfileRepository_
     )
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery<Selector<ShippingProfile>, ShippingProfile>(
+      selector,
+      config
+    )
     return shippingProfileRepo.find(query)
   }
 
@@ -167,7 +170,7 @@ class ShippingProfileService extends TransactionBaseService {
     )
 
     const profile = await profileRepository.findOne({
-      where: { type: "default" },
+      where: { type: ShippingProfileType.DEFAULT },
     })
 
     return profile
@@ -210,7 +213,7 @@ class ShippingProfileService extends TransactionBaseService {
     )
 
     const giftCardProfile = await profileRepository.findOne({
-      where: { type: "gift_card" },
+      where: { type: ShippingProfileType.GIFT_CARD },
     })
 
     return giftCardProfile

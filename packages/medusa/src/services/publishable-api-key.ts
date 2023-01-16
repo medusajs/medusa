@@ -18,6 +18,7 @@ type InjectedDependencies = {
 
   eventBusService: EventBusService
   publishableApiKeyRepository: PublishableApiKeyRepository
+  // eslint-disable-next-line max-len
   publishableApiKeySalesChannelRepository: PublishableApiKeySalesChannelRepository
 }
 
@@ -35,6 +36,7 @@ class PublishableApiKeyService extends TransactionBaseService {
 
   protected readonly eventBusService_: EventBusService
   protected readonly publishableApiKeyRepository_: PublishableApiKeyRepository
+  // eslint-disable-next-line max-len
   protected readonly publishableApiKeySalesChannelRepository_: PublishableApiKeySalesChannelRepository
 
   constructor({
@@ -116,11 +118,10 @@ class PublishableApiKeyService extends TransactionBaseService {
   ): Promise<PublishableApiKey | never> {
     const repo = this.manager_.withRepository(this.publishableApiKeyRepository_)
 
-    const { relations, ...query } = buildQuery(selector, config)
-    const publishableApiKey = await repo.findOne({
-      ...query,
-      relationLoadStrategy: "query",
-    })
+    const query = buildQuery(selector, config)
+    query.relationLoadStrategy = "query"
+
+    const publishableApiKey = await repo.findOne(query)
 
     if (!publishableApiKey) {
       const selectorConstraints = Object.entries(selector)
