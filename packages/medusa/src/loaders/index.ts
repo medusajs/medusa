@@ -11,11 +11,11 @@ import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import "reflect-metadata"
 import requestIp from "request-ip"
-import { Connection, getManager } from "typeorm"
+import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
-import databaseLoader from "./database"
+import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
@@ -153,7 +153,7 @@ export default async ({
 
   // Add the registered services to the request scope
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    container.register({ manager: asValue(getManager()) })
+    container.register({ manager: asValue(dataSource.manager) })
     ;(req as any).scope = container.createScope()
     next()
   })
