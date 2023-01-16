@@ -13,7 +13,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts",
-    "prepare": "yarn run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests"
   },
   "author": "Oliver Juhl",
