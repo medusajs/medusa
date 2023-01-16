@@ -19601,7 +19601,7 @@ __metadata:
     faker: ^5.5.3
     jest: ^26.6.3
     medusa-interfaces: "*"
-    typeorm: ^0.2.31
+    typeorm: ^0.3.9
   languageName: unknown
   linkType: soft
 
@@ -33909,7 +33909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.2.29":
+"typeorm@npm:^0.2.29, typeorm@npm:^0.2.31":
   version: 0.2.45
   resolution: "typeorm@npm:0.2.45"
   dependencies:
