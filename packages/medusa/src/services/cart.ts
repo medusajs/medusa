@@ -202,7 +202,7 @@ class CartService extends TransactionBaseService {
     config: FindConfig<Cart> = {}
   ): Promise<Cart[]> {
     const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.cartRepository_)
+    const cartRepo = manager.withRepository(this.cartRepository_)
 
     const query = buildQuery(selector, config)
     return await cartRepo.find(query)
@@ -234,7 +234,7 @@ class CartService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.cartRepository_)
+    const cartRepo = manager.withRepository(this.cartRepository_)
 
     const query = buildQuery({ id: cartId }, options)
 
@@ -270,7 +270,7 @@ class CartService extends TransactionBaseService {
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
     const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.cartRepository_)
+    const cartRepo = manager.withRepository(this.cartRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals_(options)
@@ -319,10 +319,10 @@ class CartService extends TransactionBaseService {
   async create(data: CartCreateProps): Promise<Cart | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.getCustomRepository(
+        const cartRepo = transactionManager.withRepository(
           this.cartRepository_
         )
-        const addressRepo = transactionManager.getCustomRepository(
+        const addressRepo = transactionManager.withRepository(
           this.addressRepository_
         )
 
@@ -391,7 +391,7 @@ class CartService extends TransactionBaseService {
             rawCart.shipping_address = data.shipping_address
           }
           if (data.shipping_address_id) {
-            const addr = await addressRepo.findOne(data.shipping_address_id)
+            const addr = await addressRepo.findOne({ where: { id: data.shipping_address_id } })
             if (
               addr?.country_code &&
               !regCountries.includes(addr.country_code)
@@ -415,7 +415,7 @@ class CartService extends TransactionBaseService {
           rawCart.billing_address = data.billing_address
         }
         if (data.billing_address_id) {
-          const addr = await addressRepo.findOne(data.billing_address_id)
+          const addr = await addressRepo.findOne({ where: { id: data.billing_address_id }})
           if (addr?.country_code && !regCountries.includes(addr.country_code)) {
             throw new MedusaError(
               MedusaError.Types.NOT_ALLOWED,
@@ -508,7 +508,7 @@ class CartService extends TransactionBaseService {
             .deleteShippingMethods(cart.shipping_methods)
         }
 
-        const lineItemRepository = transactionManager.getCustomRepository(
+        const lineItemRepository = transactionManager.withRepository(
           this.lineItemRepository_
         )
         await lineItemRepository.update(
@@ -995,7 +995,7 @@ class CartService extends TransactionBaseService {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     if (cart.shipping_methods?.length) {
-      const shippingMethodRepository = transactionManager.getCustomRepository(
+      const shippingMethodRepository = transactionManager.withRepository(
         this.shippingMethodRepository_
       )
 
@@ -1034,7 +1034,7 @@ class CartService extends TransactionBaseService {
   async update(cartId: string, data: CartUpdateProps): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.getCustomRepository(
+        const cartRepo = transactionManager.withRepository(
           this.cartRepository_
         )
         const relations = [
@@ -1091,7 +1091,7 @@ class CartService extends TransactionBaseService {
           await this.setRegion_(cart, data.region_id, countryCode)
         }
 
-        const addrRepo = transactionManager.getCustomRepository(
+        const addrRepo = transactionManager.withRepository(
           this.addressRepository_
         )
 
@@ -1498,7 +1498,7 @@ class CartService extends TransactionBaseService {
           (discount) => discount.code !== discountCode
         )
 
-        const cartRepo = transactionManager.getCustomRepository(
+        const cartRepo = transactionManager.withRepository(
           this.cartRepository_
         )
         const updatedCart = await cartRepo.save(cart)
@@ -1570,7 +1570,7 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cartRepository = transactionManager.getCustomRepository(
+        const cartRepository = transactionManager.withRepository(
           this.cartRepository_
         )
 
@@ -1639,7 +1639,7 @@ class CartService extends TransactionBaseService {
   async setPaymentSession(cartId: string, providerId: string): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const psRepo = transactionManager.getCustomRepository(
+        const psRepo = transactionManager.withRepository(
           this.paymentSessionRepository_
         )
 
@@ -1671,7 +1671,7 @@ class CartService extends TransactionBaseService {
           currentlySelectedSession &&
           currentlySelectedSession.provider_id !== providerId
         ) {
-          const psRepo = transactionManager.getCustomRepository(
+          const psRepo = transactionManager.withRepository(
             this.paymentSessionRepository_
           )
 
@@ -1754,7 +1754,7 @@ class CartService extends TransactionBaseService {
   async setPaymentSessions(cartOrCartId: Cart | string): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const psRepo = transactionManager.getCustomRepository(
+        const psRepo = transactionManager.withRepository(
           this.paymentSessionRepository_
         )
 
@@ -1939,7 +1939,7 @@ class CartService extends TransactionBaseService {
           relations: ["payment_sessions"],
         })
 
-        const cartRepo = transactionManager.getCustomRepository(
+        const cartRepo = transactionManager.withRepository(
           this.cartRepository_
         )
 
@@ -1952,7 +1952,7 @@ class CartService extends TransactionBaseService {
             ({ provider_id }) => provider_id !== providerId
           )
 
-          const psRepo = transactionManager.getCustomRepository(
+          const psRepo = transactionManager.withRepository(
             this.paymentSessionRepository_
           )
 
@@ -2010,7 +2010,7 @@ class CartService extends TransactionBaseService {
                   provider_id: providerId,
                 })
             } else {
-              const psRepo = transactionManager.getCustomRepository(
+              const psRepo = transactionManager.withRepository(
                 this.paymentSessionRepository_
               )
               await psRepo.update(paymentSession.id, {
@@ -2251,7 +2251,7 @@ class CartService extends TransactionBaseService {
     cart.region = region
     cart.region_id = region.id
 
-    const addrRepo = transactionManager.getCustomRepository(
+    const addrRepo = transactionManager.withRepository(
       this.addressRepository_
     )
     /*
@@ -2345,7 +2345,7 @@ class CartService extends TransactionBaseService {
     cart.gift_cards = []
 
     if (cart.payment_sessions && cart.payment_sessions.length) {
-      const paymentSessionRepo = transactionManager.getCustomRepository(
+      const paymentSessionRepo = transactionManager.withRepository(
         this.paymentSessionRepository_
       )
       await paymentSessionRepo.delete({
@@ -2389,7 +2389,7 @@ class CartService extends TransactionBaseService {
           )
         }
 
-        const cartRepo = transactionManager.getCustomRepository(
+        const cartRepo = transactionManager.withRepository(
           this.cartRepository_
         )
         return cartRepo.remove(cart)
@@ -2413,7 +2413,7 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.getCustomRepository(
+        const cartRepo = transactionManager.withRepository(
           this.cartRepository_
         )
 

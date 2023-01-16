@@ -48,7 +48,7 @@ class ClaimItemService extends TransactionBaseService {
 
   async create(data: CreateClaimItemInput): Promise<ClaimItem> {
     return await this.atomicPhase_(async (manager) => {
-      const ciRepo: ClaimItemRepository = manager.getCustomRepository(
+      const ciRepo: ClaimItemRepository = manager.withRepository(
         this.claimItemRepository_
       )
 
@@ -86,7 +86,7 @@ class ClaimItemService extends TransactionBaseService {
 
       let tagsToAdd: ClaimTag[] = []
       if (tags && tags.length) {
-        const claimTagRepo = manager.getCustomRepository(
+        const claimTagRepo = manager.withRepository(
           this.claimTagRepository_
         )
         tagsToAdd = await Promise.all(
@@ -105,7 +105,7 @@ class ClaimItemService extends TransactionBaseService {
 
       let imagesToAdd: ClaimImage[] = []
       if (images && images.length) {
-        const claimImgRepo = manager.getCustomRepository(
+        const claimImgRepo = manager.withRepository(
           this.claimImageRepository_
         )
         imagesToAdd = images.map((url) => {
@@ -138,7 +138,7 @@ class ClaimItemService extends TransactionBaseService {
 
   async update(id, data): Promise<ClaimItem> {
     return this.atomicPhase_(async (manager) => {
-      const ciRepo = manager.getCustomRepository(this.claimItemRepository_)
+      const ciRepo = manager.withRepository(this.claimItemRepository_)
       const item = await this.retrieve(id, { relations: ["images", "tags"] })
 
       const { tags, images, reason, note, metadata } = data
@@ -157,7 +157,7 @@ class ClaimItemService extends TransactionBaseService {
 
       if (tags) {
         item.tags = []
-        const claimTagRepo = manager.getCustomRepository(
+        const claimTagRepo = manager.withRepository(
           this.claimTagRepository_
         )
         for (const t of tags) {
@@ -180,7 +180,7 @@ class ClaimItemService extends TransactionBaseService {
       }
 
       if (images) {
-        const claimImgRepo = manager.getCustomRepository(
+        const claimImgRepo = manager.withRepository(
           this.claimImageRepository_
         )
         const ids = images.map((i) => i.id)
@@ -226,7 +226,7 @@ class ClaimItemService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<ClaimItem[]> {
-    const ciRepo = this.manager_.getCustomRepository(this.claimItemRepository_)
+    const ciRepo = this.manager_.withRepository(this.claimItemRepository_)
     const query = buildQuery(selector, config)
     return ciRepo.find(query)
   }
@@ -248,7 +248,7 @@ class ClaimItemService extends TransactionBaseService {
       )
     }
 
-    const claimItemRepo = this.manager_.getCustomRepository(
+    const claimItemRepo = this.manager_.withRepository(
       this.claimItemRepository_
     )
     const query = buildQuery({ id: claimItemId }, config)

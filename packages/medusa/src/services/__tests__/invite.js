@@ -14,7 +14,7 @@ describe("InviteService", () => {
     })
 
     const inviteService = new InviteService({
-      manager: { getCustomRepository: jest.fn(() => inviteRepo) },
+      manager: { withRepository: jest.fn(() => inviteRepo) },
       userService: {},
       userRepository: {},
       inviteRepository: inviteRepo,
@@ -200,7 +200,7 @@ describe("InviteService", () => {
     })
 
     const inviteService = new InviteService({
-      manager: { getCustomRepository: jest.fn(() => inviteRepo) },
+      manager: { withRepository: jest.fn(() => inviteRepo) },
       userService: {},
       userRepository: {},
       inviteRepository: inviteRepo,

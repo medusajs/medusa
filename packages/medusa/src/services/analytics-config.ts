@@ -10,7 +10,7 @@ import {
 import UserService from "./user"
 
 type InjectedDependencies = {
-  analyticsConfigRepository: typeof AnalyticsRepository
+  analyticsConfigRepository: AnalyticsRepository
   manager: EntityManager
 }
 
@@ -18,7 +18,7 @@ class AnalyticsConfigService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly analyticsConfigRepository_: typeof AnalyticsRepository
+  protected readonly analyticsConfigRepository_: AnalyticsRepository
   protected readonly userService_: UserService
 
   constructor({ analyticsConfigRepository, manager }: InjectedDependencies) {
@@ -32,7 +32,7 @@ class AnalyticsConfigService extends TransactionBaseService {
   async retrieve(userId: string): Promise<AnalyticsConfig> {
     const manager = this.manager_
 
-    const analyticsRepo = manager.getCustomRepository(
+    const analyticsRepo = manager.withRepository(
       this.analyticsConfigRepository_
     )
 
@@ -58,7 +58,7 @@ class AnalyticsConfigService extends TransactionBaseService {
     data: CreateAnalyticsConfig
   ): Promise<AnalyticsConfig> {
     const manager = this.transactionManager_ || this.manager_
-    const analyticsRepo = manager.getCustomRepository(
+    const analyticsRepo = manager.withRepository(
       this.analyticsConfigRepository_
     )
 
@@ -75,7 +75,7 @@ class AnalyticsConfigService extends TransactionBaseService {
   ): Promise<AnalyticsConfig> {
     const manager = this.transactionManager_ || this.manager_
 
-    const analyticsRepo = manager.getCustomRepository(
+    const analyticsRepo = manager.withRepository(
       this.analyticsConfigRepository_
     )
 
@@ -102,7 +102,7 @@ class AnalyticsConfigService extends TransactionBaseService {
    */
   async delete(userId: string): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
-    const analyticsRepo = manager.getCustomRepository(
+    const analyticsRepo = manager.withRepository(
       this.analyticsConfigRepository_
     )
 

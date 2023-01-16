@@ -101,7 +101,7 @@ class ShippingOptionService extends TransactionBaseService {
         )
       }
 
-      const reqRepo = manager.getCustomRepository(this.requirementRepository_)
+      const reqRepo = manager.withRepository(this.requirementRepository_)
 
       const existingReq = await reqRepo.findOne({
         where: { id: requirement.id },
@@ -150,7 +150,7 @@ class ShippingOptionService extends TransactionBaseService {
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
     const manager = this.manager_
-    const optRepo = manager.getCustomRepository(this.optionRepository_)
+    const optRepo = manager.withRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return optRepo.find(query)
@@ -166,7 +166,7 @@ class ShippingOptionService extends TransactionBaseService {
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<[ShippingOption[], number]> {
     const manager = this.manager_
-    const optRepo = manager.getCustomRepository(this.optionRepository_)
+    const optRepo = manager.withRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return await optRepo.findAndCount(query)
@@ -191,7 +191,7 @@ class ShippingOptionService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const soRepo: ShippingOptionRepository = manager.getCustomRepository(
+    const soRepo: ShippingOptionRepository = manager.withRepository(
       this.optionRepository_
     )
 
@@ -231,7 +231,7 @@ class ShippingOptionService extends TransactionBaseService {
     update: ShippingMethodUpdate
   ): Promise<ShippingMethod | undefined> {
     return await this.atomicPhase_(async (manager) => {
-      const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
+      const methodRepo: ShippingMethodRepository = manager.withRepository(
         this.methodRepository_
       )
       const method = await methodRepo.findOne({ where: { id } })
@@ -263,7 +263,7 @@ class ShippingOptionService extends TransactionBaseService {
       : [shippingMethods]
 
     return await this.atomicPhase_(async (manager) => {
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo = manager.withRepository(this.methodRepository_)
       return await methodRepo.remove(removeEntities)
     })
   }
@@ -285,7 +285,7 @@ class ShippingOptionService extends TransactionBaseService {
         relations: ["requirements"],
       })
 
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo = manager.withRepository(this.methodRepository_)
 
       if (isDefined(config.cart)) {
         await this.validateCartOption(option, config.cart)
@@ -454,7 +454,7 @@ class ShippingOptionService extends TransactionBaseService {
         price_type: data.price_type,
       })
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       const option = optionRepo.create(optionWithValidatedPrice)
 
       const region = await this.regionService_
@@ -673,7 +673,7 @@ class ShippingOptionService extends TransactionBaseService {
         }
       }
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       return await optionRepo.save(optionWithValidatedPrice)
     })
   }
@@ -689,7 +689,7 @@ class ShippingOptionService extends TransactionBaseService {
       try {
         const option = await this.retrieve(optionId)
 
-        const optionRepo = manager.getCustomRepository(this.optionRepository_)
+        const optionRepo = manager.withRepository(this.optionRepository_)
 
         return optionRepo.softRemove(option)
       } catch (error) {
@@ -725,7 +725,7 @@ class ShippingOptionService extends TransactionBaseService {
 
       option.requirements.push(validatedReq)
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       return optionRepo.save(option)
     })
   }
@@ -740,7 +740,7 @@ class ShippingOptionService extends TransactionBaseService {
   ): Promise<ShippingOptionRequirement | void> {
     return await this.atomicPhase_(async (manager) => {
       const reqRepo: ShippingOptionRequirementRepository =
-        manager.getCustomRepository(this.requirementRepository_)
+        manager.withRepository(this.requirementRepository_)
 
       const requirement = await reqRepo.findOne({
         where: { id: requirementId },

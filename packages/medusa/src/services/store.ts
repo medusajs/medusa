@@ -49,10 +49,10 @@ class StoreService extends TransactionBaseService {
   async create(): Promise<Store> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const storeRepository = transactionManager.getCustomRepository(
+        const storeRepository = transactionManager.withRepository(
           this.storeRepository_
         )
-        const currencyRepository = transactionManager.getCustomRepository(
+        const currencyRepository = transactionManager.withRepository(
           this.currencyRepository_
         )
 
@@ -84,7 +84,7 @@ class StoreService extends TransactionBaseService {
    */
   async retrieve(config: FindConfig<Store> = {}): Promise<Store> {
     const manager = this.manager_
-    const storeRepo = manager.getCustomRepository(this.storeRepository_)
+    const storeRepo = manager.withRepository(this.storeRepository_)
     const query = buildQuery({}, config)
     const store = await storeRepo.findOne(query)
 
@@ -114,10 +114,10 @@ class StoreService extends TransactionBaseService {
   async update(data: UpdateStoreInput): Promise<Store> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const storeRepository = transactionManager.getCustomRepository(
+        const storeRepository = transactionManager.withRepository(
           this.storeRepository_
         )
-        const currencyRepository = transactionManager.getCustomRepository(
+        const currencyRepository = transactionManager.withRepository(
           this.currencyRepository_
         )
 
@@ -204,10 +204,10 @@ class StoreService extends TransactionBaseService {
   async addCurrency(code: string): Promise<Store | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const storeRepo = transactionManager.getCustomRepository(
+        const storeRepo = transactionManager.withRepository(
           this.storeRepository_
         )
-        const currencyRepository = transactionManager.getCustomRepository(
+        const currencyRepository = transactionManager.withRepository(
           this.currencyRepository_
         )
 
@@ -248,7 +248,7 @@ class StoreService extends TransactionBaseService {
   async removeCurrency(code: string): Promise<any> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const storeRepo = transactionManager.getCustomRepository(
+        const storeRepo = transactionManager.withRepository(
           this.storeRepository_
         )
         const store = await this.retrieve({ relations: ["currencies"] })

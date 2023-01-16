@@ -62,7 +62,7 @@ class ProductCollectionService extends TransactionBaseService {
       )
     }
 
-    const collectionRepo = this.manager_.getCustomRepository(
+    const collectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -89,7 +89,7 @@ class ProductCollectionService extends TransactionBaseService {
     collectionHandle: string,
     config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
-    const collectionRepo = this.manager_.getCustomRepository(
+    const collectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -115,7 +115,7 @@ class ProductCollectionService extends TransactionBaseService {
     collection: CreateProductCollection
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const collectionRepo = manager.getCustomRepository(
+      const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -135,7 +135,7 @@ class ProductCollectionService extends TransactionBaseService {
     update: UpdateProductCollection
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const collectionRepo = manager.getCustomRepository(
+      const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -162,7 +162,7 @@ class ProductCollectionService extends TransactionBaseService {
    */
   async delete(collectionId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productCollectionRepo = manager.getCustomRepository(
+      const productCollectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -183,7 +183,7 @@ class ProductCollectionService extends TransactionBaseService {
     productIds: string[]
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productRepo = manager.withRepository(this.productRepository_)
 
       const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
@@ -200,7 +200,7 @@ class ProductCollectionService extends TransactionBaseService {
     productIds: string[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productRepo = manager.withRepository(this.productRepository_)
 
       const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
@@ -240,7 +240,7 @@ class ProductCollectionService extends TransactionBaseService {
     } = {},
     config: FindConfig<ProductCollection> = { skip: 0, take: 20 }
   ): Promise<[ProductCollection[], number]> {
-    const productCollectionRepo = this.manager_.getCustomRepository(
+    const productCollectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 

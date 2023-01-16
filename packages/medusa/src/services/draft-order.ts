@@ -96,7 +96,7 @@ class DraftOrderService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
+    const draftOrderRepo = manager.withRepository(
       this.draftOrderRepository_
     )
 
@@ -123,7 +123,7 @@ class DraftOrderService extends TransactionBaseService {
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
+    const draftOrderRepo = manager.withRepository(
       this.draftOrderRepository_
     )
 
@@ -147,7 +147,7 @@ class DraftOrderService extends TransactionBaseService {
   async delete(draftOrderId: string): Promise<DraftOrder | undefined> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         const draftOrder = await draftOrderRepo.findOne({
@@ -177,7 +177,7 @@ class DraftOrderService extends TransactionBaseService {
     }
   ): Promise<[DraftOrder[], number]> {
     const manager = this.manager_
-    const draftOrderRepository = manager.getCustomRepository(
+    const draftOrderRepository = manager.withRepository(
       this.draftOrderRepository_
     )
 
@@ -231,7 +231,7 @@ class DraftOrderService extends TransactionBaseService {
     }
   ): Promise<DraftOrder[]> {
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
+    const draftOrderRepo = manager.withRepository(
       this.draftOrderRepository_
     )
 
@@ -248,7 +248,7 @@ class DraftOrderService extends TransactionBaseService {
   async create(data: DraftOrderCreateProps): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
 
@@ -375,7 +375,7 @@ class DraftOrderService extends TransactionBaseService {
   ): Promise<UpdateResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         return await draftOrderRepo.update(
@@ -404,7 +404,7 @@ class DraftOrderService extends TransactionBaseService {
   ): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         const draftOrder = await this.retrieve(id)
