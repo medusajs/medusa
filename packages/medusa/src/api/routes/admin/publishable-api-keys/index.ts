@@ -102,12 +102,12 @@ export type AdminPublishableApiKeysRes = {
  *   count:
  *     type: integer
  *     description: The total number of items available
- *   limit:
- *     type: integer
- *     description: The number of items per page
  *   offset:
  *     type: integer
  *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
  */
 export type AdminPublishableApiKeysListRes = PaginatedResponse & {
   publishable_api_keys: PublishableApiKey[]
