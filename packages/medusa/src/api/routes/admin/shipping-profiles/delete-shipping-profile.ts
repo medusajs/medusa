@@ -36,19 +36,7 @@ import { ShippingProfileService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Shipping Profile.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: shipping_profile
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminDeleteShippingProfileRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
