@@ -167,7 +167,7 @@ class InviteService extends TransactionBaseService {
    */
   async delete(inviteId): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const inviteRepo: InviteRepository =
+      const inviteRepo: typeof InviteRepository =
         manager.withRepository(InviteRepository)
 
       // Should not fail, if invite does not exist, since delete is idempotent
@@ -196,7 +196,7 @@ class InviteService extends TransactionBaseService {
 
     return await this.atomicPhase_(async (m) => {
       const userRepo = m.withRepository(this.userRepo_)
-      const inviteRepo: InviteRepository = m.withRepository(
+      const inviteRepo: typeof InviteRepository = m.withRepository(
         this.inviteRepository_
       )
 

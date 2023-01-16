@@ -17,8 +17,8 @@ type InjectedDependencies = {
   manager: EntityManager
 
   eventBusService: EventBusService
-  publishableApiKeyRepository: typeof PublishableApiKeyRepository
-  publishableApiKeySalesChannelRepository: typeof PublishableApiKeySalesChannelRepository
+  publishableApiKeyRepository: PublishableApiKeyRepository
+  publishableApiKeySalesChannelRepository: PublishableApiKeySalesChannelRepository
 }
 
 /**
@@ -34,8 +34,8 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly eventBusService_: EventBusService
-  protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
-  protected readonly publishableApiKeySalesChannelRepository_: typeof PublishableApiKeySalesChannelRepository
+  protected readonly publishableApiKeyRepository_: PublishableApiKeyRepository
+  protected readonly publishableApiKeySalesChannelRepository_: PublishableApiKeySalesChannelRepository
 
   constructor({
     manager,

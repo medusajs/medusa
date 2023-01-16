@@ -1,5 +1,5 @@
 import { flatten, groupBy, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import { EntityRepository, FindManyOptions, Repository, In } from "typeorm"
 
 import { PublishableApiKey } from "../models"
 
@@ -37,7 +37,8 @@ export class PublishableApiKeyRepository extends Repository<PublishableApiKey> {
 
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(async ([_, rels]) => {
-        return this.findByIds(entitiesIds, {
+        return this.find({
+          where: { id: In(entitiesIds) },
           select: ["id"],
           relations: rels as string[],
         })

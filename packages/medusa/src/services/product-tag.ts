@@ -8,14 +8,14 @@ import { buildQuery, isString } from "../utils"
 
 type ProductTagConstructorProps = {
   manager: EntityManager
-  productTagRepository: typeof ProductTagRepository
+  productTagRepository: ProductTagRepository
 }
 
 class ProductTagService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly tagRepo_: typeof ProductTagRepository
+  protected readonly tagRepo_: ProductTagRepository
 
   constructor({ manager, productTagRepository }: ProductTagConstructorProps) {
     super(arguments[0])

@@ -1157,7 +1157,7 @@ class SwapService extends TransactionBaseService {
           this.swapRepository_
         )
 
-        const swap = await swapRepo.findOne(validatedId)
+        const swap = await swapRepo.findOne({ where: { id: validatedId } })
 
         if (!swap) {
           throw new MedusaError(

@@ -175,7 +175,7 @@ class SalesChannelService extends TransactionBaseService {
    */
   async create(data: CreateSalesChannelInput): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (manager) => {
-      const salesChannelRepo: SalesChannelRepository =
+      const salesChannelRepo: typeof SalesChannelRepository =
         manager.withRepository(this.salesChannelRepository_)
 
       const salesChannel = salesChannelRepo.create(data)
@@ -195,7 +195,7 @@ class SalesChannelService extends TransactionBaseService {
     data: UpdateSalesChannelInput
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo: SalesChannelRepository =
+      const salesChannelRepo: typeof SalesChannelRepository =
         transactionManager.withRepository(this.salesChannelRepository_)
 
       const salesChannel = await this.retrieve(salesChannelId)
