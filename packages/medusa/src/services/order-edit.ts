@@ -7,13 +7,13 @@ import {
   Order,
   OrderEdit,
   OrderEditItemChangeType,
-  OrderEditStatus
+  OrderEditStatus,
 } from "../models"
 import { OrderEditRepository } from "../repositories/order-edit"
 import { FindConfig, Selector } from "../types/common"
 import {
   AddOrderEditLineItemInput,
-  CreateOrderEditInput
+  CreateOrderEditInput,
 } from "../types/order-edit"
 import { buildQuery, isString } from "../utils"
 import {
@@ -23,7 +23,7 @@ import {
   OrderEditItemChangeService,
   OrderService,
   TaxProviderService,
-  TotalsService
+  TotalsService,
 } from "./index"
 
 type InjectedDependencies = {
@@ -265,9 +265,7 @@ export default class OrderEditService extends TransactionBaseService {
     data: DeepPartial<OrderEdit>
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.withRepository(
-        this.orderEditRepository_
-      )
+      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       const orderEdit = await this.retrieve(orderEditId)
 
@@ -291,9 +289,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   async delete(id: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.withRepository(
-        this.orderEditRepository_
-      )
+      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       const edit = await this.retrieve(id).catch(() => void 0)
 
@@ -321,9 +317,7 @@ export default class OrderEditService extends TransactionBaseService {
     }
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.withRepository(
-        this.orderEditRepository_
-      )
+      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       const { declinedBy, declinedReason } = context
 
@@ -662,9 +656,7 @@ export default class OrderEditService extends TransactionBaseService {
     } = {}
   ): Promise<OrderEdit> {
     return await this.atomicPhase_(async (manager) => {
-      const orderEditRepo = manager.withRepository(
-        this.orderEditRepository_
-      )
+      const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       let orderEdit = await this.retrieve(orderEditId, {
         relations: ["changes"],
@@ -789,7 +781,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected async retrieveActive(
     orderId: string,
     config: FindConfig<OrderEdit> = {}
-  ): Promise<OrderEdit | undefined> {
+  ): Promise<OrderEdit | undefined | null> {
     const manager = this.transactionManager_ ?? this.manager_
     const orderEditRepository = manager.withRepository(
       this.orderEditRepository_

@@ -2,11 +2,7 @@ import dotenv from "dotenv"
 import { DataSource } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import Logger from "../loaders/logger"
-import {
-  DiscountCondition,
-  DiscountConditionOperator,
-  DiscountConditionType,
-} from "../models/discount-condition"
+import { DiscountCondition, DiscountConditionOperator, DiscountConditionType, } from "../models/discount-condition"
 import { DiscountConditionProduct } from "../models/discount-condition-product"
 import { DiscountRule } from "../models/discount-rule"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
@@ -42,7 +38,7 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
         .offset(offset)
         .getRawMany()
 
-      const discountConditionRepo = manager.withRepository(
+      const discountConditionRepo = manager.getCustomRepository(
         DiscountConditionRepository
       )
       await manager

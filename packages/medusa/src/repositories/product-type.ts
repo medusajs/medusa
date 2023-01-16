@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from "typeorm"
 import { ProductType } from "../models/product-type"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig } from "../types/common"
+import { buildLegacySelectOrRelationsFrom } from "../utils"
 
 type UpsertTypeInput = Partial<ProductType> & {
   value: string
@@ -29,12 +30,13 @@ export class ProductTypeRepository extends Repository<ProductType> {
 
   async findAndCountByDiscountConditionId(
     conditionId: string,
-    query: ExtendedFindConfig<ProductType, Selector<ProductType>>
+    query: ExtendedFindConfig<ProductType>
   ): Promise<[ProductType[], number]> {
     const qb = this.createQueryBuilder("pt")
 
     if (query?.select) {
-      qb.select(query.select.map((select) => `pt.${select}`))
+      const legacySelect = buildLegacySelectOrRelationsFrom(query.select)
+      qb.select(legacySelect.map((select) => `pt.${select}`))
     }
 
     if (query.skip) {

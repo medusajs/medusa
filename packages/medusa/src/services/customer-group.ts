@@ -45,7 +45,7 @@ class CustomerGroupService extends TransactionBaseService {
       )
     }
 
-    const cgRepo = this.manager_.withRepository(
+    const cgRepo = this.manager_.getCustomRepository(
       this.customerGroupRepository_
     )
 
@@ -70,7 +70,7 @@ class CustomerGroupService extends TransactionBaseService {
   async create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
     return await this.atomicPhase_(async (manager) => {
       try {
-        const cgRepo: CustomerGroupRepository = manager.withRepository(
+        const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
           this.customerGroupRepository_
         )
 
@@ -104,7 +104,7 @@ class CustomerGroupService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (manager) => {
-        const cgRepo: CustomerGroupRepository = manager.withRepository(
+        const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
           this.customerGroupRepository_
         )
         return await cgRepo.addCustomers(id, ids)
@@ -129,7 +129,7 @@ class CustomerGroupService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const { metadata, ...properties } = update
 
-      const cgRepo: CustomerGroupRepository = manager.withRepository(
+      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
         this.customerGroupRepository_
       )
 
@@ -157,7 +157,7 @@ class CustomerGroupService extends TransactionBaseService {
    */
   async delete(groupId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const cgRepo: CustomerGroupRepository = manager.withRepository(
+      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
         this.customerGroupRepository_
       )
 
@@ -203,7 +203,7 @@ class CustomerGroupService extends TransactionBaseService {
     } = {},
     config: FindConfig<CustomerGroup>
   ): Promise<[CustomerGroup[], number]> {
-    const cgRepo: CustomerGroupRepository = this.manager_.withRepository(
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
       this.customerGroupRepository_
     )
 
@@ -213,7 +213,7 @@ class CustomerGroupService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery<CustomerGroup, any>(selector, config)
 
     if (q) {
       query.where.name = ILike(`%${q}%`)
@@ -241,7 +241,7 @@ class CustomerGroupService extends TransactionBaseService {
     id: string,
     customerIds: string[] | string
   ): Promise<CustomerGroup> {
-    const cgRepo: CustomerGroupRepository = this.manager_.withRepository(
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
       this.customerGroupRepository_
     )
     let ids: string[]

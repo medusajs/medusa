@@ -91,7 +91,7 @@ export async function queryEntityWithIds<T>(
  */
 export async function queryEntityWithoutRelations<T>(
   repository: Repository<T>,
-  optionsWithoutRelations: Omit<ExtendedFindConfig<T, unknown>, "relations">,
+  optionsWithoutRelations: Omit<ExtendedFindConfig<T>, "relations">,
   shouldCount = false,
   customJoinBuilders: ((
     qb: SelectQueryBuilder<T>,

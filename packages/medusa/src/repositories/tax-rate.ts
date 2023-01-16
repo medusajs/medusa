@@ -3,6 +3,7 @@ import {
   DeleteResult,
   EntityRepository,
   FindManyOptions,
+  FindOptionsSelect,
   FindOptionsUtils,
   In,
   Not,
@@ -18,6 +19,7 @@ import {
 } from "../models"
 import { TaxRateListByConfig } from "../types/tax-rate"
 import { isDefined } from "medusa-core-utils"
+import { buildLegacySelectOrRelationsFrom } from "../utils"
 
 const resolveableFields = [
   "product_count",
@@ -34,7 +36,10 @@ export class TaxRateRepository extends Repository<TaxRate> {
     const resolverFields: string[] = []
     if (isDefined(findOptions.select)) {
       const selectableCols: (keyof TaxRate)[] = []
-      for (const k of findOptions.select) {
+      const legacySelect = buildLegacySelectOrRelationsFrom(
+        findOptions.select as FindOptionsSelect<TaxRate>
+      )
+      for (const k of legacySelect) {
         if (!resolveableFields.includes(k)) {
           selectableCols.push(k)
         } else {

@@ -3,6 +3,8 @@ import {
   Brackets,
   EntityRepository,
   FindOperator,
+  FindOptionsRelations,
+  FindOptionsSelect,
   In,
   Repository,
 } from "typeorm"
@@ -13,17 +15,19 @@ import {
   WithRequiredProperty,
 } from "../types/common"
 import { applyOrdering } from "../utils/repository"
+import { buildLegacySelectOrRelationsFrom } from "../utils"
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
   tags: FindOperator<string[]>
 }
 
 export type DefaultWithoutRelations = Omit<
-  ExtendedFindConfig<Product, ProductSelector>,
+  ExtendedFindConfig<Product>,
   "relations"
 >
 
 export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
+  order?: Record<string, "ASC" | "DESC">
   where: DefaultWithoutRelations["where"] & {
     price_list_id?: FindOperator<PriceList>
     sales_channel_id?: FindOperator<SalesChannel>
@@ -74,7 +78,7 @@ export class ProductRepository extends Repository<Product> {
       qb.leftJoin(`${productAlias}.tags`, "tags").andWhere(
         `tags.id IN (:...tag_ids)`,
         {
-          tag_ids: tags.value,
+          tag_ids: (tags as FindOperator<number[]>).value,
         }
       )
     }
@@ -151,15 +155,17 @@ export class ProductRepository extends Repository<Product> {
     entityIds: string[],
     groupedRelations: { [toplevel: string]: string[] },
     withDeleted = false,
-    select: (keyof Product)[] = [],
+    select: FindOptionsSelect<Product> = {},
     order: { [column: string]: "ASC" | "DESC" } = {}
   ): Promise<Product[]> {
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
         let querybuilder = this.createQueryBuilder("products")
 
-        if (select && select.length) {
-          querybuilder.select(select.map((f) => `products.${f}`))
+        const legacySelect = buildLegacySelectOrRelationsFrom(select)
+
+        if (legacySelect?.length) {
+          querybuilder.select(legacySelect.map((f) => `products.${f}`))
         }
 
         if (toplevel === "variants") {
@@ -212,13 +218,14 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findWithRelationsAndCount(
-    relations: string[] = [],
+    relations: FindOptionsRelations<Product> = {},
     idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
     let count: number
     let entities: Product[]
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations, {
+      entities = await this.find({
+        where: { id: In(idsOrOptionsWithoutRelations) },
         withDeleted: idsOrOptionsWithoutRelations.withDeleted ?? false,
       })
       count = entities.length
@@ -237,7 +244,7 @@ export class ProductRepository extends Repository<Product> {
       return [[], count]
     }
 
-    if (relations.length === 0) {
+    if (Object.keys(relations).length === 0) {
       const options = { ...idsOrOptionsWithoutRelations }
 
       // Since we are finding by the ids that have been retrieved above and those ids are already
@@ -245,11 +252,15 @@ export class ProductRepository extends Repository<Product> {
       delete options.skip
       delete options.take
 
-      const toReturn = await this.findByIds(entitiesIds, options)
+      const toReturn = await this.find({
+        ...options,
+        where: { id: In(entitiesIds) },
+      })
       return [toReturn, toReturn.length]
     }
 
-    const groupedRelations = this.getGroupedRelations(relations)
+    const legacyRelations = buildLegacySelectOrRelationsFrom(relations)
+    const groupedRelations = this.getGroupedRelations(legacyRelations)
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
       groupedRelations,
@@ -267,7 +278,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findWithRelations(
-    relations: string[] = [],
+    relations: FindOptionsRelations<Product> = {},
     idsOrOptionsWithoutRelations: FindWithoutRelationsOptions | string[] = {
       where: {},
     },
@@ -275,7 +286,8 @@ export class ProductRepository extends Repository<Product> {
   ): Promise<Product[]> {
     let entities: Product[]
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations, {
+      entities = await this.find({
+        where: { id: In(idsOrOptionsWithoutRelations) },
         withDeleted,
       })
     } else {
@@ -293,13 +305,17 @@ export class ProductRepository extends Repository<Product> {
     }
 
     if (
-      relations.length === 0 &&
+      Object.keys(relations).length === 0 &&
       !Array.isArray(idsOrOptionsWithoutRelations)
     ) {
-      return await this.findByIds(entitiesIds, idsOrOptionsWithoutRelations)
+      return await this.find({
+        ...idsOrOptionsWithoutRelations,
+        where: { id: In(entitiesIds) },
+      })
     }
 
-    const groupedRelations = this.getGroupedRelations(relations)
+    const legacyRelations = buildLegacySelectOrRelationsFrom(relations)
+    const groupedRelations = this.getGroupedRelations(legacyRelations)
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
       groupedRelations,
@@ -314,7 +330,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findOneWithRelations(
-    relations: string[] = [],
+    relations: FindOptionsRelations<Product> = {},
     optionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<Product> {
     // Limit 1
@@ -356,7 +372,7 @@ export class ProductRepository extends Repository<Product> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: FindWithoutRelationsOptions = { where: {} },
-    relations: string[] = []
+    relations: FindOptionsRelations<Product> = {}
   ): Promise<[Product[], number]> {
     const productAlias = "product"
     const pricesAlias = "prices"
@@ -408,7 +424,7 @@ export class ProductRepository extends Repository<Product> {
       qb.leftJoin(`${productAlias}.tags`, tagsAlias).andWhere(
         `${tagsAlias}.id IN (:...tag_ids)`,
         {
-          tag_ids: tags.value,
+          tag_ids: (tags as FindOperator<number[]>).value,
         }
       )
     }

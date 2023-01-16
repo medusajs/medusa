@@ -1,6 +1,13 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import {
+  EntityRepository,
+  FindManyOptions,
+  FindOptionsRelations,
+  In,
+  Repository,
+} from "typeorm"
 import { Order } from "../models"
+import { buildLegacySelectOrRelationsFrom } from "../utils"
 
 const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"
@@ -8,14 +15,14 @@ const REGION_REL_NAME = "region"
 @EntityRepository(Order)
 export class OrderRepository extends Repository<Order> {
   public async findWithRelations(
-    relations: string[] = [],
+    relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order[]> {
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
 
     const groupedRelations: { [topLevel: string]: string[] } = {}
-    for (const rel of relations) {
+    for (const rel of buildLegacySelectOrRelationsFrom(relations)) {
       const [topLevel] = rel.split(".")
       if (groupedRelations[topLevel]) {
         groupedRelations[topLevel].push(rel)
@@ -27,7 +34,8 @@ export class OrderRepository extends Repository<Order> {
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(async ([topLevel, rels]) => {
         // If top level is region or items then get deleted region as well
-        return this.findByIds(entitiesIds, {
+        return this.find({
+          where: { id: In(entitiesIds) },
           select: ["id"],
           relations: rels,
           withDeleted:
@@ -44,7 +52,7 @@ export class OrderRepository extends Repository<Order> {
   }
 
   public async findOneWithRelations(
-    relations: string[] = [],
+    relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order> {
     // Limit 1

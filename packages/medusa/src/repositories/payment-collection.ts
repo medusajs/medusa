@@ -15,11 +15,10 @@ export class PaymentCollectionRepository extends Repository<PaymentCollection> {
         alias: "payment_col",
         innerJoin: { payment_sessions: "payment_col.payment_sessions" },
       },
-      where: (qb) => {
-        qb.where(
-          "payment_col_payment_sessions.payment_session_id = :sessionId",
-          { sessionId }
-        )
+      where: {
+        payment_sessions: {
+          id: sessionId,
+        },
       },
       relations: config.relations,
       select: config.select,
@@ -44,8 +43,10 @@ export class PaymentCollectionRepository extends Repository<PaymentCollection> {
         alias: "payment_col",
         innerJoin: { payments: "payment_col.payments" },
       },
-      where: (qb) => {
-        qb.where("payment_col_payments.payment_id = :paymentId", { paymentId })
+      where: {
+        payments: {
+          id: paymentId,
+        },
       },
       relations: config.relations,
       select: config.select,

@@ -145,9 +145,7 @@ class BatchJobService extends TransactionBaseService {
 
   async create(data: BatchJobCreateProps): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo: BatchJobRepository = manager.withRepository(
-        this.batchJobRepository_
-      )
+      const batchJobRepo = manager.withRepository(this.batchJobRepository_)
 
       const batchJob = batchJobRepo.create(data)
       const result = await batchJobRepo.save(batchJob)
@@ -167,9 +165,7 @@ class BatchJobService extends TransactionBaseService {
     data: BatchJobUpdateProps
   ): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo: BatchJobRepository = manager.withRepository(
-        this.batchJobRepository_
-      )
+      const batchJobRepo = manager.withRepository(this.batchJobRepository_)
 
       let batchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {

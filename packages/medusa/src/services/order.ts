@@ -1,5 +1,10 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager } from "typeorm"
+import {
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+} from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
@@ -28,7 +33,13 @@ import {
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import { buildQuery, isString, setMetadata } from "../utils"
+import {
+  buildQuery,
+  buildRelations,
+  buildSelects,
+  isString,
+  setMetadata,
+} from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 
 import {
@@ -213,10 +224,10 @@ class OrderService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions<Order>
 
     if (q) {
-      const where = query.where
+      const where = query.where as FindOptionsWhere<Order>
 
       delete where.display_id
       delete where.email
@@ -229,29 +240,48 @@ class OrderService extends TransactionBaseService {
         },
       }
 
-      query.where = (qb): void => {
-        qb.where(where)
+      query.where = [
+        {
+          ...query.where,
+          shipping_address: {
+            first_name: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...query.where,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...query.where,
+          display_id: ILike(`%${q}%`),
+        },
+        {
+          ...query.where,
+          customer: {
+            first_name: ILike(`%${q}%`),
+          },
+        },
 
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where(`shipping_address.first_name ILIKE :qfn`, {
-              qfn: `%${q}%`,
-            })
-              .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
-              .orWhere(`customer.first_name ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`customer.last_name ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`customer.phone ILIKE :q`, { q: `%${q}%` })
-          })
-        )
-      }
+        {
+          ...query.where,
+          customer: {
+            last_name: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...query.where,
+          customer: {
+            phone: ILike(`%${q}%`),
+          },
+        },
+      ]
     }
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
-    query.select = select
-    const rels = this.getTotalsRelations({ relations })
+    query.select = buildSelects(select || [])
+    const rels = buildRelations(this.getTotalsRelations({ relations }))
 
     delete query.relations
 
@@ -366,8 +396,8 @@ class OrderService extends TransactionBaseService {
       query.select = undefined
     }
 
-    const queryRelations = query.relations
-    query.relations = undefined
+    const queryRelations = { ...query.relations }
+    delete query.relations
 
     const raw = await orderRepo.findOneWithRelations(queryRelations, query)
 
@@ -393,13 +423,14 @@ class OrderService extends TransactionBaseService {
     const selector = isString(orderIdOrSelector)
       ? { id: orderIdOrSelector }
       : orderIdOrSelector
+
     const query = buildQuery(selector, config)
 
     if (relations && relations.length > 0) {
-      query.relations = relations
+      query.relations = buildRelations(relations)
     }
 
-    query.select = select?.length ? select : undefined
+    query.select = select?.length ? buildSelects(select) : undefined
 
     const rels = query.relations
     delete query.relations
@@ -486,19 +517,26 @@ class OrderService extends TransactionBaseService {
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
-    const query = {
+    const selector = {
       where: { external_id: externalId },
-    } as FindConfig<Order>
-
-    if (relations && relations.length > 0) {
-      query.relations = relations
     }
-    query.relations = this.getTotalsRelations({ relations: query.relations })
 
-    query.select = select?.length ? select : undefined
+    let queryRelations
+    if (relations && relations.length > 0) {
+      queryRelations = relations
+    }
+    queryRelations = this.getTotalsRelations({ relations: queryRelations })
 
-    const rels = query.relations
+    const querySelect = select?.length ? select : undefined
+
+    const query = buildQuery(selector, {
+      select: querySelect,
+      relations: queryRelations,
+    } as FindConfig<Order>)
+
+    const rels = { ...query.relations }
     delete query.relations
+
     const raw = await orderRepo.findOneWithRelations(rels, query)
     if (!raw) {
       throw new MedusaError(

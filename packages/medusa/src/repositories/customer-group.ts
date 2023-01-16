@@ -1,23 +1,24 @@
-import { dataSource } from "../loaders/database"
 import {
   DeleteResult,
   EntityRepository,
   FindOperator,
+  FindOptionsRelations,
   In,
   Repository,
   SelectQueryBuilder,
 } from "typeorm"
 import { CustomerGroup } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig } from "../types/common"
 import {
   getGroupedRelations,
   mergeEntitiesWithRelations,
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
+import { buildLegacySelectOrRelationsFrom } from "../utils"
 
 export type DefaultWithoutRelations = Omit<
-  ExtendedFindConfig<CustomerGroup, Selector<CustomerGroup>>,
+  ExtendedFindConfig<CustomerGroup>,
   "relations"
 >
 
@@ -35,8 +36,8 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
   ): Promise<CustomerGroup> {
     const customerGroup = await this.findOne({
       where: {
-        id: groupId
-      }
+        id: groupId,
+      },
     })
 
     await this.createQueryBuilder()
@@ -69,13 +70,14 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
   }
 
   public async findWithRelationsAndCount(
-    relations: string[] = [],
+    relations: FindOptionsRelations<CustomerGroup> = {},
     idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[CustomerGroup[], number]> {
     let count: number
     let entities: CustomerGroup[]
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations, {
+      entities = await this.find({
+        where: { id: In(idsOrOptionsWithoutRelations) },
         withDeleted: idsOrOptionsWithoutRelations.withDeleted ?? false,
       })
       count = entities.length
@@ -118,7 +120,7 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
       return [[], count]
     }
 
-    if (relations.length === 0) {
+    if (Object.keys(relations).length === 0) {
       const options = { ...idsOrOptionsWithoutRelations }
 
       // Since we are finding by the ids that have been retrieved above and those ids are already
@@ -126,17 +128,25 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
       delete options.skip
       delete options.take
 
-      const toReturn = await this.findByIds(entitiesIds, options)
+      const toReturn = await this.find({
+        ...options,
+        where: { id: In(entitiesIds) },
+      })
       return [toReturn, toReturn.length]
     }
 
-    const groupedRelations = getGroupedRelations(relations)
+    const legacyRelations = buildLegacySelectOrRelationsFrom(relations)
+    const groupedRelations = getGroupedRelations(legacyRelations)
+
+    const legacySelect = buildLegacySelectOrRelationsFrom(
+      idsOrOptionsWithoutRelations.select
+    )
     const entitiesIdsWithRelations = await queryEntityWithIds(
       this,
       entitiesIds,
       groupedRelations,
       idsOrOptionsWithoutRelations.withDeleted,
-      idsOrOptionsWithoutRelations.select
+      legacySelect
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)

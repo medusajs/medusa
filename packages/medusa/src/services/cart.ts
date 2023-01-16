@@ -242,10 +242,7 @@ class CartService extends TransactionBaseService {
       query.select = undefined
     }
 
-    const queryRelations = query.relations
-    query.relations = undefined
-
-    const raw = await cartRepo.findOneWithRelations(queryRelations, query)
+    const raw = await cartRepo.findOne(query)
 
     if (!raw) {
       throw new MedusaError(
@@ -275,17 +272,14 @@ class CartService extends TransactionBaseService {
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals_(options)
 
-    const query = buildQuery({ id: cartId }, { ...options, select, relations })
+    const query = buildQuery({ id: cartId }, {
+      ...options,
+      select,
+      relations,
+    } as FindConfig<Cart>)
 
-    if (relations && relations.length > 0) {
-      query.relations = relations
-    }
+    const raw = await cartRepo.findOne(query)
 
-    query.select = select?.length ? select : undefined
-
-    const queryRelations = query.relations
-    query.relations = undefined
-    const raw = await cartRepo.findOneWithRelations(queryRelations, query)
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -319,9 +313,7 @@ class CartService extends TransactionBaseService {
   async create(data: CartCreateProps): Promise<Cart | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.withRepository(
-          this.cartRepository_
-        )
+        const cartRepo = transactionManager.withRepository(this.cartRepository_)
         const addressRepo = transactionManager.withRepository(
           this.addressRepository_
         )
@@ -391,7 +383,9 @@ class CartService extends TransactionBaseService {
             rawCart.shipping_address = data.shipping_address
           }
           if (data.shipping_address_id) {
-            const addr = await addressRepo.findOne({ where: { id: data.shipping_address_id } })
+            const addr = await addressRepo.findOne({
+              where: { id: data.shipping_address_id },
+            })
             if (
               addr?.country_code &&
               !regCountries.includes(addr.country_code)
@@ -415,7 +409,9 @@ class CartService extends TransactionBaseService {
           rawCart.billing_address = data.billing_address
         }
         if (data.billing_address_id) {
-          const addr = await addressRepo.findOne({ where: { id: data.billing_address_id }})
+          const addr = await addressRepo.findOne({
+            where: { id: data.billing_address_id },
+          })
           if (addr?.country_code && !regCountries.includes(addr.country_code)) {
             throw new MedusaError(
               MedusaError.Types.NOT_ALLOWED,
@@ -1034,9 +1030,7 @@ class CartService extends TransactionBaseService {
   async update(cartId: string, data: CartUpdateProps): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.withRepository(
-          this.cartRepository_
-        )
+        const cartRepo = transactionManager.withRepository(this.cartRepository_)
         const relations = [
           "items",
           "shipping_methods",
@@ -1292,7 +1286,7 @@ class CartService extends TransactionBaseService {
   protected async updateBillingAddress_(
     cart: Cart,
     addressOrId: AddressPayload | Partial<Address> | string,
-    addrRepo: AddressRepository
+    addrRepo: typeof AddressRepository
   ): Promise<void> {
     let address: Address
     if (typeof addressOrId === `string`) {
@@ -1330,7 +1324,7 @@ class CartService extends TransactionBaseService {
   protected async updateShippingAddress_(
     cart: Cart,
     addressOrId: AddressPayload | Partial<Address> | string,
-    addrRepo: AddressRepository
+    addrRepo: typeof AddressRepository
   ): Promise<void> {
     let address: Address
 
@@ -1498,9 +1492,7 @@ class CartService extends TransactionBaseService {
           (discount) => discount.code !== discountCode
         )
 
-        const cartRepo = transactionManager.withRepository(
-          this.cartRepository_
-        )
+        const cartRepo = transactionManager.withRepository(this.cartRepository_)
         const updatedCart = await cartRepo.save(cart)
 
         await this.refreshAdjustments_(updatedCart)
@@ -1939,9 +1931,7 @@ class CartService extends TransactionBaseService {
           relations: ["payment_sessions"],
         })
 
-        const cartRepo = transactionManager.withRepository(
-          this.cartRepository_
-        )
+        const cartRepo = transactionManager.withRepository(this.cartRepository_)
 
         if (cart.payment_sessions) {
           const paymentSession = cart.payment_sessions.find(
@@ -1962,7 +1952,7 @@ class CartService extends TransactionBaseService {
                 .withTransaction(transactionManager)
                 .deleteSession(paymentSession)
             } else {
-              await psRepo.delete(paymentSession)
+              await psRepo.delete({ id: paymentSession.id })
             }
           }
         }
@@ -2251,9 +2241,7 @@ class CartService extends TransactionBaseService {
     cart.region = region
     cart.region_id = region.id
 
-    const addrRepo = transactionManager.withRepository(
-      this.addressRepository_
-    )
+    const addrRepo = transactionManager.withRepository(this.addressRepository_)
     /*
      * When changing the region you are changing the set of countries that your
      * cart can be shipped to so we need to make sure that the current shipping
@@ -2389,9 +2377,7 @@ class CartService extends TransactionBaseService {
           )
         }
 
-        const cartRepo = transactionManager.withRepository(
-          this.cartRepository_
-        )
+        const cartRepo = transactionManager.withRepository(this.cartRepository_)
         return cartRepo.remove(cart)
       }
     )
@@ -2413,9 +2399,7 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.withRepository(
-          this.cartRepository_
-        )
+        const cartRepo = transactionManager.withRepository(this.cartRepository_)
 
         if (typeof key !== "string") {
           throw new MedusaError(
@@ -2424,7 +2408,7 @@ class CartService extends TransactionBaseService {
           )
         }
 
-        const cart = await cartRepo.findOne(cartId)
+        const cart = await cartRepo.findOne({ where: { id: cartId } })
         if (!cart) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,

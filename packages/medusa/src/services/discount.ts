@@ -1,13 +1,7 @@
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import {
-  Brackets,
-  DeepPartial,
-  EntityManager,
-  ILike,
-  SelectQueryBuilder,
-} from "typeorm"
+import { DeepPartial, EntityManager, ILike } from "typeorm"
 import {
   EventBusService,
   NewTotalsService,
@@ -157,19 +151,7 @@ class DiscountService extends TransactionBaseService {
     const query = buildQuery(selector as Selector<Discount>, config)
 
     if (q) {
-      const where = query.where
-
-      delete where.code
-
-      query.where = (qb: SelectQueryBuilder<Discount>): void => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where({ code: ILike(`%${q}%`) })
-          })
-        )
-      }
+      query.where.code = ILike(`%${q}%`)
     }
 
     const [discounts, count] = await discountRepo.findAndCount(query)
@@ -320,12 +302,8 @@ class DiscountService extends TransactionBaseService {
     update: UpdateDiscountInput
   ): Promise<Discount> {
     return await this.atomicPhase_(async (manager) => {
-      const discountRepo: DiscountRepository = manager.withRepository(
-        this.discountRepository_
-      )
-      const ruleRepo: DiscountRuleRepository = manager.withRepository(
-        this.discountRuleRepository_
-      )
+      const discountRepo = manager.withRepository(this.discountRepository_)
+      const ruleRepo = manager.withRepository(this.discountRuleRepository_)
 
       const discount = await this.retrieve(discountId, {
         relations: ["rule"],
@@ -564,7 +542,7 @@ class DiscountService extends TransactionBaseService {
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager) => {
       const discountConditionRepo: DiscountConditionRepository =
-        manager.withRepository(this.discountConditionRepository_)
+        manager.getCustomRepository(this.discountConditionRepository_)
 
       // In case of custom line items, we don't have a product id.
       // Instead of throwing, we simply invalidate the discount.
@@ -765,7 +743,7 @@ class DiscountService extends TransactionBaseService {
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const discountConditionRepo: DiscountConditionRepository =
-        manager.withRepository(this.discountConditionRepository_)
+        manager.getCustomRepository(this.discountConditionRepository_)
 
       // Instead of throwing on missing customer id, we simply invalidate the discount
       if (!customerId) {

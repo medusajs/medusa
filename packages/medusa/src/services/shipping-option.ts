@@ -13,7 +13,7 @@ import {
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
   CreateShippingOptionInput,
@@ -191,21 +191,12 @@ class ShippingOptionService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const soRepo: ShippingOptionRepository = manager.withRepository(
-      this.optionRepository_
+    const soRepo = manager.withRepository(this.optionRepository_)
+
+    const query = buildQuery(
+      { id: optionId },
+      options as FindConfig<ShippingOption>
     )
-
-    const query: ExtendedFindConfig<ShippingOption> = {
-      where: { id: optionId },
-    }
-
-    if (options.select) {
-      query.select = options.select
-    }
-
-    if (options.relations) {
-      query.relations = options.relations
-    }
 
     const option = await soRepo.findOne(query)
 
@@ -231,9 +222,7 @@ class ShippingOptionService extends TransactionBaseService {
     update: ShippingMethodUpdate
   ): Promise<ShippingMethod | undefined> {
     return await this.atomicPhase_(async (manager) => {
-      const methodRepo: ShippingMethodRepository = manager.withRepository(
-        this.methodRepository_
-      )
+      const methodRepo = manager.withRepository(this.methodRepository_)
       const method = await methodRepo.findOne({ where: { id } })
 
       if (!method) {
@@ -739,14 +728,13 @@ class ShippingOptionService extends TransactionBaseService {
     requirementId
   ): Promise<ShippingOptionRequirement | void> {
     return await this.atomicPhase_(async (manager) => {
-      const reqRepo: ShippingOptionRequirementRepository =
-        manager.withRepository(this.requirementRepository_)
+      const reqRepo = manager.withRepository(this.requirementRepository_)
 
       const requirement = await reqRepo.findOne({
         where: { id: requirementId },
       })
       // Delete is idempotent, but we return a promise to allow then-chaining
-      if (typeof requirement === "undefined") {
+      if (!requirement) {
         return Promise.resolve()
       }
 
