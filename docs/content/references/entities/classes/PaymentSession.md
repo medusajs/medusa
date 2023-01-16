@@ -22,13 +22,23 @@ BaseEntity.constructor
 
 ## Properties
 
+### amount
+
+• **amount**: `number`
+
+#### Defined in
+
+[models/payment-session.ts:57](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L57)
+
+___
+
 ### cart
 
 • **cart**: [`Cart`](Cart.md)
 
 #### Defined in
 
-[models/payment-session.ts:34](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/payment-session.ts#L34)
+[models/payment-session.ts:36](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L36)
 
 ___
 
@@ -38,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:30](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/payment-session.ts#L30)
+[models/payment-session.ts:32](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L32)
 
 ___
 
@@ -52,7 +62,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -62,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:47](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/payment-session.ts#L47)
+[models/payment-session.ts:49](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L49)
 
 ___
 
@@ -76,7 +86,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -86,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:50](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/payment-session.ts#L50)
+[models/payment-session.ts:52](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L52)
 
 ___
 
@@ -96,7 +106,17 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:41](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/payment-session.ts#L41)
+[models/payment-session.ts:43](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L43)
+
+___
+
+### payment\_authorized\_at
+
+• **payment\_authorized\_at**: `Date`
+
+#### Defined in
+
+[models/payment-session.ts:62](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L62)
 
 ___
 
@@ -106,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:38](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/payment-session.ts#L38)
+[models/payment-session.ts:40](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L40)
 
 ___
 
@@ -116,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/payment-session.ts:44](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/payment-session.ts#L44)
+[models/payment-session.ts:46](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L46)
 
 ___
 
@@ -130,7 +150,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -144,4 +164,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/payment-session.ts:52](https://github.com/medusajs/medusa/blob/7c6521101/packages/medusa/src/models/payment-session.ts#L52)
+[models/payment-session.ts:64](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/payment-session.ts#L64)

@@ -38,9 +38,10 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               draft_order:
-                $ref: ../components/schemas/draft-order.yaml
+                $ref: ../components/schemas/DraftOrder.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -75,21 +76,8 @@ post:
     content:
       application/json:
         schema:
-          properties:
-            unit_price:
-              description: The potential custom price of the item.
-              type: integer
-            title:
-              description: The potential custom title of the item.
-              type: string
-            quantity:
-              description: The quantity of the Line Item.
-              type: integer
-            metadata:
-              description: >-
-                The optional key-value map with additional details about the
-                Line Item.
-              type: object
+          $ref: >-
+            ../components/schemas/AdminPostDraftOrdersDraftOrderLineItemsItemReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -112,9 +100,10 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               draft_order:
-                $ref: ../components/schemas/draft-order.yaml
+                $ref: ../components/schemas/DraftOrder.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

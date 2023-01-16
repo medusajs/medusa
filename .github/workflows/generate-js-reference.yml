@@ -41,14 +41,14 @@ jobs:
         run: yarn build
 
       - name: Generate Services Reference
-        run: yarn generate:services
+        run: yarn generate:js-client
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: 'chore(docs): Generated JS Client Reference (automated)'
           base: 'master'
-          title: 'chore(docs): Updated API Reference'
+          title: 'chore(docs): Generated JS Client Reference'
           labels: 'type: chore'
           add-paths: docs/content/references/js-client/**
           branch: 'chore/generate-js-client'

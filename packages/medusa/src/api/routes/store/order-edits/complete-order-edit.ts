@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { OrderEditService } from "../../../../services"
+import { OrderEditStatus, PaymentCollectionStatus } from "../../../../models"
+import { OrderEditService, PaymentProviderService } from "../../../../services"
 import {
   defaultStoreOrderEditFields,
-  defaultStoreOrderEditRelations,
+  defaultStoreOrderEditRelations
 } from "../../../../types/order-edit"
-import { OrderEditStatus } from "../../../../models"
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /order-edits/{id}/complete
@@ -21,7 +21,7 @@ import { MedusaError } from "medusa-core-utils"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdit.complete(orderEditId)
+ *       medusa.orderEdits.complete(order_edit_id)
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
@@ -37,9 +37,10 @@ import { MedusaError } from "medusa-core-utils"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *               $ref: "#/components/schemas/OrderEdit"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -55,13 +56,48 @@ export default async (req: Request, res: Response) => {
   const orderEditService: OrderEditService =
     req.scope.resolve("orderEditService")
 
+  const paymentProviderService: PaymentProviderService = req.scope.resolve(
+    "paymentProviderService"
+  )
+
   const manager: EntityManager = req.scope.resolve("manager")
 
   const userId = req.user?.customer_id ?? req.user?.id ?? req.user?.userId
 
   await manager.transaction(async (manager) => {
     const orderEditServiceTx = orderEditService.withTransaction(manager)
-    const orderEdit = await orderEditServiceTx.retrieve(id)
+    const paymentProviderServiceTx =
+      paymentProviderService.withTransaction(manager)
+
+    const orderEdit = await orderEditServiceTx.retrieve(id, {
+      relations: ["payment_collection", "payment_collection.payments"],
+    })
+
+    const allowedStatus = [OrderEditStatus.REQUESTED, OrderEditStatus.CONFIRMED]
+    if (
+      orderEdit.payment_collection &&
+      allowedStatus.includes(orderEdit.status)
+    ) {
+      if (
+        orderEdit.payment_collection.status !==
+        PaymentCollectionStatus.AUTHORIZED
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Unable to complete an order edit if the payment is not authorized"
+        )
+      }
+
+      if (orderEdit.payment_collection) {
+        for (const payment of orderEdit.payment_collection.payments) {
+          if (payment.order_id !== orderEdit.order_id) {
+            await paymentProviderServiceTx.updatePayment(payment.id, {
+              order_id: orderEdit.order_id,
+            })
+          }
+        }
+      }
+    }
 
     if (orderEdit.status === OrderEditStatus.CONFIRMED) {
       return orderEdit
@@ -74,18 +110,11 @@ export default async (req: Request, res: Response) => {
       )
     }
 
-    // TODO once payment collection is done
-    /*const paymentCollection = await this.paymentCollectionService_.withTransaction(manager).retrieve(orderEdit.payment_collection_id)
-    if (!paymentCollection.authorized_at) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Unable to complete an order edit if the payment is not authorized"
-      )
-    }*/
-
-    return await orderEditServiceTx.confirm(id, {
-      loggedInUserId: userId,
+    const returned = await orderEditServiceTx.confirm(id, {
+      confirmedBy: userId,
     })
+
+    return returned
   })
 
   let orderEdit = await orderEditService.retrieve(id, {

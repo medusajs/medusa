@@ -14,15 +14,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - product_ids
-          properties:
-            product_ids:
-              description: An array of Product IDs to add to the Product Collection.
-              type: array
-              items:
-                description: The ID of a Product to add to the Product Collection.
-                type: string
+          $ref: ../components/schemas/AdminPostProductsToCollectionReq.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -39,9 +31,10 @@ post:
       content:
         application/json:
           schema:
+            type: object
             properties:
               collection:
-                $ref: ../components/schemas/product_collection.yaml
+                $ref: ../components/schemas/ProductCollection.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -70,15 +63,7 @@ delete:
     content:
       application/json:
         schema:
-          required:
-            - product_ids
-          properties:
-            product_ids:
-              description: An array of Product IDs to remove from the Product Collection.
-              type: array
-              items:
-                description: The ID of a Product to add to the Product Collection.
-                type: string
+          $ref: ../components/schemas/AdminDeleteProductsFromCollectionReq.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -95,6 +80,7 @@ delete:
       content:
         application/json:
           schema:
+            type: object
             properties:
               id:
                 type: string

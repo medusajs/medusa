@@ -17,7 +17,10 @@ import { Swap } from "./swap"
 import { generateEntityId } from "../utils/generate-entity-id"
 
 @Index(["cart_id"], { where: "canceled_at IS NOT NULL" })
-@Index("UniquePaymentActive", ["cart_id"], { where: "canceled_at IS NULL", unique: true, })
+@Index("UniquePaymentActive", ["cart_id"], {
+  where: "canceled_at IS NULL",
+  unique: true,
+})
 @Entity()
 export class Payment extends BaseEntity {
   @Index()
@@ -40,16 +43,14 @@ export class Payment extends BaseEntity {
   @Column({ nullable: true })
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    (order) => order.payments
-  )
+  @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
   order: Order
 
   @Column({ type: "int" })
   amount: number
 
+  @Index()
   @Column()
   currency_code: string
 
@@ -86,10 +87,10 @@ export class Payment extends BaseEntity {
 }
 
 /**
- * @schema payment
+ * @schema Payment
  * title: "Payment"
  * description: "Payments represent an amount authorized with a given payment method, Payments can be captured, canceled or refunded."
- * x-resourceId: payment
+ * type: object
  * required:
  *   - amount
  *   - currency_code
@@ -132,7 +133,7 @@ export class Payment extends BaseEntity {
  *       description: See a list of codes.
  *   currency:
  *     description: Available if the relation `currency` is expanded.
- *     $ref: "#/components/schemas/currency"
+ *     $ref: "#/components/schemas/Currency"
  *   amount_refunded:
  *     description: "The amount of the original Payment amount that has been refunded back to the Customer."
  *     type: integer

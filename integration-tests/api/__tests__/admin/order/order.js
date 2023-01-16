@@ -5,7 +5,9 @@ const {
   LineItem,
   CustomShippingOption,
   ShippingMethod,
+  Fulfillment,
 } = require("@medusajs/medusa")
+const idMap = require("medusa-test-utils/src/id-map").default
 
 const setupServer = require("../../../../helpers/setup-server")
 const { useApi } = require("../../../../helpers/use-api")
@@ -22,6 +24,19 @@ const {
   callGet,
   partial,
 } = require("../../../helpers/call-helpers")
+const {
+  simpleShippingOptionFactory,
+  simpleOrderFactory,
+  simplePaymentFactory,
+  simpleProductFactory,
+  simpleLineItemFactory,
+} = require("../../../factories")
+
+const adminReqConfig = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 jest.setTimeout(30000)
 
@@ -57,11 +72,7 @@ describe("/admin/orders", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/orders", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/orders", adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -97,11 +108,7 @@ describe("/admin/orders", () => {
               country_code: "us",
             },
           },
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err.response.data)
@@ -197,11 +204,130 @@ describe("/admin/orders", () => {
       })
 
       await manager.save(li2)
+      const order3 = manager.create(Order, {
+        id: "test-order-not-payed-with-fulfillment",
+        customer_id: "test-customer",
+        email: "test@email.com",
+        fulfillment_status: "not_fulfilled",
+        payment_status: "awaiting",
+        billing_address: {
+          id: "test-billing-address",
+          first_name: "lebron",
+        },
+        shipping_address: {
+          id: "test-shipping-address",
+          first_name: "lebron",
+          country_code: "us",
+        },
+        region_id: "test-region",
+        currency_code: "usd",
+        tax_rate: 0,
+        discounts: [
+          {
+            id: "test-discount",
+            code: "TEST134",
+            is_dynamic: false,
+            rule: {
+              id: "test-rule",
+              description: "Test Discount",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            is_disabled: false,
+            regions: [
+              {
+                id: "test-region",
+              },
+            ],
+          },
+        ],
+        payments: [
+          {
+            id: "test-payment",
+            amount: 10000,
+            currency_code: "usd",
+            amount_refunded: 0,
+            provider_id: "test-pay",
+            data: {},
+          },
+        ],
+        items: [],
+      })
+
+      await manager.save(order3)
+
+      const li3 = manager.create(LineItem, {
+        id: "test-item-ful",
+        fulfilled_quantity: 1,
+        returned_quantity: 0,
+        title: "Line Item",
+        description: "Line Item Desc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 8000,
+        quantity: 2,
+        variant_id: "test-variant",
+        order_id: "test-order-not-payed-with-fulfillment",
+      })
+
+      await manager.save(li3)
+
+      const ful1 = manager.create(Fulfillment, {
+        id: "ful-1",
+        order_id: "test-order-not-payed-with-fulfillment",
+        provider_id: "test-ful",
+        items: [{ item_id: "test-item-ful", quantity: 1 }],
+        data: {},
+      })
+
+      await manager.save(ful1)
     })
 
     afterEach(async () => {
       const db = useDb()
       await db.teardown()
+    })
+
+    it("cancels an order with refund should fail", async () => {
+      const api = useApi()
+
+      const refundOrder = await simpleOrderFactory(dbConnection, {
+        id: "refunded-order",
+        customer_id: "test-customer",
+        email: "test@email.com",
+        fulfillment_status: "not_fulfilled",
+        payment_status: "refunded",
+        billing_address: {
+          id: "test-billing-address",
+          first_name: "lebron",
+        },
+        shipping_address: {
+          id: "test-shipping-address",
+          first_name: "lebron",
+          country_code: "us",
+        },
+        region_id: "test-region",
+        currency_code: "usd",
+        tax_rate: 0,
+        discounts: [],
+        payments: [],
+        items: [],
+        refunds: [
+          {
+            amount: 1000,
+            reason: "return",
+          },
+        ],
+      })
+
+      const err = await api
+        .post(`/admin/orders/${refundOrder.id}/cancel`, {}, adminReqConfig)
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "Order with refund(s) cannot be canceled"
+      )
     })
 
     it("cancels an order and increments inventory_quantity", async () => {
@@ -212,15 +338,7 @@ describe("/admin/orders", () => {
       expect(initialInventoryRes.data.variant.inventory_quantity).toEqual(1)
 
       const response = await api
-        .post(
-          `/admin/orders/test-order-not-payed/cancel`,
-          {},
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
+        .post(`/admin/orders/test-order-not-payed/cancel`, {}, adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -229,6 +347,34 @@ describe("/admin/orders", () => {
       const secondInventoryRes = await api.get("/store/variants/test-variant")
 
       expect(secondInventoryRes.data.variant.inventory_quantity).toEqual(2)
+    })
+
+    it("cancels a fulfillment and then an order and increments inventory_quantity correctly", async () => {
+      const api = useApi()
+
+      const initialInventoryRes = await api.get("/store/variants/test-variant")
+
+      expect(initialInventoryRes.data.variant.inventory_quantity).toEqual(1)
+
+      const cancelRes = await api.post(
+        `/admin/orders/test-order-not-payed-with-fulfillment/fulfillments/ful-1/cancel`,
+        {},
+        adminReqConfig
+      )
+
+      expect(cancelRes.status).toEqual(200)
+
+      const response = await api.post(
+        `/admin/orders/test-order-not-payed-with-fulfillment/cancel`,
+        {},
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      const secondInventoryRes = await api.get("/store/variants/test-variant")
+
+      expect(secondInventoryRes.data.variant.inventory_quantity).toEqual(3)
     })
 
     it("cancels an order but does not increment inventory_quantity of unmanaged variant", async () => {
@@ -246,15 +392,7 @@ describe("/admin/orders", () => {
       expect(initialInventoryRes.data.variant.inventory_quantity).toEqual(1)
 
       const response = await api
-        .post(
-          `/admin/orders/test-order-not-payed/cancel`,
-          {},
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
+        .post(`/admin/orders/test-order-not-payed/cancel`, {}, adminReqConfig)
         .catch((err) => {
           console.log(err)
         })
@@ -292,11 +430,7 @@ describe("/admin/orders", () => {
           ],
           additional_items: [{ variant_id: "test-variant", quantity: 1 }],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(swapOnSwap.status).toEqual(200)
@@ -338,19 +472,11 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
       expect(response.status).toEqual(200)
 
-      const variant = await api.get("/admin/products", {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      })
+      const variant = await api.get("/admin/products", adminReqConfig)
 
       // find test variant and verify that its inventory quantity has changed
       const toTest = variant.data.products[0].variants.find(
@@ -417,11 +543,7 @@ describe("/admin/orders", () => {
               },
             ],
           },
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => console.log(err))
       expect(response.status).toEqual(200)
@@ -451,11 +573,7 @@ describe("/admin/orders", () => {
               },
             ],
           },
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -495,11 +613,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
       expect(response.status).toEqual(200)
 
@@ -563,11 +677,7 @@ describe("/admin/orders", () => {
           ],
           return_shipping: { option_id: "test-return-option", price: 0 },
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -629,11 +739,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
       expect(response.status).toEqual(200)
 
@@ -647,11 +753,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(status).toEqual(200)
@@ -688,11 +790,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
       expect(response.status).toEqual(200)
 
@@ -715,11 +813,7 @@ describe("/admin/orders", () => {
             ],
           })),
         },
-        {
-          headers: {
-            authorization: "bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(status).toEqual(200)
@@ -775,11 +869,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
       expect(response.status).toEqual(200)
 
@@ -799,11 +889,7 @@ describe("/admin/orders", () => {
             ],
           })),
         },
-        {
-          headers: {
-            authorization: "bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(status).toEqual(200)
@@ -858,11 +944,7 @@ describe("/admin/orders", () => {
               },
             ],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -872,11 +954,7 @@ describe("/admin/orders", () => {
       const fulRes = await api.post(
         `/admin/orders/test-order/claims/${cid}/fulfillments`,
         {},
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
       expect(fulRes.status).toEqual(200)
       expect(fulRes.data.order.claims).toHaveLength(1)
@@ -938,11 +1016,7 @@ describe("/admin/orders", () => {
               },
             ],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -952,11 +1026,7 @@ describe("/admin/orders", () => {
       const fulRes = await api.post(
         `/admin/orders/test-order/claims/${cid}/fulfillments`,
         {},
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const claimItemIdToClaim =
@@ -988,11 +1058,7 @@ describe("/admin/orders", () => {
               },
             ],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1025,11 +1091,7 @@ describe("/admin/orders", () => {
             ],
             additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
           },
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((e) => console.log(e))
 
@@ -1052,11 +1114,7 @@ describe("/admin/orders", () => {
         .post(
           `/admin/orders/test-order/swaps/${sid}/fulfillments`,
           {},
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((e) => console.log(e))
 
@@ -1067,11 +1125,7 @@ describe("/admin/orders", () => {
           {
             fulfillment_id: fulRes.data.order.swaps[0].fulfillments[0].id,
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((e) => console.log(e))
 
@@ -1100,11 +1154,7 @@ describe("/admin/orders", () => {
               },
             ],
           },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1193,11 +1243,7 @@ describe("/admin/orders", () => {
               },
             ],
           },
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
       } catch (e) {
         expect(e.response.status).toEqual(400)
@@ -1244,11 +1290,7 @@ describe("/admin/orders", () => {
               },
             ],
           },
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => {
           console.log(err)
@@ -1293,11 +1335,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
       expect(response.status).toEqual(200)
 
@@ -1329,11 +1367,7 @@ describe("/admin/orders", () => {
           ],
           receive_now: true,
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       // Find variant that should have its inventory_quantity updated
@@ -1364,11 +1398,7 @@ describe("/admin/orders", () => {
           ],
           receive_now: true,
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       // Find variant that should have its inventory_quantity updated
@@ -1397,11 +1427,7 @@ describe("/admin/orders", () => {
     it("lists all orders", async () => {
       const api = useApi()
 
-      const response = await api.get("/admin/orders?fields=id", {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.get("/admin/orders?fields=id", adminReqConfig)
 
       expect(response.status).toEqual(200)
       expect(response.data.orders).toHaveLength(6)
@@ -1437,11 +1463,7 @@ describe("/admin/orders", () => {
       const response = await api
         .get(
           "/admin/orders?fulfillment_status[]=fulfilled&payment_status[]=captured",
-          {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          }
+          adminReqConfig
         )
         .catch((err) => console.log(err))
 
@@ -1464,11 +1486,7 @@ describe("/admin/orders", () => {
       const api = useApi()
 
       await api
-        .get("/admin/orders?status[]=test", {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/orders?status[]=test", adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("invalid_data")
@@ -1483,11 +1501,7 @@ describe("/admin/orders", () => {
 
       const response = await api.get(
         "/admin/orders?fields=id,email&q=test@email",
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -1503,14 +1517,88 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("list all orders with matching customer phone", async () => {
+      const order = await simpleOrderFactory(dbConnection, {
+        customer: {
+          phone: "1234567890",
+        },
+      })
+
+      const api = useApi()
+
+      const response = await api.get("/admin/orders?q=123456", adminReqConfig)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toHaveLength(1)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: order.id,
+            customer: expect.objectContaining({
+              phone: "1234567890",
+            }),
+          }),
+        ])
+      )
+    })
+
+    it("list all orders with matching customer first_name", async () => {
+      const order = await simpleOrderFactory(dbConnection, {
+        customer: {
+          first_name: "john",
+        },
+      })
+
+      const api = useApi()
+
+      const response = await api.get("/admin/orders?q=john", adminReqConfig)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toHaveLength(1)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: order.id,
+            customer: expect.objectContaining({
+              first_name: "john",
+            }),
+          }),
+        ])
+      )
+    })
+
+    it("list all orders with matching customer last_name", async () => {
+      const order = await simpleOrderFactory(dbConnection, {
+        customer: {
+          last_name: "Doe",
+        },
+      })
+
+      const api = useApi()
+
+      const response = await api.get("/admin/orders?q=Doe", adminReqConfig)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.orders).toHaveLength(1)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: order.id,
+            customer: expect.objectContaining({
+              last_name: "Doe",
+            }),
+          }),
+        ])
+      )
+    })
+
     it("list all orders with matching shipping_address first name", async () => {
       const api = useApi()
 
-      const response = await api.get("/admin/orders?q=lebron", {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      })
+      const response = await api.get("/admin/orders?q=lebron", adminReqConfig)
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
@@ -1533,11 +1621,7 @@ describe("/admin/orders", () => {
 
       const response = await api.get(
         "/admin/orders?fields=id&created_at[gt]=01-26-1990",
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -1572,11 +1656,7 @@ describe("/admin/orders", () => {
 
       const response = await api.get(
         "/admin/orders?fields=id&created_at[gt]=01-26-2000",
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -1588,11 +1668,7 @@ describe("/admin/orders", () => {
 
       const response = await api.get(
         "/admin/orders?fields=id&created_at[lt]=01-26-2000",
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -1627,11 +1703,7 @@ describe("/admin/orders", () => {
 
       const response = await api.get(
         "/admin/orders?fields=id&created_at[lt]=01-26-1990",
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -1643,11 +1715,7 @@ describe("/admin/orders", () => {
 
       const response = await api.get(
         "/admin/orders?fields=id&created_at[gt]=633351600",
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -1744,6 +1812,12 @@ describe("/admin/orders", () => {
     it("creates a swap", async () => {
       const api = useApi()
 
+      await simpleShippingOptionFactory(dbConnection, {
+        id: "testytest",
+        is_return: true,
+        region_id: "test-region",
+      })
+
       const response = await api.post(
         "/admin/orders/test-order/swaps",
         {
@@ -1754,12 +1828,12 @@ describe("/admin/orders", () => {
             },
           ],
           additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
-        },
-        {
-          headers: {
-            authorization: "Bearer test_token",
+          return_shipping: {
+            option_id: "testytest",
+            price: 400,
           },
-        }
+        },
+        adminReqConfig
       )
       expect(response.status).toEqual(200)
     })
@@ -1780,20 +1854,15 @@ describe("/admin/orders", () => {
               ],
               additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
             },
-            {
-              headers: {
-                authorization: "Bearer test_token",
-              },
-            }
+            adminReqConfig
           )
 
           const swapCartId = response.data.order.swaps[0].cart_id
 
-          const swapCartRes = await api.get(`/store/carts/${swapCartId}`, {
-            headers: {
-              authorization: "Bearer test_token",
-            },
-          })
+          const swapCartRes = await api.get(
+            `/store/carts/${swapCartId}`,
+            adminReqConfig
+          )
           const cart = swapCartRes.data.cart
 
           expect(response.status).toEqual(200)
@@ -1838,11 +1907,7 @@ describe("/admin/orders", () => {
                 ],
                 additional_items: [{ variant_id: "test-variant", quantity: 1 }],
               },
-              {
-                headers: {
-                  authorization: "Bearer test_token",
-                },
-              }
+              adminReqConfig
             )
 
             const swapCartId = createSwapRes.data.order.swaps[0].cart_id
@@ -1853,11 +1918,7 @@ describe("/admin/orders", () => {
                 variant_id: "test-variant-2",
                 quantity: 1,
               },
-              {
-                headers: {
-                  authorization: "Bearer test_token",
-                },
-              }
+              adminReqConfig
             )
 
             const cart = response.data.cart
@@ -1892,11 +1953,7 @@ describe("/admin/orders", () => {
           additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
           custom_shipping_options: [{ option_id: "test-option", price: 0 }],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       const swap = response.data.order.swaps[0]
@@ -1932,11 +1989,7 @@ describe("/admin/orders", () => {
           ],
           receive_now: true,
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(returnedOrderFirst.status).toEqual(200)
@@ -1952,11 +2005,7 @@ describe("/admin/orders", () => {
           ],
           receive_now: true,
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       // find item to test returned quantity for
@@ -1982,11 +2031,7 @@ describe("/admin/orders", () => {
           ],
           additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(createdSwapOrder.status).toEqual(200)
@@ -2003,11 +2048,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(receivedSwap.status).toEqual(200)
@@ -2028,11 +2069,7 @@ describe("/admin/orders", () => {
           ],
           additional_items: [{ variant_id: "test-variant", quantity: 1 }],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(swapOnSwap.status).toEqual(200)
@@ -2051,11 +2088,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(received.status).toEqual(200)
@@ -2075,11 +2108,7 @@ describe("/admin/orders", () => {
           ],
           return_shipping: { option_id: "test-return-option", price: 0 },
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(response.status).toEqual(200)
@@ -2122,11 +2151,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(returnOnSwap.status).toEqual(200)
@@ -2145,24 +2170,12 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(returnOnOrder.status).toEqual(200)
 
-      await api.post(
-        "/admin/orders/test-order/capture",
-        {},
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
-      )
+      await api.post("/admin/orders/test-order/capture", {}, adminReqConfig)
 
       const returnId = returnOnOrder.data.order.returns[0].id
 
@@ -2176,11 +2189,7 @@ describe("/admin/orders", () => {
             },
           ],
         },
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
+        adminReqConfig
       )
 
       expect(received.status).toEqual(200)
@@ -2234,6 +2243,219 @@ describe("/admin/orders", () => {
       })
 
       await expectCancelToReturn({ code: 200 })
+    })
+  })
+
+  describe("GET /admin/orders/:id", () => {
+    const testOrderId = "test-order"
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("retrieves an order with fields and expand", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?fields=id&expand=region`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+        })
+      )
+    })
+
+    it("retrieves an order should include the items totals", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+        })
+      )
+
+      order.data.order.items.forEach((item) => {
+        expect(item.total).toBeDefined()
+        expect(item.subtotal).toBeDefined()
+      })
+    })
+
+    it("retrieves an order should include deleted items variants", async () => {
+      const api = useApi()
+
+      const variantTitle = "test variant"
+
+      const product = await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            title: variantTitle,
+          },
+        ],
+      })
+
+      const lineItem = await simpleLineItemFactory(dbConnection, {
+        order_id: testOrderId,
+        variant_id: product.variants[0].id,
+      })
+
+      await dbConnection.manager.query(
+        `UPDATE product_variant
+         set deleted_at = NOW()
+         WHERE id = '${product.variants[0].id}';`
+      )
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: lineItem.id,
+              variant: expect.objectContaining({
+                id: product.variants[0].id,
+                deleted_at: expect.any(String),
+              }),
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("retrieves an order should include a deleted region", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `UPDATE region
+         set deleted_at = NOW()
+         WHERE id = 'test-region';`
+      )
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      expect(order.data.order).toEqual(
+        expect.objectContaining({
+          id: "test-order",
+          region: expect.objectContaining({
+            id: "test-region",
+            deleted_at: expect.any(String),
+          }),
+        })
+      )
+    })
+  })
+
+  describe("POST /orders/:id/refund", () => {
+    const orderId = idMap.getId("refund-order-1")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+
+      const product1 = await simpleProductFactory(dbConnection, {})
+
+      await simpleOrderFactory(dbConnection, {
+        id: orderId,
+        tax_rate: null,
+        email: "test@testson.com",
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        line_items: [
+          {
+            variant_id: product1.variants[0].id,
+            id: idMap.getId("item-1"),
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+          },
+        ],
+      })
+
+      await simplePaymentFactory(dbConnection, {
+        provider_id: "test-pay",
+        order: orderId,
+        amount: 300,
+        captured: true,
+      })
+
+      await simplePaymentFactory(dbConnection, {
+        provider_id: "test-pay",
+        order: orderId,
+        amount: 700,
+        captured: true,
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("set status on refunded order", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/orders/${orderId}/refund`,
+        { amount: 1000, reason: "other" },
+        adminReqConfig
+      )
+
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          payment_status: "refunded",
+          refunded_total: 1000,
+          subtotal: 1000,
+          total: 1000,
+          paid_total: 1000,
+          refundable_amount: 0,
+        })
+      )
+    })
+
+    it("set correct status on partially refunded order", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        `/admin/orders/${orderId}/refund`,
+        { amount: 500, reason: "other" },
+        adminReqConfig
+      )
+
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          payment_status: "partially_refunded",
+          refunded_total: 500,
+          subtotal: 1000,
+          total: 1000,
+          paid_total: 1000,
+          refundable_amount: 500,
+        })
+      )
     })
   })
 })

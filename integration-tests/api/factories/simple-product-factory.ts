@@ -5,6 +5,7 @@ import {
   ProductType,
   ShippingProfile,
   ShippingProfileType,
+  Store
 } from "@medusajs/medusa"
 import faker from "faker"
 import { DataSource } from "typeorm"
@@ -56,6 +57,21 @@ export const simpleProductFactory = async (
           await simpleSalesChannelFactory(dataSource, salesChannel)
       )
     )
+  } else {
+    const store = await manager.findOne(Store, {
+      relations: ["default_sales_channel"],
+    })
+
+    if (store?.default_sales_channel) {
+      sales_channels = [store.default_sales_channel]
+    } else {
+      const salesChannel = await simpleSalesChannelFactory(connection, {
+        id: `default-${Math.random() * 1000}`,
+        is_default: true,
+      })
+
+      sales_channels = [salesChannel]
+    }
   }
 
   const prodId = data.id || `simple-product-${Math.random() * 1000}`
@@ -129,7 +145,7 @@ export const simpleProductFactory = async (
     await simpleProductVariantFactory(dataSource, factoryData)
   }
 
-  return manager.findOne(
+  return await manager.findOne(
     Product,
     { id: prodId },
     { relations: ["tags", "variants", "variants.prices"] }

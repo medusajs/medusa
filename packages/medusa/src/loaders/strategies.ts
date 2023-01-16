@@ -1,11 +1,11 @@
 import glob from "glob"
 import path from "path"
-import { asFunction, aliasTo } from "awilix"
+import { aliasTo, asFunction } from "awilix"
 
 import formatRegistrationName from "../utils/format-registration-name"
 import { isBatchJobStrategy } from "../interfaces"
 import { MedusaContainer } from "../types/global"
-import { isDefined } from "../utils"
+import { isDefined } from "medusa-core-utils"
 
 type LoaderOptions = {
   container: MedusaContainer
@@ -26,17 +26,23 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
 
   const coreFull = path.join(__dirname, corePath)
 
+  const ignore = [
+    "**/__fixtures__/**",
+    "**/index.js",
+    "**/index.ts",
+    "**/utils.js",
+    "**/utils.ts",
+    "**/types.js",
+    "**/types.ts",
+    "**/types/**",
+  ]
+  if (!useMock) {
+    ignore.push("**/__tests__/**", "**/__mocks__/**")
+  }
+
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: [
-      "**/__fixtures__/**",
-      "**/index.js",
-      "**/index.ts",
-      "**/utils.js",
-      "**/utils.ts",
-      "**/types.js",
-      "**/types.ts",
-    ],
+    ignore,
   })
 
   core.forEach((fn) => {

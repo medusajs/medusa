@@ -12,7 +12,7 @@ function roundToTwo(num, currency) {
 class PayPalProviderService extends PaymentService {
   static identifier = "paypal"
 
-  constructor({ totalsService, regionService }, options) {
+  constructor({ regionService }, options) {
     super()
 
     /**
@@ -44,9 +44,6 @@ class PayPalProviderService extends PaymentService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
   }
 
   /**
@@ -80,7 +77,7 @@ class PayPalProviderService extends PaymentService {
    * Not supported
    */
   async retrieveSavedMethods(customer) {
-    return Promise.resolve([])
+    return []
   }
 
   /**
@@ -91,10 +88,10 @@ class PayPalProviderService extends PaymentService {
    * @returns {object} the data to be stored with the payment session.
    */
   async createPayment(cart) {
-    const { region_id } = cart
+    const { region_id, id, resource_id, total } = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
-    const amount = await this.totalsService_.getTotal(cart)
+    const amount = total
 
     const request = new PayPal.orders.OrdersCreateRequest()
     request.requestBody({
@@ -104,7 +101,35 @@ class PayPalProviderService extends PaymentService {
       },
       purchase_units: [
         {
-          custom_id: cart.id,
+          custom_id: resource_id ?? id,
+          amount: {
+            currency_code: currency_code.toUpperCase(),
+            value: roundToTwo(
+              humanizeAmount(amount, currency_code),
+              currency_code
+            ),
+          },
+        },
+      ],
+    })
+
+    const res = await this.paypal_.execute(request)
+
+    return { id: res.result.id }
+  }
+
+  async createPaymentNew(paymentInput) {
+    const { resource_id, currency_code, amount } = paymentInput
+
+    const request = new PayPal.orders.OrdersCreateRequest()
+    request.requestBody({
+      intent: "AUTHORIZE",
+      application_context: {
+        shipping_preference: "NO_SHIPPING",
+      },
+      purchase_units: [
+        {
+          custom_id: resource_id,
           amount: {
             currency_code: currency_code.toUpperCase(),
             value: roundToTwo(
@@ -191,7 +216,7 @@ class PayPalProviderService extends PaymentService {
    */
   async updatePayment(sessionData, cart) {
     try {
-      const { region_id } = cart
+      const { region_id, total } = cart
       const { currency_code } = await this.regionService_.retrieve(region_id)
 
       const request = new PayPal.orders.OrdersPatchRequest(sessionData.id)
@@ -203,7 +228,7 @@ class PayPalProviderService extends PaymentService {
             amount: {
               currency_code: currency_code.toUpperCase(),
               value: roundToTwo(
-                humanizeAmount(cart.total, currency_code),
+                humanizeAmount(total, currency_code),
                 currency_code
               ),
             },
@@ -216,6 +241,35 @@ class PayPalProviderService extends PaymentService {
       return sessionData
     } catch (error) {
       return this.createPayment(cart)
+    }
+  }
+
+  async updatePaymentNew(sessionData, paymentInput) {
+    try {
+      const { currency_code, amount } = paymentInput
+
+      const request = new PayPal.orders.OrdersPatchRequest(sessionData.id)
+      request.requestBody([
+        {
+          op: "replace",
+          path: "/purchase_units/@reference_id=='default'",
+          value: {
+            amount: {
+              currency_code: currency_code.toUpperCase(),
+              value: roundToTwo(
+                humanizeAmount(amount, currency_code),
+                currency_code
+              ),
+            },
+          },
+        },
+      ])
+
+      await this.paypal_.execute(request)
+
+      return sessionData
+    } catch (error) {
+      return this.createPaymentNew(paymentInput)
     }
   }
 
@@ -289,7 +343,8 @@ class PayPalProviderService extends PaymentService {
   async cancelPayment(payment) {
     const order = await this.retrievePayment(payment.data)
     const isAlreadyCanceled = order.status === "VOIDED"
-    const isCanceledAndFullyRefund = order.status === "COMPLETED" && !!order.invoice_id
+    const isCanceledAndFullyRefund =
+      order.status === "COMPLETED" && !!order.invoice_id
     if (isAlreadyCanceled || isCanceledAndFullyRefund) {
       return order
     }

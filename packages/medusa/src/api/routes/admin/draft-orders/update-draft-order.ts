@@ -1,4 +1,4 @@
-import { CartService, DraftOrderService } from "../../../../services"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -7,17 +7,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
 } from "."
-
-import { AddressPayload } from "../../../../types/common"
 import { DraftOrderStatus } from "../../../../models"
-import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
-import { Type } from "class-transformer"
+import { CartService, DraftOrderService } from "../../../../services"
+import { CartUpdateProps } from "../../../../types/cart"
+import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [post] /admin/draft-orders/{id}
@@ -31,43 +32,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           region_id:
- *             type: string
- *             description: The ID of the Region to create the Draft Order in.
- *           country_code:
- *             type: string
- *             description: "The 2 character ISO code for the Country."
- *             externalDocs:
- *                url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
- *                description: See a list of codes.
- *           email:
- *             type: string
- *             description: "An email to be used on the Draft Order."
- *             format: email
- *           billing_address:
- *             description: "The Address to be used for billing purposes."
- *             $ref: "#/components/schemas/address"
- *           shipping_address:
- *             description: "The Address to be used for shipping."
- *             $ref: "#/components/schemas/address"
- *           discounts:
- *             description: "An array of Discount codes to add to the Draft Order."
- *             type: array
- *             items:
- *               type: object
- *               required:
- *                 - code
- *               properties:
- *                 code:
- *                   description: "The code that a Discount is identifed by."
- *                   type: string
- *           no_notification_order:
- *             description: "An optional flag passed to the resulting order to determine use of notifications."
- *             type: boolean
- *           customer_id:
- *             description: "The ID of the Customer to associate the Draft Order with."
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostDraftOrdersDraftOrderReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -101,9 +66,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *           $ref: "#/components/schemas/AdminDraftOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -125,6 +88,7 @@ export default async (req, res) => {
 
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
+
   const cartService: CartService = req.scope.resolve("cartService")
 
   const draftOrder = await draftOrderService.retrieve(id)
@@ -147,12 +111,26 @@ export default async (req, res) => {
       delete validated.no_notification_order
     }
 
-    await cartService
-      .withTransaction(transactionManager)
-      .update(draftOrder.cart_id, validated)
+    const { shipping_address, billing_address, ...rest } = validated
+
+    const cartDataToUpdate: CartUpdateProps = { ...rest }
+
+    if (typeof shipping_address === "string") {
+      cartDataToUpdate.shipping_address_id = shipping_address
+    } else {
+      cartDataToUpdate.shipping_address = shipping_address
+    }
+
+    if (typeof billing_address === "string") {
+      cartDataToUpdate.billing_address_id = billing_address
+    } else {
+      cartDataToUpdate.billing_address = billing_address
+    }
+
+    await cartService.update(draftOrder.cart_id, cartDataToUpdate)
   })
 
-  draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
+  draftOrder.cart = await cartService.retrieveWithTotals(draftOrder.cart_id, {
     relations: defaultAdminDraftOrdersCartRelations,
     select: defaultAdminDraftOrdersCartFields,
   })
@@ -160,6 +138,51 @@ export default async (req, res) => {
   res.status(200).json({ draft_order: draftOrder })
 }
 
+/**
+ * @schema AdminPostDraftOrdersDraftOrderReq
+ * type: object
+ * properties:
+ *   region_id:
+ *     type: string
+ *     description: The ID of the Region to create the Draft Order in.
+ *   country_code:
+ *     type: string
+ *     description: "The 2 character ISO code for the Country."
+ *     externalDocs:
+ *        url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *        description: See a list of codes.
+ *   email:
+ *     type: string
+ *     description: "An email to be used on the Draft Order."
+ *     format: email
+ *   billing_address:
+ *     description: "The Address to be used for billing purposes."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *       - type: string
+ *   shipping_address:
+ *     description: "The Address to be used for shipping."
+ *     anyOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *       - type: string
+ *   discounts:
+ *     description: "An array of Discount codes to add to the Draft Order."
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - code
+ *       properties:
+ *         code:
+ *           description: "The code that a Discount is identifed by."
+ *           type: string
+ *   no_notification_order:
+ *     description: "An optional flag passed to the resulting order to determine use of notifications."
+ *     type: boolean
+ *   customer_id:
+ *     description: "The ID of the Customer to associate the Draft Order with."
+ *     type: string
+ */
 export class AdminPostDraftOrdersDraftOrderReq {
   @IsString()
   @IsOptional()
@@ -174,12 +197,12 @@ export class AdminPostDraftOrdersDraftOrderReq {
   email?: string
 
   @IsOptional()
-  @Type(() => AddressPayload)
-  billing_address?: AddressPayload
+  @IsType([AddressPayload, String])
+  billing_address?: AddressPayload | string
 
   @IsOptional()
-  @Type(() => AddressPayload)
-  shipping_address?: AddressPayload
+  @IsType([AddressPayload, String])
+  shipping_address?: AddressPayload | string
 
   @IsArray()
   @IsOptional()

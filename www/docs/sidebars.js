@@ -26,9 +26,25 @@ module.exports = {
           label: "Introduction",
         },
         {
-          type: "doc",
-          id: "quickstart/quick-start",
-          label: "Quickstart Guide",
+          type: "category",
+          label: "Install Medusa Server",
+          collapsed: false,
+          items: [
+            {
+              type: "doc",
+              id: "quickstart/quick-start",
+              label: "Quickstart Guide",
+            },
+            {
+              type: "doc",
+              id: "usage/create-medusa-app",
+              label: 'Use create-medusa-app'
+            },
+            {
+              type:"doc",
+              id: "quickstart/quick-start-docker",
+            },
+          ]
         },
         {
           type: "doc",
@@ -71,10 +87,6 @@ module.exports = {
           id: "admin/quickstart",
         },
         {
-          type: "doc",
-          id: "usage/create-medusa-app",
-        },
-        {
           type: "category",
           label: "Deployment",
           items: [
@@ -91,7 +103,7 @@ module.exports = {
                   id: "deployments/server/deploying-on-heroku",
                   label: "Deploy on Heroku",
                   customProps: {
-                    image: 'https://i.imgur.com/xNvxSkf.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739927/Medusa%20Docs/Other/xNvxSkf_l230wq.png'
                   }
                 },
                 {
@@ -99,7 +111,7 @@ module.exports = {
                   id: "deployments/server/deploying-on-digital-ocean",
                   label: "Deploy on DigitalOcean",
                   customProps: {
-                    image: 'https://i.imgur.com/aahqJp4.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739945/Medusa%20Docs/Other/aahqJp4_lbtfdz.png'
                   }
                 },
                 {
@@ -107,7 +119,18 @@ module.exports = {
                   id: "deployments/server/deploying-on-qovery",
                   label: "Deploy on Qovery",
                   customProps: {
-                    image: 'https://i.imgur.com/qOvY2dN.png'
+                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png'
+                  }
+                },
+                {
+                  type: "doc",
+                  id: "deployments/server/deploying-on-railway",
+                  label: "Deploy on Railway",
+                  customProps: {
+                    themedImage: {
+                      light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-light_fzuyeo.png',
+                      dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-dark_kkzuwh.png'
+                    }
                   }
                 }
               ]
@@ -161,8 +184,28 @@ module.exports = {
           items: [
             {
               type: "doc",
-              id: "advanced/backend/upgrade-guides/1-3-0",
-              label: "v1.3.0"
+              id: "advanced/backend/upgrade-guides/1-7-3",
+              label: "v1.7.3"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-7-1",
+              label: "v1.7.1"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-7-0",
+              label: "v1.7.0"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-6-1",
+              label: "v1.6.1"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/1-3-8",
+              label: "v1.3.8"
             },
             {
               type: "doc",
@@ -171,11 +214,32 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "advanced/backend/upgrade-guides/1-3-8",
-              label: "v1.3.8"
+              id: "advanced/backend/upgrade-guides/1-3-0",
+              label: "v1.3.0"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/upgrade-guides/admin/admin-vite",
+              label: "Medusa Admin: Vite"
             },
           ]
         },
+        {
+          type: "category",
+          label: 'Local Development',
+          items: [
+            {
+              type: "doc",
+              id: "usage/local-development",
+              label: "Server and Monorepo"
+            },
+            {
+              type: "doc",
+              id: "admin/development",
+              label: "Medusa Admin"
+            }
+          ]
+        }
       ]
     },
     {
@@ -183,14 +247,126 @@ module.exports = {
       label: "How-to Guides",
       items: [
         {
-          type: "doc",
-          id: "advanced/backend/endpoints/add-storefront",
-          label: "Create Endpoint for Storefront"
+          type: "category",
+          label: "Storefront",
+          items: [
+            {
+              type: "doc",
+              id: "advanced/storefront/use-regions",
+              label: "Use Regions"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/customer-profiles",
+              label: "Add Customer Profiles"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-gift-cards",
+              label: "Use Gift Cards"
+            },
+            {
+              type: "doc",
+              id: "guides/carts-in-medusa",
+              label: "Implement Cart"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-discounts-in-checkout",
+              label: "Use Discounts in Checkout"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/taxes/manual-calculation",
+              label: "Calculate Taxes Manually"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/how-to-implement-checkout-flow",
+              label: "Implement Checkout"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/implement-claim-order",
+              label: "Implement Claim Order"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/handle-order-edits",
+              label: "Handle Order Edits"
+            },
+            {
+              type: "doc",
+              id: "advanced/storefront/use-sales-channels",
+              label: "Use SalesChannels APIs"
+            },
+          ]
+        },
+        {
+          type: "category",
+          label: "Admin",
+          items: [
+            {
+              type: "doc",
+              id: "advanced/admin/order-edit",
+              label: "Edit an Order"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-customers",
+              label: "Manage Customers"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/use-customergroups-api",
+              label: "Manage Customer Groups"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/import-products",
+              label: "Import Products"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/import-prices",
+              label: "Import Prices"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/price-lists/use-api",
+              label: "Manage PriceLists"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-discounts",
+              label: "Manage Discounts"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-gift-cards",
+              label: "Manage Gift Cards"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-regions",
+              label: "Manage Regions"
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/sales-channels/manage-admin",
+              label: "Manage Sales Channels"
+            },
+            {
+              type: "doc",
+              id: "advanced/admin/manage-publishable-api-keys",
+              label: "Manage PublishableApiKeys"
+            },
+          ]
         },
         {
           type: "doc",
-          id: "advanced/backend/endpoints/add-admin",
-          label: "Create Endpoint for Admin"
+          id: "advanced/backend/endpoints/add",
+          label: "Create an Endpoint"
         },
         {
           type: "doc",
@@ -234,35 +410,37 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "advanced/backend/cron-jobs/create",
-          label: "Create a Cron Job"
+          id: "advanced/backend/feature-flags/toggle",
+          label: "Toggle Feature Flags"
         },
         {
-          type: "category",
-          label: "Storefront",
-          items: [
-            {
-              type: "doc",
-              id: "guides/carts-in-medusa",
-              label: "Implement Cart"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/how-to-implement-checkout-flow",
-              label: "Implement Checkout"
-            },
-          ]
+          type: "doc",
+          id: "advanced/backend/scheduled-jobs/create",
+          label: "Create a Scheduled Job"
         },
         {
-          type: "category",
-          label: "Admin",
-          items: [
-            {
-              type: "doc",
-              id: "advanced/admin/import-products",
-              label: "Import Products"
-            },
-          ]
+          type: "doc",
+          id: "advanced/backend/batch-jobs/create",
+          label: "Create Batch Job Strategy"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/batch-jobs/customize-import",
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/override",
+          label: "Override Price Selection"
+        },
+        {
+          type: "doc",
+          id: "advanced/ecommerce/handle-order-claim-event",
+          label: "Handle Order Claim Event"
+        },
+        {
+          type: "doc",
+          id: "advanced/ecommerce/send-gift-card-to-customer",
+          label: "Send Gift Card Code"
         },
       ]
     },
@@ -270,6 +448,10 @@ module.exports = {
       type: "category",
       label: "Conceptual Guides",
       items: [
+        {
+          type: "doc",
+          id: "advanced/backend/dependency-container/index"
+        },
         {
           type: "doc",
           id: "advanced/backend/entities/overview",
@@ -284,6 +466,11 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/subscribers/overview",
           label: "Subscribers"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/events/architecture",
+          label: "Events Architecture"
         },
         {
           type: "doc",
@@ -302,6 +489,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/discounts/index"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/plugins/overview",
           label: "Plugins"
         },
@@ -314,6 +505,45 @@ module.exports = {
           type: "doc",
           id: "advanced/backend/batch-jobs/index",
           label: "Batch Jobs"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/regions/overview",
+          label: "Regions"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/customers/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/customer-groups/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/taxes/inclusive-pricing",
+          label: "Tax Inclusive Pricing"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-lists/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/price-selection-strategy/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/sales-channels/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/gift-cards/index"
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/publishable-api-keys/index",
+          label: "Publishable API Keys"
         },
       ]
     },
@@ -450,6 +680,21 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "troubleshooting/cli-installation-errors",
+          label: "Errors Installing CLI",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/common-installation-errors",
+          label: "Installation Errors",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/database-error",
+          label: "Database SASL Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/cors-issues",
           label: "CORS issues",
         },
@@ -495,11 +740,6 @@ module.exports = {
           label: "CLI Reference",
         },
         {
-          type: "doc",
-          id: "contribution-guidelines",
-          label: "Contribution Guidelines",
-        },
-        {
           type: "ref",
           id: "references/entities/classes/Address",
           label: "Entities Reference",
@@ -520,6 +760,11 @@ module.exports = {
           label: "Services Reference",
         },
       ]
+    },
+    {
+      type: "doc",
+      id: "contribution-guidelines",
+      label: "Contribution Guidelines",
     },
   ],
   userGuideSidebar: [
@@ -561,8 +806,18 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminBatchJobsResource",
+              label: "batchJobs",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminCollectionsResource",
               label: "collections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminCurrenciesResource",
+              label: "currencies",
             },
             {
               type: "doc",
@@ -611,6 +866,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminOrderEditsResource",
+              label: "orderEdits",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminPriceListResource",
               label: "priceLists",
             },
@@ -643,6 +903,11 @@ module.exports = {
               type: "doc",
               id: "references/js-client/classes/AdminReturnsResource",
               label: "returns",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminSalesChannelsResource",
+              label: "salesChannels",
             },
             {
               type: "doc",
@@ -745,6 +1010,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "references/js-client/classes/OrderEditsResource",
+          label: "orderEdits",
+        },
+        {
+          type: "doc",
           id: "references/js-client/classes/PaymentMethodsResource",
           label: "paymentMethods",
         },
@@ -772,7 +1042,7 @@ module.exports = {
         {
           type: "doc",
           id: "references/js-client/classes/ReturnReasonsResource",
-          label: "returnReason",
+          label: "returnReasons",
         },
         {
           type: "doc",

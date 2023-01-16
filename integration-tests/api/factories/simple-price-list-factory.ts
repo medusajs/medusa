@@ -1,4 +1,5 @@
 import {
+  CustomerGroup,
   MoneyAmount,
   PriceList,
   PriceListStatus,
@@ -41,7 +42,7 @@ export const simplePriceListFactory = async (
 
   const listId = data.id || `simple-price-list-${Math.random() * 1000}`
 
-  let customerGroups = []
+  let customerGroups: CustomerGroup[] = []
   if (typeof data.customer_groups !== "undefined") {
     customerGroups = await Promise.all(
       data.customer_groups.map((group) =>

@@ -1,6 +1,5 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm"
 
 /**
@@ -33,9 +32,10 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             cart:
- *               $ref: "#/components/schemas/cart"
+ *               $ref: "#/components/schemas/Cart"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -59,11 +59,10 @@ export default async (req, res) => {
       .deletePaymentSession(id, provider_id)
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  const data = await decorateLineItemsWithTotals(cart, req)
   res.status(200).json({ cart: data })
 }

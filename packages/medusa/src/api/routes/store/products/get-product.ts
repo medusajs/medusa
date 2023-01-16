@@ -1,8 +1,8 @@
 import { defaultStoreProductsRelations } from "."
 import {
-  ProductService,
-  PricingService,
   CartService,
+  PricingService,
+  ProductService,
   RegionService,
 } from "../../../../services"
 import { PriceSelectionParams } from "../../../../types/price-selection"
@@ -49,9 +49,19 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             product:
- *               $ref: "#/components/schemas/product"
+ *               allOf:
+ *                 - $ref: "#/components/schemas/Product"
+ *                 - type: object
+ *                   properties:
+ *                     variants:
+ *                       type: array
+ *                       items:
+ *                         allOf:
+ *                           - $ref: "#/components/schemas/ProductVariant"
+ *                           - $ref: "#/components/schemas/ProductVariantPricesFields"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

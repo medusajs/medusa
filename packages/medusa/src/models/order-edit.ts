@@ -2,19 +2,19 @@ import {
   AfterLoad,
   BeforeInsert,
   Column,
+  Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from "typeorm"
 
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
-import { resolveDbType } from "../utils/db-aware-column"
-import { OrderItemChange } from "./order-item-change"
 import { BaseEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
-import { LineItem } from "./line-item"
-import { Order } from "./order"
+import { resolveDbType } from "../utils/db-aware-column"
+
+import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
 export enum OrderEditStatus {
   CONFIRMED = "confirmed",
@@ -24,8 +24,9 @@ export enum OrderEditStatus {
   CANCELED = "canceled",
 }
 
-@FeatureFlagEntity(OrderEditingFeatureFlag.key)
+@Entity()
 export class OrderEdit extends BaseEntity {
+  @Index()
   @Column()
   order_id: string
 
@@ -42,7 +43,7 @@ export class OrderEdit extends BaseEntity {
   internal_note?: string
 
   @Column()
-  created_by: string // customer or user ID
+  created_by: string // customer, user, third party, etc.
 
   @Column({ nullable: true })
   requested_by?: string // customer or user ID
@@ -73,6 +74,14 @@ export class OrderEdit extends BaseEntity {
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order_edit)
   items: LineItem[]
+
+  @Index()
+  @Column({ nullable: true })
+  payment_collection_id: string
+
+  @OneToOne(() => PaymentCollection)
+  @JoinColumn({ name: "payment_collection_id" })
+  payment_collection: PaymentCollection
 
   // Computed
   shipping_total: number
@@ -112,10 +121,10 @@ export class OrderEdit extends BaseEntity {
 }
 
 /**
- * @schema order_edit
+ * @schema OrderEdit
  * title: "Order Edit"
  * description: "Order edit keeps track of order items changes."
- * x-resourceId: order_edit
+ * type: object
  * required:
  *   - order_id
  *   - order
@@ -131,13 +140,13 @@ export class OrderEdit extends BaseEntity {
  *     description: The ID of the order that is edited
  *     example: order_01G2SG30J8C85S4A5CHM2S1NS2
  *   order:
- *     description: Order object
- *     $ref: "#/components/schemas/order"
+ *     description: Available if the relation `order` is expanded.
+ *     $ref: "#/components/schemas/Order"
  *   changes:
  *     type: array
- *     description: Line item changes array.
+ *     description: Available if the relation `changes` is expanded.
  *     items:
- *       $ref: "#/components/schemas/order_item_change"
+ *       $ref: "#/components/schemas/OrderItemChange"
  *   internal_note:
  *     description: "An optional note with additional details about the order edit."
  *     type: string
@@ -201,9 +210,33 @@ export class OrderEdit extends BaseEntity {
  *     type: integer
  *     description: The difference between the total amount of the order and total amount of edited order.
  *     example: 8200
+ *   status:
+ *     type: string
+ *     description: The status of the order edit.
+ *     enum:
+ *       - confirmed
+ *       - declined
+ *       - requested
+ *       - created
+ *       - canceled
  *   items:
  *     type: array
- *     description: Computed line items from the changes.
+ *     description: Available if the relation `items` is expanded.
  *     items:
- *       $ref: "#/components/schemas/line_item"
+ *       $ref: "#/components/schemas/LineItem"
+ *   payment_collection_id:
+ *     type: string
+ *     description: The ID of the payment collection
+ *     example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
+ *   payment_collection:
+ *     description: Available if the relation `payment_collection` is expanded.
+ *     $ref: "#/components/schemas/PaymentCollection"
+ *   created_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was created."
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was updated."
+ *     format: date-time
  */

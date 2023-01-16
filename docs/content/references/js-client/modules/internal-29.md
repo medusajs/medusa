@@ -2,36 +2,30 @@
 
 ## Classes
 
-- [StorePostAuthReq](../classes/internal-29.StorePostAuthReq.md)
+- [AdminGetSwapsParams](../classes/internal-29.AdminGetSwapsParams.md)
 
 ## Type Aliases
 
-### StoreAuthRes
+### AdminSwapsListRes
 
-Ƭ **StoreAuthRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `customer` | [`Customer`](../classes/internal.Customer.md) |
+Ƭ **AdminSwapsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `swaps`: [`Swap`](../classes/internal.Swap.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/store/auth/index.d.ts:4
+medusa/dist/api/routes/admin/swaps/index.d.ts:7
 
 ___
 
-### StoreGetAuthEmailRes
+### AdminSwapsRes
 
-Ƭ **StoreGetAuthEmailRes**: `Object`
+Ƭ **AdminSwapsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `exists` | `boolean` |
+| `swap` | [`Swap`](../classes/internal.Swap.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/store/auth/index.d.ts:7
+medusa/dist/api/routes/admin/swaps/index.d.ts:10

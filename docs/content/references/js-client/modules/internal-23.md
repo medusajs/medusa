@@ -2,53 +2,37 @@
 
 ## Classes
 
-- [AdminPostStoreReq](../classes/internal-23.AdminPostStoreReq.md)
-- [Store](../classes/internal-23.Store.md)
+- [AdminPostReturnReasonsReasonReq](../classes/internal-23.AdminPostReturnReasonsReasonReq.md)
+- [AdminPostReturnReasonsReq](../classes/internal-23.AdminPostReturnReasonsReq.md)
 
 ## Type Aliases
 
-### AdminPaymentProvidersList
+### AdminReturnReasonsListRes
 
-Ƭ **AdminPaymentProvidersList**: `Object`
+Ƭ **AdminReturnReasonsListRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `payment_providers` | [`PaymentProvider`](../classes/internal.PaymentProvider.md)[] |
+| `return_reasons` | [`ReturnReason`](../classes/internal.ReturnReason.md)[] |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/store/index.d.ts:10
+medusa/dist/api/routes/admin/return-reasons/index.d.ts:10
 
 ___
 
-### AdminStoresRes
+### AdminReturnReasonsRes
 
-Ƭ **AdminStoresRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `store` | [`Store`](../classes/internal-23.Store.md) |
-
-#### Defined in
-
-medusa/dist/api/routes/admin/store/index.d.ts:4
-
-___
-
-### AdminTaxProvidersList
-
-Ƭ **AdminTaxProvidersList**: `Object`
+Ƭ **AdminReturnReasonsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `tax_providers` | [`TaxProvider`](../classes/internal.TaxProvider.md)[] |
+| `return_reason` | [`ReturnReason`](../classes/internal.ReturnReason.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/store/index.d.ts:7
+medusa/dist/api/routes/admin/return-reasons/index.d.ts:7

@@ -8,6 +8,7 @@ on:
 jobs:
   test-cli-with-database:
     env:
+      NODE_ENV: CI
       REDIS_URL: redis://localhost:6379
       DATABASE_URL: "postgres://postgres:postgres@localhost/cli-test"
 

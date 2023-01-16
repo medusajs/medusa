@@ -35,18 +35,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Shipping Option.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: shipping-option
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminShippingOptionsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

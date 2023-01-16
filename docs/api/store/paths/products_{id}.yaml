@@ -50,9 +50,20 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               product:
-                $ref: ../components/schemas/product.yaml
+                allOf:
+                  - $ref: ../components/schemas/Product.yaml
+                  - type: object
+                    properties:
+                      variants:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: ../components/schemas/ProductVariant.yaml
+                            - $ref: >-
+                                ../components/schemas/ProductVariantPricesFields.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

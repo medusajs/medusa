@@ -8,7 +8,7 @@ Medusa’s Migrations do not work with SQLite databases. They are intended to be
 
 :::
 
-## What are Migrations?
+## What are Migrations
 
 Migrations are scripts that are used to make additions or changes to your database schema. In Medusa, they are essential for both when you first install your server and for subsequent server upgrades later on.
 
@@ -21,6 +21,8 @@ When a new Medusa version introduces changes to the database schema, you'll have
 Migrations are used to apply changes to the database schema. However, there are some version updates of Medusa that require updating the data in your database to fit the new schema. Those are specific to each version and you should check out the version under Upgrade Guides for details on the steps.
 
 :::
+
+---
 
 ## How to Run Migrations
 
@@ -48,7 +50,9 @@ npm run seed
 
 This will use the underlying `seed` command provided by Medusa's CLI to seed your database with data from the file `data/seed.json` on your Medusa server.
 
-## What's Next :rocket:
+---
 
-- Learn [how to create a migration](index.md)
-- Learn more about [setting up your development server](../../../tutorial/set-up-your-development-environment).
+## See Also
+
+- [Create a migration](index.md)
+- [Set up your development environment](../../../tutorial/set-up-your-development-environment)

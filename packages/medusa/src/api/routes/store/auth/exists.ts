@@ -32,6 +32,7 @@ import CustomerService from "../../../../services/customer"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            exists:
  *              type: boolean
@@ -53,8 +54,8 @@ export default async (req, res) => {
   try {
     const customerService: CustomerService =
       req.scope.resolve("customerService")
-    const customer = await customerService.retrieveByEmail(email, {
-      select: ["has_account"],
+    const customer = await customerService.retrieveRegisteredByEmail(email, {
+      select: ["id", "has_account"],
     })
     res.status(200).json({ exists: customer.has_account })
   } catch (err) {

@@ -11,11 +11,16 @@ import {
 /**
  * @oas [post] /order-edits/{id}
  * operationId: "PostOrderEditsOrderEdit"
- * summary: "Updates an OrderEdit"
+ * summary: "Update an OrderEdit"
  * description: "Updates a OrderEdit."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/AdminPostOrderEditsOrderEditReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -23,8 +28,9 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       const params = {internal_note: "internal reason XY"}
- *       medusa.admin.orderEdit.update(orderEditId, params)
+ *       medusa.admin.orderEdits.update(order_edit_id, {
+ *         internal_note: "internal reason XY"
+ *       })
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
@@ -32,7 +38,7 @@ import {
  *     label: cURL
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
  *           "internal_note": "internal reason XY"
@@ -48,9 +54,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -92,6 +96,14 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ order_edit: orderEdit })
 }
 
+/**
+ * @schema AdminPostOrderEditsOrderEditReq
+ * type: object
+ * properties:
+ *   internal_note:
+ *     description: An optional note to create or update for the order edit.
+ *     type: string
+ */
 export class AdminPostOrderEditsOrderEditReq {
   @IsOptional()
   @IsString()

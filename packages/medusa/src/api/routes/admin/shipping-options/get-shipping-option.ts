@@ -33,9 +33,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_option:
- *               $ref: "#/components/schemas/shipping_option"
+ *           $ref: "#/components/schemas/AdminShippingOptionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

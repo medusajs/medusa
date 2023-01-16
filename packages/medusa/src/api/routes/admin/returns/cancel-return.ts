@@ -39,9 +39,10 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/order"
+ *               $ref: "#/components/schemas/Order"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -74,7 +75,7 @@ export default async (req, res) => {
     result = await claimService.retrieve(result.claim_order_id)
   }
 
-  const order = await orderService.retrieve(result.order_id, {
+  const order = await orderService.retrieve(result.order_id!, {
     select: defaultAdminOrdersFields,
     relations: defaultAdminOrdersRelations,
   })

@@ -76,7 +76,7 @@ describe("Manual Cart Taxes", () => {
 
     const response = await api.get("/store/carts/test-cart")
     expect(response.status).toEqual(200)
-    expect(response.data.cart.tax_total).toEqual(null)
+    expect(response.data.cart.tax_total).toEqual(0)
     expect(response.data.cart.total).toEqual(100)
   })
 

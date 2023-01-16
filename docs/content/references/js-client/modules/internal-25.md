@@ -2,43 +2,34 @@
 
 ## Classes
 
-- [AdminDeleteTaxRatesTaxRateProductTypesParams](../classes/internal-25.AdminDeleteTaxRatesTaxRateProductTypesParams.md)
-- [AdminDeleteTaxRatesTaxRateProductTypesReq](../classes/internal-25.AdminDeleteTaxRatesTaxRateProductTypesReq.md)
-- [AdminDeleteTaxRatesTaxRateProductsParams](../classes/internal-25.AdminDeleteTaxRatesTaxRateProductsParams.md)
-- [AdminDeleteTaxRatesTaxRateProductsReq](../classes/internal-25.AdminDeleteTaxRatesTaxRateProductsReq.md)
-- [AdminDeleteTaxRatesTaxRateShippingOptionsParams](../classes/internal-25.AdminDeleteTaxRatesTaxRateShippingOptionsParams.md)
-- [AdminDeleteTaxRatesTaxRateShippingOptionsReq](../classes/internal-25.AdminDeleteTaxRatesTaxRateShippingOptionsReq.md)
-- [AdminGetTaxRatesParams](../classes/internal-25.AdminGetTaxRatesParams.md)
-- [AdminGetTaxRatesTaxRateParams](../classes/internal-25.AdminGetTaxRatesTaxRateParams.md)
-- [AdminPostTaxRatesReq](../classes/internal-25.AdminPostTaxRatesReq.md)
-- [AdminPostTaxRatesTaxRateProductTypesReq](../classes/internal-25.AdminPostTaxRatesTaxRateProductTypesReq.md)
-- [AdminPostTaxRatesTaxRateProductsReq](../classes/internal-25.AdminPostTaxRatesTaxRateProductsReq.md)
-- [AdminPostTaxRatesTaxRateReq](../classes/internal-25.AdminPostTaxRatesTaxRateReq.md)
-- [AdminPostTaxRatesTaxRateShippingOptionsReq](../classes/internal-25.AdminPostTaxRatesTaxRateShippingOptionsReq.md)
-- [NumericalComparisonOperator](../classes/internal-25.NumericalComparisonOperator.md)
+- [AdminDeleteSalesChannelsChannelProductsBatchReq](../classes/internal-25.AdminDeleteSalesChannelsChannelProductsBatchReq.md)
+- [AdminGetSalesChannelsParams](../classes/internal-25.AdminGetSalesChannelsParams.md)
+- [AdminPostSalesChannelsChannelProductsBatchReq](../classes/internal-25.AdminPostSalesChannelsChannelProductsBatchReq.md)
+- [AdminPostSalesChannelsReq](../classes/internal-25.AdminPostSalesChannelsReq.md)
+- [AdminPostSalesChannelsSalesChannelReq](../classes/internal-25.AdminPostSalesChannelsSalesChannelReq.md)
 
 ## Type Aliases
 
-### AdminTaxRatesListRes
+### AdminSalesChannelsRes
 
-Ƭ **AdminTaxRatesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `tax_rates`: [`TaxRate`](../classes/internal.TaxRate.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/tax-rates/index.d.ts:8
-
-___
-
-### AdminTaxRatesRes
-
-Ƭ **AdminTaxRatesRes**: `Object`
+Ƭ **AdminSalesChannelsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `tax_rate` | [`TaxRate`](../classes/internal.TaxRate.md) |
+| `sales_channel` | [`SalesChannel`](../classes/internal.SalesChannel.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/tax-rates/index.d.ts:11
+medusa/dist/api/routes/admin/sales-channels/index.d.ts:6
+
+## Variables
+
+### AdminGetSalesChannelsParams\_base
+
+• `Const` **AdminGetSalesChannelsParams\_base**: [`"/home/runner/work/medusa/medusa/packages/medusa/dist/types/global"`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md)
+
+#### Defined in
+
+medusa/dist/api/routes/admin/sales-channels/list-sales-channels.d.ts:142

@@ -13,7 +13,6 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
-import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
 
@@ -26,42 +25,7 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - order_id
- *           - items
- *         properties:
- *           order_id:
- *             type: string
- *             description: The ID of the Order to create the Return from.
- *           items:
- *             description: "The items to include in the Return."
- *             type: array
- *             items:
- *               required:
- *                 - item_id
- *                 - quantity
- *               properties:
- *                 item_id:
- *                   description: The ID of the Line Item from the Order.
- *                   type: string
- *                 quantity:
- *                   description: The quantity to return.
- *                   type: integer
- *                 reason_id:
- *                   description: The ID of the return reason.
- *                   type: string
- *                 note:
- *                   description: A note to add to the item returned.
- *                   type: string
- *           return_shipping:
- *             description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
- *             type: object
- *             required:
- *               - option_id
- *             properties:
- *               option_id:
- *                 type: string
- *                 description: The ID of the Shipping Option to create the Shipping Method from.
+ *         $ref: "#/components/schemas/StorePostReturnsReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -77,8 +41,8 @@ import { validator } from "../../../../utils/validator"
  *           }
  *         ]
  *       })
- *       .then(({ return }) => {
- *         console.log(return.id);
+ *       .then((data) => {
+ *         console.log(data.return.id);
  *       });
  *   - lang: Shell
  *     label: cURL
@@ -102,9 +66,10 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             return:
- *               $ref: "#/components/schemas/return"
+ *               $ref: "#/components/schemas/Return"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -142,7 +107,6 @@ export default async (req, res) => {
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
   try {
-    const orderService: OrderService = req.scope.resolve("orderService")
     const returnService: ReturnService = req.scope.resolve("returnService")
     const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
@@ -152,95 +116,84 @@ export default async (req, res) => {
     while (inProgress) {
       switch (idempotencyKey.recovery_point) {
         case "started": {
-          await manager.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                const order = await orderService
-                  .withTransaction(manager)
-                  .retrieve(returnDto.order_id, {
-                    select: ["refunded_total", "total"],
-                    relations: ["items"],
-                  })
+          await manager
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                  const returnObj: any = {
+                    order_id: returnDto.order_id,
+                    idempotency_key: idempotencyKey.idempotency_key,
+                    items: returnDto.items,
+                  }
 
-                const returnObj: any = {
-                  order_id: returnDto.order_id,
-                  idempotency_key: idempotencyKey.idempotency_key,
-                  items: returnDto.items,
-                }
+                  if (returnDto.return_shipping) {
+                    returnObj.shipping_method = returnDto.return_shipping
+                  }
 
-                if (returnDto.return_shipping) {
-                  returnObj.shipping_method = returnDto.return_shipping
-                }
-
-                const createdReturn = await returnService
-                  .withTransaction(manager)
-                  .create(returnObj)
-
-                if (returnDto.return_shipping) {
-                  await returnService
+                  const createdReturn = await returnService
                     .withTransaction(manager)
-                    .fulfill(createdReturn.id)
-                }
+                    .create(returnObj)
 
-                await eventBus
-                  .withTransaction(manager)
-                  .emit("order.return_requested", {
-                    id: returnDto.order_id,
-                    return_id: createdReturn.id,
-                  })
+                  if (returnDto.return_shipping) {
+                    await returnService
+                      .withTransaction(manager)
+                      .fulfill(createdReturn.id)
+                  }
 
-                return {
-                  recovery_point: "return_requested",
-                }
-              })
+                  await eventBus
+                    .withTransaction(manager)
+                    .emit("order.return_requested", {
+                      id: returnDto.order_id,
+                      return_id: createdReturn.id,
+                    })
 
-            if (error) {
+                  return {
+                    recovery_point: "return_requested",
+                  }
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key
-            }
-          })
+              err = e
+            })
           break
         }
 
         case "return_requested": {
-          await manager.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .workStage(idempotencyKey.idempotency_key, async (manager) => {
-                const returnOrders = await returnService
-                  .withTransaction(manager)
-                  .list(
-                    {
-                      idempotency_key: idempotencyKey.idempotency_key,
-                    },
-                    {
-                      relations: ["items", "items.reason"],
-                    }
-                  )
-                if (!returnOrders.length) {
-                  throw new MedusaError(
-                    MedusaError.Types.INVALID_DATA,
-                    `Return not found`
-                  )
-                }
-                const returnOrder = returnOrders[0]
+          await manager
+            .transaction("SERIALIZABLE", async (transactionManager) => {
+              idempotencyKey = await idempotencyKeyService
+                .withTransaction(transactionManager)
+                .workStage(idempotencyKey.idempotency_key, async (manager) => {
+                  const returnOrders = await returnService
+                    .withTransaction(manager)
+                    .list(
+                      {
+                        idempotency_key: idempotencyKey.idempotency_key,
+                      },
+                      {
+                        relations: ["items", "items.reason"],
+                      }
+                    )
+                  if (!returnOrders.length) {
+                    throw new MedusaError(
+                      MedusaError.Types.INVALID_DATA,
+                      `Return not found`
+                    )
+                  }
+                  const returnOrder = returnOrders[0]
 
-                return {
-                  response_code: 200,
-                  response_body: { return: returnOrder },
-                }
-              })
-
-            if (error) {
+                  return {
+                    response_code: 200,
+                    response_body: { return: returnOrder },
+                  }
+                })
+            })
+            .catch((e) => {
               inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key
-            }
-          })
+              err = e
+            })
           break
         }
 
@@ -298,6 +251,46 @@ class Item {
   note?: string
 }
 
+/**
+ * @schema StorePostReturnsReq
+ * type: object
+ * required:
+ *   - order_id
+ *   - items
+ * properties:
+ *   order_id:
+ *     type: string
+ *     description: The ID of the Order to create the Return from.
+ *   items:
+ *     description: "The items to include in the Return."
+ *     type: array
+ *     items:
+ *       required:
+ *         - item_id
+ *         - quantity
+ *       properties:
+ *         item_id:
+ *           description: The ID of the Line Item from the Order.
+ *           type: string
+ *         quantity:
+ *           description: The quantity to return.
+ *           type: integer
+ *         reason_id:
+ *           description: The ID of the return reason.
+ *           type: string
+ *         note:
+ *           description: A note to add to the item returned.
+ *           type: string
+ *   return_shipping:
+ *     description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
+ *     type: object
+ *     required:
+ *       - option_id
+ *     properties:
+ *       option_id:
+ *         type: string
+ *         description: The ID of the Shipping Option to create the Shipping Method from.
+ */
 export class StorePostReturnsReq {
   @IsString()
   @IsNotEmpty()

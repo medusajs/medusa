@@ -37,9 +37,7 @@ import { SwapService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             swap:
- *               $ref: "#/components/schemas/swap"
+ *           $ref: "#/components/schemas/AdminSwapsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

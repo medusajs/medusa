@@ -1,0 +1,65 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Resolve Errors Installing Medusa CLI
+
+In this document, you can find solutions to some common problems that occur when installing Medusa’s CLI Tool.
+
+## NPM Error: EACCES Permissions Errors
+
+If you install the Medusa CLI tool with NPM and get a permission error, NPM proposes as a solution either re-installing NPM with a node version manager (nvm), or manually setting npm’s default directory.
+
+You can check out more information in [NPM’s documentation](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally).
+
+---
+
+<!-- vale off -->
+
+## Powershell Error: command not found: medusa
+
+<!-- vale on -->
+
+If you're using Powershell and you installed the CLI tool, but when you try to use it you get the error:
+
+```bash noReport
+command not found: medusa
+```
+
+Try closing your Powershell window and opening a new one.
+
+---
+
+<!-- vale off -->
+
+## Yarn Error: command not found: medusa
+
+<!-- vale on -->
+
+If you install the Medusa CLI tool with Yarn, then try to use the CLI tool but get the error:
+
+```bash noReport
+command not found: medusa
+```
+
+You have to add Yarn’s install location to the PATH variable:
+
+<Tabs groupId="operating-systems" wrapperClassName="code-tabs">
+<TabItem value="unix" label="MacOS / Linux" default>
+
+```bash
+export PATH="$(yarn global bin):$PATH"
+```
+
+</TabItem>
+<TabItem value="windows" label="Windows">
+
+```bash
+# MAKE SURE TO INCLUDE %path%
+setx path "%path%;c:\users\YOURUSERNAME\appdata\local\yarn\bin"
+# YOURUSERNAME is your account username
+```
+
+</TabItem>
+</Tabs>
+
+You can learn more in [Yarn’s documentation](https://classic.yarnpkg.com/en/docs/cli/global#adding-the-install-location-to-your-path).

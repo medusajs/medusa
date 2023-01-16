@@ -2,7 +2,6 @@ import { IsObject } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm"
 
 /**
@@ -44,9 +43,10 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             cart:
- *               $ref: "#/components/schemas/cart"
+ *               $ref: "#/components/schemas/Cart"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -78,11 +78,10 @@ export default async (req, res) => {
       .updatePaymentSession(id, validated.data)
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  const data = await decorateLineItemsWithTotals(cart, req)
 
   res.status(200).json({ cart: data })
 }

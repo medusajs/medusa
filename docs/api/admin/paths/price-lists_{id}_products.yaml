@@ -189,18 +189,19 @@ get:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Product
+    - Price List
   responses:
     '200':
       description: OK
       content:
         application/json:
           schema:
+            type: object
             properties:
               products:
                 type: array
                 items:
-                  $ref: ../components/schemas/product.yaml
+                  $ref: ../components/schemas/Product.yaml
               count:
                 type: integer
                 description: The total number of items available

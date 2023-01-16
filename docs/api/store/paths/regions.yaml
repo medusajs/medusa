@@ -76,11 +76,12 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               regions:
                 type: array
                 items:
-                  $ref: ../components/schemas/region.yaml
+                  $ref: ../components/schemas/Region.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

@@ -1,12 +1,14 @@
 # Contentful
 
-In this document, you’ll learn how to integrate a Medusa server with Contentful to add rich CMS functionalities
+In this document, you’ll learn how to integrate a Medusa server with Contentful to add rich Content Management System (CMS) functionalities
 
 ## Overview
 
 [Contentful](https://www.contentful.com/) is a headless CMS service that allows developers to integrate rich CMS functionalities into any platform.
 
 By integrating Contentful to Medusa, you can benefit from powerful features in your ecommerce store including detailed product CMS details, easy-to-use interface to use for static content and pages, localization, and much more.
+
+---
 
 ## Prerequisites
 
@@ -22,6 +24,8 @@ By integrating Contentful to Medusa, you can benefit from powerful features in y
 - Gatsby’s CLI tool. You can follow [this documentation to install it](https://www.gatsbyjs.com/docs/reference/gatsby-cli/#how-to-use-gatsby-cli).
 - Medusa’s CLI tool. You can follow [this documentation to install it](../../cli/reference.md#how-to-install-cli-tool).
 
+---
+
 ## Install Medusa Server Using Contentful Starter
 
 Instead of using the default Medusa Server starter, you must use the [Contentful starter](https://github.com/medusajs/medusa-starter-contentful) to install a server that is ready to be used with Contentful. This server contains all the necessary files to make the integration work.
@@ -36,9 +40,9 @@ This installs a new Medusa server in the directory `medusa-contentful`.
 
 ### Add Contentful Environment Variables
 
-Change to the `medusa-contentful` directory. In `.env` you’ll find 3 variables:
+Change to the `medusa-contentful` directory. In `.env` you’ll find three variables:
 
-```bash
+```bash title=.env
 CONTENTFUL_SPACE_ID=
 CONTENTFUL_ACCESS_TOKEN=
 CONTENTFUL_ENV=
@@ -52,15 +56,15 @@ Set the value for `CONTENTFUL_ENV` to `master`.
 
 To retrieve the value of `CONTENTFUL_SPACE_ID`, go to your [Contentful Space dashboard](https://app.contentful.com/). Then, choose Settings in the navigation bar and select API keys from the dropdown.
 
-![Click on Settings then select API keys from the dropdown](https://i.imgur.com/hvp6zo5.png)
+![Click on Settings then select API keys from the dropdown](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001360/Medusa%20Docs/Contentful/hvp6zo5_uaqtmi.png)
 
 On the APIs page, click Add API Key.
 
-![Click on the Add API Key button](https://i.imgur.com/KlH2BDg.png)
+![Click on the Add API Key button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001375/Medusa%20Docs/Contentful/KlH2BDg_fiqd80.png)
 
 In the form, enter a name for the API key and click Save.
 
-![A form with the name of API key entered](https://i.imgur.com/hOG1RqM.png)
+![A form with the name of API key entered](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001385/Medusa%20Docs/Contentful/hOG1RqM_tmctae.png)
 
 Then, copy the value of Space ID and set it as the value of `CONTENTFUL_SPACE_ID`.
 
@@ -68,11 +72,11 @@ Then, copy the value of Space ID and set it as the value of `CONTENTFUL_SPACE_ID
 
 Go back to the API Keys page and click on the Content management tokens tab.
 
-![API Keys page with Content management tokens tab opened](https://i.imgur.com/7nWx1xk.png)
+![API Keys page with Content management tokens tab opened](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001394/Medusa%20Docs/Contentful/7nWx1xk_co8ykw.png)
 
 Click on Generate personal token. A pop-up will open where you have to enter a name for the token.
 
-![Pop up model for Personal Access Token with token name entered](https://i.imgur.com/y6R81pH.png)
+![Pop up model for Personal Access Token with token name entered](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001403/Medusa%20Docs/Contentful/y6R81pH_yhbg1u.png)
 
 Once you click Generate, a personal access token will be generated. Use it to set the value of `CONTENTFUL_ACCESS_TOKEN`.
 
@@ -116,17 +120,17 @@ You can find the format of the PostgreSQL database URL in [PostgreSQL’s docume
 
 Then, in `medusa-config.js` in the exported object, comment out or remove the SQLite database configurations and add the PostgreSQL database configurations:
 
-```jsx
+```jsx title=medusa-config.js
 module.exports = {
   projectConfig: {
-    //...
+    // ...
     database_url: DATABASE_URL,
     database_type: "postgres",
-    //REMOVE OR COMMENT OUT THE BELOW:
+    // REMOVE OR COMMENT OUT THE BELOW:
     // database_database: "./medusa-db.sql",
     // database_type: "sqlite",
   },
-};
+}
 ```
 
 ### Migrate Content Types to Contentful
@@ -141,7 +145,7 @@ npm run migrate:contentful
 
 Once this command finishes executing, in your Contentful Space dashboard click on Content Model in the navigation bar. You should see a list of new content models added.
 
-![Content Model page filled with new content models](https://i.imgur.com/ZDJPNkr.png)
+![Content Model page filled with new content models](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001419/Medusa%20Docs/Contentful/ZDJPNkr_avr7gy.png)
 
 ### Seed Content to Contentful
 
@@ -155,7 +159,7 @@ npm run seed:contentful
 
 After this command finishes running, in your Contentful Space dashboard click on Content in the navigation bar. You should see a list of new content added.
 
-![Content page filled with new content](https://i.imgur.com/bfgFxPg.png)
+![Content page filled with new content](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001429/Medusa%20Docs/Contentful/bfgFxPg_jb4zok.png)
 
 ### (Optional) Seed Medusa Database
 
@@ -172,18 +176,22 @@ npm run seed
 To start the server run the following command:
 
 ```bash
-npm start
+npm run start
 ```
 
 If you seeded the database with demo data, you should see that events related to the products are triggered.
 
-![Seed the database](https://i.imgur.com/ci4accp.png)
+![Seed the database](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001440/Medusa%20Docs/Contentful/ci4accp_okaro3.png)
 
 The Contentful integration ensures a two-way sync between the Medusa server and Contentful. So, when new products are added to Medusa, these products will be added to your Contentful Space as well.
+
+---
 
 ## (Optional) Add Products with the Medusa Admin
 
 Using the Medusa admin, you can add products to your Medusa server. This will trigger product events that subsequently add these products to Contentful.
+
+---
 
 ## Manage Contentful Data
 
@@ -195,7 +203,7 @@ To do that, open your Contentful Space Dashboard and click on Content in the Nav
 
 Click on the checkbox at the top of the table to select all products then click Publish to publish these products.
 
-![Select all products' checkboxes and click the publish button](https://i.imgur.com/3NrH5tJ.png)
+![Select all products' checkboxes and click the publish button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001452/Medusa%20Docs/Contentful/3NrH5tJ_f16iym.png)
 
 ### Added Featured Products
 
@@ -203,19 +211,21 @@ On the homepage of the storefront, there’s a featured products tile that shows
 
 To do that, open your Contentful Space Dashboard and click on Content in the Navigation bar. Make sure the select field next to the search bar is set to Any and search for Featured Products. You should find one content of the type Tile Section.
 
-![Search for the featured products tile section](https://i.imgur.com/2gS0ozY.png)
+![Search for the featured products tile section](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001462/Medusa%20Docs/Contentful/2gS0ozY_b2tpsb.png)
 
 Click on it. You should find on the page an empty Tiles section where you can add tiles and products.
 
-![On the content's page find the empty tiles section](https://i.imgur.com/inuN1OB.png)
+![On the content's page find the empty tiles section](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001472/Medusa%20Docs/Contentful/inuN1OB_ipiszl.png)
 
 Click on Add content then on Add existing content and pick some of the products you want to show on the homepage.
 
-![Add at least 1 product as a tile](https://i.imgur.com/N5m4LbF.png)
+![Add at least 1 product as a tile](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001500/Medusa%20Docs/Contentful/N5m4LbF_fb97tm.png)
 
 Once you’re done adding products, click on Publish changes in the right sidebar.
 
-![Click on the publish changes button on the right](https://i.imgur.com/URNpkXq.png)
+![Click on the publish changes button on the right](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001508/Medusa%20Docs/Contentful/URNpkXq_cb5ppp.png)
+
+---
 
 ## Setup Gatsby Storefront
 
@@ -239,7 +249,7 @@ mv .env.template .env
 
 Then, open `.env`. You should find the following environment variables:
 
-```bash
+```bash title=.env
 CONTENTFUL_SPACE_ID=
 CONTENTFUL_ACCESS_TOKEN=
 ```
@@ -250,19 +260,21 @@ To retrieve the value of `CONTENTFUL_ACCESS_TOKEN`, on your Contentful Space das
 
 You should find the field "Content Delivery API - access token”. Copy its value and set it as the value of `CONTENTFUL_ACCESS_TOKEN`.
 
-![Copy the value of the Content Delivery API access token](https://i.imgur.com/a7dl7DI.png)
+![Copy the value of the Content Delivery API access token](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001522/Medusa%20Docs/Contentful/a7dl7DI_mziogm.png)
 
 ### Start Storefront
 
 Make sure the Medusa server is still running. Then, start the storefront:
 
 ```bash
-npm start
+npm run start
 ```
 
 This starts the storefront at `localhost:8000`. Open it in your browser and you should see on the homepage the Featured Product section with the products you chose on Contentful.
 
-![The storefront with the featured products section](https://i.imgur.com/f6xwYbS.png)
+![The storefront with the featured products section](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001537/Medusa%20Docs/Contentful/f6xwYbS_w1v993.png)
+
+---
 
 ## Make Changes to Content
 
@@ -274,8 +286,13 @@ If you make changes to the data while your Gatsby storefront is running, the cha
 
 :::
 
-## What’s Next :rocket:
+---
 
-- Learn [how to customize your Contentful server and storefront](./customize-contentful.md).
-- Learn how to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
-- Learn [how to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).
+## What’s Next
+
+Learn [How to customize your Contentful server and storefront](./customize-contentful.md).
+
+## See Also
+
+- How to deploy your Medusa server to [Heroku](../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
+- [How to deploy your Gatsby storefront to Netlify](../../deployments/storefront/deploying-gatsby-on-netlify.md).

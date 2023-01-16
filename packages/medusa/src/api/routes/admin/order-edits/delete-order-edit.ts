@@ -5,7 +5,7 @@ import { OrderEditService } from "../../../../services"
  * @oas [delete] /order-edits/{id}
  * operationId: "DeleteOrderEditsOrderEdit"
  * summary: "Delete an Order Edit"
- * description: "Deletes an Order Edit"
+ * description: "Delete an Order Edit"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete.
@@ -16,7 +16,7 @@ import { OrderEditService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.delete(edit_id)
+ *       medusa.admin.orderEdits.delete(order_edit_id)
  *         .then(({ id, object, deleted }) => {
  *           console.log(id)
  *         })
@@ -36,18 +36,7 @@ import { OrderEditService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Order Edit.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               format: order_edit
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Order Edit was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminOrderEditDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  */

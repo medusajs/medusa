@@ -30,11 +30,12 @@ get:
       content:
         application/json:
           schema:
+            type: object
             properties:
               customers:
                 type: array
                 items:
-                  $ref: ../components/schemas/customer.yaml
+                  $ref: ../components/schemas/Customer.yaml
               count:
                 type: integer
                 description: The total number of items available

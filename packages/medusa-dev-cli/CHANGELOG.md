@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.27
+
+### Patch Changes
+
+- [#2360](https://github.com/medusajs/medusa/pull/2360) [`196595cb6`](https://github.com/medusajs/medusa/commit/196595cb651d058b7da8711604ba57e5c0ee8a55) Thanks [@srindom](https://github.com/srindom)! - Avoid dev cli auth
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,17 +13,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-dev-cli
 
-
-
-
-
 ## [0.0.25](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.24...medusa-dev-cli@0.0.25) (2022-07-05)
 
 **Note:** Version bump only for package medusa-dev-cli
-
-
-
-
 
 ## [0.0.24](https://github.com/medusajs/medusa/compare/medusa-dev-cli@0.0.23...medusa-dev-cli@0.0.24) (2021-12-08)
 

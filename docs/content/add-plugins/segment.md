@@ -36,11 +36,13 @@ Check out the [Event Reference](../advanced/backend/subscribers/events-list.md) 
 
 :::
 
+---
+
 ## Prerequisites
 
 ### Medusa Server
 
-It is assumed you already have a Medusa server installed. If not, please follow the [Quickstart guide](../quickstart/quick-start.md) to get started in minutes.
+It is assumed you already have a Medusa server installed. If not, please follow the [Quickstart guide](../quickstart/quick-start.mdx) to get started in minutes.
 
 In addition, make sure to have Redis installed and configured with your Medusa server. If not, follow [this documentation](../tutorial/0-set-up-your-development-environment.mdx#redis) to install Redis and then [configure it](../usage/configurations.md#redis).
 
@@ -48,27 +50,29 @@ In addition, make sure to have Redis installed and configured with your Medusa s
 
 You need to [create a Segment account](https://app.segment.com/signup/) to follow along with the tutorial. Segment offers a free plan to get started quickly.
 
+---
+
 ## Create a Segment Source
 
 On your Segment dashboard, choose Catalog from the sidebar under Connections.
 
-![Under Connections in the sidebar choose Catalog](https://i.imgur.com/rAeJkP3.png)
+![Under Connections in the sidebar choose Catalog](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000661/Medusa%20Docs/Segment/rAeJkP3_ybyutz.png)
 
 Then, in the catalog list find the Server category and choose Node.js from the list.
 
-![Choose Node.js under the Server category](https://i.imgur.com/6RxQbW6.png)
+![Choose Node.js under the Server category](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000672/Medusa%20Docs/Segment/6RxQbW6_wjphte.png)
 
 This opens a new side menu. In the side menu, click on Add Source.
 
-![Click on Add Source in the side menu showing information about the Node.js source](https://i.imgur.com/0VZJnpd.png)
+![Click on Add Source in the side menu showing information about the Node.js source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000683/Medusa%20Docs/Segment/0VZJnpd_ehagat.png)
 
 This opens a new page to create a Node.js source. Enter the name of the source then click Add Source.
 
-![Enter a name under the Name field then click on the Add Source button](https://i.imgur.com/u2hzkB5.png)
+![Enter a name under the Name field then click on the Add Source button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000693/Medusa%20Docs/Segment/u2hzkB5_t59yhj.png)
 
 On the new source dashboard, you should find a Write Key. You’ll use this key in the next section after you install the Segment plugin on your Medusa server.
 
-![The Write Key is available on the new source's page](https://i.imgur.com/OTJVsz7.png)
+![The Write Key is available on the new source's page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000708/Medusa%20Docs/Segment/OTJVsz7_v95qla.png)
 
 ### Optional: Add Destination
 
@@ -76,13 +80,15 @@ After you create the Segment source, you can add destinations. This is where the
 
 To add a destination, on the same Segment source page, click on Add Destination in the Destinations section.
 
-![Click on the Add Destination button on the source page](https://i.imgur.com/FrKlUxh.png)
+![Click on the Add Destination button on the source page](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000718/Medusa%20Docs/Segment/FrKlUxh_zlnkww.png)
 
 You can then choose from a list of destinations such as Google Universal Analytics or Facebook Pixel.
 
-![List of some of the available destinations in Segment's catalog](https://i.imgur.com/y2YnPUh.png)
+![List of some of the available destinations in Segment's catalog](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000730/Medusa%20Docs/Segment/y2YnPUh_mgfqdo.png)
 
 The process of integrating each destination is different, so you must follow the steps detailed in Segment for each destination you choose.
+
+---
 
 ## Install the Segment Plugin
 
@@ -102,31 +108,33 @@ Where `<YOUR_SEGMENT_WRITE_KEY>` is the Write Key shown on the page of the Segme
 
 Finally, in `medusa-config.js`, add the following new item to the `plugins` array:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
-  //...
+  // ...
   {
     resolve: `medusa-plugin-segment`,
     options: {
       write_key: process.env.SEGMENT_WRITE_KEY,
-    }
-  }
-];
+    },
+  },
+]
 ```
+
+---
 
 ## Test the Plugin
 
 Run your server with the following command:
 
 ```bash npm2yarn
-npm start
+npm run start
 ```
 
-Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
+Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts.
 
 After you place an order, on the Segment source that you created, click on the Debugger tab. You should see at least one event triggered for each order you place. If you click on the event, you can see the order details are passed to the event.
 
-![The order completed event is recorded on the Segment source](https://i.imgur.com/LQVJTGg.png)
+![The order completed event is recorded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000743/Medusa%20Docs/Segment/LQVJTGg_i5jyge.png)
 
 If you added a destination, you can also check your destination to make sure the data is reflected there.
 
@@ -136,33 +144,35 @@ If the data is not appearing on the destination, the issue is related to your co
 
 :::
 
+---
+
 ## Add Custom Tracking
 
 In some cases, you might want to track more events or custom events. You can do that using the `SegmentService` provided by the Segment Plugin.
 
 For example, you can add the following subscriber to listen to the `customer.created` event and add tracking for every customer created:
 
-```jsx
+```jsx title=src/subscribers/customer.ts
 class CustomerSubscriber {
   constructor({ segmentService, eventBusService }) {
-    this.segmentService = segmentService;
+    this.segmentService = segmentService
 
-    eventBusService.subscribe("customer.created", this.handleCustomer);
+    eventBusService.subscribe("customer.created", this.handleCustomer)
   }
 
   handleCustomer = async (data) => {
-    const customerData = data;
-    delete customerData['password_hash'];
+    const customerData = data
+    delete customerData["password_hash"]
 
     this.segmentService.track({
-      event: 'Customer Created',
+      event: "Customer Created",
       userId: data.id,
-      properties: customerData
+      properties: customerData,
     })
-  };
+  }
 }
 
-export default CustomerSubscriber;
+export default CustomerSubscriber
 ```
 
 You resolve the `SegmentService` using dependency injection. Then, when the `customer.created` event is triggered, you use the `track` method available in the `SegmentService` to send tracking data to Segment.
@@ -183,10 +193,13 @@ The `SegmentServer` also provides the method `identify` to tie a user to their a
 
 After adding the above subscriber, run your server again if it isn’t running and create a customer using the REST APIs or one of the Medusa storefronts. If you check the Debugger in your Segment source, you should see a new event “Customer Created” tracked. If you click on it, you’ll see the data you passed to the `track` method.
 
-![The customer created event is recoreded on the Segment source](https://i.imgur.com/4LD41xE.png)
+![The customer created event is recoreded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000759/Medusa%20Docs/Segment/4LD41xE_qungdw.png)
 
-## What’s Next 🚀
+---
 
-- Learn how [services](../advanced/backend/services/create-service.md) and [subscribers](../advanced/backend/subscribers/create-subscriber.md) work.
-- Check out a [full list of events](../advanced/backend/subscribers/events-list.md) in Medusa.
-- Learn how to [deploy the Medusa server](../deployments/server/index.mdx).
+## See Also
+
+- [Services Overview](../advanced/backend/services/create-service.md)
+- [Subscribers Overview](../advanced/backend/subscribers/create-subscriber.md)
+- [Events Reference](../advanced/backend/subscribers/events-list.md)
+- [Deploy the Medusa server](../deployments/server/index.mdx)

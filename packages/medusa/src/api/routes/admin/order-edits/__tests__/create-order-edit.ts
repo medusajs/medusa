@@ -1,7 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
-import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 
 describe("POST /admin/order-edits", () => {
   describe("successfully create an order edit", () => {
@@ -20,7 +19,6 @@ describe("POST /admin/order-edits", () => {
             userId: IdMap.getId("admin_user"),
           },
         },
-        flags: [OrderEditingFeatureFlag],
       })
     })
 
@@ -41,7 +39,7 @@ describe("POST /admin/order-edits", () => {
           internal_note: internalNote,
         },
         {
-          loggedInUserId: IdMap.getId("admin_user"),
+          createdBy: IdMap.getId("admin_user"),
         }
       )
     })

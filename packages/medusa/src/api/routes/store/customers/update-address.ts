@@ -1,9 +1,9 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
-import { AddressPayload } from "../../../../types/common"
-import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import CustomerService from "../../../../services/customer"
+import { AddressPayload } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/me/addresses/{address_id}
@@ -17,8 +17,7 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         anyOf:
- *           - $ref: "#/components/schemas/address"
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerAddressesAddressReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -51,9 +50,10 @@ import { EntityManager } from "typeorm"
  *    content:
  *      application/json:
  *        schema:
+ *          type: object
  *          properties:
  *            customer:
- *              $ref: "#/components/schemas/customer"
+ *              $ref: "#/components/schemas/Customer"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -69,6 +69,7 @@ import { EntityManager } from "typeorm"
  */
 export default async (req, res) => {
   const id = req.user.customer_id
+
   const { address_id } = req.params
 
   const validated = await validator(
@@ -95,5 +96,10 @@ export default async (req, res) => {
   res.json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersCustomerAddressesAddressReq
+ * anyOf:
+ *   - $ref: "#/components/schemas/AddressFields"
+ */
 // eslint-disable-next-line max-len
 export class StorePostCustomersCustomerAddressesAddressReq extends AddressPayload {}

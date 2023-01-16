@@ -1,4 +1,5 @@
 import RegionService from "../../../../services/region"
+
 /**
  * @oas [get] /regions/{id}
  * operationId: GetRegionsRegion
@@ -28,9 +29,10 @@ import RegionService from "../../../../services/region"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             region:
- *               $ref: "#/components/schemas/region"
+ *               $ref: "#/components/schemas/Region"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

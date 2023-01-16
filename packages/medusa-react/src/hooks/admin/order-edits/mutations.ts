@@ -1,19 +1,24 @@
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { Response } from "@medusajs/medusa-js"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 
 import {
   AdminOrderEditDeleteRes,
   AdminOrderEditItemChangeDeleteRes,
   AdminOrderEditsRes,
   AdminPostOrderEditsEditLineItemsLineItemReq,
+  AdminPostOrderEditsEditLineItemsReq,
   AdminPostOrderEditsOrderEditReq,
   AdminPostOrderEditsReq,
-  AdminPostOrderEditsEditLineItemsReq,
 } from "@medusajs/medusa"
 
-import { buildOptions } from "../../utils/buildOptions"
-import { useMedusa } from "../../../contexts"
 import { adminOrderEditsKeys } from "."
+import { useMedusa } from "../../../contexts"
+import { buildOptions } from "../../utils/buildOptions"
+import { adminOrderKeys } from "../orders"
 
 export const useAdminCreateOrderEdit = (
   options?: UseMutationOptions<
@@ -27,7 +32,11 @@ export const useAdminCreateOrderEdit = (
   return useMutation(
     (payload: AdminPostOrderEditsReq) =>
       client.admin.orderEdits.create(payload),
-    buildOptions(queryClient, adminOrderEditsKeys.lists(), options)
+    buildOptions(
+      queryClient,
+      [adminOrderEditsKeys.lists(), adminOrderKeys.details()],
+      options
+    )
   )
 }
 
@@ -42,7 +51,11 @@ export const useAdminDeleteOrderEdit = (
     () => client.admin.orderEdits.delete(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.detail(id), adminOrderEditsKeys.lists()],
+      [
+        adminOrderEditsKeys.detail(id),
+        adminOrderEditsKeys.lists(),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
@@ -96,16 +109,13 @@ export const useAdminOrderEditUpdateLineItem = (
 export const useAdminOrderEditDeleteLineItem = (
   orderEditId: string,
   itemId: string,
-  options?: UseMutationOptions<
-    Response<AdminOrderEditsRes>,
-    Error
-  >
+  options?: UseMutationOptions<Response<AdminOrderEditsRes>, Error>
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (() => client.admin.orderEdits.removeLineItem(orderEditId, itemId)),
+    () => client.admin.orderEdits.removeLineItem(orderEditId, itemId),
     buildOptions(
       queryClient,
       [adminOrderEditsKeys.detail(orderEditId), adminOrderEditsKeys.lists()],
@@ -130,13 +140,17 @@ export const useAdminUpdateOrderEdit = (
       client.admin.orderEdits.update(id, payload),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      [
+        adminOrderEditsKeys.lists(),
+        adminOrderEditsKeys.detail(id),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
 }
 
-export const useAdminOrderEditLineItem = (
+export const useAdminOrderEditAddLineItem = (
   id: string,
   options?: UseMutationOptions<
     Response<AdminOrderEditsRes>,
@@ -168,7 +182,11 @@ export const useAdminRequestOrderEditConfirmation = (
     () => client.admin.orderEdits.requestConfirmation(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      [
+        adminOrderEditsKeys.lists(),
+        adminOrderEditsKeys.detail(id),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
@@ -185,7 +203,11 @@ export const useAdminCancelOrderEdit = (
     () => client.admin.orderEdits.cancel(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      [
+        adminOrderEditsKeys.lists(),
+        adminOrderEditsKeys.detail(id),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )
@@ -202,7 +224,11 @@ export const useAdminConfirmOrderEdit = (
     () => client.admin.orderEdits.confirm(id),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderEditsKeys.detail(id)],
+      [
+        adminOrderEditsKeys.lists(),
+        adminOrderEditsKeys.detail(id),
+        adminOrderKeys.details(),
+      ],
       options
     )
   )

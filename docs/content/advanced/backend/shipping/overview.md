@@ -1,14 +1,16 @@
 # Shipping Architecture Overview
 
-This document gives an overview of the shipping architecture and its 4 most important components.
+This document gives an overview of the shipping architecture and its four most important components.
 
 ## Introduction
 
 In Medusa, the Shipping architecture relies on 4 components: **Fulfillment Provider**, **Shipping Profiles**, **Shipping Options**, and **Shipping Methods**.
 
-The distinction between the 4 is important. It has been carefully planned and put together to support all the different ecommerce use cases and shipping providers that can be integrated.
+The distinction between the four is important. It has been carefully planned and put together to support all the different ecommerce use cases and shipping providers that can be integrated.
 
 It’s also constructed to support multiple regions, provide different shipment configurations and options for different product types, provide promotional shipments for your customers, and much more.
+
+---
 
 ## Summary
 
@@ -17,7 +19,9 @@ It’s also constructed to support multiple regions, provide different shipment 
 - **Shipping Options:** created by the admin and belong to a shipping profile. They are specific to certain regions and can have cart conditions. They use an underlying fulfillment provider. Once a customer checks out, they can choose the shipping option that’s available and most relevant to them.
 - **Shipping Method:** created when the customer chooses a shipping option on checkout. The shipping method is basically a copy of the shipping option, but with values specific to the customer and the cart it’s associated with. When the order is placed, the shipping method will then be associated with the order and fulfilled based on the integration with the fulfillment provider.
 
-![Shipping Architecture](https://i.imgur.com/QII2Hvn.png)
+![Shipping Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001762/Medusa%20Docs/Diagrams/QII2Hvn_vjkrdy.png)
+
+---
 
 ## Fulfillment Provider
 
@@ -37,11 +41,13 @@ As a developer, you will mainly work with the Fulfillment Provider when integrat
 
 When you run your Medusa server, the Fulfillment Provider will be registered on your server if it hasn’t been already.
 
-Once the Fulfillment Provider is added to the server, the store operator will be able to associate on the [Medusa Admin](../../../quickstart/quick-start.md) the Fulfillment Provider with shipping options.
+Once the Fulfillment Provider is added to the server, the store operator will be able to associate on the [Medusa Admin](../../../quickstart/quick-start.mdx) the Fulfillment Provider with shipping options.
 
 ### FulfillmentProvider Entity Overview
 
 The [`FulfillmentProvider`](../../../references/entities/classes/FulfillmentProvider.md) entity only has 2 attributes: `is_installed` to indicate if the fulfillment provider is installed and its value is a boolean; and `id` which is the unique identifier that you define in the Fulfillment Provider Service.
+
+---
 
 ## Shipping Profile
 
@@ -68,6 +74,8 @@ The [`ShippingProfile`](../../../references/entities/classes/ShippingProfile.md
 The `ShippingProfile` has a `type` attribute that can be `default`, `gift_card`, or `custom`.
 
 The `ShippingProfile` entity also has an array of `ShippingOption` instances.
+
+---
 
 ## Shipping Option
 
@@ -105,6 +113,8 @@ The `data` attribute is used to specify any data necessary for fulfilling the 
 
 The `data` attribute does not have any specific format. It’s up to you to choose whatever data is included here.
 
+---
+
 ## Shipping Method
 
 Unlike the previous two components, a shipping method is not created by the admin. It’s created when a `POST` request is sent to `/store/carts/:id/shipping-methods` after the customer chooses a shipping option. 
@@ -135,7 +145,9 @@ The `ShippingMethod` also belongs to the `Order` entity. This association is
 
 The `ShippingMethod` instance holds a `price` attribute, which will either be the flat rate price or the calculated price.
 
-## What’s Next :rocket:
+---
 
-- [Learn how to Create a Fulfillment Provider.](./add-fulfillment-provider.md)
-- Check out [available shipping plugins](https://github.com/medusajs/medusa/tree/master/packages).
+## See Also
+
+- [Create a Fulfillment Provider](./add-fulfillment-provider.md)
+- [Available shipping plugins](https://github.com/medusajs/medusa/tree/master/packages)

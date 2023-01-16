@@ -1,10 +1,12 @@
 import { unionBy } from "lodash"
 import {
   DeleteResult,
+  EntityRepository,
   FindManyOptions,
-  FindOptionsSelect,
+  FindOptionsUtils,
   In,
   Not,
+  Repository,
   SelectQueryBuilder,
 } from "typeorm"
 import {
@@ -15,16 +17,16 @@ import {
   TaxRate,
 } from "../models"
 import { TaxRateListByConfig } from "../types/tax-rate"
-import { buildLegacySelectOrRelationsFrom, isDefined } from "../utils"
-import { dataSource } from "../loaders/database"
+import { isDefined } from "medusa-core-utils"
 
-const resolvableFields = [
+const resolveableFields = [
   "product_count",
   "product_type_count",
   "shipping_option_count",
 ]
 
-export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
+@EntityRepository(TaxRate)
+export class TaxRateRepository extends Repository<TaxRate> {
   getFindQueryBuilder(findOptions: FindManyOptions<TaxRate>) {
     const qb = this.createQueryBuilder("tr")
     const cleanOptions = findOptions
@@ -32,11 +34,8 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
     const resolverFields: string[] = []
     if (isDefined(findOptions.select)) {
       const selectableCols: (keyof TaxRate)[] = []
-      const selectArray = buildLegacySelectOrRelationsFrom(
-        findOptions.select as FindOptionsSelect<TaxRate>
-      )
-      for (const k of selectArray) {
-        if (!resolvableFields.includes(k)) {
+      for (const k of findOptions.select) {
+        if (!resolveableFields.includes(k)) {
           selectableCols.push(k)
         } else {
           resolverFields.push(k)
@@ -45,30 +44,32 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       cleanOptions.select = selectableCols
     }
 
-    // TODO: waiting feedback on issue https://github.com/typeorm/typeorm/issues/9252
-    qb.setFindOptions(cleanOptions || {})
+    FindOptionsUtils.applyFindManyOptionsOrConditionsToQueryBuilder(
+      qb,
+      cleanOptions
+    )
 
     if (resolverFields.length > 0) {
       this.applyResolutionsToQueryBuilder(qb, resolverFields)
     }
 
     return qb
-  },
+  }
 
   async findWithResolution(findOptions: FindManyOptions<TaxRate>) {
     const qb = this.getFindQueryBuilder(findOptions)
     return await qb.getMany()
-  },
+  }
 
   async findOneWithResolution(findOptions: FindManyOptions<TaxRate>) {
     const qb = this.getFindQueryBuilder(findOptions)
     return await qb.getOne()
-  },
+  }
 
   async findAndCountWithResolution(findOptions: FindManyOptions<TaxRate>) {
     const qb = this.getFindQueryBuilder(findOptions)
     return await qb.getManyAndCount()
-  },
+  }
 
   applyResolutionsToQueryBuilder(
     qb: SelectQueryBuilder<TaxRate>,
@@ -100,7 +101,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
     }
 
     return qb
-  },
+  }
 
   async removeFromProduct(
     id: string,
@@ -111,7 +112,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       .from(ProductTaxRate)
       .where({ rate_id: id, product_id: In(productIds) })
       .execute()
-  },
+  }
 
   async addToProduct(
     id: string,
@@ -139,7 +140,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       .select()
       .where(insertResult.identifiers)
       .getMany()
-  },
+  }
 
   async removeFromProductType(
     id: string,
@@ -150,7 +151,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       .from(ProductTypeTaxRate)
       .where({ rate_id: id, product_type_id: In(productTypeIds) })
       .execute()
-  },
+  }
 
   async addToProductType(
     id: string,
@@ -181,7 +182,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       .select()
       .where(insertResult.identifiers)
       .getMany()
-  },
+  }
 
   async removeFromShippingOption(
     id: string,
@@ -192,7 +193,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       .from(ShippingTaxRate)
       .where({ rate_id: id, shipping_option_id: In(optionIds) })
       .execute()
-  },
+  }
 
   async addToShippingOption(
     id: string,
@@ -223,7 +224,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       .select()
       .where(insertResult.identifiers)
       .getMany()
-  },
+  }
 
   async listByProduct(productId: string, config: TaxRateListByConfig) {
     const productRates = this.createQueryBuilder("txr")
@@ -253,7 +254,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
     // Only return unique rates by joining the two arrays from typeRates and
     // productRates matching based on the id
     return unionBy(...results, (txr) => txr.id)
-  },
+  }
 
   async listByShippingOption(optionId: string) {
     const rates = this.createQueryBuilder("txr")
@@ -261,6 +262,5 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       .where("ptr.shipping_option_id = :optionId", { optionId })
 
     return await rates.getMany()
-  },
-})
-export default TaxRateRepository
+  }
+}

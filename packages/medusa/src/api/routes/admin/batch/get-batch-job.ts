@@ -33,9 +33,7 @@
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            batch_job:
- *              $ref: "#/components/schemas/batch_job"
+ *          $ref: "#/components/schemas/AdminBatchJobRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

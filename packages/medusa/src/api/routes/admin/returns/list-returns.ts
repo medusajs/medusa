@@ -41,11 +41,12 @@ import { Return } from "../../../../models"
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             returns:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/return"
+ *                 $ref: "#/components/schemas/Return"
  *             count:
  *               type: integer
  *               description: The total number of items available

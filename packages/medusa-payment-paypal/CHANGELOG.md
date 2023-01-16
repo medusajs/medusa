@@ -1,5 +1,20 @@
 # Change Log
 
+## 1.2.7
+
+### Patch Changes
+
+- [`9cf971c6b`](https://github.com/medusajs/medusa/commit/9cf971c6bdcee89098e455f02be5539d963f896f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-payment-paypal): PaymentCollection support
+
+## 1.2.6
+
+### Patch Changes
+
+- [#2381](https://github.com/medusajs/medusa/pull/2381) [`a908a7716`](https://github.com/medusajs/medusa/commit/a908a7716c94222f340531a5b13db0867b511519) Thanks [@srindom](https://github.com/srindom)! - Rely on cart totals in payment providers
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81)]:
+  - medusa-core-utils@1.1.32
+
 ## 1.2.5
 
 ### Patch Changes
