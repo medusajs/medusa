@@ -148,6 +148,7 @@ export class FulfillmentOption {
  *   fulfillment_options:
  *     type: array
  *     items:
+ *       type: object
  *       properties:
  *         provider_id:
  *           type: string
