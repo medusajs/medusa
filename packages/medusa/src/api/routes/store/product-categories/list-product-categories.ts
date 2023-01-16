@@ -4,27 +4,24 @@ import { Type, Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
+import { defaultStoreScope } from "."
 
 /**
  * @oas [get] /product-categories
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories."
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - (query) q {string} Query used for searching product category names orhandles.
- *   - (query) is_internal {boolean} Search for only internal categories.
- *   - (query) is_active {boolean} Search for only active categories
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-categories' \
+ *       curl --location --request GET 'https://medusa-url.com/store/product-categories' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
@@ -70,36 +67,31 @@ export default async (req: Request, res: Response) => {
     "productCategoryService"
   )
 
+  const selectors = Object.assign({ ...defaultStoreScope }, req.filterableFields)
+
   const [data, count] = await productCategoryService.listAndCount(
-    req.filterableFields,
-    req.listConfig
+    selectors,
+    req.listConfig,
+    defaultStoreScope
   )
 
   const { limit, offset } = req.validatedQuery
 
   res.json({
     count,
-    product_categories: data,
     offset,
     limit,
+    product_categories: data,
   })
 }
 
-export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
+export class StoreGetProductCategoriesParams extends extendedFindParamsMixin({
   limit: 100,
   offset: 0,
 }) {
   @IsString()
   @IsOptional()
   q?: string
-
-  @IsString()
-  @IsOptional()
-  is_internal?: boolean
-
-  @IsString()
-  @IsOptional()
-  is_active?: boolean
 
   @IsString()
   @IsOptional()
