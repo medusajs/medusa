@@ -281,7 +281,7 @@ function buildOrder<TEntity>(orderBy: {
       continue
     }
 
-    output[order] = true
+    output[order] = orderBy[order]
   }
 
   return output
