@@ -126,7 +126,14 @@ enum actions {
   attachInventoryItem = "attachInventoryItem",
 }
 
-const flow: TransactionStepsDefinition = {
+const simpleFlow: TransactionStepsDefinition = {
+  next: {
+    action: actions.createVariant,
+    maxRetries: 0,
+  },
+}
+
+const flowWithInventory: TransactionStepsDefinition = {
   next: {
     action: actions.createVariant,
     forwardResponse: true,
@@ -144,9 +151,14 @@ const flow: TransactionStepsDefinition = {
   },
 }
 
-const createVariantStrategy = new TransactionOrchestrator(
+const createSimpleVariantStrategy = new TransactionOrchestrator(
   "create-variant",
-  flow
+  simpleFlow
+)
+
+const createVariantStrategyWithInventory = new TransactionOrchestrator(
+  "create-variant-with-inventory",
+  flowWithInventory
 )
 
 export default async (req, res) => {
@@ -173,9 +185,10 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     const inventoryServiceTx =
-      inventoryService.withTransaction(transactionManager)
+      inventoryService?.withTransaction?.(transactionManager)
     const productVariantInventoryServiceTx =
-      productVariantInventoryService.withTransaction(transactionManager)
+      productVariantInventoryService?.withTransaction?.(transactionManager)
+
     const productVariantServiceTx =
       productVariantService.withTransaction(transactionManager)
 
@@ -269,12 +282,16 @@ export default async (req, res) => {
       return command[actionId][type](payload.data)
     }
 
-    const transaction = await createVariantStrategy.beginTransaction(
+    const strategy = inventoryService
+      ? createVariantStrategyWithInventory
+      : createSimpleVariantStrategy
+
+    const transaction = await strategy.beginTransaction(
       ulid(),
       transactionHandler,
       validated
     )
-    await createVariantStrategy.resume(transaction)
+    await strategy.resume(transaction)
 
     if (transaction.getState() !== TransactionState.DONE) {
       throw new MedusaError(
