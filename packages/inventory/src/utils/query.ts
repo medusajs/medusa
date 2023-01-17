@@ -1,5 +1,10 @@
 import { EntityManager, ILike } from "typeorm"
-import { buildQuery, FilterableInventoryItemProps, FindConfig, } from "@medusajs/medusa"
+import {
+  buildLegacySelectOrRelationsFrom,
+  buildQuery,
+  FilterableInventoryItemProps,
+  FindConfig,
+} from "@medusajs/medusa"
 import { InventoryItem } from "../models"
 
 export function getListQuery(
@@ -10,7 +15,7 @@ export function getListQuery(
   const inventoryItemRepository = manager.getRepository(InventoryItem)
 
   const { q, ...selectorRest } = selector
-  const query = buildQuery<FilterableInventoryItemProps>(selectorRest, config)
+  const query = buildQuery<FilterableInventoryItemProps, InventoryItem & { location_id?: string | string[] }>(selectorRest, config)
 
   const queryBuilder = inventoryItemRepository.createQueryBuilder("inv_item")
 
@@ -46,7 +51,8 @@ export function getListQuery(
   }
 
   if (query.select) {
-    queryBuilder.select(query.select.map((s) => "inv_item." + s))
+    const legacySelect = buildLegacySelectOrRelationsFrom(query.select)
+    queryBuilder.select(legacySelect.map((s) => "inv_item." + s))
   }
 
   if (query.order) {
