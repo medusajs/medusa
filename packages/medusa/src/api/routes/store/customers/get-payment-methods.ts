@@ -1,7 +1,6 @@
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import PaymentProviderService from "../../../../services/payment-provider"
-import StoreService from "../../../../services/store"
 import { PaymentProvider } from "../../../../models"
 
 /**
@@ -36,18 +35,7 @@ import { PaymentProvider } from "../../../../models"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             payment_methods:
- *               type: array
- *               items:
- *                 properties:
- *                   provider_id:
- *                     type: string
- *                     description: The id of the Payment Provider where the payment method is saved.
- *                   data:
- *                     type: object
- *                     description: The data needed for the Payment Provider to use the saved payment method.
+ *           $ref: "#/components/schemas/StoreCustomersListPaymentMethodsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

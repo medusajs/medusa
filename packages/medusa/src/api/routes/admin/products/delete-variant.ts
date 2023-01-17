@@ -43,21 +43,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variant_id:
- *               type: string
- *               description: The ID of the deleted Product Variant.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: variant
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
- *             product:
- *               $ref: "#/components/schemas/Product"
+ *           $ref: "#/components/schemas/AdminProductsDeleteVariantRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

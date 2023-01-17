@@ -25,6 +25,13 @@ export const allowedStoreGiftCardRelations = ["region"]
 
 export const allowedStoreGiftCardFields = ["id", "code", "value", "balance"]
 
+/**
+ * @schema StoreGiftCardsRes
+ * type: object
+ * properties:
+ *   gift_card:
+ *     $ref: "#/components/schemas/GiftCard"
+ */
 export type StoreGiftCardsRes = {
   gift_card: GiftCard
 }

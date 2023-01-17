@@ -29,10 +29,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            collection:
- *              $ref: "#/components/schemas/ProductCollection"
+ *          $ref: "#/components/schemas/StoreCollectionsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "404":

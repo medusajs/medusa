@@ -17,6 +17,8 @@ import {
 @Entity()
 @Tree("materialized-path")
 export class ProductCategory extends SoftDeletableEntity {
+  static treeRelations = ["parent_category", "category_children"]
+
   @Column()
   name: string
 
