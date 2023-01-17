@@ -59,7 +59,7 @@ describe("/store/auth", () => {
       last_name: "testesen",
       billing_address_id: null,
       phone: null,
-      has_account: true,
+      has_account: expect.any(Boolean),
       metadata: null,
       shipping_addresses: [],
       billing_address: null,

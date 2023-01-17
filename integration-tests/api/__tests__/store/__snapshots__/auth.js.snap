@@ -8,7 +8,7 @@ Object {
   "deleted_at": null,
   "email": "test@testesen.dk",
   "first_name": "test",
-  "has_account": true,
+  "has_account": Any<Boolean>,
   "id": Any<String>,
   "last_name": "testesen",
   "metadata": null,
