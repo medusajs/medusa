@@ -8,14 +8,16 @@ const {
   ShippingProfile,
   ProductVariant,
   Image,
-  Store,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    where: { type: "default" }
+    where: {
+      type: ShippingProfileType.DEFAULT,
+    },
   })
 
   const coll = await manager.create(ProductCollection, {

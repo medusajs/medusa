@@ -13,6 +13,7 @@ const {
   ShippingOption,
   ShippingProfile,
   Swap,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 const { simpleSalesChannelFactory } = require("../factories")
 
@@ -20,7 +21,7 @@ module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    where: { type: "default" }
+    where: { type: ShippingProfileType.DEFAULT },
   })
 
   const salesChannel = await simpleSalesChannelFactory(dataSource, {

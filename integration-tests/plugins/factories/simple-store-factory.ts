@@ -10,13 +10,17 @@ export const simpleStoreFactory = async (
   connection: Connection,
   data: StoreFactoryData = {},
   seed?: number
-): Promise<Store> => {
+): Promise<Store | undefined> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
 
   const manager = connection.manager
-  const store = await manager.findOne(Store)
+  const store = await manager.findOne(Store, {})
+
+  if (!store) {
+    return
+  }
 
   store.swap_link_template = data.swap_link_template ?? "something/{cart_id}"
 

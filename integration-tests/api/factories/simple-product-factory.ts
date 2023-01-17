@@ -9,14 +9,8 @@ import {
 } from "@medusajs/medusa"
 import faker from "faker"
 import { DataSource } from "typeorm"
-import {
-  ProductVariantFactoryData,
-  simpleProductVariantFactory,
-} from "./simple-product-variant-factory"
-import {
-  SalesChannelFactoryData,
-  simpleSalesChannelFactory,
-} from "./simple-sales-channel-factory"
+import { ProductVariantFactoryData, simpleProductVariantFactory, } from "./simple-product-variant-factory"
+import { SalesChannelFactoryData, simpleSalesChannelFactory, } from "./simple-sales-channel-factory"
 
 export type ProductFactoryData = {
   id?: string
@@ -34,7 +28,7 @@ export const simpleProductFactory = async (
   dataSource: DataSource,
   data: ProductFactoryData = {},
   seed?: number
-): Promise<Product | undefined> => {
+): Promise<Product | undefined | null> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
@@ -42,11 +36,15 @@ export const simpleProductFactory = async (
   const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.DEFAULT,
+    where: {
+      type: ShippingProfileType.DEFAULT,
+    }
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.GIFT_CARD,
+    where: {
+      type: ShippingProfileType.GIFT_CARD,
+    }
   })
 
   let sales_channels
@@ -59,7 +57,7 @@ export const simpleProductFactory = async (
     )
   } else {
     const store = await manager.findOne(Store, {
-      relations: ["default_sales_channel"],
+      relations: { default_sales_channel: true },
     })
 
     if (store?.default_sales_channel) {
@@ -147,7 +145,11 @@ export const simpleProductFactory = async (
 
   return await manager.findOne(
     Product,
-    { id: prodId },
-    { relations: ["tags", "variants", "variants.prices"] }
+    {
+      where: {
+        id: prodId
+      },
+      relations: { tags: true, variants: { prices: true }}
+    }
   )
 }

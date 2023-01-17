@@ -1926,7 +1926,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const variantPre = await dbConnection.manager.findOne(ProductVariant, {
-        where: { id: "test-variant" }
+        where: { id: "test-variant" },
       })
 
       expect(variantPre).not.toEqual(undefined)
@@ -1947,7 +1947,7 @@ describe("/admin/products", () => {
       )
 
       const variant = await dbConnection.manager.findOne(ProductVariant, {
-        where: { id: "test-variant" }
+        where: { id: "test-variant" },
       })
 
       expect(variant).toEqual(undefined)
@@ -1958,7 +1958,7 @@ describe("/admin/products", () => {
 
       // Validate that the option value exists
       const optValPre = await dbConnection.manager.findOne(ProductOptionValue, {
-        where: { variant_id: "test-variant_2" }
+        where: { variant_id: "test-variant_2" },
       })
 
       expect(optValPre).not.toEqual(undefined)
@@ -2003,7 +2003,7 @@ describe("/admin/products", () => {
 
       // Validate that the option value exists
       const optValPre = await dbConnection.manager.findOne(ProductOptionValue, {
-        where: { variant_id: "test-variant_2" }
+        where: { variant_id: "test-variant_2" },
       })
 
       expect(optValPre).not.toEqual(undefined)
@@ -2020,7 +2020,7 @@ describe("/admin/products", () => {
       const optValPost = await dbConnection.manager.findOne(
         ProductOptionValue,
         {
-          where: { variant_id: "test-variant_2" }
+          where: { variant_id: "test-variant_2" },
         }
       )
 
@@ -2050,7 +2050,7 @@ describe("/admin/products", () => {
 
       // Validate that the price exists
       const pricePre = await dbConnection.manager.findOne(MoneyAmount, {
-        where: { id: "test-price" }
+        where: { id: "test-price" },
       })
 
       expect(pricePre).not.toEqual(undefined)
@@ -2065,21 +2065,18 @@ describe("/admin/products", () => {
 
       // Validate that the price was deleted
       const pricePost = await dbConnection.manager.findOne(MoneyAmount, {
-        where: { id: "test-price" }
+        where: { id: "test-price" },
       })
 
       expect(pricePost).toEqual(undefined)
 
       // Validate that the price still exists in the DB with deleted_at
-      const optValDeleted = await dbConnection.manager.findOne(
-        MoneyAmount,
-        {
-          where: {
-            id: "test-price",
-          },
-          withDeleted: true,
-        }
-      )
+      const optValDeleted = await dbConnection.manager.findOne(MoneyAmount, {
+        where: {
+          id: "test-price",
+        },
+        withDeleted: true,
+      })
 
       expect(optValDeleted).toEqual(
         expect.objectContaining({
@@ -2094,7 +2091,7 @@ describe("/admin/products", () => {
 
       // Validate that the price exists
       const pricePre = await dbConnection.manager.findOne(MoneyAmount, {
-        where: { id: "test-price" }
+        where: { id: "test-price" },
       })
 
       expect(pricePre).not.toEqual(undefined)
@@ -2109,19 +2106,18 @@ describe("/admin/products", () => {
 
       // Validate that the price has been deleted
       const pricePost = await dbConnection.manager.findOne(MoneyAmount, {
-        where: { id: "test-price" }
+        where: { id: "test-price" },
       })
 
       expect(pricePost).toEqual(undefined)
 
       // Validate that the price still exists in the DB with deleted_at
-      const optValDeleted = await dbConnection.manager.findOne(
-        MoneyAmount,
+      const optValDeleted = await dbConnection.manager.findOne(MoneyAmount, {
         where: {
           id: "test-price",
         },
         withDeleted: true,
-      )
+      })
 
       expect(optValDeleted).toEqual(
         expect.objectContaining({

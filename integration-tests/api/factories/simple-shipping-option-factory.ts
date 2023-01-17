@@ -37,11 +37,15 @@ export const simpleShippingOptionFactory = async (
 
   const manager = dataSource.manager
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.DEFAULT,
+    where: {
+      type: ShippingProfileType.DEFAULT,
+    }
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.GIFT_CARD,
+    where: {
+      type: ShippingProfileType.GIFT_CARD,
+    }
   })
 
   const shippingOptionData = {

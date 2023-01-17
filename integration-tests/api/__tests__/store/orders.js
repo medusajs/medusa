@@ -67,7 +67,9 @@ describe("/store/carts", () => {
       })
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
+        where: {
+          type: "default",
+        },
       })
       await manager.insert(Product, {
         id: "test-product",
@@ -255,7 +257,7 @@ describe("/store/carts", () => {
         MedusaError.Codes.INSUFFICIENT_INVENTORY
       )
 
-      let payments = await manager.find(Payment, { cart_id: cartId })
+      let payments = await manager.find(Payment, { where: { cart_id: cartId } })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({
@@ -280,7 +282,7 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      payments = await manager.find(Payment, { cart_id: cartId })
+      payments = await manager.find(Payment, { where: { cart_id: cartId } })
       expect(payments).toHaveLength(2)
       expect(payments).toEqual(
         expect.arrayContaining([
@@ -333,7 +335,9 @@ describe("/store/carts", () => {
       expect(responseSuccess.status).toEqual(200)
       expect(responseSuccess.data.type).toEqual("order")
 
-      const payments = await manager.find(Payment, { cart_id: cartId })
+      const payments = await manager.find(Payment, {
+        where: { cart_id: cartId },
+      })
       expect(payments).toHaveLength(1)
       expect(payments).toContainEqual(
         expect.objectContaining({

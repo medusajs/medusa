@@ -9,6 +9,7 @@ const {
   Region,
   Cart,
   PriceList,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
 module.exports = async (dataSource, data = {}) => {
@@ -27,7 +28,7 @@ module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    where: { type: "default" }
+    where: { type: ShippingProfileType.DEFAULT },
   })
 
   await manager.insert(Region, {

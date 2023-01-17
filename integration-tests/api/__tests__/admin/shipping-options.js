@@ -274,7 +274,9 @@ describe("/admin/shipping-options", () => {
 
       const manager = dbConnection.manager
       const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
+        where: {
+          type: "default",
+        },
       })
 
       payload = {
@@ -521,7 +523,9 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/shipping-options", () => {
       const defaultProfile = await dbConnection.manager.findOne(
         ShippingProfile,
         {
-          type: "default",
+          where: {
+            type: "default",
+          },
         }
       )
 
