@@ -581,11 +581,8 @@ class SendGridService extends NotificationService {
     const giftCard = await this.giftCardService_.retrieve(id, {
       relations: ["region", "order"],
     })
-    // Should this use the custom Tax Provider if any?
     const taxRate = giftCard.region.tax_rate / 100
-    // get locale from the order - but maybe we should get this from the region?
     const locale = giftCard.order ? await this.extractLocale(order) : null;
-    // if the gift card has no order, we still return the email associated to the gift card (created from admin panel).
     const email = giftCard.order ? giftCard.order.email : giftCard.metadata.email;
 
     return {
