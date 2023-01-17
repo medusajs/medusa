@@ -38,7 +38,7 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
         .offset(offset)
         .getRawMany()
 
-      const discountConditionRepo = manager.getCustomRepository(
+      const discountConditionRepo = manager.withRepository(
         DiscountConditionRepository
       )
       await manager

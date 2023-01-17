@@ -541,8 +541,9 @@ class DiscountService extends TransactionBaseService {
     productId: string | undefined
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager) => {
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
+      const discountConditionRepo = manager.withRepository(
+        this.discountConditionRepository_
+      )
 
       // In case of custom line items, we don't have a product id.
       // Instead of throwing, we simply invalidate the discount.
@@ -742,8 +743,9 @@ class DiscountService extends TransactionBaseService {
     customerId: string | undefined
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
+      const discountConditionRepo = manager.withRepository(
+        this.discountConditionRepository_
+      )
 
       // Instead of throwing on missing customer id, we simply invalidate the discount
       if (!customerId) {
