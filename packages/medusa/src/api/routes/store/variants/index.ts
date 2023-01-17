@@ -1,4 +1,3 @@
-import { PaginatedResponse } from "./../../../../types/common"
 import { ProductVariant } from "../../../../"
 import { Router } from "express"
 import middlewares from "../../../middlewares"
@@ -16,11 +15,27 @@ export default (app) => {
 
 export const defaultStoreVariantRelations = ["prices", "options"]
 
+/**
+ * @schema StoreVariantsRes
+ * type: object
+ * properties:
+ *   variant:
+ *     $ref: "#/components/schemas/PricedVariant"
+ */
 export type StoreVariantsRes = {
   variant: ProductVariant
 }
 
-export type StoreVariantsListRes = PaginatedResponse & {
+/**
+ * @schema StoreVariantsListRes
+ * type: object
+ * properties:
+ *   variants:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/PricedVariant"
+ */
+export type StoreVariantsListRes = {
   variants: ProductVariant[]
 }
 
