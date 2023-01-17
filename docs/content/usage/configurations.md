@@ -72,14 +72,11 @@ module.exports = {
     // ...other configurations
     database_type: "postgres",
     database_url: DATABASE_URL,
-    database_schema: process.env.DATABASE_SCHEMA, // optional
   },
 }
 ```
 
 Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
-
-You can optionally set the `database_schema` option. By default, its value is `public`. When you set the `database_schema` option, you must add the `search_path` option to the database URL. For example, the value of `database_url` is `postgres://localhost/store?options=-c search_path=test` if `database_schema` is `test`.
 
 It's recommended to set the Database URL as an environment variable:
 
@@ -88,6 +85,16 @@ DATABASE_URL=<YOUR_DATABASE_URL>
 ```
 
 Where `<YOUR_DATABASE_URL>` is the URL of your PostgreSQL database.
+
+### Changing PostgreSQL Schema
+
+By default, the `public` schema is used in PostgreSQL. You can change it to use a custom schema by passing the `search_path` option in the database URL. For example:
+
+```bash
+postgres://localhost/store?options=-c search_path=test
+```
+
+Where `test` is the name of the database schema that should be used instead of `public`.
 
 ### Changing Database Type
 
