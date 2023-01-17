@@ -474,7 +474,7 @@ describe("/admin/order-edits", () => {
         withDeleted: true,
       })
 
-      expect(orderEdit).toBeUndefined()
+      expect(orderEdit).toBeNull()
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id,
@@ -538,7 +538,7 @@ describe("/admin/order-edits", () => {
         withDeleted: true,
       })
 
-      expect(orderEdit).toBeUndefined()
+      expect(orderEdit).toBeNull()
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id: orderEditId,
