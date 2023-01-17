@@ -11,6 +11,8 @@ import { moduleHelper } from "../loaders/module"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
+import registerModuleDefinitions from "../loaders/module-definitions"
+import moduleLoader from "../loaders/module"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -24,6 +26,7 @@ const clientSessionOpts = {
   secret: "test",
 }
 
+const moduleResolutions = registerModuleDefinitions({})
 const config = {
   projectConfig: {
     jwt_secret: "supersecret",
@@ -31,6 +34,7 @@ const config = {
     admin_cors: "",
     store_cors: "",
   },
+  moduleResolutions,
 }
 
 const testApp = express()
@@ -64,6 +68,7 @@ featureFlagLoader(config)
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })
+moduleLoader({ container, configModule: config })
 
 testApp.use((req, res, next) => {
   req.scope = container.createScope()
