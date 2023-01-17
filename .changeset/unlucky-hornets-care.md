@@ -4,4 +4,4 @@
 "medusa-react": patch
 ---
 
-Adds endpoint to retrieve Product Tags through the Storefront API
+feat(medusa, medusa-js, medusa-react): Add endpoint to retrieve Product Tags through the Storefront API

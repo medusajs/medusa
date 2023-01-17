@@ -23,19 +23,15 @@ export default (app: Router) => {
   return app
 }
 
-export const allowedStoreProductTagFields = [
-  "id",
-  "value",
-  "created_at",
-  "updated_at",
-]
-
 export const defaultStoreProductTagFields = [
   "id",
   "value",
   "created_at",
   "updated_at",
 ]
+
+export const allowedStoreProductTagFields = [...defaultStoreProductTagFields]
+
 export const defaultStoreProductTagRelations = []
 
 export type StoreProductTagsListRes = PaginatedResponse & {
