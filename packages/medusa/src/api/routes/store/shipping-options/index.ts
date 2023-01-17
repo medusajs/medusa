@@ -16,6 +16,15 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema StoreShippingOptionsListRes
+ * type: object
+ * properties:
+ *   shipping_options:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ShippingOption"
+ */
 export type StoreShippingOptionsListRes = {
   shipping_options: ShippingOption[]
 }

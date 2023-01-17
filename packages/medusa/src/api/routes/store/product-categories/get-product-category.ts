@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import ProductCategoryService from "../../../../services/product-category"
 import { FindParams } from "../../../../types/common"
 import { transformTreeNodesWithConfig } from "../../../../utils/transformers/tree"
-import { defaultStoreProductCategoryRelations, defaultStoreScope } from "."
+import { defaultStoreScope } from "."
 
 /**
  * @oas [get] /product-categories/{id}
@@ -42,10 +42,7 @@ import { defaultStoreProductCategoryRelations, defaultStoreScope } from "."
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            productCategory:
- *              $ref: "#/components/schemas/ProductCategory"
+ *          $ref: "#/components/schemas/StoreGetProductCategoryRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
