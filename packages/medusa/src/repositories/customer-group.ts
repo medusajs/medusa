@@ -16,6 +16,7 @@ import {
   queryEntityWithoutRelations,
 } from "../utils/repository"
 import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { dataSource } from "../loaders/database"
 
 export type DefaultWithoutRelations = Omit<
   ExtendedFindConfig<CustomerGroup>,
@@ -28,8 +29,7 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   }
 }
 
-@EntityRepository(CustomerGroup)
-export class CustomerGroupRepository extends Repository<CustomerGroup> {
+export const CustomerGroupRepository = dataSource.getRepository(CustomerGroup).extend({
   async addCustomers(
     groupId: string,
     customerIds: string[]
@@ -53,7 +53,7 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
       .execute()
 
     return customerGroup as CustomerGroup
-  }
+  },
 
   async removeCustomers(
     groupId: string,
@@ -67,9 +67,9 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
         customer_id: In(customerIds),
       })
       .execute()
-  }
+  },
 
-  public async findWithRelationsAndCount(
+  async findWithRelationsAndCount(
     relations: FindOptionsRelations<CustomerGroup> = {},
     idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[CustomerGroup[], number]> {
@@ -155,4 +155,6 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
 
     return [entitiesToReturn, count]
   }
-}
+})
+
+export default CustomerGroupRepository
