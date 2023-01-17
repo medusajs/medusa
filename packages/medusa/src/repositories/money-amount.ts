@@ -21,9 +21,10 @@ type Price = Partial<
   amount: number
 }
 
-@EntityRepository(MoneyAmount)
-export class MoneyAmountRepository extends Repository<MoneyAmount> {
-  public async findVariantPricesNotIn(
+import { dataSource } from "../loaders/database"
+
+export const MoneyAmountRepository = dataSource.getRepository(MoneyAmount).extend({
+  async findVariantPricesNotIn(
     variantId: string,
     prices: Price[]
   ): Promise<MoneyAmount[]> {
@@ -41,9 +42,9 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       )
       .getMany()
     return pricesNotInPricesPayload
-  }
+  },
 
-  public async upsertVariantCurrencyPrice(
+  async upsertVariantCurrencyPrice(
     variantId: string,
     price: Price
   ): Promise<MoneyAmount> {
@@ -67,9 +68,9 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     }
 
     return await this.save(moneyAmount)
-  }
+  },
 
-  public async addPriceListPrices(
+  async addPriceListPrices(
     priceListId: string,
     prices: PriceListPriceCreateInput[],
     overrideExisting = false
@@ -104,9 +105,9 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .select()
       .where(insertResult.identifiers)
       .getMany()
-  }
+  },
 
-  public async deletePriceListPrices(
+  async deletePriceListPrices(
     priceListId: string,
     moneyAmountIds: string[]
   ): Promise<void> {
@@ -115,9 +116,9 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .from(MoneyAmount)
       .where({ price_list_id: priceListId, id: In(moneyAmountIds) })
       .execute()
-  }
+  },
 
-  public async findManyForVariantInPriceList(
+  async findManyForVariantInPriceList(
     variant_id: string,
     price_list_id: string,
     requiresPriceList = false
@@ -139,9 +140,9 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     qb.andWhere(new Brackets(getAndWhere))
 
     return await qb.getManyAndCount()
-  }
+  },
 
-  public async findManyForVariantInRegion(
+  async findManyForVariantInRegion(
     variant_id: string,
     region_id?: string,
     currency_code?: string,
@@ -209,9 +210,9 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       )
     }
     return await qb.getManyAndCount()
-  }
+  },
 
-  public async updatePriceListPrices(
+  async updatePriceListPrices(
     priceListId: string,
     updates: PriceListPriceUpdateInput[]
   ): Promise<MoneyAmount[]> {
@@ -226,4 +227,6 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
 
     return await this.save([...existingPrices, ...newPriceEntities])
   }
-}
+})
+
+export default MoneyAmountRepository
