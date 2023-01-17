@@ -1,13 +1,15 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager, FindOperator, FindManyOptions } from "typeorm"
+import {
+  DeepPartial,
+  EntityManager,
+  FindManyOptions,
+  FindOperator,
+} from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
-import {
-  PriceListFindOptions,
-  PriceListRepository,
-} from "../repositories/price-list"
-import { FindConfig, Selector, ExtendedFindConfig } from "../types/common"
+import { PriceListRepository } from "../repositories/price-list"
+import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreatePriceListInput,
   FilterablePriceListProps,
@@ -34,7 +36,7 @@ type PriceListConstructorProps = {
   productVariantService: ProductVariantService
   priceListRepository: typeof PriceListRepository
   moneyAmountRepository: MoneyAmountRepository
-  productVariantRepository: ProductVariantRepository
+  productVariantRepository: typeof ProductVariantRepository
   featureFlagRouter: FlagRouter
 }
 
@@ -51,7 +53,7 @@ class PriceListService extends TransactionBaseService {
   protected readonly variantService_: ProductVariantService
   protected readonly priceListRepo_: typeof PriceListRepository
   protected readonly moneyAmountRepo_: MoneyAmountRepository
-  protected readonly productVariantRepo_: ProductVariantRepository
+  protected readonly productVariantRepo_: typeof ProductVariantRepository
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
@@ -297,7 +299,10 @@ class PriceListService extends TransactionBaseService {
     const priceListRepo = manager.withRepository(this.priceListRepo_)
 
     const { q, ...priceListSelector } = selector
-    const query = buildQuery(priceListSelector, config) as FindManyOptions<FilterablePriceListProps> & {
+    const query = buildQuery(
+      priceListSelector,
+      config
+    ) as FindManyOptions<FilterablePriceListProps> & {
       where: { customer_groups?: FindOperator<string[]> }
     } & ExtendedFindConfig<FilterablePriceListProps>
 
@@ -325,7 +330,10 @@ class PriceListService extends TransactionBaseService {
     const manager = this.manager_
     const priceListRepo = manager.withRepository(this.priceListRepo_)
     const { q, ...priceListSelector } = selector
-    const query = buildQuery(priceListSelector, config) as FindManyOptions<FilterablePriceListProps> & {
+    const query = buildQuery(
+      priceListSelector,
+      config
+    ) as FindManyOptions<FilterablePriceListProps> & {
       where: { customer_groups?: FindOperator<string[]> }
     } & ExtendedFindConfig<FilterablePriceListProps>
     const { relations } = query
@@ -341,7 +349,9 @@ class PriceListService extends TransactionBaseService {
     //     relations
     //   )
     // }
-    return await priceListRepo.listAndCount(query as ExtendedFindConfig<PriceList>)
+    return await priceListRepo.listAndCount(
+      query as ExtendedFindConfig<PriceList>
+    )
   }
 
   protected async upsertCustomerGroups_(

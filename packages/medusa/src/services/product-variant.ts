@@ -51,13 +51,13 @@ class ProductVariantService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly productVariantRepository_: ProductVariantRepository
+  protected readonly productVariantRepository_: typeof ProductVariantRepository
   protected readonly productRepository_: ProductRepository
   protected readonly eventBus_: EventBusService
   protected readonly regionService_: RegionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly moneyAmountRepository_: MoneyAmountRepository
-  // @ts-ignore
+  // eslint-disable-next-line max-len
   protected readonly productOptionValueRepository_: typeof ProductOptionValueRepository
   protected readonly cartRepository_: typeof CartRepository
 
@@ -712,7 +712,7 @@ class ProductVariantService extends TransactionBaseService {
    *   count of products that matches the query as the second element.
    */
   getFreeTextQueryBuilder_(
-    variantRepo: ProductVariantRepository,
+    variantRepo: typeof ProductVariantRepository,
     query: FindWithRelationsOptions,
     q?: string
   ): SelectQueryBuilder<ProductVariant> {

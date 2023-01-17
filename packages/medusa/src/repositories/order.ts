@@ -1,20 +1,14 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import {
-  EntityRepository,
-  FindManyOptions,
-  FindOptionsRelations,
-  In,
-  Repository,
-} from "typeorm"
+import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
 import { Order } from "../models"
 import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { dataSource } from "../loaders/database"
 
 const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"
 
-@EntityRepository(Order)
-export class OrderRepository extends Repository<Order> {
-  public async findWithRelations(
+export const OrderRepository = dataSource.getRepository(Order).extend({
+  async findWithRelations(
     relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order[]> {
@@ -49,9 +43,9 @@ export class OrderRepository extends Repository<Order> {
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
 
     return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
-  }
+  },
 
-  public async findOneWithRelations(
+  async findOneWithRelations(
     relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order> {
@@ -63,5 +57,5 @@ export class OrderRepository extends Repository<Order> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-}
+  },
+})
