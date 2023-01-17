@@ -332,7 +332,7 @@ class ProductService extends TransactionBaseService {
 
   async listTypes(): Promise<ProductType[]> {
     const manager = this.manager_
-    const productTypeRepository = manager.getCustomRepository(
+    const productTypeRepository = manager.withRepository(
       this.productTypeRepository_
     )
 
@@ -382,7 +382,7 @@ class ProductService extends TransactionBaseService {
       const productTagRepo = manager.getCustomRepository(
         this.productTagRepository_
       )
-      const productTypeRepo = manager.getCustomRepository(
+      const productTypeRepo = manager.withRepository(
         this.productTypeRepository_
       )
       const imageRepo = manager.withRepository(this.imageRepository_)
@@ -481,7 +481,7 @@ class ProductService extends TransactionBaseService {
       const productTagRepo = manager.getCustomRepository(
         this.productTagRepository_
       )
-      const productTypeRepo = manager.getCustomRepository(
+      const productTypeRepo = manager.withRepository(
         this.productTypeRepository_
       )
       const imageRepo = manager.withRepository(this.imageRepository_)

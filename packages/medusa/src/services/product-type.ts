@@ -1,8 +1,8 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, ILike, FindManyOptions } from "typeorm"
+import { EntityManager, FindManyOptions, ILike } from "typeorm"
 import { ProductType } from "../models"
 import { ProductTypeRepository } from "../repositories/product-type"
-import { FindConfig, Selector, ExtendedFindConfig } from "../types/common"
+import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, isString } from "../utils"
 
@@ -10,7 +10,7 @@ class ProductTypeService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly typeRepository_: ProductTypeRepository
+  protected readonly typeRepository_: typeof ProductTypeRepository
 
   constructor({ manager, productTypeRepository }) {
     super(arguments[0])
@@ -84,7 +84,10 @@ class ProductTypeService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery(selector, config) as FindManyOptions<ProductType> & {
+    const query = buildQuery(
+      selector,
+      config
+    ) as FindManyOptions<ProductType> & {
       where: { discount_condition_id?: string }
     } & ExtendedFindConfig<ProductType>
 

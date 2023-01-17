@@ -59,3 +59,5 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
     return result[0]
   },
 })
+
+export default OrderRepository
