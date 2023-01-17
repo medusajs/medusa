@@ -6,8 +6,8 @@ const {
   Return,
 } = require("@medusajs/medusa")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   let orderWithClaim = manager.create(Order, {
     id: "order-with-claim",

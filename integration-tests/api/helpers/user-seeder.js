@@ -11,8 +11,8 @@ const expires_at = new Date()
 
 expires_at.setDate(expires_at.getDate() + 8)
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   const memberUser = await manager.create(User, {
     id: "member-user",

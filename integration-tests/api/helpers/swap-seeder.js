@@ -12,8 +12,8 @@ const {
   CustomShippingOption,
 } = require("@medusajs/medusa/dist/models/custom-shipping-option")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   let orderWithSwap = manager.create(Order, {
     id: "order-with-swap",

@@ -109,12 +109,6 @@ export default async ({
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
 
-  const repoActivity = Logger.activity(`Initializing repositories${EOL}`)
-  track("REPOSITORIES_INIT_STARTED")
-  repositoriesLoader({ container })
-  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
-  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
-
   const stratActivity = Logger.activity(`Initializing strategies${EOL}`)
   track("STRATEGIES_INIT_STARTED")
   strategiesLoader({ container, configModule, isTest })
@@ -135,6 +129,12 @@ export default async ({
   })
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
+
+  const repoActivity = Logger.activity(`Initializing repositories${EOL}`)
+  track("REPOSITORIES_INIT_STARTED")
+  repositoriesLoader({ container })
+  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
+  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
   container.register({ manager: asValue(dataSource.manager) })
 

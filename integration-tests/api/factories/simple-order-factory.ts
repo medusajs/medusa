@@ -53,7 +53,7 @@ export const simpleOrderFactory = async (
   }
   const address = await simpleAddressFactory(dataSource, data.shipping_address)
 
-  const customer = await simpleCustomerFactory(connection, {
+  const customer = await simpleCustomerFactory(dataSource, {
     ...data.customer,
     email: data.email ?? undefined,
   })
@@ -110,7 +110,7 @@ export const simpleOrderFactory = async (
     }) || []
 
   for (const item of items) {
-    await simpleLineItemFactory(connection, { ...item, order_id: id } as unknown as LineItemFactoryData)
+    await simpleLineItemFactory(dataSource, { ...item, order_id: id } as unknown as LineItemFactoryData)
   }
 
   return order

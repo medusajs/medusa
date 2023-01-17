@@ -1,5 +1,5 @@
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 
 import { PublishableApiKey } from "@medusajs/medusa"
 
@@ -12,10 +12,10 @@ export type PublishableApiKeyData = {
 }
 
 export const simplePublishableApiKeyFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: PublishableApiKeyData = {}
 ): Promise<PublishableApiKey> => {
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const pubKey = manager.create(PublishableApiKey, {
     ...data,

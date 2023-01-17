@@ -16,14 +16,14 @@ const {
 } = require("@medusajs/medusa")
 const { simpleSalesChannelFactory } = require("../factories")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
     type: "default",
   })
 
-  const salesChannel = await simpleSalesChannelFactory(connection, {
+  const salesChannel = await simpleSalesChannelFactory(dataSource, {
     id: "test-channel",
     is_default: true,
   })

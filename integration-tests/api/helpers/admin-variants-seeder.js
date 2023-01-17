@@ -11,8 +11,8 @@ const {
   ProductOption,
 } = require("@medusajs/medusa")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
     new Date()
