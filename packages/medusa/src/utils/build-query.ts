@@ -358,7 +358,7 @@ function buildRelationsOrSelect<TEntity>(
       continue
     }
 
-    output[relation] = true
+    output[relation] = output[relation] ?? true
   }
 
   return output

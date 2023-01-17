@@ -46,6 +46,11 @@ describe("buildQuery", () => {
             "return_order.items",
             "return_order.shipping_method",
             "return_order.shipping_method.tax_lines",
+            "items.variants",
+            "items.variants.product",
+            "items",
+            "items.tax_lines",
+            "items.adjustments",
           ],
           order: {
             id: "ASC",
@@ -108,6 +113,13 @@ describe("buildQuery", () => {
               tax_lines: true,
             },
           },
+          items: {
+            variants: {
+              product: true
+            },
+            tax_lines: true,
+            adjustments: true
+          }
         },
         order: {
           id: "ASC",
