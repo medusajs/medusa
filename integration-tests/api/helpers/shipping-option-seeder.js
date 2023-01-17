@@ -16,7 +16,7 @@ module.exports = async (dataSource, data = {}) => {
   })
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: "default" }
   })
 
   await manager.insert(ShippingOption, {

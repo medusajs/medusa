@@ -48,7 +48,7 @@ module.exports = async (dataSource, data = {}) => {
   await manager.save(priceList1)
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: "default" }
   })
 
   const coll = manager.create(ProductCollection, {
