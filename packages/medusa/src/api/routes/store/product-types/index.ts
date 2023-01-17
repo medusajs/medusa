@@ -44,7 +44,9 @@ export const defaultStoreProductTypeRelations = []
  * type: object
  * properties:
  *   product_types:
- *     $ref: "#/components/schemas/ProductType"
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ProductType"
  *   count:
  *     type: integer
  *     description: The total number of items available
