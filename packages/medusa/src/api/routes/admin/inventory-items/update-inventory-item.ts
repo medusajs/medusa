@@ -52,10 +52,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             inventory_item:
- *               $ref: "#/components/schemas/InventoryItemDTO"
+ *           $ref: "#/components/schemas/AdminInventoryItemsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

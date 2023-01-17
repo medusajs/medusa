@@ -83,34 +83,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             inventory_items:
- *               type: array
- *               items:
- *                 allOf:
- *                   - $ref: "#/components/schemas/InventoryItemDTO"
- *                   - type: object
- *                     properties:
- *                       location_levels:
- *                         type: array
- *                         items:
- *                           allOf:
- *                             - $ref: "#/components/schemas/InventoryLevelDTO"
- *                       variants:
- *                         type: array
- *                         items:
- *                           allOf:
- *                             - $ref: "#/components/schemas/ProductVariant"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminInventoryItemsListWithVariantsAndLocationLevelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

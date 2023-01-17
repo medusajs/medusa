@@ -21,12 +21,11 @@ export const getVariantsByInventoryItemId = async (
   const variants = await productVariantService.list({
     id: variantInventory.map((varInventory) => varInventory.variant_id),
   })
+  const variantMap = new Map(variants.map((variant) => [variant.id, variant]))
 
   return variantInventory.reduce((acc, cur) => {
-    const variant = variants.find((v) => v.id === cur.variant_id)
-
     acc[cur.inventory_item_id] = acc[cur.inventory_item_id] ?? []
-    acc[cur.inventory_item_id].push(variant)
+    acc[cur.inventory_item_id].push(variantMap.get(cur.variant_id))
     return acc
   }, {})
 }

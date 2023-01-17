@@ -36,19 +36,7 @@ import { IInventoryService } from "../../../../interfaces"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Inventory Item.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               format: inventory_item
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Inventory Item was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminInventoryItemsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  */

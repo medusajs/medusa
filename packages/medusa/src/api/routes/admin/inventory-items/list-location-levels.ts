@@ -43,15 +43,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               description: The id of the location
- *             location_levels:
- *               description: List of stock levels at a given location
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/InventoryLevelDTO"
+ *           $ref: "#/components/schemas/AdminInventoryItemsLocationLevelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

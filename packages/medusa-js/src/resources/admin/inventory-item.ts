@@ -7,6 +7,8 @@ import {
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminInventoryItemsDeleteRes,
   AdminGetInventoryItemsItemParams,
+  AdminInventoryItemsListWithVariantsAndLocationLevelsRes,
+  AdminInventoryItemsLocationLevelsRes,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -83,7 +85,7 @@ class AdminInventoryItemsResource extends BaseResource {
   list(
     query?: AdminGetInventoryItemsParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminInventoryItemsListRes> {
+  ): ResponsePromise<AdminInventoryItemsListWithVariantsAndLocationLevelsRes> {
     let path = `/admin/inventory-items`
 
     if (query) {
@@ -138,7 +140,7 @@ class AdminInventoryItemsResource extends BaseResource {
     inventoryItemId: string,
     query?: AdminGetInventoryItemsItemLocationLevelsParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminInventoryItemsListRes> {
+  ): ResponsePromise<AdminInventoryItemsLocationLevelsRes> {
     let path = `/admin/inventory-items/${inventoryItemId}`
 
     if (query) {
