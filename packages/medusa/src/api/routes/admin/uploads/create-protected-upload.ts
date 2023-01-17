@@ -46,17 +46,7 @@ import { IFileService } from "../../../../interfaces"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             uploads:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   url:
- *                     type: string
- *                     description: The URL of the uploaded file.
- *                     format: uri
+ *           $ref: "#/components/schemas/AdminUploadsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -84,6 +74,7 @@ export default async (req, res) => {
 
   res.status(200).json({ uploads: result })
 }
+
 export class IAdminPostUploadsFileReq {
   originalName: string
   path: string

@@ -35,19 +35,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Gift Card
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: gift-card
- *             deleted:
- *               type: boolean
- *               description: Whether the gift card was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminGiftCardsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

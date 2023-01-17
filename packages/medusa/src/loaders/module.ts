@@ -1,33 +1,56 @@
-import { asFunction, asValue } from "awilix"
+import { asClass, asFunction, asValue } from "awilix"
 import { trackInstallation } from "medusa-telemetry"
-import { ConfigModule, Logger, MedusaContainer } from "../types/global"
+import { EntitySchema } from "typeorm"
+import {
+  ClassConstructor,
+  ConfigModule,
+  LoaderOptions,
+  Logger,
+  MedusaContainer,
+  ModuleExports,
+  ModuleResolution,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
+} from "../types/global"
 import { ModulesHelper } from "../utils/module-helper"
-
-type Options = {
-  container: MedusaContainer
-  configModule: ConfigModule
-  logger: Logger
-}
 
 export const moduleHelper = new ModulesHelper()
 
 const registerModule = async (
-  container,
-  resolution,
-  configModule,
-  logger
+  container: MedusaContainer,
+  resolution: ModuleResolution,
+  configModule: ConfigModule,
+  logger: Logger
 ): Promise<{ error?: Error } | void> => {
+  const constainerName = resolution.definition.registrationName
+
+  const { scope, resources } = resolution.moduleDeclaration ?? {}
+  if (!scope || (scope === MODULE_SCOPE.INTERNAL && !resources)) {
+    let message = `The module ${resolution.definition.label} has to define its scope (internal | external)`
+    if (scope && !resources) {
+      message = `The module ${resolution.definition.label} is missing its resources config`
+    }
+
+    container.register({
+      [constainerName]: asValue(false),
+    })
+
+    return {
+      error: new Error(message),
+    }
+  }
+
   if (!resolution.resolutionPath) {
     container.register({
-      [resolution.definition.registrationName]: asValue(false),
+      [constainerName]: asValue(false),
     })
 
     return
   }
 
-  let loadedModule
+  let loadedModule: ModuleExports
   try {
-    loadedModule = await import(resolution.resolutionPath!)
+    loadedModule = (await import(resolution.resolutionPath!)).default
   } catch (error) {
     return { error }
   }
@@ -42,15 +65,41 @@ const registerModule = async (
     }
   }
 
+  if (
+    scope === MODULE_SCOPE.INTERNAL &&
+    resources === MODULE_RESOURCE_TYPE.SHARED
+  ) {
+    const moduleModels = loadedModule?.models || null
+    if (moduleModels) {
+      moduleModels.map((val: ClassConstructor<unknown>) => {
+        container.registerAdd("db_entities", asValue(val))
+      })
+    }
+  }
+
+  // TODO: "cradle" should only contain dependent Modules and the EntityManager if module scope is shared
+  container.register({
+    [constainerName]: asFunction((cradle) => {
+      return new moduleService(
+        cradle,
+        resolution.options,
+        resolution.moduleDeclaration
+      )
+    }).singleton(),
+  })
+
   const moduleLoaders = loadedModule?.loaders || []
   try {
     for (const loader of moduleLoaders) {
-      await loader({
-        container,
-        configModule,
-        logger,
-        options: resolution.options,
-      })
+      await loader(
+        {
+          container,
+          configModule,
+          logger,
+          options: resolution.options,
+        },
+        resolution.moduleDeclaration
+      )
     }
   } catch (err) {
     return {
@@ -59,12 +108,6 @@ const registerModule = async (
       ),
     }
   }
-
-  container.register({
-    [resolution.definition.registrationName]: asFunction(
-      (cradle) => new moduleService(cradle, resolution.options)
-    ).singleton(),
-  })
 
   trackInstallation(
     {
@@ -79,7 +122,7 @@ export default async ({
   container,
   configModule,
   logger,
-}: Options): Promise<void> => {
+}: LoaderOptions): Promise<void> => {
   const moduleResolutions = configModule?.moduleResolutions ?? {}
 
   for (const resolution of Object.values(moduleResolutions)) {
@@ -87,18 +130,18 @@ export default async ({
       container,
       resolution,
       configModule,
-      logger
+      logger!
     )
     if (registrationResult?.error) {
       const { error } = registrationResult
       if (resolution.definition.isRequired) {
-        logger.warn(
+        logger?.warn(
           `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}`
         )
         throw error
       }
 
-      logger.warn(
+      logger?.warn(
         `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}`
       )
     }

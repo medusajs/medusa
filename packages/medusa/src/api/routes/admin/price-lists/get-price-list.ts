@@ -38,10 +38,7 @@ import PriceListService from "../../../../services/price-list"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             price_list:
- *               $ref: "#/components/schemas/PriceList"
+ *           $ref: "#/components/schemas/AdminPriceListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

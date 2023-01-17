@@ -18,17 +18,9 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
  * x-codeSamples:
- *   - lang: JavaScript
- *     label: JS Client
- *     source: |
- *       import Medusa from "@medusajs/medusa-js"
- *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.list()
- *       .then(({ product_category, limit, offset, count }) => {
- *         console.log(product_category.length);
- *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -38,7 +30,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Categories
+ *   - Product Category
  * responses:
  *   200:
  *     description: OK
@@ -47,7 +39,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *         schema:
  *           type: object
  *           properties:
- *             product_category:
+ *             product_categories:
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/ProductCategory"

@@ -49,10 +49,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             notification:
- *               $ref: "#/components/schemas/Notification"
+ *           $ref: "#/components/schemas/AdminNotificationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

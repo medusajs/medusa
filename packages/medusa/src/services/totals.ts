@@ -840,7 +840,7 @@ class TotalsService extends TransactionBaseService {
          * items we have to get the line items from the tax provider.
          */
         if (options.use_tax_lines || isOrder(cartOrOrder)) {
-          if (typeof lineItem.tax_lines === "undefined") {
+          if (!isDefined(lineItem.tax_lines) && lineItem.variant_id) {
             throw new MedusaError(
               MedusaError.Types.UNEXPECTED_STATE,
               "Tax Lines must be joined on items to calculate taxes"
@@ -850,7 +850,7 @@ class TotalsService extends TransactionBaseService {
           taxLines = lineItem.tax_lines
         } else {
           if (lineItem.is_return) {
-            if (typeof lineItem.tax_lines === "undefined") {
+            if (!isDefined(lineItem.tax_lines) && lineItem.variant_id) {
               throw new MedusaError(
                 MedusaError.Types.UNEXPECTED_STATE,
                 "Return Line Items must join tax lines"
