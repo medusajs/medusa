@@ -55,6 +55,125 @@ export function buildQuery<TWhereKeys, TEntity = unknown>(
   return query
 }
 
+/**
+ * @param constraints
+ *
+ * @example
+ * const q = buildQuery(
+ *   {
+ *     id: "1234",
+ *     test1: ["123", "12", "1"],
+ *     test2: Not("this"),
+ *     date: { gt: date },
+ *     amount: { gt: 10 },
+ *   },
+ *   {
+ *     select: [
+ *       "order",
+ *       "order.items",
+ *       "order.swaps",
+ *       "order.swaps.additional_items",
+ *       "order.discounts",
+ *       "order.discounts.rule",
+ *       "order.claims",
+ *       "order.claims.additional_items",
+ *       "additional_items",
+ *       "additional_items.variant",
+ *       "return_order",
+ *       "return_order.items",
+ *       "return_order.shipping_method",
+ *       "return_order.shipping_method.tax_lines",
+ *     ],
+ *     relations: [
+ *       "order",
+ *       "order.items",
+ *       "order.swaps",
+ *       "order.swaps.additional_items",
+ *       "order.discounts",
+ *       "order.discounts.rule",
+ *       "order.claims",
+ *       "order.claims.additional_items",
+ *       "additional_items",
+ *       "additional_items.variant",
+ *       "return_order",
+ *       "return_order.items",
+ *       "return_order.shipping_method",
+ *       "return_order.shipping_method.tax_lines",
+ *     ],
+ *     order: {
+ *       id: "ASC",
+ *       "items.id": "ASC",
+ *       "items.variant.id": "ASC"
+ *     }
+ *   }
+ *)
+ *
+ * // Output
+ * {
+ *   where: {
+ *     id: "1234",
+ *     test1: In(["123", "12", "1"]),
+ *     test2: Not("this"),
+ *     date: MoreThan(date),
+ *     amount: MoreThan(10)
+ *   },
+ *   select: {
+ *     order: {
+ *       items: true,
+ *       swaps: {
+ *         additional_items: true,
+ *       },
+ *       discounts: {
+ *         rule: true,
+ *       },
+ *       claims: {
+ *         additional_items: true,
+ *       },
+ *     },
+ *     additional_items: {
+ *       variant: true,
+ *     },
+ *     return_order: {
+ *       items: true,
+ *       shipping_method: {
+ *         tax_lines: true,
+ *       },
+ *     },
+ *   },
+ *   relations: {
+ *     order: {
+ *       items: true,
+ *       swaps: {
+ *         additional_items: true,
+ *       },
+ *       discounts: {
+ *         rule: true,
+ *       },
+ *       claims: {
+ *         additional_items: true,
+ *       },
+ *     },
+ *     additional_items: {
+ *       variant: true,
+ *     },
+ *     return_order: {
+ *       items: true,
+ *       shipping_method: {
+ *         tax_lines: true,
+ *       },
+ *     },
+ *   },
+ *   order: {
+ *     id: "ASC",
+ *     items: {
+ *       id: "ASC",
+ *       variant: {
+ *         id: "ASC"
+ *       }
+ *     }
+ *   }
+ * })
+ */
 function buildWhere<TWhereKeys, TEntity>(
   constraints: TWhereKeys
 ): FindOptionsWhere<TEntity> {
@@ -80,26 +199,26 @@ function buildWhere<TWhereKeys, TEntity>(
     }
 
     if (typeof value === "object") {
-      where[key] = buildWhere<TWhereKeys[keyof TWhereKeys], TEntity>(value)
-      continue
-    }
+      Object.entries(value).forEach(([objectKey, objectValue]) => {
+        switch (objectKey) {
+          case "lt":
+            where[key] = LessThan(objectValue)
+            break
+          case "gt":
+            where[key] = MoreThan(objectValue)
+            break
+          case "lte":
+            where[key] = LessThanOrEqual(objectValue)
+            break
+          case "gte":
+            where[key] = MoreThanOrEqual(objectValue)
+            break
+          default:
+            where[key] = buildWhere<any, TEntity>(objectValue)
+        }
+        return
+      })
 
-    const allowedModifiers = ["lt", "gt", "lte", "gte"]
-    if (allowedModifiers.indexOf(key.toLowerCase()) > -1) {
-      switch (key) {
-        case "lt":
-          where[key] = LessThan(value)
-          break
-        case "gt":
-          where[key] = MoreThan(value)
-          break
-        case "lte":
-          where[key] = LessThanOrEqual(value)
-          break
-        case "gte":
-          where[key] = MoreThanOrEqual(value)
-          break
-      }
       continue
     }
 

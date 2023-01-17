@@ -1,14 +1,18 @@
-import { In, Not } from "typeorm"
+import { In, MoreThan, Not } from "typeorm"
 import { buildQuery } from "../build-query"
 
 describe("buildQuery", () => {
   describe("buildQuery_", () => {
     it("successfully creates query", () => {
+      const date = new Date()
+
       const q = buildQuery(
         {
           id: "1234",
           test1: ["123", "12", "1"],
           test2: Not("this"),
+          date: { gt: date },
+          amount: { gt: 10 },
         },
         {
           select: [
@@ -56,6 +60,8 @@ describe("buildQuery", () => {
           id: "1234",
           test1: In(["123", "12", "1"]),
           test2: Not("this"),
+          date: MoreThan(date),
+          amount: MoreThan(10)
         },
         select: {
           order: {
