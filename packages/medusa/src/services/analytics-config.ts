@@ -10,7 +10,7 @@ import {
 import UserService from "./user"
 
 type InjectedDependencies = {
-  analyticsConfigRepository: AnalyticsRepository
+  analyticsConfigRepository: typeof AnalyticsRepository
   manager: EntityManager
 }
 
@@ -18,7 +18,7 @@ class AnalyticsConfigService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly analyticsConfigRepository_: AnalyticsRepository
+  protected readonly analyticsConfigRepository_: typeof AnalyticsRepository
   protected readonly userService_: UserService
 
   constructor({ analyticsConfigRepository, manager }: InjectedDependencies) {
