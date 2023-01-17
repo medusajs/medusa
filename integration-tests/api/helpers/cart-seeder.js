@@ -34,11 +34,11 @@ module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: "default" }
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: "gift_card",
+    where: { type: "gift_card" }
   })
 
   await manager.insert(Address, {
