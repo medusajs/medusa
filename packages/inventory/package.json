@@ -32,6 +32,6 @@
     "medusa-interfaces": "1.x.x"
   },
   "dependencies": {
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.3.11"
   }
 }
