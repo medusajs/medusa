@@ -3,6 +3,7 @@ import middlewares, { transformQuery } from "../../../middlewares"
 import getProductCategory, {
   StoreGetProductCategoryParams,
 } from "./get-product-category"
+import { ProductCategory } from "../../../../models"
 
 import listProductCategories, {
   StoreGetProductCategoriesParams,
@@ -65,6 +66,17 @@ export const allowedStoreProductCategoryFields = [
   "created_at",
   "updated_at",
 ]
+
+/**
+ * @schema StoreGetProductCategoryRes
+ * type: object
+ * properties:
+ *   product_category:
+ *     $ref: "#/components/schemas/ProductCategory"
+ */
+export type StoreGetProductCategoryRes = {
+  product_category: ProductCategory
+}
 
 export * from "./get-product-category"
 export * from "./list-product-categories"
