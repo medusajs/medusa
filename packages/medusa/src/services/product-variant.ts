@@ -52,7 +52,7 @@ class ProductVariantService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly productVariantRepository_: typeof ProductVariantRepository
-  protected readonly productRepository_: ProductRepository
+  protected readonly productRepository_: typeof ProductRepository
   protected readonly eventBus_: EventBusService
   protected readonly regionService_: RegionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy

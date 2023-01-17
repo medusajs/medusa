@@ -1,12 +1,10 @@
 import { flatten, groupBy, map, merge } from "lodash"
 import {
   Brackets,
-  EntityRepository,
   FindOperator,
   FindOptionsRelations,
   FindOptionsSelect,
   In,
-  Repository,
 } from "typeorm"
 import { PriceList, Product, SalesChannel } from "../models"
 import {
@@ -16,6 +14,7 @@ import {
 } from "../types/common"
 import { applyOrdering } from "../utils/repository"
 import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { dataSource } from "../loaders/database"
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
   tags: FindOperator<string[]>
@@ -35,18 +34,17 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   }
 }
 
-@EntityRepository(Product)
-export class ProductRepository extends Repository<Product> {
-  private mergeEntitiesWithRelations(
+export const ProductRepository = dataSource.getRepository(Product).extend({
+  mergeEntitiesWithRelations(
     entitiesAndRelations: Array<Partial<Product>>
   ): Product[] {
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
     return map(entitiesAndRelationsById, (entityAndRelations) =>
       merge({}, ...entityAndRelations)
     )
-  }
+  },
 
-  private async queryProducts(
+  async queryProducts(
     optionsWithoutRelations: FindWithoutRelationsOptions,
     shouldCount = false
   ): Promise<[Product[], number]> {
@@ -133,9 +131,9 @@ export class ProductRepository extends Repository<Product> {
     }
 
     return [entities, count]
-  }
+  },
 
-  private getGroupedRelations(relations: string[]): {
+  getGroupedRelations(relations: string[]): {
     [toplevel: string]: string[]
   } {
     const groupedRelations: { [toplevel: string]: string[] } = {}
@@ -149,9 +147,9 @@ export class ProductRepository extends Repository<Product> {
     }
 
     return groupedRelations
-  }
+  },
 
-  private async queryProductsWithIds(
+  async queryProductsWithIds(
     entityIds: string[],
     groupedRelations: { [toplevel: string]: string[] },
     withDeleted = false,
@@ -215,9 +213,9 @@ export class ProductRepository extends Repository<Product> {
     ).then(flatten)
 
     return entitiesIdsWithRelations
-  }
+  },
 
-  public async findWithRelationsAndCount(
+  async findWithRelationsAndCount(
     relations: FindOptionsRelations<Product> = {},
     idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
@@ -275,9 +273,9 @@ export class ProductRepository extends Repository<Product> {
     )
 
     return [entitiesToReturn, count]
-  }
+  },
 
-  public async findWithRelations(
+  async findWithRelations(
     relations: FindOptionsRelations<Product> = {},
     idsOrOptionsWithoutRelations: FindWithoutRelationsOptions | string[] = {
       where: {},
@@ -327,9 +325,9 @@ export class ProductRepository extends Repository<Product> {
       this.mergeEntitiesWithRelations(entitiesAndRelations)
 
     return entitiesToReturn
-  }
+  },
 
-  public async findOneWithRelations(
+  async findOneWithRelations(
     relations: FindOptionsRelations<Product> = {},
     optionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<Product> {
@@ -341,9 +339,9 @@ export class ProductRepository extends Repository<Product> {
       optionsWithoutRelations
     )
     return result[0]
-  }
+  },
 
-  public async bulkAddToCollection(
+  async bulkAddToCollection(
     productIds: string[],
     collectionId: string
   ): Promise<Product[]> {
@@ -354,9 +352,9 @@ export class ProductRepository extends Repository<Product> {
       .execute()
 
     return this.findByIds(productIds)
-  }
+  },
 
-  public async bulkRemoveFromCollection(
+  async bulkRemoveFromCollection(
     productIds: string[],
     collectionId: string
   ): Promise<Product[]> {
@@ -367,9 +365,9 @@ export class ProductRepository extends Repository<Product> {
       .execute()
 
     return this.findByIds(productIds)
-  }
+  },
 
-  public async getFreeTextSearchResultsAndCount(
+  async getFreeTextSearchResultsAndCount(
     q: string,
     options: FindWithoutRelationsOptions = { where: {} },
     relations: FindOptionsRelations<Product> = {}
@@ -481,9 +479,9 @@ export class ProductRepository extends Repository<Product> {
     })
 
     return [orderedProducts, count]
-  }
+  },
 
-  public async isProductInSalesChannels(
+  async isProductInSalesChannels(
     id: string,
     salesChannelIds: string[]
   ): Promise<boolean> {
@@ -497,9 +495,9 @@ export class ProductRepository extends Repository<Product> {
         )
         .getCount()) > 0
     )
-  }
+  },
 
-  private _cleanOptions(
+  _cleanOptions(
     options: FindWithoutRelationsOptions
   ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {
     const where = options.where ?? {}
@@ -522,5 +520,6 @@ export class ProductRepository extends Repository<Product> {
       ...options,
       where,
     }
-  }
-}
+  },
+})
+export default ProductRepository

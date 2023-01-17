@@ -1,10 +1,10 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager, ILike, FindManyOptions } from "typeorm"
+import { EntityManager, FindManyOptions, ILike } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ProductCollectionRepository } from "../repositories/product-collection"
-import { FindConfig, Selector, ExtendedFindConfig } from "../types/common"
+import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateProductCollection,
   UpdateProductCollection,
@@ -15,7 +15,7 @@ import EventBusService from "./event-bus"
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: EventBusService
-  productRepository: ProductRepository
+  productRepository: typeof ProductRepository
   productCollectionRepository: typeof ProductCollectionRepository
 }
 
@@ -34,7 +34,7 @@ class ProductCollectionService extends TransactionBaseService {
   protected readonly eventBus_: EventBusService
   // eslint-disable-next-line max-len
   protected readonly productCollectionRepository_: typeof ProductCollectionRepository
-  protected readonly productRepository_: ProductRepository
+  protected readonly productRepository_: typeof ProductRepository
 
   constructor({
     manager,
@@ -252,7 +252,10 @@ class ProductCollectionService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery(selector, config) as FindManyOptions<ProductCollection> & {
+    const query = buildQuery(
+      selector,
+      config
+    ) as FindManyOptions<ProductCollection> & {
       where: { discount_condition_id?: string }
     } & ExtendedFindConfig<ProductCollection>
 
