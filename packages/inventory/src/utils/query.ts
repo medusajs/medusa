@@ -1,9 +1,5 @@
 import { EntityManager, ILike } from "typeorm"
-import {
-  buildQuery,
-  FilterableInventoryItemProps,
-  FindConfig,
-} from "@medusajs/medusa"
+import { buildQuery, FilterableInventoryItemProps, FindConfig, } from "@medusajs/medusa"
 import { InventoryItem } from "../models"
 
 export function getListQuery(
@@ -12,14 +8,14 @@ export function getListQuery(
   config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
 ) {
   const inventoryItemRepository = manager.getRepository(InventoryItem)
-  const query = buildQuery(selector, config)
+
+  const { q, ...selectorRest } = selector
+  const query = buildQuery<FilterableInventoryItemProps>(selectorRest, config)
 
   const queryBuilder = inventoryItemRepository.createQueryBuilder("inv_item")
 
-  if (query.where.q) {
-    query.where.sku = ILike(`%${query.where.q as string}%`)
-
-    delete query.where.q
+  if (q) {
+    query.where.sku = ILike(`%${q}%`)
   }
 
   if ("location_id" in query.where) {

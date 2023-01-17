@@ -1,10 +1,10 @@
-import { DeepPartial, EntityManager } from "typeorm"
+import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
   buildQuery,
-  FilterableInventoryLevelProps,
   CreateInventoryLevelInput,
+  FilterableInventoryLevelProps,
+  FindConfig,
   IEventBusService,
   TransactionBaseService,
 } from "@medusajs/medusa"
@@ -52,7 +52,7 @@ export default class InventoryLevelService extends TransactionBaseService {
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
     return await levelRepository.find(query)
   }
 
@@ -69,7 +69,7 @@ export default class InventoryLevelService extends TransactionBaseService {
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
     return await levelRepository.findAndCount(query)
   }
 
@@ -94,7 +94,7 @@ export default class InventoryLevelService extends TransactionBaseService {
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    const query = buildQuery({ id: inventoryLevelId }, config)
+    const query = buildQuery({ id: inventoryLevelId }, config) as FindManyOptions
     const [inventoryLevel] = await levelRepository.find(query)
 
     if (!inventoryLevel) {

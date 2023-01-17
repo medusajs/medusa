@@ -4340,11 +4340,12 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     ts-jest: ^25.5.1
-    typeorm: ^0.3.11
+    typeorm: ^0.3.9
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": 1.x.x
     medusa-interfaces: 1.x.x
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -4481,7 +4482,7 @@ __metadata:
     winston: ^3.2.1
   peerDependencies:
     medusa-interfaces: 1.3.3
-    typeorm: ">0.3.0"
+    typeorm: ^0.3.11
   bin:
     medusa: ./cli.js
   languageName: unknown
@@ -4495,6 +4496,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     ts-jest: ^25.5.1
+    typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.7.3
@@ -19601,7 +19603,7 @@ __metadata:
     faker: ^5.5.3
     jest: ^26.6.3
     medusa-interfaces: "*"
-    typeorm: ^0.3.9
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -19619,7 +19621,7 @@ __metadata:
     medusa-fulfillment-webshipper: "*"
     medusa-interfaces: "*"
     medusa-plugin-sendgrid: "*"
-    typeorm: ^0.2.31
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -19634,7 +19636,7 @@ __metadata:
     babel-preset-medusa-package: "*"
     jest: ^26.6.3
     medusa-interfaces: "*"
-    typeorm: ^0.2.31
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -22207,7 +22209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^4.0.0, js-yaml@npm:^4.1.0":
+"js-yaml@npm:^4.1.0":
   version: 4.1.0
   resolution: "js-yaml@npm:4.1.0"
   dependencies:
@@ -24160,11 +24162,11 @@ __metadata:
     jest: ^25.5.2
     medusa-core-utils: ^1.1.31
     medusa-test-utils: ^1.1.37
-    typeorm: ^0.2.29
+    typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
     medusa-core-utils: ^1.1.31
-    typeorm: 0.x
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -24332,7 +24334,7 @@ __metadata:
     medusa-interfaces: ^1.3.3
   peerDependencies:
     medusa-interfaces: 1.3.3
-    typeorm: 0.x
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -24763,7 +24765,7 @@ __metadata:
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.3.3
-    typeorm: 0.x
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -30532,7 +30534,7 @@ __metadata:
     typedoc-plugin-markdown: ^3.13.4
     typedoc-plugin-merge-modules: ^4.0.1
     typedoc-plugin-reference-excluder: ^1.0.0
-    typeorm: ^0.3.9
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -33909,80 +33911,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.2.29, typeorm@npm:^0.2.31":
-  version: 0.2.45
-  resolution: "typeorm@npm:0.2.45"
-  dependencies:
-    "@sqltools/formatter": ^1.2.2
-    app-root-path: ^3.0.0
-    buffer: ^6.0.3
-    chalk: ^4.1.0
-    cli-highlight: ^2.1.11
-    debug: ^4.3.1
-    dotenv: ^8.2.0
-    glob: ^7.1.6
-    js-yaml: ^4.0.0
-    mkdirp: ^1.0.4
-    reflect-metadata: ^0.1.13
-    sha.js: ^2.4.11
-    tslib: ^2.1.0
-    uuid: ^8.3.2
-    xml2js: ^0.4.23
-    yargs: ^17.0.1
-    zen-observable-ts: ^1.0.0
-  peerDependencies:
-    "@sap/hana-client": ^2.11.14
-    better-sqlite3: ^7.1.2
-    hdb-pool: ^0.1.6
-    ioredis: ^4.28.3
-    mongodb: ^3.6.0
-    mssql: ^6.3.1
-    mysql2: ^2.2.5
-    oracledb: ^5.1.0
-    pg: ^8.5.1
-    pg-native: ^3.0.0
-    pg-query-stream: ^4.0.0
-    redis: ^3.1.1
-    sql.js: ^1.4.0
-    sqlite3: ^5.0.2
-    typeorm-aurora-data-api-driver: ^2.0.0
-  peerDependenciesMeta:
-    "@sap/hana-client":
-      optional: true
-    better-sqlite3:
-      optional: true
-    hdb-pool:
-      optional: true
-    ioredis:
-      optional: true
-    mongodb:
-      optional: true
-    mssql:
-      optional: true
-    mysql2:
-      optional: true
-    oracledb:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    pg-query-stream:
-      optional: true
-    redis:
-      optional: true
-    sql.js:
-      optional: true
-    sqlite3:
-      optional: true
-    typeorm-aurora-data-api-driver:
-      optional: true
-  bin:
-    typeorm: cli.js
-  checksum: 005655de6670d4ca7fcb85c7b865f1a21b1191bc810f4cee4f4424c8018c238f927eedda916de07a28dde51577bf44cc56a6f5f2080e93eeb1bdb7ee64e7609c
-  languageName: node
-  linkType: hard
-
 "typeorm@npm:^0.3.11":
   version: 0.3.11
   resolution: "typeorm@npm:0.3.11"
@@ -36043,22 +35971,6 @@ __metadata:
     read: ^1.0.7
     strip-ansi: ^5.2.0
   checksum: 56db963fdc03ba905f0e5b24d9b9b59931a00f5acc2418c40b2818ac11059d6dda812ddc65333642282cd48a731fadd4d56e196bf52fc74d04207d6ed7630de9
-  languageName: node
-  linkType: hard
-
-"zen-observable-ts@npm:^1.0.0":
-  version: 1.2.5
-  resolution: "zen-observable-ts@npm:1.2.5"
-  dependencies:
-    zen-observable: 0.8.15
-  checksum: 21d586f3d0543e1d6f05d9333a137b407dbf337907c1ee1c2fa7a7da044f7e1262e4baf4ef8902f230c6f5acb561047659eb7df73df33307233cc451efe46db1
-  languageName: node
-  linkType: hard
-
-"zen-observable@npm:0.8.15":
-  version: 0.8.15
-  resolution: "zen-observable@npm:0.8.15"
-  checksum: 71cc2f2bbb537300c3f569e25693d37b3bc91f225cefce251a71c30bc6bb3e7f8e9420ca0eb57f2ac9e492b085b8dfa075fd1e8195c40b83c951dd59c6e4fbf8
   languageName: node
   linkType: hard
 
