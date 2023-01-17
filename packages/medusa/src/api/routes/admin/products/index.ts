@@ -211,7 +211,9 @@ export type AdminProductsDeleteRes = {
  *   products:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/Product"
+ *       oneOf:
+ *         - $ref: "#/components/schemas/Product"
+ *         - $ref: "#/components/schemas/PricedProduct"
  *   count:
  *     type: integer
  *     description: The total number of items available
