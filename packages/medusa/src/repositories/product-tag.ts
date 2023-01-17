@@ -2,6 +2,7 @@ import { EntityRepository, In, Repository } from "typeorm"
 import { ProductTag } from "../models/product-tag"
 import { ExtendedFindConfig } from "../types/common"
 import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { dataSource } from "../loaders/database"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
   value: string
@@ -23,9 +24,8 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   }
 }
 
-@EntityRepository(ProductTag)
-export class ProductTagRepository extends Repository<ProductTag> {
-  public async listTagsByUsage(count = 10): Promise<ProductTag[]> {
+export const ProductTagRepository = dataSource.getRepository(ProductTag).extend({
+  async listTagsByUsage(count = 10): Promise<ProductTag[]> {
     return await this.query(
       `
           SELECT id, COUNT(pts.product_tag_id) as usage_count, pt.value
@@ -37,9 +37,9 @@ export class ProductTagRepository extends Repository<ProductTag> {
       `,
       [count]
     )
-  }
+  },
 
-  public async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
+  async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
     const tagsValues = tags.map((tag) => tag.value)
     const existingTags = await this.find({
       where: {
@@ -64,7 +64,7 @@ export class ProductTagRepository extends Repository<ProductTag> {
     }
 
     return upsertedTags
-  }
+  },
 
   async findAndCountByDiscountConditionId(
     conditionId: string,
@@ -98,4 +98,6 @@ export class ProductTagRepository extends Repository<ProductTag> {
       )
       .getManyAndCount()
   }
-}
+})
+
+export default ProductTagRepository
