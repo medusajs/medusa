@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager, FindOperator } from "typeorm"
+import { DeepPartial, EntityManager, FindOperator, FindManyOptions } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -7,7 +7,7 @@ import {
   PriceListFindOptions,
   PriceListRepository,
 } from "../repositories/price-list"
-import { FindConfig, Selector } from "../types/common"
+import { FindConfig, Selector, ExtendedFindConfig } from "../types/common"
 import {
   CreatePriceListInput,
   FilterablePriceListProps,
@@ -297,12 +297,14 @@ class PriceListService extends TransactionBaseService {
     const priceListRepo = manager.withRepository(this.priceListRepo_)
 
     const { q, ...priceListSelector } = selector
-    const query = buildQuery(priceListSelector, config)
+    const query = buildQuery(priceListSelector, config) as FindManyOptions<FilterablePriceListProps> & {
+      where: { customer_groups?: FindOperator<string[]> }
+    } & ExtendedFindConfig<FilterablePriceListProps>
 
-    const groups = query.where.customer_groups as FindOperator<string[]>
+    const groups = query.where.customer_groups
     query.where.customer_groups = undefined
 
-    const [priceLists] = await priceListRepo.listAndCount(query, groups)
+    const [priceLists] = await priceListRepo.listAndCount(query as any)
 
     return priceLists
   }
@@ -323,23 +325,23 @@ class PriceListService extends TransactionBaseService {
     const manager = this.manager_
     const priceListRepo = manager.withRepository(this.priceListRepo_)
     const { q, ...priceListSelector } = selector
-    const { relations, ...query } = buildQuery<
-      FilterablePriceListProps,
-      FilterablePriceListProps
-    >(priceListSelector, config)
+    const query = buildQuery(priceListSelector, config) as FindManyOptions<FilterablePriceListProps> & {
+      where: { customer_groups?: FindOperator<string[]> }
+    } & ExtendedFindConfig<FilterablePriceListProps>
+    const { relations } = query
 
-    const groups = query.where.customer_groups as FindOperator<string[]>
+    const groups = query.where.customer_groups
     delete query.where.customer_groups
 
-    if (q) {
-      return await priceListRepo.getFreeTextSearchResultsAndCount(
-        q,
-        query as PriceListFindOptions,
-        groups,
-        relations
-      )
-    }
-    return await priceListRepo.listAndCount({ ...query, relations }, groups)
+    // if (q) {
+    //   return await priceListRepo.getFreeTextSearchResultsAndCount(
+    //     q,
+    //     query as PriceListFindOptions,
+    //     groups,
+    //     relations
+    //   )
+    // }
+    return await priceListRepo.listAndCount(query as ExtendedFindConfig<PriceList>)
   }
 
   protected async upsertCustomerGroups_(

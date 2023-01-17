@@ -1,10 +1,10 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager, ILike } from "typeorm"
+import { Brackets, EntityManager, ILike, FindManyOptions } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ProductCollectionRepository } from "../repositories/product-collection"
-import { FindConfig, Selector } from "../types/common"
+import { FindConfig, Selector, ExtendedFindConfig } from "../types/common"
 import {
   CreateProductCollection,
   UpdateProductCollection,
@@ -17,6 +17,11 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   productRepository: ProductRepository
   productCollectionRepository: ProductCollectionRepository
+}
+
+type ListAndCountSelector = Selector<ProductCollection> & {
+  q?: string
+  discount_condition_id?: string
 }
 
 /**
@@ -234,10 +239,7 @@ class ProductCollectionService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: Selector<ProductCollection> & {
-      q?: string
-      discount_condition_id?: string
-    } = {},
+    selector: ListAndCountSelector = {},
     config: FindConfig<ProductCollection> = { skip: 0, take: 20 }
   ): Promise<[ProductCollection[], number]> {
     const productCollectionRepo = this.manager_.withRepository(
@@ -250,7 +252,9 @@ class ProductCollectionService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions<ProductCollection> & {
+      where: { discount_condition_id?: string }
+    } & ExtendedFindConfig<ProductCollection>
 
     if (q) {
       const where = query.where
@@ -260,23 +264,22 @@ class ProductCollectionService extends TransactionBaseService {
       delete where.created_at
       delete where.updated_at
 
-      query.where = (qb): void => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where({ title: ILike(`%${q}%`) }).orWhere({
-              handle: ILike(`%${q}%`),
-            })
-          })
-        )
-      }
+      query.where = [
+        {
+          ...where,
+          title: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          handle: ILike(`%${q}%`),
+        },
+      ]
     }
 
     if (query.where.discount_condition_id) {
       const discountConditionId = query.where.discount_condition_id as string
       delete query.where.discount_condition_id
-      return await productCollectionRepo.findAndCountBy(query)
+      return await productCollectionRepo.findAndCountBy(query as any)
     }
 
     return await productCollectionRepo.findAndCount(query)

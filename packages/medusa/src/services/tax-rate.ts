@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, FindConditions } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import {
   ProductTaxRate,
   ProductTypeTaxRate,
@@ -128,7 +128,11 @@ class TaxRateService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
       const query = buildQuery({ id })
-      await taxRateRepo.delete(query.where as FindConditions<TaxRate>)
+      if (Array.isArray(id)) {
+        await taxRateRepo.delete({ id: In(id) })
+      } else {
+        await taxRateRepo.delete({ id: id })
+      }
     })
   }
 

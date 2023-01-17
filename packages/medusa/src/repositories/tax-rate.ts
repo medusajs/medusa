@@ -49,10 +49,11 @@ export class TaxRateRepository extends Repository<TaxRate> {
       cleanOptions.select = selectableCols
     }
 
-    FindOptionsUtils.applyFindManyOptionsOrConditionsToQueryBuilder(
-      qb,
-      cleanOptions
-    )
+    // Todo: Find out what this does and have a replacement
+    // FindOptionsUtils.applyFindManyOptionsOrConditionsToQueryBuilder(
+    //   qb,
+    //   cleanOptions
+    // )
 
     if (resolverFields.length > 0) {
       this.applyResolutionsToQueryBuilder(qb, resolverFields)

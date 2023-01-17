@@ -1,4 +1,4 @@
-import { EntityRepository, TreeRepository, Brackets, ILike } from "typeorm"
+import { EntityRepository, TreeRepository, Brackets, ILike, FindOptionsRelations } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, Selector } from "../types/common"
 
@@ -37,11 +37,9 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
       queryBuilder.withDeleted()
     }
 
-    if (options_.relations?.length) {
-      options_.relations.forEach((rel) => {
-        queryBuilder.leftJoinAndSelect(`${entityName}.${rel}`, rel)
-      })
-    }
+    Object.entries((options_.relations || {}) as FindOptionsRelations<ProductCategory>).forEach(([rel, _]) => {
+      queryBuilder.leftJoinAndSelect(`${entityName}.${rel}`, rel)
+    })
 
     return await queryBuilder.getManyAndCount()
   }
