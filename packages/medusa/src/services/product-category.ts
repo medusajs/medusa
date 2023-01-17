@@ -14,14 +14,14 @@ import {
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: EventBusService
-  productCategoryRepository: ProductCategoryRepository
+  productCategoryRepository: typeof ProductCategoryRepository
 }
 
 /**
  * Provides layer to manipulate product categories.
  */
 class ProductCategoryService extends TransactionBaseService {
-  protected readonly productCategoryRepo_: ProductCategoryRepository
+  protected readonly productCategoryRepo_: typeof ProductCategoryRepository
   protected readonly eventBusService_: EventBusService
   protected transactionManager_: EntityManager | undefined
   protected manager_: EntityManager
@@ -185,7 +185,7 @@ class ProductCategoryService extends TransactionBaseService {
    */
   async delete(productCategoryId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productCategoryRepository: ProductCategoryRepository =
+      const productCategoryRepository: typeof ProductCategoryRepository =
         manager.withRepository(this.productCategoryRepo_)
 
       const productCategory = await this.retrieve(productCategoryId, {

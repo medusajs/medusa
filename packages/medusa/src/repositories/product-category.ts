@@ -1,10 +1,10 @@
 import { EntityRepository, TreeRepository, Brackets, ILike, FindOptionsRelations } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, Selector } from "../types/common"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(ProductCategory)
-export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
-  public async getFreeTextSearchResultsAndCount(
+export const ProductCategoryRepository = dataSource.getTreeRepository(ProductCategory).extend({
+  async getFreeTextSearchResultsAndCount(
     options: ExtendedFindConfig<ProductCategory> = {
       where: {},
     },
@@ -43,4 +43,5 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
 
     return await queryBuilder.getManyAndCount()
   }
-}
+})
+export default ProductCategoryRepository
