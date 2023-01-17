@@ -56,7 +56,7 @@ class ProductVariantService extends TransactionBaseService {
   protected readonly eventBus_: EventBusService
   protected readonly regionService_: RegionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
-  protected readonly moneyAmountRepository_: MoneyAmountRepository
+  protected readonly moneyAmountRepository_: typeof MoneyAmountRepository
   // eslint-disable-next-line max-len
   protected readonly productOptionValueRepository_: typeof ProductOptionValueRepository
   protected readonly cartRepository_: typeof CartRepository
