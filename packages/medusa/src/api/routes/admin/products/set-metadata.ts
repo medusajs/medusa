@@ -52,10 +52,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             product:
- *               $ref: "#/components/schemas/Product"
+ *           $ref: "#/components/schemas/AdminProductsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

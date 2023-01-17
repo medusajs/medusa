@@ -29,9 +29,9 @@
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "build": "babel src -d .",
-    "watch": "babel -w src --out-dir .",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests src",
+    "build": "babel src --out-dir . --ignore '**/__tests__','**/__mocks__'",
+    "watch": "babel -w src --out-dir . --ignore '**/__tests__','**/__mocks__'"
   },
   "peerDependencies": {
     "medusa-interfaces": "1.x"

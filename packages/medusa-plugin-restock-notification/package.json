@@ -23,10 +23,10 @@
     "ulid": "^2.3.0"
   },
   "scripts": {
-    "build": "babel src -d . --ignore **/__tests__ --extensions \".ts,.js\"",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__",
-    "test": "jest"
+    "test": "jest --passWithNoTests src",
+    "build": "babel src --out-dir . --ignore '**/__tests__','**/__mocks__'",
+    "watch": "babel -w src --out-dir . --ignore '**/__tests__','**/__mocks__'"
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.7.1",

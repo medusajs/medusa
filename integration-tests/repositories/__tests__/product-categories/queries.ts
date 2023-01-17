@@ -27,10 +27,26 @@ describe("Product Categories", () => {
     let productCategoryRepository
 
     beforeEach(async () => {
-      a1 = await simpleProductCategoryFactory(dbConnection, { name: 'a1', handle: 'a1' })
-      a11 = await simpleProductCategoryFactory(dbConnection, { name: 'a11', handle: 'a11', parent_category: a1 })
-      a111 = await simpleProductCategoryFactory(dbConnection, { name: 'a111', handle: 'a111', parent_category: a11 })
-      a12 = await simpleProductCategoryFactory(dbConnection, { name: 'a12', handle: 'a12', parent_category: a1 })
+      a1 = await simpleProductCategoryFactory(dbConnection, {
+        name: 'a1',
+        is_active: true
+      })
+      a11 = await simpleProductCategoryFactory(dbConnection, {
+        name: 'a11',
+        parent_category: a1,
+        is_active: true
+      })
+      a111 = await simpleProductCategoryFactory(dbConnection, {
+        name: 'a111',
+        parent_category: a11,
+        is_active: true,
+        is_internal: true
+      })
+      a12 = await simpleProductCategoryFactory(dbConnection, {
+        name: 'a12',
+        parent_category: a1,
+        is_active: false
+      })
 
       productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
     })
@@ -184,7 +200,7 @@ describe("Product Categories", () => {
       const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
         {
           where: { id: a11.id },
-          relations: ['parent_category', 'category_children']
+          relations: ['parent_category', 'category_children'],
         },
       )
 

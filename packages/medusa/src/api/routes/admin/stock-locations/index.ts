@@ -1,6 +1,6 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { PaginatedResponse } from "../../../../types/common"
 import { StockLocationDTO } from "../../../../types/stock-location"
 import middlewares, {
   transformBody,
@@ -85,12 +85,35 @@ export const defaultAdminStockLocationFields: (keyof StockLocationDTO)[] = [
 
 export const defaultAdminStockLocationRelations = []
 
+/**
+ * @schema AdminStockLocationsRes
+ * type: object
+ * properties:
+ *   stock_location:
+ *     $ref: "#/components/schemas/StockLocationDTO"
+ */
 export type AdminStockLocationsRes = {
   stock_location: StockLocationDTO
 }
 
-export type AdminStockLocationsDeleteRes = DeleteResponse
-
+/**
+ * @schema AdminStockLocationsListRes
+ * type: object
+ * properties:
+ *   stock_locations:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/StockLocationDTO"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminStockLocationsListRes = PaginatedResponse & {
   stock_locations: StockLocationDTO[]
 }
