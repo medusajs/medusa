@@ -1,7 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
 import { ProductCollection } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common"
-
-@EntityRepository(ProductCollection)
+import { dataSource } from "../loaders/database"
 // eslint-disable-next-line max-len
-export class ProductCollectionRepository extends Repository<ProductCollection> {}
+export const ProductCollectionRepository = dataSource.getRepository(ProductCollection)
+export default ProductCollectionRepository

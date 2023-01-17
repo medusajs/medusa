@@ -17,7 +17,7 @@ type InjectedDependencies = {
   manager: EntityManager
 
   eventBusService: EventBusService
-  publishableApiKeyRepository: PublishableApiKeyRepository
+  publishableApiKeyRepository: typeof PublishableApiKeyRepository
   // eslint-disable-next-line max-len
   publishableApiKeySalesChannelRepository: PublishableApiKeySalesChannelRepository
 }
@@ -35,7 +35,7 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly eventBusService_: EventBusService
-  protected readonly publishableApiKeyRepository_: PublishableApiKeyRepository
+  protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
   // eslint-disable-next-line max-len
   protected readonly publishableApiKeySalesChannelRepository_: PublishableApiKeySalesChannelRepository
 

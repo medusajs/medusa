@@ -16,7 +16,7 @@ type InjectedDependencies = {
   manager: EntityManager
   eventBusService: EventBusService
   productRepository: ProductRepository
-  productCollectionRepository: ProductCollectionRepository
+  productCollectionRepository: typeof ProductCollectionRepository
 }
 
 type ListAndCountSelector = Selector<ProductCollection> & {
@@ -33,7 +33,7 @@ class ProductCollectionService extends TransactionBaseService {
 
   protected readonly eventBus_: EventBusService
   // eslint-disable-next-line max-len
-  protected readonly productCollectionRepository_: ProductCollectionRepository
+  protected readonly productCollectionRepository_: typeof ProductCollectionRepository
   protected readonly productRepository_: ProductRepository
 
   constructor({
