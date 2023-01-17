@@ -7,16 +7,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-<<<<<<< HEAD
-=======
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import {
-  ProductService,
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../../../../services"
-
->>>>>>> 2d1453720 (add inventory management to create-variant)
 import { Type } from "class-transformer"
 import {
   ProductService,
@@ -31,8 +21,6 @@ import {
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
-import { IInventoryService } from "../../../../interfaces"
-import { ProductVariant } from "../../../../models"
 
 import {
   TransactionHandlerType,
@@ -321,34 +309,6 @@ export default async (req, res) => {
   })
 
   res.json({ product })
-}
-
-const createAndAttachInventoryItemToVariant = async (
-  validated: AdminPostProductsProductVariantsReq,
-  variant: ProductVariant,
-  context: {
-    inventoryService: IInventoryService
-    productVariantInventoryService: ProductVariantInventoryService
-  }
-) => {
-  const { inventoryService, productVariantInventoryService } = context
-  const inventoryItem = await inventoryService.createInventoryItem({
-    sku: validated.sku,
-    origin_country: validated.origin_country,
-    hs_code: validated.hs_code,
-    mid_code: validated.mid_code,
-    material: validated.material,
-    weight: validated.weight,
-    length: validated.length,
-    height: validated.height,
-    width: validated.width,
-  })
-
-  await productVariantInventoryService.attachInventoryItem(
-    variant.id,
-    inventoryItem.id,
-    1
-  )
 }
 
 class ProductVariantOptionReq {
