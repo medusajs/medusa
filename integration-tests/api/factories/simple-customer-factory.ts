@@ -1,10 +1,7 @@
 import faker from "faker"
 import { DataSource } from "typeorm"
-import { Customer } from "@medusajs/medusa"
-import {
-  CustomerGroupFactoryData,
-  simpleCustomerGroupFactory,
-} from "./simple-customer-group-factory"
+import { Customer, CustomerGroup } from "@medusajs/medusa"
+import { CustomerGroupFactoryData, simpleCustomerGroupFactory, } from "./simple-customer-group-factory"
 
 export type CustomerFactoryData = {
   id?: string
@@ -49,7 +46,7 @@ export const simpleCustomerFactory = async (
   const customer = await manager.save(c)
 
   if (data.groups) {
-    const groups = []
+    const groups: CustomerGroup[] = []
     for (const g of data.groups) {
       const created = await simpleCustomerGroupFactory(dataSource, g)
       groups.push(created)

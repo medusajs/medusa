@@ -56,9 +56,11 @@ export const simpleProductFactory = async (
       )
     )
   } else {
-    const store = await manager.findOne(Store, {
+    const stores = await manager.find(Store, {
       relations: { default_sales_channel: true },
     })
+
+    const store = stores[0]
 
     if (store?.default_sales_channel) {
       sales_channels = [store.default_sales_channel]
