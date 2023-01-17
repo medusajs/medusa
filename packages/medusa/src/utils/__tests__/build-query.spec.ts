@@ -107,7 +107,9 @@ describe("buildQuery", () => {
           id: "ASC",
           items: {
             id: "ASC",
-            variant: "ASC"
+            variant: {
+              id: "ASC"
+            }
           }
         }
       })
