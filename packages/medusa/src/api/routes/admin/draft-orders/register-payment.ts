@@ -3,6 +3,7 @@ import {
   DraftOrderService,
   OrderService,
   PaymentProviderService,
+  ProductVariantInventoryService,
 } from "../../../../services"
 import {
   defaultAdminOrdersFields as defaultOrderFields,
@@ -10,6 +11,8 @@ import {
 } from "../orders/index"
 
 import { EntityManager } from "typeorm"
+import { Order } from "../../../../models"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /draft-orders/{id}/pay
@@ -71,43 +74,90 @@ export default async (req, res) => {
   )
   const orderService: OrderService = req.scope.resolve("orderService")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const entityManager: EntityManager = req.scope.resolve("manager")
 
-  let result
-  await entityManager.transaction(async (manager) => {
-    const draftOrder = await draftOrderService
-      .withTransaction(manager)
-      .retrieve(id)
+  const order = await entityManager.transaction(async (manager) => {
+    const draftOrderServiceTx = draftOrderService.withTransaction(manager)
+    const orderServiceTx = orderService.withTransaction(manager)
+    const cartServiceTx = cartService.withTransaction(manager)
 
-    const cart = await cartService
-      .withTransaction(manager)
-      .retrieveWithTotals(draftOrder.cart_id)
+    const productVariantInventoryServiceTx =
+      productVariantInventoryService.withTransaction(manager)
+
+    const draftOrder = await draftOrderServiceTx.retrieve(id)
+
+    const cart = await cartServiceTx.retrieveWithTotals(draftOrder.cart_id)
 
     await paymentProviderService
       .withTransaction(manager)
       .createSession("system", cart)
 
-    await cartService
+    await cartServiceTx.setPaymentSession(cart.id, "system")
+
+    await cartServiceTx.createTaxLines(cart.id)
+
+    await cartServiceTx.authorizePayment(cart.id)
+
+    let order = await orderServiceTx.createFromCart(cart.id)
+
+    await draftOrderServiceTx.registerCartCompletion(draftOrder.id, order.id)
+
+    await orderServiceTx.capturePayment(order.id)
+
+    order = await orderService
       .withTransaction(manager)
-      .setPaymentSession(cart.id, "system")
+      .retrieveWithTotals(order.id, {
+        relations: defaultOrderRelations,
+        select: defaultOrderFields,
+      })
 
-    await cartService.withTransaction(manager).createTaxLines(cart.id)
+    await reserveQuantityForDraftOrder(order, {
+      productVariantInventoryService: productVariantInventoryServiceTx,
+    })
 
-    await cartService.withTransaction(manager).authorizePayment(cart.id)
-
-    result = await orderService.withTransaction(manager).createFromCart(cart.id)
-
-    await draftOrderService
-      .withTransaction(manager)
-      .registerCartCompletion(draftOrder.id, result.id)
-
-    await orderService.withTransaction(manager).capturePayment(result.id)
-  })
-
-  const order = await orderService.retrieveWithTotals(result.id, {
-    relations: defaultOrderRelations,
-    select: defaultOrderFields,
+    return order
   })
 
   res.status(200).json({ order })
+}
+
+export const reserveQuantityForDraftOrder = async (
+  order: Order,
+  context: {
+    productVariantInventoryService: ProductVariantInventoryService
+    locationId?: string
+  }
+) => {
+  const { productVariantInventoryService, locationId } = context
+  await Promise.all(
+    order.items.map(async (item) => {
+      if (item.variant_id) {
+        const inventoryConfirmed =
+          await productVariantInventoryService.confirmInventory(
+            item.variant_id,
+            item.quantity,
+            { salesChannelId: order.sales_channel_id }
+          )
+
+        if (!inventoryConfirmed) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Variant with id: ${item.variant_id} does not have the required inventory`,
+            MedusaError.Codes.INSUFFICIENT_INVENTORY
+          )
+        }
+
+        await productVariantInventoryService.reserveQuantity(
+          item.variant_id,
+          item.quantity,
+          {
+            lineItemId: item.id,
+            salesChannelId: order.sales_channel_id,
+          }
+        )
+      }
+    })
+  )
 }
