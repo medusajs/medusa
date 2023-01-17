@@ -1,4 +1,5 @@
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
@@ -62,12 +63,17 @@ import { IInventoryService } from "../../../../interfaces"
  */
 export default async (req, res) => {
   const { validatedBody } = req as { validatedBody: AdminPostReservationsReq }
+
+  const manager: EntityManager = req.scope.resolve("manager")
+
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
-  const reservation = await inventoryService.createReservationItem(
-    validatedBody
-  )
+  const reservation = await manager.transaction(async (manager) => {
+    return await inventoryService
+      .withTransaction(manager)
+      .createReservationItem(validatedBody)
+  })
 
   res.status(200).json({ reservation })
 }

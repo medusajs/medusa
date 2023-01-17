@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
@@ -64,8 +65,11 @@ import { IInventoryService } from "../../../../interfaces"
 export default async (req, res) => {
   const { id } = req.params
   const inventoryService: IInventoryService = req.resolve("inventoryService")
+  const manager: EntityManager = req.resolve("manager")
 
-  await inventoryService.deleteReservationItem(id)
+  await manager.transaction(async (manager) => {
+    await inventoryService.withTransaction(manager).deleteReservationItem(id)
+  })
 
   res.json({
     id,

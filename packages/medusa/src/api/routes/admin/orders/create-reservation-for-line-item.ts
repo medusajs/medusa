@@ -1,4 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import {
   LineItemService,
   ProductVariantInventoryService,
@@ -74,31 +75,40 @@ export default async (req, res) => {
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
 
+  const manager: EntityManager = req.scope.resolve("manager")
+
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
 
-  const lineItem = await lineItemService.retrieve(line_item_id)
+  const reservations = await manager.transaction(async (manager) => {
+    const lineItem = await lineItemService
+      .withTransaction(manager)
+      .retrieve(line_item_id)
 
-  if (!lineItem.variant_id) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Can't create a reservation for a line-item wihtout a variant`
-    )
-  }
-
-  const quantity = validatedBody.quantity || lineItem.quantity
-
-  await productVariantInventoryService.validateInventoryAtLocation(
-    [{ ...lineItem, quantity }],
-    validatedBody.location_id
-  )
-
-  const reservations = await productVariantInventoryService.reserveQuantity(
-    lineItem.variant_id,
-    quantity,
-    {
-      locationId: validatedBody.location_id,
+    if (!lineItem.variant_id) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Can't create a reservation for a line-item wihtout a variant`
+      )
     }
-  )
+
+    const quantity = validatedBody.quantity || lineItem.quantity
+
+    const ProductVariantInventoryServiceTx =
+      productVariantInventoryService.withTransaction(manager)
+
+    await ProductVariantInventoryServiceTx.validateInventoryAtLocation(
+      [{ ...lineItem, quantity }],
+      validatedBody.location_id
+    )
+
+    return await ProductVariantInventoryServiceTx.reserveQuantity(
+      lineItem.variant_id,
+      quantity,
+      {
+        locationId: validatedBody.location_id,
+      }
+    )
+  })
 
   res.json({ reservation: reservations[0] })
 }
