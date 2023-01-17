@@ -185,33 +185,33 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
 /**
  * @schema AdminInventoryItemsListWithVariantsAndLocationLevelsRes
  * type: object
- *   properties:
- *     inventory_items:
- *       type: array
- *       items:
- *         allOf:
- *           - $ref: "#/components/schemas/InventoryItemDTO"
- *           - type: object
- *             properties:
- *               location_levels:
- *                 type: array
- *                 items:
- *                   allOf:
- *                     - $ref: "#/components/schemas/InventoryLevelDTO"
- *               variants:
- *                 type: array
- *                 items:
- *                   allOf:
- *                     - $ref: "#/components/schemas/ProductVariant"
- *     count:
- *       type: integer
- *       description: The total number of items available
- *     offset:
- *       type: integer
- *       description: The number of items skipped before these items
- *     limit:
- *       type: integer
- *       description: The number of items per page
+ * properties:
+ *   inventory_items:
+ *     type: array
+ *     items:
+ *       allOf:
+ *         - $ref: "#/components/schemas/InventoryItemDTO"
+ *         - type: object
+ *           properties:
+ *             location_levels:
+ *               type: array
+ *               items:
+ *                 allOf:
+ *                   - $ref: "#/components/schemas/InventoryLevelDTO"
+ *             variants:
+ *               type: array
+ *               items:
+ *                 allOf:
+ *                   - $ref: "#/components/schemas/ProductVariant"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
  */
 export type AdminInventoryItemsListWithVariantsAndLocationLevelsRes =
   Partial<InventoryItemDTO> & {
@@ -222,14 +222,14 @@ export type AdminInventoryItemsListWithVariantsAndLocationLevelsRes =
 /**
  * @schema AdminInventoryItemsLocationLevelsRes
  * type: object
- *   properties:
- *     id:
- *       description: The id of the location
- *     location_levels:
- *       description: List of stock levels at a given location
- *       type: array
- *       items:
- *         $ref: "#/components/schemas/InventoryLevelDTO"
+ * properties:
+ *   id:
+ *     description: The id of the location
+ *   location_levels:
+ *     description: List of stock levels at a given location
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/InventoryLevelDTO"
  */
 export type AdminInventoryItemsLocationLevelsRes = {
   inventory_item: {
