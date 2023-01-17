@@ -53,10 +53,17 @@ describe("/store/auth", () => {
       id: expect.any(String),
       created_at: expect.any(String),
       updated_at: expect.any(String),
+      deleted_at: null,
+      email: "test@testesen.dk",
       first_name: "test",
       last_name: "testesen",
+      billing_address_id: null,
       phone: null,
-      email: "test@testesen.dk",
+      has_account: true,
+      metadata: null,
+      shipping_addresses: [],
+      billing_address: null,
+      orders: [],
     })
   })
 
