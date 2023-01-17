@@ -1,7 +1,6 @@
-import { EntityRepository, Repository } from "typeorm"
-
 import { PublishableApiKey } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(PublishableApiKey)
 // eslint-disable-next-line max-len
-export class PublishableApiKeyRepository extends Repository<PublishableApiKey> {}
+export const PublishableApiKeyRepository = dataSource.getRepository(PublishableApiKey)
+export default PublishableApiKeyRepository
