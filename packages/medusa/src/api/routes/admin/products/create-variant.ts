@@ -169,7 +169,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const inventoryService: IInventoryService =
+  const inventoryService: IInventoryService | undefined =
     req.scope.resolve("inventoryService")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
@@ -185,9 +185,10 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     const inventoryServiceTx =
-      inventoryService?.withTransaction?.(transactionManager)
+      inventoryService?.withTransaction(transactionManager)
+
     const productVariantInventoryServiceTx =
-      productVariantInventoryService?.withTransaction?.(transactionManager)
+      productVariantInventoryService.withTransaction(transactionManager)
 
     const productVariantServiceTx =
       productVariantService.withTransaction(transactionManager)
@@ -214,7 +215,7 @@ export default async (req, res) => {
         return
       }
 
-      const inventoryItem = await inventoryServiceTx.createInventoryItem({
+      const inventoryItem = await inventoryServiceTx!.createInventoryItem({
         sku: validated.sku,
         origin_country: validated.origin_country,
         hs_code: validated.hs_code,
@@ -233,7 +234,7 @@ export default async (req, res) => {
 
     async function removeInventoryItem() {
       if (createdId.inventoryItem) {
-        await inventoryServiceTx.deleteInventoryItem(createdId.inventoryItem)
+        await inventoryServiceTx!.deleteInventoryItem(createdId.inventoryItem)
       }
     }
 
