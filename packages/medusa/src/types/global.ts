@@ -86,6 +86,7 @@ export type LoaderOptions = {
   configModule: ConfigModule
   options?: Record<string, unknown>
   logger?: Logger
+  isTest?: boolean
 }
 
 export type Constructor<T> = new (...args: any[]) => T

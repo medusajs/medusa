@@ -20,6 +20,15 @@ type InjectedDependencies = {
   manager: EntityManager
   logger: Logger
   stagedJobService: StagedJobService
+  configModule: ConfigModule
+}
+
+type ModuleOptions = {
+  queueName?: string
+  workerName?: string
+  queuePrefix?: string
+  workerPrefix?: string
+  redisUrl?: string
 }
 
 type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
@@ -59,6 +68,8 @@ export default class RedisEventBusService
   implements IEventBusService
 {
   protected readonly config_: ConfigModule
+  protected readonly moduleOptions_: ModuleOptions
+  protected readonly moduleDeclaration_: ConfigurableModuleDeclaration
   protected readonly logger_: Logger
   protected readonly stagedJobService_: StagedJobService
   protected readonly eventToSubscribersMap_: Map<
@@ -78,9 +89,10 @@ export default class RedisEventBusService
       manager,
       logger,
       stagedJobService,
+      configModule,
     }: MedusaContainer & InjectedDependencies,
-    config: ConfigModule,
-    moduleDeclaration?: ConfigurableModuleDeclaration,
+    moduleOptions: ModuleOptions = {},
+    moduleDeclaration: ConfigurableModuleDeclaration,
     singleton = true
   ) {
     // @ts-ignore
@@ -93,29 +105,35 @@ export default class RedisEventBusService
       )
     }
 
-    this.config_ = config
+    this.moduleOptions_ = moduleOptions
+    this.moduleDeclaration_ = moduleDeclaration
+    this.config_ = configModule
     this.manager_ = manager
 
     this.logger_ = logger
     this.stagedJobService_ = stagedJobService
 
-    if (singleton && config?.projectConfig?.redis_url) {
+    if (singleton && moduleOptions.redisUrl) {
       this.connect()
     }
   }
 
   connect(): void {
-    const connection = new Redis(this.config_?.projectConfig?.redis_url!)
+    // Required config
+    // See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
+    const connection = new Redis(this.moduleOptions_?.redisUrl!, {
+      maxRetriesPerRequest: null,
+    })
 
-    this.queue_ = new Queue(`:events-queue`, {
+    this.queue_ = new Queue(this.moduleOptions_.queueName ?? `events-queue`, {
       connection,
-      prefix: `${this.constructor.name}`,
+      prefix: this.moduleOptions_.queuePrefix ?? `${this.constructor.name}`,
     })
 
     // Register our worker to handle emit calls
-    new Worker("events-worker", this.worker_, {
+    new Worker(this.moduleOptions_.queueName ?? "events-queue", this.worker_, {
       connection,
-      prefix: `${this.constructor.name}`,
+      prefix: this.moduleOptions_.workerPrefix ?? `${this.constructor.name}`,
     })
 
     if (process.env.NODE_ENV !== "test") {
@@ -303,7 +321,7 @@ export default class RedisEventBusService
         subscriber.id && !completedSubscribers.includes(subscriber.id)
     )
 
-    const isRetry = job.attemptsMade > 0
+    const isRetry = job.attemptsMade > 1
     const currentAttempt = job.attemptsMade + 1
 
     const isFinalAttempt = job?.opts?.attempts === currentAttempt

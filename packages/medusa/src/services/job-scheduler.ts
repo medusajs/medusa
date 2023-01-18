@@ -27,7 +27,11 @@ export default class JobSchedulerService {
     this.logger_ = logger
 
     if (singleton && config?.projectConfig?.redis_url) {
-      const connection = new Redis(config.projectConfig.redis_url)
+      // Required config
+      // See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
+      const connection = new Redis(config.projectConfig.redis_url, {
+        maxRetriesPerRequest: null,
+      })
 
       this.queue_ = new Queue(`scheduled-jobs:queue`, {
         connection,
@@ -35,7 +39,7 @@ export default class JobSchedulerService {
       })
 
       // Register scheduled job worker
-      new Worker("scheduled-jobs:worker", this.scheduledJobsWorker, {
+      new Worker("scheduled-jobs:queue", this.scheduledJobsWorker, {
         connection,
         prefix: `${this.constructor.name}`,
       })

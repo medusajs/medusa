@@ -123,7 +123,7 @@ export default async ({
 
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
-  await moduleLoader({ container, configModule, logger: Logger })
+  await moduleLoader({ container, configModule, logger: Logger, isTest })
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 

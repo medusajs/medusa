@@ -1,15 +1,15 @@
 const path = require("path")
 const fs = require("fs/promises")
 import { resolve, sep } from "path"
-import { simpleSalesChannelFactory } from "../../../factories"
+import { simpleSalesChannelFactory } from "../../../../../../integration-tests/api/factories"
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../../helpers/setup-server")
+const { useApi } = require("../../../../../helpers/use-api")
+const { initDb, useDb } = require("../../../../../helpers/use-db")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const userSeeder = require("../../../helpers/user-seeder")
-const productSeeder = require("../../../helpers/product-seeder")
+const adminSeeder = require("../../../../../api/helpers")
+const userSeeder = require("../../../../../api/helpers")
+const productSeeder = require("../../../../../api/helpers")
 
 const adminReqConfig = {
   headers: {
