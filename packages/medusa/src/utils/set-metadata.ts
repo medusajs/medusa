@@ -23,9 +23,9 @@ export function setMetadata(
 
     /**
      * We reserve the empty string as a way to delete a key.
-     * So if the value of a key is an empty string, we don't
+     * If the value is an empty string, we don't
      * set it, and if it exists in the existing metadata, we
-     * delete it.
+     * unset the field.
      */
     if (value === "") {
       if (key in existing) {
