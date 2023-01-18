@@ -38,7 +38,7 @@ export default (app) => {
       defaultRelations: defaultAdminReservationRelations,
       isList: true,
     }),
-    middlewares.wrap(require("./create-reservation").default)
+    middlewares.wrap(require("./list-reservations").default)
   )
 
   route.post(
