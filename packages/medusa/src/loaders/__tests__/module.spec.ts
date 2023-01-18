@@ -81,7 +81,7 @@ describe("modules loader", () => {
     container = buildContainer()
   })
 
-  it("registers service as false in container when no resolution path is given", async () => {
+  it("registers service as undefined in container when no resolution path is given", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
         resolutionPath: false,
@@ -110,7 +110,7 @@ describe("modules loader", () => {
     const testService = container.resolve(
       moduleResolutions.testService.definition.key
     )
-    expect(testService).toBe(false)
+    expect(testService).toBe(undefined)
   })
 
   it("registers service ", async () => {

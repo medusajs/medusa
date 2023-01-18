@@ -7,16 +7,32 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService, ProductVariantService } from "../../../../services"
-
 import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
+import {
+  ProductService,
+  ProductVariantService,
+  ProductVariantInventoryService,
+} from "../../../../services"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { IInventoryService } from "../../../../interfaces"
 import {
   CreateProductVariantInput,
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
+
+import {
+  TransactionHandlerType,
+  TransactionOrchestrator,
+  TransactionPayload,
+  TransactionState,
+  TransactionStepsDefinition,
+} from "../../../../utils/transaction"
+
+import { ulid } from "ulid"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /products/{id}/variants
@@ -103,6 +119,48 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
+
+enum actions {
+  createVariant = "createVariant",
+  createInventoryItem = "createInventoryItem",
+  attachInventoryItem = "attachInventoryItem",
+}
+
+const simpleFlow: TransactionStepsDefinition = {
+  next: {
+    action: actions.createVariant,
+    maxRetries: 0,
+  },
+}
+
+const flowWithInventory: TransactionStepsDefinition = {
+  next: {
+    action: actions.createVariant,
+    forwardResponse: true,
+    maxRetries: 0,
+    next: {
+      action: actions.createInventoryItem,
+      forwardResponse: true,
+      maxRetries: 0,
+      next: {
+        action: actions.attachInventoryItem,
+        noCompensation: true,
+        maxRetries: 0,
+      },
+    },
+  },
+}
+
+const createSimpleVariantStrategy = new TransactionOrchestrator(
+  "create-variant",
+  simpleFlow
+)
+
+const createVariantStrategyWithInventory = new TransactionOrchestrator(
+  "create-variant-with-inventory",
+  flowWithInventory
+)
+
 export default async (req, res) => {
   const { id } = req.params
 
@@ -111,18 +169,140 @@ export default async (req, res) => {
     req.body
   )
 
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-  const productService: ProductService = req.scope.resolve("productService")
+
+  const createdId: Record<string, string | null> = {
+    variant: null,
+    inventoryItem: null,
+  }
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await productVariantService
-      .withTransaction(transactionManager)
-      .create(id, validated as CreateProductVariantInput)
+    const inventoryServiceTx =
+      inventoryService?.withTransaction(transactionManager)
+
+    const productVariantInventoryServiceTx =
+      productVariantInventoryService.withTransaction(transactionManager)
+
+    const productVariantServiceTx =
+      productVariantService.withTransaction(transactionManager)
+
+    async function createVariant() {
+      const variant = await productVariantServiceTx.create(
+        id,
+        validated as CreateProductVariantInput
+      )
+
+      createdId.variant = variant.id
+
+      return { variant }
+    }
+
+    async function removeVariant() {
+      if (createdId.variant) {
+        await productVariantServiceTx.delete(createdId.variant)
+      }
+    }
+
+    async function createInventoryItem(variant) {
+      if (!validated.manage_inventory) {
+        return
+      }
+
+      const inventoryItem = await inventoryServiceTx!.createInventoryItem({
+        sku: validated.sku,
+        origin_country: validated.origin_country,
+        hs_code: validated.hs_code,
+        mid_code: validated.mid_code,
+        material: validated.material,
+        weight: validated.weight,
+        length: validated.length,
+        height: validated.height,
+        width: validated.width,
+      })
+
+      createdId.inventoryItem = inventoryItem.id
+
+      return { variant, inventoryItem }
+    }
+
+    async function removeInventoryItem() {
+      if (createdId.inventoryItem) {
+        await inventoryServiceTx!.deleteInventoryItem(createdId.inventoryItem)
+      }
+    }
+
+    async function attachInventoryItem(variant, inventoryItem) {
+      if (!validated.manage_inventory) {
+        return
+      }
+
+      await productVariantInventoryServiceTx.attachInventoryItem(
+        variant.id,
+        inventoryItem.id,
+        validated.inventory_quantity
+      )
+    }
+
+    async function transactionHandler(
+      actionId: string,
+      type: TransactionHandlerType,
+      payload: TransactionPayload
+    ) {
+      const command = {
+        [actions.createVariant]: {
+          [TransactionHandlerType.INVOKE]: async () => {
+            return await createVariant()
+          },
+          [TransactionHandlerType.COMPENSATE]: async () => {
+            await removeVariant()
+          },
+        },
+        [actions.createInventoryItem]: {
+          [TransactionHandlerType.INVOKE]: async (data) => {
+            const { variant } = data._response ?? {}
+            return await createInventoryItem(variant)
+          },
+          [TransactionHandlerType.COMPENSATE]: async () => {
+            await removeInventoryItem()
+          },
+        },
+        [actions.attachInventoryItem]: {
+          [TransactionHandlerType.INVOKE]: async (data) => {
+            const { variant, inventoryItem } = data._response ?? {}
+            return await attachInventoryItem(variant, inventoryItem)
+          },
+        },
+      }
+      return command[actionId][type](payload.data)
+    }
+
+    const strategy = inventoryService
+      ? createVariantStrategyWithInventory
+      : createSimpleVariantStrategy
+
+    const transaction = await strategy.beginTransaction(
+      ulid(),
+      transactionHandler,
+      validated
+    )
+    await strategy.resume(transaction)
+
+    if (transaction.getState() !== TransactionState.DONE) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        transaction.errors.map((err) => err.error?.message).join("\n")
+      )
+    }
   })
 
+  const productService: ProductService = req.scope.resolve("productService")
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
@@ -175,6 +355,7 @@ class ProductVariantOptionReq {
  *   manage_inventory:
  *     description: Whether Medusa should keep track of the inventory for this Product Variant.
  *     type: boolean
+ *     default: true
  *   weight:
  *     description: The wieght of the Product Variant.
  *     type: number
@@ -274,7 +455,7 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsBoolean()
   @IsOptional()
-  manage_inventory?: boolean
+  manage_inventory?: boolean = true
 
   @IsNumber()
   @IsOptional()
