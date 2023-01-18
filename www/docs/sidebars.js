@@ -695,6 +695,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "troubleshooting/errors-after-update",
+          label: "Errors After Update",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/database-error",
           label: "Database SASL Error",
         },
