@@ -11,6 +11,8 @@ import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
 import NavbarLogo from '@theme/Navbar/Logo';
 import NavbarSearch from '@theme/Navbar/Search';
 import styles from './styles.module.css';
+import {useWindowSize} from '@docusaurus/theme-common';
+
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
   return useThemeConfig().navbar.items;
@@ -36,6 +38,8 @@ export default function NavbarContent() {
   const mobileSidebar = useNavbarMobileSidebar();
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
+  const windowSize = useWindowSize();
+
   return (
     <NavbarContentLayout
       left={
@@ -52,9 +56,11 @@ export default function NavbarContent() {
         <>
           <NavbarItems items={rightItems} />
           <NavbarColorModeToggle className={styles.colorModeToggle} />
-          <NavbarSearch>
-            <SearchBar />
-          </NavbarSearch>
+          {windowSize === 'mobile' && (
+            <NavbarSearch>
+              <SearchBar />
+            </NavbarSearch>
+          )}
         </>
       }
     />
