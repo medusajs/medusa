@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import { FindConfig } from "../../types/common"
 
 import {
@@ -15,6 +16,8 @@ import {
 } from "../../types/inventory"
 
 export interface IInventoryService {
+  withTransaction(transactionManager?: EntityManager): this
+
   listInventoryItems(
     selector: FilterableInventoryItemProps,
     config?: FindConfig<InventoryItemDTO>

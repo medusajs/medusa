@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import { FindConfig } from "../../types/common"
 
 import {
@@ -8,6 +9,7 @@ import {
 } from "../../types/stock-location"
 
 export interface IStockLocationService {
+  withTransaction(transactionManager?: EntityManager): this
   list(
     selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>
