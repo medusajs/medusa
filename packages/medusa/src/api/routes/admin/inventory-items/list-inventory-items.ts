@@ -27,7 +27,7 @@ import {
  * @oas [get] /inventory-items
  * operationId: "GetInventoryItems"
  * summary: "List inventory items."
- * description: "Retrives inventory items."
+ * description: "Lists inventory items."
  * x-authenticated: true
  * parameters:
  *   - (query) offset=0 {integer} How many inventory items to skip in the result.

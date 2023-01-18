@@ -7,7 +7,7 @@ import { FindParams } from "../../../../types/common"
  * @oas [get] /inventory-items/{id}/location-levels
  * operationId: "GetInventoryItemsInventoryItemLocationLevels"
  * summary: "List stock levels of a given location."
- * description: "Retrives stock levels of a given location."
+ * description: "Lists stock levels of a given location."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.

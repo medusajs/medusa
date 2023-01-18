@@ -7,8 +7,8 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /inventory-items/{id}/location-levels
  * operationId: "PostInventoryItemsInventoryItemLocationLevels"
- * summary: "Create an Inventory Location Level to a given Inventory Item."
- * description: "Creates an Inventory Location Level to a given Inventory Item."
+ * summary: "Create an Inventory Location Level for a given Inventory Item."
+ * description: "Creates an Inventory Location Level for a given Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
