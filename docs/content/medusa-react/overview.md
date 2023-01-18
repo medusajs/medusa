@@ -4,7 +4,7 @@
 
 :::tip
 
-Alternatively, you can use Medusa’s [JS Client](../js-client/) or the [REST APIs](/api/store).
+Alternatively, you can use Medusa’s [JS Client](../js-client/overview.md) or the [REST APIs](/api/store).
 
 :::
 
