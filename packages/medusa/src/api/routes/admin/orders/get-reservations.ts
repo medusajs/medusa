@@ -12,7 +12,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (query) offset=0 {integer} How many reservations to skip before the results.
- *   - (query) limit=50 {integer} Limit the number of reservations returned.
+ *   - (query) limit=20 {integer} Limit the number of reservations returned.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -63,20 +63,22 @@ export default async (req: Request, res: Response) => {
 
   const order = await orderService.retrieve(id, { relations: ["items"] })
 
-  const [reservations] = await inventoryService.listReservationItems(
+  const [reservations, count] = await inventoryService.listReservationItems(
     {
       line_item_id: order.items.map((i) => i.id),
     },
     req.listConfig
   )
 
-  res.json({ reservations })
+  const { limit, offset } = req.validatedQuery
+
+  res.json({ reservations, count, limit, offset })
 }
 
 // eslint-disable-next-line max-len
 export class AdminGetOrdersOrderReservationsParams extends extendedFindParamsMixin(
   {
-    limit: 50,
+    limit: 20,
     offset: 0,
   }
 ) {}
