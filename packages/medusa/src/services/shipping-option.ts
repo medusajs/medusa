@@ -103,14 +103,16 @@ class ShippingOptionService extends TransactionBaseService {
 
       const reqRepo = manager.withRepository(this.requirementRepository_)
 
-      const existingReq = await reqRepo.findOne({
-        where: { id: requirement.id },
-      })
+      const existingReq = requirement.id
+        ? await reqRepo.findOne({
+            where: { id: requirement.id },
+          })
+        : undefined
 
       if (!existingReq && requirement.id) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "ID does not exist"
+          `Shipping option requirement with id ${requirement.id} does not exist`
         )
       }
 
@@ -181,7 +183,7 @@ class ShippingOptionService extends TransactionBaseService {
    */
   async retrieve(
     optionId,
-    options: { select?: (keyof ShippingOption)[]; relations?: string[] } = {}
+    options: FindConfig<ShippingOption> = {}
   ): Promise<ShippingOption> {
     if (!isDefined(optionId)) {
       throw new MedusaError(
@@ -193,10 +195,7 @@ class ShippingOptionService extends TransactionBaseService {
     const manager = this.manager_
     const soRepo = manager.withRepository(this.optionRepository_)
 
-    const query = buildQuery(
-      { id: optionId },
-      options as FindConfig<ShippingOption>
-    )
+    const query = buildQuery({ id: optionId }, options)
 
     const option = await soRepo.findOne(query)
 
