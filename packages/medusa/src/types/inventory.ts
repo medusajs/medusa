@@ -18,11 +18,52 @@ export type InventoryItemDTO = {
   deleted_at: string | Date | null
 }
 
+/**
+ * @schema ReservationItemDTO
+ * title: "Reservation item"
+ * description: "Represents a reservation of an inventory item at a stock location"
+ * type: object
+ * required:
+ * - id
+ * - location_id
+ * - inventory_item_id
+ * - quantity
+ * properties:
+ *   id:
+ *     description: "The id of the reservation item"
+ *     type: string
+ *   location_id:
+ *     description: "The id of the location of the reservation"
+ *     type: string
+ *   inventory_item_id:
+ *     description: "The id of the inventory item the reservation relates to"
+ *     type: string
+ *   quantity:
+ *     description: "The id of the reservation item"
+ *     type: number
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details
+ *     example: {car: "white"}
+ *   created_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was created."
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was updated."
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     description: "The date with timezone at which the resource was deleted."
+ *     format: date-time
+ */
 export type ReservationItemDTO = {
   id: string
   location_id: string
   inventory_item_id: string
   quantity: number
+  line_item_id?: string | null
   metadata: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
