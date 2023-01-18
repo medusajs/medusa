@@ -9,7 +9,6 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
-    "@medusajs/event-bus-redis": "*",
     "@medusajs/medusa": "*",
     "faker": "^5.5.3",
     "medusa-interfaces": "*",

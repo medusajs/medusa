@@ -7,9 +7,9 @@ const setupServer = require("../../../../../helpers/setup-server")
 const { useApi } = require("../../../../../helpers/use-api")
 const { initDb, useDb } = require("../../../../../helpers/use-db")
 
-const adminSeeder = require("../../../../../api/helpers")
-const userSeeder = require("../../../../../api/helpers")
-const productSeeder = require("../../../../../api/helpers")
+const adminSeeder = require("../../../../../api/helpers/admin-seeder")
+const userSeeder = require("../../../../../api/helpers/user-seeder")
+const productSeeder = require("../../../../../api/helpers/product-seeder")
 
 const adminReqConfig = {
   headers: {
@@ -32,7 +32,6 @@ describe("Batch job of product-export type", () => {
       cwd,
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: true,
     })
   })
 

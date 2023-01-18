@@ -2,13 +2,13 @@ const path = require("path")
 const fs = require("fs/promises")
 import { resolve, sep } from "path"
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../../helpers/setup-server")
+const { useApi } = require("../../../../../helpers/use-api")
+const { initDb, useDb } = require("../../../../../helpers/use-db")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const userSeeder = require("../../../helpers/user-seeder")
-const orderSeeder = require("../../../helpers/order-seeder")
+const adminSeeder = require("../../../../../api/helpers/admin-seeder")
+const userSeeder = require("../../../../../api/helpers/user-seeder")
+const orderSeeder = require("../../../../../api/helpers/order-seeder")
 
 const adminReqConfig = {
   headers: {

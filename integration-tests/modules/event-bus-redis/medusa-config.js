@@ -9,6 +9,7 @@ module.exports = {
     database_type: "postgres",
     jwt_secret: "test",
     cookie_secret: "test",
+    redis_url: process.env.REDIS_URL,
   },
   modules: {
     eventBus: {
