@@ -1,4 +1,4 @@
-import { ILike, Raw } from "typeorm"
+import { FindOptionsWhere, ILike, Raw } from "typeorm"
 import { GiftCard } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
@@ -8,24 +8,22 @@ export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
     query: ExtendedFindConfig<GiftCard>,
     q?: string
   ): Promise<[GiftCard[], number]> {
-    let query_ = { ...query }
+    const query_ = { ...query }
+    query_.where = query_.where as FindOptionsWhere<GiftCard>
 
     if (q) {
-      query_ = {
-        ...query_,
-        where: {
-          ...query_.where,
-          id: undefined,
-          code: ILike(`%${q}%`),
-          order: {
-            display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
-              q: `%${q}%`,
-            }),
-          },
-        },
-        relations: {
-          ...query_.relations,
-          order: true,
+      delete query_.where.id
+
+      query_.relations = query_.relations ?? {}
+      query_.relations.order = query_.relations.order ?? true
+
+      query_.where = {
+        ...query_.where,
+        code: ILike(`%${q}%`),
+        order: {
+          display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
+            q: `%${q}%`,
+          }),
         },
       }
     }

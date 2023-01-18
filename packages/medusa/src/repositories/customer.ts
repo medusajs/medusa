@@ -27,23 +27,22 @@ export const CustomerRepository = dataSource.getRepository(Customer).extend({
       delete query_.where.first_name
       delete query_.where.last_name
 
-      query.where = [
+      query_.where = [
         {
-          ...query.where,
+          ...query_.where,
           email: ILike(`%${q}%`),
         },
         {
-          ...query.where,
+          ...query_.where,
           first_name: ILike(`%${q}%`),
         },
         {
-          ...query.where,
+          ...query_.where,
           last_name: ILike(`%${q}%`),
         },
       ]
     }
 
-    query_.relationLoadStrategy = "query"
     return await this.findAndCount(query_)
   },
 })
