@@ -1,13 +1,10 @@
 import { unionBy } from "lodash"
 import {
   DeleteResult,
-  EntityRepository,
   FindManyOptions,
   FindOptionsSelect,
-  FindOptionsUtils,
   In,
   Not,
-  Repository,
   SelectQueryBuilder,
 } from "typeorm"
 import {
@@ -20,14 +17,13 @@ import {
 import { TaxRateListByConfig } from "../types/tax-rate"
 import { isDefined } from "medusa-core-utils"
 import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { dataSource } from "../loaders/database"
 
 const resolveableFields = [
   "product_count",
   "product_type_count",
   "shipping_option_count",
 ]
-
-import { dataSource } from "../loaders/database"
 
 export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
   getFindQueryBuilder(findOptions: FindManyOptions<TaxRate>) {
@@ -50,11 +46,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       cleanOptions.select = selectableCols
     }
 
-    // Todo: Find out what this does and have a replacement
-    // FindOptionsUtils.applyFindManyOptionsOrConditionsToQueryBuilder(
-    //   qb,
-    //   cleanOptions
-    // )
+    qb.setFindOptions(cleanOptions)
 
     if (resolverFields.length > 0) {
       this.applyResolutionsToQueryBuilder(qb, resolverFields)
@@ -269,6 +261,6 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       .where("ptr.shipping_option_id = :optionId", { optionId })
 
     return await rates.getMany()
-  }
+  },
 })
 export default TaxRateRepository

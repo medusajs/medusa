@@ -49,9 +49,7 @@ class TaxRateService extends TransactionBaseService {
     selector: FilterableTaxRateProps,
     config: FindConfig<TaxRate> = {}
   ): Promise<TaxRate[]> {
-    const taxRateRepo = this.manager_.withRepository(
-      this.taxRateRepository_
-    )
+    const taxRateRepo = this.manager_.withRepository(this.taxRateRepository_)
     const query = buildQuery(selector, config)
     return await taxRateRepo.findWithResolution(query)
   }
@@ -60,9 +58,7 @@ class TaxRateService extends TransactionBaseService {
     selector: FilterableTaxRateProps,
     config: FindConfig<TaxRate> = {}
   ): Promise<[TaxRate[], number]> {
-    const taxRateRepo = this.manager_.withRepository(
-      this.taxRateRepository_
-    )
+    const taxRateRepo = this.manager_.withRepository(this.taxRateRepository_)
     const query = buildQuery(selector, config)
     return await taxRateRepo.findAndCountWithResolution(query)
   }
