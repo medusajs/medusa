@@ -258,25 +258,25 @@ export function buildLegacySelectOrRelationsFrom<TEntity>(
     return []
   }
 
-  const output: string[] = []
+  const output: Set<string> = new Set(Object.keys(input))
 
   for (const key of Object.keys(input)) {
     if (input[key] != undefined && typeof input[key] === "object") {
       const deepRes = buildLegacySelectOrRelationsFrom(input[key])
 
-      const res = deepRes.reduce((acc, val) => {
+      const items = deepRes.reduce((acc, val) => {
         acc.push(`${key}.${val}`)
         return acc
       }, [] as string[])
 
-      output.push(...res)
+      items.forEach((item) => output.add(item))
       continue
     }
 
-    output.push(key)
+    output.add(key)
   }
 
-  return output as (keyof TEntity)[]
+  return Array.from(output) as (keyof TEntity)[]
 }
 
 export function buildSelects<TEntity>(
