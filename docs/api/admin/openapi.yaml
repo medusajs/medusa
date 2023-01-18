@@ -347,6 +347,10 @@ paths:
     $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
   /price-lists/{id}/products:
     $ref: paths/price-lists_{id}_products.yaml
+  /product-categories:
+    $ref: paths/product-categories.yaml
+  /product-categories/{id}:
+    $ref: paths/product-categories_{id}.yaml
   /product-tags:
     $ref: paths/product-tags.yaml
   /product-types:
@@ -411,6 +415,8 @@ paths:
     $ref: paths/returns_{id}_receive.yaml
   /sales-channels/{id}/products/batch:
     $ref: paths/sales-channels_{id}_products_batch.yaml
+  /sales-channels/{id}/stock-locations:
+    $ref: paths/sales-channels_{id}_stock-locations.yaml
   /sales-channels:
     $ref: paths/sales-channels.yaml
   /sales-channels/{id}:
@@ -423,6 +429,10 @@ paths:
     $ref: paths/shipping-profiles.yaml
   /shipping-profiles/{id}:
     $ref: paths/shipping-profiles_{id}.yaml
+  /stock-locations:
+    $ref: paths/stock-locations.yaml
+  /stock-locations/{id}:
+    $ref: paths/stock-locations_{id}.yaml
   /store/currencies/{code}:
     $ref: paths/store_currencies_{code}.yaml
   /store:

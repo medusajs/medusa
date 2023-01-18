@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:31](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L31)
+[packages/medusa/src/services/oauth.ts:31](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L31)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:27](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L27)
+[packages/medusa/src/services/oauth.ts:27](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L27)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:29](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L29)
+[packages/medusa/src/services/oauth.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L29)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:26](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L26)
+[packages/medusa/src/services/oauth.ts:26](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L26)
 
 ___
 
@@ -96,7 +96,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:19](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L19)
+[packages/medusa/src/services/oauth.ts:19](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L19)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:28](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L28)
+[packages/medusa/src/services/oauth.ts:28](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L28)
 
 ___
 
@@ -120,7 +120,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:20](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L20)
+[packages/medusa/src/services/oauth.ts:20](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L20)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:21](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L21)
+[packages/medusa/src/services/oauth.ts:21](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L21)
 
 ## Methods
 
@@ -176,7 +176,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:88](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L88)
+[packages/medusa/src/services/oauth.ts:88](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L88)
 
 ___
 
@@ -218,7 +218,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:122](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L122)
+[packages/medusa/src/services/oauth.ts:122](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L122)
 
 ___
 
@@ -238,7 +238,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:80](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L80)
+[packages/medusa/src/services/oauth.ts:80](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L80)
 
 ___
 
@@ -258,7 +258,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:156](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L156)
+[packages/medusa/src/services/oauth.ts:156](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L156)
 
 ___
 
@@ -278,7 +278,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:112](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L112)
+[packages/medusa/src/services/oauth.ts:112](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L112)
 
 ___
 
@@ -298,7 +298,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:57](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L57)
+[packages/medusa/src/services/oauth.ts:57](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L57)
 
 ___
 
@@ -318,7 +318,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:41](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L41)
+[packages/medusa/src/services/oauth.ts:41](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L41)
 
 ___
 
@@ -342,7 +342,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -363,7 +363,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/oauth.ts:101](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/oauth.ts#L101)
+[packages/medusa/src/services/oauth.ts:101](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/oauth.ts#L101)
 
 ___
 
@@ -387,4 +387,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
