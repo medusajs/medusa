@@ -26,6 +26,7 @@ import {
   isTaxCalculationStrategy,
   TransactionBaseService as BaseService,
 } from "../interfaces"
+import { ApiPlugin } from "../interfaces/plugin"
 import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
@@ -323,9 +324,9 @@ function registerApi(
     `Registering custom endpoints for ${pluginDetails.name}`
   )
   try {
-    const routes = require(`${pluginDetails.resolve}/api`).default
+    const routes = require(`${pluginDetails.resolve}/api`).default as ApiPlugin
     if (routes) {
-      app.use("/", routes(rootDirectory, pluginDetails.options))
+      app.use("/", routes(rootDirectory, pluginDetails.options, container))
     }
     return app
   } catch (err) {
