@@ -695,6 +695,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "troubleshooting/errors-after-update",
+          label: "Errors After Update",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/database-error",
           label: "Database SASL Error",
         },
@@ -758,6 +763,11 @@ module.exports = {
           type: "ref",
           id: "js-client/overview",
           label: "JS Client Reference",
+        },
+        {
+          type: "doc",
+          id: "medusa-react/overview",
+          label: "Medusa React",
         },
         {
           type: "ref",
