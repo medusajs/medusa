@@ -1,7 +1,10 @@
 import { Request, Response } from "express"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 
-import { IInventoryService } from "../../../../interfaces"
+import {
+  IInventoryService,
+  IStockLocationService,
+} from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
 
 /**
@@ -74,12 +77,21 @@ export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
+  const stockLocationService: IStockLocationService | undefined =
+    req.scope.resolve("stockLocationService")
+
   const validatedBody =
     req.validatedBody as AdminPostInventoryItemsItemLocationLevelsReq
 
+  const location_id = validatedBody.location_id
+  if (stockLocationService) {
+    // will throw if not found
+    await stockLocationService.retrieve(location_id)
+  }
+
   await inventoryService.createInventoryLevel({
     inventory_item_id: id,
-    location_id: validatedBody.location_id,
+    location_id,
     stocked_quantity: validatedBody.stocked_quantity,
     incoming_quantity: validatedBody.incoming_quantity,
   })
