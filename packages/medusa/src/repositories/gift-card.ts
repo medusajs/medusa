@@ -18,9 +18,9 @@ export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
           id: undefined,
           code: ILike(`%${q}%`),
           order: {
-            display_id: Raw(
-              (alias) => `CAST(${alias} as varchar) ILike '%${q}%'`
-            ),
+            display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
+              q: `%${q}%`,
+            }),
           },
         },
         relations: {

@@ -1,5 +1,11 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, FindManyOptions, ILike, UpdateResult } from "typeorm"
+import {
+  EntityManager,
+  FindManyOptions,
+  ILike,
+  Raw,
+  UpdateResult,
+} from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
@@ -203,7 +209,9 @@ class DraftOrderService extends TransactionBaseService {
         },
         {
           ...query.where,
-          display_id: ILike(`%${q}%`) as any,
+          display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
+            q: `%${q}%`,
+          }),
         },
       ]
     }

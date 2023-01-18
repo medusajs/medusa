@@ -223,7 +223,6 @@ class SwapService extends TransactionBaseService {
       this.transformQueryForCart(config)
 
     const query = buildQuery({ id: swapId }, newConfig)
-    query.relationLoadStrategy = "query"
 
     const swap = await swapRepo.findOne(query)
 

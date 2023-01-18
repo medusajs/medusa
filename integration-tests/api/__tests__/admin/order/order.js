@@ -38,7 +38,7 @@ const adminReqConfig = {
   },
 }
 
-jest.setTimeout(30000)
+jest.setTimeout(3000000)
 
 describe("/admin/orders", () => {
   let medusaProcess

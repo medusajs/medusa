@@ -4,6 +4,7 @@ import {
   FindManyOptions,
   FindOptionsWhere,
   ILike,
+  Raw,
 } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -222,6 +223,12 @@ class OrderService extends TransactionBaseService {
     if (selector.q) {
       q = selector.q
       delete selector.q
+
+      config.relations = config.relations
+        ? Array.from(
+            new Set([...config.relations, "shipping_address", "customer"])
+          )
+        : ["shipping_address", "customer"]
     }
 
     const query = buildQuery(selector, config) as FindManyOptions<Order>
@@ -231,14 +238,6 @@ class OrderService extends TransactionBaseService {
 
       delete where.display_id
       delete where.email
-
-      query.join = {
-        alias: "order",
-        innerJoin: {
-          shipping_address: "order.shipping_address",
-          customer: "order.customer",
-        },
-      }
 
       query.where = [
         {
@@ -253,7 +252,9 @@ class OrderService extends TransactionBaseService {
         },
         {
           ...query.where,
-          display_id: ILike(`%${q}%`) as any,
+          display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
+            q: `%${q}%`,
+          }),
         },
         {
           ...query.where,
@@ -261,7 +262,6 @@ class OrderService extends TransactionBaseService {
             first_name: ILike(`%${q}%`),
           },
         },
-
         {
           ...query.where,
           customer: {
