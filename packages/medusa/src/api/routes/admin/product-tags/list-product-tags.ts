@@ -83,6 +83,9 @@ import { Request, Response } from "express"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetProductTagsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

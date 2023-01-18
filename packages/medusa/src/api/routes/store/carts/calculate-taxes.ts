@@ -11,6 +11,8 @@ import { IdempotencyKey } from "../../../../models/idempotency-key"
  *   this may involve making 3rd party API calls to a Tax Provider service."
  * parameters:
  *   - (path) id=* {String} The Cart ID.
+ * x-codegen:
+ *   method: calculateTaxes
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

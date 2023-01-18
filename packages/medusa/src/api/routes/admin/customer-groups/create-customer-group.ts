@@ -14,6 +14,8 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (body) name=* {string} Name of the customer group
  *   - (body) metadata {object} Metadata for the customer.
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

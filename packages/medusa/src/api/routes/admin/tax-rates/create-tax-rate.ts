@@ -39,6 +39,9 @@ import { IsNullable } from "../../../../utils/validators/is-nullable"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostTaxRatesReq"
+ * x-codegen:
+ *   method: create
+ *   queryParams: AdminPostTaxRatesParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -90,6 +90,9 @@ import { Type } from "class-transformer"
  *   - (query) limit=20 {integer} Limit the number of sales channels returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each sales channel of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each sales channel of the result.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetSalesChannelsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -13,6 +13,8 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) swap_id=* {string} The ID of the Swap.
+ * x-codegen:
+ *   method: cancelSwap
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -13,6 +13,9 @@ import { FindParams } from "../../../../types/common"
  *   - (path) id=* {string} The ID of the Customer Group.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer group.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the customer group.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetCustomerGroupsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
