@@ -45,21 +45,20 @@ import {
  *     name: quantity
  *     description: Filter by reservation quantity
  *     schema:
- *       - type: object
- *         description: search using less and greater than comparisons.
- *         properties:
- *           lt:
- *             type: number
- *             description: filter by reservation quantity less than this number
- *           gt:
- *             type: number
- *             description: filter by reservation quantity greater than this number
- *           lte:
- *             type: number
- *             description: filter by reservation quantity less than or equal to this number
- *           gte:
- *             type: number
- *             description: filter by reservation quantity greater than or equal to this number
+ *       type: object
+ *       properties:
+ *         lt:
+ *           type: number
+ *           description: filter by reservation quantity less than this number
+ *         gt:
+ *           type: number
+ *           description: filter by reservation quantity greater than this number
+ *         lte:
+ *           type: number
+ *           description: filter by reservation quantity less than or equal to this number
+ *         gte:
+ *           type: number
+ *           description: filter by reservation quantity greater than or equal to this number
  *   - (query) offset=0 {integer} How many Reservations to skip in the result.
  *   - (query) limit=20 {integer} Limit the number of Reservations returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.

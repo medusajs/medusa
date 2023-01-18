@@ -71,11 +71,6 @@ export type AdminReservationsRes = {
 /**
  * @schema AdminGetReservationReservationsReq
  * type: object
- * required:
- *   - reservations
- *   - count
- *   - offset
- *   - limit
  * properties:
  *   reservations:
  *     type: array
