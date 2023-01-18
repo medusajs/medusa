@@ -1,9 +1,43 @@
-import { AwilixContainer } from "awilix"
+import { AwilixContainer, ResolveOptions } from "awilix"
 import { Request } from "express"
-import { LoggerOptions } from "typeorm"
+import { EntityManager, LoggerOptions } from "typeorm"
 import { Logger as _Logger } from "winston"
+import { IFileService, ISearchService } from "../interfaces"
 import { Customer, User } from "../models"
+import { CountryRepository } from "../repositories/country"
+import { CurrencyRepository } from "../repositories/currency"
+import {
+  AuthService,
+  CacheService,
+  CartService,
+  CustomerService,
+  DiscountService,
+  EventBusService,
+  FulfillmentProviderService,
+  GiftCardService,
+  LineItemService,
+  MiddlewareService,
+  NoteService,
+  NotificationService,
+  OauthService,
+  OrderService,
+  PaymentProviderService,
+  PricingService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  SalesChannelService,
+  ShippingOptionService,
+  ShippingProfileService,
+  StoreService,
+  SwapService,
+  TaxProviderService,
+  TaxRateService,
+  UserService,
+} from "../services"
+import InviteService from "../services/invite"
 import { FindConfig, RequestQueryFields } from "./common"
+import { IFlagRouter } from "./feature-flags"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -28,8 +62,60 @@ export type ClassConstructor<T> = {
   new (...args: unknown[]): T
 }
 
+/**
+ * Mapping of core Medusa DI container registrations, to their types
+ */
+export type CoreMedusaContainerMap = {
+  logger: Logger
+  configModule: ConfigModule
+  featureFlagRouter: IFlagRouter
+  manager: EntityManager
+  cacheService: CacheService
+  middlewareService: MiddlewareService
+  authService: AuthService
+  oauthService: OauthService
+  userService: UserService
+  storeService: StoreService
+  eventBusService: EventBusService
+  searchService: ISearchService
+  currencyRepository: CurrencyRepository
+  countryRepisotory: CountryRepository
+  salesChannelService: SalesChannelService
+  paymentProviderService: PaymentProviderService
+  notificationService: NotificationService
+  fullfillmentProviderService: FulfillmentProviderService
+  taxProviderService: TaxProviderService
+  taxRateService: TaxRateService
+  cartService: CartService
+  orderService: OrderService
+  customerService: CustomerService
+  discountServie: DiscountService
+  giftCardService: GiftCardService
+  inviteSerivce: InviteService
+  noteService: NoteService
+  swapService: SwapService
+  productService: ProductService
+  regionService: RegionService
+  fileService: IFileService
+  lineItemService: LineItemService
+  pricingServiece: PricingService
+  productVariantService: ProductVariantService
+  shippingOptionService: ShippingOptionService
+  shippingProfileService: ShippingProfileService
+}
+
 export type MedusaContainer = AwilixContainer & {
   registerAdd: <T>(name: string, registration: T) => MedusaContainer
+  /**
+   * Resolve a core registration with known type
+   * @param name Name of the registration
+   * @param resolveOptions options to pass to awilix resolver
+   * @returns The entity registered under the given name
+   */
+  resolveCore<T extends keyof CoreMedusaContainerMap>(
+    name: T,
+    resolveOptions?: ResolveOptions
+  ): CoreMedusaContainerMap[T]
 }
 
 export type Logger = _Logger & {

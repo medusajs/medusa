@@ -5,14 +5,14 @@ import {
   createContainer,
   Resolver,
 } from "awilix"
-import { ClassOrFunctionReturning } from "awilix/lib/container"
+import { ClassOrFunctionReturning, ResolveOptions } from "awilix/lib/container"
 import { Express, NextFunction, Request, Response } from "express"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import "reflect-metadata"
 import requestIp from "request-ip"
 import { Connection, getManager } from "typeorm"
-import { MedusaContainer } from "../types/global"
+import { CoreMedusaContainerMap, MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader from "./database"
@@ -72,6 +72,14 @@ export default async ({
     store.unshift(registration)
 
     return this
+  }.bind(container)
+
+  container.resolveCore = function <T extends keyof CoreMedusaContainerMap>(
+    this: MedusaContainer,
+    name: T,
+    resolveOptions?: ResolveOptions
+  ) {
+    return container.resolve<T>(name, resolveOptions)
   }.bind(container)
 
   // Add additional information to context of request
