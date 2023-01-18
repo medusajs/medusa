@@ -13,6 +13,9 @@ describe("buildQuery", () => {
           test2: Not("this"),
           date: { gt: date },
           amount: { gt: 10 },
+          rule: {
+            type: "fixed"
+          }
         },
         {
           select: [
@@ -66,7 +69,10 @@ describe("buildQuery", () => {
           test1: In(["123", "12", "1"]),
           test2: Not("this"),
           date: MoreThan(date),
-          amount: MoreThan(10)
+          amount: MoreThan(10),
+          rule: {
+            type: "fixed"
+          }
         },
         select: {
           order: {

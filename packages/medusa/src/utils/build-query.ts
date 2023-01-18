@@ -214,7 +214,11 @@ function buildWhere<TWhereKeys, TEntity>(
             where[key] = MoreThanOrEqual(objectValue)
             break
           default:
-            where[key] = buildWhere<any, TEntity>(objectValue)
+            if (objectValue != undefined && typeof objectValue === "object") {
+              where[key] = buildWhere<any, TEntity>(objectValue)
+              return
+            }
+            where[key] = value
         }
         return
       })
