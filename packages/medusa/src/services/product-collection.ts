@@ -285,9 +285,12 @@ class ProductCollectionService extends TransactionBaseService {
     }
 
     if (query.where.discount_condition_id) {
-      const discountConditionId = query.where.discount_condition_id as string
+      const discountConditionId = query.where.discount_condition_id
       delete query.where.discount_condition_id
-      return await productCollectionRepo.findAndCountBy(query as any)
+      return await productCollectionRepo.findAndCountByDiscountConditionId(
+        discountConditionId,
+        query
+      )
     }
 
     return await productCollectionRepo.findAndCount(query)
