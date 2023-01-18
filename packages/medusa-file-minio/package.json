@@ -26,9 +26,7 @@
     "medusa-interfaces": "^1.3.3"
   },
   "scripts": {
-    "build": "babel src -d .",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "watch": "babel -w src --out-dir .",
     "test": "jest --passWithNoTests src",
     "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
     "watch": "babel -w src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'"
