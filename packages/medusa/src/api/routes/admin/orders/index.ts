@@ -13,6 +13,7 @@ import middlewares, {
 } from "../../../middlewares"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 import { AdminOrdersOrderLineItemReservationReq } from "./create-reservation-for-line-item"
+import { AdminGetOrdersOrderReservationsParams } from "./get-reservations"
 import { AdminGetOrdersParams } from "./list-orders"
 
 const route = Router()
@@ -237,6 +238,9 @@ export default (app, featureFlagRouter: FlagRouter) => {
     checkRegisteredModules({
       inventoryService:
         "Inventory is not enabled. Please add an Inventory module to enable this functionality.",
+    }),
+    transformQuery(AdminGetOrdersOrderReservationsParams, {
+      isList: true,
     }),
     middlewares.wrap(require("./get-reservations").default)
   )

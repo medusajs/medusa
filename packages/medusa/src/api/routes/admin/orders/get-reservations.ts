@@ -1,5 +1,7 @@
+import { Request, Response } from "express"
 import { IInventoryService } from "../../../../interfaces"
 import { OrderService } from "../../../../services"
+import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
  * @oas [get] /orders/{id}/reservations
@@ -9,6 +11,8 @@ import { OrderService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) offset=0 {integer} How many reservations to skip before the results.
+ *   - (query) limit=50 {integer} Limit the number of reservations returned.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -50,7 +54,7 @@ import { OrderService } from "../../../../services"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
 
   const inventoryService: IInventoryService =
@@ -59,9 +63,20 @@ export default async (req, res) => {
 
   const order = await orderService.retrieve(id, { relations: ["items"] })
 
-  const [reservations] = await inventoryService.listReservationItems({
-    line_item_id: order.items.map((i) => i.id),
-  })
+  const [reservations] = await inventoryService.listReservationItems(
+    {
+      line_item_id: order.items.map((i) => i.id),
+    },
+    req.listConfig
+  )
 
   res.json({ reservations })
 }
+
+// eslint-disable-next-line max-len
+export class AdminGetOrdersOrderReservationsParams extends extendedFindParamsMixin(
+  {
+    limit: 50,
+    offset: 0,
+  }
+) {}

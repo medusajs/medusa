@@ -1,11 +1,15 @@
 import { Router } from "express"
 import { Note, ReservationItemDTO } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, { transformBody } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import "reflect-metadata"
 import { AdminPostReservationsReq } from "./create-reservation"
 import { AdminPostReservationsReservationReq } from "./update-reservation"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import { AdminGetReservationsParams } from "./list-reservations"
 
 const route = Router()
 
@@ -24,6 +28,16 @@ export default (app) => {
   route.post(
     "/",
     transformBody(AdminPostReservationsReq),
+    middlewares.wrap(require("./create-reservation").default)
+  )
+
+  route.get(
+    "/",
+    transformQuery(AdminGetReservationsParams, {
+      defaultFields: defaultReservationFields,
+      defaultRelations: defaultAdminReservationRelations,
+      isList: true,
+    }),
     middlewares.wrap(require("./create-reservation").default)
   )
 
@@ -68,6 +82,19 @@ export type AdminReservationsRes = {
 export type AdminReservationsListRes = PaginatedResponse & {
   reservations: ReservationItemDTO[]
 }
+
+export const defaultAdminReservationRelations = []
+
+export const defaultReservationFields = [
+  "id",
+  "location_id",
+  "inventory_item_id",
+  "quantity",
+  "line_item_id",
+  "metadata",
+  "created_at",
+  "updated_at",
+]
 
 export type AdminReservationsDeleteRes = DeleteResponse
 

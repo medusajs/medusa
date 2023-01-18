@@ -6,7 +6,7 @@ import {
 } from "../../../../services"
 
 /**
- * @oas [post] /orders/{id}/line-items/{line_item_id}/reservations
+ * @oas [post] /orders/{id}/line-items/{line_item_id}/reserve
  * operationId: "PostOrdersOrderLineItemReservations"
  * summary: "Create a Reservation for a line item"
  * description: "Creates a Reservation for a line item at a specified location, optionally for a partial quantity."
@@ -87,21 +87,16 @@ export default async (req, res) => {
     if (!lineItem.variant_id) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Can't create a reservation for a line-item wihtout a variant`
+        `Can't create a reservation for a Line Item wihtout a variant`
       )
     }
 
     const quantity = validatedBody.quantity || lineItem.quantity
 
-    const ProductVariantInventoryServiceTx =
+    const productVariantInventoryServiceTx =
       productVariantInventoryService.withTransaction(manager)
 
-    await ProductVariantInventoryServiceTx.validateInventoryAtLocation(
-      [{ ...lineItem, quantity }],
-      validatedBody.location_id
-    )
-
-    return await ProductVariantInventoryServiceTx.reserveQuantity(
+    return await productVariantInventoryServiceTx.reserveQuantity(
       lineItem.variant_id,
       quantity,
       {
