@@ -37,10 +37,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              payment_session:
-                $ref: ../components/schemas/PaymentSession.yaml
+            $ref: ../components/schemas/StorePaymentCollectionsSessionRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

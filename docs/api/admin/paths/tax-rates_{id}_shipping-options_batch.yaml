@@ -56,10 +56,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              tax_rate:
-                $ref: ../components/schemas/TaxRate.yaml
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -130,10 +127,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              tax_rate:
-                $ref: ../components/schemas/TaxRate.yaml
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

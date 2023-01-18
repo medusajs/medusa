@@ -38,10 +38,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              customer_group:
-                $ref: ../components/schemas/CustomerGroup.yaml
+            $ref: ../components/schemas/AdminCustomerGroupsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -94,10 +91,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              customer_group:
-                $ref: ../components/schemas/CustomerGroup.yaml
+            $ref: ../components/schemas/AdminCustomerGroupsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
