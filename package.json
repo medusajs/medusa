@@ -52,7 +52,8 @@
     "typedoc-plugin-markdown": "^3.14.0",
     "typedoc-plugin-merge-modules": "^4.0.1",
     "typedoc-plugin-reference-excluder": "^1.1.3",
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.2.31",
+    "typedoc-plugin-missing-exports": "^1.0.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "yarn run lint",
@@ -75,7 +76,6 @@
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",
     "generate:entities": "typedoc --options typedoc.entities.js",
-    "generate:medusa-react": "typedoc --options typedoc.medusa-react.js",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
     "generate:announcement": "node ./scripts/doc-change-release.js",
     "develop": "NODE_ENV=development ts-node --transpile-only ./integration-tests/development/server.js",
@@ -92,8 +92,7 @@
     "global": "^4.4.0",
     "import-from": "^3.0.0",
     "oas-normalize": "^5.0.1",
-    "swagger-inline": "^3.2.2",
-    "typedoc-plugin-missing-exports": "^1.0.0"
+    "swagger-inline": "^3.2.2"
   },
   "packageManager": "yarn@3.2.1"
 }
