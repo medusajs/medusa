@@ -140,9 +140,51 @@ describe("buildQuery", () => {
 })
 
 describe("buildLegacySelectOrRelationsFrom", () => {
-  it("successfully compute object shape from relations or select to the old collection shape", () => {
-    const date = new Date()
+  it("successfully compute selects object shape from relations or select to the old collection shape", () => {
+    const q = buildLegacySelectOrRelationsFrom({
+      order: {
+        items: true,
+        swaps: {
+          additional_items: true,
+        },
+        discounts: {
+          rule: true,
+        },
+        claims: {
+          additional_items: true,
+        },
+      },
+      additional_items: {
+        variant: true,
+      },
+      return_order: {
+        items: true,
+        shipping_method: {
+          tax_lines: true,
+        },
+      },
+    })
 
+    expect(q.length).toBe(14)
+    expect(q).toEqual(expect.arrayContaining([
+      "order",
+      "order.items",
+      "order.swaps",
+      "order.swaps.additional_items",
+      "order.discounts",
+      "order.discounts.rule",
+      "order.claims",
+      "order.claims.additional_items",
+      "additional_items",
+      "additional_items.variant",
+      "return_order",
+      "return_order.items",
+      "return_order.shipping_method",
+      "return_order.shipping_method.tax_lines",
+    ]))
+  })
+
+  it("successfully relations selects object shape from relations or select to the old collection shape", () => {
     const q = buildLegacySelectOrRelationsFrom({
       order: {
         items: true,
