@@ -4,6 +4,8 @@ import {
   EntityManager,
   FindManyOptions,
   FindOperator,
+  ILike,
+  In,
 } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
@@ -322,7 +324,7 @@ class PriceListService extends TransactionBaseService {
    */
   async listAndCount(
     selector: FilterablePriceListProps = {},
-    config: FindConfig<FilterablePriceListProps> = {
+    config: FindConfig<PriceList> = {
       skip: 0,
       take: 20,
     }
@@ -330,28 +332,55 @@ class PriceListService extends TransactionBaseService {
     const manager = this.manager_
     const priceListRepo = manager.withRepository(this.priceListRepo_)
     const { q, ...priceListSelector } = selector
-    const query = buildQuery(
-      priceListSelector,
-      config
-    ) as FindManyOptions<FilterablePriceListProps> & {
-      where: { customer_groups?: FindOperator<string[]> }
-    } & ExtendedFindConfig<FilterablePriceListProps>
-    const { relations } = query
+    const query = buildQuery(priceListSelector, config)
 
-    const groups = query.where.customer_groups
+    const groups = query.where.customer_groups as unknown as FindOperator<
+      string[]
+    >
     delete query.where.customer_groups
 
-    // if (q) {
-    //   return await priceListRepo.getFreeTextSearchResultsAndCount(
-    //     q,
-    //     query as PriceListFindOptions,
-    //     groups,
-    //     relations
-    //   )
-    // }
-    return await priceListRepo.listAndCount(
-      query as ExtendedFindConfig<PriceList>
-    )
+    if (groups) {
+      query.relations = query.relations ?? {}
+      query.relations.customer_groups = query.relations.customer_groups ?? true
+
+      query.where.customer_groups = {
+        ...(query.where.customer_groups ?? {}),
+        id: In(groups.value),
+      }
+    }
+
+    if (q) {
+      if (!groups) {
+        query.relations = query.relations ?? {}
+        query.relations.customer_groups =
+          query.relations.customer_groups ?? true
+      }
+
+      const where = [
+        {
+          ...query.where,
+          name: ILike(`%${q}%`),
+        },
+        {
+          ...query.where,
+          description: ILike(`%${q}%`),
+        },
+        {
+          ...query.where,
+          customer_groups: {
+            ...query.where.customer_groups,
+            name: ILike(`%${q}%`),
+          },
+        },
+      ]
+
+      return await priceListRepo.findAndCount({
+        ...query,
+        where,
+      })
+    }
+
+    return await priceListRepo.listAndCount(query)
   }
 
   protected async upsertCustomerGroups_(
