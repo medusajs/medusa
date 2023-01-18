@@ -1,3 +1,5 @@
+import { Type } from "class-transformer"
+import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
 import { IInventoryService } from "../../../../interfaces"
 import {
@@ -111,11 +113,23 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
   location_id?: string[]
 
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
   inventory_item_id?: string[]
 
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
   line_item_id?: string[]
 
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => NumericalComparisonOperator)
   quantity?: NumericalComparisonOperator
 }
