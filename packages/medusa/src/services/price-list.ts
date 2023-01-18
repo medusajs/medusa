@@ -4,6 +4,7 @@ import {
   EntityManager,
   FindManyOptions,
   FindOperator,
+  FindOptionsWhere,
   ILike,
   In,
 } from "typeorm"
@@ -333,6 +334,7 @@ class PriceListService extends TransactionBaseService {
     const priceListRepo = manager.withRepository(this.priceListRepo_)
     const { q, ...priceListSelector } = selector
     const query = buildQuery(priceListSelector, config)
+    query.where = query.where as FindOptionsWhere<PriceList>
 
     const groups = query.where.customer_groups as unknown as FindOperator<
       string[]

@@ -1,4 +1,4 @@
-import { EntityManager, ILike } from "typeorm"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
@@ -160,6 +160,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     }
 
     const query = buildQuery(selector, config)
+    query.where = query.where as FindOptionsWhere<PublishableApiKey>
 
     if (q) {
       query.where.title = ILike(`%${q}%`)

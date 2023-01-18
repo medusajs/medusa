@@ -1,4 +1,4 @@
-import { ILike } from "typeorm"
+import { FindOptionsWhere, ILike } from "typeorm"
 import { PriceList } from "../models"
 import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
@@ -16,6 +16,7 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
     const query_ = { ...query }
 
     if (q) {
+      query_.where = query_.where as FindOptionsWhere<PriceList>
       delete query_.where.description
       delete query_.where.name
 

@@ -1,4 +1,4 @@
-import { Brackets, DeleteResult, In } from "typeorm"
+import { Brackets, DeleteResult, FindOptionsWhere, In } from "typeorm"
 import { SalesChannel } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
@@ -13,6 +13,8 @@ export const SalesChannelRepository = dataSource
       }
     ): Promise<[SalesChannel[], number]> {
       const options_ = { ...options }
+      options_.where = options_.where as FindOptionsWhere<SalesChannel>
+
       delete options_?.where?.name
       delete options_?.where?.description
 

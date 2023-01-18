@@ -4,6 +4,7 @@ import {
   FindOperator,
   FindOptionsRelations,
   FindOptionsSelect,
+  FindOptionsWhere,
   In,
 } from "typeorm"
 import { PriceList, Product, SalesChannel } from "../models"
@@ -49,6 +50,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     shouldCount = false
   ): Promise<[Product[], number]> {
     const productAlias = "product"
+
+    optionsWithoutRelations.where = (optionsWithoutRelations?.where ??
+      {}) as FindOptionsWhere<Product>
 
     const tags = optionsWithoutRelations?.where?.tags
     delete optionsWithoutRelations?.where?.tags
@@ -377,6 +381,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const variantsAlias = "variants"
     const collectionAlias = "collection"
     const tagsAlias = "tags"
+
+    options.where = options.where as FindOptionsWhere<Product>
 
     const tags = options.where.tags
     delete options.where.tags

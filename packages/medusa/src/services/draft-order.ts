@@ -1,8 +1,10 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   EntityManager,
-  FindManyOptions,
+  FindOptionsWhere,
   ILike,
+  IsNull,
+  Not,
   Raw,
   UpdateResult,
 } from "typeorm"
@@ -11,7 +13,7 @@ import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
-import { ExtendedFindConfig, FindConfig } from "../types/common"
+import { FindConfig } from "../types/common"
 import { DraftOrderCreateProps } from "../types/draft-orders"
 import { buildQuery } from "../utils"
 import CartService from "./cart"
@@ -184,31 +186,35 @@ class DraftOrderService extends TransactionBaseService {
     )
 
     const { q, ...restSelector } = selector
-    const query = buildQuery(
-      restSelector,
-      config
-    ) as FindManyOptions<DraftOrder> & ExtendedFindConfig<DraftOrder>
+    const query = buildQuery(restSelector, config)
 
     if (q) {
-      const where = query.where
-      delete where?.display_id
+      query.where = query.where as FindOptionsWhere<DraftOrder>
+      delete query.where?.display_id
 
-      query.join = {
-        alias: "draft_order",
-        innerJoin: {
-          cart: "draft_order.cart",
+      query.relations = query.relations ?? {}
+      query.relations.cart = query.relations.cart ?? true
+
+      const innerJoinLikeConstraint = {
+        cart: {
+          id: Not(IsNull()),
         },
       }
 
+      query.where = query.where as FindOptionsWhere<DraftOrder>[]
       query.where = [
         {
           ...query.where,
+          ...innerJoinLikeConstraint,
           cart: {
+            ...innerJoinLikeConstraint.cart,
+            id: Not(IsNull()),
             email: ILike(`%${q}%`),
           },
         },
         {
           ...query.where,
+          ...innerJoinLikeConstraint,
           display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
             q: `%${q}%`,
           }),

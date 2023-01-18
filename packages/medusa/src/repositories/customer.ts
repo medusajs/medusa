@@ -1,4 +1,4 @@
-import { ILike, In } from "typeorm"
+import { FindOptionsWhere, ILike } from "typeorm"
 import { Customer } from "../models"
 import { dataSource } from "../loaders/database"
 import { ExtendedFindConfig } from "../types/common"
@@ -10,29 +10,30 @@ export const CustomerRepository = dataSource.getRepository(Customer).extend({
   ): Promise<[Customer[], number]> {
     const query_ = { ...query }
 
-    const groups = query_.where?.groups as { value: string[] }
-    delete query_.where.groups
-
     if (q) {
+      query_.where = query_.where as FindOptionsWhere<Customer>
       delete query_.where.email
       delete query_.where.first_name
       delete query_.where.last_name
 
-      query_.where.email = ILike(`%${q}%`)
-      query_.where.first_name = ILike(`%${q}%`)
-      query_.where.last_name = ILike(`%${q}%`)
+      query.where = [
+        {
+          ...query.where,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...query.where,
+          first_name: ILike(`%${q}%`),
+        },
+        {
+          ...query.where,
+          last_name: ILike(`%${q}%`),
+        },
+      ]
     }
 
-    return await this.findAndCount({
-      ...query_,
-      where: {
-        ...query_.where,
-        groups: {
-          id: In(groups.value),
-        },
-      },
-      relationLoadStrategy: "query",
-    })
+    query_.relationLoadStrategy = "query"
+    return await this.findAndCount(query_)
   },
 })
 export default CustomerRepository

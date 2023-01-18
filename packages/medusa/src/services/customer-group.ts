@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager, ILike } from "typeorm"
+import { DeepPartial, EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { CustomerService } from "."
 import { CustomerGroup } from ".."
 import {
@@ -45,9 +45,7 @@ class CustomerGroupService extends TransactionBaseService {
       )
     }
 
-    const cgRepo = this.manager_.withRepository(
-      this.customerGroupRepository_
-    )
+    const cgRepo = this.manager_.withRepository(this.customerGroupRepository_)
 
     const query = buildQuery({ id: customerGroupId }, config)
 
@@ -214,6 +212,7 @@ class CustomerGroupService extends TransactionBaseService {
     }
 
     const query = buildQuery<Selector<CustomerGroup>, any>(selector, config)
+    query.where = query.where as FindOptionsWhere<CustomerGroup>
 
     if (q) {
       query.where.name = ILike(`%${q}%`)

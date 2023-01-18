@@ -1,5 +1,10 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, FindManyOptions, ILike } from "typeorm"
+import {
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+} from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
 import { ProductRepository } from "../repositories/product"
@@ -260,7 +265,7 @@ class ProductCollectionService extends TransactionBaseService {
     } & ExtendedFindConfig<ProductCollection>
 
     if (q) {
-      const where = query.where
+      const where = query.where as FindOptionsWhere<ProductCollection>
 
       delete where.title
       delete where.handle

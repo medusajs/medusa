@@ -1,5 +1,11 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
+import {
+  DeepPartial,
+  EntityManager,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+} from "typeorm"
 
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -132,6 +138,7 @@ export default class OrderEditService extends TransactionBaseService {
     }
 
     const query = buildQuery(selector, config)
+    query.where = query.where as FindOptionsWhere<OrderEdit>
 
     if (q) {
       query.where.internal_note = ILike(`%${q}%`)

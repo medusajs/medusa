@@ -591,6 +591,7 @@ class ProductVariantService extends TransactionBaseService {
       query.relations = query.relations ?? {}
       query.relations["product"] = query.relations["product"] ?? true
 
+      query.where = query.where as FindOptionsWhere<ProductVariant>
       delete query.where?.title
 
       query.where = query.where ?? {}
@@ -606,7 +607,8 @@ class ProductVariantService extends TransactionBaseService {
         {
           ...query.where,
           product: {
-            ...((query.where.product as FindOptionsSelect<Product>) ?? {}),
+            ...((query.where.product ??
+              {}) as FindOptionsWhere<ProductVariant>),
             title: ILike(`%${q}%`),
           },
         },

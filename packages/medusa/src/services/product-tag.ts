@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, ILike } from "typeorm"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { ProductTag } from "../models"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { FindConfig, Selector } from "../types/common"
@@ -107,6 +107,7 @@ class ProductTagService extends TransactionBaseService {
     }
 
     const query = buildQuery(selector, config)
+    query.where = query.where as FindOptionsWhere<ProductTag>
 
     if (q) {
       query.where.value = ILike(`%${q}%`)

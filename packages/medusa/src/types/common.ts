@@ -55,7 +55,7 @@ export type ExtendedFindConfig<TEntity> = (
 ) & {
   select?: FindOptionsSelect<TEntity>
   relations?: FindOptionsRelations<TEntity>
-  where: FindOptionsWhere<TEntity>
+  where: FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[]
   order?: FindOptionsOrder<TEntity>
   skip?: number
   take?: number

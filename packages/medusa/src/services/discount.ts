@@ -1,7 +1,7 @@
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager, ILike } from "typeorm"
+import { DeepPartial, EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import {
   EventBusService,
   NewTotalsService,
@@ -151,6 +151,7 @@ class DiscountService extends TransactionBaseService {
     const query = buildQuery(selector as Selector<Discount>, config)
 
     if (q) {
+      query.where = query.where as FindOptionsWhere<Discount>
       query.where.code = ILike(`%${q}%`)
     }
 
