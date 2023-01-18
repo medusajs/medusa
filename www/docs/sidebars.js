@@ -765,6 +765,11 @@ module.exports = {
           label: "JS Client Reference",
         },
         {
+          type: "doc",
+          id: "medusa-react/overview",
+          label: "Medusa React",
+        },
+        {
           type: "ref",
           id: "references/services/classes/AuthService",
           label: "Services Reference",
