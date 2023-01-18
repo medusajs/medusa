@@ -5528,6 +5528,7 @@ __metadata:
     react: ^17.0.1
     react-dom: ^17.0.1
     react-transition-group: ^4.4.5
+    react-uuid: ^2.0.0
     redocusaurus: ^1.4.0
     url-loader: ^4.1.1
   languageName: unknown
@@ -9889,6 +9890,13 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: 2ba754ba748faefa15f87c96dfa700d5525054a0141de8c75763aae6734af0740e77e11261a1e8f4ffc08fd9ab78510122e05c21c2d79066c38bb6861a886c82
+  languageName: node
+  linkType: hard
+
+"react-uuid@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-uuid@npm:2.0.0"
+  checksum: 91f35c83911a2072f181eee0092b45f9ea3590d22268cf8418721756d53205dd9029a873b36a00913807651a0ea5548cc0fc60bad8c4f09bcd7cb03e6ae39ecf
   languageName: node
   linkType: hard
 
