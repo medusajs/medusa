@@ -1,9 +1,19 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import { FindParams, PaginatedResponse } from "../../../../types/common"
+import {
+  DeleteResponse,
+  FindParams,
+  PaginatedResponse,
+} from "../../../../types/common"
 import { FlagRouter } from "../../../../utils/flag-router"
-import middlewares, { transformQuery } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+import { AdminOrdersOrderLineItemReservationReq } from "./create-reservation-for-line-item"
+import { AdminGetOrdersOrderReservationsParams } from "./get-reservations"
 import { AdminGetOrdersParams } from "./list-orders"
 
 const route = Router()
@@ -221,6 +231,28 @@ export default (app, featureFlagRouter: FlagRouter) => {
   route.post(
     "/:id/claims/:claim_id/shipments",
     middlewares.wrap(require("./create-claim-shipment").default)
+  )
+
+  route.get(
+    "/:id/reservations",
+    checkRegisteredModules({
+      inventoryService:
+        "Inventory is not enabled. Please add an Inventory module to enable this functionality.",
+    }),
+    transformQuery(AdminGetOrdersOrderReservationsParams, {
+      isList: true,
+    }),
+    middlewares.wrap(require("./get-reservations").default)
+  )
+
+  route.post(
+    "/:id/line-items/:line_item_id/reserve",
+    checkRegisteredModules({
+      inventoryService:
+        "Inventory is not enabled. Please add an Inventory module to enable this functionality.",
+    }),
+    transformBody(AdminOrdersOrderLineItemReservationReq),
+    middlewares.wrap(require("./create-reservation-for-line-item").default)
   )
 
   return app
