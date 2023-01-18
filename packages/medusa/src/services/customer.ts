@@ -1,14 +1,24 @@
 import jwt from "jsonwebtoken"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
-import { DeepPartial, EntityManager } from "typeorm"
+import {
+  DeepPartial,
+  EntityManager,
+  FindOperator,
+  FindOptionsWhere,
+} from "typeorm"
 import { EventBusService } from "."
 import { StorePostCustomersCustomerAddressesAddressReq } from "../api"
 import { TransactionBaseService } from "../interfaces"
 import { Address, Customer, CustomerGroup } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
-import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
+import {
+  AddressCreatePayload,
+  ExtendedFindConfig,
+  FindConfig,
+  Selector,
+} from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
 import { buildQuery, setMetadata } from "../utils"
 
@@ -105,7 +115,7 @@ class CustomerService extends TransactionBaseService {
    * @return {Promise} the result of the find operation
    */
   async list(
-    selector: Selector<Customer> & { q?: string } = {},
+    selector: Selector<Customer> & { q?: string; groups?: string[] } = {},
     config: FindConfig<Customer> = { relations: [], skip: 0, take: 50 }
   ): Promise<Customer[]> {
     const manager = this.manager_
@@ -117,7 +127,14 @@ class CustomerService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery<Selector<Customer>, Customer>(selector, config)
+    const query = buildQuery<Selector<Customer>, Customer>(
+      selector,
+      config
+    ) as ExtendedFindConfig<Customer> & {
+      where: FindOptionsWhere<
+        Customer | (Customer & { groups?: FindOperator<string[]> })
+      >
+    }
 
     const [customers] = await customerRepo.listAndCount(query, q)
     return customers
@@ -129,7 +146,7 @@ class CustomerService extends TransactionBaseService {
    * @return {Promise} the result of the find operation
    */
   async listAndCount(
-    selector: Selector<Customer> & { q?: string },
+    selector: Selector<Customer> & { q?: string; groups?: string[] },
     config: FindConfig<Customer> = {
       relations: [],
       skip: 0,
@@ -146,7 +163,14 @@ class CustomerService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(
+      selector,
+      config
+    ) as ExtendedFindConfig<Customer> & {
+      where: FindOptionsWhere<
+        Customer | (Customer & { groups?: FindOperator<string[]> })
+      >
+    }
 
     return await customerRepo.listAndCount(query, q)
   }
