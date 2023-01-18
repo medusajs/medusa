@@ -92,7 +92,7 @@ describe("/admin/shipping-options", () => {
       )
     })
 
-    it("fails as it is not allowed to set id from client side", async () => {
+    it("fails to add a a requirement with an id if it does not exists", async () => {
       const api = useApi()
 
       const payload = {
@@ -123,7 +123,9 @@ describe("/admin/shipping-options", () => {
         })
 
       expect(res.status).toEqual(400)
-      expect(res.data.message).toEqual("ID does not exist")
+      expect(res.data.message).toEqual(
+        "Shipping option requirement with id not_allowed does not exist"
+      )
     })
 
     it("it successfully updates a set of existing requirements", async () => {
