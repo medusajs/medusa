@@ -41,6 +41,13 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema StoreOrderEditsRes
+ * type: object
+ * properties:
+ *   order_edit:
+ *     $ref: "#/components/schemas/OrderEdit"
+ */
 export type StoreOrderEditsRes = {
   order_edit: Omit<
     OrderEdit,

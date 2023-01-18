@@ -71,10 +71,24 @@ export const defaultPaymentCollectionFields = [
 
 export const defaulPaymentCollectionRelations = ["region", "payment_sessions"]
 
+/**
+ * @schema StorePaymentCollectionsRes
+ * type: object
+ * properties:
+ *   payment_collection:
+ *     $ref: "#/components/schemas/PaymentCollection"
+ */
 export type StorePaymentCollectionsRes = {
   payment_collection: PaymentCollection
 }
 
+/**
+ * @schema StorePaymentCollectionsSessionRes
+ * type: object
+ * properties:
+ *   payment_session:
+ *     $ref: "#/components/schemas/PaymentSession"
+ */
 export type StorePaymentCollectionsSessionRes = {
   payment_session: PaymentSession
 }

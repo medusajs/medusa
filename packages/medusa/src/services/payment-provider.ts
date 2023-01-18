@@ -665,6 +665,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       context.cart = data.cart
       context.amount = data.amount
       context.currency_code = data.currency_code
+      context.resource_id = data.resource_id
       Object.assign(context, cart)
     }
 

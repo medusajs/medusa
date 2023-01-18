@@ -73,14 +73,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variants:
- *               type: array
- *               items:
- *                 allOf:
- *                   - $ref: "#/components/schemas/ProductVariant"
- *                   - $ref: "#/components/schemas/ProductVariantPricesFields"
+ *           $ref: "#/components/schemas/StoreVariantsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
