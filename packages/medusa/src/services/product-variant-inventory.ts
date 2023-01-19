@@ -7,7 +7,11 @@ import {
 } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { ProductVariantService, SalesChannelLocationService } from "./"
-import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
+import {
+  InventoryItemDTO,
+  ReservationItemDTO,
+  ReserveQuantityContext,
+} from "../types/inventory"
 import { LineItem, ProductVariant } from "../models"
 
 type InjectedDependencies = {
@@ -331,7 +335,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     variantId: string,
     quantity: number,
     context: ReserveQuantityContext = {}
-  ): Promise<void> {
+  ): Promise<void | ReservationItemDTO[]> {
     const manager = this.transactionManager_ || this.manager_
 
     if (!this.inventoryService_) {
@@ -375,7 +379,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationId = locations[0]
     }
 
-    await Promise.all(
+    return await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_
@@ -470,7 +474,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param locationId Location to validate stock at
    * @returns nothing if successful, throws error if not
    */
-  async validateInventoryAtLocation(items: LineItem[], locationId: string) {
+  async validateInventoryAtLocation(
+    items: Omit<LineItem, "beforeInsert">[],
+    locationId: string
+  ) {
     if (!this.inventoryService_) {
       return
     }
