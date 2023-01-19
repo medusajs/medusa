@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.7.5
+
+### Patch Changes
+
+- [#3069](https://github.com/medusajs/medusa/pull/3069) [`9c2169422`](https://github.com/medusajs/medusa/commit/9c2169422dd51be727118fa4830dadc58c24568a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Only add SC relation when enabled
+
+- [#3067](https://github.com/medusajs/medusa/pull/3067) [`9427bc7f2`](https://github.com/medusajs/medusa/commit/9427bc7f256c563befe3035bc3d67380066f304b) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Move migration to correct folder
+
 ## 1.7.4
 
 ### Patch Changes

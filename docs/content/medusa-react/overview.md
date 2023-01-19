@@ -13,13 +13,20 @@ Alternatively, you can use Medusa’s [JS Client](../js-client/overview.md) or t
 In the directory holding your React-based storefront or admin dashboard, run the following command to install Medusa React:
 
 ```bash npm2yarn
-npm install medusa-react react-query @medusajs/medusa
+npm install medusa-react @tanstack/react-query @medusajs/medusa
 ```
 
 In addition to the `medusa-react` library, you need the following libraries:
 
-1. `react-query`: `medusa-react` is built on top of [React Query v3](https://react-query-v3.tanstack.com/). You’ll learn later in this reference how you can use Mutations and Queries with Medusa React.
-2. `@medusajs/medusa`: The core Medusa package. This is used to import types used by Medusa React and while developing with it.
+1\. `@tanstack/react-query`: `medusa-react` is built on top of [Tanstack Query](https://tanstack.com/query/latest/docs/react/overview). You’ll learn later in this reference how you can use Mutations and Queries with Medusa React.
+
+:::note
+
+Versions of Medusa React prior to v4.0.2 used React Query v3 instead of Tanstack Query. Check out [this upgrade guide] to learn how you can update your storefront.
+
+:::
+
+2\. `@medusajs/medusa`: The core Medusa package. This is used to import types used by Medusa React and while developing with it.
 
 :::info
 
@@ -36,14 +43,14 @@ To use the hooks exposed by Medusa React, you need to include  the `MedusaProvi
 The `MedusaProvider` requires two props:
 
 1. `baseUrl`: The URL to your Medusa server
-2. `queryClientProviderProps`: An object used to set the `react-query` client. The object requires a `client` property, which should be an instance of [QueryClient](https://react-query-v3.tanstack.com/reference/QueryClient).
+2. `queryClientProviderProps`: An object used to set the Tanstack Query client. The object requires a `client` property, which should be an instance of [QueryClient](https://tanstack.com/query/v4/docs/react/reference/QueryClient).
 
 For example:
 
 ```tsx title=src/App.ts
 import { MedusaProvider } from "medusa-react"
 import Storefront from "./Storefront"
-import { QueryClient } from "react-query"
+import { QueryClient } from "@tanstack/react-query"
 import React from "react"
 
 const queryClient = new QueryClient()
@@ -68,7 +75,7 @@ The `Storefront` component and its child components can now use hooks exposed by
 
 ### Queries
 
-To fetch data from the Medusa server (in other words, perform `GET` requests), you can use [Queries](https://react-query-v3.tanstack.com/guides/queries). Query hooks simply wrap around react-query's `useQuery` hook to fetch data from your medusa server.
+To fetch data from the Medusa server (in other words, perform `GET` requests), you can use [Queries](https://tanstack.com/query/v4/docs/react/guides/queries). Query hooks simply wrap around Tanstack Query's `useQuery` hook to fetch data from your medusa server.
 
 For example, to fetch products from your Medusa server:
 
@@ -99,7 +106,7 @@ const Products = () => {
 export default Products
 ```
 
-In the example above, you import the `useProducts` hook from `medusa-react`. This hook, and every other query hook exposed by `medusa-react`, returns everything that `useQuery` [returns in react-query](https://react-query-v3.tanstack.com/reference/useQuery), except for the `data` field.
+In the example above, you import the `useProducts` hook from `medusa-react`. This hook, and every other query hook exposed by `medusa-react`, returns everything that `useQuery` [returns in Tanstack Query](https://tanstack.com/query/v4/docs/react/reference/useQuery), except for the `data` field.
 
 Instead of the `data` field, the response data is flattened and is part of the hooks’ returned fields. In the example above, the List Products endpoint returns a `products` array. So, `useProducts` returns a `products` array along with other fields returned by `useQuery`.
 
@@ -111,11 +118,11 @@ const { products } = useProducts({
   })
 ```
 
-You can learn more about using queries in [React Query’s documentation](https://react-query-v3.tanstack.com/guides/queries).
+You can learn more about using queries in [Tanstack Query’s documentation](https://tanstack.com/query/v4/docs/react/guides/queries).
 
 ### Mutations
 
-To create, update, or delete data on the Medusa server (in other words, perform `POST`, `PUT`, and `DELETE` requests), you can use [Mutations](https://react-query-v3.tanstack.com/guides/mutations). Mutation hooks wrap around react-query's `useMutation` to mutate data on your medusa server.
+To create, update, or delete data on the Medusa server (in other words, perform `POST`, `PUT`, and `DELETE` requests), you can use [Mutations](https://tanstack.com/query/v4/docs/react/guides/mutations). Mutation hooks wrap around Tanstack Query's `useMutation` to mutate data on your medusa server.
 
 For example, to create a cart:
 
@@ -148,13 +155,13 @@ const Cart = () => {
 export default Cart
 ```
 
-In the example above, you import the `useCreateCart` hook from `medusa-react`. This hook, and every other mutation hook exposed by `medusa-react`, returns everything that [useMutation](https://react-query-v3.tanstack.com/reference/useMutation) returns. You can also pass the same options you would pass to `useMutation` to mutation hooks exposed by `medusa-react`.
+In the example above, you import the `useCreateCart` hook from `medusa-react`. This hook, and every other mutation hook exposed by `medusa-react`, returns everything that [useMutation](https://tanstack.com/query/v4/docs/react/reference/useMutation) returns. You can also pass the same options you would pass to `useMutation` to mutation hooks exposed by `medusa-react`.
 
 To create a cart, you call the `createCart.mutate` method. In the underlying logic, this method sends a `POST` request to the Medusa server to create a cart.
 
 If the request accepts any parameters, they can be passed as parameters to the `mutate` request. For example:
 
-```tsx
+```ts
 createCart.mutate({
   region_id,
 })
@@ -170,7 +177,7 @@ The example above does not store in the browser the ID of the cart created, so t
 
 Instead of using `mutate`, you can use `mutateAsync` to receive a Promise that resolves on success or throws on error.
 
-Learn more about how you can use mutations in [React Query’s documentation](https://react-query-v3.tanstack.com/guides/mutations).
+Learn more about how you can use mutations in [Tanstack Query’s documentation](https://tanstack.com/query/v4/docs/react/guides/mutations).
 
 ---
 
@@ -349,7 +356,7 @@ For example:
 ```tsx title=src/App.ts
 import { CartProvider, MedusaProvider } from "medusa-react"
 import Storefront from "./Storefront"
-import { QueryClient } from "react-query"
+import { QueryClient } from "@tanstack/react-query"
 import React from "react"
 
 const queryClient = new QueryClient()
@@ -439,7 +446,7 @@ For example:
 ```tsx title=src/App.ts
 import { SessionProvider, MedusaProvider } from "medusa-react"
 import Storefront from "./Storefront"
-import { QueryClient } from "react-query"
+import { QueryClient } from "@tanstack/react-query"
 import React from "react"
 
 const queryClient = new QueryClient()

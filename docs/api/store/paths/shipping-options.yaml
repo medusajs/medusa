@@ -37,12 +37,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              shipping_options:
-                type: array
-                items:
-                  $ref: ../components/schemas/ShippingOption.yaml
+            $ref: ../components/schemas/StoreShippingOptionsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

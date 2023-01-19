@@ -93,6 +93,20 @@ get:
       schema:
         type: integer
         default: 100
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded in the product
+        category.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included in the product
+        category.
+      schema:
+        type: string
   x-codeSamples:
     - lang: Shell
       label: cURL
