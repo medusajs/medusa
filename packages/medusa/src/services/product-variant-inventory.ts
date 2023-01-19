@@ -660,8 +660,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
           return product
         }
 
-        product.variants = await Promise.all(
-          await this.setVariantAvailability(product.variants, salesChannelId)
+        product.variants = await this.setVariantAvailability(
+          product.variants,
+          salesChannelId
         )
 
         return product
