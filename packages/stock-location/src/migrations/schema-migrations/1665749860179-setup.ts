@@ -55,6 +55,7 @@ export class setup1665749860179 implements MigrationInterface {
         "deleted_at" TIMESTAMP WITH TIME zone,
         "address_1" TEXT NOT NULL,
         "address_2" TEXT,
+        "company" TEXT,
         "city" TEXT,
         "country_code" TEXT NOT NULL,
         "phone" TEXT,
