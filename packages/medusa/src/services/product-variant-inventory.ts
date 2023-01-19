@@ -1,20 +1,20 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import {
-  IStockLocationService,
   IInventoryService,
+  IStockLocationService,
   TransactionBaseService,
 } from "../interfaces"
+import { LineItem, Product, ProductVariant } from "../models"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
+import { PricedProduct, PricedVariant } from "../types/pricing"
 import {
   CacheService,
   ProductVariantService,
   SalesChannelInventoryService,
   SalesChannelLocationService,
 } from "./"
-import { LineItem, Product, ProductVariant } from "../models"
-import { PricedProduct, PricedVariant } from "../types/pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
