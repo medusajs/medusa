@@ -6,13 +6,13 @@ import {
   TransactionBaseService,
 } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
+import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
 import {
   CacheService,
   ProductVariantService,
   SalesChannelInventoryService,
   SalesChannelLocationService,
 } from "./"
-import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
 import { LineItem, Product, ProductVariant } from "../models"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
@@ -619,16 +619,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
         if (!variant.id) {
           return variant
         }
-
-        const cacheKey = this.getCacheKey(variant.id, salesChannelId)
-
-        const cacheHit = await this.cacheService_.get<number>(cacheKey)
-
-        if (cacheHit) {
-          variant.inventory_quantity = cacheHit
-          return variant
-        }
-
         const variantInventory = await this.listByVariant(variant.id)
 
         variant.inventory_quantity = Math.min(
@@ -667,16 +657,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
         return product
       })
     )
-  }
-
-  /**
-   * The cache key to get cache hits by.
-   * @param variantId - the entity id to cache
-   * @param salesChannelId - the region id to cache
-   * @return the cache key to use for the id set
-   */
-  private getCacheKey(variantId: string, salesChannelId: string): string {
-    return `pvivcache:${variantId}:${salesChannelId}`
   }
 }
 
