@@ -37,9 +37,15 @@ It's also assumed you already have a storefront set up. It can be a custom store
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ---
 
@@ -62,6 +68,35 @@ medusa.customers.create({
 .then(({ customer }) => {
   console.log(customer.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCreateCustomer } from "medusa-react";
+
+export default function RegisterCustomer () {
+  const createCustomer = useCreateCustomer()
+
+  function handleCreate (formData) {
+    createCustomer.mutate({
+      first_name,
+      last_name,
+      email,
+      password
+    })
+  }
+
+  //...
+  
+  return (
+    <form>
+      {/* Render form */}
+      <button onClick={handleCreate}>Register</button>
+    </div>
+  )
+}
 ```
 
 </TabItem>
