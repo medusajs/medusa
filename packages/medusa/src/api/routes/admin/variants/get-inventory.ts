@@ -76,8 +76,9 @@ export default async (req, res) => {
   const channelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
-  const variantInventoryService: ProductVariantInventoryService =
+  const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
+
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
@@ -101,9 +102,8 @@ export default async (req, res) => {
     })
   )
 
-  const inventory = await variantInventoryService.listInventoryItemsByVariant(
-    variant.id
-  )
+  const inventory =
+    await productVariantInventoryService.listInventoryItemsByVariant(variant.id)
   responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
   if (inventory.length) {
