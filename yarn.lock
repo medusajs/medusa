@@ -19696,7 +19696,6 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
-    "@medusajs/event-bus-redis": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3

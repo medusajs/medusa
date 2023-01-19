@@ -16,7 +16,9 @@ module.exports = {
       resolve: "@medusajs/event-bus-redis",
       scope: "internal",
       resources: "shared",
-      redisUrl: process.env.REDIS_URL,
+      options: {
+        redisUrl: process.env.REDIS_URL,
+      },
     },
   },
 }

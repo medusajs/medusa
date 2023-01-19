@@ -3,7 +3,6 @@ import {
   ConfigurableModuleDeclaration,
   IEventBusService,
   Logger,
-  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   StagedJob,
   StagedJobService,
@@ -85,12 +84,7 @@ export default class RedisEventBusService
   protected transactionManager_: EntityManager | undefined
 
   constructor(
-    {
-      manager,
-      logger,
-      stagedJobService,
-      configModule,
-    }: MedusaContainer & InjectedDependencies,
+    { manager, logger, stagedJobService, configModule }: InjectedDependencies,
     moduleOptions: ModuleOptions = {},
     moduleDeclaration: ConfigurableModuleDeclaration,
     singleton = true
@@ -116,6 +110,30 @@ export default class RedisEventBusService
     if (singleton && moduleOptions.redisUrl) {
       this.connect()
     }
+  }
+
+  // @ts-ignore
+  withTransaction(transactionManager): RedisEventBusService {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new RedisEventBusService(
+      {
+        manager: transactionManager,
+        stagedJobService: this.stagedJobService_,
+        logger: this.logger_,
+        configModule: this.config_,
+      },
+      this.moduleOptions_,
+      this.moduleDeclaration_,
+      false
+    )
+
+    cloned.transactionManager_ = transactionManager
+    cloned.queue_ = this.queue_
+
+    return cloned
   }
 
   connect(): void {
