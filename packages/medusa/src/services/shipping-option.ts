@@ -732,6 +732,7 @@ class ShippingOptionService extends TransactionBaseService {
       const requirement = await reqRepo.findOne({
         where: { id: requirementId },
       })
+
       // Delete is idempotent, but we return a promise to allow then-chaining
       if (!requirement) {
         return Promise.resolve()

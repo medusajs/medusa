@@ -192,7 +192,7 @@ describe("InviteService", () => {
     const inviteRepo = MockRepository({
       findOne: (q) => {
         return Promise.resolve({
-          id: q.id,
+          id: q.where.id,
           role: "admin",
           user_email: "test@test.com",
         })
