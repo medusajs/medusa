@@ -1,6 +1,6 @@
 import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import {
-  buildLegacySelectOrRelationsFrom,
+  buildLegacyFieldsListFrom,
   buildQuery,
   ExtendedFindConfig,
   FilterableInventoryItemProps,
@@ -57,7 +57,7 @@ export function getListQuery(
   }
 
   if (query.select) {
-    const legacySelect = buildLegacySelectOrRelationsFrom(query.select)
+    const legacySelect = buildLegacyFieldsListFrom(query.select)
     queryBuilder.select(legacySelect.map((s) => "inv_item." + s))
   }
 
