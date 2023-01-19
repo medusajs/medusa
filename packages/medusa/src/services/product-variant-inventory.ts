@@ -608,7 +608,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   async setVariantAvailability(
     variants: ProductVariant[] | PricedVariant[],
-    salesChannelId: string
+    salesChannelId: string | undefined
   ): Promise<ProductVariant[] | PricedVariant[]> {
     if (!this.inventoryService_) {
       return variants
@@ -619,6 +619,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
         if (!variant.id) {
           return variant
         }
+
+        if (!salesChannelId) {
+          delete variant.inventory_quantity
+          return variant
+        }
+
         const variantInventory = await this.listByVariant(variant.id)
 
         variant.inventory_quantity = Math.min(
@@ -642,7 +648,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   async setProductAvailability(
     products: (Product | PricedProduct)[],
-    salesChannelId: string
+    salesChannelId: string | undefined
   ): Promise<(Product | PricedProduct)[]> {
     return await Promise.all(
       products.map(async (product) => {

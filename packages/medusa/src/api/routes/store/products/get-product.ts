@@ -1,4 +1,6 @@
+import { IsOptional, IsString } from "class-validator"
 import { defaultStoreProductsRelations } from "."
+import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import {
   CartService,
   PricingService,
@@ -7,6 +9,7 @@ import {
   RegionService,
 } from "../../../../services"
 import { PriceSelectionParams } from "../../../../types/price-selection"
+import { FlagRouter } from "../../../../utils/flag-router"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -16,6 +19,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a Product."
  * parameters:
  *   - (path) id=* {string} The id of the Product.
+ *   - (query) sales_channel_ud {string} The sales channel used when fetching the product.
  *   - (query) cart_id {string} The ID of the customer's cart.
  *   - (query) region_id {string} The ID of the region the customer is using. This is helpful to ensure correct prices are retrieved for a region.
  *   - in: query
@@ -65,7 +69,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(PriceSelectionParams, req.query)
+  const validated = await validator(StoreGetProductParams, req.query)
 
   const customer_id = req.user?.customer_id
 
@@ -78,6 +82,14 @@ export default async (req, res) => {
   const rawProduct = await productService.retrieve(id, {
     relations: defaultStoreProductsRelations,
   })
+
+  let sales_channel_id = validated.sales_channel_id
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    if (req.publishableApiKeyScopes?.sales_channel_id.length === 1) {
+      sales_channel_id = req.publishableApiKeyScopes.sales_channel_id[0]
+    }
+  }
 
   let regionId = validated.region_id
   let currencyCode = validated.currency_code
@@ -105,8 +117,14 @@ export default async (req, res) => {
 
   const [product] = await productVariantInventoryService.setProductAvailability(
     pricedProductArray,
-    ""
+    sales_channel_id
   )
 
   res.json({ product })
+}
+
+export class StoreGetProductParams extends PriceSelectionParams {
+  @IsString()
+  @IsOptional()
+  sales_channel_id?: string
 }

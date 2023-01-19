@@ -221,7 +221,7 @@ export default async (req, res) => {
 
   const products = await productVariantInventoryService.setProductAvailability(
     pricedProducts,
-    ""
+    filterableFields.sales_channel_id
   )
 
   res.json({

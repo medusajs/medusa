@@ -15,6 +15,8 @@ import { PriceSelectionParams } from "../../../../types/price-selection"
 import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [get] /variants
@@ -23,6 +25,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * description: "Retrieves a list of Product Variants"
  * parameters:
  *   - (query) ids {string} A comma separated list of Product Variant ids to filter by.
+ *   - (query) sales_channel_id {string} A sales channel id for result configuration.
  *   - (query) expand {string} A comma separated list of Product Variant relations to load.
  *   - (query) offset=0 {number} How many product variants to skip in the result.
  *   - (query) limit=100 {number} Maximum number of Product Variants to return.
@@ -119,6 +122,14 @@ export default async (req, res) => {
     filterableFields.id = validated.ids.split(",")
   }
 
+  let sales_channel_id = validated.sales_channel_id
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    if (req.publishableApiKeyScopes?.sales_channel_id.length === 1) {
+      sales_channel_id = req.publishableApiKeyScopes.sales_channel_id[0]
+    }
+  }
+
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
@@ -153,7 +164,7 @@ export default async (req, res) => {
 
   const variants = await productVariantInventoryService.setVariantAvailability(
     pricedVariants,
-    ""
+    sales_channel_id
   )
 
   res.json({ variants })
@@ -177,6 +188,10 @@ export class StoreGetVariantsParams extends PriceSelectionParams {
   @IsOptional()
   @IsString()
   ids?: string
+
+  @IsOptional()
+  @IsString()
+  sales_channel_id?: string
 
   @IsOptional()
   @IsType([String, [String]])
