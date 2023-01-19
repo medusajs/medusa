@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import { MedusaError } from "medusa-core-utils"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
@@ -57,6 +58,17 @@ export default async (req: Request, res: Response) => {
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
+
+  const reservedQuantity = await inventoryService.retrieveReservedQuantity(id, [
+    location_id,
+  ])
+
+  if (reservedQuantity > 0) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      `Cannot remove Inventory Level ${id} at Location ${location_id} because there are reserved items.`
+    )
+  }
 
   await inventoryService.deleteInventoryLevel(id, location_id)
 
