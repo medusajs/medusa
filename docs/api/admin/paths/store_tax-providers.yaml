@@ -23,12 +23,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              tax_providers:
-                type: array
-                items:
-                  $ref: ../components/schemas/TaxProvider.yaml
+            $ref: ../components/schemas/AdminTaxProvidersList.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

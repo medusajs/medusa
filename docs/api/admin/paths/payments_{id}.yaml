@@ -30,10 +30,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              payment:
-                $ref: ../components/schemas/Payment.yaml
+            $ref: ../components/schemas/AdminPaymentRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
