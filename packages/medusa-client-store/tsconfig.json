@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "module": "esnext",
+    "target": "es5",
+    "lib": [
+      "es5",
+      "es6",
+      "dom"
+    ],
+    "outDir": "./dist",
+    "declarationDir": "./dist",
+    "esModuleInterop": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    " **/tests/*"
+  ]
+}
