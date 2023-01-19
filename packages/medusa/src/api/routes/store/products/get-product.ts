@@ -3,6 +3,7 @@ import {
   CartService,
   PricingService,
   ProductService,
+  ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
 import { PriceSelectionParams } from "../../../../types/price-selection"
@@ -68,6 +69,8 @@ export default async (req, res) => {
 
   const customer_id = req.user?.customer_id
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
@@ -89,13 +92,21 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const [product] = await pricingService.setProductPrices([rawProduct], {
-    cart_id: validated.cart_id,
-    customer_id: customer_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    include_discount_prices: true,
-  })
+  const pricedProductArray = await pricingService.setProductPrices(
+    [rawProduct],
+    {
+      cart_id: validated.cart_id,
+      customer_id: customer_id,
+      region_id: regionId,
+      currency_code: currencyCode,
+      include_discount_prices: true,
+    }
+  )
+
+  const [product] = await productVariantInventoryService.setProductAvailability(
+    pricedProductArray,
+    ""
+  )
 
   res.json({ product })
 }

@@ -2,6 +2,7 @@ import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
+  ProductVariantInventoryService,
   ProductVariantService,
   RegionService,
 } from "../../../../services"
@@ -123,6 +124,8 @@ export default async (req, res) => {
     "productVariantService"
   )
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
   const rawVariants = await variantService.list(filterableFields, listConfig)
@@ -140,13 +143,18 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const variants = await pricingService.setVariantPrices(rawVariants, {
+  const pricedVariants = await pricingService.setVariantPrices(rawVariants, {
     cart_id: validated.cart_id,
     region_id: regionId,
     currency_code: currencyCode,
     customer_id: customer_id,
     include_discount_prices: true,
   })
+
+  const variants = await productVariantInventoryService.setVariantAvailability(
+    pricedVariants,
+    ""
+  )
 
   res.json({ variants })
 }

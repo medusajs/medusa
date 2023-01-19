@@ -47,6 +47,7 @@ class ProductVariantService extends TransactionBaseService {
   protected readonly regionService_: RegionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly moneyAmountRepository_: typeof MoneyAmountRepository
+  // eslint-disable-next-line max-len
   protected readonly productOptionValueRepository_: typeof ProductOptionValueRepository
   protected readonly cartRepository_: typeof CartRepository
 
@@ -61,6 +62,7 @@ class ProductVariantService extends TransactionBaseService {
     cartRepository,
     priceSelectionStrategy,
   }) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager

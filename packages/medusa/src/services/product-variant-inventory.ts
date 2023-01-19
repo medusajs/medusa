@@ -6,17 +6,20 @@ import {
   TransactionBaseService,
 } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
-import { ProductVariantService, SalesChannelLocationService } from "./"
 import {
-  InventoryItemDTO,
-  ReservationItemDTO,
-  ReserveQuantityContext,
-} from "../types/inventory"
-import { LineItem, ProductVariant } from "../models"
+  CacheService,
+  ProductVariantService,
+  SalesChannelInventoryService,
+  SalesChannelLocationService,
+} from "./"
+import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
+import { LineItem, Product, ProductVariant } from "../models"
+import { PricedProduct, PricedVariant } from "../types/pricing"
 
 type InjectedDependencies = {
   manager: EntityManager
   salesChannelLocationService: SalesChannelLocationService
+  salesChannelInventoryService: SalesChannelInventoryService
   productVariantService: ProductVariantService
   stockLocationService: IStockLocationService
   inventoryService: IInventoryService
@@ -27,14 +30,17 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly salesChannelLocationService_: SalesChannelLocationService
+  protected readonly salesChannelInventoryService_: SalesChannelInventoryService
   protected readonly productVariantService_: ProductVariantService
   protected readonly stockLocationService_: IStockLocationService
   protected readonly inventoryService_: IInventoryService
+  protected readonly cacheService_: CacheService
 
   constructor({
     manager,
     stockLocationService,
     salesChannelLocationService,
+    salesChannelInventoryService,
     productVariantService,
     inventoryService,
   }: InjectedDependencies) {
@@ -43,6 +49,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     this.manager_ = manager
     this.salesChannelLocationService_ = salesChannelLocationService
+    this.salesChannelInventoryService_ = salesChannelInventoryService
     this.stockLocationService_ = stockLocationService
     this.productVariantService_ = productVariantService
     this.inventoryService_ = inventoryService
@@ -597,6 +604,79 @@ class ProductVariantInventoryService extends TransactionBaseService {
         })
       )
     }
+  }
+
+  async setVariantAvailability(
+    variants: ProductVariant[] | PricedVariant[],
+    salesChannelId: string
+  ): Promise<ProductVariant[] | PricedVariant[]> {
+    if (!this.inventoryService_) {
+      return variants
+    }
+
+    return await Promise.all(
+      variants.map(async (variant) => {
+        if (!variant.id) {
+          return variant
+        }
+
+        const cacheKey = this.getCacheKey(variant.id, salesChannelId)
+
+        const cacheHit = await this.cacheService_.get<number>(cacheKey)
+
+        if (cacheHit) {
+          variant.inventory_quantity = cacheHit
+          return variant
+        }
+
+        const variantInventory = await this.listByVariant(variant.id)
+
+        variant.inventory_quantity = Math.min(
+          ...(await Promise.all(
+            variantInventory.map(async (variantInventory) => {
+              return (
+                // eslint-disable-next-line max-len
+                (await this.salesChannelInventoryService_.retrieveAvailableItemQuantity(
+                  salesChannelId,
+                  variantInventory.inventory_item_id
+                )) / variantInventory.required_quantity
+              )
+            })
+          ))
+        )
+
+        return variant
+      })
+    )
+  }
+
+  async setProductAvailability(
+    products: (Product | PricedProduct)[],
+    salesChannelId: string
+  ): Promise<(Product | PricedProduct)[]> {
+    return await Promise.all(
+      products.map(async (product) => {
+        if (!product.variants || product.variants.length === 0) {
+          return product
+        }
+
+        product.variants = await Promise.all(
+          await this.setVariantAvailability(product.variants, salesChannelId)
+        )
+
+        return product
+      })
+    )
+  }
+
+  /**
+   * The cache key to get cache hits by.
+   * @param variantId - the entity id to cache
+   * @param salesChannelId - the region id to cache
+   * @return the cache key to use for the id set
+   */
+  private getCacheKey(variantId: string, salesChannelId: string): string {
+    return `pvivcache:${variantId}:${salesChannelId}`
   }
 }
 

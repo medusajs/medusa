@@ -1,6 +1,7 @@
 import {
   CartService,
   PricingService,
+  ProductVariantInventoryService,
   ProductVariantService,
   RegionService,
 } from "../../../../services"
@@ -62,6 +63,8 @@ export default async (req, res) => {
     "productVariantService"
   )
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
@@ -84,13 +87,18 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const [variant] = await pricingService.setVariantPrices([rawVariant], {
+  const variantRes = await pricingService.setVariantPrices([rawVariant], {
     cart_id: validated.cart_id,
     customer_id: customer_id,
     region_id: regionId,
     currency_code: currencyCode,
     include_discount_prices: true,
   })
+
+  const [variant] = await productVariantInventoryService.setVariantAvailability(
+    variantRes,
+    ""
+  )
 
   res.json({ variant })
 }
