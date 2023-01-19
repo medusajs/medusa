@@ -1,12 +1,4 @@
-import {
-  BeforeInsert,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-} from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, } from "typeorm"
 
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { MoneyAmount } from "./money-amount"
@@ -24,7 +16,7 @@ export class ProductVariant extends SoftDeletableEntity {
   @Column()
   product_id: string
 
-  @ManyToOne(() => Product, (product) => product.variants, { eager: true })
+  @ManyToOne(() => Product, (product) => product.variants)
   @JoinColumn({ name: "product_id" })
   product: Product
 

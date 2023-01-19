@@ -15,7 +15,7 @@ import {
   WithRequiredProperty,
 } from "../types/common"
 import { applyOrdering } from "../utils/repository"
-import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { buildLegacyFieldsListFrom } from "../utils"
 import { dataSource } from "../loaders/database"
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
@@ -165,7 +165,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
         let querybuilder = this.createQueryBuilder("products")
 
-        const legacySelect = buildLegacySelectOrRelationsFrom(select)
+        const legacySelect = buildLegacyFieldsListFrom(select)
 
         if (legacySelect?.length) {
           querybuilder.select(legacySelect.map((f) => `products.${f}`))
@@ -262,7 +262,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       return [toReturn, toReturn.length]
     }
 
-    const legacyRelations = buildLegacySelectOrRelationsFrom(relations)
+    const legacyRelations = buildLegacyFieldsListFrom(relations)
     const groupedRelations = this.getGroupedRelations(legacyRelations)
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
@@ -317,7 +317,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       })
     }
 
-    const legacyRelations = buildLegacySelectOrRelationsFrom(relations)
+    const legacyRelations = buildLegacyFieldsListFrom(relations)
     const groupedRelations = this.getGroupedRelations(legacyRelations)
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
@@ -540,8 +540,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     q?: string
   ): Promise<[Product[], number]> {
     const productAlias = "product"
-    const queryBuilder = this.createQueryBuilder()
-    queryBuilder.expressionMap.relationLoadStrategy = "query"
+    const queryBuilder = this.createQueryBuilder(productAlias)
+    // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
+    queryBuilder.expressionMap.relationLoadStrategy = "join"
 
     const options_ = { ...options }
 

@@ -1,5 +1,5 @@
 import { In, MoreThan, Not } from "typeorm"
-import { buildLegacySelectOrRelationsFrom, buildQuery } from "../build-query"
+import { buildLegacyFieldsListFrom, buildQuery } from "../build-query"
 
 describe("buildQuery", () => {
   it("successfully creates query", () => {
@@ -139,9 +139,9 @@ describe("buildQuery", () => {
   })
 })
 
-describe("buildLegacySelectOrRelationsFrom", () => {
-  it("successfully compute selects object shape from relations or select to the old collection shape", () => {
-    const q = buildLegacySelectOrRelationsFrom({
+describe("buildLegacyFieldsListFrom", () => {
+  it("successfully build back select object shape to list", () => {
+    const q = buildLegacyFieldsListFrom({
       order: {
         items: true,
         swaps: {
@@ -184,8 +184,8 @@ describe("buildLegacySelectOrRelationsFrom", () => {
     ]))
   })
 
-  it("successfully relations selects object shape from relations or select to the old collection shape", () => {
-    const q = buildLegacySelectOrRelationsFrom({
+  it("successfully build back relation object shape to list", () => {
+    const q = buildLegacyFieldsListFrom({
       order: {
         items: true,
         swaps: {
@@ -237,6 +237,27 @@ describe("buildLegacySelectOrRelationsFrom", () => {
       "items",
       "items.tax_lines",
       "items.adjustments",
+    ]))
+  })
+
+  it("successfully build back order object shape to list", () => {
+    const q = buildLegacyFieldsListFrom({
+      id: "ASC",
+      items: {
+        id: "ASC",
+        variant: {
+          id: "ASC"
+        }
+      }
+    })
+
+    expect(q.length).toBe(5)
+    expect(q).toEqual(expect.arrayContaining([
+      "id",
+      "items",
+      "items.id",
+      "items.variant",
+      "items.variant.id"
     ]))
   })
 })

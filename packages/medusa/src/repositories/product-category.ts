@@ -2,7 +2,7 @@ import { Brackets, FindOptionsWhere, ILike } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { buildLegacyFieldsListFrom } from "../utils"
 
 export const ProductCategoryRepository = dataSource
   .getTreeRepository(ProductCategory)
@@ -18,10 +18,8 @@ export const ProductCategoryRepository = dataSource
       const options_ = { ...options }
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
-      const legacySelect = buildLegacySelectOrRelationsFrom(options_.select)
-      const legacyRelations = buildLegacySelectOrRelationsFrom(
-        options_.relations
-      )
+      const legacySelect = buildLegacyFieldsListFrom(options_.select)
+      const legacyRelations = buildLegacyFieldsListFrom(options_.relations)
 
       const selectStatements = (relationName: string): string[] => {
         const modelColumns = this.manager.connection

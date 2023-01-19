@@ -1,7 +1,7 @@
-import { EntityRepository, In, Repository } from "typeorm"
+import { In } from "typeorm"
 import { ProductTag } from "../models/product-tag"
 import { ExtendedFindConfig } from "../types/common"
-import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { buildLegacyFieldsListFrom } from "../utils"
 import { dataSource } from "../loaders/database"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
@@ -24,10 +24,12 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   }
 }
 
-export const ProductTagRepository = dataSource.getRepository(ProductTag).extend({
-  async listTagsByUsage(count = 10): Promise<ProductTag[]> {
-    return await this.query(
-      `
+export const ProductTagRepository = dataSource
+  .getRepository(ProductTag)
+  .extend({
+    async listTagsByUsage(count = 10): Promise<ProductTag[]> {
+      return await this.query(
+        `
           SELECT id, COUNT(pts.product_tag_id) as usage_count, pt.value
           FROM product_tag pt
                    LEFT JOIN product_tags pts ON pt.id = pts.product_tag_id
@@ -35,69 +37,69 @@ export const ProductTagRepository = dataSource.getRepository(ProductTag).extend(
           ORDER BY usage_count DESC
               LIMIT $1
       `,
-      [count]
-    )
-  },
+        [count]
+      )
+    },
 
-  async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
-    const tagsValues = tags.map((tag) => tag.value)
-    const existingTags = await this.find({
-      where: {
-        value: In(tagsValues),
-      },
-    })
-    const existingTagsMap = new Map(
-      existingTags.map<[string, ProductTag]>((tag) => [tag.value, tag])
-    )
+    async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
+      const tagsValues = tags.map((tag) => tag.value)
+      const existingTags = await this.find({
+        where: {
+          value: In(tagsValues),
+        },
+      })
+      const existingTagsMap = new Map(
+        existingTags.map<[string, ProductTag]>((tag) => [tag.value, tag])
+      )
 
-    const upsertedTags: ProductTag[] = []
+      const upsertedTags: ProductTag[] = []
 
-    for (const tag of tags) {
-      const aTag = existingTagsMap.get(tag.value)
-      if (aTag) {
-        upsertedTags.push(aTag)
-      } else {
-        const newTag = this.create(tag)
-        const savedTag = await this.save(newTag)
-        upsertedTags.push(savedTag)
+      for (const tag of tags) {
+        const aTag = existingTagsMap.get(tag.value)
+        if (aTag) {
+          upsertedTags.push(aTag)
+        } else {
+          const newTag = this.create(tag)
+          const savedTag = await this.save(newTag)
+          upsertedTags.push(savedTag)
+        }
       }
-    }
 
-    return upsertedTags
-  },
+      return upsertedTags
+    },
 
-  async findAndCountByDiscountConditionId(
-    conditionId: string,
-    query: ExtendedFindConfig<ProductTag>
-  ) {
-    const qb = this.createQueryBuilder("pt")
+    async findAndCountByDiscountConditionId(
+      conditionId: string,
+      query: ExtendedFindConfig<ProductTag>
+    ) {
+      const qb = this.createQueryBuilder("pt")
 
-    if (query?.select) {
-      qb.select(
-        buildLegacySelectOrRelationsFrom(query.select).map(
-          (select) => `pt.${select}`
+      if (query?.select) {
+        qb.select(
+          buildLegacyFieldsListFrom(query.select).map(
+            (select) => `pt.${select}`
+          )
         )
-      )
-    }
+      }
 
-    if (query.skip) {
-      qb.skip(query.skip)
-    }
+      if (query.skip) {
+        qb.skip(query.skip)
+      }
 
-    if (query.take) {
-      qb.take(query.take)
-    }
+      if (query.take) {
+        qb.take(query.take)
+      }
 
-    return await qb
-      .where(query.where)
-      .innerJoin(
-        "discount_condition_product_tag",
-        "dc_pt",
-        `dc_pt.product_tag_id = pt.id AND dc_pt.condition_id = :dcId`,
-        { dcId: conditionId }
-      )
-      .getManyAndCount()
-  }
-})
+      return await qb
+        .where(query.where)
+        .innerJoin(
+          "discount_condition_product_tag",
+          "dc_pt",
+          `dc_pt.product_tag_id = pt.id AND dc_pt.condition_id = :dcId`,
+          { dcId: conditionId }
+        )
+        .getManyAndCount()
+    },
+  })
 
 export default ProductTagRepository

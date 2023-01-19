@@ -13,7 +13,7 @@ import {
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
-import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { buildLegacyFieldsListFrom } from "../utils"
 import { dataSource } from "../loaders/database"
 
 export type DefaultWithoutRelations = Omit<
@@ -135,10 +135,10 @@ export const CustomerGroupRepository = dataSource
         return [toReturn, toReturn.length]
       }
 
-      const legacyRelations = buildLegacySelectOrRelationsFrom(relations)
+      const legacyRelations = buildLegacyFieldsListFrom(relations)
       const groupedRelations = getGroupedRelations(legacyRelations)
 
-      const legacySelect = buildLegacySelectOrRelationsFrom(
+      const legacySelect = buildLegacyFieldsListFrom(
         idsOrOptionsWithoutRelations.select
       )
       const entitiesIdsWithRelations = await queryEntityWithIds(

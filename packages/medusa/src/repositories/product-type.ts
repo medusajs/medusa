@@ -1,6 +1,6 @@
 import { ProductType } from "../models/product-type"
 import { ExtendedFindConfig } from "../types/common"
-import { buildLegacySelectOrRelationsFrom } from "../utils"
+import { buildLegacyFieldsListFrom } from "../utils"
 import { dataSource } from "../loaders/database"
 
 type UpsertTypeInput = Partial<ProductType> & {
@@ -36,7 +36,7 @@ export const ProductTypeRepository = dataSource
       const qb = this.createQueryBuilder("pt")
 
       if (query?.select) {
-        const legacySelect = buildLegacySelectOrRelationsFrom(query.select)
+        const legacySelect = buildLegacyFieldsListFrom(query.select)
         qb.select(legacySelect.map((select) => `pt.${select}`))
       }
 

@@ -248,10 +248,11 @@ function buildWhere<TWhereKeys extends object, TEntity>(
  * output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
  * @param input
  */
-export function buildLegacySelectOrRelationsFrom<TEntity>(
+export function buildLegacyFieldsListFrom<TEntity>(
   input:
     | FindOptionsWhere<TEntity>
     | FindOptionsSelect<TEntity>
+    | FindOptionsOrder<TEntity>
     | FindOptionsRelations<TEntity> = {}
 ): (keyof TEntity)[] {
   if (!Object.keys(input).length) {
@@ -262,7 +263,7 @@ export function buildLegacySelectOrRelationsFrom<TEntity>(
 
   for (const key of Object.keys(input)) {
     if (input[key] != undefined && typeof input[key] === "object") {
-      const deepRes = buildLegacySelectOrRelationsFrom(input[key])
+      const deepRes = buildLegacyFieldsListFrom(input[key])
 
       const items = deepRes.reduce((acc, val) => {
         acc.push(`${key}.${val}`)
