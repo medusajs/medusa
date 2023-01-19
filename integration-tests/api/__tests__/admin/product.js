@@ -1334,6 +1334,37 @@ describe("/admin/products", () => {
       expect(response.data.product.images.length).toEqual(0)
     })
 
+    it("updates a product by deleting a field from metadata", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection, {
+        metadata: {
+          "test-key": "test-value",
+          "test-key-2": "test-value-2",
+          "test-key-3": "test-value-3",
+        },
+      })
+
+      const payload = {
+        metadata: {
+          "test-key": "",
+          "test-key-2": null,
+        },
+      }
+
+      const response = await api.post(
+        "/admin/products/" + product.id,
+        payload,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product.metadata).toEqual({
+        "test-key-2": null,
+        "test-key-3": "test-value-3",
+      })
+    })
+
     it("fails to update product with invalid status", async () => {
       const api = useApi()
 
