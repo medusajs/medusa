@@ -29,6 +29,7 @@ import { validator } from "../../../../utils/validator"
  *         description: See a list of codes.
  * x-codegen:
  *   method: retrieve
+ *   queryParams: StoreGetProductsProductParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
