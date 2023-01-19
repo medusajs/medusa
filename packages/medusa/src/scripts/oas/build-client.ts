@@ -1,7 +1,7 @@
 import path from "path"
 import { generate, HttpClient, Indent } from "openapi-typescript-codegen"
 import { upperFirst } from "lodash"
-import { mkdir, readFile } from "fs/promises"
+import fs, { mkdir, readFile } from "fs/promises"
 import logger from "../../loaders/logger"
 import { OpenAPIObject } from "openapi3-ts"
 
@@ -21,11 +21,28 @@ const packagePath = path.resolve(__dirname, "../../../")
 const run = async () => {
   debug("Generate Client from OAS.")
 
-  const targetPackageSrcDir = path.resolve(packagePath, "../medusa-client/src")
-  await mkdir(targetPackageSrcDir, { recursive: true })
-
   for (const apiType of ["store", "admin"]) {
     debug(`Building Client for ${apiType} api.`)
+    const targetPackageSrcDir = path.resolve(
+      packagePath,
+      `../medusa-client-${apiType}/src/lib`
+    )
+    await fs.rm(targetPackageSrcDir, { recursive: true, force: true })
+    await mkdir(targetPackageSrcDir, { recursive: true })
+
+    const oas = await getOASFromFile(apiType as ApiType)
+    await generateClientSDK(oas, apiType as ApiType, targetPackageSrcDir)
+  }
+
+  for (const apiType of ["store", "admin"]) {
+    debug(`Building React for ${apiType} api.`)
+    const targetPackageSrcDir = path.resolve(
+      packagePath,
+      `../medusa-react-${apiType}/src/lib`
+    )
+    await fs.rm(targetPackageSrcDir, { recursive: true, force: true })
+    await mkdir(targetPackageSrcDir, { recursive: true })
+
     const oas = await getOASFromFile(apiType as ApiType)
     await generateClientSDK(oas, apiType as ApiType, targetPackageSrcDir)
   }
@@ -46,7 +63,7 @@ const generateClientSDK = async (
 ) => {
   await generate({
     input: oas,
-    output: path.resolve(targetPackageSrcDir, apiType),
+    output: targetPackageSrcDir,
     httpClient: HttpClient.AXIOS,
     useOptions: true,
     useUnionTypes: true,
