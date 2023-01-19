@@ -1,5 +1,6 @@
 ---
 description: 'Actions Required for Vite Update'
+sidebar_label: 'Medusa Admin: Vite'
 ---
 
 # Updating Medusa Admin from Gatsby to Vite
