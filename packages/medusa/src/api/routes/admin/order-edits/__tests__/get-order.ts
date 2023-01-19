@@ -3,7 +3,7 @@ import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 import {
   defaultOrderEditFields,
-  defaultOrderEditRelations
+  defaultOrderEditRelations,
 } from "../../../../../types/order-edit"
 
 describe("GET /admin/order-edits/:id", () => {
