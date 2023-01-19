@@ -2,6 +2,7 @@ const path = require("path")
 const fs = require("fs")
 const docsPath = path.join(__dirname, "../../docs/content")
 const apisPath = path.join(__dirname, "../../docs/api")
+const reverseSidebar = require('./src/utils/reverseSidebar')
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
@@ -33,7 +34,7 @@ const config = {
         apiKey: process.env.SEGMENT_API_KEY || "temp"
       }
     ],
-    require.resolve("docusaurus-plugin-image-zoom")
+    require.resolve("docusaurus-plugin-image-zoom"),
   ],
   themeConfig: {
     image: 'img/docs-banner.jpg',
@@ -210,6 +211,10 @@ const config = {
           ],
           showLastUpdateTime: true,
           breadcrumbs: false,
+          async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
+            const sidebarItems = await defaultSidebarItemsGenerator(args);
+            return reverseSidebar(sidebarItems);
+          },
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")
