@@ -25,6 +25,9 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - (query) expand {string} A comma separated list of Product Variant relations to load.
  *   - (query) offset=0 {number} How many product variants to skip in the result.
  *   - (query) limit=100 {number} Maximum number of Product Variants to return.
+ *   - (query) cart_id {string} The id of the Cart to set prices based on.
+ *   - (query) region_id {string} The id of the Region to set prices based on.
+ *   - (query) currency_code {string} The currency code to use for price selection.
  *   - in: query
  *     name: title
  *     style: form
