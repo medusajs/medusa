@@ -1,11 +1,12 @@
 import { FlagRouter } from "../utils/flag-router"
 
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, FindOptionsRelations } from "typeorm"
+import { EntityManager, FindOperator, FindOptionsRelations } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
+  PriceList,
   Product,
   ProductOption,
   ProductTag,
@@ -22,7 +23,7 @@ import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
-import { FindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateProductInput,
   FilterableProductProps,
@@ -31,7 +32,7 @@ import {
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, buildRelations, buildSelects, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -143,17 +144,16 @@ class ProductService extends TransactionBaseService {
     const manager = this.manager_
     const productRepo = manager.withRepository(this.productRepository_)
 
-    const { q, query, relations } = this.prepareListQuery_(selector, config)
+    const { q, ...productSelector } = selector
+    const query = buildQuery(productSelector, config) as ExtendedFindConfig<
+      Product & {
+        price_list_id?: FindOperator<PriceList>
+        sales_channel_id?: FindOperator<SalesChannel>
+        discount_condition_id?: string
+      }
+    >
 
-    if (q) {
-      return await productRepo.getFreeTextSearchResultsAndCount(
-        q,
-        query,
-        relations
-      )
-    }
-
-    return await productRepo.findWithRelationsAndCount(relations, query)
+    return await productRepo.findAndCount(query, q)
   }
 
   /**
@@ -912,14 +912,6 @@ class ProductService extends TransactionBaseService {
     }
 
     const query = buildQuery(selector, config as FindConfig<Product>)
-
-    if (config.relations && config.relations.length > 0) {
-      query.relations = buildRelations(config.relations)
-    }
-
-    if (config.select && config.select.length > 0) {
-      query.select = buildSelects(config.select)
-    }
 
     const rels = query.relations
     delete query.relations

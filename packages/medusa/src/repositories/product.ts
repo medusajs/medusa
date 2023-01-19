@@ -5,6 +5,7 @@ import {
   FindOptionsRelations,
   FindOptionsSelect,
   FindOptionsWhere,
+  ILike,
   In,
 } from "typeorm"
 import { PriceList, Product, SalesChannel } from "../models"
@@ -526,6 +527,136 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       ...options,
       where,
     }
+  },
+
+  async findAndCount(
+    options: ExtendedFindConfig<
+      Product & {
+        price_list_id?: FindOperator<PriceList>
+        sales_channel_id?: FindOperator<SalesChannel>
+        discount_condition_id?: string
+      }
+    >,
+    q?: string
+  ): Promise<[Product[], number]> {
+    const productAlias = "product"
+    const queryBuilder = this.createQueryBuilder()
+    queryBuilder.expressionMap.relationLoadStrategy = "query"
+
+    const options_ = { ...options }
+
+    options_.relations = options_.relations ?? {}
+    options_.where = options_.where as FindOptionsWhere<Product>
+
+    if (options_.where.price_list_id) {
+      options_.relations.variants = {
+        prices: true,
+      }
+
+      const priceListIds = options_.where.price_list_id as FindOperator<
+        string[]
+      >
+      delete options_.where.price_list_id
+
+      options_.where.variants = options_.where.variants ?? {}
+      options_.where.variants["prices"] = {
+        price_list_id: In(priceListIds.value) as any,
+      }
+    }
+
+    if (options_.where.tags) {
+      // For an unknown reason, the implementation of the SelectQueryBuilder.setFindOptions -> buildWhere
+      // Only check if it is a find operator MoreThan or LessThan. Otherwise, it has to be a relation of
+      // isManyToOne or isOneToOne in order to be valid. Otherwise, it throws `This relation isn't supported by given find operator`
+      // We might need to wait for an update or open a PR around that subject
+      queryBuilder
+        .leftJoin(`${productAlias}.tags`, "tags")
+        .andWhere(`tags.id IN (:...tag_ids)`, {
+          tag_ids: (options_.where.tags as FindOperator<string[]>).value,
+        })
+
+      if (typeof options_.relations.tags === "boolean") {
+        delete options_.relations.tags
+      }
+
+      delete options_.where.tags
+    }
+
+    if (options_.where.sales_channels) {
+      // For an unknown reason, the implementation of the SelectQueryBuilder.setFindOptions -> buildWhere
+      // Only check if it is a find operator MoreThan or LessThan. Otherwise, it has to be a relation of
+      // isManyToOne or isOneToOne in order to be valid. Otherwise, it throws `This relation isn't supported by given find operator`
+      // We might need to wait for an update or open a PR around that subject
+      queryBuilder.innerJoin(
+        `${productAlias}.sales_channels`,
+        "sales_channels",
+        "sales_channels.id IN (:...sales_channels_ids)",
+        {
+          sales_channels_ids: (
+            options_.where.sales_channels as FindOperator<string[]>
+          ).value,
+        }
+      )
+
+      if (typeof options_.relations.sales_channels === "boolean") {
+        delete options_.relations.sales_channels
+      }
+
+      delete options_.where.sales_channels
+    }
+
+    if (options_.where.discount_condition_id) {
+      queryBuilder.innerJoin(
+        "discount_condition_product",
+        "dc_product",
+        `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
+        { dcId: options_.where.discount_condition_id }
+      )
+
+      delete options_.where.discount_condition_id
+    }
+
+    if (q) {
+      options_.relations = options_.relations ?? {}
+      options_.relations.variants = options_.relations.variants ?? true
+      options_.relations.collection = options_.relations.collection ?? true
+
+      options_.where = [
+        {
+          ...options_.where,
+          description: ILike(`%${q}%`),
+        },
+        {
+          ...options_.where,
+          title: ILike(`%${q}%`),
+        },
+        {
+          ...options_.where,
+          variants: {
+            title: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...options_.where,
+          variants: {
+            sku: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...options_.where,
+          collection: {
+            title: ILike(`%${q}%`),
+          },
+        },
+      ]
+    }
+
+    if (options_.withDeleted) {
+      queryBuilder.withDeleted()
+    }
+
+    const res = await queryBuilder.setFindOptions(options_).getManyAndCount()
+    return res
   },
 })
 export default ProductRepository
