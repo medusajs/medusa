@@ -14,6 +14,22 @@ const medusaCore = path
   .replace(/\\/g, "/")
 
 let WATCHING = false
+let IS_RELOADING = false
+
+function getParentModulesIds(element) {
+  if (!element) {
+    return []
+  }
+
+  const ids = [element.id]
+  let parent = element.parent
+  while (parent && parent.id.replace(/\\/g, "/").includes(medusaCore)) {
+    ids.push(parent.id)
+    parent = parent.parent
+  }
+  return ids
+}
+
 const watchFiles = () => {
   if (WATCHING) {
     return
@@ -42,7 +58,12 @@ const watchFiles = () => {
   })
 
   watcher.on("change", async function (rawFile) {
+    if (IS_RELOADING) {
+      return
+    }
+
     console.log("Reloading server...")
+    IS_RELOADING = true
     const start = Date.now()
 
     const file = rawFile.replace(/\\/g, "/")
@@ -75,12 +96,18 @@ const watchFiles = () => {
           next.endsWith(".ts") ||
           name.startsWith(next)
         ) {
-          delete module.constructor._cache[rawName]
+          const cacheToClean = getParentModulesIds(
+            module.constructor._cache[rawName]
+          )
+          for (const id of cacheToClean) {
+            delete module.constructor._cache[id]
+          }
         }
       }
     }
 
     await bootstrapApp()
+    IS_RELOADING = false
 
     console.log("Server reloaded in", Date.now() - start, "ms")
   })
@@ -119,8 +146,6 @@ const bootstrapApp = async () => {
     watchFiles()
     console.log(`Server Running at localhost:${port}`)
   })
-
-  database = dbConnection
 }
 
-bootstrapApp()
+void bootstrapApp()

@@ -68,7 +68,7 @@ describe("ProductCategoryService", () => {
       ...MockRepository({}),
       getFreeTextSearchResultsAndCount: jest
         .fn()
-        .mockImplementation((query, q) => {
+        .mockImplementation((query, q, treeSelector = {}) => {
           if (q == "not-found") {
             return Promise.resolve([[], 0])
           }
@@ -112,7 +112,8 @@ describe("ProductCategoryService", () => {
           take: 100,
           where: {},
         },
-        validProdCategoryId
+        validProdCategoryId,
+        {}
       )
     })
 

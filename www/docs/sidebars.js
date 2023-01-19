@@ -370,6 +370,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/endpoints/add-middleware",
+          label: "Add a Middleware"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/services/create-service",
           label: "Create a Service"
         },
@@ -690,6 +695,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "troubleshooting/errors-after-update",
+          label: "Errors After Update",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/database-error",
           label: "Database SASL Error",
         },
@@ -753,6 +763,11 @@ module.exports = {
           type: "ref",
           id: "js-client/overview",
           label: "JS Client Reference",
+        },
+        {
+          type: "doc",
+          id: "medusa-react/overview",
+          label: "Medusa React",
         },
         {
           type: "ref",

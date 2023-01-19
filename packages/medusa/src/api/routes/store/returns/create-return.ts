@@ -66,10 +66,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             return:
- *               $ref: "#/components/schemas/Return"
+ *           $ref: "#/components/schemas/StoreReturnsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

@@ -31,7 +31,7 @@ const registerModule = async (
     }
 
     container.register({
-      [constainerName]: asValue(false),
+      [constainerName]: asValue(undefined),
     })
 
     return {
@@ -41,7 +41,7 @@ const registerModule = async (
 
   if (!resolution.resolutionPath) {
     container.register({
-      [constainerName]: asValue(false),
+      [constainerName]: asValue(undefined),
     })
 
     return

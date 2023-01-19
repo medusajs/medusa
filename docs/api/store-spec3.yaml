@@ -6416,6 +6416,10 @@ components:
             fulfillment
           type: string
           example: manual
+        location_id:
+          description: The id of the stock location the fulfillment will be shipped from
+          type: string
+          example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
         provider:
           description: Available if the relation `provider` is expanded.
           $ref: '#/components/schemas/FulfillmentProvider'
@@ -7957,6 +7961,13 @@ components:
             method that will be used to complete the purchase.
           type: boolean
           example: true
+        is_initiated:
+          description: >-
+            A flag to indicate if a communication with the third party provider
+            has been initiated.
+          type: boolean
+          example: true
+          default: false
         status:
           description: >-
             Indicates the status of the Payment Session. Will default to
@@ -8159,6 +8170,69 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Does the price list prices include tax'
           type: boolean
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    ProductCategory:
+      title: ProductCategory
+      description: Represents a product category
+      x-resourceId: ProductCategory
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          description: The product category's ID
+          example: pcat_01G2SG30J8C85S4A5CHM2S1NS2
+        name:
+          type: string
+          description: The product category's name
+          example: Regular Fit
+        handle:
+          description: >-
+            A unique string that identifies the Category - example: slug
+            structures.
+          type: string
+          example: regular-fit
+        mpath:
+          type: string
+          description: >-
+            A string for Materialized Paths - used for finding ancestors and
+            descendents
+          example: pcat_id1.pcat_id2.pcat_id3
+        is_internal:
+          type: boolean
+          description: A flag to make product category an internal category for admins
+          default: false
+        is_active:
+          type: boolean
+          description: A flag to make product category visible/hidden in the store front
+          default: false
+        category_children:
+          description: Available if the relation `category_children` are expanded.
+          type: array
+          items:
+            type: object
+            description: A product category object.
+        parent_category_id:
+          description: The ID of the parent category.
+          type: string
+          default: null
+        parent_category:
+          description: >-
+            A product category object. Available if the relation
+            `parent_category` is expanded.
+          type: object
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -10181,6 +10255,195 @@ components:
           type: string
           description: The date with timezone at which the resource was deleted.
           format: date-time
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    StockLocationAddressDTO:
+      title: Stock Location Address
+      description: Represents a Stock Location Address
+      type: object
+      required:
+        - address_1
+        - country_code
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: The stock location address' ID
+          example: laddr_51G4ZW853Y6TFXWPG5ENJ81X42
+        address_1:
+          type: string
+          description: Stock location address
+          example: '35, Jhon Doe Ave'
+        address_2:
+          type: string
+          description: Stock location address' complement
+          example: apartment 4432
+        city:
+          type: string
+          description: Stock location address' city
+          example: Mexico city
+        country_code:
+          type: string
+          description: Stock location address' country
+          example: MX
+        phone:
+          type: string
+          description: Stock location address' phone number
+          example: +1 555 61646
+        postal_code:
+          type: string
+          description: Stock location address' postal code
+          example: HD3-1G8
+        province:
+          type: string
+          description: Stock location address' province
+          example: Sinaloa
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    StockLocationDTO:
+      title: Stock Location
+      description: Represents a Stock Location
+      type: object
+      required:
+        - id
+        - name
+        - address_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: The stock location's ID
+          example: sloc_51G4ZW853Y6TFXWPG5ENJ81X42
+        address_id:
+          type: string
+          description: Stock location address' ID
+          example: laddr_05B2ZE853Y6FTXWPW85NJ81A44
+        name:
+          type: string
+          description: The name of the stock location
+          example: Main Warehouse
+        address:
+          description: The Address of the Stock Location
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressDTO'
+            - type: object
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    StockLocationAddressInput:
+      title: Stock Location Address Input
+      description: Represents a Stock Location Address Input
+      type: object
+      required:
+        - address_1
+        - country_code
+      properties:
+        address_1:
+          type: string
+          description: Stock location address
+          example: '35, Jhon Doe Ave'
+        address_2:
+          type: string
+          description: Stock location address' complement
+          example: apartment 4432
+        city:
+          type: string
+          description: Stock location address' city
+          example: Mexico city
+        country_code:
+          type: string
+          description: Stock location address' country
+          example: MX
+        phone:
+          type: string
+          description: Stock location address' phone number
+          example: +1 555 61646
+        postal_code:
+          type: string
+          description: Stock location address' postal code
+          example: HD3-1G8
+        province:
+          type: string
+          description: Stock location address' province
+          example: Sinaloa
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    CreateStockLocationInput:
+      title: Create Stock Location Input
+      description: Represents the Input to create a Stock Location
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The stock location name
+        address_id:
+          type: string
+          description: The Stock location address ID
+        address:
+          description: Stock location address object
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressInput'
+            - type: object
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    UpdateStockLocationInput:
+      title: Update Stock Location Input
+      description: Represents the Input to update a Stock Location
+      type: object
+      properties:
+        name:
+          type: string
+          description: The stock location name
+        address_id:
+          type: string
+          description: The Stock location address ID
+        address:
+          description: Stock location address object
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressInput'
+            - type: object
         metadata:
           type: object
           description: An optional key-value map with additional details
