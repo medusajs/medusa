@@ -73,12 +73,12 @@ export class setup1665749860179 implements MigrationInterface {
         "updated_at" TIMESTAMP WITH time zone NOT NULL DEFAULT Now(),
         "deleted_at" TIMESTAMP WITH time zone,
         "name"       TEXT NOT NULL,
-        "address_id" TEXT NOT NULL,
+        "address_id" TEXT,
         "metadata"   JSONB,
         CONSTRAINT "PK_adf770067d0df1421f525fa25cc" PRIMARY KEY ("id")
       );
 
-      CREATE INDEX "IDX_stock_location_address_id" ON "stock_location" ("address_id");
+      CREATE INDEX "IDX_stock_location_address_id" ON "stock_location" ("address_id") WHERE deleted_at IS NOT NULL;
     `)
   }
 
