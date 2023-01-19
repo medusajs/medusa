@@ -129,40 +129,6 @@ export default class StockLocationService extends TransactionBaseService {
   }
 
   /**
-   * Retrieves a Stock Location Address by its ID.
-   * @param stockLocationAddressId - The ID of the stock location.
-   * @param config - Additional configuration for the query.
-   * @return The stock location address.
-   * @throws If the stock location address ID is not defined or the stock location address with the given ID was not found.
-   */
-  protected async retrieveAddress(
-    stockLocationAddressId: string,
-    config: FindConfig<StockLocationAddress> = {}
-  ): Promise<StockLocationAddress> {
-    if (!isDefined(stockLocationAddressId)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `"stockLocationAddressId" must be defined`
-      )
-    }
-
-    const manager = this.getManager()
-    const locationAddressRepo = manager.getRepository(StockLocationAddress)
-
-    const query = buildQuery({ id: stockLocationAddressId }, config)
-    const [loc] = await locationAddressRepo.find(query)
-
-    if (!loc) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `StockLocationAddress with id ${stockLocationAddressId} was not found`
-      )
-    }
-
-    return loc
-  }
-
-  /**
    * Creates a new stock location.
    * @param data - The input data for creating a Stock Location.
    * @returns The created stock location.
@@ -178,10 +144,7 @@ export default class StockLocationService extends TransactionBaseService {
       if (isDefined(data.address) || isDefined(data.address_id)) {
         if (typeof data.address === "string" || data.address_id) {
           const addrId = (data.address ?? data.address_id) as string
-          const address = await this.retrieveAddress(addrId, {
-            select: ["id"],
-          })
-          loc.address_id = address.id
+          loc.address_id = addrId
         } else {
           const locAddressRepo = manager.getRepository(StockLocationAddress)
           const locAddress = locAddressRepo.create(data.address!)
