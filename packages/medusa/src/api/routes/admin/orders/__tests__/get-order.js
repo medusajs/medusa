@@ -43,7 +43,8 @@ describe("GET /admin/orders", () => {
               "gift_card_tax_total",
             ].includes(field)
           }),
-          relations: [...defaultAdminOrdersRelations],
+          // TODO [MEDUSA_FF_SALES_CHANNELS]: Remove when sales channel flag is removed entirely
+          relations: [...defaultAdminOrdersRelations, "sales_channel"],
         }
       )
     })
