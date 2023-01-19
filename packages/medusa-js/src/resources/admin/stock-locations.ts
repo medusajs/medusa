@@ -12,11 +12,11 @@ import qs from "qs"
 
 class AdminStockLocationsResource extends BaseResource {
   /**
-   * Create an stock location
+   * Create a Stock Location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
-   * @description gets a medusa stock location
-   * @returns a medusa stock location
+   * @description gets a medusa Stock Location
+   * @returns a medusa Stock Location
    */
   create(
     payload: AdminPostStockLocationsReq,
@@ -27,11 +27,11 @@ class AdminStockLocationsResource extends BaseResource {
   }
 
   /**
-   * Retrieve an stock location
+   * Retrieve a Stock Location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
-   * @description gets a medusa stock location
-   * @returns a medusa stock location
+   * @description gets a medusa Stock Location
+   * @returns a medusa Stock Location
    */
   retrieve(
     itemId: string,
@@ -42,11 +42,11 @@ class AdminStockLocationsResource extends BaseResource {
   }
 
   /**
-   * Update an stock location
+   * Update a Stock Location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
-   * @description updates a stock location
-   * @returns the updated medusa stock location
+   * @description updates a Stock Location
+   * @returns the updated medusa Stock Location
    */
   update(
     stockLocationId: string,
@@ -58,10 +58,10 @@ class AdminStockLocationsResource extends BaseResource {
   }
 
   /**
-   * Delete a stock location
+   * Delete a Stock Location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
-   * @description deletes a stock location
+   * @description deletes a Stock Location
    */
   delete(
     id: string,
@@ -72,11 +72,11 @@ class AdminStockLocationsResource extends BaseResource {
   }
 
   /**
-   * Retrieve a list of stock locations
+   * Retrieve a list of Stock Locations
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/stock-location
-   * @description Retrieve a list of stock locations
-   * @returns the list of stock locations as well as the pagination properties
+   * @description Retrieve a list of Stock Locations
+   * @returns the list of Stock Locations as well as the pagination properties
    */
   list(
     query?: AdminGetStockLocationsParams,

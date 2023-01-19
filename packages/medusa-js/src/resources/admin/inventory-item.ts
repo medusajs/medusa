@@ -16,11 +16,11 @@ import qs from "qs"
 
 class AdminInventoryItemsResource extends BaseResource {
   /**
-   * Retrieve an inventory item
+   * Retrieve an Inventory Item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
-   * @description gets an inventory item
-   * @returns an inventory item
+   * @description gets an Inventory Item
+   * @returns an Inventory Item
    */
   retrieve(
     inventoryItemId: string,
@@ -38,11 +38,11 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
-   * Update an inventory item
+   * Update an Inventory Item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
-   * @description updates an inventory item
-   * @returns the updated inventory item
+   * @description updates an Inventory Item
+   * @returns the updated Inventory Item
    */
   update(
     inventoryItemId: string,
@@ -61,11 +61,11 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
-   * Delete an inventory item
+   * Delete an Inventory Item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
-   * @description deletes an inventory item
-   * @returns the deleted inventory item
+   * @description deletes an Inventory Item
+   * @returns the deleted Inventory Item
    */
   delete(
     inventoryItemId: string,
@@ -76,11 +76,11 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
-   * Retrieve a list of inventory items
+   * Retrieve a list of Inventory Items
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
-   * @description Retrieve a list of inventory items
-   * @returns the list of inventory items as well as the pagination properties
+   * @description Retrieve a list of Inventory Items
+   * @returns the list of Inventory Items as well as the pagination properties
    */
   list(
     query?: AdminGetInventoryItemsParams,
@@ -97,11 +97,11 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
-   * Update an inventory item
+   * Update an Inventory Item
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
-   * @description updates an inventory item
-   * @returns the updated inventory item
+   * @description updates an Inventory Item
+   * @returns the updated Inventory Item
    */
   updateLocationLevel(
     inventoryItemId: string,
@@ -114,11 +114,11 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
-   * Delete a location level of an inventory item
+   * Removes an Inventory Item from a Stock Location. This erases trace of any quantity currently at the location.
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
-   * @description deletes a location level of an inventory item
-   * @returns the inventory item
+   * @description deletes a location level of an Inventory Item
+   * @returns the Inventory Item
    */
   deleteLocationLevel(
     inventoryItemId: string,
@@ -130,11 +130,11 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
-   * Retrieve a list of location levels related to an inventory item
+   * Retrieve a list of Inventory Levels related to an Inventory Item across Stock Locations
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
-   * @description Retrieve a list of location levels related to an inventory item
-   * @returns the list of inventory levels related to an inventory item as well as the pagination properties
+   * @description Retrieve a list of location levels related to an Inventory Item
+   * @returns the list of inventory levels related to an Inventory Item as well as the pagination properties
    */
   listLocationLevels(
     inventoryItemId: string,
