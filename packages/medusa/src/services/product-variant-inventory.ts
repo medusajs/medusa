@@ -7,7 +7,11 @@ import {
 } from "../interfaces"
 import { LineItem, Product, ProductVariant } from "../models"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
-import { InventoryItemDTO, ReserveQuantityContext } from "../types/inventory"
+import {
+  InventoryItemDTO,
+  ReservationItemDTO,
+  ReserveQuantityContext,
+} from "../types/inventory"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 import {
   CacheService,
