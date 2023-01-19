@@ -20,7 +20,7 @@ import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
  * @param config The config
  * @return The QueryBuilderConfig
  */
-export function buildQuery<TWhereKeys, TEntity = unknown>(
+export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
   selector: TWhereKeys,
   config: FindConfig<TEntity> = {}
 ) {
@@ -174,7 +174,7 @@ export function buildQuery<TWhereKeys, TEntity = unknown>(
  *   }
  * })
  */
-function buildWhere<TWhereKeys, TEntity>(
+function buildWhere<TWhereKeys extends object, TEntity>(
   constraints: TWhereKeys
 ): FindOptionsWhere<TEntity> {
   const where: FindOptionsWhere<TEntity> = {}

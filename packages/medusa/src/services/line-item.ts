@@ -364,7 +364,7 @@ class LineItemService extends TransactionBaseService {
    * @return the created line item
    */
   async create<
-    T = LineItem | LineItem[],
+    T = DeepPartial<LineItem> | DeepPartial<LineItem>[],
     TResult = T extends LineItem ? LineItem : LineItem[]
   >(data: T): Promise<TResult> {
     return await this.atomicPhase_(
@@ -373,7 +373,9 @@ class LineItemService extends TransactionBaseService {
           this.lineItemRepository_
         )
 
-        const data_ = Array.isArray(data) ? data : [data]
+        const data_ = (
+          Array.isArray(data) ? data : [data]
+        ) as DeepPartial<LineItem>[]
 
         const items = lineItemRepository.create(data_)
         const lineItems = await lineItemRepository.save(items)

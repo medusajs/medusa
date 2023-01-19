@@ -237,7 +237,7 @@ class UserService extends TransactionBaseService {
       }
 
       for (const [key, value] of Object.entries(rest)) {
-        user[key as keyof User] = value
+        user[key] = value
       }
 
       const updatedUser = await userRepo.save(user)
