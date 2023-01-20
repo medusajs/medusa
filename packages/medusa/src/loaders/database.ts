@@ -1,7 +1,12 @@
-import { DataSource, DataSourceOptions, Repository, TreeRepository } from "typeorm"
+import {
+  DataSource,
+  DataSourceOptions,
+  Repository,
+  TreeRepository,
+} from "typeorm"
 import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
-import { ShortenedNamingStrategy } from "../utils/naming-strategy"
+import "../utils/naming-strategy"
 
 type Options = {
   configModule: ConfigModule
@@ -32,7 +37,7 @@ export default async ({
     extra: configModule.projectConfig.database_extra || {},
     schema: configModule.projectConfig.database_schema,
     entities,
-    namingStrategy: new ShortenedNamingStrategy(),
+    // namingStrategy: new DefaultNamingStrategy(), Since we are monkey patching, no need to set this option
     logging: configModule.projectConfig.database_logging || false,
   } as DataSourceOptions)
 
