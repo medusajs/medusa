@@ -29,7 +29,7 @@ const mockUpsertType = jest.fn().mockImplementation((value) => {
 describe("ProductService", () => {
   describe("retrieve", () => {
     const productRepo = MockRepository({
-      findOneWithRelations: (rels, query) => {
+      findOne: (query) => {
         if (query.where.id === "test id with variants") {
           return {
             id: "test id with variants",
@@ -62,8 +62,8 @@ describe("ProductService", () => {
     it("successfully retrieves a product", async () => {
       const result = await productService.retrieve(IdMap.getId("ironman"))
 
-      expect(productRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(productRepo.findOneWithRelations).toHaveBeenCalledWith(undefined, {
+      expect(productRepo.findOne).toHaveBeenCalledTimes(1)
+      expect(productRepo.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("ironman") },
       })
 
@@ -80,7 +80,7 @@ describe("ProductService", () => {
         collection: { id: IdMap.getId("cat"), title: "Suits" },
         variants: product.variants,
       }),
-      findOneWithRelations: () => ({
+      findOne: () => ({
         id: IdMap.getId("ironman"),
         title: "Suit",
         options: [],
@@ -210,7 +210,7 @@ describe("ProductService", () => {
 
   describe("update", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: (rels, query) => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("ironman&co")) {
           return Promise.resolve({
             id: IdMap.getId("ironman&co"),
@@ -482,7 +482,7 @@ describe("ProductService", () => {
 
   describe("addOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: (query) =>
+      findOne: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [{ title: "Color" }],
@@ -555,7 +555,7 @@ describe("ProductService", () => {
 
   describe("reorderVariants", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: (query) =>
+      findOne: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           variants: [{ id: IdMap.getId("green") }, { id: IdMap.getId("blue") }],
@@ -614,7 +614,7 @@ describe("ProductService", () => {
 
   describe("updateOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: (query) =>
+      findOne: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [
@@ -690,7 +690,7 @@ describe("ProductService", () => {
 
   describe("deleteOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: (query) =>
+      findOne: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           variants: [

@@ -246,9 +246,7 @@ class ProductService extends TransactionBaseService {
   ): Promise<Product> {
     const manager = this.manager_
     const productRepo = manager.withRepository(this.productRepository_)
-
     const query = buildQuery(selector, config as FindConfig<Product>)
-
     const product = await productRepo.findOne(query)
 
     if (!product) {
