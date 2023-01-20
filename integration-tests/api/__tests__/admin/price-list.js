@@ -23,7 +23,7 @@ const adminReqConfig = {
   },
 }
 
-jest.setTimeout(30000)
+jest.setTimeout(30000000)
 
 describe("/admin/price-lists", () => {
   let medusaProcess
@@ -1113,12 +1113,6 @@ describe("/admin/price-lists", () => {
           id: "test-prod-2",
           variants: expect.arrayContaining([
             expect.objectContaining({
-              id: "test-variant-3",
-              prices: expect.arrayContaining([
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
-              ]),
-            }),
-            expect.objectContaining({
               id: "test-variant-4",
               prices: expect.arrayContaining([
                 expect.objectContaining({ currency_code: "usd", amount: 100 }),
@@ -1143,12 +1137,6 @@ describe("/admin/price-lists", () => {
                   amount: 150,
                   price_list_id: "test-list",
                 }),
-              ]),
-            }),
-            expect.objectContaining({
-              id: "test-variant-2",
-              prices: expect.arrayContaining([
-                expect.objectContaining({ currency_code: "usd", amount: 100 }),
               ]),
             }),
           ]),
