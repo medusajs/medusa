@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/inventory",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Inventory Module for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -28,7 +28,7 @@
     "test:unit": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.7.4",
+    "@medusajs/medusa": "1.7.5",
     "medusa-interfaces": "1.3.4"
   },
   "dependencies": {

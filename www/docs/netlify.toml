@@ -85,3 +85,31 @@
 [[redirects]]
   from = "/guides/checkouts"
   to = "/advanced/storefront/how-to-implement-checkout-flow"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-7-3"
+  to="advanced/backend/upgrade-guides/medusa-core/1-7-3"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-7-1"
+  to="advanced/backend/upgrade-guides/medusa-core/1-7-1"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-7-0"
+  to="advanced/backend/upgrade-guides/medusa-core/1-7-0"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-6-1"
+  to="advanced/backend/upgrade-guides/medusa-core/1-6-1"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-3-8"
+  to="advanced/backend/upgrade-guides/medusa-core/1-3-8"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-3-6"
+  to="advanced/backend/upgrade-guides/medusa-core/1-3-6"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-3-0"
+  to="advanced/backend/upgrade-guides/medusa-core/1-3-0"

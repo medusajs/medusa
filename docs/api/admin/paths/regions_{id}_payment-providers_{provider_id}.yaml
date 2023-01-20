@@ -38,10 +38,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              region:
-                $ref: ../components/schemas/Region.yaml
+            $ref: ../components/schemas/AdminRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

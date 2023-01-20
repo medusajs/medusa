@@ -40,10 +40,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              stock_location:
-                $ref: ../components/schemas/StockLocationDTO.yaml
+            $ref: ../components/schemas/AdminStockLocationsRes.yaml
 post:
   operationId: PostStockLocationsStockLocation
   summary: Update a Stock Location
@@ -91,10 +88,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              stock_location:
-                $ref: ../components/schemas/StockLocationDTO.yaml
+            $ref: ../components/schemas/AdminStockLocationsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

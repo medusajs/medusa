@@ -4357,7 +4357,7 @@ __metadata:
     typeorm: ^0.2.31
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": 1.7.4
+    "@medusajs/medusa": 1.7.5
     medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft

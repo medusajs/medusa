@@ -169,31 +169,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              products:
-                type: array
-                items:
-                  allOf:
-                    - $ref: ../components/schemas/Product.yaml
-                    - type: object
-                      properties:
-                        variants:
-                          type: array
-                          items:
-                            allOf:
-                              - $ref: ../components/schemas/ProductVariant.yaml
-                              - $ref: >-
-                                  ../components/schemas/ProductVariantPricesFields.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/StoreProductsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

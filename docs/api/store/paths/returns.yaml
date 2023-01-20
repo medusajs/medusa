@@ -24,10 +24,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              return:
-                $ref: ../components/schemas/Return.yaml
+            $ref: ../components/schemas/StoreReturnsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

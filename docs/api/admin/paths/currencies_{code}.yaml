@@ -32,7 +32,4 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              currency:
-                $ref: ../components/schemas/Currency.yaml
+            $ref: ../components/schemas/AdminCurrenciesRes.yaml

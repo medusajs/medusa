@@ -24,7 +24,7 @@ By default, Medusa loads environment variables from the system’s environment v
 
 :::info
 
-This change in how environment variables are loaded was introduced in version 1.3.0. You can learn more in the [upgrade guide for version 1.3.0](../advanced/backend/upgrade-guides/1-3-0.md).
+This change in how environment variables are loaded was introduced in version 1.3.0. You can learn more in the [upgrade guide for version 1.3.0](../advanced/backend/upgrade-guides/medusa-core/1-3-0.md).
 
 :::
 
