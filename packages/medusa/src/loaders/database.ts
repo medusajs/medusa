@@ -1,4 +1,4 @@
-import { DataSource, DataSourceOptions, Repository } from "typeorm"
+import { DataSource, DataSourceOptions, Repository, TreeRepository } from "typeorm"
 import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
 
@@ -12,6 +12,7 @@ export let dataSource: DataSource
 if (process.env.NODE_ENV === "test") {
   dataSource = {
     getRepository: (target) => new Repository(target, {} as any) as any,
+    getTreeRepository: (target) => new TreeRepository(target, {} as any) as any,
   } as unknown as DataSource
 }
 

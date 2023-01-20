@@ -22,11 +22,11 @@ export const ProductCategoryRepository = dataSource
       const legacyRelations = buildLegacyFieldsListFrom(options_.relations)
 
       const selectStatements = (relationName: string): string[] => {
-        const modelColumns = this.manager.connection
-          .getMetadata(ProductCategory)
+        const modelColumns = this.metadata
           .ownColumns.map((column) => column.propertyName)
+        const selectColumns = (legacySelect.length) ? legacySelect : modelColumns
 
-        return (legacySelect || modelColumns).map((column) => {
+        return selectColumns.map((column) => {
           return `${relationName}.${column}`
         })
       }
