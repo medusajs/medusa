@@ -1,7 +1,7 @@
 import { FlagRouter } from "../utils/flag-router"
 
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, FindOperator, FindOptionsRelations } from "typeorm"
+import { EntityManager, FindOperator } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -15,10 +15,7 @@ import {
   SalesChannel,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
-import {
-  FindWithoutRelationsOptions,
-  ProductRepository,
-} from "../repositories/product"
+import { ProductRepository } from "../repositories/product"
 import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
@@ -26,7 +23,6 @@ import { ProductVariantRepository } from "../repositories/product-variant"
 import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateProductInput,
-  FilterableProductProps,
   FindProductConfig,
   ProductOptionInput,
   ProductSelector,
@@ -251,15 +247,9 @@ class ProductService extends TransactionBaseService {
     const manager = this.manager_
     const productRepo = manager.withRepository(this.productRepository_)
 
-    const { relations, ...query } = buildQuery(
-      selector,
-      config as FindConfig<Product>
-    )
+    const query = buildQuery(selector, config as FindConfig<Product>)
 
-    const product = await productRepo.findOneWithRelations(
-      relations,
-      query as FindWithoutRelationsOptions
-    )
+    const product = await productRepo.findOne(query)
 
     if (!product) {
       const selectorConstraints = Object.entries(selector)
@@ -888,39 +878,6 @@ class ProductService extends TransactionBaseService {
         .emit(ProductService.Events.UPDATED, product)
       return product
     })
-  }
-
-  /**
-   * Creates a query object to be used for list queries.
-   * @param selector - the selector to create the query from
-   * @param config - the config to use for the query
-   * @return an object containing the query, relations and free-text
-   *   search param.
-   */
-  protected prepareListQuery_(
-    selector: FilterableProductProps | Selector<Product>,
-    config: FindProductConfig
-  ): {
-    q: string
-    relations?: FindOptionsRelations<Product>
-    query: FindWithoutRelationsOptions
-  } {
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query = buildQuery(selector, config as FindConfig<Product>)
-
-    const rels = query.relations
-    delete query.relations
-
-    return {
-      query: query as FindWithoutRelationsOptions,
-      relations: rels,
-      q,
-    }
   }
 }
 
