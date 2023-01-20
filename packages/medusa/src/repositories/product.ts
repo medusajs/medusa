@@ -77,9 +77,26 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
 
+    // Add explicit ordering for variant ranking on the variants join directly
+    // The constraint if there is any will be applied by the options_
+    if (options_.relations.variants) {
+      // The query strategy, as explain at the top of the function, does not select the column from the separated query
+      // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
+      queryBuilder.expressionMap.relationLoadStrategy = "join"
+      queryBuilder.leftJoinAndSelect(`${productAlias}.variants`, "variants")
+
+      options_.order = options_.order ?? {}
+
+      if (!isObject(options_.order.variants)) {
+        options_.order.variants = {
+          variant_rank: "ASC",
+        }
+      }
+    }
+
     if (options_.where.price_list_id) {
       options_.relations.variants = {
-        ...(typeof options_.relations.variants === "object"
+        ...(isObject(options_.relations.variants)
           ? options_.relations.variants
           : {}),
         prices: true,
@@ -149,23 +166,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       )
 
       delete options_.where.discount_condition_id
-    }
-
-    // Add explicit ordering for variant ranking on the variants join directly
-    // The constraint if there is any will be applied by the options_
-    if (options_.relations.variants) {
-      // The query strategy, as explain at the top of the function, does not select the column from the separated query
-      // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
-      queryBuilder.expressionMap.relationLoadStrategy = "join"
-      queryBuilder.leftJoinAndSelect(`${productAlias}.variants`, "variants")
-
-      options_.order = options_.order ?? {}
-
-      delete options_.order.variants?.variant_rank
-      options_.order.variants = {
-        variant_rank: "ASC",
-        ...(isObject(options_.order.variants) ? options_.order.variants : {}),
-      }
     }
 
     if (q) {
