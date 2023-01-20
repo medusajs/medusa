@@ -1,0 +1,41 @@
+title: Priced Product Variant
+type: object
+allOf:
+  - $ref: ./ProductVariant.yaml
+  - type: object
+    properties:
+      original_price:
+        type: number
+        description: >-
+          The original price of the variant without any discounted prices
+          applied.
+      calculated_price:
+        type: number
+        description: The calculated price of the variant. Can be a discounted price.
+      original_price_incl_tax:
+        type: number
+        description: The original price of the variant including taxes.
+      calculated_price_incl_tax:
+        type: number
+        description: The calculated price of the variant including taxes.
+      original_tax:
+        type: number
+        description: The taxes applied on the original price.
+      calculated_tax:
+        type: number
+        description: The taxes applied on the calculated price.
+      tax_rates:
+        type: array
+        description: An array of applied tax rates
+        items:
+          type: object
+          properties:
+            rate:
+              type: number
+              description: The tax rate value
+            name:
+              type: string
+              description: The name of the tax rate
+            code:
+              type: string
+              description: The code of the tax rate

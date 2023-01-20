@@ -31,10 +31,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              payment_collection:
-                $ref: ../components/schemas/PaymentCollection.yaml
+            $ref: ../components/schemas/AdminPaymentCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -33,10 +33,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              store:
-                $ref: ../components/schemas/Store.yaml
+            $ref: ../components/schemas/AdminStoresRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -84,10 +81,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              store:
-                $ref: ../components/schemas/Store.yaml
+            $ref: ../components/schemas/AdminStoresRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
