@@ -542,6 +542,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const productAlias = "product"
     const queryBuilder = this.createQueryBuilder(productAlias)
     // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
+    // Therefore use query when there is only an ordering by the product entity otherwise fallback to join
     queryBuilder.expressionMap.relationLoadStrategy = "join"
 
     const options_ = { ...options }
@@ -566,29 +567,41 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (options_.where.tags) {
+      const tagIds = (options_.where.tags as FindOperator<string[]>).value
+      const joinMethod = options_.relations.tags
+        ? queryBuilder.leftJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.leftJoin.bind(queryBuilder)
+
       // For an unknown reason, the implementation of the SelectQueryBuilder.setFindOptions -> buildWhere
       // Only check if it is a find operator MoreThan or LessThan. Otherwise, it has to be a relation of
       // isManyToOne or isOneToOne in order to be valid. Otherwise, it throws `This relation isn't supported by given find operator`
       // We might need to wait for an update or open a PR around that subject
-      queryBuilder
-        .leftJoin(`${productAlias}.tags`, "tags")
-        .andWhere(`tags.id IN (:...tag_ids)`, {
-          tag_ids: (options_.where.tags as FindOperator<string[]>).value,
-        })
 
-      if (typeof options_.relations.tags === "boolean") {
+      joinMethod(`${productAlias}.tags`, "tags").andWhere(
+        `tags.id IN (:...tag_ids)`,
+        {
+          tag_ids: tagIds,
+        }
+      )
+
+      /* if (typeof options_.relations.tags === "boolean") {
         delete options_.relations.tags
-      }
+      }*/
 
       delete options_.where.tags
     }
 
     if (options_.where.sales_channels) {
+      const joinMethod = options_.relations.sales_channels
+        ? queryBuilder.leftJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.leftJoin.bind(queryBuilder)
+
       // For an unknown reason, the implementation of the SelectQueryBuilder.setFindOptions -> buildWhere
       // Only check if it is a find operator MoreThan or LessThan. Otherwise, it has to be a relation of
       // isManyToOne or isOneToOne in order to be valid. Otherwise, it throws `This relation isn't supported by given find operator`
       // We might need to wait for an update or open a PR around that subject
-      queryBuilder.innerJoin(
+
+      joinMethod(
         `${productAlias}.sales_channels`,
         "sales_channels",
         "sales_channels.id IN (:...sales_channels_ids)",
@@ -599,9 +612,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         }
       )
 
-      if (typeof options_.relations.sales_channels === "boolean") {
+      /* if (typeof options_.relations.sales_channels === "boolean") {
         delete options_.relations.sales_channels
-      }
+      }*/
 
       delete options_.where.sales_channels
     }
