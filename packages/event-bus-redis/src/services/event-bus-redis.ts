@@ -1,18 +1,16 @@
 import {
+  AbstractEventBusService,
   ConfigModule,
   ConfigurableModuleDeclaration,
-  IEventBusService,
   Logger,
   MODULE_RESOURCE_TYPE,
   StagedJob,
   StagedJobService,
-  TransactionBaseService,
 } from "@medusajs/medusa"
 import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { ulid } from "ulid"
 import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
@@ -30,12 +28,6 @@ type ModuleOptions = {
   redisUrl?: string
 }
 
-type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
-
-type SubscriberContext = {
-  subscriberId: string
-}
-
 type BullJob<T> = {
   data: {
     eventName: string
@@ -43,11 +35,6 @@ type BullJob<T> = {
     completedSubscriberIds: string[] | undefined
   }
 } & Job
-
-type SubscriberDescriptor = {
-  id: string
-  subscriber: Subscriber
-}
 
 type EmitOptions = {
   delay?: number
@@ -62,19 +49,12 @@ type EmitOptions = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class RedisEventBusService
-  extends TransactionBaseService
-  implements IEventBusService
-{
+export default class RedisEventBusService extends AbstractEventBusService {
   protected readonly config_: ConfigModule
   protected readonly moduleOptions_: ModuleOptions
   protected readonly moduleDeclaration_: ConfigurableModuleDeclaration
   protected readonly logger_: Logger
   protected readonly stagedJobService_: StagedJobService
-  protected readonly eventToSubscribersMap_: Map<
-    string | symbol,
-    SubscriberDescriptor[]
-  > = new Map()
 
   protected queue_: Queue
   protected shouldEnqueuerRun: boolean
@@ -157,77 +137,6 @@ export default class RedisEventBusService
     if (process.env.NODE_ENV !== "test") {
       this.startEnqueuer()
     }
-  }
-
-  /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * @param context - context to use when attaching subscriber
-   * happens. Subscribers must return a Promise.
-   * @return this
-   */
-  subscribe(
-    event: string | symbol,
-    subscriber: Subscriber,
-    context?: SubscriberContext
-  ): this {
-    if (typeof subscriber !== "function") {
-      throw new Error("Subscriber must be a function")
-    }
-
-    /**
-     * If context is provided, we use the subscriberId from it
-     * otherwise we generate a random using a ulid
-     */
-    const subscriberId =
-      context?.subscriberId ?? `${event.toString()}-${ulid()}`
-
-    const newSubscriberDescriptor = { subscriber, id: subscriberId }
-
-    const existingSubscribers = this.eventToSubscribersMap_.get(event) ?? []
-
-    const subscriberAlreadyExists = existingSubscribers.find(
-      (sub) => sub.id === subscriberId
-    )
-
-    if (subscriberAlreadyExists) {
-      throw Error(`Subscriber with id ${subscriberId} already exists`)
-    }
-
-    this.eventToSubscribersMap_.set(event, [
-      ...existingSubscribers,
-      newSubscriberDescriptor,
-    ])
-
-    return this
-  }
-
-  /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * happens. Subscribers must return a Promise.
-   * @return this
-   */
-  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
-    if (typeof subscriber !== "function") {
-      throw new Error("Subscriber must be a function")
-    }
-
-    const existingSubscribers = this.eventToSubscribersMap_.get(event)
-
-    if (existingSubscribers?.length) {
-      const subIndex = existingSubscribers?.findIndex(
-        (sub) => sub.subscriber === subscriber
-      )
-
-      if (subIndex !== -1) {
-        this.eventToSubscribersMap_.get(event)?.splice(subIndex as number, 1)
-      }
-    }
-
-    return this
   }
 
   /**

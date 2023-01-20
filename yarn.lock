@@ -4376,6 +4376,7 @@ __metadata:
     cross-env: ^5.2.1
     ioredis: ^5.2.5
     jest: ^25.5.2
+    medusa-test-utils: "workspace:^"
     ts-jest: ^25.5.1
     typeorm: ^0.2.31
     typescript: ^4.4.4
@@ -25129,7 +25130,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:

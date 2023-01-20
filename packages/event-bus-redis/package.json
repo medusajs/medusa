@@ -17,6 +17,7 @@
     "@medusajs/medusa": "^1.6.5",
     "cross-env": "^5.2.1",
     "jest": "^25.5.2",
+    "medusa-test-utils": "workspace:^",
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },

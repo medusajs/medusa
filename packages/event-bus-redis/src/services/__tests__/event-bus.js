@@ -1,14 +1,10 @@
-import config from "@medusajs/medusa/src/loaders/config"
-import StagedJobServiceMock from "@medusajs/medusa/src/services/__mocks__/staged-job"
-import Bull from "bull"
+import { StagedJobServiceMock } from "@medusajs/medusa/dist/services/__mocks__/staged-job"
+import Bull from "bullmq"
 import { MockManager } from "medusa-test-utils"
 import EventBusService from "../event-bus-redis"
 
-jest.genMockFromModule("bull")
-jest.mock("bull")
-jest.mock("@medusajs/medusa/src/loaders/config")
-
-config.redisURI = "testhost"
+jest.genMockFromModule("bullmq")
+jest.mock("bullmq")
 
 const loggerMock = {
   info: jest.fn().mockReturnValue(console.log),
@@ -22,10 +18,18 @@ describe("EventBusService", () => {
     beforeAll(() => {
       jest.resetAllMocks()
 
-      eventBus = new EventBusService({
-        manager: MockManager,
-        logger: loggerMock,
-      })
+      eventBus = new EventBusService(
+        {
+          manager: MockManager,
+          logger: loggerMock,
+        },
+        {
+          redisUrl: "test-url",
+        },
+        {
+          resources: "shared",
+        }
+      )
     })
 
     afterAll(async () => {
@@ -40,93 +44,6 @@ describe("EventBusService", () => {
     })
   })
 
-  describe("subscribe", () => {
-    let eventBus
-
-    beforeEach(() => {
-      jest.resetAllMocks()
-
-      eventBus = new EventBusService({
-        manager: MockManager,
-        logger: loggerMock,
-      })
-    })
-
-    afterAll(async () => {
-      await eventBus.stopEnqueuer()
-    })
-
-    it("throws when subscriber already exists", async () => {
-      expect.assertions(1)
-
-      eventBus.subscribe("eventName", () => "test", {
-        subscriberId: "my-subscriber",
-      })
-
-      try {
-        eventBus.subscribe("eventName", () => "new", {
-          subscriberId: "my-subscriber",
-        })
-      } catch (error) {
-        expect(error.message).toBe(
-          "Subscriber with id my-subscriber already exists"
-        )
-      }
-    })
-
-    it("successfully adds subscriber", () => {
-      eventBus.subscribe("eventName", () => "test", {
-        subscriberId: "my-subscriber",
-      })
-
-      expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(1)
-    })
-
-    it("successfully adds multiple subscribers with explicit ids", () => {
-      eventBus.subscribe("eventName", () => "test", {
-        subscriberId: "my-subscriber-1",
-      })
-
-      eventBus.subscribe("eventName", () => "test", {
-        subscriberId: "my-subscriber-2",
-      })
-
-      expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(2)
-    })
-
-    it("successfully adds multiple subscribers with generates ids", () => {
-      eventBus.subscribe("eventName", () => "test")
-
-      eventBus.subscribe("eventName", () => "test")
-
-      expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(2)
-    })
-
-    describe("fails when adding non-function subscriber", () => {
-      let eventBus
-      beforeAll(() => {
-        jest.resetAllMocks()
-
-        eventBus = new EventBusService({
-          manager: MockManager,
-          logger: loggerMock,
-        })
-      })
-
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
-      })
-
-      it("rejects subscriber with error", () => {
-        try {
-          eventBus.subscribe("eventName", 1234)
-        } catch (err) {
-          expect(err.message).toEqual("Subscriber must be a function")
-        }
-      })
-    })
-  })
-
   describe("emit", () => {
     let eventBus
 
@@ -134,10 +51,18 @@ describe("EventBusService", () => {
       beforeAll(() => {
         jest.resetAllMocks()
 
-        eventBus = new EventBusService({
-          logger: loggerMock,
-          manager: MockManager,
-        })
+        eventBus = new EventBusService(
+          {
+            manager: MockManager,
+            logger: loggerMock,
+          },
+          {
+            redisUrl: "test-url",
+          },
+          {
+            resources: "shared",
+          }
+        )
 
         eventBus.queue_.add.mockImplementationOnce(() => "hi")
 
