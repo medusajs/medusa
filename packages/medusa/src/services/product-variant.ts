@@ -359,7 +359,9 @@ class ProductVariantService extends TransactionBaseService {
 
       for (const price of prices) {
         if (price.region_id) {
-          const region = await this.regionService_.retrieve(price.region_id)
+          const region = await this.regionService_
+            .withTransaction(manager)
+            .retrieve(price.region_id)
 
           await this.setRegionPrice(variantId, {
             currency_code: region.currency_code,
