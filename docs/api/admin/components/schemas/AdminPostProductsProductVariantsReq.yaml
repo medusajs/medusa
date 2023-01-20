@@ -34,6 +34,7 @@ properties:
       Whether Medusa should keep track of the inventory for this Product
       Variant.
     type: boolean
+    default: true
   weight:
     description: The wieght of the Product Variant.
     type: number

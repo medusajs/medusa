@@ -30,19 +30,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                description: The ID of the deleted Shipping Option.
-              object:
-                type: string
-                description: The type of the object that was deleted.
-                default: tax-rate
-              deleted:
-                type: boolean
-                description: Whether or not the items were deleted.
-                default: true
+            $ref: ../components/schemas/AdminTaxRatesDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -105,10 +93,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              tax_rate:
-                $ref: ../components/schemas/TaxRate.yaml
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -176,10 +161,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              tax_rate:
-                $ref: ../components/schemas/TaxRate.yaml
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

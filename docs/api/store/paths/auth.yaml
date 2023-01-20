@@ -22,10 +22,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              customer:
-                $ref: ../components/schemas/Customer.yaml
+            $ref: ../components/schemas/StoreAuthRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -106,10 +103,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              customer:
-                $ref: ../components/schemas/Customer.yaml
+            $ref: ../components/schemas/StoreAuthRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

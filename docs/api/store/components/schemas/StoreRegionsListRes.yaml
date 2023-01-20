@@ -1,0 +1,6 @@
+type: object
+properties:
+  regions:
+    type: array
+    items:
+      $ref: ./Region.yaml

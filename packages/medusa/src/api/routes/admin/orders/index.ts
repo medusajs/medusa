@@ -1,11 +1,8 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import {
-  DeleteResponse,
-  FindParams,
-  PaginatedResponse,
-} from "../../../../types/common"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, {
   transformBody,
@@ -22,6 +19,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/orders", route)
 
   const relations = [...defaultAdminOrdersRelations]
+  const defaultFields = [...defaultAdminOrdersFields]
+
+  if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
+    relations.push("sales_channel")
+    defaultFields.push("sales_channel_id")
+  }
 
   /**
    * List orders
@@ -43,7 +46,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/:id",
     transformQuery(FindParams, {
       defaultRelations: relations,
-      defaultFields: defaultAdminOrdersFields.filter((field) => {
+      defaultFields: defaultFields.filter((field) => {
         return ![
           "shipping_total",
           "discount_total",
@@ -333,7 +336,6 @@ export const defaultAdminOrdersRelations = [
   "swaps.additional_items",
   "swaps.fulfillments",
   "swaps.fulfillments.tracking_links",
-  "sales_channel",
 ]
 
 export const defaultAdminOrdersFields = [
@@ -345,7 +347,6 @@ export const defaultAdminOrdersFields = [
   "cart_id",
   "draft_order_id",
   "customer_id",
-  "sales_channel_id",
   "email",
   "region_id",
   "currency_code",
@@ -379,7 +380,6 @@ export const filterableAdminOrdersFields = [
   "customer_id",
   "email",
   "region_id",
-  "sales_channel_id",
   "currency_code",
   "tax_rate",
   "canceled_at",
