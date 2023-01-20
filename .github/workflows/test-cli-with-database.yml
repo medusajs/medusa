@@ -70,6 +70,14 @@ jobs:
           --output medusa-config.js
         working-directory: ../cli-test
 
+      - name: Install sqlite config
+        if: matrix.db == 'sqlite'
+        run: |
+          curl \
+          https://raw.githubusercontent.com/medusajs/medusa-starter-default/feat/sqlite-config/medusa-config.js \
+          --output medusa-config.js
+        working-directory: ../cli-test
+
       - name: run medusa dev
         run: medusa-dev --force-install
         working-directory: ../cli-test
