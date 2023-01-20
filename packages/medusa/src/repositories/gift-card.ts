@@ -17,15 +17,21 @@ export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
       query_.relations = query_.relations ?? {}
       query_.relations.order = query_.relations.order ?? true
 
-      query_.where = {
-        ...query_.where,
-        code: ILike(`%${q}%`),
-        order: {
-          display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
-            q: `%${q}%`,
-          }),
+      query_.where = query_.where as FindOptionsWhere<GiftCard>[]
+      query_.where = [
+        {
+          ...query_.where,
+          code: ILike(`%${q}%`),
         },
-      }
+        {
+          ...query_.where,
+          order: {
+            display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
+              q: `%${q}%`,
+            }),
+          },
+        },
+      ]
     }
 
     return await this.findAndCount(query_)
