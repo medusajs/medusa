@@ -1,6 +1,7 @@
 import { DataSource, DataSourceOptions, Repository, TreeRepository } from "typeorm"
 import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
+import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 
 type Options = {
   configModule: ConfigModule
@@ -31,7 +32,7 @@ export default async ({
     extra: configModule.projectConfig.database_extra || {},
     schema: configModule.projectConfig.database_schema,
     entities,
-    //namingStrategy: new ShortenedNamingStrategy(),
+    namingStrategy: new ShortenedNamingStrategy(),
     logging: configModule.projectConfig.database_logging || false,
   } as DataSourceOptions)
 
