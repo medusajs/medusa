@@ -2,7 +2,7 @@ import { FindOperator, FindOptionsWhere, ILike, In } from "typeorm"
 import { PriceList, Product, SalesChannel } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { buildLegacyFieldsListFrom } from "../utils"
+import { buildLegacyFieldsListFrom, isObject } from "../utils"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -62,10 +62,10 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
     // Therefore use query when there is only an ordering by the product entity otherwise fallback to join.
     // In other word, if the order depth is more than 1 then use join otherwise use query
-    const fieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
+    const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
       options.order ?? {}
     )
-    const isDepth1 = !fieldsCollectionPointSeparated.some(
+    const isDepth1 = !orderFieldsCollectionPointSeparated.some(
       (field) => field.indexOf(".") !== -1
     )
     queryBuilder.expressionMap.relationLoadStrategy = isDepth1
@@ -126,10 +126,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       const scIds = (options_.where.sales_channel_id as FindOperator<string[]>)
         .value
 
-      // For an unknown reason, the implementation of the SelectQueryBuilder.setFindOptions -> buildWhere
-      // Only check if it is a find operator MoreThan or LessThan. Otherwise, it has to be a relation of
-      // isManyToOne or isOneToOne in order to be valid. Otherwise, it throws `This relation isn't supported by given find operator`
-      // We might need to wait for an update or open a PR around that subject
+      // Same comment as in the tags if block above
 
       joinMethod(
         `${productAlias}.sales_channels`,
@@ -152,6 +149,23 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       )
 
       delete options_.where.discount_condition_id
+    }
+
+    // Add explicit ordering for variant ranking on the variants join directly
+    // The constraint if there is any will be applied by the options_
+    if (options_.relations.variants) {
+      // The query strategy, as explain at the top of the function, does not select the column from the separated query
+      // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
+      queryBuilder.expressionMap.relationLoadStrategy = "join"
+      queryBuilder.leftJoinAndSelect(`${productAlias}.variants`, "variants")
+
+      options_.order = options_.order ?? {}
+
+      delete options_.order.variants?.variant_rank
+      options_.order.variants = {
+        variant_rank: "ASC",
+        ...(isObject(options_.order.variants) ? options_.order.variants : {}),
+      }
     }
 
     if (q) {
@@ -193,8 +207,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       queryBuilder.withDeleted()
     }
 
-    const res = await queryBuilder.setFindOptions(options_).getManyAndCount()
-    return res
+    return await queryBuilder.setFindOptions(options_).getManyAndCount()
   },
 })
 export default ProductRepository

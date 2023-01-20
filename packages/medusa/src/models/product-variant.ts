@@ -42,7 +42,7 @@ export class ProductVariant extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   upc: string
 
-  @Column({ nullable: true, default: 0, select: false })
+  @Column({ nullable: true, default: 0 })
   variant_rank: number
 
   @Column({ type: "int" })
