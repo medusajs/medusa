@@ -19,12 +19,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              apps:
-                type: array
-                items:
-                  $ref: ../components/schemas/OAuth.yaml
+            $ref: ../components/schemas/AdminAppsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

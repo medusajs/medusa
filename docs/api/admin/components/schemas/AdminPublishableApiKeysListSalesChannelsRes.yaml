@@ -1,0 +1,6 @@
+type: object
+properties:
+  sales_channels:
+    type: array
+    items:
+      $ref: ./SalesChannel.yaml

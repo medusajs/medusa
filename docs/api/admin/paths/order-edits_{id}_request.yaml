@@ -30,10 +30,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              order_edit:
-                $ref: ../components/schemas/OrderEdit.yaml
+            $ref: ../components/schemas/AdminOrderEditsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -303,6 +303,8 @@ paths:
     $ref: paths/order_{id}_claims.yaml
   /orders/{id}/fulfillment:
     $ref: paths/orders_{id}_fulfillment.yaml
+  /orders/{id}/line-items/{line_item_id}/reserve:
+    $ref: paths/orders_{id}_line-items_{line_item_id}_reserve.yaml
   /orders/{id}/shipment:
     $ref: paths/orders_{id}_shipment.yaml
   /orders/{id}/swaps/{swap_id}/shipments:
@@ -315,6 +317,8 @@ paths:
     $ref: paths/orders_{id}_swaps_{swap_id}_fulfillments.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
+  /orders/{id}/reservations:
+    $ref: paths/orders_{id}_reservations.yaml
   /orders:
     $ref: paths/orders.yaml
   /orders/{id}/swaps/{swap_id}/process-payment:
@@ -403,6 +407,10 @@ paths:
     $ref: paths/regions_{id}_fulfillment-providers_{provider_id}.yaml
   /regions/{id}/payment-providers/{provider_id}:
     $ref: paths/regions_{id}_payment-providers_{provider_id}.yaml
+  /reservations:
+    $ref: paths/reservations.yaml
+  /reservations/{id}:
+    $ref: paths/reservations_{id}.yaml
   /return-reasons:
     $ref: paths/return-reasons.yaml
   /return-reasons/{id}:
