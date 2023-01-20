@@ -4484,7 +4484,6 @@ __metadata:
     awilix: ^8.0.0
     babel-preset-medusa-package: ^1.1.19
     body-parser: ^1.19.0
-    bull: ^3.12.1
     bullmq: ^3.5.6
     chokidar: ^3.4.2
     class-transformer: ^0.5.1
@@ -11648,24 +11647,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bull@npm:^3.12.1":
-  version: 3.29.3
-  resolution: "bull@npm:3.29.3"
-  dependencies:
-    cron-parser: ^2.13.0
-    debuglog: ^1.0.0
-    get-port: ^5.1.1
-    ioredis: ^4.27.0
-    lodash: ^4.17.21
-    p-timeout: ^3.2.0
-    promise.prototype.finally: ^3.1.2
-    semver: ^7.3.2
-    util.promisify: ^1.0.1
-    uuid: ^8.3.0
-  checksum: 6860a17a2abc45bfa887c8fed0f666da2291d382dea3b5be581b82ba992e6edc487d55b5cf2e668f29e7123930958d2bdefae5a2bb003414767d4f209ebc2b4f
-  languageName: node
-  linkType: hard
-
 "bullmq@npm:^3.5.6":
   version: 3.5.6
   resolution: "bullmq@npm:3.5.6"
@@ -13409,16 +13390,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cron-parser@npm:^2.13.0":
-  version: 2.18.0
-  resolution: "cron-parser@npm:2.18.0"
-  dependencies:
-    is-nan: ^1.3.0
-    moment-timezone: ^0.5.31
-  checksum: 1361cf0af8a749a355c7dd45ec85d94f8b1b768e6ce19955fea38d72b22874c0c63add070a1fe543a4ee4fa5229b6ae43760934df0d4aed6499581108657df25
-  languageName: node
-  linkType: hard
-
 "cron-parser@npm:^3.5.0":
   version: 3.5.0
   resolution: "cron-parser@npm:3.5.0"
@@ -14002,13 +13973,6 @@ __metadata:
   dependencies:
     ms: ^2.1.1
   checksum: 37d96ae42cbc71c14844d2ae3ba55adf462ec89fd3a999459dec3833944cd999af6007ff29c780f1c61153bcaaf2c842d1e4ce1ec621e4fc4923244942e4a02a
-  languageName: node
-  linkType: hard
-
-"debuglog@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "debuglog@npm:1.0.1"
-  checksum: d98ac9abe6a528fcbb4d843b1caf5a9116998c76e1263d8ff4db2c086aa96fa7ea4c752a81050fa2e4304129ef330e6e4dc9dd4d47141afd7db80bf699f08219
   languageName: node
   linkType: hard
 
@@ -17296,15 +17260,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"for-each@npm:^0.3.3":
-  version: 0.3.3
-  resolution: "for-each@npm:0.3.3"
-  dependencies:
-    is-callable: ^1.1.3
-  checksum: 22330d8a2db728dbf003ec9182c2d421fbcd2969b02b4f97ec288721cda63eb28f2c08585ddccd0f77cb2930af8d958005c9e72f47141dc51816127a118f39aa
-  languageName: node
-  linkType: hard
-
 "for-in@npm:^1.0.2":
   version: 1.0.2
   resolution: "for-in@npm:1.0.2"
@@ -20007,7 +19962,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^4.27.0, ioredis@npm:^4.27.9":
+"ioredis@npm:^4.27.9":
   version: 4.28.5
   resolution: "ioredis@npm:4.28.5"
   dependencies:
@@ -20207,7 +20162,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-callable@npm:^1.1.3, is-callable@npm:^1.1.4, is-callable@npm:^1.2.4":
+"is-callable@npm:^1.1.4, is-callable@npm:^1.2.4":
   version: 1.2.4
   resolution: "is-callable@npm:1.2.4"
   checksum: bda3c67128741129d61e1cb7ca89025ca56b39bf3564657989567c9f6d1e20d6f5579750d3c1fa8887903c6dc669fbc695e33a1363e7c5ec944077e39d24f73d
@@ -20491,7 +20446,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-nan@npm:^1.3.0, is-nan@npm:^1.3.2":
+"is-nan@npm:^1.3.2":
   version: 1.3.2
   resolution: "is-nan@npm:1.3.2"
   dependencies:
@@ -25776,16 +25731,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:^0.5.31":
-  version: 0.5.34
-  resolution: "moment-timezone@npm:0.5.34"
-  dependencies:
-    moment: ">= 2.9.0"
-  checksum: 26b2dc80648004ee29fdcf819d4aa153fadf71eb061a90386cf738214e388009ec189b9da39e7320ff81dd0d213c0b1958c15d69cdb660982246daf7d225a1d5
-  languageName: node
-  linkType: hard
-
-"moment@npm:>= 2.9.0, moment@npm:^2.19.3, moment@npm:^2.27.0, moment@npm:^2.29.1":
+"moment@npm:^2.19.3, moment@npm:^2.27.0, moment@npm:^2.29.1":
   version: 2.29.4
   resolution: "moment@npm:2.29.4"
   checksum: 844c6f3ce42862ac9467c8ca4f5e48a00750078682cc5bda1bc0e50cc7ca88e2115a0f932d65a06e4a90e26cb78892be9b3ca3dd6546ca2c4d994cebb787fc2b
@@ -26879,7 +26825,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object.getownpropertydescriptors@npm:^2.0.3, object.getownpropertydescriptors@npm:^2.1.1, object.getownpropertydescriptors@npm:^2.1.2":
+"object.getownpropertydescriptors@npm:^2.0.3, object.getownpropertydescriptors@npm:^2.1.2":
   version: 2.1.4
   resolution: "object.getownpropertydescriptors@npm:2.1.4"
   dependencies:
@@ -28947,7 +28893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"promise.prototype.finally@npm:^3.1.0, promise.prototype.finally@npm:^3.1.2":
+"promise.prototype.finally@npm:^3.1.0":
   version: 3.1.3
   resolution: "promise.prototype.finally@npm:3.1.3"
   dependencies:
@@ -35029,19 +34975,6 @@ __metadata:
     define-properties: ^1.1.2
     object.getownpropertydescriptors: ^2.0.3
   checksum: af9df9d111b1464586e4fa414ccf6de61c3a14c0664a66a497438a0507d47f65389f5e025c048ef7e2bf6dba73e95adc3d0c56111a0952ae0282817fc4dd83b2
-  languageName: node
-  linkType: hard
-
-"util.promisify@npm:^1.0.1":
-  version: 1.1.1
-  resolution: "util.promisify@npm:1.1.1"
-  dependencies:
-    call-bind: ^1.0.0
-    define-properties: ^1.1.3
-    for-each: ^0.3.3
-    has-symbols: ^1.0.1
-    object.getownpropertydescriptors: ^2.1.1
-  checksum: aacccbf770c667430ca3b7fce9a2a04a80fcd1f9f4de5507ea54cc3bbbcdcd33cbd2501ac23d1c477c5c40817234f6068b89cf7792f0610fe6e7df7ac0fe83ce
   languageName: node
   linkType: hard
 

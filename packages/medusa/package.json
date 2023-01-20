@@ -50,7 +50,6 @@
     "@types/lodash": "^4.14.168",
     "awilix": "^8.0.0",
     "body-parser": "^1.19.0",
-    "bull": "^3.12.1",
     "bullmq": "^3.5.6",
     "chokidar": "^3.4.2",
     "class-transformer": "^0.5.1",
