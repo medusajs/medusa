@@ -615,7 +615,7 @@ class SendGridService extends NotificationService {
       {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
-      { relations: ["tax_lines"] }
+      { relations: ["tax_lines", "variant", "variant.product"] }
     )
 
     // Fetch the order
