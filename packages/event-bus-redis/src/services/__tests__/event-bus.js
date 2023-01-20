@@ -82,6 +82,26 @@ describe("EventBusService", () => {
       expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(1)
     })
 
+    it("successfully adds multiple subscribers with explicit ids", () => {
+      eventBus.subscribe("eventName", () => "test", {
+        subscriberId: "my-subscriber-1",
+      })
+
+      eventBus.subscribe("eventName", () => "test", {
+        subscriberId: "my-subscriber-2",
+      })
+
+      expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(2)
+    })
+
+    it("successfully adds multiple subscribers with generates ids", () => {
+      eventBus.subscribe("eventName", () => "test")
+
+      eventBus.subscribe("eventName", () => "test")
+
+      expect(eventBus.eventToSubscribersMap_.get("eventName").length).toEqual(2)
+    })
+
     describe("fails when adding non-function subscriber", () => {
       let eventBus
       beforeAll(() => {

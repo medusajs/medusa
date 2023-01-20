@@ -277,7 +277,7 @@ export default class RedisEventBusService
         .create(jobToCreate)
     }
 
-    this.queue_.add(eventName, { eventName, data }, opts)
+    await this.queue_.add(eventName, { eventName, data }, opts)
   }
 
   startEnqueuer(): void {
