@@ -570,6 +570,8 @@ class SwapService extends TransactionBaseService {
         relations: [
           "order",
           "order.items",
+          "order.items.variant",
+          "order.items.variant.product",
           "order.swaps",
           "order.swaps.additional_items",
           "order.discounts",
@@ -646,7 +648,7 @@ class SwapService extends TransactionBaseService {
       cart = await this.cartService_
         .withTransaction(manager)
         .retrieve(cart.id, {
-          relations: ["items", "region", "discounts", "discounts.rule"],
+          relations: ["items", "items.variant", "region", "discounts", "discounts.rule"],
         })
 
       await Promise.all(

@@ -334,6 +334,8 @@ export const defaultAdminOrdersRelations = [
   "swaps.shipping_methods.tax_lines",
   "swaps.shipping_address",
   "swaps.additional_items",
+  "swaps.additional_items.variant",
+  "swaps.additional_items.variant.product",
   "swaps.fulfillments",
   "swaps.fulfillments.tracking_links",
 ]
