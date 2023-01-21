@@ -235,7 +235,6 @@ class CartService extends TransactionBaseService {
 
     const manager = this.manager_
     const cartRepo = manager.withRepository(this.cartRepository_)
-
     const query = buildQuery({ id: cartId }, options)
 
     if ((options.select || []).length === 0) {
@@ -1567,7 +1566,7 @@ class CartService extends TransactionBaseService {
         )
 
         const cart = await this.retrieveWithTotals(cartId, {
-          relations: ["payment_sessions"],
+          relations: ["payment_sessions", "items", "items.variant", "items.variant.product"],
         })
 
         // If cart total is 0, we don't perform anything payment related
@@ -1637,6 +1636,9 @@ class CartService extends TransactionBaseService {
 
         const cart = await this.retrieveWithTotals(cartId, {
           relations: [
+            "items",
+            "items.variant",
+            "items.variant.product",
             "customer",
             "region",
             "region.payment_providers",
@@ -1761,6 +1763,8 @@ class CartService extends TransactionBaseService {
           {
             relations: [
               "items",
+              "items.variant",
+              "items.variant.product",
               "items.adjustments",
               "discounts",
               "discounts.rule",
@@ -2709,6 +2713,8 @@ class CartService extends TransactionBaseService {
     const relationSet = new Set(config.relations)
 
     relationSet.add("items")
+    relationSet.add("items.variant")
+    relationSet.add("items.variant.product")
     relationSet.add("items.tax_lines")
     relationSet.add("items.adjustments")
     relationSet.add("gift_cards")

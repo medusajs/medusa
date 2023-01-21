@@ -237,7 +237,7 @@ export default class ClaimService extends TransactionBaseService {
 
         for (const item of claim_items) {
           const line = await lineItemServiceTx.retrieve(item.item_id, {
-            relations: ["order", "swap", "claim_order", "tax_lines"],
+            relations: ["order", "swap", "claim_order", "tax_lines", "variant", "variant.product"],
           })
 
           if (
@@ -385,7 +385,10 @@ export default class ClaimService extends TransactionBaseService {
           )
           const lineItems = await lineItemServiceTx.list({
             id: result.additional_items.map((i) => i.id),
+          },{
+            relations: ["variant", "variant.product"]
           })
+
           await this.taxProviderService_
             .withTransaction(transactionManager)
             .createTaxLines(lineItems, calcContext)

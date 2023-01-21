@@ -839,6 +839,7 @@ class SendGridService extends NotificationService {
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
+        "additional_items.variant.product",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
@@ -855,7 +856,7 @@ class SendGridService extends NotificationService {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
       {
-        relations: ["tax_lines"],
+        relations: ["tax_lines", "variant", "variant.product"],
       }
     )
 
@@ -876,6 +877,8 @@ class SendGridService extends NotificationService {
       select: ["total"],
       relations: [
         "items",
+        "items.variant",
+        "items.variant.product",
         "items.tax_lines",
         "discounts",
         "discounts.rule",
@@ -894,6 +897,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
+      relations: ["items", "items.variant", "items.variant.product"]
     })
     const currencyCode = order.currency_code.toUpperCase()
 
@@ -975,6 +979,8 @@ class SendGridService extends NotificationService {
         "shipping_methods",
         "shipping_methods.tax_lines",
         "additional_items",
+        "additional_items.variant",
+        "additional_items.variant.product",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
@@ -986,10 +992,14 @@ class SendGridService extends NotificationService {
         "region",
         "items",
         "items.tax_lines",
+        "items.variant",
+        "items.variant.product",
         "discounts",
         "discounts.rule",
         "swaps",
         "swaps.additional_items",
+        "swaps.additional_items.variant",
+        "swaps.additional_items.variant.product",
         "swaps.additional_items.tax_lines",
       ],
     })
@@ -1002,6 +1012,11 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
+      relations: [
+        "items",
+        "items.variant",
+        "items.variant.product",
+      ]
     })
 
     const returnRequest = swap.return_order
@@ -1010,7 +1025,7 @@ class SendGridService extends NotificationService {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
       {
-        relations: ["tax_lines"],
+        relations: ["tax_lines", "variant", "variant.product"],
       }
     )
 
@@ -1116,7 +1131,13 @@ class SendGridService extends NotificationService {
 
   async claimShipmentCreatedData({ id, fulfillment_id }) {
     const claim = await this.claimService_.retrieve(id, {
-      relations: ["order", "order.items", "order.shipping_address"],
+      relations: [
+        "order",
+        "order.items",
+        "order.items.variant",
+        "order.items.variant.product",
+        "order.shipping_address"
+      ],
     })
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
