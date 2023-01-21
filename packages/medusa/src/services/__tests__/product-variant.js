@@ -667,6 +667,9 @@ describe("ProductVariantService", () => {
           name: "California",
         })
       },
+      withTransaction: function () {
+        return this
+      },
     }
 
     const productVariantService = new ProductVariantService({
