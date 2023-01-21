@@ -714,7 +714,7 @@ class CartService extends TransactionBaseService {
           })
 
         cart = await this.retrieve(cart.id, {
-          relations: ["items", "discounts", "discounts.rule", "region"],
+          relations: ["items", "items.variant", "items.variant.product", "discounts", "discounts.rule", "region"],
         })
 
         await this.refreshAdjustments_(cart)
