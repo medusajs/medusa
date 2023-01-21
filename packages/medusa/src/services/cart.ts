@@ -2203,9 +2203,13 @@ class CartService extends TransactionBaseService {
               availablePrice !== undefined &&
               availablePrice.calculatedPrice !== null
             ) {
-              return await lineItemServiceTx.update(item.id, {
+              await lineItemServiceTx.update(item.id, {
                 has_shipping: false,
                 unit_price: availablePrice.calculatedPrice,
+              })
+
+              return await lineItemServiceTx.retrieve(item.id, {
+                relations: ["variant", "variant.product"],
               })
             }
 
