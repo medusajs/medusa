@@ -1032,6 +1032,8 @@ class CartService extends TransactionBaseService {
         const cartRepo = transactionManager.withRepository(this.cartRepository_)
         const relations = [
           "items",
+          "items.variant",
+          "items.variant.product",
           "shipping_methods",
           "shipping_address",
           "billing_address",
