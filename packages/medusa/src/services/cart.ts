@@ -520,7 +520,14 @@ class CartService extends TransactionBaseService {
           .delete(lineItem.id)
 
         const result = await this.retrieve(cartId, {
-          relations: ["items", "discounts", "discounts.rule", "region"],
+          relations: [
+            "items",
+            "items.variant",
+            "items.variant.product",
+            "discounts",
+            "discounts.rule",
+            "region"
+          ],
         })
 
         await this.refreshAdjustments_(result)
@@ -887,7 +894,14 @@ class CartService extends TransactionBaseService {
           })
 
         cart = await this.retrieve(cart.id, {
-          relations: ["items", "discounts", "discounts.rule", "region"],
+          relations: [
+            "items",
+            "items.variant",
+            "items.variant.product",
+            "discounts",
+            "discounts.rule",
+            "region"
+          ],
         })
 
         await this.refreshAdjustments_(cart)
@@ -959,7 +973,14 @@ class CartService extends TransactionBaseService {
           .update(lineItemId, lineItemUpdate)
 
         const updatedCart = await this.retrieve(cartId, {
-          relations: ["items", "discounts", "discounts.rule", "region"],
+          relations: [
+            "items",
+            "items.variant",
+            "items.variant.product",
+            "discounts",
+            "discounts.rule",
+            "region"
+          ],
         })
 
         await this.refreshAdjustments_(updatedCart)
@@ -1473,6 +1494,8 @@ class CartService extends TransactionBaseService {
         const cart = await this.retrieve(cartId, {
           relations: [
             "items",
+            "items.variant",
+            "items.variant.product",
             "region",
             "discounts",
             "discounts.rule",
@@ -2050,8 +2073,8 @@ class CartService extends TransactionBaseService {
             "shipping_methods.shipping_option",
             "items",
             "items.variant",
-            "payment_sessions",
             "items.variant.product",
+            "payment_sessions",
           ],
         })
 
@@ -2367,6 +2390,8 @@ class CartService extends TransactionBaseService {
         const cart = await this.retrieve(cartId, {
           relations: [
             "items",
+            "items.variant",
+            "items.variant.product",
             "discounts",
             "discounts.rule",
             "payment_sessions",
@@ -2454,6 +2479,8 @@ class CartService extends TransactionBaseService {
                 "discounts.rule",
                 "gift_cards",
                 "items",
+                "items.variant",
+                "items.variant.product",
                 "items.adjustments",
                 "region",
                 "region.tax_rates",
