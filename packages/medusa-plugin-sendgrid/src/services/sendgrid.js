@@ -1,6 +1,7 @@
 import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
+import { Not, IsNull } from "typeorm"
 
 class SendGridService extends NotificationService {
   static identifier = "sendgrid"
@@ -705,7 +706,10 @@ class SendGridService extends NotificationService {
   }
 
   async swapReceivedData({ id }) {
-    const store = await this.storeService_.retrieve()
+    const store = await this.storeService_.retrieve({
+      where: { id: Not(IsNull()) }
+    })
+
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
@@ -719,7 +723,6 @@ class SendGridService extends NotificationService {
     })
 
     const returnRequest = swap.return_order
-
     const items = await this.lineItemService_.list(
       {
         id: returnRequest.items.map(({ item_id }) => item_id),
@@ -756,6 +759,7 @@ class SendGridService extends NotificationService {
     })
 
     const cart = await this.cartService_.retrieve(swap.cart_id, {
+      relations: ["items", "items.variant", "items.variant.product"],
       select: [
         "total",
         "tax_total",
@@ -764,8 +768,8 @@ class SendGridService extends NotificationService {
         "subtotal",
       ],
     })
-    const currencyCode = order.currency_code.toUpperCase()
 
+    const currencyCode = order.currency_code.toUpperCase()
     const decoratedItems = await Promise.all(
       cart.items.map(async (i) => {
         const totals = await this.totalsService_.getLineItemTotals(i, cart, {
@@ -831,7 +835,7 @@ class SendGridService extends NotificationService {
   }
 
   async swapCreatedData({ id }) {
-    const store = await this.storeService_.retrieve()
+    const store = await this.storeService_.retrieve({ where: { id: Not(IsNull()) } })
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
