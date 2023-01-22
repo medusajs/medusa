@@ -504,6 +504,8 @@ export default class OrderEditService extends TransactionBaseService {
     const orderEdit = await this.retrieve(orderEditId, {
       relations: [
         "items",
+        "items.variant",
+        // "items.variant.product",
         "items.adjustments",
         "items.tax_lines",
         "order",
@@ -588,14 +590,15 @@ export default class OrderEditService extends TransactionBaseService {
       )
 
       let lineItem = await lineItemServiceTx.create(lineItemData)
-      lineItem = await lineItemServiceTx.retrieve(lineItem.id)
+      lineItem = await lineItemServiceTx.retrieve(lineItem.id, {
+        relations: ['variant', 'variant.product']
+      })
 
       await this.refreshAdjustments(orderEditId)
 
       /**
        * Generate a change record
        */
-
       await this.orderEditItemChangeService_.withTransaction(manager).create({
         type: OrderEditItemChangeType.ITEM_ADD,
         line_item_id: lineItem.id,
@@ -605,7 +608,6 @@ export default class OrderEditService extends TransactionBaseService {
       /**
        * Compute tax lines
        */
-
       const localCart = {
         ...orderEdit.order,
         object: "cart",
@@ -666,7 +668,11 @@ export default class OrderEditService extends TransactionBaseService {
       const orderEditRepo = manager.withRepository(this.orderEditRepository_)
 
       let orderEdit = await this.retrieve(orderEditId, {
-        relations: ["changes"],
+        relations: [
+          "changes",
+          "changes.original_line_item",
+          "changes.original_line_item.variant",
+        ],
         select: ["id", "order_id", "requested_at"],
       })
 
@@ -827,7 +833,11 @@ export default class OrderEditService extends TransactionBaseService {
 
     const orderEdit = await this.retrieve(orderEditId, {
       select: ["id", "changes"],
-      relations: ["changes"],
+      relations: [
+        "changes",
+        "changes.original_line_item",
+        "changes.original_line_item.variant"
+      ],
     })
 
     await this.orderEditItemChangeService_.delete(
