@@ -852,7 +852,11 @@ describe("CartService", () => {
               rule: true
             },
             gift_cards: true,
-            items: true,
+            items: {
+              variant: {
+                product: true
+              }
+            },
             payment_sessions: true,
             region: { countries: true },
             shipping_address: true,
@@ -1228,6 +1232,16 @@ describe("CartService", () => {
     const lineItemService = {
       update: jest.fn((r) => r),
       delete: jest.fn(),
+      retrieve: jest.fn().mockImplementation((lineItemId) => {
+        if (lineItemId === IdMap.getId("existing")) {
+          return Promise.resolve({
+            id: lineItemId,
+          })
+        }
+        return Promise.resolve({
+          id: lineItemId,
+        })
+      }),
       withTransaction: function () {
         return this
       },
@@ -1358,7 +1372,9 @@ describe("CartService", () => {
           shipping_address: {
             country_code: "us",
           },
-          items: [IdMap.getId("testitem")],
+          items: [{
+            id: IdMap.getId("testitem")
+          }],
           payment_session: null,
           payment_sessions: [],
           gift_cards: [],
