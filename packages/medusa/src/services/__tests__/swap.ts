@@ -276,7 +276,11 @@ describe("SwapService", () => {
               discounts: {
                 rule: true
               },
-              items: true,
+              items: {
+                variant: {
+                  product: true
+                }
+              },
               swaps: {
                 additional_items: true
               }
