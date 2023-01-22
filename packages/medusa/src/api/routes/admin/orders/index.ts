@@ -319,6 +319,7 @@ export const defaultAdminOrdersRelations = [
   "claims.shipping_methods",
   "claims.shipping_address",
   "claims.additional_items",
+  "claims.additional_items.variant",
   "claims.fulfillments",
   "claims.fulfillments.tracking_links",
   "claims.claim_items",
