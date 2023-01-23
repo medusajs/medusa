@@ -629,11 +629,19 @@ class ProductVariantInventoryService extends TransactionBaseService {
           return variant
         }
 
+        // first get all inventory items required for a variant
         const variantInventory = await this.listByVariant(variant.id)
 
+        // the inventory quantity of the variant should be equal to the inventory
+        // item with the smallest stock, adjusted for quantity required to fulfill
+        // the given variant
         variant.inventory_quantity = Math.min(
           ...(await Promise.all(
             variantInventory.map(async (variantInventory) => {
+              // get the total available quantity for the given sales channel
+              // divided by the required quantity to account for how many of the
+              // variant we can fulfill at the current time. Take the minimum we
+              // can fulfill and set that as quantity
               return (
                 // eslint-disable-next-line max-len
                 (await this.salesChannelInventoryService_.retrieveAvailableItemQuantity(
