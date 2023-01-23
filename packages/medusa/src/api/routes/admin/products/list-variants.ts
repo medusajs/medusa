@@ -20,6 +20,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) expand {string} Comma separated string of the relations to include.
  *   - (query) offset=0 {integer} How many items to skip before the results.
  *   - (query) limit=100 {integer} Limit the number of items returned.
+ * x-codegen:
+ *   method: listVariants
+ *   queryParams: AdminGetProductsVariantsParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

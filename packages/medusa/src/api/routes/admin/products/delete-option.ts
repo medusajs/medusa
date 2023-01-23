@@ -12,6 +12,8 @@ import { ProductService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  *   - (path) option_id=* {string} The ID of the Product Option.
+ * x-codegen:
+ *   method: deleteOption
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
