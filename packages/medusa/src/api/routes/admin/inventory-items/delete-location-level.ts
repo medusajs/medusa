@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 import { IInventoryService } from "../../../../interfaces"
 
 /**
@@ -58,6 +59,7 @@ export default async (req: Request, res: Response) => {
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
   const reservedQuantity = await inventoryService.retrieveReservedQuantity(id, [
     location_id,
@@ -70,7 +72,11 @@ export default async (req: Request, res: Response) => {
     )
   }
 
-  await inventoryService.deleteInventoryLevel(id, location_id)
+  await manager.transaction(async (transactionManager) => {
+    await inventoryService
+      .withTransaction(transactionManager)
+      .deleteInventoryLevel(id, location_id)
+  })
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,

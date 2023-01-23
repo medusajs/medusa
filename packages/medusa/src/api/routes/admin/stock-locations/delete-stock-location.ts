@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import { IStockLocationService } from "../../../../interfaces"
 
 /**
@@ -58,7 +59,10 @@ export default async (req, res) => {
     "stockLocationService"
   )
 
-  await stockLocationService.delete(id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    await stockLocationService.withTransaction(transactionManager).delete(id)
+  })
 
   res.status(200).send({
     id,
