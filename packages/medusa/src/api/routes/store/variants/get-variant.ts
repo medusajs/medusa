@@ -33,6 +33,9 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: StoreGetVariantsVariantParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -61,7 +64,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(StoreGetProductVariantParams, req.query)
+  const validated = await validator(StoreGetVariantsVariantParams, req.query)
 
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
@@ -115,7 +118,7 @@ export default async (req, res) => {
   res.json({ variant })
 }
 
-export class StoreGetProductVariantParams extends PriceSelectionParams {
+export class StoreGetVariantsVariantParams extends PriceSelectionParams {
   @IsString()
   @IsOptional()
   sales_channel_id?: string

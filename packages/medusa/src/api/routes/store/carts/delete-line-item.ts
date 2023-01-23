@@ -10,6 +10,8 @@ import { CartService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) line_id=* {string} The id of the Line Item.
+ * x-codegen:
+ *   method: deleteLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

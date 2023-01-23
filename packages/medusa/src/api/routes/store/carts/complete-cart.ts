@@ -15,6 +15,8 @@ import { IdempotencyKeyService } from "../../../../services"
  *   will generate one for the request."
  * parameters:
  *   - (path) id=* {String} The Cart id.
+ * x-codegen:
+ *   method: complete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
