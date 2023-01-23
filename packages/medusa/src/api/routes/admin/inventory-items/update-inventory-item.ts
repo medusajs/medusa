@@ -3,6 +3,7 @@ import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
 
 import { IInventoryService } from "../../../../interfaces"
 import { FindParams } from "../../../../types/common"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /inventory-items/{id}
@@ -71,11 +72,16 @@ export default async (req: Request, res: Response) => {
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
-  await inventoryService.updateInventoryItem(
-    id,
-    req.validatedBody as AdminPostInventoryItemsInventoryItemReq
-  )
+  await manager.transaction(async (transactionManager) => {
+    await inventoryService
+      .withTransaction(transactionManager)
+      .updateInventoryItem(
+        id,
+        req.validatedBody as AdminPostInventoryItemsInventoryItemReq
+      )
+  })
 
   const inventoryItem = await inventoryService.retrieveInventoryItem(
     id,
