@@ -67,7 +67,7 @@ export default async (req: Request, res: Response) => {
 
   if (reservedQuantity > 0) {
     throw new MedusaError(
-      MedusaError.Types.UNAUTHORIZED,
+      MedusaError.Types.NOT_ALLOWED,
       `Cannot remove Inventory Level ${id} at Location ${location_id} because there are reserved items.`
     )
   }
