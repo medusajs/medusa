@@ -33,9 +33,17 @@ It is also assumed you already have a storefront set up. It can be a custom stor
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+
+It's also assumed you already have [used CartProvider higher in your component tree](../../medusa-react/overview.md#cartprovider).
 
 ### Previous Steps
 
@@ -54,7 +62,7 @@ You can add a discount to a customer’s cart by sending the [Update Cart reques
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.update(cartId, {
   discounts: [
     {
@@ -72,9 +80,36 @@ medusa.carts.update(cartId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const { updateCart } = useCart()
+
+  const addDiscount = (code: string) => {
+    updateCart.mutate({
+      discounts: [
+        {
+          code,
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
@@ -218,7 +253,7 @@ You can remove a discount from a customer’s cart using the [Remove Discount re
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.deleteDiscount(cartId, code)
 .then(({ cart }) => {
   console.log(cart.discounts)
@@ -228,7 +263,7 @@ medusa.carts.deleteDiscount(cartId, code)
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/discounts/${code}`, {
   method: "DELETE",
   credentials: "include",

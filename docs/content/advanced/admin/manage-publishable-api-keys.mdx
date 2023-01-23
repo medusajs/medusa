@@ -36,9 +36,15 @@ It is assumed that you already have a Medusa server installed and set up. If not
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
@@ -60,6 +66,38 @@ medusa.admin.publishableApiKeys.list()
 .then(({ publishable_api_keys, count, limit, offset }) => {
   console.log(publishable_api_keys)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { PublishableApiKey } from "@medusajs/medusa"
+import { useAdminPublishableApiKeys } from "medusa-react"
+
+const PublishabelApiKeys = () => {
+  const { publishable_api_keys, isLoading } = useAdminPublishableApiKeys()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {publishable_api_keys && !publishable_api_keys.length && (
+        <span>No Publishable API Keys</span>
+      )}
+      {publishable_api_keys && publishable_api_keys.length > 0 && (
+        <ul>
+          {publishable_api_keys.map(
+            (publishableApiKey: PublishableApiKey) => (
+              <li key={publishableApiKey.id}>{publishableApiKey.title}</li>
+            )
+          )}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default PublishabelApiKeys
 ```
 
 </TabItem>
@@ -120,6 +158,28 @@ medusa.admin.publishableApiKeys.create({
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreatePublishableApiKey } from "medusa-react"
+
+const CreatePublishableApiKey = () => {
+  const createKey = useAdminCreatePublishableApiKey()
+  // ...
+
+  const handleCreate = (title: string) => {
+    createKey.mutate({
+      title,
+    })
+  }
+
+  // ...
+}
+
+export default CreatePublishableApiKey
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -174,6 +234,28 @@ medusa.admin.publishableApiKeys.update(publishableApiKeyId, {
 .then(({ publishable_api_key }) => {
   console.log(publishable_api_key.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdatePublishableApiKey } from "medusa-react"
+
+const UpdatePublishableApiKey = () => {
+  const updateKey = useAdminUpdatePublishableApiKey(publishableApiKeyId)
+  // ...
+
+  const handleUpdate = (title: string) => {
+    updateKey.mutate({
+      title,
+    })
+  }
+
+  // ...
+}
+
+export default UpdatePublishableApiKey
 ```
 
 </TabItem>
@@ -234,6 +316,26 @@ medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminRevokePublishableApiKey } from "medusa-react"
+
+const PublishableApiKey = () => {
+  const revokeKey = useAdminRevokePublishableApiKey(publishableApiKeyId)
+  // ...
+
+  const handleRevoke = () => {
+    revokeKey.mutate()
+  }
+
+  // ...
+}
+
+export default PublishableApiKey
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -277,6 +379,26 @@ medusa.admin.publishableApiKeys.delete(publishableApiKeyId)
 .then(({ id, object, deleted }) => {
   console.log(id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeletePublishableApiKey } from "medusa-react"
+
+const PublishableApiKey = () => {
+  const deleteKey = useAdminDeletePublishableApiKey(publishableApiKeyId)
+  // ...
+
+  const handleDelete = () => {
+    deleteKey.mutate()
+  }
+
+  // ...
+}
+
+export default PublishableApiKey
 ```
 
 </TabItem>
@@ -333,6 +455,39 @@ medusa.admin.publishableApiKeys.listSalesChannels(publishableApiKeyId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { SalesChannel } from "@medusajs/medusa"
+import { useAdminPublishableApiKeySalesChannels } from "medusa-react"
+
+const SalesChannels = () => {
+  const { sales_channels, isLoading } = 
+    useAdminPublishableApiKeySalesChannels(
+      publishableApiKeyId
+    )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {sales_channels && !sales_channels.length && (
+        <span>No Sales Channels</span>
+      )}
+      {sales_channels && sales_channels.length > 0 && (
+        <ul>
+          {sales_channels.map((salesChannel: SalesChannel) => (
+            <li key={salesChannel.id}>{salesChannel.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default SalesChannels
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
@@ -386,6 +541,34 @@ medusa.admin.publishableApiKeys.addSalesChannelsBatch(
 .then(({ publishable_api_key }) => {
   console.log(publishable_api_key.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminAddPublishableKeySalesChannelsBatch } from "medusa-react"
+
+const PublishableApiKey = () => {
+  const addSalesChannels = useAdminAddPublishableKeySalesChannelsBatch(
+    publishableApiKeyId
+  )
+  // ...
+
+  const handleAdd = (salesChannelId: string) => {
+    addSalesChannels.mutate({
+      sales_channel_ids: [
+        {
+          id: salesChannelId,
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default PublishableApiKey
 ```
 
 </TabItem>
@@ -465,6 +648,37 @@ medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(
 .then(({ publishable_api_key }) => {
   console.log(publishable_api_key.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { 
+  useAdminRemovePublishableKeySalesChannelsBatch,
+} from "medusa-react"
+
+const PublishableApiKey = () => {
+  const deleteSalesChannels = 
+    useAdminRemovePublishableKeySalesChannelsBatch(
+      publishableApiKeyId
+    )
+  // ...
+
+  const handleDelete = (salesChannelId: string) => {
+    deleteSalesChannels.mutate({
+      sales_channel_ids: [
+        {
+          id: salesChannelId,
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default PublishableApiKey
 ```
 
 </TabItem>
