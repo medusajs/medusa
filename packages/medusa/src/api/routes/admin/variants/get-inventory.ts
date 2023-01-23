@@ -28,9 +28,9 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.variants.list()
- *       .then(({ variants, limit, offset, count }) => {
- *         console.log(variants.length);
- *       });
+ *         .then(({ variants, limit, offset, count }) => {
+ *           console.log(variants.length)
+ *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -116,10 +116,12 @@ export default async (req, res) => {
             available_quantity: 0,
           }
         }
+
         const quantity = await inventoryService.retrieveAvailableQuantity(
           inventory[0].id,
           channel.locations
         )
+
         return {
           channel_name: channel.name as string,
           channel_id: channel.id as string,
