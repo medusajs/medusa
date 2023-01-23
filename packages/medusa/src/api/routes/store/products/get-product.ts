@@ -19,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a Product."
  * parameters:
  *   - (path) id=* {string} The id of the Product.
- *   - (query) sales_channel_ud {string} The sales channel used when fetching the product.
+ *   - (query) sales_channel_id {string} The sales channel used when fetching the product.
  *   - (query) cart_id {string} The ID of the customer's cart.
  *   - (query) region_id {string} The ID of the region the customer is using. This is helpful to ensure correct prices are retrieved for a region.
  *   - in: query
