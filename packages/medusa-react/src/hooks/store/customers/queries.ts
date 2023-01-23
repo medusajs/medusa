@@ -3,8 +3,8 @@ import {
   StoreCustomersRes,
   StoreGetCustomersCustomerOrdersParams,
 } from "@medusajs/medusa"
-import { useQuery } from "react-query"
 import { Response } from "@medusajs/medusa-js"
+import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils/index"

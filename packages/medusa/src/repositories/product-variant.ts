@@ -150,9 +150,18 @@ export class ProductVariantRepository extends Repository<ProductVariant> {
     }
 
     if (relations.length === 0) {
+      const options = { ...idsOrOptionsWithoutRelations }
+
+      // Since we are finding by the ids that have been retrieved above and those ids are already
+      // applying skip/take. Remove those options to avoid getting no results
+      if (typeof options === "object") {
+        delete (options as FindWithRelationsOptions).skip
+        delete (options as FindWithRelationsOptions).take
+      }
+
       const toReturn = await this.findByIds(
         entitiesIds,
-        idsOrOptionsWithoutRelations as FindConditions<ProductVariant>
+        options as FindConditions<ProductVariant>
       )
       return [toReturn, count]
     }
@@ -198,9 +207,18 @@ export class ProductVariantRepository extends Repository<ProductVariant> {
     }
 
     if (relations.length === 0) {
+      const options = { ...idsOrOptionsWithoutRelations }
+
+      // Since we are finding by the ids that have been retrieved above and those ids are already
+      // applying skip/take. Remove those options to avoid getting no results
+      if (typeof options === "object") {
+        delete (options as FindWithRelationsOptions).skip
+        delete (options as FindWithRelationsOptions).take
+      }
+
       return await this.findByIds(
         entitiesIds,
-        idsOrOptionsWithoutRelations as FindConditions<ProductVariant>
+        options as FindConditions<ProductVariant>
       )
     }
 

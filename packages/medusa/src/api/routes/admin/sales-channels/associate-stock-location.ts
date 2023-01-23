@@ -3,8 +3,8 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
 import {
-  SalesChannelService,
   SalesChannelLocationService,
+  SalesChannelService,
 } from "../../../../services"
 
 /**
@@ -53,10 +53,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             sales_channel:
- *               $ref: "#/components/schemas/SalesChannel"
+ *           $ref: "#/components/schemas/AdminSalesChannelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -11,6 +11,8 @@ import { PaymentCollectionService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collections.
  *   - (path) session_id=* {string} The ID of the Payment Session.
+ * x-codegen:
+ *   method: authorizePaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -37,9 +39,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             payment_session:
- *               $ref: "#/components/schemas/PaymentSession"
+ *           $ref: "#/components/schemas/StorePaymentCollectionsSessionRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

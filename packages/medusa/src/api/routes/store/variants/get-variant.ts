@@ -28,6 +28,9 @@ import { validator } from "../../../../utils/validator"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: StoreGetVariantsVariantParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -41,12 +44,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variant:
- *               allOf:
- *                 - $ref: "#/components/schemas/ProductVariant"
- *                 - $ref: "#/components/schemas/ProductVariantPricesFields"
+ *           $ref: "#/components/schemas/StoreVariantsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -61,7 +59,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(PriceSelectionParams, req.query)
+  const validated = await validator(StoreGetVariantsVariantParams, req.query)
 
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
@@ -99,3 +97,5 @@ export default async (req, res) => {
 
   res.json({ variant })
 }
+
+export class StoreGetVariantsVariantParams extends PriceSelectionParams {}

@@ -47,10 +47,7 @@ import { EntityManager } from "typeorm"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            collection:
- *              $ref: "#/components/schemas/ProductCollection"
+ *          $ref: "#/components/schemas/AdminCollectionsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

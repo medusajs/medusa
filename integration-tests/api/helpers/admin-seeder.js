@@ -1,5 +1,6 @@
 const Scrypt = require("scrypt-kdf")
 const { User } = require("@medusajs/medusa")
+const { simpleSalesChannelFactory } = require("../factories")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager

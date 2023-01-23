@@ -10,6 +10,8 @@ import { CartService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) line_id=* {string} The id of the Line Item.
+ * x-codegen:
+ *   method: deleteLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -32,10 +34,7 @@ import { CartService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/Cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

@@ -1895,7 +1895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2, @babel/runtime@npm:^7.9.6":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2, @babel/runtime@npm:^7.9.6":
   version: 7.18.6
   resolution: "@babel/runtime@npm:7.18.6"
   dependencies:
@@ -2438,6 +2438,20 @@ __metadata:
   peerDependencies:
     cosmiconfig: ">=6"
   checksum: 3f0411ac0395baf1e08b3ba4c5b42b13810469260598655da7e45bf6579554a5167fed176b297a93c0889d97d028a24c68333510c4103993b08de7a0c6bc9482
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-arm@npm:0.15.18":
+  version: 0.15.18
+  resolution: "@esbuild/android-arm@npm:0.15.18"
+  conditions: os=android & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-loong64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "@esbuild/linux-loong64@npm:0.15.18"
+  conditions: os=linux & cpu=loong64
   languageName: node
   linkType: hard
 
@@ -4332,7 +4346,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/medusa-cli@^1.3.5, @medusajs/medusa-cli@workspace:packages/medusa-cli":
+"@medusajs/inventory@workspace:packages/inventory":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/inventory@workspace:packages/inventory"
+  dependencies:
+    "@medusajs/medusa": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.2
+    ts-jest: ^25.5.1
+    typeorm: ^0.2.31
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": 1.7.5
+    medusa-interfaces: 1.3.4
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/medusa-cli@^1.3.6, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
   dependencies:
@@ -4359,7 +4389,7 @@ __metadata:
     jest: ^25.5.2
     meant: ^1.0.1
     medusa-core-utils: ^1.1.31
-    medusa-telemetry: 0.0.15
+    medusa-telemetry: 0.0.16
     netrc-parser: ^3.1.6
     open: ^8.0.6
     ora: ^5.4.1
@@ -4377,32 +4407,34 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@^1.3.5, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@^1.3.7, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.7.1
-    "@types/jest": ^26.0.19
+    "@medusajs/medusa": ^1.7.4
+    "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^7.0.3
-    form-data: ^4.0.0
-    jest: ^26.6.3
+    jest: ^27.4.7
     qs: ^6.10.3
     retry-axios: ^2.6.0
-    typescript: ^4.1.3
+    ts-jest: ^27.1.5
+    tsup: ^6.5.0
+    typescript: ^4.9.4
+    uuid: ^9.0.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.1, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.4, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
     "@babel/cli": ^7.14.3
     "@babel/core": ^7.14.3
     "@babel/preset-typescript": ^7.13.0
-    "@medusajs/medusa-cli": ^1.3.5
+    "@medusajs/medusa-cli": ^1.3.6
     "@types/express": ^4.17.13
     "@types/ioredis": ^4.28.10
     "@types/jest": ^27.5.0
@@ -4432,9 +4464,9 @@ __metadata:
     jest: ^25.5.2
     jsonwebtoken: ^8.5.1
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
-    medusa-telemetry: ^0.0.15
-    medusa-test-utils: ^1.1.37
+    medusa-interfaces: ^1.3.4
+    medusa-telemetry: ^0.0.16
+    medusa-test-utils: ^1.1.38
     morgan: ^1.9.1
     multer: ^1.4.2
     node-schedule: ^2.1.0
@@ -4459,7 +4491,7 @@ __metadata:
     uuid: ^8.3.1
     winston: ^3.2.1
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
     typeorm: 0.2.x
   bin:
     medusa: ./cli.js
@@ -4470,14 +4502,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.4
     cross-env: ^5.2.1
     jest: ^25.5.2
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.7.1
-    medusa-interfaces: 1.3.3
+    "@medusajs/medusa": ^1.7.4
+    medusa-interfaces: 1.3.4
     typeorm: ^0.2.31
   languageName: unknown
   linkType: soft
@@ -7342,6 +7374,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:4.22.0":
+  version: 4.22.0
+  resolution: "@tanstack/query-core@npm:4.22.0"
+  checksum: be3f870719ea9c53dfc3398725c92876448a2a5cd8253010226ad88e91b0586d3c5e9bb9366ca27a035d5855517b6883ec0a5d7d4437458ff5bd3acb5553974f
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^4.22.0":
+  version: 4.22.0
+  resolution: "@tanstack/react-query@npm:4.22.0"
+  dependencies:
+    "@tanstack/query-core": 4.22.0
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: aacb071935c20ec695adfce7594649b6a7683640b82b232727f1b000bb871b6e99bb98bf47b9617eb76829d6b5822a6c98d3cefb1ede90a69cc52c2c79488d14
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.0.0":
   version: 8.16.0
   resolution: "@testing-library/dom@npm:8.16.0"
@@ -7849,16 +7907,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^26.0.19":
-  version: 26.0.24
-  resolution: "@types/jest@npm:26.0.24"
-  dependencies:
-    jest-diff: ^26.0.0
-    pretty-format: ^26.0.0
-  checksum: 1085ac96af43566518daf3aca60cb7881bfe2ffe1f5343738933e386ebf909095fde15273c3e99c685854dfc833b05b156fb5daf68707c0daa1c0c0db13a665b
-  languageName: node
-  linkType: hard
-
 "@types/jest@npm:^27.0.1, @types/jest@npm:^27.0.3, @types/jest@npm:^27.5.0, @types/jest@npm:^27.5.2":
   version: 27.5.2
   resolution: "@types/jest@npm:27.5.2"
@@ -8344,6 +8392,13 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 8690789328e8e10c487334341fcf879fd49f8987c98ce49849f9871052f95d87477735171bb661e6f551bdb95235e015dfdad1867ca1d9b5b88a053f72ac40eb
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@types/uuid@npm:9.0.0"
+  checksum: b0dc4582249b4efdbb6a9ebcd6acbcb864da14d558acfd5b17648972f8756e1a8e1de216a5e49a52b51d3804d56e60314467d9ac9450c8b90de138130021ed87
   languageName: node
   linkType: hard
 
@@ -11076,7 +11131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"big-integer@npm:^1.6.16, big-integer@npm:^1.6.7":
+"big-integer@npm:^1.6.7":
   version: 1.6.51
   resolution: "big-integer@npm:1.6.51"
   checksum: c8139662d57f8833a44802f4b65be911679c569535ea73c5cfd3c1c8994eaead1b84b6f63e1db63833e4d4cacb6b6a9e5522178113dfdc8e4c81ed8436f1e8cc
@@ -11290,22 +11345,6 @@ __metadata:
   dependencies:
     wcwidth: ^1.0.1
   checksum: e2ce6d51dfb96bc83798796313f7436cd3eef653405c3ac748c3da36606d429b4953a1b17597e75c0a182fdd79f09528a2acc043de5df7626f22273f3bb643d1
-  languageName: node
-  linkType: hard
-
-"broadcast-channel@npm:^3.4.1":
-  version: 3.7.0
-  resolution: "broadcast-channel@npm:3.7.0"
-  dependencies:
-    "@babel/runtime": ^7.7.2
-    detect-node: ^2.1.0
-    js-sha3: 0.8.0
-    microseconds: 0.2.0
-    nano-time: 1.0.0
-    oblivious-set: 1.0.0
-    rimraf: 3.0.2
-    unload: 2.2.0
-  checksum: 95978446f24c685be666f5508a91350bcd4075c08feda929d26c0c678fb24bd421901f19fa8d36cb6f5ed480a334072f3bdce48fa177a8cb29793d88693911cc
   languageName: node
   linkType: hard
 
@@ -11544,6 +11583,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bundle-require@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "bundle-require@npm:3.1.2"
+  dependencies:
+    load-tsconfig: ^0.2.0
+  peerDependencies:
+    esbuild: ">=0.13"
+  checksum: 73f77df391a46f2cefc3bfc4777cd0169a47db1e69a64a16cb6a37208a03992ef68f02921e18ae4fba3387e076f37bcac8388077cba316ce9fd96105aec43f89
+  languageName: node
+  linkType: hard
+
 "bunyan@npm:1.8.15":
   version: 1.8.15
   resolution: "bunyan@npm:1.8.15"
@@ -11624,6 +11674,13 @@ __metadata:
   bin:
     c8: bin/c8.js
   checksum: 5b12b929bfaa30a5f35c1b22672db8d70d734574f4382383ba7415a21575cdf2e17f906d09a5cc49f6366b511c20abcb53213c3222b200a4e127573e5180e873
+  languageName: node
+  linkType: hard
+
+"cac@npm:^6.7.12":
+  version: 6.7.14
+  resolution: "cac@npm:6.7.14"
+  checksum: 4ee06aaa7bab8981f0d54e5f5f9d4adcd64058e9697563ce336d8a3878ed018ee18ebe5359b2430eceae87e0758e62ea2019c3f52ae6e211b1bd2e133856cd10
   languageName: node
   linkType: hard
 
@@ -12628,7 +12685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^4.0.1, commander@npm:^4.1.1":
+"commander@npm:^4.0.0, commander@npm:^4.0.1, commander@npm:^4.1.1":
   version: 4.1.1
   resolution: "commander@npm:4.1.1"
   checksum: 84a76c08fe6cc08c9c93f62ac573d2907d8e79138999312c92d4155bc2325d487d64d13f669b2000c9f8caf70493c1be2dac74fec3c51d5a04f8bc3ae1830bab
@@ -14194,13 +14251,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"detect-node@npm:^2.0.4, detect-node@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "detect-node@npm:2.1.0"
-  checksum: f039f601790f2e9d4654e499913259a798b1f5246ae24f86ab5e8bd4aaf3bce50484234c494f11fb00aecb0c6e2733aa7b1cf3f530865640b65fbbd65b2c4e09
-  languageName: node
-  linkType: hard
-
 "detect-package-manager@npm:^2.0.1":
   version: 2.0.1
   resolution: "detect-package-manager@npm:2.0.1"
@@ -15100,6 +15150,223 @@ __metadata:
     es6-iterator: ^2.0.3
     es6-symbol: ^3.1.1
   checksum: 460932be9542473dbbddd183e21c15a66cfec1b2c17dae2b514e190d6fb2896b7eb683783d4b36da036609d2e1c93d2815f21b374dfccaf02a8978694c2f7b67
+  languageName: node
+  linkType: hard
+
+"esbuild-android-64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-android-64@npm:0.15.18"
+  conditions: os=android & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-android-arm64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-android-arm64@npm:0.15.18"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild-darwin-64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-darwin-64@npm:0.15.18"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-darwin-arm64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-darwin-arm64@npm:0.15.18"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild-freebsd-64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-freebsd-64@npm:0.15.18"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-freebsd-arm64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-freebsd-arm64@npm:0.15.18"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-32@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-linux-32@npm:0.15.18"
+  conditions: os=linux & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-linux-64@npm:0.15.18"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-arm64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-linux-arm64@npm:0.15.18"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-arm@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-linux-arm@npm:0.15.18"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-mips64le@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-linux-mips64le@npm:0.15.18"
+  conditions: os=linux & cpu=mips64el
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-ppc64le@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-linux-ppc64le@npm:0.15.18"
+  conditions: os=linux & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-riscv64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-linux-riscv64@npm:0.15.18"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-s390x@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-linux-s390x@npm:0.15.18"
+  conditions: os=linux & cpu=s390x
+  languageName: node
+  linkType: hard
+
+"esbuild-netbsd-64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-netbsd-64@npm:0.15.18"
+  conditions: os=netbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-openbsd-64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-openbsd-64@npm:0.15.18"
+  conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-sunos-64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-sunos-64@npm:0.15.18"
+  conditions: os=sunos & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-windows-32@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-windows-32@npm:0.15.18"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"esbuild-windows-64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-windows-64@npm:0.15.18"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"esbuild-windows-arm64@npm:0.15.18":
+  version: 0.15.18
+  resolution: "esbuild-windows-arm64@npm:0.15.18"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:^0.15.1":
+  version: 0.15.18
+  resolution: "esbuild@npm:0.15.18"
+  dependencies:
+    "@esbuild/android-arm": 0.15.18
+    "@esbuild/linux-loong64": 0.15.18
+    esbuild-android-64: 0.15.18
+    esbuild-android-arm64: 0.15.18
+    esbuild-darwin-64: 0.15.18
+    esbuild-darwin-arm64: 0.15.18
+    esbuild-freebsd-64: 0.15.18
+    esbuild-freebsd-arm64: 0.15.18
+    esbuild-linux-32: 0.15.18
+    esbuild-linux-64: 0.15.18
+    esbuild-linux-arm: 0.15.18
+    esbuild-linux-arm64: 0.15.18
+    esbuild-linux-mips64le: 0.15.18
+    esbuild-linux-ppc64le: 0.15.18
+    esbuild-linux-riscv64: 0.15.18
+    esbuild-linux-s390x: 0.15.18
+    esbuild-netbsd-64: 0.15.18
+    esbuild-openbsd-64: 0.15.18
+    esbuild-sunos-64: 0.15.18
+    esbuild-windows-32: 0.15.18
+    esbuild-windows-64: 0.15.18
+    esbuild-windows-arm64: 0.15.18
+  dependenciesMeta:
+    "@esbuild/android-arm":
+      optional: true
+    "@esbuild/linux-loong64":
+      optional: true
+    esbuild-android-64:
+      optional: true
+    esbuild-android-arm64:
+      optional: true
+    esbuild-darwin-64:
+      optional: true
+    esbuild-darwin-arm64:
+      optional: true
+    esbuild-freebsd-64:
+      optional: true
+    esbuild-freebsd-arm64:
+      optional: true
+    esbuild-linux-32:
+      optional: true
+    esbuild-linux-64:
+      optional: true
+    esbuild-linux-arm:
+      optional: true
+    esbuild-linux-arm64:
+      optional: true
+    esbuild-linux-mips64le:
+      optional: true
+    esbuild-linux-ppc64le:
+      optional: true
+    esbuild-linux-riscv64:
+      optional: true
+    esbuild-linux-s390x:
+      optional: true
+    esbuild-netbsd-64:
+      optional: true
+    esbuild-openbsd-64:
+      optional: true
+    esbuild-sunos-64:
+      optional: true
+    esbuild-windows-32:
+      optional: true
+    esbuild-windows-64:
+      optional: true
+    esbuild-windows-arm64:
+      optional: true
+  bin:
+    esbuild: bin/esbuild
+  checksum: 4eb13979ae2e52eab529b79a0f236e03d08a7bd90c46924d60af73ea4de32d819abf916d0fd7a12b4908f91297e1477739f3ea9c53a68fbcc47a08ab173c41b0
   languageName: node
   linkType: hard
 
@@ -16993,7 +17260,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"form-data@npm:4.0.0, form-data@npm:^4.0.0":
+"form-data@npm:4.0.0":
   version: 4.0.0
   resolution: "form-data@npm:4.0.0"
   dependencies:
@@ -18071,6 +18338,20 @@ __metadata:
   version: 0.4.1
   resolution: "glob-to-regexp@npm:0.4.1"
   checksum: 0486925072d7a916f052842772b61c3e86247f0a80cc0deb9b5a3e8a1a9faad5b04fb6f58986a09f34d3e96cd2a22a24b7e9882fb1cf904c31e9a310de96c429
+  languageName: node
+  linkType: hard
+
+"glob@npm:7.1.6":
+  version: 7.1.6
+  resolution: "glob@npm:7.1.6"
+  dependencies:
+    fs.realpath: ^1.0.0
+    inflight: ^1.0.4
+    inherits: 2
+    minimatch: ^3.0.4
+    once: ^1.3.0
+    path-is-absolute: ^1.0.0
+  checksum: 2575cce9306ac534388db751f0aa3e78afedb6af8f3b529ac6b2354f66765545145dba8530abf7bff49fb399a047d3f9b6901c38ee4c9503f592960d9af67763
   languageName: node
   linkType: hard
 
@@ -19517,6 +19798,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"integration-tests-repositories@workspace:integration-tests/repositories":
+  version: 0.0.0-use.local
+  resolution: "integration-tests-repositories@workspace:integration-tests/repositories"
+  dependencies:
+    "@babel/cli": ^7.12.10
+    "@babel/core": ^7.12.10
+    "@babel/node": ^7.12.10
+    "@medusajs/medusa": "*"
+    babel-preset-medusa-package: "*"
+    jest: ^26.6.3
+    medusa-interfaces: "*"
+    typeorm: ^0.2.31
+  languageName: unknown
+  linkType: soft
+
 "internal-slot@npm:^1.0.3":
   version: 1.0.3
   resolution: "internal-slot@npm:1.0.3"
@@ -20853,7 +21149,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:^26.0.0, jest-diff@npm:^26.6.2":
+"jest-diff@npm:^26.6.2":
   version: 26.6.2
   resolution: "jest-diff@npm:26.6.2"
   dependencies:
@@ -22030,6 +22326,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"joycon@npm:^3.0.1":
+  version: 3.1.1
+  resolution: "joycon@npm:3.1.1"
+  checksum: 131fb1e98c9065d067fd49b6e685487ac4ad4d254191d7aa2c9e3b90f4e9ca70430c43cad001602bdbdabcf58717d3b5c5b7461c1bd8e39478c8de706b3fe6ae
+  languageName: node
+  linkType: hard
+
 "jpeg-js@npm:0.4.2":
   version: 0.4.2
   resolution: "jpeg-js@npm:0.4.2"
@@ -22048,13 +22351,6 @@ __metadata:
   version: 1.1.6
   resolution: "js-levenshtein@npm:1.1.6"
   checksum: 14045735325ea1fd87f434a74b11d8a14380f090f154747e613529c7cff68b5ee607f5230fa40665d5fb6125a3791f4c223f73b9feca754f989b059f5c05864f
-  languageName: node
-  linkType: hard
-
-"js-sha3@npm:0.8.0":
-  version: 0.8.0
-  resolution: "js-sha3@npm:0.8.0"
-  checksum: 43a21dc7967c871bd2c46cb1c2ae97441a97169f324e509f382d43330d8f75cf2c96dba7c806ab08a425765a9c847efdd4bffbac2d99c3a4f3de6c0218f40533
   languageName: node
   linkType: hard
 
@@ -22896,6 +23192,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"load-tsconfig@npm:^0.2.0":
+  version: 0.2.3
+  resolution: "load-tsconfig@npm:0.2.3"
+  checksum: 82d0851020ecf8e226f328c0958cfbf5a34c8ffc7b04d396f25f53861e408c948866f2536123986a13ad9357c3cb2d2b90f51a04eb9474abbfef92399a6caa3d
+  languageName: node
+  linkType: hard
+
 "load-yaml-file@npm:^0.2.0":
   version: 0.2.0
   resolution: "load-yaml-file@npm:0.2.0"
@@ -23696,16 +23999,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"match-sorter@npm:^6.0.2":
-  version: 6.3.1
-  resolution: "match-sorter@npm:6.3.1"
-  dependencies:
-    "@babel/runtime": ^7.12.5
-    remove-accents: 0.4.2
-  checksum: fb805e1f8cd1a41846dd5dcbba810a3bff3e1436a34a8226201d3f7518970171a7dbedb0d99677a6dce2a2925e4fc3cf1d0d82a1203ac9ef65d13d5d290b1dad
-  languageName: node
-  linkType: hard
-
 "math-random@npm:^1.0.1":
   version: 1.0.4
   resolution: "math-random@npm:1.0.4"
@@ -23908,10 +24201,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -23936,10 +24229,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -23964,11 +24257,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -23989,9 +24282,9 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24006,7 +24299,7 @@ __metadata:
     "@babel/plugin-transform-runtime": ^7.7.6
     "@babel/preset-env": ^7.7.5
     "@babel/runtime": ^7.9.6
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.4
     axios: ^0.20.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -24015,13 +24308,13 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
-"medusa-interfaces@*, medusa-interfaces@^1.3.1, medusa-interfaces@^1.3.3, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@*, medusa-interfaces@^1.3.4, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -24069,10 +24362,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24098,10 +24391,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24122,10 +24415,10 @@ __metadata:
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
     jest: ^25.5.2
-    medusa-interfaces: ^1.3.3
-    medusa-test-utils: ^1.1.37
+    medusa-interfaces: ^1.3.4
+    medusa-test-utils: ^1.1.38
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24151,10 +24444,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.32
-    medusa-interfaces: ^1.3.3
-    medusa-test-utils: ^1.1.37
+    medusa-interfaces: ^1.3.4
+    medusa-test-utils: ^1.1.38
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24179,11 +24472,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24207,9 +24500,9 @@ __metadata:
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
     typeorm: 0.x
   languageName: unknown
   linkType: soft
@@ -24237,11 +24530,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.1
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     randomatic: ^3.1.1
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24266,11 +24559,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     redis: ^3.0.2
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24294,10 +24587,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     randomatic: ^3.1.1
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24322,11 +24615,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24345,9 +24638,9 @@ __metadata:
     axios: ^0.20.0
     cross-env: ^5.2.1
     jest: ^25.5.2
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24373,10 +24666,10 @@ __metadata:
     jest: ^25.5.2
     mailchimp-api-v3: ^1.14.0
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24399,10 +24692,10 @@ __metadata:
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     meilisearch: 0.27.0
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24421,13 +24714,13 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     pg: ^8.5.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.1
-    medusa-interfaces: 1.x
+    "@medusajs/medusa": ^1.7.4
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24453,10 +24746,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24481,10 +24774,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24509,11 +24802,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24535,11 +24828,11 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     twilio: ^3.49.1
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24563,10 +24856,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24575,8 +24868,8 @@ __metadata:
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
     "@babel/core": ^7.16.0
-    "@medusajs/medusa": ^1.7.1
-    "@medusajs/medusa-js": ^1.3.5
+    "@medusajs/medusa": ^1.7.4
+    "@medusajs/medusa-js": ^1.3.7
     "@size-limit/preset-small-lib": ^6.0.4
     "@storybook/addon-contexts": ^5.3.21
     "@storybook/addon-essentials": ^6.3.12
@@ -24584,6 +24877,7 @@ __metadata:
     "@storybook/addon-links": ^6.3.12
     "@storybook/addons": ^6.3.12
     "@storybook/react": ^6.3.12
+    "@tanstack/react-query": ^4.22.0
     "@testing-library/react": ^12.1.2
     "@testing-library/react-hooks": ^7.0.2
     "@types/jest": ^27.0.3
@@ -24602,14 +24896,13 @@ __metadata:
     react-dom: ^17.0.2
     react-is: ^17.0.2
     react-json-view: ^1.21.3
-    react-query: ^3.31.0
     size-limit: ^6.0.4
     ts-jest: ^27.1.4
     tslib: ^2.3.1
   peerDependencies:
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.4
+    "@tanstack/react-query": ">=4.22.0"
     react: ">=16"
-    react-query: ">= 3.29.0"
   languageName: unknown
   linkType: soft
 
@@ -24637,15 +24930,15 @@ __metadata:
     jest: ^26.6.3
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
     typeorm: 0.x
   languageName: unknown
   linkType: soft
 
-"medusa-telemetry@0.0.15, medusa-telemetry@^0.0.15, medusa-telemetry@workspace:packages/medusa-telemetry":
+"medusa-telemetry@0.0.16, medusa-telemetry@^0.0.16, medusa-telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
   dependencies:
@@ -24668,7 +24961,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.37, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.37, medusa-test-utils@^1.1.38, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
@@ -24931,13 +25224,6 @@ __metadata:
     snapdragon: ^0.8.1
     to-regex: ^3.0.2
   checksum: 531a32e7ac92bef60657820202be71b63d0f945c08a69cc4c239c0b19372b751483d464a850a2e3a5ff6cc9060641e43d44c303af104c1a27493d137d8af017f
-  languageName: node
-  linkType: hard
-
-"microseconds@npm:0.2.0":
-  version: 0.2.0
-  resolution: "microseconds@npm:0.2.0"
-  checksum: 59dfae1c696c0bacd79603c4df7cd0dcc9e091b7c5556aaca9b0832017d3c0b40ad8f57ca25e0ee5709ef1973404448c4a2fea6c9c1fad7d9e197ff5c1c9c2d5
   languageName: node
   linkType: hard
 
@@ -25528,7 +25814,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mz@npm:^2.4.0":
+"mz@npm:^2.4.0, mz@npm:^2.7.0":
   version: 2.7.0
   resolution: "mz@npm:2.7.0"
   dependencies:
@@ -25545,15 +25831,6 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: 95204e4ed2970c0411735d866b0a71f30625e9ce598d2f7c2dfc2145dcd4e8e48dda26fda2587657f91e96973044353d300a9a6d259079b342fa4b30548aa8fa
-  languageName: node
-  linkType: hard
-
-"nano-time@npm:1.0.0":
-  version: 1.0.0
-  resolution: "nano-time@npm:1.0.0"
-  dependencies:
-    big-integer: ^1.6.16
-  checksum: 3bd12e0bcd30867178afdbe8053b3dde5fdd1c665ecd348bf879863049344fbaf05cbb1d7806a825b91efbca011ee115eee52e76fb38b7da9c97931cd9e61f15
   languageName: node
   linkType: hard
 
@@ -26464,13 +26741,6 @@ __metadata:
   version: 1.0.5
   resolution: "objectorarray@npm:1.0.5"
   checksum: 3d3db66e2052df85617ac31b98f8e51a7a883ebce24123018dacf286712aa513a0a84e82b4a6bef68889d5fc39cf08e630ee78df013023fc5161e1fdf3eaaa5a
-  languageName: node
-  linkType: hard
-
-"oblivious-set@npm:1.0.0":
-  version: 1.0.0
-  resolution: "oblivious-set@npm:1.0.0"
-  checksum: ca8640474ea1e1feb3b5c98d42f5649f114ac4513ef84774e724f22fc7e529f1de3e7f26a0d9593097ab8942ca0bb8c241f7c1bd63c3e33047dd49de3aca9805
   languageName: node
   linkType: hard
 
@@ -27775,7 +28045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-load-config@npm:^3.0.0":
+"postcss-load-config@npm:^3.0.0, postcss-load-config@npm:^3.0.1":
   version: 3.1.4
   resolution: "postcss-load-config@npm:3.1.4"
   dependencies:
@@ -28345,7 +28615,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^26.0.0, pretty-format@npm:^26.6.2":
+"pretty-format@npm:^26.6.2":
   version: 26.6.2
   resolution: "pretty-format@npm:26.6.2"
   dependencies:
@@ -29173,24 +29443,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.31.0":
-  version: 3.39.1
-  resolution: "react-query@npm:3.39.1"
-  dependencies:
-    "@babel/runtime": ^7.5.5
-    broadcast-channel: ^3.4.1
-    match-sorter: ^6.0.2
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: 5a67610e7d1eb15b6137e939fa3670f5deb8e519338380d19fd7bd47ac7dbea33f15df93c717648160b3c4dc6c3885450ff22eda180cd636afdfc5ba42682384
-  languageName: node
-  linkType: hard
-
 "react-refresh@npm:^0.11.0":
   version: 0.11.0
   resolution: "react-refresh@npm:0.11.0"
@@ -29785,13 +30037,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remove-accents@npm:0.4.2":
-  version: 0.4.2
-  resolution: "remove-accents@npm:0.4.2"
-  checksum: 5cbc00efa52df29ce947a0c572ff975b011f5f197ebe7b4f6e527de26aba534cba12d502e3040b72e46ad01de3d4f2d5ef57a6593c964965e43ddb60438da0f8
-  languageName: node
-  linkType: hard
-
 "remove-trailing-separator@npm:^1.0.1":
   version: 1.1.0
   resolution: "remove-trailing-separator@npm:1.1.0"
@@ -30187,17 +30432,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:3.0.2, rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "rimraf@npm:3.0.2"
-  dependencies:
-    glob: ^7.1.3
-  bin:
-    rimraf: bin.js
-  checksum: 9cb7757acb489bd83757ba1a274ab545eafd75598a9d817e0c3f8b164238dd90eba50d6b848bd4dcc5f3040912e882dc7ba71653e35af660d77b25c381d402e8
-  languageName: node
-  linkType: hard
-
 "rimraf@npm:^2.5.4, rimraf@npm:^2.6.2, rimraf@npm:^2.6.3":
   version: 2.7.1
   resolution: "rimraf@npm:2.7.1"
@@ -30206,6 +30440,17 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 4eef73d406c6940927479a3a9dee551e14a54faf54b31ef861250ac815172bade86cc6f7d64a4dc5e98b65e4b18a2e1c9ff3b68d296be0c748413f092bb0dd40
+  languageName: node
+  linkType: hard
+
+"rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "rimraf@npm:3.0.2"
+  dependencies:
+    glob: ^7.1.3
+  bin:
+    rimraf: bin.js
+  checksum: 9cb7757acb489bd83757ba1a274ab545eafd75598a9d817e0c3f8b164238dd90eba50d6b848bd4dcc5f3040912e882dc7ba71653e35af660d77b25c381d402e8
   languageName: node
   linkType: hard
 
@@ -30370,6 +30615,20 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: c5655016a3453c95c6ef3c8fb5e6b44c00489c3af2f57a5e974659d9f3480d5506abc89da352b2a0a85b2b0e792613b224b4aecf22d57029c545ebfea457dcc1
+  languageName: node
+  linkType: hard
+
+"rollup@npm:^3.2.5":
+  version: 3.10.0
+  resolution: "rollup@npm:3.10.0"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: 2803c8142865de4d5f68267a6e8810d2dff0a5414927b936773b7c27504ab7302c5ada1f85b0871de26a1e6d10363bdc2928fddcd3d55bb93c2c2570f704f8f6
   languageName: node
   linkType: hard
 
@@ -31554,6 +31813,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"source-map@npm:0.8.0-beta.0":
+  version: 0.8.0-beta.0
+  resolution: "source-map@npm:0.8.0-beta.0"
+  dependencies:
+    whatwg-url: ^7.0.0
+  checksum: fb4d9bde9a9fdb2c29b10e5eae6c71d10e09ef467e1afb75fdec2eb7e11fa5b343a2af553f74f18b695dbc0b81f9da2e9fa3d7a317d5985e9939499ec6087835
+  languageName: node
+  linkType: hard
+
 "source-map@npm:^0.5.0, source-map@npm:^0.5.6, source-map@npm:^0.5.7":
   version: 0.5.7
   resolution: "source-map@npm:0.5.7"
@@ -32384,6 +32652,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sucrase@npm:^3.20.3":
+  version: 3.29.0
+  resolution: "sucrase@npm:3.29.0"
+  dependencies:
+    commander: ^4.0.0
+    glob: 7.1.6
+    lines-and-columns: ^1.1.6
+    mz: ^2.7.0
+    pirates: ^4.0.1
+    ts-interface-checker: ^0.1.9
+  bin:
+    sucrase: bin/sucrase
+    sucrase-node: bin/sucrase-node
+  checksum: 4932ca76122f1f0cbd19f864265ce7c95652723994cf5a5c73b7b2bdef8d9b9257ba65085f61760e83cb8624d18b2fa309fe901dba77169264f4eb6a2e12719c
+  languageName: node
+  linkType: hard
+
 "sudo-prompt@npm:^8.2.0":
   version: 8.2.5
   resolution: "sudo-prompt@npm:8.2.5"
@@ -33135,6 +33420,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tree-kill@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "tree-kill@npm:1.2.2"
+  bin:
+    tree-kill: cli.js
+  checksum: 7b1b7c7f17608a8f8d20a162e7957ac1ef6cd1636db1aba92f4e072dc31818c2ff0efac1e3d91064ede67ed5dc57c565420531a8134090a12ac10cf792ab14d2
+  languageName: node
+  linkType: hard
+
 "trim-newlines@npm:^1.0.0":
   version: 1.0.0
   resolution: "trim-newlines@npm:1.0.0"
@@ -33195,6 +33489,13 @@ __metadata:
   version: 2.2.0
   resolution: "ts-dedent@npm:2.2.0"
   checksum: 175adea838468cc2ff7d5e97f970dcb798bbcb623f29c6088cb21aa2880d207c5784be81ab1741f56b9ac37840cbaba0c0d79f7f8b67ffe61c02634cafa5c303
+  languageName: node
+  linkType: hard
+
+"ts-interface-checker@npm:^0.1.9":
+  version: 0.1.13
+  resolution: "ts-interface-checker@npm:0.1.13"
+  checksum: 232509f1b84192d07b81d1e9b9677088e590ac1303436da1e92b296e9be8e31ea042e3e1fd3d29b1742ad2c959e95afe30f63117b8f1bc3a3850070a5142fea7
   languageName: node
   linkType: hard
 
@@ -33466,6 +33767,42 @@ __metadata:
   version: 1.0.6
   resolution: "tsscmp@npm:1.0.6"
   checksum: 2f79a9455e7e3e8071995f98cdf3487ccfc91b760bec21a9abb4d90519557eafaa37246e87c92fa8bf3fef8fd30cfd0cc3c4212bb929baa9fb62494bfa4d24b2
+  languageName: node
+  linkType: hard
+
+"tsup@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "tsup@npm:6.5.0"
+  dependencies:
+    bundle-require: ^3.1.2
+    cac: ^6.7.12
+    chokidar: ^3.5.1
+    debug: ^4.3.1
+    esbuild: ^0.15.1
+    execa: ^5.0.0
+    globby: ^11.0.3
+    joycon: ^3.0.1
+    postcss-load-config: ^3.0.1
+    resolve-from: ^5.0.0
+    rollup: ^3.2.5
+    source-map: 0.8.0-beta.0
+    sucrase: ^3.20.3
+    tree-kill: ^1.2.2
+  peerDependencies:
+    "@swc/core": ^1
+    postcss: ^8.4.12
+    typescript: ^4.1.0
+  peerDependenciesMeta:
+    "@swc/core":
+      optional: true
+    postcss:
+      optional: true
+    typescript:
+      optional: true
+  bin:
+    tsup: dist/cli-default.js
+    tsup-node: dist/cli-node.js
+  checksum: 6372a480db2dca02bb10ff27b888114d4347ce4c635ae95a7d558be0e5e23ff81373389bcce98c3086136527b63590b02f3000e266d0cb8be0fcdca6119e716e
   languageName: node
   linkType: hard
 
@@ -33889,6 +34226,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^4.9.4":
+  version: 4.9.4
+  resolution: "typescript@npm:4.9.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 5008b97a2a3afdbe57ea70e504ebc8ec98f18d888059dfb7932a41f566a1360a28afc8de2a440fd6143b4014cc6d2616079931dc690c7513c2d21fa53957e0ec
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@^4.1.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.2#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
   version: 4.7.4
   resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"
@@ -33896,6 +34243,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 2eb6e31b04fabec84a4d07b5d567deb5ef0a2971d89d9adb16895f148f7d8508adfb12074abc2efc6966805d3664e68ab67925060e5b0ebd8da616db4b151906
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
+  version: 4.9.4
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=7ad353"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: b8cba6ab3ee30218578663352bcd74220ef20c42544fd1cc1382f24dee385002e784702b176c451da9c14c39965c035815902ef43b06eeefd5faae18ee700cea
   languageName: node
   linkType: hard
 
@@ -34182,16 +34539,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unload@npm:2.2.0":
-  version: 2.2.0
-  resolution: "unload@npm:2.2.0"
-  dependencies:
-    "@babel/runtime": ^7.6.2
-    detect-node: ^2.0.4
-  checksum: 0a4f86b502e7aa35d39c27373ebeaad4f2b7da793fb3d6308e5337aab541885cfe7b339ea4a1963477bf73fddabd5d69f4f47023dad71224b4b4a25611ef7dd8
-  languageName: node
-  linkType: hard
-
 "unpipe@npm:1.0.0, unpipe@npm:~1.0.0":
   version: 1.0.0
   resolution: "unpipe@npm:1.0.0"
@@ -34431,6 +34778,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-sync-external-store@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: ac4814e5592524f242921157e791b022efe36e451fe0d4fd4d204322d5433a4fc300d63b0ade5185f8e0735ded044c70bcf6d2352db0f74d097a238cebd2da02
+  languageName: node
+  linkType: hard
+
 "use@npm:^3.1.0":
   version: 3.1.1
   resolution: "use@npm:3.1.1"
@@ -34547,6 +34903,15 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: bcbb807a917d374a49f475fae2e87fdca7da5e5530820ef53f65ba1d12131bd81a92ecf259cc7ce317cbe0f289e7d79fdfebcef9bfa3087c8c8a2fa304c9be54
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "uuid@npm:9.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 8867e438990d1d33ac61093e2e4e3477a2148b844e4fa9e3c2360fa4399292429c4b6ec64537eb1659c97b2d10db349c673ad58b50e2824a11e0d3630de3c056
   languageName: node
   linkType: hard
 

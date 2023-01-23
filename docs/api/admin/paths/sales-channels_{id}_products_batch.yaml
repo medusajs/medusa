@@ -37,10 +37,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              sales_channel:
-                $ref: ../components/schemas/SalesChannel.yaml
+            $ref: ../components/schemas/AdminSalesChannelsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -93,10 +90,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              sales_channel:
-                $ref: ../components/schemas/SalesChannel.yaml
+            $ref: ../components/schemas/AdminSalesChannelsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

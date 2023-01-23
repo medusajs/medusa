@@ -26,10 +26,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              collection:
-                $ref: ../components/schemas/ProductCollection.yaml
+            $ref: ../components/schemas/StoreCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

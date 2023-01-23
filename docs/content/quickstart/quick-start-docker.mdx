@@ -81,18 +81,8 @@ Once done, your server will be accessible at `http://localhost:9000`.
 You can test out your server using tools like Postman or by sending a cURL request:
 
 ```bash noReport
-curl -X GET localhost:9000/store/products | python -m json.tool
+curl -X GET localhost:9000/store/products
 ```
-
-:::note
-
-This command uses Python to format the result of the request better in your command line. If you don't want to use Python you can simply send a request without the formatting:
-
-```bash noReport
-curl localhost:9000/store/products
-```
-
-:::
 
 ---
 

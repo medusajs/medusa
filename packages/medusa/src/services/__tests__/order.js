@@ -647,12 +647,25 @@ describe("OrderService", () => {
               payment_status: "paid",
               status: "pending",
             })
+          case IdMap.getId("refunded-order"):
+            return Promise.resolve({
+              fulfillment_status: "fulfilled",
+              payment_status: "refunded",
+              refunds: [
+                {
+                  order_id: IdMap.getId("refunded-order"),
+                },
+              ],
+              status: "pending",
+            })
           default:
             return Promise.resolve({
               fulfillment_status: "not_fulfilled",
               payment_status: "awaiting",
               status: "pending",
-              fulfillments: [{ id: "fulfillment_test", canceled_at: now }],
+              fulfillments: [
+                { id: "fulfillment_test", canceled_at: now, items: [] },
+              ],
               payments: [{ id: "payment_test" }],
               items: [
                 { id: "item_1", variant_id: "variant-1", quantity: 12 },
@@ -711,7 +724,7 @@ describe("OrderService", () => {
         payment_status: "canceled",
         canceled_at: expect.any(Date),
         status: "canceled",
-        fulfillments: [{ id: "fulfillment_test", canceled_at: now }],
+        fulfillments: [{ id: "fulfillment_test", canceled_at: now, items: [] }],
         payments: [{ id: "payment_test" }],
         items: [
           {
@@ -726,6 +739,12 @@ describe("OrderService", () => {
           },
         ],
       })
+    })
+
+    it("fails if order has refunds", async () => {
+      await expect(
+        orderService.cancel(IdMap.getId("refunded-order"))
+      ).rejects.toThrow("Order with refund(s) cannot be canceled")
     })
   })
 
@@ -915,7 +934,8 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        { metadata: {}, order_id: "test-order" }
+        { metadata: {}, order_id: "test-order" },
+        { location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -947,7 +967,8 @@ describe("OrderService", () => {
             quantity: 2,
           },
         ],
-        { metadata: {}, order_id: "partial" }
+        { metadata: {}, order_id: "partial" },
+        { location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -979,7 +1000,8 @@ describe("OrderService", () => {
             quantity: 1,
           },
         ],
-        { metadata: {}, order_id: "test" }
+        { metadata: {}, order_id: "test" },
+        { location_id: undefined }
       )
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
@@ -992,6 +1014,34 @@ describe("OrderService", () => {
         ...order,
         fulfillment_status: "partially_fulfilled",
       })
+    })
+
+    it("Calls createFulfillment with locationId", async () => {
+      await orderService.createFulfillment(
+        "test",
+        [
+          {
+            item_id: "item_1",
+            quantity: 1,
+          },
+        ],
+        {
+          location_id: "loc_1",
+        }
+      )
+
+      expect(fulfillmentService.createFulfillment).toHaveBeenCalledTimes(1)
+      expect(fulfillmentService.createFulfillment).toHaveBeenCalledWith(
+        order,
+        [
+          {
+            item_id: "item_1",
+            quantity: 1,
+          },
+        ],
+        { metadata: {}, order_id: "test", no_notification: undefined },
+        { locationId: "loc_1" }
+      )
     })
 
     it("fails if order is canceled", async () => {

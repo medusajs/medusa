@@ -122,6 +122,9 @@ medusa.admin.customers.create({
 fetch(`<SERVER_URL>/admin/customers`, {
   method: "POST",
   credentials: "include",
+	headers: {
+		"Content-Type": "application/json",
+	},
   body: JSON.stringify({
     email,
     password,
@@ -191,6 +194,9 @@ medusa.admin.customers.update(customerId, {
 fetch(`<SERVER_URL>/admin/customers/${customerId}`, {
   method: "POST",
   credentials: "include",
+	headers: {
+		"Content-Type": "application/json",
+	},
   body: JSON.stringify({
     first_name,
   }),

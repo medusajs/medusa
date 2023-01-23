@@ -22,6 +22,7 @@ const {
   simpleProductFactory,
   simpleShippingOptionFactory,
   simpleLineItemFactory,
+  simpleSalesChannelFactory,
 } = require("../../../factories")
 const {
   simpleDiscountFactory,
@@ -57,6 +58,9 @@ describe("/store/carts", () => {
   })
 
   describe("POST /store/carts", () => {
+    let prod1
+    let prodSale
+
     beforeEach(async () => {
       const manager = dbConnection.manager
       await manager.insert(Region, {
@@ -70,6 +74,21 @@ describe("/store/carts", () => {
          SET region_id='region'
          WHERE iso_2 = 'us'`
       )
+
+      prod1 = await simpleProductFactory(dbConnection, {
+        id: "test-product",
+        variants: [{ id: "test-variant_1" }],
+      })
+
+      prodSale = await simpleProductFactory(dbConnection, {
+        id: "test-product-sale",
+        variants: [
+          {
+            id: "test-variant-sale",
+            prices: [{ amount: 1000, currency: "usd" }],
+          },
+        ],
+      })
     })
 
     afterEach(async () => {
@@ -108,8 +127,6 @@ describe("/store/carts", () => {
     })
 
     it("creates a cart with items", async () => {
-      await productSeeder(dbConnection)
-
       const yesterday = ((today) =>
         new Date(today.setDate(today.getDate() - 1)))(new Date())
       const tomorrow = ((today) =>
@@ -128,7 +145,7 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: "test-variant-sale",
+        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
@@ -142,11 +159,11 @@ describe("/store/carts", () => {
         .post("/store/carts", {
           items: [
             {
-              variant_id: "test-variant_1",
+              variant_id: prod1.variants[0].id,
               quantity: 1,
             },
             {
-              variant_id: "test-variant-sale",
+              variant_id: prodSale.variants[0].id,
               quantity: 2,
             },
           ],
@@ -160,11 +177,11 @@ describe("/store/carts", () => {
       expect(response.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            variant_id: "test-variant_1",
+            variant_id: prod1.variants[0].id,
             quantity: 1,
           }),
           expect.objectContaining({
-            variant_id: "test-variant-sale",
+            variant_id: prodSale.variants[0].id,
             quantity: 2,
             unit_price: 800,
           }),
@@ -931,6 +948,11 @@ describe("/store/carts", () => {
     beforeEach(async () => {
       await cartSeeder(dbConnection)
       await swapSeeder(dbConnection)
+
+      await simpleSalesChannelFactory(dbConnection, {
+        id: "test-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
@@ -2263,6 +2285,10 @@ describe("/store/carts", () => {
   describe("get-cart with session customer", () => {
     beforeEach(async () => {
       await cartSeeder(dbConnection)
+      await simpleSalesChannelFactory(dbConnection, {
+        id: "test-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {

@@ -17,6 +17,8 @@ import { PaymentCollectionService } from "../../../../services"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostPaymentCollectionsBatchSessionsReq"
+ * x-codegen:
+ *   method: managePaymentSessionsBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -68,9 +70,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             payment_collection:
- *               $ref: "#/components/schemas/PaymentCollection"
+ *           $ref: "#/components/schemas/StorePaymentCollectionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

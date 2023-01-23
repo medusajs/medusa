@@ -100,7 +100,7 @@ By default, the admin runs on port 7000. So, in your browser, go to `localhost:7
 
 Use your Medusa admin’s user credentials to log in.
 
-:::tip
+### Demo Credentials
 
 If you installed the demo data when you installed the Medusa server by using the `--seed` option or running:
 
@@ -109,6 +109,10 @@ npm run seed
 ```
 
 You can use the email `admin@medusa-test.com` and password `supersecret` to log in.
+
+:::info
+
+Passwords in Medusa are hashed using the [scrypt-kdf](https://www.npmjs.com/package/scrypt-kdf). The password hash is then stored in the database.
 
 :::
 

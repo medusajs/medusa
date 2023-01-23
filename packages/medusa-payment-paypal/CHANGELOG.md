@@ -1,5 +1,22 @@
 # Change Log
 
+## 1.2.8
+
+### Patch Changes
+
+- [#3010](https://github.com/medusajs/medusa/pull/3010) [`142c8aa70`](https://github.com/medusajs/medusa/commit/142c8aa70f583d9b11a6add2b8f988e9ba4cf979) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Payment collection should provider the region_id, total and id in the partial cart data
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+- Updated dependencies [[`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2)]:
+  - medusa-interfaces@1.3.4
+
+## 1.2.7
+
+### Patch Changes
+
+- [`9cf971c6b`](https://github.com/medusajs/medusa/commit/9cf971c6bdcee89098e455f02be5539d963f896f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa-payment-paypal): PaymentCollection support
+
 ## 1.2.6
 
 ### Patch Changes
