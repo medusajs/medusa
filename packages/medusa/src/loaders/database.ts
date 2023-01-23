@@ -11,6 +11,10 @@ import "../utils/naming-strategy"
 type Options = {
   configModule: ConfigModule
   container: AwilixContainer
+  customOptions?: {
+    migrations: DataSourceOptions["migrations"]
+    logging: DataSourceOptions["logging"]
+  }
 }
 
 export let dataSource: DataSource
@@ -25,6 +29,7 @@ if (process.env.NODE_ENV === "test") {
 export default async ({
   container,
   configModule,
+  customOptions,
 }: Options): Promise<DataSource> => {
   const entities = container.resolve("db_entities")
 
@@ -37,8 +42,11 @@ export default async ({
     extra: configModule.projectConfig.database_extra || {},
     schema: configModule.projectConfig.database_schema,
     entities,
+    migrations: customOptions?.migrations,
     // namingStrategy: new DefaultNamingStrategy(), Since we are monkey patching, no need to set this option
-    logging: configModule.projectConfig.database_logging || false,
+    logging:
+      customOptions?.logging ??
+      (configModule.projectConfig.database_logging || false),
   } as DataSourceOptions)
 
   await dataSource.initialize()
