@@ -3,10 +3,7 @@ import { BeforeInsert, Column } from "typeorm"
 import { BaseEntity } from "../interfaces"
 import { resolveDbType } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
-import PublishableAPIKeysFeatureFlag from "../loaders/feature-flags/publishable-api-keys"
 
-@FeatureFlagEntity(PublishableAPIKeysFeatureFlag.key)
 export class PublishableApiKey extends BaseEntity {
   @Column({ type: "varchar", nullable: true })
   created_by: string | null

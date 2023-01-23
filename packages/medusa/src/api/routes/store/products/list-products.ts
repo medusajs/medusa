@@ -19,8 +19,6 @@ import { PriceSelectionParams } from "../../../../types/price-selection"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { IsType } from "../../../../utils/validators/is-type"
-import { FlagRouter } from "../../../../utils/flag-router"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 
 /**
  * @oas [get] /products
@@ -181,15 +179,12 @@ export default async (req, res) => {
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
 
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    if (req.publishableApiKeyScopes?.sales_channel_id.length) {
-      filterableFields.sales_channel_id =
-        filterableFields.sales_channel_id ||
-        req.publishableApiKeyScopes.sales_channel_id
+  if (req.publishableApiKeyScopes?.sales_channel_id.length) {
+    filterableFields.sales_channel_id =
+      filterableFields.sales_channel_id ||
+      req.publishableApiKeyScopes.sales_channel_id
 
-      listConfig.relations.push("sales_channels")
-    }
+    listConfig.relations.push("sales_channels")
   }
 
   const [rawProducts, count] = await productService.listAndCount(

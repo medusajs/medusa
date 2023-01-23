@@ -30,7 +30,7 @@ const customerData = {
   last_name: "medusa",
 }
 
-describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
+describe("Publishable API keys", () => {
   let medusaProcess
   let dbConnection
   const adminUserId = "admin_user"
@@ -39,10 +39,6 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: {
-        MEDUSA_FF_PUBLISHABLE_API_KEYS: true,
-        MEDUSA_FF_SALES_CHANNELS: true,
-      },
     })
     dbConnection = connection
     medusaProcess = process
