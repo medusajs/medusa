@@ -13,6 +13,8 @@ import { validator } from "../../../../utils/validator"
  *   - (path) id=* {string} The ID of the Customer.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the customer.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

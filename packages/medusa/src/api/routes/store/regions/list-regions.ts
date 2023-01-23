@@ -58,6 +58,9 @@ import { validator } from "../../../../utils/validator"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetRegionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

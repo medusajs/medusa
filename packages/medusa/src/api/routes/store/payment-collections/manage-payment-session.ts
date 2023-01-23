@@ -16,6 +16,8 @@ import { PaymentCollectionService } from "../../../../services"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePaymentCollectionSessionsReq"
+ * x-codegen:
+ *   method: managePaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

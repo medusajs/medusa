@@ -27,6 +27,9 @@ import { validator } from "../../../../utils/validator"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: StoreGetProductsProductParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -64,7 +67,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(PriceSelectionParams, req.query)
+  const validated = await validator(StoreGetProductsProductParams, req.query)
 
   const customer_id = req.user?.customer_id
 
@@ -99,3 +102,5 @@ export default async (req, res) => {
 
   res.json({ product })
 }
+
+export class StoreGetProductsProductParams extends PriceSelectionParams {}

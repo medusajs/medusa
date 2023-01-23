@@ -11,6 +11,8 @@ import { PaymentCollectionService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collections.
  *   - (path) session_id=* {string} The ID of the Payment Session.
+ * x-codegen:
+ *   method: authorizePaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
