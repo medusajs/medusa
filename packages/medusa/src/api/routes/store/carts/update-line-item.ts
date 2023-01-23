@@ -13,7 +13,13 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) line_id=* {string} The id of the Line Item.
- *   - (body) quantity=* {integer} The quantity to set the Line Item to.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartLineItemsItemReq"
+ * x-codegen:
+ *   method: updateLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -112,6 +118,16 @@ export default async (req, res) => {
   res.status(200).json({ cart: data })
 }
 
+/**
+ * @schema StorePostCartsCartLineItemsItemReq
+ * type: object
+ * required:
+ *   - quantity
+ * properties:
+ *   quantity:
+ *     type: number
+ *     description: The quantity to set the Line Item to.
+ */
 export class StorePostCartsCartLineItemsItemReq {
   @IsInt()
   quantity: number
