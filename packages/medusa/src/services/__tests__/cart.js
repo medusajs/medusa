@@ -515,6 +515,21 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: [IdMap.getId("merger")],
+        discount_id: expect.objectContaining({
+          _getSql: undefined,
+          _multipleParameters: false,
+          _objectLiteralParameters: undefined,
+          _type: "not",
+          _useParameter: true,
+          _value: expect.objectContaining({
+            _getSql: undefined,
+            _multipleParameters: false,
+            _objectLiteralParameters: undefined,
+            _type: "isNull",
+            _useParameter: false,
+            _value: undefined,
+          }),
+        }),
       })
 
       expect(
@@ -745,6 +760,21 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: [IdMap.getId("itemToRemove")],
+        discount_id: expect.objectContaining({
+          _getSql: undefined,
+          _multipleParameters: false,
+          _objectLiteralParameters: undefined,
+          _type: "not",
+          _useParameter: true,
+          _value: expect.objectContaining({
+            _getSql: undefined,
+            _multipleParameters: false,
+            _objectLiteralParameters: undefined,
+            _type: "isNull",
+            _useParameter: false,
+            _value: undefined,
+          }),
+        }),
       })
 
       expect(
@@ -786,6 +816,21 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: [IdMap.getId("itemToRemove")],
+        discount_id: expect.objectContaining({
+          _getSql: undefined,
+          _multipleParameters: false,
+          _objectLiteralParameters: undefined,
+          _type: "not",
+          _useParameter: true,
+          _value: expect.objectContaining({
+            _getSql: undefined,
+            _multipleParameters: false,
+            _objectLiteralParameters: undefined,
+            _type: "isNull",
+            _useParameter: false,
+            _value: undefined,
+          }),
+        }),
       })
 
       expect(
@@ -965,6 +1010,21 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: [IdMap.getId("existingUpdate")],
+        discount_id: expect.objectContaining({
+          _getSql: undefined,
+          _multipleParameters: false,
+          _objectLiteralParameters: undefined,
+          _type: "not",
+          _useParameter: true,
+          _value: expect.objectContaining({
+            _getSql: undefined,
+            _multipleParameters: false,
+            _objectLiteralParameters: undefined,
+            _type: "isNull",
+            _useParameter: false,
+            _value: undefined,
+          }),
+        }),
       })
 
       expect(
@@ -2259,6 +2319,21 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: ["li1", "li2"],
+        discount_id: expect.objectContaining({
+          _getSql: undefined,
+          _multipleParameters: false,
+          _objectLiteralParameters: undefined,
+          _type: "not",
+          _useParameter: true,
+          _value: expect.objectContaining({
+            _getSql: undefined,
+            _multipleParameters: false,
+            _objectLiteralParameters: undefined,
+            _type: "isNull",
+            _useParameter: false,
+            _value: undefined,
+          }),
+        }),
       })
 
       expect(
@@ -2309,6 +2384,21 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: ["li1", "li2"],
+        discount_id: expect.objectContaining({
+          _getSql: undefined,
+          _multipleParameters: false,
+          _objectLiteralParameters: undefined,
+          _type: "not",
+          _useParameter: true,
+          _value: expect.objectContaining({
+            _getSql: undefined,
+            _multipleParameters: false,
+            _objectLiteralParameters: undefined,
+            _type: "isNull",
+            _useParameter: false,
+            _value: undefined,
+          }),
+        }),
       })
 
       expect(
@@ -2368,6 +2458,21 @@ describe("CartService", () => {
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
         item_id: ["li1", "li2"],
+        discount_id: expect.objectContaining({
+          _getSql: undefined,
+          _multipleParameters: false,
+          _objectLiteralParameters: undefined,
+          _type: "not",
+          _useParameter: true,
+          _value: expect.objectContaining({
+            _getSql: undefined,
+            _multipleParameters: false,
+            _objectLiteralParameters: undefined,
+            _type: "isNull",
+            _useParameter: false,
+            _value: undefined,
+          }),
+        }),
       })
 
       expect(
