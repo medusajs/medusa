@@ -1,6 +1,8 @@
 import { Request, Response } from "express"
 
 import CustomerController from "../../../../controllers/customers"
+import { IsNumber, IsOptional, IsString } from "class-validator"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /customer-groups/{id}/customers
@@ -10,6 +12,13 @@ import CustomerController from "../../../../controllers/customers"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
+ *   - (query) limit=50 {integer} The number of items to return.
+ *   - (query) offset=0 {integer} The items to skip before result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
+ *   - (query) q {string} a search term to search email, first_name, and last_name.
+ * x-codegen:
+ *   method: listCustomers
+ *   queryParams: AdminGetGroupsGroupCustomersParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -63,4 +72,26 @@ export default async (req: Request, res: Response) => {
   )
 
   res.json(result)
+}
+
+// eslint-disable-next-line max-len
+export class AdminGetGroupsGroupCustomersParams {
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  limit = 50
+
+  @IsOptional()
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  offset = 0
+
+  @IsString()
+  @IsOptional()
+  expand?: string
 }

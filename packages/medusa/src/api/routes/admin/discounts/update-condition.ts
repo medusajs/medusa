@@ -21,6 +21,9 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDiscountsDiscountConditionsCondition"
+ * x-codegen:
+ *   method: updateCondition
+ *   queryParams: AdminPostDiscountsDiscountConditionsConditionParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

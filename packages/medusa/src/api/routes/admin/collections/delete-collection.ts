@@ -11,6 +11,8 @@ import ProductCollectionService from "../../../../services/product-collection"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Collection.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
