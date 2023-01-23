@@ -101,7 +101,8 @@ import { Type } from "class-transformer"
  *   - (query) limit=10 {integer} Limit the number of customer groups returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer groups of the result.
  * x-codegen:
- *   method: AdminGetCustomerGroupsParams
+ *   method: list
+ *   queryParams: AdminGetCustomerGroupsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
