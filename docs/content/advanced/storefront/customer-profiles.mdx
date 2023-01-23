@@ -76,10 +76,12 @@ medusa.customers.create({
 ```tsx
 import { useCreateCustomer } from "medusa-react";
 
-export default function RegisterCustomer () {
+const RegisterCustomer = () => {
   const createCustomer = useCreateCustomer()
+  //...
 
-  function handleCreate (formData) {
+  const handleCreate = () => {
+    //...
     createCustomer.mutate({
       first_name,
       last_name,
@@ -97,6 +99,8 @@ export default function RegisterCustomer () {
     </div>
   )
 }
+
+export default RegisterCustomer
 ```
 
 </TabItem>
@@ -357,6 +361,37 @@ medusa.customers.update({
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useUpdateMe } from "medusa-react";
+
+const UpdateCustomer = () => {
+  const updateCustomer = useUpdateMe()
+  //...
+
+  const handleUpdate = () => {
+    //...
+    updateCustomer.mutate({
+      id: customer_id,
+      first_name,
+    })
+  }
+
+  //...
+  
+  return (
+    <form>
+      {/* Render form */}
+      <button onClick={handleUpdate}>Update</button>
+    </div>
+  )
+}
+
+export default UpdateCustomer
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -563,6 +598,35 @@ medusa.customers.listOrders()
 .then(({ orders, limit, offset, count }) => {
   console.log(orders)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCustomerOrders } from "medusa-react";
+import { Order } from "@medusajs/medusa";
+
+const Orders = () => {
+  //refetch a function that can be used to
+  //re-retrieve orders after the customer logs in
+  const { orders, isLoading, refetch } = useCustomerOrders()
+
+  return (
+    <div>
+      {isLoading && <span>Loading orders...</span>}
+      {orders?.length && (
+        <ul>
+          {orders.map((order: Order) => (
+            <li>{order.id}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Orders
 ```
 
 </TabItem>

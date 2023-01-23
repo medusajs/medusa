@@ -44,11 +44,10 @@ For example:
 import { MedusaProvider } from "medusa-react"
 import Storefront from "./Storefront"
 import { QueryClient } from "react-query"
-import React from "react"
 
 const queryClient = new QueryClient()
 
-function App() {
+const App = () => {
   return (
     <MedusaProvider
       queryClientProviderProps={{ client: queryClient }}
@@ -73,8 +72,6 @@ To fetch data from the Medusa server (in other words, perform `GET` requests), y
 For example, to fetch products from your Medusa server:
 
 ```tsx title=src/Products.ts
-import * as React from "react"
-
 import { Product } from "@medusajs/medusa"
 import { useProducts } from "medusa-react"
 
@@ -120,8 +117,6 @@ To create, update, or delete data on the Medusa server (in other words, perform 
 For example, to create a cart:
 
 ```tsx title=src/Cart.ts
-import * as React from "react"
-
 import { useCreateCart } from "medusa-react"
 
 const Cart = () => {
@@ -440,11 +435,10 @@ For example:
 import { SessionProvider, MedusaProvider } from "medusa-react"
 import Storefront from "./Storefront"
 import { QueryClient } from "react-query"
-import React from "react"
 
 const queryClient = new QueryClient()
 
-function App() {
+const App = () => {
   return (
     <MedusaProvider
       queryClientProviderProps={{ client: queryClient }}

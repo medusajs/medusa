@@ -67,7 +67,7 @@ medusa.regions.list()
 import { Region } from "@medusajs/medusa";
 import { useRegions } from "medusa-react";
 
-export default function Regions () {
+const Regions = () => {
   const { regions, isLoading } = useRegions()
 
   return (
@@ -85,6 +85,8 @@ export default function Regions () {
     </div>
   )
 }
+
+export default Regions
 ```
 
 </TabItem>
@@ -135,7 +137,7 @@ medusa.products.list({
 ```tsx
 import { formatVariantPrice } from "medusa-react"
 
-export default function Product () {
+const Product = () => {
   //retrieve the region and variant(s)
   //...
 
@@ -148,6 +150,8 @@ export default function Product () {
     </span>
   )
 }
+
+export default Product
 ```
 
 </TabItem>
@@ -205,12 +209,12 @@ medusa.carts.update(cartId, {
 ```tsx
 import { useCart } from "medusa-react"
 
-export default function Cart () {
+const Cart = () => {
   //...
 
   const { updateCart } = useCart()
 
-  function changeRegionId (region_id) {
+  const changeRegionId = (region_id: string) => {
     updateCart.mutate({
       region_id
     })
@@ -218,6 +222,8 @@ export default function Cart () {
 
   //...
 }
+
+export default Cart
 ```
 
 </TabItem>
