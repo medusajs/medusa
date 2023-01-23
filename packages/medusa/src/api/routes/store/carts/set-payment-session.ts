@@ -12,7 +12,6 @@ import { validator } from "../../../../utils/validator"
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
  * parameters:
  *   - (path) id=* {string} The ID of the Cart.
- *   - (body) provider_id=* {string} The ID of the Payment Provider.
  * requestBody:
  *   content:
  *     application/json:
