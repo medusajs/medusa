@@ -10,6 +10,8 @@ import CustomerController from "../../../../controllers/customers"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
+ * x-codegen:
+ *   method: listCustomers
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -30,6 +30,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostCustomersCustomerReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -77,6 +79,7 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
+
 export default async (req, res) => {
   const { id } = req.params
 

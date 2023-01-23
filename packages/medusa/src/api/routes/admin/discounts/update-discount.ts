@@ -37,6 +37,9 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDiscountsDiscountReq"
+ * x-codegen:
+ *   method: update
+ *   queryParams: AdminPostDiscountsDiscountParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

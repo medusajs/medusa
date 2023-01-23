@@ -17,6 +17,8 @@ import { EntityManager } from "typeorm"
  *         $ref: "#/components/schemas/AdminPostCustomersReq"
  * tags:
  *   - Customer
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
