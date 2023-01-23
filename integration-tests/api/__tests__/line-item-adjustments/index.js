@@ -208,7 +208,7 @@ describe("Line Item Adjustments", () => {
     })
   })
 
-  describe("When deleting an adjustment make sure that only adjustment associated with Medusa Discount are deleted", () => {
+  describe("When refreshing adjustments make sure that only adjustments associated with a Medusa Discount are deleted", () => {
     let cart
     let discount
     const lineItemId = "line-test"
@@ -268,7 +268,7 @@ describe("Line Item Adjustments", () => {
       await doAfterEach()
     })
 
-    test("Delete only adjustments associated with Medusa and keep 'custom' adjustments", async () => {
+    test("Delete only adjustments of the removed discount and keep 'custom' adjustments", async () => {
       const api = useApi()
 
       const response = await api.delete(
