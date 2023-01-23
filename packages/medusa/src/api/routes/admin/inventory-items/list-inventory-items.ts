@@ -12,16 +12,12 @@ import {
   ProductVariantService,
 } from "../../../../services"
 import { IInventoryService } from "../../../../interfaces"
-import { ProductVariant } from "../../../../models"
-import {
-  InventoryLevelDTO,
-  InventoryItemDTO,
-} from "../../../../types/inventory"
 import {
   extendedFindParamsMixin,
   StringComparisonOperator,
   NumericalComparisonOperator,
 } from "../../../../types/common"
+import { AdminInventoryItemsListWithVariantsAndLocationLevelsRes } from "."
 
 /**
  * @oas [get] /inventory-items
@@ -98,12 +94,6 @@ import {
  *     $ref: "#/components/responses/500_error"
  */
 
-type ResponseInventoryItemWithVariantsAndLocationLevels =
-  Partial<InventoryItemDTO> & {
-    location_levels?: InventoryLevelDTO[]
-    variants?: ProductVariant[]
-  }
-
 export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
@@ -143,7 +133,9 @@ export default async (req: Request, res: Response) => {
     )
 
   const inventoryItemsWithVariantsAndLocationLevels = inventoryItems.map(
-    (inventoryItem): ResponseInventoryItemWithVariantsAndLocationLevels => {
+    (
+      inventoryItem
+    ): AdminInventoryItemsListWithVariantsAndLocationLevelsRes => {
       return {
         ...inventoryItem,
         variants: variantsByInventoryItemId[inventoryItem.id] ?? [],

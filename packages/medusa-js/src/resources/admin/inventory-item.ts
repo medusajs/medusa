@@ -1,7 +1,6 @@
 import {
   AdminGetInventoryItemsParams,
   AdminInventoryItemsRes,
-  AdminInventoryItemsListRes,
   AdminPostInventoryItemsInventoryItemReq,
   AdminGetInventoryItemsItemLocationLevelsParams,
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
@@ -107,9 +106,16 @@ class AdminInventoryItemsResource extends BaseResource {
     inventoryItemId: string,
     locationId: string,
     payload: AdminPostInventoryItemsItemLocationLevelsLevelReq,
+    query?: AdminGetInventoryItemsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
-    const path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
+    let path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
@@ -123,9 +129,16 @@ class AdminInventoryItemsResource extends BaseResource {
   deleteLocationLevel(
     inventoryItemId: string,
     locationId: string,
+    query?: AdminGetInventoryItemsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
-    const path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
+    let path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
