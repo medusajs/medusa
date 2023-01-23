@@ -21,7 +21,9 @@ export type EventHandler<T = unknown> = (
   eventName: string
 ) => Promise<void>
 
-export interface IEventBusService extends TransactionBaseService {
+export interface IEventBusService
+  // TODO: Remove inheritance of TransactionBaseService when transactions are not shared across modules
+  extends TransactionBaseService {
   emit<T>(
     eventName: string,
     data: T,
@@ -32,6 +34,7 @@ export interface IEventBusService extends TransactionBaseService {
 }
 
 export abstract class AbstractEventBusService
+  // TODO: Remove inheritance of TransactionBaseService when transactions are not shared across modules
   extends TransactionBaseService
   implements IEventBusService
 {

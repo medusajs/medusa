@@ -1,62 +1,60 @@
 import {
-  EventHandler,
-  IEventBusService,
+  AbstractEventBusService,
   Logger,
   MedusaContainer,
-  TransactionBaseService,
+  Subscriber,
 } from "@medusajs/medusa"
+import { EventEmitter } from "events"
 import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {
   logger: Logger
 }
 
-export default class LocalEventBus
-  extends TransactionBaseService
-  implements IEventBusService
-{
+const eventEmitter = new EventEmitter()
+
+export default class LocalEventBusService extends AbstractEventBusService {
   protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly logger_: Logger
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
-    // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    // @ts-ignore
+    super(...arguments)
 
     this.logger_ = logger
   }
 
-  /**
-   * @return this
-   */
-  subscribe(event: string | symbol, handler: EventHandler): this {
-    this.logger_.info(
-      `[${event.toString()}] Local Event Bus installed. Subscribe is unavailable.`
-    )
-    return this
-  }
-
-  /**
-   * @return this
-   */
-  unsubscribe(event: string | symbol, subscriber: EventHandler): this {
-    this.logger_.info(
-      `[${event.toString()}] Local Event Bus installed. Unsubscribe is unavailable.`
-    )
+  withTransaction(transactionManager?: EntityManager) {
     return this
   }
 
   /**
    * @return void
    */
-  async emit<T>(
-    eventName: string,
-    data: T,
-    options: { delay?: number } = {}
-  ): Promise<void> {
+  async emit<T>(eventName: string, data: T): Promise<void> {
+    const eventListenersCount = eventEmitter.listenerCount(eventName)
+
+    if (eventListenersCount === 0) {
+      console.log("Here: ", eventListenersCount)
+      return
+    }
+
     this.logger_.info(
-      `[${eventName}] Local Event Bus installed. Emitting events has no effect.`
+      `Processing ${eventName} which has ${eventListenersCount} subscribers`
     )
+
+    eventEmitter.emit(eventName, data)
+  }
+
+  subscribe(event: string | symbol, subscriber: Subscriber): this {
+    eventEmitter.on(event, subscriber)
+    return this
+  }
+
+  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
+    eventEmitter.off(event, subscriber)
+    return this
   }
 }
