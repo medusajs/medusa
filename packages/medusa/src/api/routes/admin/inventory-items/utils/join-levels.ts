@@ -8,34 +8,28 @@ type LevelWithAvailability = InventoryLevelDTO & {
   available_quantity: number
 }
 
-export const buildLevelsByItemId = (
-  levels: (LevelWithAvailability | InventoryLevelDTO)[],
+export const buildLevelsByInventoryItemId = (
+  inventoryLevels: InventoryLevelDTO[],
   locationIds: string[]
 ) => {
-  return levels.reduce((acc, level) => {
-    if (locationIds.length) {
-      if (!locationIds.includes(level.location_id)) {
-        return acc
-      }
-    }
+  const filteredLevels = inventoryLevels.filter((level) =>
+    locationIds?.includes(level.location_id)
+  )
 
-    if (level.inventory_item_id in acc) {
-      acc[level.inventory_item_id].push(level)
-    } else {
-      acc[level.inventory_item_id] = [level]
-    }
-
+  return filteredLevels.reduce((acc, level) => {
+    acc[level.inventory_item_id] = acc[level.inventory_item_id] ?? []
+    acc[level.inventory_item_id].push(level)
     return acc
   }, {})
 }
 
-export const getLevelsByItemId = async (
+export const getLevelsByInventoryItemId = async (
   items: InventoryItemDTO[],
   locationIds: string[],
   inventoryService: IInventoryService
 ) => {
   const [levels] = await inventoryService.listInventoryLevels({
-    inventory_item_id: items.map((i) => i.id),
+    inventory_item_id: items.map((inventoryItem) => inventoryItem.id),
   })
 
   const levelsWithAvailability: LevelWithAvailability[] = await Promise.all(
@@ -51,28 +45,21 @@ export const getLevelsByItemId = async (
     })
   )
 
-  return buildLevelsByItemId(levelsWithAvailability, locationIds)
+  return buildLevelsByInventoryItemId(levelsWithAvailability, locationIds)
 }
 
 export const joinLevels = async (
-  items: InventoryItemDTO[],
+  inventoryItems: InventoryItemDTO[],
   locationIds: string[],
   inventoryService: IInventoryService
 ) => {
-  const levelsByItemId = await getLevelsByItemId(
-    items,
+  const levelsByItemId = await getLevelsByInventoryItemId(
+    inventoryItems,
     locationIds,
     inventoryService
   )
-
-  const responseItems = items.map((i) => {
-    const responseItem: ResponseInventoryItem = { ...i }
-    responseItem.location_levels = levelsByItemId[i.id] || []
-    return responseItem
-  })
-  return responseItems
-}
-
-type ResponseInventoryItem = Partial<InventoryItemDTO> & {
-  location_levels?: InventoryLevelDTO[]
+  return inventoryItems.map((inventoryItem) => ({
+    ...inventoryItem,
+    location_levels: levelsByItemId[inventoryItem.id] || [],
+  }))
 }
