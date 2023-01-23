@@ -23,6 +23,10 @@ import { StringComparisonOperator } from "./common"
  *     type: string
  *     description: Stock location address' complement
  *     example: apartment 4432
+ *   company:
+ *     type: string
+ *     description: Stock location company' name
+ *     example: Medusa
  *   city:
  *     type: string
  *     description: Stock location address' city
@@ -64,6 +68,7 @@ export type StockLocationAddressDTO = {
   id?: string
   address_1: string
   address_2?: string | null
+  company?: string | null
   country_code: string
   city?: string | null
   phone?: string | null
