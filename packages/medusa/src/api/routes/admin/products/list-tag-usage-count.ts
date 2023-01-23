@@ -33,21 +33,7 @@ import { ProductService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             tags:
- *               type: array
- *               items:
- *                 properties:
- *                   id:
- *                     description: The ID of the tag.
- *                     type: string
- *                   usage_count:
- *                     description: The number of products that use this tag.
- *                     type: string
- *                   value:
- *                     description: The value of the tag.
- *                     type: string
+ *           $ref: "#/components/schemas/AdminProductsListTagsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

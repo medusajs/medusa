@@ -18,6 +18,8 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

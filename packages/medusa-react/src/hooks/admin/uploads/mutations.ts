@@ -6,7 +6,11 @@ import {
   AdminUploadsRes,
 } from "@medusajs/medusa"
 import { AdminCreateUploadPayload, Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 

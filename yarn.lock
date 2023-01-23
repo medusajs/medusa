@@ -1895,7 +1895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.6.2, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2, @babel/runtime@npm:^7.9.6":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.10.4, @babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2, @babel/runtime@npm:^7.9.6":
   version: 7.18.6
   resolution: "@babel/runtime@npm:7.18.6"
   dependencies:
@@ -4357,12 +4357,12 @@ __metadata:
     typeorm: ^0.2.31
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": 1.x.x
-    medusa-interfaces: 1.x.x
+    "@medusajs/medusa": 1.7.5
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@^1.3.5, @medusajs/medusa-cli@workspace:packages/medusa-cli":
+"@medusajs/medusa-cli@^1.3.6, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
   dependencies:
@@ -4389,7 +4389,7 @@ __metadata:
     jest: ^25.5.2
     meant: ^1.0.1
     medusa-core-utils: ^1.1.31
-    medusa-telemetry: 0.0.15
+    medusa-telemetry: 0.0.16
     netrc-parser: ^3.1.6
     open: ^8.0.6
     ora: ^5.4.1
@@ -4407,11 +4407,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@^1.3.5, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@^1.3.7, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.7.3
+    "@medusajs/medusa": ^1.7.4
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^7.0.3
@@ -4423,18 +4423,18 @@ __metadata:
     typescript: ^4.9.4
     uuid: ^9.0.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.3
+    "@medusajs/medusa": ^1.7.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.1, @medusajs/medusa@^1.7.3, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.4, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
     "@babel/cli": ^7.14.3
     "@babel/core": ^7.14.3
     "@babel/preset-typescript": ^7.13.0
-    "@medusajs/medusa-cli": ^1.3.5
+    "@medusajs/medusa-cli": ^1.3.6
     "@types/express": ^4.17.13
     "@types/ioredis": ^4.28.10
     "@types/jest": ^27.5.0
@@ -4464,8 +4464,8 @@ __metadata:
     jest: ^25.5.2
     jsonwebtoken: ^8.5.1
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
-    medusa-telemetry: ^0.0.15
+    medusa-interfaces: ^1.3.4
+    medusa-telemetry: ^0.0.16
     medusa-test-utils: ^1.1.38
     morgan: ^1.9.1
     multer: ^1.4.2
@@ -4491,7 +4491,7 @@ __metadata:
     uuid: ^8.3.1
     winston: ^3.2.1
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
     typeorm: 0.2.x
   bin:
     medusa: ./cli.js
@@ -4502,14 +4502,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
-    "@medusajs/medusa": ^1.7.3
+    "@medusajs/medusa": ^1.7.4
     cross-env: ^5.2.1
     jest: ^25.5.2
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.7.3
-    medusa-interfaces: 1.3.3
+    "@medusajs/medusa": ^1.7.4
+    medusa-interfaces: 1.3.4
     typeorm: ^0.2.31
   languageName: unknown
   linkType: soft
@@ -7371,6 +7371,32 @@ __metadata:
   dependencies:
     defer-to-connect: ^2.0.0
   checksum: 73946918c025339db68b09abd91fa3001e87fc749c619d2e9c2003a663039d4c3cb89836c98a96598b3d47dec2481284ba85355392644911f5ecd2336536697f
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:4.22.0":
+  version: 4.22.0
+  resolution: "@tanstack/query-core@npm:4.22.0"
+  checksum: be3f870719ea9c53dfc3398725c92876448a2a5cd8253010226ad88e91b0586d3c5e9bb9366ca27a035d5855517b6883ec0a5d7d4437458ff5bd3acb5553974f
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^4.22.0":
+  version: 4.22.0
+  resolution: "@tanstack/react-query@npm:4.22.0"
+  dependencies:
+    "@tanstack/query-core": 4.22.0
+    use-sync-external-store: ^1.2.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-native: "*"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: aacb071935c20ec695adfce7594649b6a7683640b82b232727f1b000bb871b6e99bb98bf47b9617eb76829d6b5822a6c98d3cefb1ede90a69cc52c2c79488d14
   languageName: node
   linkType: hard
 
@@ -11105,7 +11131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"big-integer@npm:^1.6.16, big-integer@npm:^1.6.7":
+"big-integer@npm:^1.6.7":
   version: 1.6.51
   resolution: "big-integer@npm:1.6.51"
   checksum: c8139662d57f8833a44802f4b65be911679c569535ea73c5cfd3c1c8994eaead1b84b6f63e1db63833e4d4cacb6b6a9e5522178113dfdc8e4c81ed8436f1e8cc
@@ -11319,22 +11345,6 @@ __metadata:
   dependencies:
     wcwidth: ^1.0.1
   checksum: e2ce6d51dfb96bc83798796313f7436cd3eef653405c3ac748c3da36606d429b4953a1b17597e75c0a182fdd79f09528a2acc043de5df7626f22273f3bb643d1
-  languageName: node
-  linkType: hard
-
-"broadcast-channel@npm:^3.4.1":
-  version: 3.7.0
-  resolution: "broadcast-channel@npm:3.7.0"
-  dependencies:
-    "@babel/runtime": ^7.7.2
-    detect-node: ^2.1.0
-    js-sha3: 0.8.0
-    microseconds: 0.2.0
-    nano-time: 1.0.0
-    oblivious-set: 1.0.0
-    rimraf: 3.0.2
-    unload: 2.2.0
-  checksum: 95978446f24c685be666f5508a91350bcd4075c08feda929d26c0c678fb24bd421901f19fa8d36cb6f5ed480a334072f3bdce48fa177a8cb29793d88693911cc
   languageName: node
   linkType: hard
 
@@ -14238,13 +14248,6 @@ __metadata:
   version: 1.1.0
   resolution: "detect-node-es@npm:1.1.0"
   checksum: e562f00de23f10c27d7119e1af0e7388407eb4b06596a25f6d79a360094a109ff285de317f02b090faae093d314cf6e73ac3214f8a5bb3a0def5bece94557fbe
-  languageName: node
-  linkType: hard
-
-"detect-node@npm:^2.0.4, detect-node@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "detect-node@npm:2.1.0"
-  checksum: f039f601790f2e9d4654e499913259a798b1f5246ae24f86ab5e8bd4aaf3bce50484234c494f11fb00aecb0c6e2733aa7b1cf3f530865640b65fbbd65b2c4e09
   languageName: node
   linkType: hard
 
@@ -22351,13 +22354,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-sha3@npm:0.8.0":
-  version: 0.8.0
-  resolution: "js-sha3@npm:0.8.0"
-  checksum: 43a21dc7967c871bd2c46cb1c2ae97441a97169f324e509f382d43330d8f75cf2c96dba7c806ab08a425765a9c847efdd4bffbac2d99c3a4f3de6c0218f40533
-  languageName: node
-  linkType: hard
-
 "js-string-escape@npm:^1.0.1":
   version: 1.0.1
   resolution: "js-string-escape@npm:1.0.1"
@@ -24003,16 +23999,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"match-sorter@npm:^6.0.2":
-  version: 6.3.1
-  resolution: "match-sorter@npm:6.3.1"
-  dependencies:
-    "@babel/runtime": ^7.12.5
-    remove-accents: 0.4.2
-  checksum: fb805e1f8cd1a41846dd5dcbba810a3bff3e1436a34a8226201d3f7518970171a7dbedb0d99677a6dce2a2925e4fc3cf1d0d82a1203ac9ef65d13d5d290b1dad
-  languageName: node
-  linkType: hard
-
 "math-random@npm:^1.0.1":
   version: 1.0.4
   resolution: "math-random@npm:1.0.4"
@@ -24215,10 +24201,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24243,10 +24229,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24271,11 +24257,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24296,9 +24282,9 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24313,7 +24299,7 @@ __metadata:
     "@babel/plugin-transform-runtime": ^7.7.6
     "@babel/preset-env": ^7.7.5
     "@babel/runtime": ^7.9.6
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.4
     axios: ^0.20.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -24322,13 +24308,13 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
-"medusa-interfaces@*, medusa-interfaces@^1.3.1, medusa-interfaces@^1.3.3, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@*, medusa-interfaces@^1.3.4, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -24376,10 +24362,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24405,10 +24391,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24429,10 +24415,10 @@ __metadata:
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
     jest: ^25.5.2
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.38
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24458,10 +24444,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.32
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.38
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24486,11 +24472,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24514,9 +24500,9 @@ __metadata:
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
     typeorm: 0.x
   languageName: unknown
   linkType: soft
@@ -24544,11 +24530,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.1
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     randomatic: ^3.1.1
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24573,11 +24559,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     redis: ^3.0.2
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24601,10 +24587,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     randomatic: ^3.1.1
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24629,11 +24615,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24652,9 +24638,9 @@ __metadata:
     axios: ^0.20.0
     cross-env: ^5.2.1
     jest: ^25.5.2
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24680,10 +24666,10 @@ __metadata:
     jest: ^25.5.2
     mailchimp-api-v3: ^1.14.0
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24706,10 +24692,10 @@ __metadata:
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     meilisearch: 0.27.0
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24728,13 +24714,13 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     pg: ^8.5.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.1
-    medusa-interfaces: 1.x
+    "@medusajs/medusa": ^1.7.4
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24760,10 +24746,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24788,10 +24774,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24816,11 +24802,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24842,11 +24828,11 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
     twilio: ^3.49.1
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24870,10 +24856,10 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.2
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.x
+    medusa-interfaces: 1.3.4
   languageName: unknown
   linkType: soft
 
@@ -24882,8 +24868,8 @@ __metadata:
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
     "@babel/core": ^7.16.0
-    "@medusajs/medusa": ^1.7.1
-    "@medusajs/medusa-js": ^1.3.5
+    "@medusajs/medusa": ^1.7.4
+    "@medusajs/medusa-js": ^1.3.7
     "@size-limit/preset-small-lib": ^6.0.4
     "@storybook/addon-contexts": ^5.3.21
     "@storybook/addon-essentials": ^6.3.12
@@ -24891,6 +24877,7 @@ __metadata:
     "@storybook/addon-links": ^6.3.12
     "@storybook/addons": ^6.3.12
     "@storybook/react": ^6.3.12
+    "@tanstack/react-query": ^4.22.0
     "@testing-library/react": ^12.1.2
     "@testing-library/react-hooks": ^7.0.2
     "@types/jest": ^27.0.3
@@ -24909,14 +24896,13 @@ __metadata:
     react-dom: ^17.0.2
     react-is: ^17.0.2
     react-json-view: ^1.21.3
-    react-query: ^3.31.0
     size-limit: ^6.0.4
     ts-jest: ^27.1.4
     tslib: ^2.3.1
   peerDependencies:
-    "@medusajs/medusa": ^1.7.1
+    "@medusajs/medusa": ^1.7.4
+    "@tanstack/react-query": ">=4.22.0"
     react: ">=16"
-    react-query: ">= 3.29.0"
   languageName: unknown
   linkType: soft
 
@@ -24944,15 +24930,15 @@ __metadata:
     jest: ^26.6.3
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.37
-    medusa-interfaces: ^1.3.3
+    medusa-interfaces: ^1.3.4
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.3
+    medusa-interfaces: 1.3.4
     typeorm: 0.x
   languageName: unknown
   linkType: soft
 
-"medusa-telemetry@0.0.15, medusa-telemetry@^0.0.15, medusa-telemetry@workspace:packages/medusa-telemetry":
+"medusa-telemetry@0.0.16, medusa-telemetry@^0.0.16, medusa-telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
   dependencies:
@@ -25238,13 +25224,6 @@ __metadata:
     snapdragon: ^0.8.1
     to-regex: ^3.0.2
   checksum: 531a32e7ac92bef60657820202be71b63d0f945c08a69cc4c239c0b19372b751483d464a850a2e3a5ff6cc9060641e43d44c303af104c1a27493d137d8af017f
-  languageName: node
-  linkType: hard
-
-"microseconds@npm:0.2.0":
-  version: 0.2.0
-  resolution: "microseconds@npm:0.2.0"
-  checksum: 59dfae1c696c0bacd79603c4df7cd0dcc9e091b7c5556aaca9b0832017d3c0b40ad8f57ca25e0ee5709ef1973404448c4a2fea6c9c1fad7d9e197ff5c1c9c2d5
   languageName: node
   linkType: hard
 
@@ -25852,15 +25831,6 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: 95204e4ed2970c0411735d866b0a71f30625e9ce598d2f7c2dfc2145dcd4e8e48dda26fda2587657f91e96973044353d300a9a6d259079b342fa4b30548aa8fa
-  languageName: node
-  linkType: hard
-
-"nano-time@npm:1.0.0":
-  version: 1.0.0
-  resolution: "nano-time@npm:1.0.0"
-  dependencies:
-    big-integer: ^1.6.16
-  checksum: 3bd12e0bcd30867178afdbe8053b3dde5fdd1c665ecd348bf879863049344fbaf05cbb1d7806a825b91efbca011ee115eee52e76fb38b7da9c97931cd9e61f15
   languageName: node
   linkType: hard
 
@@ -26771,13 +26741,6 @@ __metadata:
   version: 1.0.5
   resolution: "objectorarray@npm:1.0.5"
   checksum: 3d3db66e2052df85617ac31b98f8e51a7a883ebce24123018dacf286712aa513a0a84e82b4a6bef68889d5fc39cf08e630ee78df013023fc5161e1fdf3eaaa5a
-  languageName: node
-  linkType: hard
-
-"oblivious-set@npm:1.0.0":
-  version: 1.0.0
-  resolution: "oblivious-set@npm:1.0.0"
-  checksum: ca8640474ea1e1feb3b5c98d42f5649f114ac4513ef84774e724f22fc7e529f1de3e7f26a0d9593097ab8942ca0bb8c241f7c1bd63c3e33047dd49de3aca9805
   languageName: node
   linkType: hard
 
@@ -29480,24 +29443,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.31.0":
-  version: 3.39.1
-  resolution: "react-query@npm:3.39.1"
-  dependencies:
-    "@babel/runtime": ^7.5.5
-    broadcast-channel: ^3.4.1
-    match-sorter: ^6.0.2
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: 5a67610e7d1eb15b6137e939fa3670f5deb8e519338380d19fd7bd47ac7dbea33f15df93c717648160b3c4dc6c3885450ff22eda180cd636afdfc5ba42682384
-  languageName: node
-  linkType: hard
-
 "react-refresh@npm:^0.11.0":
   version: 0.11.0
   resolution: "react-refresh@npm:0.11.0"
@@ -30092,13 +30037,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remove-accents@npm:0.4.2":
-  version: 0.4.2
-  resolution: "remove-accents@npm:0.4.2"
-  checksum: 5cbc00efa52df29ce947a0c572ff975b011f5f197ebe7b4f6e527de26aba534cba12d502e3040b72e46ad01de3d4f2d5ef57a6593c964965e43ddb60438da0f8
-  languageName: node
-  linkType: hard
-
 "remove-trailing-separator@npm:^1.0.1":
   version: 1.1.0
   resolution: "remove-trailing-separator@npm:1.1.0"
@@ -30494,17 +30432,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:3.0.2, rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "rimraf@npm:3.0.2"
-  dependencies:
-    glob: ^7.1.3
-  bin:
-    rimraf: bin.js
-  checksum: 9cb7757acb489bd83757ba1a274ab545eafd75598a9d817e0c3f8b164238dd90eba50d6b848bd4dcc5f3040912e882dc7ba71653e35af660d77b25c381d402e8
-  languageName: node
-  linkType: hard
-
 "rimraf@npm:^2.5.4, rimraf@npm:^2.6.2, rimraf@npm:^2.6.3":
   version: 2.7.1
   resolution: "rimraf@npm:2.7.1"
@@ -30513,6 +30440,17 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 4eef73d406c6940927479a3a9dee551e14a54faf54b31ef861250ac815172bade86cc6f7d64a4dc5e98b65e4b18a2e1c9ff3b68d296be0c748413f092bb0dd40
+  languageName: node
+  linkType: hard
+
+"rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "rimraf@npm:3.0.2"
+  dependencies:
+    glob: ^7.1.3
+  bin:
+    rimraf: bin.js
+  checksum: 9cb7757acb489bd83757ba1a274ab545eafd75598a9d817e0c3f8b164238dd90eba50d6b848bd4dcc5f3040912e882dc7ba71653e35af660d77b25c381d402e8
   languageName: node
   linkType: hard
 
@@ -34601,16 +34539,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unload@npm:2.2.0":
-  version: 2.2.0
-  resolution: "unload@npm:2.2.0"
-  dependencies:
-    "@babel/runtime": ^7.6.2
-    detect-node: ^2.0.4
-  checksum: 0a4f86b502e7aa35d39c27373ebeaad4f2b7da793fb3d6308e5337aab541885cfe7b339ea4a1963477bf73fddabd5d69f4f47023dad71224b4b4a25611ef7dd8
-  languageName: node
-  linkType: hard
-
 "unpipe@npm:1.0.0, unpipe@npm:~1.0.0":
   version: 1.0.0
   resolution: "unpipe@npm:1.0.0"
@@ -34847,6 +34775,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 89f0018fd9aee1fc17c85ac18c4bf8944d460d453d0d0e04ddbc8eaddf3fa591e9c74a1f8a438a1bff368a7a2417fab380bdb3df899d2194c4375b0982736de0
+  languageName: node
+  linkType: hard
+
+"use-sync-external-store@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: ac4814e5592524f242921157e791b022efe36e451fe0d4fd4d204322d5433a4fc300d63b0ade5185f8e0735ded044c70bcf6d2352db0f74d097a238cebd2da02
   languageName: node
   linkType: hard
 

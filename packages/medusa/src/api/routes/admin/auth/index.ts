@@ -23,6 +23,13 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema AdminAuthRes
+ * type: object
+ * properties:
+ *   user:
+ *     $ref: "#/components/schemas/User"
+ */
 export type AdminAuthRes = {
   user: Omit<User, "password_hash">
 }

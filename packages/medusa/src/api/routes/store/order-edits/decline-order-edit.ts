@@ -41,10 +41,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/OrderEdit"
+ *           $ref: "#/components/schemas/StoreOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -70,7 +67,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (manager) => {
     await orderEditService.withTransaction(manager).decline(id, {
       declinedReason: validatedBody.declined_reason,
-      loggedInUserId: userId,
+      declinedBy: userId,
     })
   })
 

@@ -43,11 +43,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             publishable_api_keys:
- *               type: array
- *               $ref: "#/components/schemas/PublishableApiKey"
+ *           $ref: "#/components/schemas/AdminPublishableApiKeysListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

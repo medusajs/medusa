@@ -42,21 +42,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             notes:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Note"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminNotesListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

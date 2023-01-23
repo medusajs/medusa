@@ -8,6 +8,7 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { Fulfillment } from "../../../../models"
+import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [post] /orders/{id}/fulfillments/{fulfillment_id}/cancel
@@ -45,10 +46,7 @@ import { Fulfillment } from "../../../../models"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/Order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -66,6 +64,8 @@ export default async (req, res) => {
   const { id, fulfillment_id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
 
@@ -91,10 +91,12 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .retrieve(fulfillment_id, { relations: ["items", "items.item"] })
 
-    await adjustInventoryForCancelledFulfillment(fulfillment, {
-      productVariantInventoryService:
-        productVariantInventoryService.withTransaction(transactionManager),
-    })
+    if (fulfillment.location_id && inventoryService) {
+      await adjustInventoryForCancelledFulfillment(fulfillment, {
+        productVariantInventoryService:
+          productVariantInventoryService.withTransaction(transactionManager),
+      })
+    }
   })
 
   const order = await orderService.retrieve(id, {
