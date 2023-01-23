@@ -79,7 +79,6 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-
 export default async (req, res) => {
   const { id } = req.params
 
