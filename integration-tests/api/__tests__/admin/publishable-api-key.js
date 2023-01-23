@@ -4,7 +4,7 @@ const { IdMap } = require("medusa-test-utils")
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { useDb, initDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const {
   simplePublishableApiKeyFactory,
@@ -14,6 +14,7 @@ const {
   simpleProductFactory,
   simpleRegionFactory,
 } = require("../../factories")
+const setupServer = require("../../../helpers/setup-server")
 
 jest.setTimeout(50000)
 
@@ -37,11 +38,10 @@ describe("Publishable API keys", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [process, connection] = await startServerWithEnvironment({
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({
       cwd,
     })
-    dbConnection = connection
-    medusaProcess = process
   })
 
   afterAll(async () => {
