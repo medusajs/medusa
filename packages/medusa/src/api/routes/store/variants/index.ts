@@ -4,8 +4,8 @@ import middlewares from "../../../middlewares"
 import { featureFlagRouter } from "../../../../loaders/feature-flags"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
-import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
 
 const route = Router()
 
@@ -18,7 +18,7 @@ export default (app) => {
       extendRequestParams as unknown as RequestHandler,
       validateSalesChannelParam as unknown as RequestHandler
     )
-    route.use("/:id", validateProductSalesChannelAssociation)
+    route.use("/:id", validateProductVariantSalesChannelAssociation)
   }
 
   route.get("/", middlewares.wrap(require("./list-variants").default))
