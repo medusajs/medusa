@@ -9,6 +9,8 @@ import { PaymentCollectionService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the PaymentCollection.
+ * x-codegen:
+ *   method: markAsAuthorized
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

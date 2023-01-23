@@ -9,6 +9,8 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) invite_id=* {string} The ID of the Invite
+ * x-codegen:
+ *   method: resend
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
