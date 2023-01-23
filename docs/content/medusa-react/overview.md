@@ -65,6 +65,15 @@ In the example above, you wrap the `Storefront` component with the `MedusaProvid
 
 The `Storefront` component and its child components can now use hooks exposed by Medusa React.
 
+### MedusaProvider Optional Props
+
+You can also pass the following props to Medusa Provider:
+
+| Props               | Default                   | Description                                               |
+| ------------------- | ------------------------- | --------------------------------------------------------- |
+| `apiKey`            | `''`                      | Optional API key used for authenticating admin requests.  |
+| `publishableApiKey` | `''`                      | Optional publishable API key used for storefront requests.|
+
 ### Queries
 
 To fetch data from the Medusa server (in other words, perform `GET` requests), you can use [Queries](https://react-query-v3.tanstack.com/guides/queries). Query hooks simply wrap around react-query's `useQuery` hook to fetch data from your medusa server.

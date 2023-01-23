@@ -32,9 +32,15 @@ It is assumed that you already have a Medusa server installed and set up. If not
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
@@ -69,6 +75,37 @@ medusa.admin.products.list({
     // no gift card product is created
   }
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { Product } from "@medusajs/medusa"
+import { PricedProduct } from "@medusajs/medusa/dist/types/pricing"
+import { useAdminProducts } from "medusa-react"
+
+const GiftCard = () => {
+  const { products, isLoading } = useAdminProducts({
+    is_giftcard: true,
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {products && products.length > 0 && (
+        <ul>
+          {products.map((product: (Product | PricedProduct)) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+      {products && !products.length && <span>No Gift Cards</span>}
+    </div>
+  )
+}
+
+export default GiftCard
 ```
 
 </TabItem>
@@ -147,6 +184,55 @@ medusa.admin.products.create({
 .then(({ product }) => {
   console.log(product.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateProduct } from "medusa-react"
+import { ProductStatus } from "@medusajs/medusa"
+
+const CreateGiftCard = () => {
+  const createGiftCard = useAdminCreateProduct()
+  // ...
+
+  const handleCreate = () => {
+    createGiftCard.mutate({
+      title: "My Gift Card",
+      is_giftcard: true,
+      discountable: false,
+      status: ProductStatus.PUBLISHED,
+      options: [
+        {
+          title: "Denomination",
+        },
+      ],
+      variants: [
+        {
+          title: "1",
+          inventory_quantity: 0,
+          manage_inventory: false,
+          prices: [
+              {
+                  amount: 2000,
+                  currency_code: "usd",
+              },
+          ],
+          options: [
+              {
+                  value: "2000",
+              },
+          ],
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default CreateGiftCard
 ```
 
 </TabItem>
@@ -267,6 +353,28 @@ medusa.admin.products.update(giftCardId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateProduct } from "medusa-react"
+
+const UpdateGiftCard = () => {
+  const createGiftCard = useAdminUpdateProduct(giftCardId)
+  // ...
+
+  const handleUpdate = () => {
+    createGiftCard.mutate({
+      description: "The best gift card",
+    })
+  }
+
+  // ...
+}
+
+export default UpdateGiftCard
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -319,6 +427,26 @@ medusa.admin.products.delete(giftCardId)
 .then(({ id, object, deleted }) => {
   console.log(id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeleteProduct } from "medusa-react"
+
+const GiftCard = () => {
+  const deleteGiftCard = useAdminDeleteProduct(giftCardId)
+  // ...
+
+  const handleDelete = () => {
+    deleteGiftCard.mutate()
+  }
+
+  // ...
+}
+
+export default GiftCard
 ```
 
 </TabItem>
@@ -375,6 +503,36 @@ medusa.admin.giftCards.list()
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { GiftCard } from "@medusajs/medusa"
+import { useAdminGiftCards } from "medusa-react"
+
+const CustomGiftCards = () => {
+  const { gift_cards, isLoading } = useAdminGiftCards()
+  
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {gift_cards && !gift_cards.length && (
+        <span>No custom gift cards...</span>
+      )}
+      {gift_cards && gift_cards.length > 0 && (
+        <ul>
+          {gift_cards.map((giftCard: GiftCard) => (
+            <li key={giftCard.id}>{giftCard.code}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default CustomGiftCards
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -419,6 +577,29 @@ medusa.admin.giftCards.create({
 .then(({ gift_card }) => {
   console.log(gift_card.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateGiftCard } from "medusa-react"
+
+const CreateCustomGiftCards = () => {
+  const createGiftCard = useAdminCreateGiftCard()
+  // ...
+  
+  const handleCreate = (regionId: string, value: number) => {
+    createGiftCard.mutate({
+      region_id: regionId,
+      value,
+    })
+  }
+
+  // ...
+}
+
+export default CreateCustomGiftCards
 ```
 
 </TabItem>
@@ -483,6 +664,28 @@ medusa.admin.giftCards.update(giftCardId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateGiftCard } from "medusa-react"
+
+const UpdateCustomGiftCards = () => {
+  const updateGiftCard = useAdminUpdateGiftCard(customGiftCardId)
+  // ...
+  
+  const handleUpdate = (regionId: string) => {
+    updateGiftCard.mutate({
+      region_id: regionId,
+    })
+  }
+
+  // ...
+}
+
+export default UpdateCustomGiftCards
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -535,6 +738,26 @@ medusa.admin.giftCards.delete(giftCardId)
 .then(({ id, object, deleted }) => {
   console.log(id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeleteGiftCard } from "medusa-react"
+
+const CustomGiftCard = () => {
+  const deleteGiftCard = useAdminDeleteGiftCard(customGiftCardId)
+  // ...
+  
+  const handleDelete = () => {
+    deleteGiftCard.mutate()
+  }
+
+  // ...
+}
+
+export default CustomGiftCard
 ```
 
 </TabItem>

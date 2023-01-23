@@ -84,5 +84,5 @@ const medusa = new Medusa({
 | ------------------- | ------------------------- | --------------------------------------------------------- |
 | `maxRetries`        | `0`                       | The amount of times a request is retried.                 |
 | `baseUrl`           | `'http://localhost:9000'` | The url to which requests are made to.                    |
-| `apiKey`            | `''`                      | Optional api key used for authenticating admin requests . |
+| `apiKey`            | `''`                      | Optional API key used for authenticating admin requests.  |
 | `publishableApiKey` | `''`                      | Optional publishable API key used for storefront requests.|

@@ -72,12 +72,12 @@ const Cart = () => {
     createCart.mutate(
       {}, // create an empty cart
       {
-        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id)
+        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id),
       }
     )
   }
   
-  //...
+  // ...
 }
 
 export default Cart
@@ -134,15 +134,15 @@ const Cart = () => {
   const handleCreateCart = () => {
     createCart.mutate(
       {
-        region_id
+        region_id,
       },
       {
-        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id)
+        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id),
       }
     )
   }
   
-  //...
+  // ...
 }
 
 export default Cart
@@ -210,7 +210,7 @@ import { useGetCart } from "medusa-react"
 const Cart = () => {
   const { cart, isLoading } = useGetCart(cart_id)
   
-  //...
+  // ...
 }
 
 export default Cart
@@ -269,17 +269,17 @@ medusa.carts.update(cartId, {
 import { useCart } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const { updateCart } = useCart()
 
   const changeRegionId = (region_id: string) => {
     updateCart.mutate({
-      region_id
+      region_id,
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart
@@ -335,17 +335,17 @@ medusa.carts.update(cartId, {
 import { useCart } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const { updateCart } = useCart()
 
   const changeCustomerId = (customer_id: string) => {
     updateCart.mutate({
-      customer_id
+      customer_id,
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart
@@ -397,17 +397,17 @@ medusa.carts.update(cartId, {
 import { useCart } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const { updateCart } = useCart()
 
   const changeEmail = (email: string) => {
     updateCart.mutate({
-      email
+      email,
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart
@@ -458,18 +458,18 @@ medusa.carts.lineItems.create(cartId, {
 import { useCreateLineItem } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const createLineItem = useCreateLineItem(cart_id)
 
   const handleAddItem = () => {
     createLineItem.mutate({
       variant_id,
-      quantity
+      quantity,
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart
@@ -532,18 +532,18 @@ medusa.carts.lineItems.update(cartId, lineItemId, {
 import { useUpdateLineItem } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const updateLineItem = useUpdateLineItem(cart_id)
 
   const handleUpdateItem = () => {
     updateLineItem.mutate({
       lineId,
-      quantity: 3
+      quantity: 3,
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart
@@ -595,7 +595,7 @@ medusa.carts.lineItems.delete(cartId, lineItemId)
 import { useDeleteLineItem } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const deleteLineItem = useDeleteLineItem(cart_id)
 
@@ -605,7 +605,7 @@ const Cart = () => {
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart

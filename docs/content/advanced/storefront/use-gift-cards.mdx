@@ -75,13 +75,13 @@ medusa.products.list({
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```ts
+```tsx
 import { Product } from "@medusajs/medusa"
 import { useProducts } from "medusa-react"
 
 const GiftCard = () => {
   const { products, isLoading } = useProducts({
-    is_giftcard: true
+    is_giftcard: true,
   })
 
   return (
@@ -163,13 +163,13 @@ medusa.giftCards.retrieve(code)
 import { useGiftCard } from "medusa-react"
 
 const GiftCard = () => {
-  const { gift_card, isLoading, isError } = useGiftCard('code')
+  const { gift_card, isLoading, isError } = useGiftCard("code")
 
   return (
     <div>
       {isLoading && <span>Loading...</span>}
       {gift_card && <span>{gift_card.value}</span>}
-      {isError && <span>Gift Card doesn't exist</span>}
+      {isError && <span>Gift Card does not exist</span>}
     </div>
   )
 }
@@ -244,7 +244,7 @@ medusa.carts.update(cartId, {
 import { useCart } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const { updateCart } = useCart()
 
@@ -252,13 +252,13 @@ const Cart = () => {
     updateCart.mutate({
       gift_cards: [
         {
-          code
-        }
-      ]
+          code,
+        },
+      ],
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart

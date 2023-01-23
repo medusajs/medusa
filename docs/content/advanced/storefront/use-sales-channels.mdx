@@ -53,7 +53,7 @@ To filter products by a specific sales channel, pass the `sales_channel_id` quer
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.products.list({
   sales_channel_id: [
     salesChannelId,
@@ -67,15 +67,15 @@ medusa.products.list({
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```ts
+```tsx
 import { Product } from "@medusajs/medusa"
 import { useProducts } from "medusa-react"
 
 const Products = () => {
   const { products, isLoading } = useProducts({
     sales_channel_id: [
-      salesChannelId
-    ]
+      salesChannelId,
+    ],
   })
 
   return (
@@ -99,7 +99,7 @@ export default Products
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/products?sales_channel_id[0]=${salesChannelId}`)
 .then((response) => response.json())
 .then(({ products, limit, offset, count }) => {
@@ -126,7 +126,7 @@ To associate a sales channel with a cart while creating it, you can pass the `sa
 <TabItem value="client" label="Medusa JS Client" default>
 
 
-```jsx
+```ts
 medusa.carts.create({
   sales_channel_id: salesChannelId,
 })
@@ -147,15 +147,15 @@ const Cart = () => {
   const handleCreateCart = () => {
     createCart.mutate(
       {
-        sales_channel_id: salesChannelId
+        sales_channel_id: salesChannelId,
       },
       {
-        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id)
+        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id),
       }
     )
   }
   
-  //...
+  // ...
 }
 
 export default Cart
@@ -164,7 +164,7 @@ export default Cart
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts`, {
   method: "POST",
   headers: {
@@ -192,7 +192,7 @@ You can update the sales channel of an existing cart by passing the `sales_chann
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.update(cartId, {
   sales_channel_id: salesChannelId,
 })
@@ -208,17 +208,17 @@ medusa.carts.update(cartId, {
 import { useCart } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const { updateCart } = useCart()
 
   const changeSalesChannel = (salesChannelId: string) => {
     updateCart.mutate({
-      sales_channel_id: salesChannelId
+      sales_channel_id: salesChannelId,
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart
@@ -227,7 +227,7 @@ export default Cart
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: "POST",
   headers: {

@@ -155,15 +155,15 @@ import { useGrantOrderAccess } from "medusa-react"
 
 const ClaimOrder = () => {
   const grantOrderAccess = useGrantOrderAccess()
-  //...
+  // ...
 
   const handleVerifyOrderClaim = (token: string) => {
     grantOrderAccess.mutate(({
-      token
+      token,
     }))
   }
 
-  //...
+  // ...
 }
 
 export default ClaimOrder

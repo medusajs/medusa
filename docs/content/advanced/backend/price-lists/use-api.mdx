@@ -23,6 +23,12 @@ This guide includes code snippets to send requests to your Medusa server using M
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and [have created an instance of the client](../../../js-client/overview.md#configuration).
 
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
 ### Authenticated Admin User
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
@@ -69,13 +75,13 @@ For example, sending the following request creates a price list with two prices:
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
-import { PriceListType } from "@medusajs/medusa"
+import { PriceListStatus, PriceListType } from "@medusajs/medusa"
 
 medusa.admin.priceLists.create({
   name: "New Price List",
   description: "A new price list",
   type: PriceListType.SALE,
-  status: "active",
+  status: PriceListStatus.ACTIVE,
   prices: [
     {
       amount: 1000,
@@ -94,6 +100,46 @@ medusa.admin.priceLists.create({
 .then(({ price_list }) => {
   console.log(price_list.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { PriceListStatus, PriceListType } from "@medusajs/medusa"
+import { useAdminCreatePriceList } from "medusa-react"
+
+const CreatePriceList = () => {
+  const createPriceList = useAdminCreatePriceList()
+  // ...
+
+  const handleCreate = () => {
+    createPriceList.mutate({
+      name: "New Price List",
+      description: "A new price list",
+      type: PriceListType.SALE,
+      status: PriceListStatus.ACTIVE,
+      prices: [
+        {
+          amount: 1000,
+          variant_id,
+          currency_code: "eur",
+          max_quantity: 3,
+        },
+        {
+          amount: 1500,
+          variant_id,
+          currency_code: "eur",
+          min_quantity: 4,
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default CreatePriceList
 ```
 
 </TabItem>
@@ -186,6 +232,27 @@ medusa.admin.priceLists.retrieve(priceListId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { CustomerGroup } from "@medusajs/medusa"
+import { useAdminPriceList } from "medusa-react"
+
+const PriceList = () => {
+  const { price_list, isLoading } = useAdminPriceList(priceListId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {price_list && <span>{price_list.name}</span>}
+    </div>
+  )
+}
+
+export default PriceList
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
@@ -227,6 +294,29 @@ medusa.admin.priceLists.update(priceListId, {
 .then(({ price_list }) => {
   console.log(price_list.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { PriceListStatus, PriceListType } from "@medusajs/medusa"
+import { useAdminUpdatePriceList } from "medusa-react"
+
+const CreatePriceList = () => {
+  const updatePriceList = useAdminUpdatePriceList(priceListId)
+  // ...
+
+  const handleUpdate = () => {
+    updatePriceList.mutate({
+      ends_at: "2022-10-11",
+    })
+  }
+
+  // ...
+}
+
+export default CreatePriceList
 ```
 
 </TabItem>
@@ -299,6 +389,34 @@ medusa.admin.priceLists.addPrices(priceListId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreatePriceListPrices } from "medusa-react"
+
+const PriceList = () => {
+  const addPrice = useAdminCreatePriceListPrices(priceListId)
+  // ...
+
+  const handleAddPrice = () => {
+    addPrice.mutate({
+      prices: [
+        {
+          amount: 1200,
+          variant_id,
+          currency_code: "eur",
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default PriceList
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```jsx
@@ -364,6 +482,29 @@ medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeletePriceListProductPrices } from "medusa-react"
+
+const PriceList = () => {
+  const deletePrices = useAdminDeletePriceListProductPrices(
+    priceListId,
+    productId
+  )
+  // ...
+
+  const handleDeletePrices = () => {
+    deletePrices.mutate()
+  }
+
+  // ...
+}
+
+export default PriceList
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
@@ -407,6 +548,29 @@ medusa.admin.priceLists.deleteVariantPrices(priceListId, variantId)
 .then(({ ids, object, deleted }) => {
   console.log(ids)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeletePriceListVariantPrices } from "medusa-react"
+
+const PriceList = () => {
+  const deleteVariantPrices = useAdminDeletePriceListVariantPrices(
+    priceListId, 
+    variantId
+  )
+  // ...
+
+  const handleDeletePrices = () => {
+    deleteVariantPrices.mutate()
+  }
+
+  // ...
+}
+
+export default PriceList
 ```
 
 </TabItem>
@@ -455,6 +619,26 @@ medusa.admin.priceLists.delete(priceListId)
 .then(({ id, object, deleted }) => {
   console.log(id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeletePriceList } from "medusa-react"
+
+const PriceList = () => {
+  const deletePriceList = useAdminDeletePriceList(priceListId)
+  // ...
+
+  const handleDeletePriceList = () => {
+    deletePriceList.mutate()
+  }
+
+  // ...
+}
+
+export default PriceList
 ```
 
 </TabItem>

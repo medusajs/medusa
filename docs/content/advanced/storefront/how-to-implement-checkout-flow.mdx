@@ -87,7 +87,7 @@ medusa.carts.update(cartId, {
 import { useCart } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const { updateCart } = useCart()
 
@@ -108,7 +108,7 @@ const Cart = () => {
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart
@@ -243,19 +243,19 @@ medusa.carts.addShippingMethod(cartId, {
 
 ```tsx
 import { useAddShippingMethodToCart } from "medusa-react"
-//...
+// ...
 
 const ShippingOptions = ({ cartId }: Props) => {
-  //...
+  // ...
   const addShippingMethod = useAddShippingMethodToCart(cartId)
 
   const handleAddShippingMethod = (option_id: string) => {
     addShippingMethod.mutate({
-      option_id
+      option_id,
     })
   }
 
-  //...
+  // ...
 }
 
 export default ShippingOptions
@@ -384,15 +384,15 @@ import { useCart } from "medusa-react"
 
 const PaymentProviders = () => {
   const { cart, startCheckout, pay } = useCart()
-  //...
+  // ...
 
   const handleSetPaymentSession = (provider_id: string) => {
     pay.mutate({
-      provider_id
+      provider_id,
     })
   }
   
-  //...
+  // ...
 }
 
 export default PaymentProviders
@@ -459,12 +459,12 @@ medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
 
 ```tsx
 import { useUpdatePaymentSession, useCart } from "medusa-react"
-//...
+// ...
 
 const PaymentProviders = () => {
   const { cart } = useCart()
   const updatePaymentSession = useUpdatePaymentSession(cart.id)
-  //...
+  // ...
 
   const handleUpdatePaymentSession = (
     provider_id: string, 
@@ -472,11 +472,11 @@ const PaymentProviders = () => {
   ) => {
     updatePaymentSession.mutate({
       provider_id,
-      data
+      data,
     })
   }
 
-  //...
+  // ...
 }
 
 export default PaymentProviders
@@ -539,17 +539,17 @@ medusa.carts.complete(cartId)
 
 ```tsx
 import { useCart } from "medusa-react"
-//...
+// ...
 
 const Cart = () => {
   const { completeCheckout } = useCart()
-  //...
+  // ...
 
   const handleStartCheckout = () => {
     startCheckout.mutate()
   }
 
-  //...
+  // ...
 }
 
 export default Cart

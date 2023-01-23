@@ -43,6 +43,12 @@ This guide includes code snippets to send requests to your Medusa server using M
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
 
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+
 ### Authenticated Admin User
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
@@ -58,7 +64,7 @@ You can create a discount by sending a request to the [Create Discount](/api/adm
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
 // ...
 medusa.admin.discounts.create({
@@ -69,8 +75,10 @@ medusa.admin.discounts.create({
     allocation: AllocationType.ITEM,
   },
   regions: [
-      regionId,
+    regionId,
   ],
+  is_dynamic: false,
+  is_disabled: false,
 })
 .then(({ discount }) => {
   console.log(discount.id)
@@ -78,9 +86,43 @@ medusa.admin.discounts.create({
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateDiscount } from "medusa-react"
+import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
+
+const CreateDiscount = () => {
+  const createDiscount = useAdminCreateDiscount()
+  // ...
+
+  const handleCreate = () => {
+    // ...
+    createDiscount.mutate({
+      code,
+      rule: {
+        type: DiscountRuleType.FIXED,
+        value: 10,
+        allocation: AllocationType.ITEM,
+      },
+      regions: [
+          regionId,
+      ],
+      is_dynamic: false,
+      is_disabled: false,
+    })
+  }
+
+  // ...
+}
+
+export default CreateDiscount
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/discounts`, {
   method: "POST",
   credentials: "include",
@@ -97,6 +139,8 @@ fetch(`<YOUR_SERVER>/admin/discounts`, {
     regions: [
       regionId,
     ],
+    is_dynamic: false,
+    is_disabled: false,
   }),
 })
 .then((response) => response.json())
@@ -121,7 +165,9 @@ curl -L -X POST '<YOUR_SERVER>/admin/discounts' \
     },
     "regions": [
       "<REGION_ID>"
-    ]
+    ],
+    "is_dynamic": false,
+    "is_disabled": false
 }'
 ```
 
@@ -150,9 +196,8 @@ For example, you can update the discount’s description and status by sending t
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.discounts.update(discountId, {
-  description: "New description",
   is_disabled: true,
 })
 .then(({ discount }) => {
@@ -161,9 +206,32 @@ medusa.admin.discounts.update(discountId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateDiscount } from "medusa-react"
+
+const UpdateDiscount = () => {
+  const updateDiscount = useAdminUpdateDiscount(discount_id)
+  // ...
+
+  const handleUpdate = () => {
+    // ...
+    updateDiscount.mutate({
+      is_disabled: true,
+    })
+  }
+
+  // ...
+}
+
+export default UpdateDiscount
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
   method: "POST",
   credentials: "include",
@@ -171,7 +239,6 @@ fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    description: "New description",
     is_disabled: true,
   }),
 })
@@ -189,7 +256,6 @@ curl -L -X POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>' \
 -H 'Authorization: Bearer <API_TOKEN>' \
 -H 'Content-Type: application/json' \
 --data-raw '{
-  "description": "New description",
   "is_disabled": true
 }'
 ```
@@ -197,7 +263,7 @@ curl -L -X POST '<YOUR_SERVER>/admin/discounts/<DISCOUNT_ID>' \
 </TabItem>
 </Tabs>
 
-This request accepts the discount ID as a path parameter. You can pass the parameters you want to update in the request body. In the example above, you pass the `description` and `is_disabled` parameters to update them.
+This request accepts the discount ID as a path parameter. You can pass the parameters you want to update in the request body. In the example above, is_disabled` parameter to update it.
 
 You can check the [API reference](/api/admin/#tag/Discount/operation/PostDiscountsDiscount) for all the accepted parameters to update the discount.
 
@@ -220,7 +286,7 @@ You can send a request to the [Create Condition](/api/admin/#tag/Discount-Condit
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 import { DiscountConditionOperator } from "@medusajs/medusa"
 // ...
 medusa.admin.discounts.createCondition(discount_id, {
@@ -235,9 +301,39 @@ medusa.admin.discounts.createCondition(discount_id, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDiscountCreateCondition } from "medusa-react"
+import { DiscountConditionOperator } from "@medusajs/medusa"
+
+const Discount = () => {
+  const createCondition = useAdminDiscountCreateCondition(discount_id)
+  // ...
+
+  const handleCreateCondition = (
+    operator: DiscountConditionOperator, 
+    productId: string
+  ) => {
+    // ...
+    createCondition.mutate({
+      operator,
+      products: [
+        productId,
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default Discount
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/discounts/${discountId}/conditions`, {
   method: "POST",
   credentials: "include",
@@ -299,7 +395,7 @@ You can retrieve a condition and its resources by sending a request to the [Get 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.discounts.getCondition(discountId, conditionId, {
   expand: "products",
 })
@@ -309,9 +405,43 @@ medusa.admin.discounts.getCondition(discountId, conditionId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminGetDiscountCondition } from "medusa-react"
+import { Product } from "@medusajs/medusa"
+
+const DiscountCondition = () => {
+  const { discount_condition, isLoading } = useAdminGetDiscountCondition(
+    discount_id, 
+    conditionId
+  )
+  // ...
+
+  return (
+    <div>
+      {isLoading && <span>Loading</span>}
+      {discount_condition && (
+        <>
+          <span>{discount_condition.id}</span>
+          <ul>
+            {discount_condition.products.map((product: Product) => (
+              <li key={product.id}>{product.title}</li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  )
+}
+
+export default DiscountCondition
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(
   `<YOUR_SERVER>/admin/discounts/${discountId}` + 
   `/conditions/${conditionId}&expand=products`,
@@ -351,7 +481,7 @@ For example, to update the products in a condition:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.discounts.updateCondition(discountId, conditionId, {
   products: [
     productId1,
@@ -364,9 +494,35 @@ medusa.admin.discounts.updateCondition(discountId, conditionId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDiscountUpdateCondition } from "medusa-react"
+import { Product } from "@medusajs/medusa"
+
+const DiscountCondition = () => {
+  const updateCondition = useAdminDiscountUpdateCondition(
+    discount_id, 
+    conditionId
+  )
+  // ...
+
+  const handleUpdateCondition = (productIds: string[]) => {
+    updateCondition.mutate({
+      products: productIds,
+    })
+  }
+
+  // ...
+}
+
+export default DiscountCondition
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(
   `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`, 
   {
@@ -420,7 +576,7 @@ You can delete a condition by sending a request to the [Delete Condition](/api/a
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.discounts.deleteCondition(discountId, conditionId)
 .then(({ discount }) => {
   console.log(discount)
@@ -428,9 +584,29 @@ medusa.admin.discounts.deleteCondition(discountId, conditionId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDiscountRemoveCondition } from "medusa-react"
+
+const Discount = () => {
+  const deleteCondition = useAdminDiscountRemoveCondition(discount_id)
+  // ...
+
+  const handleUpdateCondition = (conditionId: string) => {
+    deleteCondition.mutate(conditionId)
+  }
+
+  // ...
+}
+
+export default Discount
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(
   `<YOUR_SERVER>/admin/discounts/${discountId}/conditions/${conditionId}`,
   {
@@ -468,7 +644,7 @@ You can delete a discount by sending a request to the [Delete Discount](/api/adm
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.discounts.delete(discount_id)
 .then(({ id, object, deleted }) => {
   console.log(id)
@@ -476,9 +652,29 @@ medusa.admin.discounts.delete(discount_id)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeleteDiscount } from "medusa-react"
+
+const Discount = () => {
+  const deleteDiscount = useAdminDeleteDiscount(discount_id)
+  // ...
+
+  const handleDelete = () => {
+    deleteDiscount.mutate()
+  }
+
+  // ...
+}
+
+export default Discount
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/discounts/${discountId}`, {
   method: "DELETE",
   credentials: "include",

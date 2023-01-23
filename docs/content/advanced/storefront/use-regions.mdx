@@ -64,8 +64,8 @@ medusa.regions.list()
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { Region } from "@medusajs/medusa";
-import { useRegions } from "medusa-react";
+import { Region } from "@medusajs/medusa"
+import { useRegions } from "medusa-react"
 
 const Regions = () => {
   const { regions, isLoading } = useRegions()
@@ -138,14 +138,14 @@ medusa.products.list({
 import { formatVariantPrice } from "medusa-react"
 
 const Product = () => {
-  //retrieve the region and variant(s)
-  //...
+  // retrieve the region and variant(s)
+  // ...
 
   return (
     <span>
       {formatVariantPrice({
-        variant, //ProductVariant
-        region // Region
+        variant, // ProductVariant
+        region, // Region
       })}
     </span>
   )
@@ -210,17 +210,17 @@ medusa.carts.update(cartId, {
 import { useCart } from "medusa-react"
 
 const Cart = () => {
-  //...
+  // ...
 
   const { updateCart } = useCart()
 
   const changeRegionId = (region_id: string) => {
     updateCart.mutate({
-      region_id
+      region_id,
     })
   }
 
-  //...
+  // ...
 }
 
 export default Cart

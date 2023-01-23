@@ -98,7 +98,7 @@ import { useOrderEdit } from "medusa-react"
 const OrderEdit = () => {
   const { order_edit, isLoading } = useOrderEdit(orderEditId)
 
-  //...
+  // ...
 }
 
 export default OrderEdit
@@ -155,7 +155,7 @@ All data about changes to the original order’s items can be found in `order_ed
 
 Here’s an example of how you can use this data to show the customer the requested edits to the order:
 
-```jsx
+```tsx
 <ul>
   {orderEdit.changes.map((itemChange) => (
     <li key={itemChange.id}>
@@ -224,15 +224,15 @@ import { useManagePaymentSession } from "medusa-react"
 
 const OrderEditPayment = () => {
   const managePaymentSession = useManagePaymentSession(paymentCollectionId)
-  //...
+  // ...
 
   const handleAdditionalPayment = (provider_id: string) => {
     managePaymentSession.mutate({
-      provider_id
+      provider_id,
     })
   }
 
-  //...
+  // ...
 }
 
 export default OrderEditPayment
@@ -285,14 +285,16 @@ medusa.paymentCollection
 import { useAuthorizePaymentSession } from "medusa-react"
 
 const OrderEditPayment = () => {
-  const authorizePaymentSession = useAuthorizePaymentSession(paymentCollectionId)
-  //...
+  const authorizePaymentSession = useAuthorizePaymentSession(
+    paymentCollectionId
+  )
+  // ...
 
   const handleAuthorizePayment = (paymentSessionId: string) => {
     authorizePaymentSession.mutate(paymentSessionId)
   }
 
-  //...
+  // ...
 }
 
 export default OrderEditPayment
@@ -345,13 +347,13 @@ import { useCompleteOrderEdit } from "medusa-react"
 
 const OrderEdit = () => {
   const completeOrderEdit = useCompleteOrderEdit(orderEditId)
-  //...
+  // ...
 
   const handleCompleteOrderEdit = () => {
     completeOrderEdit.mutate()
   }
 
-  //...
+  // ...
 }
 
 export default OrderEdit
@@ -412,15 +414,15 @@ import { useDeclineOrderEdit } from "medusa-react"
 
 const OrderEdit = () => {
   const declineOrderEdit = useDeclineOrderEdit(orderEditId)
-  //...
+  // ...
 
   const handleDeclineOrderEdit = () => {
     declineOrderEdit.mutate({
-      declined_reason: 'I am not satisfied'
+      declined_reason: "I am not satisfied",
     })
   }
 
-  //...
+  // ...
 }
 
 export default OrderEdit

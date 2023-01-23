@@ -74,29 +74,28 @@ medusa.customers.create({
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useCreateCustomer } from "medusa-react";
+import { useCreateCustomer } from "medusa-react"
 
 const RegisterCustomer = () => {
   const createCustomer = useCreateCustomer()
-  //...
+  // ...
 
   const handleCreate = () => {
-    //...
+    // ...
     createCustomer.mutate({
       first_name,
       last_name,
       email,
-      password
+      password,
     })
   }
 
-  //...
+  // ...
   
   return (
     <form>
       {/* Render form */}
-      <button onClick={handleCreate}>Register</button>
-    </div>
+    </form>
   )
 }
 
@@ -364,27 +363,26 @@ medusa.customers.update({
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useUpdateMe } from "medusa-react";
+import { useUpdateMe } from "medusa-react"
 
 const UpdateCustomer = () => {
   const updateCustomer = useUpdateMe()
-  //...
+  // ...
 
   const handleUpdate = () => {
-    //...
+    // ...
     updateCustomer.mutate({
       id: customer_id,
       first_name,
     })
   }
 
-  //...
+  // ...
   
   return (
     <form>
       {/* Render form */}
-      <button onClick={handleUpdate}>Update</button>
-    </div>
+    </form>
   )
 }
 
@@ -604,12 +602,12 @@ medusa.customers.listOrders()
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { useCustomerOrders } from "medusa-react";
-import { Order } from "@medusajs/medusa";
+import { useCustomerOrders } from "medusa-react"
+import { Order } from "@medusajs/medusa"
 
 const Orders = () => {
-  //refetch a function that can be used to
-  //re-retrieve orders after the customer logs in
+  // refetch a function that can be used to
+  // re-retrieve orders after the customer logs in
   const { orders, isLoading, refetch } = useCustomerOrders()
 
   return (
@@ -618,7 +616,7 @@ const Orders = () => {
       {orders?.length && (
         <ul>
           {orders.map((order: Order) => (
-            <li>{order.id}</li>
+            <li key={order.id}>{order.display_id}</li>
           ))}
         </ul>
       )}
