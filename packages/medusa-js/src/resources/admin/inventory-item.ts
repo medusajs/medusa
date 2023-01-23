@@ -96,7 +96,7 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
-   * Update an Inventory Item
+   * Update an Inventory Item's stock level at a Stock Location
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
    * @description updates an Inventory Item
