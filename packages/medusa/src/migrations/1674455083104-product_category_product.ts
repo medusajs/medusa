@@ -10,7 +10,10 @@ export class productCategoryProduct1674455083104 implements MigrationInterface {
           "product_id" character varying NOT NULL,
           "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
           "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-          CONSTRAINT "PK_product_category_product_id" PRIMARY KEY ("id")
+
+          CONSTRAINT "PK_product_category_product_id" PRIMARY KEY ("id"),
+          CONSTRAINT "FK_product_category_id" FOREIGN KEY ("product_category_id") REFERENCES product_category("id"),
+          CONSTRAINT "FK_product_id" FOREIGN KEY ("product_id") REFERENCES product("id")
         )
       `
     )
