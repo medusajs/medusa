@@ -4,6 +4,8 @@
  * summary: "User Logout"
  * x-authenticated: true
  * description: "Deletes the current session for the logged in user."
+ * x-codegen:
+ *   method: deleteSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

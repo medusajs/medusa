@@ -25,6 +25,9 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDiscountsDiscountConditionsConditionBatchReq"
+ * x-codegen:
+ *   method: addConditionResourceBatch
+ *   queryParams: AdminPostDiscountsDiscountConditionsConditionBatchParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
