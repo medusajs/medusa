@@ -14,6 +14,7 @@ import { FindParams } from "../../../../types/common"
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codegen:
  *   method: retrieve
+ *   queryParams: AdminGetStockLocationsLocationParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
