@@ -13,6 +13,7 @@ import {
   MoreThanOrEqual,
 } from "typeorm"
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
+import { isObject } from "./is-object"
 
 /**
  * Used to build TypeORM queries.
@@ -292,6 +293,24 @@ export function buildRelations<TEntity>(
   return buildRelationsOrSelect(
     relationCollection
   ) as FindOptionsRelations<TEntity>
+}
+
+export function addOrderToSelect<TEntity>(
+  order: FindOptionsOrder<TEntity>,
+  select: FindOptionsSelect<TEntity>
+): void {
+  for (const orderBy of Object.keys(order)) {
+    if (isObject(order[orderBy])) {
+      select[orderBy] =
+        select[orderBy] && isObject(select[orderBy]) ? select[orderBy] : {}
+      addOrderToSelect(order[orderBy], select[orderBy])
+      continue
+    }
+
+    select[orderBy] = isObject(select[orderBy])
+      ? { ...select[orderBy], id: true, [orderBy]: true }
+      : true
+  }
 }
 
 /**

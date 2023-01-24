@@ -1,8 +1,14 @@
-import { FindOperator, FindOptionsWhere, ILike, In } from "typeorm"
+import {
+  FindOperator,
+  FindOptionsWhere,
+  ILike,
+  In,
+  SelectQueryBuilder,
+} from "typeorm"
 import { PriceList, Product, SalesChannel } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
-import { buildLegacyFieldsListFrom, isObject } from "../utils"
+import { isObject } from "../utils"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -57,22 +63,48 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     >,
     q?: string
   ): Promise<[Product[], number]> {
+    const queryBuilder = this.prepareQueryBuilder_(options, q)
+    return await queryBuilder.getManyAndCount()
+  },
+
+  async findOne(
+    options: ExtendedFindConfig<
+      Product & {
+        price_list_id?: FindOperator<PriceList>
+        sales_channel_id?: FindOperator<SalesChannel>
+        discount_condition_id?: string
+      }
+    >
+  ) {
+    const queryBuilder = this.prepareQueryBuilder_(options)
+    return await queryBuilder.getOne()
+  },
+
+  prepareQueryBuilder_(
+    options: ExtendedFindConfig<
+      Product & {
+        price_list_id?: FindOperator<PriceList>
+        sales_channel_id?: FindOperator<SalesChannel>
+        discount_condition_id?: string
+      }
+    >,
+    q?: string
+  ): SelectQueryBuilder<Product> {
+    const options_ = { ...options }
+
     const productAlias = "product"
     const queryBuilder = this.createQueryBuilder(productAlias)
     // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
     // Therefore use query when there is only an ordering by the product entity otherwise fallback to join.
     // In other word, if the order depth is more than 1 then use join otherwise use query
-    const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
+    /* const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
       options.order ?? {}
     )
     const isDepth1 = !orderFieldsCollectionPointSeparated.some(
       (field) => field.indexOf(".") !== -1
     )
-    queryBuilder.expressionMap.relationLoadStrategy = isDepth1
-      ? "query"
-      : "join"
-
-    const options_ = { ...options }
+    options_.relationLoadStrategy = isDepth1 ? "query" : "join"*/
+    options_.relationLoadStrategy = "join"
 
     options_.relations = options_.relations ?? {}
     options_.where = options_.where as FindOptionsWhere<Product>
@@ -82,7 +114,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     if (options_.relations.variants) {
       // The query strategy, as explain at the top of the function, does not select the column from the separated query
       // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
-      queryBuilder.expressionMap.relationLoadStrategy = "join"
+      options_.relationLoadStrategy = "join"
       queryBuilder.leftJoinAndSelect(`${productAlias}.variants`, "variants")
 
       options_.order = options_.order ?? {}
@@ -143,7 +175,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       const scIds = (options_.where.sales_channel_id as FindOperator<string[]>)
         .value
 
-      // Same comment as in the tags if block above
+      // Same comment as in the tags if block above + inner join is only doable using the query builder and not the options
 
       joinMethod(
         `${productAlias}.sales_channels`,
@@ -158,6 +190,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (options_.where.discount_condition_id) {
+      // inner join is only doable using the query builder and not the options
+
       queryBuilder.innerJoin(
         "discount_condition_product",
         "dc_product",
@@ -207,7 +241,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       queryBuilder.withDeleted()
     }
 
-    return await queryBuilder.setFindOptions(options_).getManyAndCount()
+    queryBuilder.setFindOptions(options_)
+    return queryBuilder
   },
 })
 export default ProductRepository

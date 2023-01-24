@@ -1,5 +1,5 @@
-import { In, MoreThan, Not } from "typeorm"
-import { buildLegacyFieldsListFrom, buildQuery } from "../build-query"
+import { FindOptionsOrder, FindOptionsSelect, In, MoreThan, Not } from "typeorm"
+import { addOrderToSelect, buildLegacyFieldsListFrom, buildQuery } from "../build-query"
 
 describe("buildQuery", () => {
   it("successfully creates query", () => {
@@ -260,4 +260,35 @@ describe("buildLegacyFieldsListFrom", () => {
       "items.variant.id"
     ]))
   })
+
+  describe('addOrderToSelect', function () {
+    it("successfully add the order fields to the select object", () => {
+      const select: FindOptionsSelect<any> = {
+        item: {
+          variant: {
+            id: true
+          }
+        }
+      }
+
+      const order: FindOptionsOrder<any> = {
+        item: {
+          variant: {
+            rank: true
+          }
+        }
+      }
+
+      addOrderToSelect(order, select)
+
+      expect(select).toEqual({
+        item: {
+          variant: {
+            id: true,
+            rank: true
+          }
+        }
+      })
+    })
+  });
 })
