@@ -1,3 +1,7 @@
+---
+description: 'Medusa is composed of three architectures: Medusa server, admin dashboard, and storefront. It also provides advanced ecommerce features such as order management and automated RMA flows.'
+---
+
 # Overview
 
 ## Architecture
