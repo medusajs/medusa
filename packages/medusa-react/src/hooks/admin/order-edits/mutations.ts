@@ -15,10 +15,10 @@ import {
   AdminPostOrderEditsReq,
 } from "@medusajs/medusa"
 
-import { adminOrderEditsKeys } from "."
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminOrderKeys } from "../orders"
+import { adminOrderEditsKeys } from "./queries"
 
 export const useAdminCreateOrderEdit = (
   options?: UseMutationOptions<
@@ -34,7 +34,7 @@ export const useAdminCreateOrderEdit = (
       client.admin.orderEdits.create(payload),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderKeys.details()],
+      [adminOrderEditsKeys.lists(), adminOrderKeys.details()].flat(),
       options
     )
   )
@@ -55,7 +55,7 @@ export const useAdminDeleteOrderEdit = (
         adminOrderEditsKeys.detail(id),
         adminOrderEditsKeys.lists(),
         adminOrderKeys.details(),
-      ],
+      ].flat(),
       options
     )
   )
