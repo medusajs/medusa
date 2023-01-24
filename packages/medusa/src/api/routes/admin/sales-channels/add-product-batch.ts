@@ -19,6 +19,8 @@ import { Type } from "class-transformer"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostSalesChannelsChannelProductsBatchReq"
+ * x-codegen:
+ *   method: addProducts
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

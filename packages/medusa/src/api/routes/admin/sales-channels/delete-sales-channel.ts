@@ -11,6 +11,8 @@ import { SalesChannelService } from "../../../../services/"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales channel.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
