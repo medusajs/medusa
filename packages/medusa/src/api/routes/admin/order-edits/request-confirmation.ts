@@ -19,6 +19,8 @@ import {
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to request confirmation from.
+ * x-codegen:
+ *   method: requestConfirmation
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
