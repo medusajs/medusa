@@ -2699,6 +2699,162 @@ describe("/admin/order-edits", () => {
     })
   })
 
+  describe("Preserve custom adjustments on items change", () => {
+    let product
+    let product2
+    const orderId = IdMap.getId("order-1")
+    const prodId1 = IdMap.getId("product-1")
+    const prodId2 = IdMap.getId("product-2")
+    const lineItemId1 = IdMap.getId("line-item-1")
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      product = await simpleProductFactory(dbConnection, {
+        id: prodId1,
+      })
+
+      product2 = await simpleProductFactory(dbConnection, {
+        id: prodId2,
+      })
+
+      await simpleOrderFactory(dbConnection, {
+        id: orderId,
+        email: "test@testson.com",
+        line_items: [
+          {
+            adjustments: [
+              {
+                item_id: lineItemId1,
+                amount: 200,
+                description: "custom adjustment that should be persisted",
+              },
+            ],
+            id: lineItemId1,
+            variant_id: product.variants[0].id,
+            quantity: 1,
+            fulfilled_quantity: 1,
+            shipped_quantity: 1,
+            unit_price: 1000,
+            tax_lines: [
+              {
+                item_id: lineItemId1,
+                rate: 12.5,
+                code: "default",
+                name: "default",
+              },
+            ],
+          },
+        ],
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("preserve custom line item on update item change", async () => {
+      const api = useApi()
+
+      const {
+        data: { order_edit },
+      } = await api.post(
+        `/admin/order-edits/`,
+        {
+          order_id: orderId,
+          internal_note: "This is an internal note",
+        },
+        adminHeaders
+      )
+
+      const orderEditId = order_edit.id
+      const updateItemId = order_edit.items.find(
+        (item) => item.original_item_id === lineItemId1
+      ).id
+
+      const response = await api.post(
+        `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
+        { quantity: 2 },
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order_edit.changes).toHaveLength(1)
+      expect(response.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: orderEditId,
+          changes: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              deleted_at: null,
+              type: "item_update",
+              order_edit_id: orderEditId,
+              original_line_item_id: lineItemId1,
+              line_item_id: expect.any(String),
+              line_item: expect.objectContaining({
+                id: expect.any(String),
+                // adjustments: expect.arrayContaining([
+                //   expect.objectContaining({
+                //     amount: 200,
+                //     description: "custom adjustment that should be persisted",
+                //     discount_id: null,
+                //   }),
+                // ]),
+              }),
+              original_line_item: expect.objectContaining({
+                id: lineItemId1,
+                // adjustments: expect.arrayContaining([
+                //   expect.objectContaining({
+                //     item_id: lineItemId1,
+                //     amount: 200,
+                //     description: "custom adjustment that should be persisted",
+                //     discount_id: null,
+                //   }),
+                // ]),
+              }),
+            }),
+          ]),
+          status: "created",
+          order_id: orderId,
+          internal_note: "This is an internal note",
+          created_by: "admin_user",
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              original_item_id: lineItemId1,
+              order_edit_id: orderEditId,
+              quantity: 2,
+              adjustments: expect.arrayContaining([
+                expect.objectContaining({
+                  amount: 200,
+                  description: "custom adjustment that should be persisted",
+                  discount_id: null,
+                }),
+              ]),
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  rate: 12.5,
+                  name: "default",
+                  code: "default",
+                }),
+              ]),
+            }),
+          ]),
+          discount_total: 0,
+          gift_card_total: 0,
+          gift_card_tax_total: 0,
+          shipping_total: 0,
+          subtotal: 3000,
+          tax_total: 375,
+          total: 3375,
+        })
+      )
+    })
+  })
+
   describe("DELETE /admin/order-edits/:id/items/:item_id", () => {
     let product
     let product2
