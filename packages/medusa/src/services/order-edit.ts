@@ -567,9 +567,7 @@ export default class OrderEditService extends TransactionBaseService {
       let lineItem = await lineItemServiceTx.create(lineItemData)
       lineItem = await lineItemServiceTx.retrieve(lineItem.id)
 
-      await this.refreshAdjustments(orderEditId, {
-        preserveCustomAdjustments: true,
-      })
+      await this.refreshAdjustments(orderEditId)
 
       /**
        * Generate a change record
