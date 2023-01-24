@@ -13,7 +13,6 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - (path) id=* {string} The id of the Order.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
