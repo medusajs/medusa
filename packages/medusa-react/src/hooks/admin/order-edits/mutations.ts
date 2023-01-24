@@ -34,7 +34,7 @@ export const useAdminCreateOrderEdit = (
       client.admin.orderEdits.create(payload),
     buildOptions(
       queryClient,
-      [adminOrderEditsKeys.lists(), adminOrderKeys.details()].flat(),
+      [adminOrderEditsKeys.lists(), adminOrderKeys.details()],
       options
     )
   )
@@ -55,7 +55,7 @@ export const useAdminDeleteOrderEdit = (
         adminOrderEditsKeys.detail(id),
         adminOrderEditsKeys.lists(),
         adminOrderKeys.details(),
-      ].flat(),
+      ],
       options
     )
   )
