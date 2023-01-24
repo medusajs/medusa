@@ -2854,60 +2854,6 @@ describe("/admin/order-edits", () => {
         })
       )
     })
-
-    it("copies custom line item adjustment", async () => {
-      const api = useApi()
-
-      const response = await api.post(
-        `/admin/order-edits/${orderEditId}/items`,
-        { variant_id: toBeAddedVariantId, quantity: 2 },
-        adminHeaders
-      )
-
-      expect(response.status).toEqual(200)
-      expect(response.data.order_edit).toEqual(
-        expect.objectContaining({
-          id: orderEditId,
-          created_by: "admin_user",
-          requested_by: null,
-          canceled_by: null,
-          confirmed_by: null,
-          // "Add item" change has been created
-          changes: [
-            expect.objectContaining({
-              type: "item_add",
-              order_edit_id: orderEditId,
-              original_line_item_id: null,
-              line_item_id: expect.any(String),
-            }),
-          ],
-          items: expect.arrayContaining([
-            expect.objectContaining({
-              variant: expect.objectContaining({ id: toBeAddedVariantId }),
-              quantity: 2,
-              order_id: null, // <-- NOT associated with the order at this point
-              tax_lines: [
-                expect.objectContaining({
-                  rate: 12.5,
-                  name: "default",
-                  code: "default",
-                }),
-              ],
-            }),
-          ]),
-          /*
-           * Computed totals are appended to the response
-           */
-          discount_total: 0,
-          gift_card_total: 0,
-          gift_card_tax_total: 0,
-          shipping_total: 0,
-          subtotal: 2 * 200,
-          tax_total: 0.125 * 2 * 200,
-          total: 400 + 50,
-        })
-      )
-    })
   })
 
   describe("DELETE /admin/order-edits/:id/items/:item_id", () => {
