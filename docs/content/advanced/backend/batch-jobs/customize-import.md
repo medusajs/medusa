@@ -1,4 +1,8 @@
-# Customize Import Strategy
+---
+description: 'Learn how to customize the import strategy in Medusa. The import strategy can be used to import entities such as products, prices in a price list, orders, or other entities. This guide also includes how to test the import strategy.'
+---
+
+# How to Customize Import Strategy
 
 In this document, you’ll learn how to create a custom product import strategy either by overwriting the default strategy or creating your own.
 

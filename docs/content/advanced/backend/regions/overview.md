@@ -1,3 +1,7 @@
+---
+description: 'Learn about what Regions are and how they are used in a Medusa server. Regions represent at least one country on the Medusa server. Learn about the different relations that a Region has with other entities.'
+---
+
 # Regions Overview
 
 In this document, you’ll learn about Regions and their importance in your Medusa server.

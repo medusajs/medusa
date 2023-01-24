@@ -1,3 +1,7 @@
+---
+description: 'Learn how to create a migration in the Medusa server. Migrations are used to make changes to the database schema the Medusa server is connected to. This guide explains how to write and run migrations.'
+---
+
 # How to Create Migrations
 
 In this document, you’ll learn how to create a [Migration](overview.md) using [Typeorm](https://typeorm.io) on your Medusa server.

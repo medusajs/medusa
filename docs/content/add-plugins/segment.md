@@ -1,3 +1,7 @@
+---
+description: 'Learn how to integrate Segment with the Medusa server. Segment can be used to track ecommerce events and push them to other destinations using Segment. Learn how to add custom tracking with Segment and Medusa.'
+---
+
 # Segment
 
 In this document, you’ll learn about the [Segment plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-segment), what it does, and how to install and use it.

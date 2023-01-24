@@ -1,3 +1,7 @@
+---
+description: 'Learn how to integrate Algolia with the Medusa server. Algolia is a search engine service that allows developers to integrate advanced search functionalities into an ecommerce storefront. Learn how to install the Algolia plugin into the Medusa server and how to integrate it into a storefront.'
+---
+
 # Algolia
 
 In this document, you’ll learn how to install the [Algolia plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-algolia) and use it on both your Medusa Server and your storefront.

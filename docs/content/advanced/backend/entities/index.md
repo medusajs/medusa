@@ -1,3 +1,7 @@
+---
+description: 'Learn how to create an entity in the Medusa server. Entities are a representation of database tables in the Medusa server. This guide also explains how to create a repository and access and delete the entity.'
+---
+
 # Create an Entity
 
 In this document, you’ll learn how you can create an [Entity](overview.md).

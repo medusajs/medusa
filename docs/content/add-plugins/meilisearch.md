@@ -1,3 +1,7 @@
+---
+description: 'Learn how to integrate MeiliSearch with the Medusa server. MeiliSearch is an open source search engine that can be integrated with ecommerce platforms. Learn how to install the MeiliSearch plugin on the Medusa server and how to integrate it into the storefront.'
+---
+
 # MeiliSearch
 
 In this document, you’ll learn how to install the [MeiliSearch plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-meilisearch) and use it on both your Medusa Server and your storefront.

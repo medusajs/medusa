@@ -1,3 +1,7 @@
+---
+description: 'Learn how to integrate Stripe with the Medusa server. Stripe is a payment provider that is used by businesses around the world. Learn how to install the Stripe plugin on the Medusa server and integrate it into a storefront.'
+---
+
 # Stripe
 
 This document guides you through setting up Stripe payments in your Medusa server, admin, and storefront using the [Stripe Plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-stripe).

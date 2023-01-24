@@ -1,3 +1,7 @@
+---
+description: 'Learn what batch jobs in the Medusa server are. Batch jobs are tasks that can be performed asynchronously and iteratively in the Medusa server. Learn about Batch Job strategies and about the general flow of batch jobs.'
+---
+
 # Batch Jobs
 
 In this document, you’ll learn what Batch Jobs are and how they work in Medusa.

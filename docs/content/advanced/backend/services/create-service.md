@@ -1,3 +1,7 @@
+---
+description: 'Learn how to create a service in Medusa. A service allows bundling a set of methods related to an entity. This guide also includes how to use services in other services, subscribers, and endpoints.'
+---
+
 # Create a Service
 
 In this document, you’ll learn how you can create a [Service](./overview.md) and use it across your Medusa server just like any of the core services.

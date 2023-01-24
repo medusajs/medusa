@@ -1,4 +1,8 @@
-# Override Price Selection Strategy
+---
+description: 'Learn how to override the price selection strategy. The price selection strategy is used to determine the best price based on a specific context. This guide also includes how to test it out.'
+---
+
+# How to Override Price Selection Strategy
 
 In this document, you’ll learn how to override Medusa’s price selection strategy to create a custom pricing strategy.
 

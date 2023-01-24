@@ -1,3 +1,7 @@
+---
+description: 'Learn how to create a scheduled job in the Medusa server. A scheduled job is used to run a task at a specific time during the lifetime of the server. The scheduled job in this example will simply change the status of draft products to published.'
+---
+
 # How to Create a Scheduled Job
 
 In this document, you’ll learn how to create a scheduled job in Medusa.

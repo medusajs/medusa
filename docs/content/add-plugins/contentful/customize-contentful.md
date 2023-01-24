@@ -1,3 +1,7 @@
+---
+description: 'Learn how to customize the Contentful integration with Medusa and how to customize the Gatsby storefront that is connected to Contentful. Learn how to create migrations on the Medusa server and create new content models.'
+---
+
 # Customize your Medusa and Contentful Integration
 
 In this document, you’ll learn how to customize the Contentful integration with Medusa and how to customize the Gatsby storefront that is connected to Contentful.

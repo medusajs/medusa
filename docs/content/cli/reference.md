@@ -1,3 +1,7 @@
+---
+description: 'Learn how to install the Medusa CLI Tool. Medusa CLI Tool can be used to perform actions such as create a new Medusa server, run migrations, create a new admin user, and more.'
+---
+
 # CLI Reference
 
 This document serves as a reference to the Medusa CLI tool including how to install it and what commands are available.

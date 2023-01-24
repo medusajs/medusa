@@ -1,3 +1,7 @@
+---
+description: 'Learn about what Customers are in Medusa and how they are implemented. Customers are individuals that make purchases in your store. They can be guest or registered customers. Learn about the different relations customers have with other entities.'
+---
+
 # Customers
 
 In this document, you’ll learn about Customers and their relation to other entities in Medusa.

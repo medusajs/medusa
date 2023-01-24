@@ -1,3 +1,7 @@
+---
+description: 'Learn how to integrate Slack with the Medusa server. The Slack plugin can be used to receive order notifications from the Medusa server. Learn how to create and configure a Slack app and install the Slack plugin on the Medusa server.'
+---
+
 # Slack
 
 In this documentation, you'll learn how to add the [Slack plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-slack-notification) to your Medusa server to start receiving order notifications.

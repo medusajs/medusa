@@ -1,3 +1,7 @@
+---
+description: 'Learn how to integrate PayPal with the Medusa server. PayPal is a payment providers used by millions around the world. Learn how to install the PayPal plugin on the Medusa server and integrate into a storefront.'
+---
+
 # PayPal
 
 This document guides you through setting up PayPal as a payment provider in your Medusa server, admin, and storefront using the [PayPal plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-paypal).

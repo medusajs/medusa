@@ -1,3 +1,7 @@
+---
+description: 'Learn how to integrate Klarna with the Medusa server. Klarna is a payment provider that allows customers to pay in different ways including direct payments or installment payments. Learn how to install Klarna and enable the payment provider in a region.'
+---
+
 # Klarna
 
 In this document, you’ll learn how to integrate Klarna as a payment provider in Medusa.
