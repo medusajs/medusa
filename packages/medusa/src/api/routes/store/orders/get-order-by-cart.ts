@@ -9,6 +9,8 @@ import { OrderService } from "../../../../services"
  * description: "Retrieves an Order by the id of the Cart that was used to create the Order."
  * parameters:
  *   - (path) cart_id=* {string} The ID of Cart.
+ * x-codegen:
+ *   method: retrieveByCartId
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

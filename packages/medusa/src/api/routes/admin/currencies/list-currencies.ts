@@ -18,6 +18,9 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   - (query) order {string} order to retrieve products in.
  *   - (query) offset=0 {number} How many products to skip in the result.
  *   - (query) limit=20 {number} Limit the number of products returned.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetCurrenciesParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
