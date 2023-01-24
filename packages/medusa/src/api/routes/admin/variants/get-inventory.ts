@@ -127,7 +127,7 @@ export default async (req, res) => {
           }
         }
 
-        const inventory_quantity = Math.min(
+        const quantity = Math.min(
           ...(await Promise.all(
             variantInventoryItems.map(async (variantInventory) => {
               return (
@@ -144,7 +144,7 @@ export default async (req, res) => {
         return {
           channel_name: channel.name as string,
           channel_id: channel.id as string,
-          available_quantity: inventory_quantity || 0,
+          available_quantity: quantity || 0,
         }
       })
     )
