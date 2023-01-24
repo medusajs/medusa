@@ -153,6 +153,9 @@ import { pick } from "lodash"
  *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetOrdersParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
