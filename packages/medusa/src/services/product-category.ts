@@ -58,7 +58,8 @@ class ProductCategoryService extends TransactionBaseService {
       skip: 0,
       take: 100,
       order: { created_at: "DESC" },
-    }
+    },
+    treeSelector: QuerySelector<ProductCategory> = {},
   ): Promise<[ProductCategory[], number]> {
     const manager = this.transactionManager_ ?? this.manager_
     const productCategoryRepo = manager.getCustomRepository(
@@ -75,7 +76,11 @@ class ProductCategoryService extends TransactionBaseService {
 
     const query = buildQuery(selector_, config)
 
-    return await productCategoryRepo.getFreeTextSearchResultsAndCount(query, q)
+    return await productCategoryRepo.getFreeTextSearchResultsAndCount(
+      query,
+      q,
+      treeSelector
+    )
   }
 
   /**

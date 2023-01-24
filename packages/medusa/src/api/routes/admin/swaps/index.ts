@@ -53,10 +53,35 @@ export const defaultAdminSwapFields = [
   "cart.total",
 ]
 
+/**
+ * @schema AdminSwapsListRes
+ * type: object
+ * properties:
+ *   swaps:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Swap"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminSwapsListRes = PaginatedResponse & {
   swaps: Swap[]
 }
 
+/**
+ * @schema AdminSwapsRes
+ * type: object
+ * properties:
+ *   swap:
+ *     $ref: "#/components/schemas/Swap"
+ */
 export type AdminSwapsRes = {
   swap: Swap
 }

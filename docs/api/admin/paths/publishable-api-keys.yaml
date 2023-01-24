@@ -28,10 +28,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              publishable_api_key:
-                $ref: ../components/schemas/PublishableApiKey.yaml
+            $ref: ../components/schemas/AdminPublishableApiKeysRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -97,11 +94,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              publishable_api_keys:
-                type: array
-                $ref: ../components/schemas/PublishableApiKey.yaml
+            $ref: ../components/schemas/AdminPublishableApiKeysListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

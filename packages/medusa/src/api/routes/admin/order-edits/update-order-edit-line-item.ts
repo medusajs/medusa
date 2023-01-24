@@ -21,6 +21,8 @@ import {
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrderEditsEditLineItemsLineItemReq"
+ * x-codegen:
+ *   method: updateLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -52,10 +54,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/OrderEdit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

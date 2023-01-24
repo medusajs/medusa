@@ -210,6 +210,9 @@ import { isDefined } from "medusa-core-utils"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetBatchParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

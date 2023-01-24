@@ -71,6 +71,11 @@ export default (app) => {
     middlewares.wrap(require("./update-stock-location").default)
   )
 
+  route.delete(
+    "/:id",
+    middlewares.wrap(require("./delete-stock-location").default)
+  )
+
   return app
 }
 
@@ -85,12 +90,53 @@ export const defaultAdminStockLocationFields: (keyof StockLocationDTO)[] = [
 
 export const defaultAdminStockLocationRelations = []
 
+/**
+ * @schema AdminStockLocationsDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Stock Location.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: stock_location
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
+export type AdminStockLocationsDeleteRes = DeleteResponse
+
+/**
+ * @schema AdminStockLocationsRes
+ * type: object
+ * properties:
+ *   stock_location:
+ *     $ref: "#/components/schemas/StockLocationDTO"
+ */
 export type AdminStockLocationsRes = {
   stock_location: StockLocationDTO
 }
 
-export type AdminStockLocationsDeleteRes = DeleteResponse
-
+/**
+ * @schema AdminStockLocationsListRes
+ * type: object
+ * properties:
+ *   stock_locations:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/StockLocationDTO"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminStockLocationsListRes = PaginatedResponse & {
   stock_locations: StockLocationDTO[]
 }

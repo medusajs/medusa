@@ -5,7 +5,7 @@ import { OrderEditStatus, PaymentCollectionStatus } from "../../../../models"
 import { OrderEditService, PaymentProviderService } from "../../../../services"
 import {
   defaultStoreOrderEditFields,
-  defaultStoreOrderEditRelations
+  defaultStoreOrderEditRelations,
 } from "../../../../types/order-edit"
 
 /**
@@ -15,6 +15,8 @@ import {
  * description: "Completes an OrderEdit."
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit.
+ * x-codegen:
+ *   method: complete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -37,10 +39,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/OrderEdit"
+ *           $ref: "#/components/schemas/StoreOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

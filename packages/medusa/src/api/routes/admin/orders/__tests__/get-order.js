@@ -30,20 +30,24 @@ describe("GET /admin/orders", () => {
       expect(OrderServiceMock.retrieveWithTotals).toHaveBeenCalledWith(
         IdMap.getId("test-order"),
         {
-          select: defaultAdminOrdersFields.filter((field) => {
-            return ![
-              "shipping_total",
-              "discount_total",
-              "tax_total",
-              "refunded_total",
-              "total",
-              "subtotal",
-              "refundable_amount",
-              "gift_card_total",
-              "gift_card_tax_total",
-            ].includes(field)
-          }),
-          relations: [...defaultAdminOrdersRelations],
+          // TODO [MEDUSA_FF_SALES_CHANNELS]: Remove when sales channel flag is removed entirely
+          select: [...defaultAdminOrdersFields, "sales_channel_id"].filter(
+            (field) => {
+              return ![
+                "shipping_total",
+                "discount_total",
+                "tax_total",
+                "refunded_total",
+                "total",
+                "subtotal",
+                "refundable_amount",
+                "gift_card_total",
+                "gift_card_tax_total",
+              ].includes(field)
+            }
+          ),
+          // TODO [MEDUSA_FF_SALES_CHANNELS]: Remove when sales channel flag is removed entirely
+          relations: [...defaultAdminOrdersRelations, "sales_channel"],
         }
       )
     })

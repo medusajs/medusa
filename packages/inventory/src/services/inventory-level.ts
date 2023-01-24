@@ -1,4 +1,4 @@
-import { getConnection, DeepPartial, EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   FindConfig,
@@ -10,10 +10,10 @@ import {
 } from "@medusajs/medusa"
 
 import { InventoryLevel } from "../models"
-import { CONNECTION_NAME } from "../config"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
+  manager: EntityManager
 }
 
 export default class InventoryLevelService extends TransactionBaseService {
@@ -28,20 +28,15 @@ export default class InventoryLevelService extends TransactionBaseService {
 
   protected readonly eventBusService_: IEventBusService
 
-  constructor({ eventBusService }: InjectedDependencies) {
+  constructor({ eventBusService, manager }: InjectedDependencies) {
     super(arguments[0])
 
     this.eventBusService_ = eventBusService
-    this.manager_ = this.getManager()
+    this.manager_ = manager
   }
 
   private getManager(): EntityManager {
-    if (this.manager_) {
-      return this.transactionManager_ ?? this.manager_
-    }
-
-    const connection = getConnection(CONNECTION_NAME)
-    return connection.manager
+    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -118,7 +113,7 @@ export default class InventoryLevelService extends TransactionBaseService {
    * @return The created inventory level.
    */
   async create(data: CreateInventoryLevelInput): Promise<InventoryLevel> {
-    const result = await this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const levelRepository = manager.getRepository(InventoryLevel)
 
       const inventoryLevel = levelRepository.create({
@@ -129,21 +124,21 @@ export default class InventoryLevelService extends TransactionBaseService {
         incoming_quantity: data.incoming_quantity,
       })
 
-      return await levelRepository.save(inventoryLevel)
-    })
+      const saved = await levelRepository.save(inventoryLevel)
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(InventoryLevelService.Events.CREATED, {
+          id: saved.id,
+        })
 
-    await this.eventBusService_.emit(InventoryLevelService.Events.CREATED, {
-      id: result.id,
+      return saved
     })
-
-    return result
   }
 
   /**
    * Updates an existing inventory level.
    * @param inventoryLevelId - The ID of the inventory level to update.
    * @param data - An object containing the properties to update on the inventory level.
-   * @param autoSave - A flag indicating whether to save the changes automatically.
    * @return The updated inventory level.
    * @throws If the inventory level ID is not defined or the given ID was not found.
    */
@@ -167,9 +162,11 @@ export default class InventoryLevelService extends TransactionBaseService {
         levelRepository.merge(item, data)
         await levelRepository.save(item)
 
-        await this.eventBusService_.emit(InventoryLevelService.Events.UPDATED, {
-          id: item.id,
-        })
+        await this.eventBusService_
+          .withTransaction(manager)
+          .emit(InventoryLevelService.Events.UPDATED, {
+            id: item.id,
+          })
       }
 
       return item
@@ -209,10 +206,12 @@ export default class InventoryLevelService extends TransactionBaseService {
       const levelRepository = manager.getRepository(InventoryLevel)
 
       await levelRepository.delete({ id: inventoryLevelId })
-    })
 
-    await this.eventBusService_.emit(InventoryLevelService.Events.DELETED, {
-      id: inventoryLevelId,
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(InventoryLevelService.Events.DELETED, {
+          id: inventoryLevelId,
+        })
     })
   }
 

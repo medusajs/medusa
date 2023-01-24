@@ -15,6 +15,8 @@ import { IdempotencyKeyService } from "../../../../services"
  *   will generate one for the request."
  * parameters:
  *   - (path) id=* {String} The Cart id.
+ * x-codegen:
+ *   method: complete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -40,31 +42,7 @@ import { IdempotencyKeyService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             type:
- *               type: string
- *               description: The type of the data property.
- *               enum: [order, cart, swap]
- *             data:
- *               type: object
- *               description: The data of the result object. Its type depends on the type field.
- *               oneOf:
- *                 - type: object
- *                   description: Cart was successfully authorized and order was placed successfully.
- *                   properties:
- *                     order:
- *                       $ref: "#/components/schemas/Order"
- *                 - type: object
- *                   description: Cart was successfully authorized but requires further actions.
- *                   properties:
- *                     cart:
- *                       $ref: "#/components/schemas/Cart"
- *                 - type: object
- *                   description: When cart is used for a swap and it has been completed successfully.
- *                   properties:
- *                     cart:
- *                       $ref: "#/components/schemas/Swap"
+ *           $ref: "#/components/schemas/StoreCompleteCartRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

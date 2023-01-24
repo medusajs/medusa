@@ -62,12 +62,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              invites:
-                type: array
-                items:
-                  $ref: ../components/schemas/Invite.yaml
+            $ref: ../components/schemas/AdminListInvitesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

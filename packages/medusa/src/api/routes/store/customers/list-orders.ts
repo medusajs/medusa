@@ -137,6 +137,9 @@ import { DateComparisonOperator } from "../../../../types/common"
  *   - (query) offset=0 {integer} The offset in the resulting orders.
  *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
  *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting orders.
+ * x-codegen:
+ *   method: listOrders
+ *   queryParams: StoreGetCustomersCustomerOrdersParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -163,21 +166,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             orders:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Order"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/StoreCustomersListOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
