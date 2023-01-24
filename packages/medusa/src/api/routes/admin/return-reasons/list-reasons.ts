@@ -12,6 +12,8 @@ import { Selector } from "../../../../types/common"
  * summary: "List Return Reasons"
  * description: "Retrieves a list of Return Reasons."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
