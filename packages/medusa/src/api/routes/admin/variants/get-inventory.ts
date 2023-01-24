@@ -144,7 +144,7 @@ export default async (req, res) => {
         return {
           channel_name: channel.name as string,
           channel_id: channel.id as string,
-          available_quantity: quantity || 0,
+          available_quantity: quantity,
         }
       })
     )
