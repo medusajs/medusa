@@ -22,6 +22,16 @@ export const ProductVariantInventoryServiceMock = {
   validateInventoryAtLocation: jest
     .fn()
     .mockImplementation((items, locationId) => {}),
+  setVariantAvailability: jest
+    .fn()
+    .mockImplementation((variants, salesChannelId) => {
+      return variants
+    }),
+  setProductAvailability: jest
+    .fn()
+    .mockImplementation((products, salesChannelId) => {
+      return products
+    }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

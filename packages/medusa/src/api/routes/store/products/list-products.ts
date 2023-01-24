@@ -10,6 +10,7 @@ import {
 import {
   CartService,
   ProductService,
+  ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -171,6 +172,8 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
@@ -214,13 +217,18 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const products = await pricingService.setProductPrices(rawProducts, {
+  const pricedProducts = await pricingService.setProductPrices(rawProducts, {
     cart_id: cart_id,
     region_id: regionId,
     currency_code: currencyCode,
     customer_id: req.user?.customer_id,
     include_discount_prices: true,
   })
+
+  const products = await productVariantInventoryService.setProductAvailability(
+    pricedProducts,
+    filterableFields.sales_channel_id
+  )
 
   res.json({
     products,
