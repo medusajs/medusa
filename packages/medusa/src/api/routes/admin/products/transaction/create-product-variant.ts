@@ -126,8 +126,7 @@ export const createVariantTransaction = async (
 
     await productVariantInventoryServiceTx.attachInventoryItem(
       variant.id,
-      inventoryItem.id,
-      input.inventory_quantity
+      inventoryItem.id
     )
   }
 

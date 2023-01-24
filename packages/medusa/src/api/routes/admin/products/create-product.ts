@@ -143,8 +143,8 @@ export default async (req, res) => {
       .create({ ...validated, profile_id: shippingProfile.id })
 
     if (variants) {
-      for (const [i, variant] of variants.entries()) {
-        variant["variant_rank"] = i
+      for (const [index, variant] of variants.entries()) {
+        variant["variant_rank"] = index
       }
 
       const optionIds =
@@ -163,13 +163,15 @@ export default async (req, res) => {
       try {
         await Promise.all(
           variants.map(async (variant) => {
+            const options =
+              variant?.options?.map((option, index) => ({
+                ...option,
+                option_id: optionIds[index],
+              })) || []
+
             const input = {
               ...variant,
-              options:
-                variant?.options?.map((o, index) => ({
-                  ...o,
-                  option_id: optionIds[index],
-                })) || [],
+              options,
             }
 
             const varTransation = await createVariantTransaction(
