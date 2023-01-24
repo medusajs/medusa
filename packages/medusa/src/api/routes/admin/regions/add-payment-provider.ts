@@ -19,6 +19,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostRegionsRegionPaymentProvidersReq"
+ * x-codegen:
+ *   method: addPaymentProvider
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

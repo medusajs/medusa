@@ -1,6 +1,6 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
-import { Type, Transform } from "class-transformer"
+import { Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
@@ -20,6 +20,9 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetProductCategoriesParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

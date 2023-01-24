@@ -15,6 +15,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       schema:
  *         $ref: "#/components/schemas/AdminPostPublishableApiKeysReq"
  * x-authenticated: true
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
