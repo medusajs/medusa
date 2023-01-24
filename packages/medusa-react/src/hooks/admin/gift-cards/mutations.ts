@@ -9,9 +9,9 @@ import {
   UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query"
-import { adminGiftCardKeys } from "."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminGiftCardKeys } from "./queries"
 
 export const useAdminCreateGiftCard = (
   options?: UseMutationOptions<

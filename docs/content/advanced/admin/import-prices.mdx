@@ -40,9 +40,15 @@ You must have a CSV file that you will use to import prices into your Medusa ser
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
@@ -67,7 +73,7 @@ You can do that by sending the following request to the [Upload Files](https://d
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.uploads.create(file) // file is an instance of File
 .then(({ uploads }) => {
 	const key = uploads[0].key
@@ -75,9 +81,29 @@ medusa.admin.uploads.create(file) // file is an instance of File
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUploadFile } from "medusa-react"
+
+const ImportPrices = () => {
+  const uploadFile = useAdminUploadFile()
+  // ...
+
+  const handleFileUpload = (file: File) => {
+    uploadFile.mutate(file)
+  }
+
+  // ...
+}
+
+export default ImportPrices
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 const formData = new FormData()
 formData.append("files", file) // file is an instance of File
 
@@ -121,7 +147,7 @@ You can do that by sending the following request to the [Create a Batch Job](htt
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.batchJobs.create({
 	type: "price-list-import",
 	context: {
@@ -136,9 +162,35 @@ medusa.admin.batchJobs.create({
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateBatchJob } from "medusa-react"
+
+const ImportPrices = () => {
+  const createBatchJob = useAdminCreateBatchJob()
+  // ...
+
+  const handleCreateBatchJob = () => {
+    createBatchJob.mutate({
+      type: "price-list-import",
+      context: {
+        fileKey: key, // obtained from previous step
+      },
+      dry_run: true,
+    })
+  }
+
+  // ...
+}
+
+export default ImportPrices
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/batch-jobs`, {
 	method: "POST",
 	credentials: "include",
@@ -209,7 +261,7 @@ You can retrieve all the details of the batch job, including its status and the 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.batchJobs.retrieve(batchJobId)
 .then(( batch_job ) => {
 	console.log(batch_job.status, batch_job.result)
@@ -217,9 +269,36 @@ medusa.admin.batchJobs.retrieve(batchJobId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminBatchJob } from "medusa-react"
+
+const ImportPrices = () => {
+  const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
+  // ...
+
+  return (
+    <div>
+      {/* ... */}
+      {isLoading && <span>Loading</span>}
+      {batch_job && (
+        <span>
+          Status: {batch_job.status}. 
+          Number of Prices: {batch_job.result.count}
+        </span>
+      )}
+    </div>
+  )
+}
+
+export default ImportPrices
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}`, {
 	credentials: "include",
 })
@@ -272,7 +351,7 @@ To confirm a batch job send the following request:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.batchJobs.confirm(batchJobId)
 .then(( batch_job ) => {
 	console.log(batch_job.status)
@@ -280,9 +359,29 @@ medusa.admin.batchJobs.confirm(batchJobId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminConfirmBatchJob } from "medusa-react"
+
+const ImportPrices = () => {
+  const confirmBatchJob = useAdminConfirmBatchJob(batchJobId)
+  // ...
+
+  const handleConfirmJob = () => {
+    confirmBatchJob.mutate()
+  }
+  
+  // ...
+}
+
+export default ImportPrices
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<YOUR_SERVER>/admin/batch-jobs/${batchJobId}/confirm`, {
 	method: "POST",
 	credentials: "include",

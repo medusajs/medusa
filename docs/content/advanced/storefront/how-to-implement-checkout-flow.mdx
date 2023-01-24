@@ -33,6 +33,14 @@ This guide includes code snippets to send requests to your Medusa server using M
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
 
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+
+It's also assumed you already have [used CartProvider higher in your component tree](../../medusa-react/overview.md#cartprovider).
+
 ### Previous Steps
 
 This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
@@ -52,7 +60,7 @@ After the customer enters their shipping address information, you must send a `P
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.update(cartId, {
   shipping_address: {
     company,
@@ -73,9 +81,43 @@ medusa.carts.update(cartId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const { updateCart } = useCart()
+
+  const addShippingAddress = (address: Record<string, string>) => {
+    updateCart.mutate({
+      shipping_address: {
+        company: address.company,
+        first_name: address.first_name,
+        last_name: address.last_name,
+        address_1: address.address_1,
+        address_2: address.address_2,
+        city: address.city,
+        country_code: address.country_code,
+        province: address.province,
+        postal_code: address.postal_code,
+        phone: address.phone,
+      },
+    })
+  }
+
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
@@ -121,7 +163,7 @@ You can retrieve the list of shipping options by sending a `GET` request to the 
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.shippingOptions.listCartOptions(cartId)
 .then(({ shipping_options }) => {
   console.log(shipping_options.length)
@@ -129,9 +171,43 @@ medusa.shippingOptions.listCartOptions(cartId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { ShippingOption } from "@medusajs/medusa"
+import { useCartShippingOptions } from "medusa-react"
+
+type Props = {
+  cartId: string
+}
+
+const ShippingOptions = ({ cartId }: Props) => {
+  const { shipping_options, isLoading } = useCartShippingOptions(cartId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {shipping_options && !shipping_options.length && (
+        <span>No shipping options</span>
+      )}
+      {shipping_options && (
+        <ul>
+          {shipping_options.map((shipping_option: ShippingOption) => (
+            <li key={shipping_option.id}>{shipping_option.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default ShippingOptions
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/shipping-options/${cartId}`, {
   credentials: "include",
 })
@@ -153,7 +229,7 @@ Once the customer chooses one of the available shipping options, send a `POST` r
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.addShippingMethod(cartId, {
   option_id: shippingOptionId, // the ID of the selected option
 })
@@ -163,9 +239,32 @@ medusa.carts.addShippingMethod(cartId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAddShippingMethodToCart } from "medusa-react"
+// ...
+
+const ShippingOptions = ({ cartId }: Props) => {
+  // ...
+  const addShippingMethod = useAddShippingMethodToCart(cartId)
+
+  const handleAddShippingMethod = (option_id: string) => {
+    addShippingMethod.mutate({
+      option_id,
+    })
+  }
+
+  // ...
+}
+
+export default ShippingOptions
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/shipping-methods`, {
   method: "POST",
   credentials: "include",
@@ -204,7 +303,7 @@ To initialize the payment sessions, send a `POST` request to the [Initialize Pay
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.createPaymentSessions(cartId)
 .then(({ cart }) => {
   console.log(cart.payment_sessions)
@@ -212,9 +311,39 @@ medusa.carts.createPaymentSessions(cartId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { PaymentSession } from "@medusajs/medusa"
+import { useCart } from "medusa-react"
+import { useEffect } from "react"
+
+const PaymentProviders = () => {
+  const { cart, startCheckout } = useCart()
+
+  useEffect(() => {
+    startCheckout.mutate()
+  }, [])
+
+  return (
+    <div>
+      {!cart?.payment_sessions.length && <span>No payment providers</span>}
+      <ul>
+        {cart?.payment_sessions.map((paymentSession: PaymentSession) => (
+          <li key={paymentSession.id}>{paymentSession.provider_id}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+export default PaymentProviders
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/payment-sessions`, {
   method: "POST",
   credentials: "include",
@@ -237,7 +366,7 @@ When the customer chooses the payment provider they want to complete purchase wi
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.setPaymentSession(cartId, {
   // retrieved from the payment session selected by the customer
   provider_id: paymentProviderId,
@@ -248,9 +377,31 @@ medusa.carts.setPaymentSession(cartId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const PaymentProviders = () => {
+  const { cart, startCheckout, pay } = useCart()
+  // ...
+
+  const handleSetPaymentSession = (provider_id: string) => {
+    pay.mutate({
+      provider_id,
+    })
+  }
+  
+  // ...
+}
+
+export default PaymentProviders
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/payment-session`, {
   method: "POST",
   credentials: "include",
@@ -290,7 +441,7 @@ If you need to update that data at any point before the purchase is made, send a
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
   data: {
     // pass any data you want to add in the `data` attribute
@@ -304,11 +455,39 @@ medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useUpdatePaymentSession, useCart } from "medusa-react"
+// ...
+
+const PaymentProviders = () => {
+  const { cart } = useCart()
+  const updatePaymentSession = useUpdatePaymentSession(cart.id)
+  // ...
+
+  const handleUpdatePaymentSession = (
+    provider_id: string, 
+    data: Record<string, any>
+  ) => {
+    updatePaymentSession.mutate({
+      provider_id,
+      data,
+    })
+  }
+
+  // ...
+}
+
+export default PaymentProviders
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```jsx
+```ts
 fetch(
   `<SERVER_URL>/store/carts/${cartId}/payment-sessions/${paymentProviderId}`, 
   {
@@ -348,7 +527,7 @@ To complete a cart, send a `POST` request to the [Complete a Cart](/api/store/#t
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.complete(cartId)
 .then(({ type, data }) => {
   console.log(type, data)
@@ -356,9 +535,30 @@ medusa.carts.complete(cartId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+// ...
+
+const Cart = () => {
+  const { completeCheckout } = useCart()
+  // ...
+
+  const handleStartCheckout = () => {
+    startCheckout.mutate()
+  }
+
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/complete`, {
   method: "POST",
   credentials: "include",
