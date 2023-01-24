@@ -1,11 +1,12 @@
-import { buildQuery, setMetadata, validateId } from "@medusajs/medusa"
+// Import from dist to avoid circular deps which result in the base service to be undefined
+import { buildQuery, setMetadata, validateId } from "@medusajs/medusa/dist/utils"
 
 /**
  * Common functionality for Services
  * @interface
  * @deprecated use TransactionBaseService from @medusajs/medusa instead
  */
-class BaseService {
+export default class BaseService {
   constructor() {
     this.decorators_ = []
   }
@@ -167,4 +168,3 @@ class BaseService {
     }, Promise.resolve(obj))
   }
 }
-export default BaseService

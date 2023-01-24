@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, IsNull, Not } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { Currency, Store } from "../models"
 import { CurrencyRepository } from "../repositories/currency"
@@ -87,7 +87,12 @@ class StoreService extends TransactionBaseService {
   async retrieve(config: FindConfig<Store> = {}): Promise<Store> {
     const manager = this.manager_
     const storeRepo = manager.withRepository(this.storeRepository_)
-    const query = buildQuery({}, config)
+    const query = buildQuery(
+      {
+        id: Not(IsNull()),
+      },
+      config
+    )
     const store = await storeRepo.findOne(query)
 
     if (!store) {

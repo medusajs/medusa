@@ -1,7 +1,7 @@
 import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
-import { Not, IsNull } from "typeorm"
+import { IsNull, Not } from "typeorm"
 
 class SendGridService extends NotificationService {
   static identifier = "sendgrid"
@@ -338,7 +338,7 @@ class SendGridService extends NotificationService {
     })
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
-      relations: ["items", "tracking_links"],
+      relations: ["items", "items.variant", "tracking_links"],
     })
 
     const locale = await this.extractLocale(order)
@@ -624,6 +624,7 @@ class SendGridService extends NotificationService {
       select: ["total"],
       relations: [
         "items",
+        "items.variant",
         "items.tax_lines",
         "discounts",
         "discounts.rule",
@@ -706,17 +707,17 @@ class SendGridService extends NotificationService {
   }
 
   async swapReceivedData({ id }) {
-    const store = await this.storeService_.retrieve({
-      where: { id: Not(IsNull()) }
-    })
+    const store = await this.storeService_.retrieve()
 
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
         "additional_items.tax_lines",
+        "additional_items.variant",
         "return_order",
         "return_order.items",
         "return_order.items.item",
+        "return_order.items.item.variant",
         "return_order.shipping_method",
         "return_order.shipping_method.shipping_option",
       ],
@@ -749,12 +750,14 @@ class SendGridService extends NotificationService {
       select: ["total"],
       relations: [
         "items",
+        "items.variant",
         "discounts",
         "discounts.rule",
         "shipping_address",
         "swaps",
         "swaps.additional_items",
         "swaps.additional_items.tax_lines",
+        "swaps.additional_items.variant",
       ],
     })
 
@@ -839,11 +842,12 @@ class SendGridService extends NotificationService {
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
-        "additional_items.variant.product",
+        "additional_items.variant",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
         "return_order.items.item",
+        "return_order.items.item.variant",
         "return_order.shipping_method",
         "return_order.shipping_method.shipping_option",
       ],
@@ -886,6 +890,7 @@ class SendGridService extends NotificationService {
         "swaps",
         "swaps.additional_items",
         "swaps.additional_items.tax_lines",
+        "swaps.additional_items.tax_lines.variant",
       ],
     })
 
@@ -984,6 +989,8 @@ class SendGridService extends NotificationService {
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
+        "return_order.items.item",
+        "return_order.items.item.variant",
       ],
     })
 
@@ -993,13 +1000,13 @@ class SendGridService extends NotificationService {
         "items",
         "items.tax_lines",
         "items.variant",
-        "items.variant.product",
+        "items.variant",
         "discounts",
         "discounts.rule",
         "swaps",
         "swaps.additional_items",
         "swaps.additional_items.variant",
-        "swaps.additional_items.variant.product",
+        "swaps.additional_items.variant",
         "swaps.additional_items.tax_lines",
       ],
     })
@@ -1135,7 +1142,7 @@ class SendGridService extends NotificationService {
         "order",
         "order.items",
         "order.items.variant",
-        "order.items.variant.product",
+        "order.items.variant",
         "order.shipping_address"
       ],
     })
