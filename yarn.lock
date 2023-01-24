@@ -23290,7 +23290,6 @@ __metadata:
     medusa-interfaces: ^1.3.4
   peerDependencies:
     medusa-interfaces: 1.3.4
-    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -23721,7 +23720,6 @@ __metadata:
     medusa-test-utils: ^1.1.37
   peerDependencies:
     medusa-interfaces: 1.3.4
-    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
