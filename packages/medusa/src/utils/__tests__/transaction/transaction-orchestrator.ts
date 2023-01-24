@@ -852,6 +852,6 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.one).toBeCalledTimes(1)
     expect(mocks.two).toBeCalledTimes(1)
     expect(mocks.oneCompensate).toBeCalledTimes(1)
-    expect(mocks.oneCompensate).toBeCalledTimes(1)
+    expect(mocks.twoCompensate).toBeCalledTimes(1)
   })
 })
