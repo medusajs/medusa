@@ -2721,6 +2721,21 @@ describe("/admin/order-edits", () => {
       await simpleOrderFactory(dbConnection, {
         id: orderId,
         email: "test@testson.com",
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: 12.5,
+        },
+        discounts: [
+          {
+            code: "DUMMY_DISCOUNT_TO_TRICK_TOTALS_SERVICE",
+            rule: {
+              type: "fixed",
+              allocation: "total",
+              value: 0,
+            },
+          },
+        ],
         line_items: [
           {
             adjustments: [
@@ -2796,24 +2811,9 @@ describe("/admin/order-edits", () => {
               line_item_id: expect.any(String),
               line_item: expect.objectContaining({
                 id: expect.any(String),
-                // adjustments: expect.arrayContaining([
-                //   expect.objectContaining({
-                //     amount: 200,
-                //     description: "custom adjustment that should be persisted",
-                //     discount_id: null,
-                //   }),
-                // ]),
               }),
               original_line_item: expect.objectContaining({
                 id: lineItemId1,
-                // adjustments: expect.arrayContaining([
-                //   expect.objectContaining({
-                //     item_id: lineItemId1,
-                //     amount: 200,
-                //     description: "custom adjustment that should be persisted",
-                //     discount_id: null,
-                //   }),
-                // ]),
               }),
             }),
           ]),
@@ -2843,13 +2843,14 @@ describe("/admin/order-edits", () => {
               ]),
             }),
           ]),
-          discount_total: 0,
+          // 2 items with unit price 1000 and a custom line item adjustment of 200
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
-          subtotal: 3000,
-          tax_total: 375,
-          total: 3375,
+          discount_total: 200,
+          subtotal: 2 * 1000,
+          tax_total: (2000 - 200) * 0.125,
+          total: 1800 * 0.125 + 1800,
         })
       )
     })
