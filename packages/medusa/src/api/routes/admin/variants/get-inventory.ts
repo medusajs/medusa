@@ -110,7 +110,6 @@ export default async (req, res) => {
     await productVariantInventoryService.listInventoryItemsByVariant(variant.id)
   responseVariant.inventory = await joinLevels(inventory, [], inventoryService)
 
-  // TODO: adjust for required quantity
   if (inventory.length) {
     responseVariant.sales_channel_availability = await Promise.all(
       channels.map(async (channel) => {
@@ -122,15 +121,16 @@ export default async (req, res) => {
           }
         }
 
-        const quantity = await inventoryService.retrieveAvailableQuantity(
-          inventory[0].id,
-          channel.locations
-        )
+        const [{ inventory_quantity }] =
+          await productVariantInventoryService.setVariantAvailability(
+            [variant],
+            channel.id
+          )
 
         return {
           channel_name: channel.name as string,
           channel_id: channel.id as string,
-          available_quantity: quantity,
+          available_quantity: inventory_quantity || 0,
         }
       })
     )
