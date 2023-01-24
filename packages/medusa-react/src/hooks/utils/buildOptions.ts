@@ -24,7 +24,7 @@ export const buildOptions = <
 
       if (queryKey !== undefined) {
         queryKey.forEach((key) => {
-          queryClient.invalidateQueries(key as QueryKey)
+          queryClient.invalidateQueries({ queryKey: key as QueryKey })
         })
       }
     },
