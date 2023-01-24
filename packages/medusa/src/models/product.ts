@@ -78,7 +78,7 @@ export class Product extends SoftDeletableEntity {
   })
   variants: ProductVariant[]
 
-  @ManyToMany(() => ProductCategory)
+  @ManyToMany(() => ProductCategory, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
     name: "product_category_product",
     joinColumn: {

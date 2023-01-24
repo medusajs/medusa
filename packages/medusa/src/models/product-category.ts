@@ -52,7 +52,7 @@ export class ProductCategory extends SoftDeletableEntity {
   @TreeChildren({ cascade: true })
   category_children: ProductCategory[]
 
-  @ManyToMany(() => Product)
+  @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
     name: "product_category_product",
     joinColumn: {

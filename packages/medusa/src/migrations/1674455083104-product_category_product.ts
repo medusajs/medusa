@@ -5,13 +5,8 @@ export class productCategoryProduct1674455083104 implements MigrationInterface {
     await queryRunner.query(
       `
         CREATE TABLE "product_category_product" (
-          "id" character varying NOT NULL,
           "product_category_id" character varying NOT NULL,
           "product_id" character varying NOT NULL,
-          "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-          "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-
-          CONSTRAINT "PK_product_category_product_id" PRIMARY KEY ("id"),
           CONSTRAINT "FK_product_category_id" FOREIGN KEY ("product_category_id") REFERENCES product_category("id") ON DELETE CASCADE ON UPDATE NO ACTION,
           CONSTRAINT "FK_product_id" FOREIGN KEY ("product_id") REFERENCES product("id") ON DELETE CASCADE ON UPDATE NO ACTION
         )
