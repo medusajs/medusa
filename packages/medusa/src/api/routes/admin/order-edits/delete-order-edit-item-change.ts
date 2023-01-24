@@ -10,6 +10,8 @@ import { OrderEditService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete.
  *   - (path) change_id=* {string} The ID of the Order Edit Item Change to delete.
+ * x-codegen:
+ *   method: deleteItemChange
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
