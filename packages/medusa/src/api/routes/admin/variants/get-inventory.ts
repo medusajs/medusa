@@ -127,19 +127,11 @@ export default async (req, res) => {
           }
         }
 
-        const quantity = Math.min(
-          ...(await Promise.all(
-            variantInventoryItems.map(async (variantInventory) => {
-              return (
-                // eslint-disable-next-line max-len
-                (await salesChannelInventoryService.retrieveAvailableItemQuantity(
-                  channel.id,
-                  variantInventory.inventory_item_id
-                )) / variantInventory.required_quantity
-              )
-            })
-          ))
-        )
+        const quantity =
+          await productVariantInventoryService.getVariantQuantityFromVariantInventoryItems(
+            variantInventoryItems,
+            channel.id
+          )
 
         return {
           channel_name: channel.name as string,
