@@ -131,9 +131,11 @@ export default async (req, res) => {
       return
     }
 
-    const product = await productService.retrieve(id, {
-      relations: ["variants"],
-    })
+    const product = await productService
+      .withTransaction(transactionManager)
+      .retrieve(id, {
+        relations: ["variants"],
+      })
 
     // Iterate product variants and update their properties accordingly
     for (const variant of product.variants) {
