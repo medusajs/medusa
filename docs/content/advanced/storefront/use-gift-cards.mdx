@@ -29,9 +29,17 @@ It is also assumed you already have a storefront set up. It can be a custom stor
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+
+For requests that use the cart, it's also assumed you already have [used CartProvider higher in your component tree](../../medusa-react/overview.md#cartprovider).
 
 ### Previous Steps
 
@@ -62,6 +70,36 @@ medusa.products.list({
     // no gift card product is created
   }
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { Product } from "@medusajs/medusa"
+import { useProducts } from "medusa-react"
+
+const GiftCard = () => {
+  const { products, isLoading } = useProducts({
+    is_giftcard: true,
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {products && products.length > 0 && (
+        <ul>
+          {products.map((product: Product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+      {products && !products.length && <span>No Gift Cards</span>}
+    </div>
+  )
+}
+
+export default GiftCard
 ```
 
 </TabItem>
@@ -116,6 +154,27 @@ medusa.giftCards.retrieve(code)
 .catch((e) => {
   // gift card doesn't exist or is disabled
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useGiftCard } from "medusa-react"
+
+const GiftCard = () => {
+  const { gift_card, isLoading, isError } = useGiftCard("code")
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {gift_card && <span>{gift_card.value}</span>}
+      {isError && <span>Gift Card does not exist</span>}
+    </div>
+  )
+}
+
+export default GiftCard
 ```
 
 </TabItem>
@@ -176,6 +235,33 @@ medusa.carts.update(cartId, {
 .catch((e) => {
   // gift card doesn't exist or is disabled
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const { updateCart } = useCart()
+
+  const setGiftCard = (code: string) => {
+    updateCart.mutate({
+      gift_cards: [
+        {
+          code,
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default Cart
 ```
 
 </TabItem>

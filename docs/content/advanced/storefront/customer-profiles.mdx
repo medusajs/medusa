@@ -37,9 +37,15 @@ It's also assumed you already have a storefront set up. It can be a custom store
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ---
 
@@ -62,6 +68,38 @@ medusa.customers.create({
 .then(({ customer }) => {
   console.log(customer.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCreateCustomer } from "medusa-react"
+
+const RegisterCustomer = () => {
+  const createCustomer = useCreateCustomer()
+  // ...
+
+  const handleCreate = () => {
+    // ...
+    createCustomer.mutate({
+      first_name,
+      last_name,
+      email,
+      password,
+    })
+  }
+
+  // ...
+  
+  return (
+    <form>
+      {/* Render form */}
+    </form>
+  )
+}
+
+export default RegisterCustomer
 ```
 
 </TabItem>
@@ -322,6 +360,36 @@ medusa.customers.update({
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useUpdateMe } from "medusa-react"
+
+const UpdateCustomer = () => {
+  const updateCustomer = useUpdateMe()
+  // ...
+
+  const handleUpdate = () => {
+    // ...
+    updateCustomer.mutate({
+      id: customer_id,
+      first_name,
+    })
+  }
+
+  // ...
+  
+  return (
+    <form>
+      {/* Render form */}
+    </form>
+  )
+}
+
+export default UpdateCustomer
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -528,6 +596,35 @@ medusa.customers.listOrders()
 .then(({ orders, limit, offset, count }) => {
   console.log(orders)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCustomerOrders } from "medusa-react"
+import { Order } from "@medusajs/medusa"
+
+const Orders = () => {
+  // refetch a function that can be used to
+  // re-retrieve orders after the customer logs in
+  const { orders, isLoading, refetch } = useCustomerOrders()
+
+  return (
+    <div>
+      {isLoading && <span>Loading orders...</span>}
+      {orders?.length && (
+        <ul>
+          {orders.map((order: Order) => (
+            <li key={order.id}>{order.display_id}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Orders
 ```
 
 </TabItem>
