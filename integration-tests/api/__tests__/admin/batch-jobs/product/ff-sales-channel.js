@@ -4,13 +4,13 @@ const path = require("path")
 const { useApi } = require("../../../../../helpers/use-api")
 const { useDb } = require("../../../../../helpers/use-db")
 
-const adminSeeder = require("../../../../../api/helpers/admin-seeder")
-const userSeeder = require("../../../../../api/helpers/user-seeder")
-const { simpleSalesChannelFactory } = require("../../../../../api/factories")
-const batchJobSeeder = require("../../../../../api/helpers/batch-job-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const userSeeder = require("../../../../helpers/user-seeder")
+const { simpleSalesChannelFactory } = require("../../../../factories")
+const batchJobSeeder = require("../../../../helpers/batch-job-seeder")
 const {
   simpleProductCollectionFactory,
-} = require("../../../../../api/factories/simple-product-collection-factory")
+} = require("../../../../factories/simple-product-collection-factory")
 
 const startServerWithEnvironment =
   require("../../../../../helpers/start-server-with-environment").default

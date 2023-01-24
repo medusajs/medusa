@@ -5,13 +5,13 @@ const setupServer = require("../../../../../helpers/setup-server")
 const { useApi } = require("../../../../../helpers/use-api")
 const { initDb, useDb } = require("../../../../../helpers/use-db")
 
-const adminSeeder = require("../../../../../api/helpers/admin-seeder")
-const batchJobSeeder = require("../../../../../api/helpers/batch-job-seeder")
-const userSeeder = require("../../../../../api/helpers/user-seeder")
-const { simpleProductFactory } = require("../../../../../api/factories")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const batchJobSeeder = require("../../../../helpers/batch-job-seeder")
+const userSeeder = require("../../../../helpers/user-seeder")
+const { simpleProductFactory } = require("../../../../factories")
 const {
   simpleProductCollectionFactory,
-} = require("../../../../../api/factories/simple-product-collection-factory")
+} = require("../../../../factories/simple-product-collection-factory")
 
 const adminReqConfig = {
   headers: {
