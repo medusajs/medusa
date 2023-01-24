@@ -158,6 +158,9 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  *   - (query) order {string} the field used to order the products.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -18,6 +18,8 @@ import { EntityManager } from "typeorm"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductsProductOptionsReq"
+ * x-codegen:
+ *   method: addOption
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

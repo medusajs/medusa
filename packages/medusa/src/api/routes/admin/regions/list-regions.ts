@@ -47,6 +47,9 @@ import { validator } from "../../../../utils/validator"
  *      type: object
  *    required: false
  *    description: Date comparison for when resulting region was deleted, i.e. less than, greater than etc.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetRegionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
