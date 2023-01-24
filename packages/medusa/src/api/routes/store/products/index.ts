@@ -10,7 +10,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 import { StoreGetProductsParams } from "./list-products"
-import { StoreGetProductParams } from "./get-product"
+import { StoreGetProductsProductParams } from "./get-product"
 
 const route = Router()
 
@@ -40,7 +40,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/:id",
-    transformQuery(StoreGetProductParams, {
+    transformQuery(StoreGetProductsProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
       allowedFields: allowedStoreProductsFields,
