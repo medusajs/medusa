@@ -132,7 +132,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (options_.where.price_list_id) {
-      options_.relations.variants = {
+      /* options_.relations.variants = {
         ...(isObject(options_.relations.variants)
           ? options_.relations.variants
           : {}),
@@ -146,10 +146,23 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
       options_.where.variants = {
         ...(isObject(options_.where.variants) ? options_.where.variants : {}),
-        prices: {
-          price_list_id: In(priceListIds),
-        },
-      }
+        prices: [
+          {
+            price_list_id: In(priceListIds),
+          },
+        ],
+      }*/
+      const priceListIds = (
+        options_.where.price_list_id as FindOperator<string[]>
+      ).value
+      delete options_.where.price_list_id
+
+      queryBuilder
+        .leftJoin(`${productAlias}.variants`, "variants")
+        .leftJoin("variants.prices", "ma")
+        .andWhere("ma.price_list_id IN (:...price_list_ids)", {
+          price_list_ids: priceListIds,
+        })
     }
 
     if (options_.where.tags) {
