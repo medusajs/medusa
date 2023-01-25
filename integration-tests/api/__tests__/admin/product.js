@@ -912,7 +912,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it.only("creates a product", async () => {
+    it("creates a product", async () => {
       const api = useApi()
 
       const payload = {
@@ -952,7 +952,7 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
-console.log("response.data.product - ", response.data.product)
+
       expect(response.status).toEqual(200)
       expect(response.data.product).toMatchSnapshot({
         id: expect.stringMatching(/^prod_*/),
