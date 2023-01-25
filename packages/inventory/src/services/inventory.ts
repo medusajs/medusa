@@ -3,11 +3,11 @@ import {
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
   CreateReservationItemInput,
+  EventRelayService,
   FilterableInventoryItemProps,
   FilterableInventoryLevelProps,
   FilterableReservationItemProps,
   FindConfig,
-  IEventBusService,
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
@@ -28,14 +28,14 @@ import {
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: IEventBusService
+  eventBusService: EventRelayService
 }
 
 export default class InventoryService
   extends TransactionBaseService
   implements IInventoryService
 {
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventRelayService
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected readonly inventoryItemService_: InventoryItemService

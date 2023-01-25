@@ -1,7 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { IEventBusService } from "../../interfaces"
 import { CreateRegionInput } from "../../types/region"
 import { FlagRouter } from "../../utils/flag-router"
+import EventBusService from "../event-bus"
 import {
   FulfillmentProviderService,
   PaymentProviderService,
@@ -14,7 +14,7 @@ const eventBusService = {
   withTransaction: function () {
     return this
   },
-} as unknown as IEventBusService
+} as unknown as EventBusService
 
 describe("RegionService", () => {
   const regionRepository = MockRepository({})

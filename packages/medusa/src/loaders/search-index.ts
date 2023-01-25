@@ -1,4 +1,5 @@
-import { AbstractSearchService, IEventBusService } from "../interfaces"
+import { AbstractSearchService } from "../interfaces"
+import EventBusService from "../services/event-bus"
 import { Logger, MedusaContainer } from "../types/global"
 
 export const SEARCH_INDEX_EVENT = "SEARCH_INDEX_EVENT"
@@ -7,7 +8,7 @@ async function loadProductsIntoSearchEngine(
   container: MedusaContainer
 ): Promise<void> {
   const logger: Logger = container.resolve<Logger>("logger")
-  const eventBusService: IEventBusService = container.resolve("eventBusService")
+  const eventBusService: EventBusService = container.resolve("eventBusService")
   void eventBusService.emit(SEARCH_INDEX_EVENT, {}).catch((err) => {
     logger.error(err)
     logger.error(

@@ -1,18 +1,19 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { OrderItemChange } from "../models"
 import { OrderItemChangeRepository } from "../repositories/order-item-change"
 import { FindConfig, Selector } from "../types/common"
 import { CreateOrderEditItemChangeInput } from "../types/order-edit"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 import { LineItemService } from "./index"
 import TaxProviderService from "./tax-provider"
 
 type InjectedDependencies = {
   manager: EntityManager
   orderItemChangeRepository: typeof OrderItemChangeRepository
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   lineItemService: LineItemService
   taxProviderService: TaxProviderService
 }
@@ -27,7 +28,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly orderItemChangeRepository_: typeof OrderItemChangeRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly lineItemService_: LineItemService
   protected readonly taxProviderService_: TaxProviderService
 

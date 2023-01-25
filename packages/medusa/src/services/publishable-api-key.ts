@@ -1,7 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, ILike } from "typeorm"
 
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { PublishableApiKey, SalesChannel } from "../models"
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
 import { PublishableApiKeySalesChannelRepository } from "../repositories/publishable-api-key-sales-channel"
@@ -11,11 +11,12 @@ import {
   UpdatePublishableApiKeyInput,
 } from "../types/publishable-api-key"
 import { buildQuery, isString } from "../utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
 
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   publishableApiKeyRepository: typeof PublishableApiKeyRepository
   // eslint-disable-next-line max-len
   publishableApiKeySalesChannelRepository: typeof PublishableApiKeySalesChannelRepository
@@ -33,7 +34,7 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusService
   // eslint-disable-next-line max-len
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
   // eslint-disable-next-line max-len

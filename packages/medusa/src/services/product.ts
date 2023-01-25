@@ -1,7 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantService, SearchService } from "."
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
@@ -31,6 +31,7 @@ import {
 } from "../types/product"
 import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -42,7 +43,7 @@ type InjectedDependencies = {
   imageRepository: typeof ImageRepository
   productVariantService: ProductVariantService
   searchService: SearchService
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   featureFlagRouter: FlagRouter
 }
 
@@ -58,7 +59,7 @@ class ProductService extends TransactionBaseService {
   protected readonly imageRepository_: typeof ImageRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
   static readonly IndexName = `products`

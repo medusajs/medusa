@@ -1,17 +1,18 @@
-import { StagedJob, StagedJobService } from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
-import { AbstractEventBusService, TransactionBaseService } from "../interfaces"
+import { AbstractEventBusModuleService } from "../interfaces"
+import { StagedJob } from "../models"
 import { sleep } from "../utils/sleep"
+import StagedJobService from "./staged-job"
 
 type InjectedDependencies = {
   manager: EntityManager
   stagedJobService: StagedJobService
-  eventBusService: AbstractEventBusService
+  eventBusService: AbstractEventBusModuleService
 }
 
-export default class EventRelayService extends TransactionBaseService {
+export default class EventBusService extends AbstractEventBusModuleService {
   protected readonly stagedJobService_: StagedJobService
-  protected readonly eventBusService_: AbstractEventBusService
+  protected readonly eventBusService_: AbstractEventBusModuleService
 
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
@@ -42,7 +43,7 @@ export default class EventRelayService extends TransactionBaseService {
   async emit<T>(
     eventName: string,
     data: T,
-    options: Record<string, unknown>
+    options?: Record<string, unknown>
   ): Promise<StagedJob | void> {
     const manager = this.transactionManager_ ?? this.manager_
     /**

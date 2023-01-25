@@ -1,21 +1,20 @@
-import { EntityManager } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
   buildQuery,
-  IEventBusService,
-  FilterableReservationItemProps,
   CreateReservationItemInput,
+  EventRelayService,
+  FilterableReservationItemProps,
+  FindConfig,
   TransactionBaseService,
   UpdateReservationItemInput,
 } from "@medusajs/medusa"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
-import { ReservationItem } from "../models"
-import { CONNECTION_NAME } from "../config"
 import { InventoryLevelService } from "."
+import { ReservationItem } from "../models"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusService: EventRelayService
   manager: EntityManager
   inventoryLevelService: InventoryLevelService
 }
@@ -30,7 +29,7 @@ export default class ReservationItemService extends TransactionBaseService {
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventRelayService
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor({

@@ -12,19 +12,20 @@ import { FindConfig } from "../types/common"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { CustomerService, PaymentProviderService } from "./index"
 
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { CreatePaymentInput, PaymentSessionInput } from "../types/payment"
 import {
   CreatePaymentCollectionInput,
   PaymentCollectionsSessionsBatchInput,
   PaymentCollectionsSessionsInput,
 } from "../types/payment-collection"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
   paymentCollectionRepository: typeof PaymentCollectionRepository
   paymentProviderService: PaymentProviderService
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   customerService: CustomerService
 }
 
@@ -38,7 +39,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
 
   protected readonly manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly customerService_: CustomerService
   // eslint-disable-next-line max-len

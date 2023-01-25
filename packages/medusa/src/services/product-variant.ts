@@ -1,7 +1,6 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import {
-  IEventBusService,
   IPriceSelectionStrategy,
   PriceSelectionContext,
   TransactionBaseService,
@@ -29,6 +28,7 @@ import {
   UpdateProductVariantInput,
 } from "../types/product-variant"
 import { buildQuery, setMetadata } from "../utils"
+import EventBusService from "./event-bus"
 import RegionService from "./region"
 
 class ProductVariantService extends TransactionBaseService {
@@ -43,7 +43,7 @@ class ProductVariantService extends TransactionBaseService {
 
   protected readonly productVariantRepository_: typeof ProductVariantRepository
   protected readonly productRepository_: typeof ProductRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly regionService_: RegionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly moneyAmountRepository_: typeof MoneyAmountRepository

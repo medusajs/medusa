@@ -4,7 +4,6 @@ import { EntityManager, In } from "typeorm"
 
 import {
   ICacheService,
-  IEventBusService,
   ITaxService,
   ItemTaxCalculationLine,
   TaxCalculationContext,
@@ -25,6 +24,7 @@ import { TaxProviderRepository } from "../repositories/tax-provider"
 import { isCart } from "../types/cart"
 
 import { TaxLinesMaps, TaxServiceRate } from "../types/tax-service"
+import EventBusService from "./event-bus"
 
 import TaxRateService from "./tax-rate"
 
@@ -46,7 +46,7 @@ class TaxProviderService extends TransactionBaseService {
   protected readonly taxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   protected readonly taxProviderRepo_: typeof TaxProviderRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
 
   constructor(container: AwilixContainer) {
     super(container)

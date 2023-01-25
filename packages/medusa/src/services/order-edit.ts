@@ -1,7 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, ILike, IsNull } from "typeorm"
 
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
   Order,
@@ -16,6 +16,7 @@ import {
   CreateOrderEditInput,
 } from "../types/order-edit"
 import { buildQuery, isString } from "../utils"
+import EventBusService from "./event-bus"
 import {
   LineItemAdjustmentService,
   LineItemService,
@@ -32,7 +33,7 @@ type InjectedDependencies = {
   orderService: OrderService
   totalsService: TotalsService
   lineItemService: LineItemService
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   taxProviderService: TaxProviderService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
@@ -56,7 +57,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly orderService_: OrderService
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusService
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService

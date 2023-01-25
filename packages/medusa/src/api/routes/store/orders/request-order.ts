@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { IEventBusService } from "../../../../interfaces"
 import { CustomerService, OrderService } from "../../../../services"
+import EventBusService from "../../../../services/event-bus"
 import TokenService from "../../../../services/token"
 import { TokenEvents } from "../../../../types/token"
 
@@ -63,7 +63,7 @@ import { TokenEvents } from "../../../../types/token"
 export default async (req, res) => {
   const { order_ids } = req.validatedBody
 
-  const eventBusService: IEventBusService = req.scope.resolve("eventBusService")
+  const eventBusService: EventBusService = req.scope.resolve("eventBusService")
   const orderService: OrderService = req.scope.resolve("orderService")
   const customerService: CustomerService = req.scope.resolve("customerService")
   const tokenService: TokenService = req.scope.resolve(

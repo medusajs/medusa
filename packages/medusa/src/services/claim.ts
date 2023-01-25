@@ -1,6 +1,6 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import {
   ClaimFulfillmentStatus,
   ClaimOrder,
@@ -8,7 +8,7 @@ import {
   ClaimType,
   FulfillmentItem,
   LineItem,
-  ReturnItem
+  ReturnItem,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { ClaimRepository } from "../repositories/claim"
@@ -18,6 +18,7 @@ import { CreateClaimInput, UpdateClaimInput } from "../types/claim"
 import { FindConfig } from "../types/common"
 import { buildQuery, setMetadata } from "../utils"
 import ClaimItemService from "./claim-item"
+import EventBusService from "./event-bus"
 import FulfillmentService from "./fulfillment"
 import FulfillmentProviderService from "./fulfillment-provider"
 import LineItemService from "./line-item"
@@ -36,7 +37,7 @@ type InjectedDependencies = {
   lineItemRepository: typeof LineItemRepository
   claimRepository: typeof ClaimRepository
   claimItemService: ClaimItemService
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   fulfillmentProviderService: FulfillmentProviderService
   fulfillmentService: FulfillmentService
   productVariantInventoryService: ProductVariantInventoryService
@@ -67,7 +68,7 @@ export default class ClaimService extends TransactionBaseService {
   protected readonly shippingMethodRepository_: typeof ShippingMethodRepository
   protected readonly lineItemRepository_: typeof LineItemRepository
   protected readonly claimItemService_: ClaimItemService
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly lineItemService_: LineItemService

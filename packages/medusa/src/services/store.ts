@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { Currency, Store } from "../models"
 import { CurrencyRepository } from "../repositories/currency"
 import { StoreRepository } from "../repositories/store"
@@ -8,12 +8,13 @@ import { FindConfig } from "../types/common"
 import { UpdateStoreInput } from "../types/store"
 import { buildQuery, setMetadata } from "../utils"
 import { currencies } from "../utils/currencies"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
   storeRepository: typeof StoreRepository
   currencyRepository: typeof CurrencyRepository
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
 }
 
 /**
@@ -25,7 +26,7 @@ class StoreService extends TransactionBaseService {
 
   protected readonly storeRepository_: typeof StoreRepository
   protected readonly currencyRepository_: typeof CurrencyRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
 
   constructor({
     manager,

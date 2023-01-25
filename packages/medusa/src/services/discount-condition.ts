@@ -1,24 +1,25 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import {
-    DiscountCondition,
-    DiscountConditionCustomerGroup,
-    DiscountConditionProduct,
-    DiscountConditionProductCollection,
-    DiscountConditionProductTag,
-    DiscountConditionProductType,
-    DiscountConditionType
+  DiscountCondition,
+  DiscountConditionCustomerGroup,
+  DiscountConditionProduct,
+  DiscountConditionProductCollection,
+  DiscountConditionProductTag,
+  DiscountConditionProductType,
+  DiscountConditionType,
 } from "../models"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { FindConfig } from "../types/common"
 import { DiscountConditionInput } from "../types/discount"
 import { buildQuery, PostgresError } from "../utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
   discountConditionRepository: typeof DiscountConditionRepository
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
 }
 
 /**
@@ -28,7 +29,7 @@ type InjectedDependencies = {
 class DiscountConditionService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined

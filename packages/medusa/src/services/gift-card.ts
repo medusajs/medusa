@@ -1,7 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import randomize from "randomatic"
 import { EntityManager } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { GiftCard, Region } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { GiftCardTransactionRepository } from "../repositories/gift-card-transaction"
@@ -17,6 +17,7 @@ import {
   UpdateGiftCardInput,
 } from "../types/gift-card"
 import { buildQuery, setMetadata } from "../utils"
+import EventBusService from "./event-bus"
 import RegionService from "./region"
 
 type InjectedDependencies = {
@@ -24,7 +25,7 @@ type InjectedDependencies = {
   giftCardRepository: typeof GiftCardRepository
   giftCardTransactionRepository: typeof GiftCardTransactionRepository
   regionService: RegionService
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
 }
 /**
  * Provides layer to manipulate gift cards.
@@ -34,7 +35,7 @@ class GiftCardService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly giftCardTransactionRepo_: typeof GiftCardTransactionRepository
   protected readonly regionService_: RegionService
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined

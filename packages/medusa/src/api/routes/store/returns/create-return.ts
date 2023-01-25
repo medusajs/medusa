@@ -5,13 +5,13 @@ import {
   IsOptional,
   IsString,
   Min,
-  ValidateNested
+  ValidateNested,
 } from "class-validator"
 
 import { Type } from "class-transformer"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IEventBusService } from "../../../../interfaces"
+import EventBusService from "../../../../services/event-bus"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
@@ -105,7 +105,7 @@ export default async (req, res) => {
 
   try {
     const returnService: ReturnService = req.scope.resolve("returnService")
-    const eventBus: IEventBusService = req.scope.resolve("eventBusService")
+    const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
     let inProgress = true
     let err: unknown = false

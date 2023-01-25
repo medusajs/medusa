@@ -14,7 +14,7 @@ import {
   RegionService,
   TotalsService,
 } from "."
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Cart, Discount, LineItem, Region } from "../models"
 import {
@@ -35,12 +35,13 @@ import {
   UpdateDiscountInput,
   UpdateDiscountRuleInput,
 } from "../types/discount"
+import { CalculationContextData } from "../types/totals"
 import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
 import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
-import { CalculationContextData } from "../types/totals"
+import EventBusService from "./event-bus"
 
 /**
  * Provides layer to manipulate discounts.
@@ -61,7 +62,7 @@ class DiscountService extends TransactionBaseService {
   protected readonly newTotalsService_: NewTotalsService
   protected readonly productService_: ProductService
   protected readonly regionService_: RegionService
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({

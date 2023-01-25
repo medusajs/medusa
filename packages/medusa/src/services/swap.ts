@@ -1,7 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { buildQuery, setMetadata, validateId } from "../utils"
 
 import {
@@ -22,6 +22,7 @@ import { FindConfig, Selector } from "../types/common"
 import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
 import CartService from "./cart"
+import EventBusService from "./event-bus"
 import {
   CustomShippingOptionService,
   FulfillmentService,
@@ -44,7 +45,7 @@ type InjectedProps = {
   orderService: OrderService
   returnService: ReturnService
   totalsService: TotalsService
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   lineItemService: LineItemService
   productVariantInventoryService: ProductVariantInventoryService
   fulfillmentService: FulfillmentService
@@ -76,7 +77,7 @@ class SwapService extends TransactionBaseService {
   protected readonly swapRepository_: typeof SwapRepository
 
   protected readonly cartService_: CartService
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly orderService_: OrderService
   protected readonly returnService_: ReturnService
   protected readonly totalsService_: TotalsService

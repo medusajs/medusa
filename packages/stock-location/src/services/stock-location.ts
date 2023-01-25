@@ -2,9 +2,9 @@ import {
   buildQuery,
   ConfigurableModuleDeclaration,
   CreateStockLocationInput,
+  EventRelayService,
   FilterableStockLocationProps,
   FindConfig,
-  IEventBusService,
   MODULE_RESOURCE_TYPE,
   setMetadata,
   StockLocationAddressInput,
@@ -18,7 +18,7 @@ import { StockLocation, StockLocationAddress } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: IEventBusService
+  eventBusService: EventRelayService
 }
 
 /**
@@ -35,7 +35,7 @@ export default class StockLocationService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventRelayService
 
   constructor(
     { eventBusService, manager }: InjectedDependencies,

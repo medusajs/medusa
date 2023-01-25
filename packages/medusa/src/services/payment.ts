@@ -2,16 +2,17 @@ import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { PaymentRepository } from "./../repositories/payment"
 
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { Payment, Refund } from "../models"
 import { FindConfig } from "../types/common"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 import { PaymentProviderService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
   paymentProviderService: PaymentProviderService
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   paymentRepository: typeof PaymentRepository
 }
 
@@ -25,7 +26,7 @@ export type PaymentDataInput = {
 export default class PaymentService extends TransactionBaseService {
   protected readonly manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly paymentRepository_: typeof PaymentRepository
   static readonly Events = {

@@ -1,5 +1,5 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { IEventBusService } from "../.."
+import EventBusService from "../event-bus"
 import ProductCategoryService from "../product-category"
 
 const eventBusService = {
@@ -7,7 +7,7 @@ const eventBusService = {
   withTransaction: function () {
     return this
   },
-} as unknown as IEventBusService
+} as unknown as EventBusService
 
 describe("ProductCategoryService", () => {
   const validProdCategoryId = "skinny-jeans"

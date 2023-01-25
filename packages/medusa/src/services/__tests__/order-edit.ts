@@ -1,6 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { IEventBusService } from "../.."
 import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
+import EventBusService from "../event-bus"
 import {
   LineItemService,
   OrderEditItemChangeService,
@@ -186,7 +186,7 @@ describe("OrderEditService", () => {
     manager: MockManager,
     orderEditRepository,
     orderService: OrderServiceMock as unknown as OrderService,
-    eventBusService: EventBusServiceMock as unknown as IEventBusService,
+    eventBusService: EventBusServiceMock as unknown as EventBusService,
     totalsService: TotalsServiceMock as unknown as TotalsService,
     lineItemService: lineItemServiceMock as unknown as LineItemService,
     orderEditItemChangeService:

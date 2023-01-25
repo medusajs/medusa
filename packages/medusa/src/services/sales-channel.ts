@@ -6,15 +6,16 @@ import {
 
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 import StoreService from "./store"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   manager: EntityManager
   storeService: StoreService
 }
@@ -30,7 +31,7 @@ class SalesChannelService extends TransactionBaseService {
   protected transactionManager_: EntityManager | undefined
 
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusService
   protected readonly storeService_: StoreService
 
   constructor({

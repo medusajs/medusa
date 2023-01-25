@@ -1,9 +1,9 @@
 import { EntityManager } from "typeorm"
-import { IEventBusService } from "../interfaces"
 import { CartService } from "../services"
+import EventBusService from "../services/event-bus"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   cartService: CartService
   manager: EntityManager
 }
@@ -11,7 +11,7 @@ type InjectedDependencies = {
 class CartSubscriber {
   protected readonly manager_: EntityManager
   protected readonly cartService_: CartService
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
 
   constructor({ manager, cartService, eventBusService }: InjectedDependencies) {
     this.cartService_ = cartService

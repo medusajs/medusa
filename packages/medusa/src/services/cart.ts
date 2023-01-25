@@ -20,11 +20,7 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
-import {
-  IEventBusService,
-  IPriceSelectionStrategy,
-  TransactionBaseService,
-} from "../interfaces"
+import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -62,6 +58,7 @@ import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -70,7 +67,7 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   paymentSessionRepository: typeof PaymentSessionRepository
   lineItemRepository: typeof LineItemRepository
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   salesChannelService: SalesChannelService
   taxProviderService: TaxProviderService
   paymentProviderService: PaymentProviderService
@@ -114,7 +111,7 @@ class CartService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
   protected readonly lineItemRepository_: typeof LineItemRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
   protected readonly storeService_: StoreService

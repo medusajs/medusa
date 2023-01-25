@@ -3,17 +3,18 @@ import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import { DeepPartial, EntityManager } from "typeorm"
 import { StorePostCustomersCustomerAddressesAddressReq } from "../api"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { Address, Customer, CustomerGroup } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
 import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
 import { buildQuery, setMetadata } from "../utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   customerRepository: typeof CustomerRepository
   addressRepository: typeof AddressRepository
 }
@@ -24,7 +25,7 @@ type InjectedDependencies = {
 class CustomerService extends TransactionBaseService {
   protected readonly customerRepository_: typeof CustomerRepository
   protected readonly addressRepository_: typeof AddressRepository
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusService
 
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined

@@ -1,16 +1,17 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { Oauth as OAuthModel } from "../models"
 import { OauthRepository } from "../repositories/oauth"
 import { Selector } from "../types/common"
 import { MedusaContainer } from "../types/global"
 import { CreateOauthInput, UpdateOauthInput } from "../types/oauth"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = MedusaContainer & {
   manager: EntityManager
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   oauthRepository: typeof OauthRepository
 }
 
@@ -25,7 +26,7 @@ class Oauth extends TransactionBaseService {
   protected manager: EntityManager
   protected container_: InjectedDependencies
   protected oauthRepository_: typeof OauthRepository
-  protected eventBus_: IEventBusService
+  protected eventBus_: EventBusService
 
   constructor(cradle: InjectedDependencies) {
     super(cradle)

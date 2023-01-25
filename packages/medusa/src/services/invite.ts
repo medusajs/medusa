@@ -3,13 +3,14 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { UserService } from "."
 import { User } from ".."
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { UserRoles } from "../models/user"
 import { InviteRepository } from "../repositories/invite"
 import { UserRepository } from "../repositories/user"
 import { ConfigModule } from "../types/global"
 import { ListInvite } from "../types/invites"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 
 // 7 days
 const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
@@ -19,7 +20,7 @@ type InviteServiceProps = {
   userService: UserService
   userRepository: typeof UserRepository
   inviteRepository: typeof InviteRepository
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
 }
 
 class InviteService extends TransactionBaseService {
@@ -33,7 +34,7 @@ class InviteService extends TransactionBaseService {
   protected readonly userService_: UserService
   protected readonly userRepo_: typeof UserRepository
   protected readonly inviteRepository_: typeof InviteRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
 
   protected readonly configModule_: ConfigModule
 

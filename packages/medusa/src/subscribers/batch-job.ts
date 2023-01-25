@@ -1,17 +1,17 @@
 import { EntityManager } from "typeorm"
-import { IEventBusService } from "../interfaces"
 import { StrategyResolverService } from "../services"
 import BatchJobService from "../services/batch-job"
+import EventBusService from "../services/event-bus"
 
 type InjectedDependencies = {
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   batchJobService: BatchJobService
   strategyResolverService: StrategyResolverService
   manager: EntityManager
 }
 
 class BatchJobSubscriber {
-  private readonly eventBusService_: IEventBusService
+  private readonly eventBusService_: EventBusService
   private readonly batchJobService_: BatchJobService
   private readonly strategyResolver_: StrategyResolverService
   private readonly manager_: EntityManager
@@ -30,12 +30,12 @@ class BatchJobSubscriber {
     this.eventBusService_.subscribe(
       BatchJobService.Events.CREATED,
       this.preProcessBatchJob
-    ) as IEventBusService
+    ) as EventBusService
 
     this.eventBusService_.subscribe(
       BatchJobService.Events.CONFIRMED,
       this.processBatchJob
-    ) as IEventBusService
+    ) as EventBusService
   }
 
   preProcessBatchJob = async (data): Promise<void> => {

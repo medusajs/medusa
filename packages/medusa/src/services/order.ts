@@ -1,10 +1,6 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager } from "typeorm"
-import {
-  IEventBusService,
-  IInventoryService,
-  TransactionBaseService,
-} from "../interfaces"
+import { IInventoryService, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -53,6 +49,7 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
+import EventBusService from "./event-bus"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -76,7 +73,7 @@ type InjectedDependencies = {
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
   inventoryService: IInventoryService
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   featureFlagRouter: FlagRouter
   productVariantInventoryService: ProductVariantInventoryService
 }
@@ -126,7 +123,7 @@ class OrderService extends TransactionBaseService {
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
   protected readonly inventoryService_: IInventoryService
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService

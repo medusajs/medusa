@@ -1,6 +1,6 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { OrderRepository } from "../repositories/order"
@@ -10,6 +10,7 @@ import { DraftOrderCreateProps } from "../types/draft-orders"
 import { buildQuery } from "../utils"
 import CartService from "./cart"
 import CustomShippingOptionService from "./custom-shipping-option"
+import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
@@ -19,7 +20,7 @@ type InjectedDependencies = {
   draftOrderRepository: typeof DraftOrderRepository
   paymentRepository: typeof PaymentRepository
   orderRepository: typeof OrderRepository
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   cartService: CartService
   lineItemService: LineItemService
   productVariantService: ProductVariantService
@@ -43,7 +44,7 @@ class DraftOrderService extends TransactionBaseService {
   protected readonly draftOrderRepository_: typeof DraftOrderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly orderRepository_: typeof OrderRepository
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly cartService_: CartService
   protected readonly lineItemService_: LineItemService
   protected readonly productVariantService_: ProductVariantService
@@ -302,7 +303,7 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of (items || [])) {
+        for (const item of items || []) {
           if (item.variant_id) {
             const line = await lineItemServiceTx.generate(
               item.variant_id,

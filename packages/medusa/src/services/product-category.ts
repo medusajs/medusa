@@ -1,6 +1,6 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IEventBusService, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
@@ -9,10 +9,11 @@ import {
   UpdateProductCategoryInput,
 } from "../types/product-category"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusService: IEventBusService
+  eventBusService: EventBusService
   productCategoryRepository: typeof ProductCategoryRepository
 }
 
@@ -21,7 +22,7 @@ type InjectedDependencies = {
  */
 class ProductCategoryService extends TransactionBaseService {
   protected readonly productCategoryRepo_: typeof ProductCategoryRepository
-  protected readonly eventBusService_: IEventBusService
+  protected readonly eventBusService_: EventBusService
   protected transactionManager_: EntityManager | undefined
   protected manager_: EntityManager
 
@@ -58,7 +59,7 @@ class ProductCategoryService extends TransactionBaseService {
       take: 100,
       order: { created_at: "DESC" },
     },
-    treeSelector: QuerySelector<ProductCategory> = {},
+    treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
     const manager = this.transactionManager_ ?? this.manager_
     const productCategoryRepo = manager.getCustomRepository(

@@ -1,6 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { FindManyOptions, In } from "typeorm"
-import { IEventBusService } from "../.."
+import EventBusService from "../event-bus"
 import {
   LineItemService,
   OrderEditItemChangeService,
@@ -38,7 +38,7 @@ describe("OrderEditItemChangeService", () => {
   const orderEditItemChangeService = new OrderEditItemChangeService({
     manager: MockManager,
     orderItemChangeRepository,
-    eventBusService: EventBusServiceMock as unknown as IEventBusService,
+    eventBusService: EventBusServiceMock as unknown as EventBusService,
     lineItemService: LineItemServiceMock as unknown as LineItemService,
     taxProviderService: taxProviderServiceMock as unknown as TaxProviderService,
   })

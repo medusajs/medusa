@@ -1,5 +1,5 @@
-import { IEventBusService } from "../interfaces"
 import { CacheService, ProductVariantService } from "../services"
+import EventBusService from "../services/event-bus"
 
 type ProductVariantUpdatedEventData = {
   id: string
@@ -8,7 +8,7 @@ type ProductVariantUpdatedEventData = {
 }
 
 class PricingSubscriber {
-  protected readonly eventBus_: IEventBusService
+  protected readonly eventBus_: EventBusService
   protected readonly cacheService_: CacheService
 
   constructor({ eventBusService, cacheService }) {

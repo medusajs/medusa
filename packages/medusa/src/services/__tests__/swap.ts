@@ -1,17 +1,18 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { IEventBusService } from "../.."
 import { Order, Swap } from "../../models"
 import { SwapRepository } from "../../repositories/swap"
 import CartService from "../cart"
+import EventBusService from "../event-bus"
 import {
-  CustomShippingOptionService, FulfillmentService,
+  CustomShippingOptionService,
+  FulfillmentService,
   LineItemService,
   OrderService,
   PaymentProviderService,
   ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
-  TotalsService
+  TotalsService,
 } from "../index"
 import LineItemAdjustmentService from "../line-item-adjustment"
 import SwapService from "../swap"
@@ -34,7 +35,7 @@ const eventBusService = {
   withTransaction: function () {
     return this
   },
-} as unknown as IEventBusService
+} as unknown as EventBusService
 
 const cartService = {
   create: jest.fn().mockReturnValue(Promise.resolve({ id: "cart" })),
