@@ -80,10 +80,7 @@ const instance = DbTestUtil
 
 module.exports = {
   initDb: async function ({ cwd, database_extra }) {
-    const { configModule } = getConfigFile(
-      path.join(__dirname),
-      `medusa-config`
-    )
+    const { configModule } = getConfigFile(cwd, `medusa-config`)
     const { projectConfig, featureFlags } = configModule
 
     const featureFlagsLoader =

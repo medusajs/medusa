@@ -25,10 +25,7 @@ class DatabaseFactory {
   }
 
   async createTemplateDb_({ cwd }) {
-    const { configModule } = getConfigFile(
-      path.join(__dirname),
-      `medusa-config`
-    )
+    const { configModule } = getConfigFile(cwd, `medusa-config`)
 
     const connection = await this.getMasterConnection()
 
