@@ -487,6 +487,112 @@ export const adminHandlers = [
     )
   }),
 
+  // inventory
+  rest.get("/admin/inventory-items", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        inventory_items: fixtures.list("inventory_item"),
+      })
+    )
+  }),
+
+  rest.get("/admin/inventory-items/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        inventory_item: fixtures.get("inventory_item"),
+      })
+    )
+  }),
+
+  rest.post("/admin/inventory-items/:id", (req, res, ctx) => {
+    const body = req.body as Record<string, any>
+    return res(
+      ctx.status(200),
+      ctx.json({
+        inventory_item: {
+          ...fixtures.get("inventory_item"),
+          ...body,
+          id: req.params.id,
+        },
+      })
+    )
+  }),
+
+  rest.delete("/admin/inventory-items/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "inventory_item",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.get("/admin/inventory-items/:id/location-levels", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        inventory_item: {
+          ...fixtures.get("inventory_item"),
+          id: req.params.id,
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/inventory-items/:id/location-levels", (req, res, ctx) => {
+    const body = req.body as Record<string, any>
+    const { location_levels } = fixtures.get("inventory_item")
+    return res(
+      ctx.status(200),
+      ctx.json({
+        inventory_item: {
+          ...fixtures.get("inventory_item"),
+          id: req.params.id,
+          location_levels: [...location_levels, { ...body, id: "2" }],
+        },
+      })
+    )
+  }),
+
+  rest.post(
+    "/admin/inventory-items/:id/location-levels/:location_id",
+    (req, res, ctx) => {
+      const body = req.body as Record<string, any>
+      const inventoryItem = fixtures.get("inventory_item")
+      const locationlevel = { ...inventoryItem.location_levels[0], ...body }
+      return res(
+        ctx.status(200),
+        ctx.json({
+          inventory_item: {
+            ...fixtures.get("inventory_item"),
+            id: req.params.id,
+            location_levels: [locationlevel],
+          },
+        })
+      )
+    }
+  ),
+
+  rest.delete(
+    "/admin/inventory-items/:id/location-levels/:location_id",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          inventory_item: {
+            ...fixtures.get("inventory_item"),
+            id: req.params.id,
+            location_levels: [],
+          },
+        })
+      )
+    }
+  ),
+
   rest.get("/admin/invites", (req, res, ctx) => {
     return res(
       ctx.status(200),
