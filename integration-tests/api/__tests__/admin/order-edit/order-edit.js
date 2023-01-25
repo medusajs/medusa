@@ -1,17 +1,15 @@
 const path = require("path")
 
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+const { useApi } = require("../../../../helpers/use-api")
+const { useDb, initDb } = require("../../../../helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simpleOrderEditFactory,
-} = require("../../factories/simple-order-edit-factory")
+} = require("../../../factories/simple-order-edit-factory")
 const { IdMap } = require("medusa-test-utils")
 const {
   simpleOrderItemChangeFactory,
-} = require("../../factories/simple-order-item-change-factory")
+} = require("../../../factories/simple-order-item-change-factory")
 const {
   simpleLineItemFactory,
   simpleProductFactory,
@@ -19,9 +17,9 @@ const {
   simpleDiscountFactory,
   simpleCartFactory,
   simpleRegionFactory,
-} = require("../../factories")
+} = require("../../../factories")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../../helpers/setup-server")
 
 jest.setTimeout(30000)
 

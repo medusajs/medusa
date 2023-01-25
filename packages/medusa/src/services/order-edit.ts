@@ -7,23 +7,24 @@ import {
   Order,
   OrderEdit,
   OrderEditItemChangeType,
-  OrderEditStatus
+  OrderEditStatus,
 } from "../models"
 import { OrderEditRepository } from "../repositories/order-edit"
 import { FindConfig, Selector } from "../types/common"
 import {
   AddOrderEditLineItemInput,
-  CreateOrderEditInput
+  CreateOrderEditInput,
 } from "../types/order-edit"
 import { buildQuery, isString } from "../utils"
 import {
   EventBusService,
   LineItemAdjustmentService,
   LineItemService,
+  NewTotalsService,
   OrderEditItemChangeService,
   OrderService,
   TaxProviderService,
-  TotalsService
+  TotalsService,
 } from "./index"
 
 type InjectedDependencies = {
@@ -32,6 +33,7 @@ type InjectedDependencies = {
 
   orderService: OrderService
   totalsService: TotalsService
+  newTotalsService: NewTotalsService
   lineItemService: LineItemService
   eventBusService: EventBusService
   taxProviderService: TaxProviderService
@@ -56,6 +58,7 @@ export default class OrderEditService extends TransactionBaseService {
 
   protected readonly orderService_: OrderService
   protected readonly totalsService_: TotalsService
+  protected readonly newTotalsService_: NewTotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
   protected readonly taxProviderService_: TaxProviderService
@@ -69,6 +72,7 @@ export default class OrderEditService extends TransactionBaseService {
     lineItemService,
     eventBusService,
     totalsService,
+    newTotalsService,
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
@@ -82,6 +86,7 @@ export default class OrderEditService extends TransactionBaseService {
     this.lineItemService_ = lineItemService
     this.eventBusService_ = eventBusService
     this.totalsService_ = totalsService
+    this.newTotalsService_ = newTotalsService
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService
@@ -537,6 +542,60 @@ export default class OrderEditService extends TransactionBaseService {
     await lineItemAdjustmentServiceTx.createAdjustments(localCart)
   }
 
+  /**
+   * Calculate totals for order edit items and decorate the items.
+   *
+   * @param orderEdit
+   */
+  async decorateItemsTotals(orderEdit: OrderEdit) {
+    const manager = this.transactionManager_ ?? this.manager_
+    const totalsServiceTx = this.totalsService_.withTransaction(manager)
+    const newTotalsServiceTx = this.newTotalsService_.withTransaction(manager)
+
+    const { order_id, items } = await this.retrieve(orderEdit.id, {
+      select: ["id", "order_id", "items"],
+      relations: ["items", "items.tax_lines", "items.adjustments"],
+    })
+
+    const order = await this.orderService_
+      .withTransaction(manager)
+      .retrieve(order_id, {
+        relations: [
+          "discounts",
+          "discounts.rule",
+          "gift_cards",
+          "region",
+          "items",
+          "items.tax_lines",
+          "items.adjustments",
+          "region.tax_rates",
+          "shipping_methods",
+          "shipping_methods.tax_lines",
+        ],
+      })
+
+    const computedOrder = { ...order, items } as Order
+
+    const calculationContext = await totalsServiceTx.getCalculationContext(
+      computedOrder
+    )
+
+    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(
+      orderEdit.items,
+      {
+        taxRate: order.tax_rate,
+        includeTax: true,
+        calculationContext,
+      }
+    )
+
+    orderEdit.items.forEach((item) => {
+      Object.assign(item, itemsTotals[item.id])
+    })
+
+    return orderEdit
+  }
+
   async decorateTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
     const totals = await this.getTotals(orderEdit.id)
     orderEdit.discount_total = totals.discount_total
@@ -547,6 +606,8 @@ export default class OrderEditService extends TransactionBaseService {
     orderEdit.tax_total = totals.tax_total
     orderEdit.total = totals.total
     orderEdit.difference_due = totals.difference_due
+
+    await this.decorateItemsTotals(orderEdit)
 
     return orderEdit
   }
