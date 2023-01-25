@@ -338,7 +338,7 @@ class SendGridService extends NotificationService {
     })
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
-      relations: ["items", "items.variant", "tracking_links"],
+      relations: ["items", "tracking_links"],
     })
 
     const locale = await this.extractLocale(order)
@@ -889,7 +889,7 @@ class SendGridService extends NotificationService {
         "swaps",
         "swaps.additional_items",
         "swaps.additional_items.tax_lines",
-        "swaps.additional_items.tax_lines.variant",
+        "swaps.additional_items.variant",
       ],
     })
 
