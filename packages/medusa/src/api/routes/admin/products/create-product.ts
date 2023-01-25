@@ -51,6 +51,8 @@ import { DistributedTransaction } from "../../../../utils/transaction"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductsReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

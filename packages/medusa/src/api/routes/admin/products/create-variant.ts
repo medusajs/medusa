@@ -39,6 +39,8 @@ import { createVariantTransaction } from "./transaction/create-product-variant"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductsProductVariantsReq"
+ * x-codegen:
+ *   method: createVariant
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

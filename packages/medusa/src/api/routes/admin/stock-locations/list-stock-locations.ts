@@ -85,6 +85,9 @@ import { Request, Response } from "express"
  *   - (query) limit=20 {integer} Limit the number of stock locations returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each stock location of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each stock location of the result.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetStockLocationsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
