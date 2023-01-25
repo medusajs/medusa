@@ -30,7 +30,16 @@ class DatabaseFactory {
     const connection = await this.getMasterConnection()
 
     const migrationDir = path.resolve(
-      path.join(`@medusajs`, `medusa`, `dist`, `migrations`, `*.js`)
+      path.join(
+        __dirname,
+        `../../`,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `migrations`,
+        `*.js`
+      )
     )
 
     const {
