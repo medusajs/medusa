@@ -5,22 +5,17 @@ import {
   Logger,
   MODULE_RESOURCE_TYPE,
   StagedJob,
-  StagedJobService,
 } from "@medusajs/medusa"
 import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
-  manager: EntityManager
   logger: Logger
-  stagedJobService: StagedJobService
   configModule: ConfigModule
 }
 
-type ModuleOptions = {
+type EventBusRedisModuleOptions = {
   queueName?: string
   workerName?: string
   queuePrefix?: string
@@ -51,21 +46,17 @@ type EmitOptions = {
  */
 export default class RedisEventBusService extends AbstractEventBusService {
   protected readonly config_: ConfigModule
-  protected readonly moduleOptions_: ModuleOptions
+  protected readonly moduleOptions_: EventBusRedisModuleOptions
   protected readonly moduleDeclaration_: ConfigurableModuleDeclaration
   protected readonly logger_: Logger
-  protected readonly stagedJobService_: StagedJobService
 
   protected queue_: Queue
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor(
-    { manager, logger, stagedJobService, configModule }: InjectedDependencies,
-    moduleOptions: ModuleOptions = {},
+    { logger, configModule }: InjectedDependencies,
+    moduleOptions: EventBusRedisModuleOptions = {},
     moduleDeclaration: ConfigurableModuleDeclaration,
     singleton = true
   ) {
@@ -82,38 +73,11 @@ export default class RedisEventBusService extends AbstractEventBusService {
     this.moduleOptions_ = moduleOptions
     this.moduleDeclaration_ = moduleDeclaration
     this.config_ = configModule
-    this.manager_ = manager
-
     this.logger_ = logger
-    this.stagedJobService_ = stagedJobService
 
     if (singleton && moduleOptions.redisUrl) {
       this.connect()
     }
-  }
-
-  // @ts-ignore
-  withTransaction(transactionManager): RedisEventBusService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new RedisEventBusService(
-      {
-        manager: transactionManager,
-        stagedJobService: this.stagedJobService_,
-        logger: this.logger_,
-        configModule: this.config_,
-      },
-      this.moduleOptions_,
-      this.moduleDeclaration_,
-      false
-    )
-
-    cloned.transactionManager_ = transactionManager
-    cloned.queue_ = this.queue_
-
-    return cloned
   }
 
   connect(): void {
@@ -133,10 +97,6 @@ export default class RedisEventBusService extends AbstractEventBusService {
       connection,
       prefix: this.moduleOptions_.workerPrefix ?? `${this.constructor.name}`,
     })
-
-    if (process.env.NODE_ENV !== "test") {
-      this.startEnqueuer()
-    }
   }
 
   /**
@@ -165,66 +125,7 @@ export default class RedisEventBusService extends AbstractEventBusService {
       opts.delay = options.delay
     }
 
-    /**
-     * If we are in an ongoing transaction, we store the jobs in the database
-     * instead of processing them immediately. We only want to process those
-     * events, if the transaction successfully commits. This is to avoid jobs
-     * being processed if the transaction fails.
-     *
-     * In case of a failing transaction, kobs stored in the database are removed
-     * as part of the rollback.
-     */
-    if (this.transactionManager_) {
-      const jobToCreate = {
-        event_name: eventName,
-        data: data as unknown as Record<string, unknown>,
-        options: opts,
-      } as Partial<StagedJob>
-
-      return await this.stagedJobService_
-        .withTransaction(this.transactionManager_)
-        .create(jobToCreate)
-    }
-
     await this.queue_.add(eventName, { eventName, data }, opts)
-  }
-
-  startEnqueuer(): void {
-    this.shouldEnqueuerRun = true
-    this.enqueue_ = this.enqueuer_()
-  }
-
-  async stopEnqueuer(): Promise<void> {
-    this.shouldEnqueuerRun = false
-    await this.enqueue_
-  }
-
-  async enqueuer_(): Promise<void> {
-    while (this.shouldEnqueuerRun) {
-      const listConfig = {
-        relations: [],
-        skip: 0,
-        take: 1000,
-      }
-
-      const jobs = await this.stagedJobService_.list(listConfig)
-
-      await Promise.all(
-        jobs.map((job) => {
-          this.queue_
-            .add(
-              job.event_name,
-              { eventName: job.event_name, data: job.data },
-              job.options ?? { removeOnComplete: true }
-            )
-            .then(async () => {
-              await this.stagedJobService_.remove(job)
-            })
-        })
-      )
-
-      await sleep(3000)
-    }
   }
 
   /**

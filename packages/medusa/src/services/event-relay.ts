@@ -1,24 +1,15 @@
-import {
-  ConfigModule,
-  Logger,
-  StagedJob,
-  StagedJobService,
-} from "@medusajs/medusa"
+import { StagedJob, StagedJobService } from "@medusajs/medusa"
 import { EntityManager } from "typeorm"
 import { AbstractEventBusService, TransactionBaseService } from "../interfaces"
 import { sleep } from "../utils/sleep"
 
 type InjectedDependencies = {
   manager: EntityManager
-  logger: Logger
   stagedJobService: StagedJobService
-  configModule: ConfigModule
   eventBusService: AbstractEventBusService
 }
 
 export default class EventRelayService extends TransactionBaseService {
-  protected readonly config_: ConfigModule
-  protected readonly logger_: Logger
   protected readonly stagedJobService_: StagedJobService
   protected readonly eventBusService_: AbstractEventBusService
 
@@ -30,19 +21,14 @@ export default class EventRelayService extends TransactionBaseService {
 
   constructor({
     manager,
-    logger,
     stagedJobService,
-    configModule,
     eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.config_ = configModule
     this.manager_ = manager
     this.eventBusService_ = eventBusService
-
-    this.logger_ = logger
     this.stagedJobService_ = stagedJobService
   }
 
@@ -69,7 +55,7 @@ export default class EventRelayService extends TransactionBaseService {
      * This patterns also gives us at-least-once delivery of events, as events
      * are only removed from the database, if they are successfully delivered.
      *
-     * In case of a failing transaction, kobs stored in the database are removed
+     * In case of a failing transaction, jobs stored in the database are removed
      * as part of the rollback.
      */
     const jobToCreate = {

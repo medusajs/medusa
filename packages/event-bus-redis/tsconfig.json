@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6"],
+    "lib": [
+      "es5",
+      "es6",
+      "es2019"
+    ],
     "target": "es5",
     "outDir": "./dist",
     "esModuleInterop": true,
@@ -15,12 +19,15 @@
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "downlevelIteration": true // to use ES5 specific tooling
   },
-  "include": ["./src/**/*"],
+  "include": ["src"],
   "exclude": [
     "./dist/**/*",
-    "./src/services/__tests__",
+    "./src/**/__tests__",
+    "./src/**/__mocks__",
+    "./src/**/__fixtures__",
     "node_modules"
   ]
 }

@@ -1,6 +1,5 @@
 import { ulid } from "ulid"
 import { StagedJob } from "../../models"
-import { TransactionBaseService } from "../transaction-base-service"
 
 export type Subscriber<T = unknown> = (
   data: T,
@@ -21,9 +20,7 @@ export type EventHandler<T = unknown> = (
   eventName: string
 ) => Promise<void>
 
-export interface IEventBusService
-  // TODO: Remove inheritance of TransactionBaseService when transactions are not shared across modules
-  extends TransactionBaseService {
+export interface IEventBusService {
   emit<T>(
     eventName: string,
     data: T,
@@ -33,11 +30,7 @@ export interface IEventBusService
   subscribe<T>(eventName: string, handler: EventHandler): this
 }
 
-export abstract class AbstractEventBusService
-  // TODO: Remove inheritance of TransactionBaseService when transactions are not shared across modules
-  extends TransactionBaseService
-  implements IEventBusService
-{
+export abstract class AbstractEventBusService implements IEventBusService {
   protected eventToSubscribersMap_: Map<
     string | symbol,
     SubscriberDescriptor[]

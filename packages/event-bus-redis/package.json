@@ -19,21 +19,23 @@
     "jest": "^25.5.2",
     "medusa-test-utils": "workspace:^",
     "ts-jest": "^25.5.1",
+    "typeorm": "^0.2.31",
     "typescript": "^4.4.4"
   },
   "scripts": {
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "test": "jest"
+    "test": "jest --passWithNoTests",
+    "test:unit": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.x.x",
-    "medusa-interfaces": "1.x.x"
+    "@medusajs/medusa": "^1.6.5",
+    "medusa-interfaces": "^1.3.3",
+    "typeorm": "^0.2.31"
   },
   "dependencies": {
     "bullmq": "^3.5.6",
-    "ioredis": "^5.2.5",
-    "typeorm": "^0.2.31"
+    "ioredis": "^5.2.5"
   }
 }

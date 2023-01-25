@@ -37,7 +37,6 @@ export default class LocalEventBusService extends AbstractEventBusService {
     const eventListenersCount = eventEmitter.listenerCount(eventName)
 
     if (eventListenersCount === 0) {
-      console.log("Here: ", eventListenersCount)
       return
     }
 

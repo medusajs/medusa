@@ -1,5 +1,5 @@
 {
-  "name": "integration-tests-event-bus-redis",
+  "name": "integration-tests-modules",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
