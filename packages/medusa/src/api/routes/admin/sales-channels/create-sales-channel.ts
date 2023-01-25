@@ -16,6 +16,8 @@ import SalesChannelService from "../../../../services/sales-channel"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostSalesChannelsReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

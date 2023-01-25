@@ -20,6 +20,8 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  * x-authenticated: true
  * parameters:
  *   - (path) id {string} The Product Variant id to get inventory for.
+ * x-codegen:
+ *   method: getInventory
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -17,6 +17,8 @@ import { EntityManager } from "typeorm"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codegen:
+ *   method: deleteCurrency
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
