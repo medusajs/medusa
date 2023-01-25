@@ -35,7 +35,7 @@ describe("/admin/order-edits", () => {
   const adminUserId = "admin_user"
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
