@@ -1,7 +1,7 @@
-import Medusa from "@medusajs/medusa-js"
+import Medusa from "@medusajs/medusa-js/dist/index"
 import {
   QueryClientProvider,
-  QueryClientProviderProps
+  QueryClientProviderProps,
 } from "@tanstack/react-query"
 import React from "react"
 

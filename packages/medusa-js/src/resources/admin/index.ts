@@ -33,6 +33,7 @@ import AdminUsersResource from "./users"
 import AdminVariantsResource from "./variants"
 import AdminPaymentCollectionsResource from "./payment-collections"
 import AdminPaymentsResource from "./payments"
+import AdminInventoryItemsResource from "./inventory-item"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -45,6 +46,7 @@ class Admin extends BaseResource {
   public draftOrders = new AdminDraftOrdersResource(this.client)
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
+  public inventoryItems = new AdminInventoryItemsResource(this.client)
   public notes = new AdminNotesResource(this.client)
   public priceLists = new AdminPriceListResource(this.client)
   public products = new AdminProductsResource(this.client)
