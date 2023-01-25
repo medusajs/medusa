@@ -1,7 +1,6 @@
 import { In } from "typeorm"
 import { ProductTag } from "../models/product-tag"
 import { ExtendedFindConfig } from "../types/common"
-import { buildLegacyFieldsListFrom } from "../utils"
 import { dataSource } from "../loaders/database"
 
 type UpsertTagsInput = (Partial<ProductTag> & {
@@ -72,26 +71,9 @@ export const ProductTagRepository = dataSource
       conditionId: string,
       query: ExtendedFindConfig<ProductTag>
     ) {
-      const qb = this.createQueryBuilder("pt")
-
-      if (query?.select) {
-        qb.select(
-          buildLegacyFieldsListFrom(query.select).map(
-            (select) => `pt.${select}`
-          )
-        )
-      }
-
-      if (query.skip) {
-        qb.skip(query.skip)
-      }
-
-      if (query.take) {
-        qb.take(query.take)
-      }
-
-      return await qb
+      return await this.createQueryBuilder("pt")
         .where(query.where)
+        .setFindOptions(query)
         .innerJoin(
           "discount_condition_product_tag",
           "dc_pt",
