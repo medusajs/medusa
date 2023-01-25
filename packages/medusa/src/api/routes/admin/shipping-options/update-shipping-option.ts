@@ -30,6 +30,8 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostShippingOptionsOptionReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

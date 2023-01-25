@@ -6,6 +6,8 @@ import { TaxProviderService } from "../../../../services"
  * summary: "List Tax Providers"
  * description: "Retrieves the configured Tax Providers"
  * x-authenticated: true
+ * x-codegen:
+ *   method: listTaxProviders
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

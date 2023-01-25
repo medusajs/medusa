@@ -15,6 +15,9 @@ import { Swap } from "../../../../models"
  *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
  *   - (query) offset=0 {number} The offset of the list returned.
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetSwapsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
