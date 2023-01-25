@@ -16,6 +16,7 @@ import styles from './styles.module.css';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import {useLocation} from '@docusaurus/router';
 import StructuredDataSearchbox from '../StructuredData/Searchbox';
+import StructuredDataBreadcrumbs from '../StructuredData/Breadcrumbs';
 
 export default function Layout(props) {
   const {
@@ -55,6 +56,7 @@ export default function Layout(props) {
     <LayoutProvider>
       <PageMetadata title={title} description={description} />
       {location.pathname === '/' && <StructuredDataSearchbox />}
+      {!location.pathname.startsWith('/api/') && <StructuredDataBreadcrumbs />}
       <SkipToContent />
 
       <Navbar />

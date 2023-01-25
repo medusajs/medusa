@@ -1,6 +1,6 @@
+import React from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Head from '@docusaurus/Head';
-import React from 'react';
 
 export default function StructuredDataSearchbox () {
   const { siteConfig: { url } } = useDocusaurusContext()
