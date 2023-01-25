@@ -566,6 +566,7 @@ export default class OrderEditService extends TransactionBaseService {
           "gift_cards",
           "region",
           "items",
+          "items.variant",
           "items.tax_lines",
           "items.adjustments",
           "region.tax_rates",
