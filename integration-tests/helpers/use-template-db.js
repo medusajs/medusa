@@ -2,6 +2,7 @@ const path = require("path")
 
 require("dotenv").config({ path: path.join(__dirname, "../.env.test") })
 
+const { getConfigFile } = require("medusa-core-utils")
 const { createDatabase, dropDatabase } = require("pg-god")
 const { createConnection, getConnection } = require("typeorm")
 
@@ -24,30 +25,30 @@ class DatabaseFactory {
   }
 
   async createTemplateDb_({ cwd }) {
-    // const cwd = path.resolve(path.join(__dirname, ".."))
+    const { configModule } = getConfigFile(
+      path.join(__dirname),
+      `medusa-config`
+    )
+
     const connection = await this.getMasterConnection()
+
     const migrationDir = path.resolve(
-      path.join(
-        __dirname,
-        `../../`,
-        `node_modules`,
-        `@medusajs`,
-        `medusa`,
-        `dist`,
-        `migrations`,
-        `*.js`
-      )
+      path.join(`@medusajs`, `medusa`, `dist`, `migrations`, `*.js`)
     )
 
     const {
       getEnabledMigrations,
+      getModuleSharedResources,
     } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
     // filter migrations to only include those that don't have feature flags
-    const enabledMigrations = await getEnabledMigrations(
+    const enabledMigrations = getEnabledMigrations(
       [migrationDir],
       (flag) => false
     )
+
+    const { migrations: moduleMigrations } =
+      getModuleSharedResources(configModule)
 
     await dropDatabase(
       {
@@ -65,7 +66,7 @@ class DatabaseFactory {
       type: "postgres",
       name: "templateConnection",
       url: `${DB_URL}/${this.templateDbName}`,
-      migrations: enabledMigrations,
+      migrations: enabledMigrations.concat(moduleMigrations),
     })
 
     await templateDbConnection.runMigrations()
@@ -76,7 +77,7 @@ class DatabaseFactory {
 
   async getMasterConnection() {
     try {
-      return await getConnection(this.masterConnectionName)
+      return getConnection(this.masterConnectionName)
     } catch (err) {
       return await this.createMasterConnection()
     }
