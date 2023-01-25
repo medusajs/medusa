@@ -112,11 +112,10 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     // Add explicit ordering for variant ranking on the variants join directly
     // The constraint if there is any will be applied by the options_
-    if (options_.relations.variants) {
+    if (options_.relations.variants && !isObject(options_.order?.variants)) {
       options_.order = options_.order ?? {}
       options_.order.variants = {
         variant_rank: "ASC",
-        ...(isObject(options_.order.variants) ? options_.order.variants : {}),
       }
       /* // The query strategy, as explain at the top of the function, does not select the column from the separated query
       // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
@@ -209,7 +208,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
       delete options_.where.discount_condition_id
     }
-
+    // TODO: move back to the service layer
     if (q) {
       options_.relations = options_.relations ?? {}
       options_.relations.variants = options_.relations.variants ?? true
