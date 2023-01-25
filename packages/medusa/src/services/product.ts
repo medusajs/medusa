@@ -1,7 +1,7 @@
 import { FlagRouter } from "../utils/flag-router"
 
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -18,6 +18,7 @@ import {
   FindWithoutRelationsOptions,
   ProductRepository,
 } from "../repositories/product"
+import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
@@ -42,6 +43,7 @@ type InjectedDependencies = {
   productTypeRepository: typeof ProductTypeRepository
   productTagRepository: typeof ProductTagRepository
   imageRepository: typeof ImageRepository
+  productCategoryRepository: typeof ProductCategoryRepository
   productVariantService: ProductVariantService
   searchService: SearchService
   eventBusService: EventBusService
@@ -58,6 +60,7 @@ class ProductService extends TransactionBaseService {
   protected readonly productTypeRepository_: typeof ProductTypeRepository
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
+  protected readonly productCategoryRepository_: typeof ProductCategoryRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
@@ -79,6 +82,7 @@ class ProductService extends TransactionBaseService {
     productVariantService,
     productTypeRepository,
     productTagRepository,
+    productCategoryRepository,
     imageRepository,
     searchService,
     featureFlagRouter,
@@ -92,6 +96,7 @@ class ProductService extends TransactionBaseService {
     this.productVariantRepository_ = productVariantRepository
     this.eventBus_ = eventBusService
     this.productVariantService_ = productVariantService
+    this.productCategoryRepository_ = productCategoryRepository
     this.productTypeRepository_ = productTypeRepository
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
@@ -386,13 +391,14 @@ class ProductService extends TransactionBaseService {
       const optionRepo = manager.getCustomRepository(
         this.productOptionRepository_
       )
-
+console.log("productObject - ", productObject)
       const {
         options,
         tags,
         type,
         images,
         sales_channels: salesChannels,
+        categories: categories,
         ...rest
       } = productObject
 
@@ -430,6 +436,22 @@ class ProductService extends TransactionBaseService {
               (id) => ({ id } as SalesChannel)
             )
           }
+        }
+      }
+console.log("categories - ", categories)
+console.log("isDefined(categories) - ", isDefined(categories))
+      if (isDefined(categories)) {
+        product.categories = []
+
+        if (categories?.length) {
+          const categoryIds = categories?.map((c) => c.id)
+          const pcRepo = manager.getCustomRepository(this.productCategoryRepository_)
+
+          const categoryRecords = await pcRepo.find({
+            where: { id: In(categoryIds) }
+          })
+console.log("categoryRecords - ", categoryRecords)
+          product.categories = categoryRecords
         }
       }
 

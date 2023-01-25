@@ -6,6 +6,8 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
+const { productCategorySeeder } = require("../../helpers/product-category-seeder")
+
 const {
   ProductVariant,
   ProductOptionValue,
@@ -38,6 +40,7 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
+      verbose: true
     })
   })
 
@@ -900,6 +903,7 @@ describe("/admin/products", () => {
   describe("POST /admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
+      await productCategorySeeder(dbConnection)
       await adminSeeder(dbConnection)
     })
 
@@ -908,7 +912,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("creates a product", async () => {
+    it.only("creates a product", async () => {
       const api = useApi()
 
       const payload = {
@@ -917,6 +921,7 @@ describe("/admin/products", () => {
         type: { value: "test-type" },
         images: ["test-image.png", "test-image-2.png"],
         collection_id: "test-collection",
+        categories: [{ id: "test-category-d2B" }, { id: "test-category-d2A" }],
         tags: [{ value: "123" }, { value: "456" }],
         options: [{ title: "size" }, { title: "color" }],
         variants: [
@@ -947,7 +952,7 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
-
+console.log("response.data.product - ", response.data.product)
       expect(response.status).toEqual(200)
       expect(response.data.product).toMatchSnapshot({
         id: expect.stringMatching(/^prod_*/),

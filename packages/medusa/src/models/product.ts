@@ -320,6 +320,12 @@ export class Product extends SoftDeletableEntity {
  *     items:
  *       type: object
  *       description: A sales channel object.
+ *   categories:
+ *     description: The product's associated categories. Available if the relation `categories` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: A category object.
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."
