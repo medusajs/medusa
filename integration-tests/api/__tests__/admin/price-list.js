@@ -23,7 +23,7 @@ const adminReqConfig = {
   },
 }
 
-jest.setTimeout(30000000)
+jest.setTimeout(50000)
 
 describe("/admin/price-lists", () => {
   let medusaProcess
