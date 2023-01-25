@@ -139,7 +139,6 @@ export default class InventoryLevelService extends TransactionBaseService {
    * Updates an existing inventory level.
    * @param inventoryLevelId - The ID of the inventory level to update.
    * @param data - An object containing the properties to update on the inventory level.
-   * @param autoSave - A flag indicating whether to save the changes automatically.
    * @return The updated inventory level.
    * @throws If the inventory level ID is not defined or the given ID was not found.
    */

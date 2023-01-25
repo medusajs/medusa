@@ -1,9 +1,28 @@
-export default function filterListItems (items: any[], pathPattern: string | RegExp) {
+import { PropSidebarItem, PropSidebarItemLink } from '@docusaurus/plugin-content-docs'
+
+export default function filterListItems (items: PropSidebarItemLink[], pathPattern: string | RegExp): PropSidebarItemLink[] {
+  console.log(items)
   if (!items.length) {
     return items
   }
 
   let pattern = new RegExp(pathPattern)
 
-  return items.filter((item) => pattern.test(item.href))
+  return items.filter((item: PropSidebarItemLink) => pattern.test(item.href))
+}
+
+/**
+ * Flatting a sidebar list moving items from category
+ * to links
+ */
+export function flattenList (items: PropSidebarItem[]): PropSidebarItem[] {
+  const newItems = items.map((item: PropSidebarItem) => {
+    if (item.type !== 'category') {
+      return item
+    }
+
+    return item.items
+  })
+
+  return newItems.flat()
 }

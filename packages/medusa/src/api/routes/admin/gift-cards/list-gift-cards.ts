@@ -16,6 +16,9 @@ import { isDefined } from "medusa-core-utils"
  *   - (query) offset=0 {number} The number of items to skip before the results.
  *   - (query) limit=50 {number} Limit the number of items returned.
  *   - (query) q {string} a search term to search by code or display ID
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetGiftCardsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -28,11 +28,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              download_url:
-                type: string
-                description: The Download URL of the file
+            $ref: ../components/schemas/AdminUploadsDownloadUrlRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

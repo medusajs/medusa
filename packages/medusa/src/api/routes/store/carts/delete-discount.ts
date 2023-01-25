@@ -10,6 +10,8 @@ import { CartService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) code=* {string} The unique Discount code.
+ * x-codegen:
+ *   method: deleteDiscount
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

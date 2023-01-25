@@ -38,10 +38,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              notification:
-                $ref: ../components/schemas/Notification.yaml
+            $ref: ../components/schemas/AdminNotificationsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

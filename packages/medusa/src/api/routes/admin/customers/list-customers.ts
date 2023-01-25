@@ -16,6 +16,9 @@ import customerController from "../../../../controllers/customers"
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
  *   - (query) q {string} a search term to search email, first_name, and last_name.
  *   - (query) groups[] {string} group IDs to search customers by.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetCustomersParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

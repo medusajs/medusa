@@ -31,6 +31,8 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostPriceListsPriceListReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

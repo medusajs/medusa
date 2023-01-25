@@ -9,6 +9,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the Payment Provider that created the Payment Session to be refreshed.
+ * x-codegen:
+ *   method: refreshPaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

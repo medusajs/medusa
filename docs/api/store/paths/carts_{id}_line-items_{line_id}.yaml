@@ -33,10 +33,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              cart:
-                $ref: ../components/schemas/Cart.yaml
+            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':
@@ -82,10 +79,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              cart:
-                $ref: ../components/schemas/Cart.yaml
+            $ref: ../components/schemas/StoreCartsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

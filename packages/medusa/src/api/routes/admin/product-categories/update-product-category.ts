@@ -5,6 +5,7 @@ import { EntityManager } from "typeorm"
 import { ProductCategoryService } from "../../../../services"
 import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
 import { FindParams } from "../../../../types/common"
+
 /**
  * @oas [post] /product-categories/{id}
  * operationId: "PostProductCategoriesCategory"
@@ -20,6 +21,9 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductCategoriesCategoryReq"
+ * x-codegen:
+ *   method: update
+ *   queryParams: AdminPostProductCategoriesCategoryParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -77,7 +81,7 @@ export default async (req: Request, res: Response) => {
 
   const productCategory = await productCategoryService.retrieve(
     updated.id,
-    req.retrieveConfig,
+    req.retrieveConfig
   )
 
   res.status(200).json({ product_category: productCategory })
