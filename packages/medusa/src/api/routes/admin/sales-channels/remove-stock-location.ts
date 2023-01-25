@@ -17,6 +17,8 @@ import { SalesChannelLocationService } from "../../../../services"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeleteSalesChannelsChannelStockLocationsReq"
+ * x-codegen:
+ *   method: removeLocation
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

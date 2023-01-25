@@ -28,6 +28,9 @@ import { validator } from "../../../../utils/validator"
  *    schema:
  *      type: boolean
  *    description: Flag for fetching admin specific options
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetShippingOptionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

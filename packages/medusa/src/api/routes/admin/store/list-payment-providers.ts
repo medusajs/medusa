@@ -6,6 +6,8 @@ import { PaymentProviderService } from "../../../../services"
  * summary: "List Payment Providers"
  * description: "Retrieves the configured Payment Providers"
  * x-authenticated: true
+ * x-codegen:
+ *   method: listPaymentProviders
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
