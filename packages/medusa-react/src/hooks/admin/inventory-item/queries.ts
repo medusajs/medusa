@@ -18,7 +18,6 @@ export const adminInventoryItemsKeys = queryKeysFactory(
 
 type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
 
-// list inventory items
 export const useAdminInventoryItems = (
   query?: AdminGetStockLocationsParams,
   options?: UseQueryOptionsWrapper<
@@ -38,7 +37,6 @@ export const useAdminInventoryItems = (
   return { ...data, ...rest } as const
 }
 
-// get inventory item
 export const useAdminInventoryItem = (
   inventoryItemId: string,
   query?: AdminGetStockLocationsParams,
@@ -59,7 +57,6 @@ export const useAdminInventoryItem = (
   return { ...data, ...rest } as const
 }
 
-// list location levels
 export const useAdminInventoryItemLocationLevels = (
   inventoryItemId: string,
   query?: AdminGetStockLocationsParams,

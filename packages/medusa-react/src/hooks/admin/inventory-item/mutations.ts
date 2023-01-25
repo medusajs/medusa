@@ -32,7 +32,11 @@ export const useAdminUpdateInventoryItem = (
   return useMutation(
     (payload: AdminPostInventoryItemsInventoryItemReq) =>
       client.admin.inventoryItems.update(inventoryItemId, payload),
-    buildOptions(queryClient, [adminInventoryItemsKeys.list()], options)
+    buildOptions(
+      queryClient,
+      [adminInventoryItemsKeys.detail(inventoryItemId)],
+      options
+    )
   )
 }
 
@@ -50,7 +54,11 @@ export const useAdminDeleteInventoryItem = (
 
   return useMutation(
     () => client.admin.inventoryItems.delete(inventoryItemId),
-    buildOptions(queryClient, [adminInventoryItemsKeys.list()], options)
+    buildOptions(
+      queryClient,
+      [adminInventoryItemsKeys.detail(inventoryItemId)],
+      options
+    )
   )
 }
 
@@ -74,7 +82,14 @@ export const useAdminUpdateLocationLevel = (
         stockLocationId,
         payload
       ),
-    buildOptions(queryClient, [adminInventoryItemsKeys.list()], options)
+    buildOptions(
+      queryClient,
+      [
+        adminInventoryItemsKeys.detail(inventoryItemId),
+        adminInventoryItemsKeys.lists(),
+      ],
+      options
+    )
   )
 }
 
@@ -92,7 +107,14 @@ export const useAdminDeleteLocationLevel = (
         inventoryItemId,
         stockLocationId
       ),
-    buildOptions(queryClient, [adminInventoryItemsKeys.list()], options)
+    buildOptions(
+      queryClient,
+      [
+        adminInventoryItemsKeys.detail(inventoryItemId),
+        adminInventoryItemsKeys.lists(),
+      ],
+      options
+    )
   )
 }
 
@@ -110,6 +132,13 @@ export const useAdminCreateLocationLevel = (
   return useMutation(
     (payload: AdminPostInventoryItemsItemLocationLevelsReq) =>
       client.admin.inventoryItems.createLocationLevel(inventoryItemId, payload),
-    buildOptions(queryClient, [adminInventoryItemsKeys.list()], options)
+    buildOptions(
+      queryClient,
+      [
+        adminInventoryItemsKeys.detail(inventoryItemId),
+        adminInventoryItemsKeys.lists(),
+      ],
+      options
+    )
   )
 }
