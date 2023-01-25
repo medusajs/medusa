@@ -465,6 +465,61 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/stock-locations", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        stock_locations: fixtures.list("stock_location"),
+      })
+    )
+  }),
+  rest.post("/admin/stock-locations", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        stock_location: {
+          ...fixtures.get("stock_location"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+  rest.get("/admin/stock-locations/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        stock_location: {
+          ...fixtures.get("stock_location"),
+          id: req.params.id,
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/stock-locations/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        stock_location: {
+          ...fixtures.get("stock_location"),
+          ...(req.body as any),
+          id: req.params.id,
+        },
+      })
+    )
+  }),
+
+  rest.delete("/admin/stock-locations/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "stock_location",
+        deleted: true,
+      })
+    )
+  }),
+
   rest.get("/admin/notifications/", (req, res, ctx) => {
     return res(
       ctx.status(200),
