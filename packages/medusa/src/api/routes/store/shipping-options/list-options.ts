@@ -12,6 +12,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) is_return {boolean} Whether return Shipping Options should be included. By default all Shipping Options are returned.
  *   - (query) product_ids {string} A comma separated list of Product ids to filter Shipping Options by.
  *   - (query) region_id {string} the Region to retrieve Shipping Options from.
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetShippingOptionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

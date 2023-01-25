@@ -76,12 +76,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              regions:
-                type: array
-                items:
-                  $ref: ../components/schemas/Region.yaml
+            $ref: ../components/schemas/StoreRegionsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

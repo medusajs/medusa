@@ -1,6 +1,6 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
-import { Type, Transform } from "class-transformer"
+import { Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
@@ -17,6 +17,9 @@ import { defaultStoreScope } from "."
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetProductCategoriesParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -67,7 +70,10 @@ export default async (req: Request, res: Response) => {
     "productCategoryService"
   )
 
-  const selectors = Object.assign({ ...defaultStoreScope }, req.filterableFields)
+  const selectors = Object.assign(
+    { ...defaultStoreScope },
+    req.filterableFields
+  )
 
   const [data, count] = await productCategoryService.listAndCount(
     selectors,

@@ -4,7 +4,7 @@ hide_table_of_contents: true
 
 import DocCardList from '@theme/DocCardList';
 import {useCurrentSidebarCategory} from '@docusaurus/theme-common';
-import filterListItems from '@site/src/utils/filterListItems';
+import filterListItems, { flattenList } from '@site/src/utils/filterListItems';
 
 # Upgrade Guides
 
@@ -12,8 +12,12 @@ Find in this page the upgrade guides that require necessary steps when upgrading
 
 ## Server
 
-<DocCardList items={filterListItems(useCurrentSidebarCategory().items, /^(?!.*\/admin\/).*$/)}/>
+<DocCardList items={filterListItems(flattenList(useCurrentSidebarCategory().items), /\/medusa\-core\//)}/>
+
+## Medusa React
+
+<DocCardList items={filterListItems(flattenList(useCurrentSidebarCategory().items), /\/medusa-react\//)}/>
 
 ## Admin
 
-<DocCardList items={filterListItems(useCurrentSidebarCategory().items, /\/admin\//)}/>
+<DocCardList items={filterListItems(flattenList(useCurrentSidebarCategory().items), /\/admin\//)}/>

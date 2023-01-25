@@ -209,6 +209,12 @@ paths:
     $ref: paths/payment-collections_{id}_sessions.yaml
   /payment-collections/{id}/sessions/{session_id}:
     $ref: paths/payment-collections_{id}_sessions_{session_id}.yaml
+  /product-categories/{id}:
+    $ref: paths/product-categories_{id}.yaml
+  /product-categories:
+    $ref: paths/product-categories.yaml
+  /product-tags:
+    $ref: paths/product-tags.yaml
   /product-types:
     $ref: paths/product-types.yaml
   /products/{id}:

@@ -303,6 +303,8 @@ paths:
     $ref: paths/order_{id}_claims.yaml
   /orders/{id}/fulfillment:
     $ref: paths/orders_{id}_fulfillment.yaml
+  /orders/{id}/line-items/{line_item_id}/reserve:
+    $ref: paths/orders_{id}_line-items_{line_item_id}_reserve.yaml
   /orders/{id}/shipment:
     $ref: paths/orders_{id}_shipment.yaml
   /orders/{id}/swaps/{swap_id}/shipments:
@@ -315,6 +317,8 @@ paths:
     $ref: paths/orders_{id}_swaps_{swap_id}_fulfillments.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
+  /orders/{id}/reservations:
+    $ref: paths/orders_{id}_reservations.yaml
   /orders:
     $ref: paths/orders.yaml
   /orders/{id}/swaps/{swap_id}/process-payment:
@@ -347,6 +351,10 @@ paths:
     $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
   /price-lists/{id}/products:
     $ref: paths/price-lists_{id}_products.yaml
+  /product-categories:
+    $ref: paths/product-categories.yaml
+  /product-categories/{id}:
+    $ref: paths/product-categories_{id}.yaml
   /product-tags:
     $ref: paths/product-tags.yaml
   /product-types:
@@ -399,6 +407,10 @@ paths:
     $ref: paths/regions_{id}_fulfillment-providers_{provider_id}.yaml
   /regions/{id}/payment-providers/{provider_id}:
     $ref: paths/regions_{id}_payment-providers_{provider_id}.yaml
+  /reservations:
+    $ref: paths/reservations.yaml
+  /reservations/{id}:
+    $ref: paths/reservations_{id}.yaml
   /return-reasons:
     $ref: paths/return-reasons.yaml
   /return-reasons/{id}:
@@ -411,6 +423,8 @@ paths:
     $ref: paths/returns_{id}_receive.yaml
   /sales-channels/{id}/products/batch:
     $ref: paths/sales-channels_{id}_products_batch.yaml
+  /sales-channels/{id}/stock-locations:
+    $ref: paths/sales-channels_{id}_stock-locations.yaml
   /sales-channels:
     $ref: paths/sales-channels.yaml
   /sales-channels/{id}:
@@ -423,6 +437,10 @@ paths:
     $ref: paths/shipping-profiles.yaml
   /shipping-profiles/{id}:
     $ref: paths/shipping-profiles_{id}.yaml
+  /stock-locations:
+    $ref: paths/stock-locations.yaml
+  /stock-locations/{id}:
+    $ref: paths/stock-locations_{id}.yaml
   /store/currencies/{code}:
     $ref: paths/store_currencies_{code}.yaml
   /store:

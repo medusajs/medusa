@@ -9,6 +9,8 @@ import { PaymentProvider } from "../../../../models"
  * summary: Get Payment Methods
  * description: "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods."
  * x-authenticated: true
+ * x-codegen:
+ *   method: listPaymentMethods
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

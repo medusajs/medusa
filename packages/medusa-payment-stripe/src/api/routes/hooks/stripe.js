@@ -31,6 +31,9 @@ export default async (req, res) => {
           await manager.transaction(async (manager) => {
             await orderService.withTransaction(manager).capturePayment(order.id)
           })
+        } else {
+          // If we receive the event, before the order is created, we respond with 404 as this will trigger Stripe to resend the event later
+          return res.sendStatus(404)
         }
         break
       case "payment_intent.amount_capturable_updated":

@@ -15,6 +15,8 @@ import {
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete from.
  *   - (path) item_id=* {string} The ID of the order edit item to delete from order.
+ * x-codegen:
+ *   method: removeLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -1,0 +1,4 @@
+type: object
+properties:
+  swap:
+    $ref: ./Swap.yaml

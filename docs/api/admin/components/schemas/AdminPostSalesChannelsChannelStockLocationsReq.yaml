@@ -1,0 +1,7 @@
+type: object
+required:
+  - location_id
+properties:
+  location_id:
+    description: The ID of the stock location
+    type: string

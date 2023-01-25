@@ -11,6 +11,8 @@ import CustomerService from "../../../../services/customer"
  * x-authenticated: true
  * parameters:
  *   - (path) address_id=* {string} The id of the Address to remove.
+ * x-codegen:
+ *   method: deleteAddress
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -29,6 +29,8 @@ import { EntityManager } from "typeorm"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimReq"
+ * x-codegen:
+ *   method: updateClaim
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
