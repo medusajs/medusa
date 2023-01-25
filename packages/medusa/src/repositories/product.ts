@@ -75,7 +75,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         discount_condition_id?: string
       }
     >
-  ) {
+  ): Promise<Product | null> {
     const queryBuilder = this.prepareQueryBuilder_(options)
     return await queryBuilder.getOne()
   },
@@ -94,6 +94,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     const productAlias = "product"
     const queryBuilder = this.createQueryBuilder(productAlias)
+
     // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
     // Therefore use query when there is only an ordering by the product entity otherwise fallback to join.
     // In other word, if the order depth is more than 1 then use join otherwise use query
@@ -112,7 +113,12 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     // Add explicit ordering for variant ranking on the variants join directly
     // The constraint if there is any will be applied by the options_
     if (options_.relations.variants) {
-      // The query strategy, as explain at the top of the function, does not select the column from the separated query
+      options_.order = options_.order ?? {}
+      options_.order.variants = {
+        variant_rank: "ASC",
+        ...(isObject(options_.order.variants) ? options_.order.variants : {}),
+      }
+      /* // The query strategy, as explain at the top of the function, does not select the column from the separated query
       // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
       options_.relationLoadStrategy = "join"
       queryBuilder.leftJoinAndSelect(`${productAlias}.variants`, "variants")
@@ -123,7 +129,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
         options_.order.variants = {
           variant_rank: "ASC",
         }
-      }
+      }*/
     }
 
     if (options_.where.price_list_id) {
@@ -139,9 +145,11 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       ).value
       delete options_.where.price_list_id
 
-      options_.where.variants = options_.where.variants ?? {}
-      options_.where.variants["prices"] = {
-        price_list_id: In(priceListIds),
+      options_.where.variants = {
+        ...(isObject(options_.where.variants) ? options_.where.variants : {}),
+        prices: {
+          price_list_id: In(priceListIds),
+        },
       }
     }
 

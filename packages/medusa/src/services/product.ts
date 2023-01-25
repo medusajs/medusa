@@ -244,7 +244,7 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false, // TODO: this seams to be unused from the repository
     }
   ): Promise<Product> {
-    const manager = this.manager_
+    const manager = this.transactionManager_ ?? this.manager_
     const productRepo = manager.withRepository(this.productRepository_)
     const query = buildQuery(selector, config as FindConfig<Product>)
     const product = await productRepo.findOne(query)
