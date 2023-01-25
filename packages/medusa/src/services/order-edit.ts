@@ -583,7 +583,6 @@ export default class OrderEditService extends TransactionBaseService {
     const itemsTotals = await newTotalsServiceTx.getLineItemTotals(
       orderEdit.items,
       {
-        taxRate: order.tax_rate,
         includeTax: true,
         calculationContext,
       }
