@@ -6,16 +6,32 @@ import { AdminPluginOptions } from "../types"
 
 const route = Router()
 
-export default async function (
-  _rootDirectory: string,
-  options: AdminPluginOptions
-) {
+export default function (_rootDirectory: string, options: AdminPluginOptions) {
   const { path, serve } = options
 
-  if (serve) {
-    const adminPath = require.resolve("@medusajs/ui")
+  console.log("Im here")
 
-    const html = await fse.readFile(adminPath, "utf8")
+  if (serve) {
+    let adminPath = ""
+
+    try {
+      adminPath = require.resolve("@medusajs/ui")
+    } catch (e) {
+      console.log("Could not find @medusajs/ui")
+      console.error(e)
+      adminPath = join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "..",
+        "node_modules",
+        "@medusajs",
+        "ui"
+      )
+    }
+
+    const html = fse.readFileSync(adminPath, "utf8")
     const htmlWithBase = html.replace(
       /<base \/>/,
       `<base href="http://localhost:9000${path}" />`
