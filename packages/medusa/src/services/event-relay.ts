@@ -58,28 +58,29 @@ export default class EventRelayService extends TransactionBaseService {
     data: T,
     options: Record<string, unknown>
   ): Promise<StagedJob | void> {
+    const manager = this.transactionManager_ ?? this.manager_
     /**
-     * If we are in an ongoing transaction, we store the jobs in the database
-     * instead of processing them immediately. We only want to process those
-     * events, if the transaction successfully commits. This is to avoid jobs
-     * being processed if the transaction fails.
+     * We always store events in the database.
+     *
+     * If we are in a long-running transaction, the ACID properties of a
+     * transaction ensure, that events are kept invisible to the enqueuer
+     * until the trasaction has commited.
+     *
+     * This patterns also gives us at-least-once delivery of events, as events
+     * are only removed from the database, if they are successfully delivered.
      *
      * In case of a failing transaction, kobs stored in the database are removed
      * as part of the rollback.
      */
-    if (this.transactionManager_) {
-      const jobToCreate = {
-        event_name: eventName,
-        data: data as unknown as Record<string, unknown>,
-        options,
-      } as Partial<StagedJob>
+    const jobToCreate = {
+      event_name: eventName,
+      data: data as unknown as Record<string, unknown>,
+      options,
+    } as Partial<StagedJob>
 
-      return await this.stagedJobService_
-        .withTransaction(this.transactionManager_)
-        .create(jobToCreate)
-    }
-
-    await this.eventBusService_.emit(eventName, { eventName, data }, options)
+    return await this.stagedJobService_
+      .withTransaction(manager)
+      .create(jobToCreate)
   }
 
   startEnqueuer(): void {
@@ -116,6 +117,7 @@ export default class EventRelayService extends TransactionBaseService {
         })
       )
 
+      // TODO: Refactor to a sleeper with exponential backoff and make it configurable
       await sleep(3000)
     }
   }
