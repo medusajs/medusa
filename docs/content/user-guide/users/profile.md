@@ -1,5 +1,6 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
+description: 'This user guide explains how to manage user profile on the Medusa admin. Learn how to edit a user profile and reset user password.'
 ---
 
 # Manage Profile

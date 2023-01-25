@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Segment with the Medusa server. Segment can be used to track ecommerce events and push them to other destinations using Segment. Learn how to add custom tracking with Segment and Medusa.'
+description: 'Learn how to integrate Segment with the Medusa server. Learn how to add custom tracking with Segment and Medusa.'
 ---
 
 # Segment

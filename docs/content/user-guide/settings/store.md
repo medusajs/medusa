@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: 'This user guide explains how to manage a store's details on the Medusa admin.'
 ---
 
 # Manage Store Details

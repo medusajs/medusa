@@ -1,5 +1,5 @@
 ---
-description: 'Learn about the available events and their data payloads in Medusa. Events can be used to perform an action when the events are triggered. Events can be related to orders, customers, products, and other entities.'
+description: 'Learn about the available events and their data payloads in Medusa. Events can be used to perform an action when the events are triggered.'
 ---
 
 # Events Reference

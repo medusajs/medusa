@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a service in Medusa. A service allows bundling a set of methods related to an entity. This guide also includes how to use services in other services, subscribers, and endpoints.'
+description: 'Learn how to create a service in Medusa. This guide also includes how to use services in other services, subscribers, and endpoints.'
 ---
 
 # Create a Service

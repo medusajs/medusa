@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create endpoints in the Medusa server. Endpoints can be used to create custom APIs in Medusa. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
+description: 'Learn how to create endpoints in the Medusa server. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
 ---
 
 # How to Create Endpoints

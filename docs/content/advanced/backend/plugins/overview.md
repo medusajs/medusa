@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Plugins are and how they are used in Medusa. Plugins are re-usable customizations that can be added to a Medusa server. This guide also learns where you can find plugins for your Medusa server.'
+description: 'Learn what Plugins are and how they are used in Medusa. Plugins are re-usable customizations that can be added to a Medusa server.'
 ---
 
 # Plugins

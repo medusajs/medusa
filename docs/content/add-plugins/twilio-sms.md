@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Twilio SMS with the Medusa server. Twilio SMS can be used to send users SMS messages instantly. It can be used to send SMS messages to customers. Learn how to install the plugin and test it out.'
+description: 'Learn how to integrate Twilio SMS with the Medusa server. Learn how to install the Twilio SMS plugin and test it out.'
 ---
 
 # Twilio SMS

@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a payment provider in the Medusa server. The payment provider is used to authorize, capture, and refund payments, among other actions. This guide explains the different methods available in a fulfillment provider.'
+description: 'Learn how to create a payment provider in the Medusa server. This guide explains the different methods available in a fulfillment provider.'
 ---
 
 # How to Create a Payment Provider

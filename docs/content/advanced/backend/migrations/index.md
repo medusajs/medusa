@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a migration in the Medusa server. Migrations are used to make changes to the database schema the Medusa server is connected to. This guide explains how to write and run migrations.'
+description: 'Learn how to create a migration in the Medusa server. This guide explains how to write and run migrations.'
 ---
 
 # How to Create Migrations

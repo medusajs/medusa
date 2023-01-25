@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Strapi with the Medusa server. Strapi is a headless CMS service that provides rich CMS functionalities to an ecommerce platform. Learn how to install the plugin and test two-way sync between the ecommerce and CMS services.'
+description: 'Learn how to integrate Strapi with the Medusa server. Learn how to install the plugin and test two-way sync between the ecommerce and CMS services.'
 ---
 
 # Strapi

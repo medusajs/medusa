@@ -1,5 +1,5 @@
 ---
-description: 'Learn what the price selection strategy is in the Medusa server. The price selection strategy retrieves the best price for a product variant for a specific context. Learn about the methods in the PriceSelectionStrategy class.'
+description: 'Learn what the price selection strategy is in the Medusa server. The price selection strategy retrieves the best price for a product variant for a specific context.'
 ---
 
 # Price Selection Strategy

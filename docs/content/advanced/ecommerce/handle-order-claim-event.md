@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to handle the order claim event in the Medusa server. When the event is triggered, you can send an email to the customer to inform them about it. This guide explains how to do that using subscribers.'
+description: 'Learn how to handle the order claim event in the Medusa server. When the event is triggered, you can send an email to the customer to inform them about it.'
 ---
 
 # How to Handle Order Claim Event

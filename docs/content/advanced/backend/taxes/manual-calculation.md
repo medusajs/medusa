@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to manually calculate taxes during checkout in the Medusa server. There are different methods including the calculate taxes endpoint, using the CartService, and using the TotalsService.'
+description: 'Learn how to manually calculate taxes during checkout in the Medusa server. There are different methods including using endpoints or services.'
 ---
 
 # Calculate Taxes Manually in Checkout

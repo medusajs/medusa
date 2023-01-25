@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Migrations are in the Medusa server. Migrations are used to make changes to the database schema the Medusa server is linked to. Learn also about the available commands to run migrations in the Medusa server.'
+description: 'Learn what Migrations are in the Medusa server and how to run them. Migrations are used to make changes to the database schema the Medusa server is linked to.'
 ---
 
 # Migrations

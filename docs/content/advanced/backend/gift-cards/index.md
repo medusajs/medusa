@@ -1,5 +1,5 @@
 ---
-description: 'Learn what gift cards are and how they work in the Medusa server. Gift Cards are products that the customers can purchase and redeem in their future orders. Learn about the relations between Gift Cards and other entities.'
+description: 'Learn what gift cards are and how they work in the Medusa server. Learn about the relations between Gift Cards and other entities.'
 ---
 
 # Gift Cards

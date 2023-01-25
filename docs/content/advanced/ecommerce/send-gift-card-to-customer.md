@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to send a gift card code to the customer. Once the customer purchases a gift card, an email can be sent with the code so that they can redeem the gift card. This guide includes an example of how to send an email using SendGrid.'
+description: 'Learn how to send a gift card code to the customer. Once the customer purchases a gift card, an email can be sent with the code so that they can redeem the gift card.'
 ---
 
 # How to Send Gift Card Code to Customer

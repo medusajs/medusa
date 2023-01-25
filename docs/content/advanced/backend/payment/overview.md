@@ -1,5 +1,5 @@
 ---
-description: 'Learn about the payment architecture in the Medusa server. The payment architecture refers to all operations in the ecommerce store related to processing payments. This includes an overview of what Payment Providers, Payment Sessions, and Payments are.'
+description: 'Learn about the payment architecture in the Medusa server. The payment architecture refers to all operations in the ecommerce store related to processing payments.'
 ---
 
 # Payment Architecture Overview

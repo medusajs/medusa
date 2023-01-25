@@ -1,5 +1,5 @@
 ---
-description: 'Learn how the shipping architecture is implemented in the Medusa server. This includes an overview of what the Fulfillment Provider, Shipping Profile, Shipping Option, and Shipping Methods are and how they fit into the checkout and order flow.'
+description: 'Learn how the shipping architecture is implemented in the Medusa server. This includes an overview of what the Fulfillment Provider, Shipping Profile, Shipping Option, and Shipping Methods.'
 ---
 
 # Shipping Architecture Overview

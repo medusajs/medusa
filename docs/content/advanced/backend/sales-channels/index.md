@@ -1,5 +1,5 @@
 ---
-description: 'Learn what Sales Channels are and how they can be used in Medusa. Sales Channels allow merchants to separate between the different channels products are sold in. Learn about the different relations between Sales Channels and other entities.'
+description: 'Learn what Sales Channels are and how they can be used in Medusa. Sales Channels allow merchants to separate between the different channels products are sold in.'
 ---
 
 # Sales Channels

@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate MinIO with the Medusa server. MinIO is an open source storage provider that can be used to store files and images. Learn how to install the MinIO plugin on the Medusa server and configure it.'
+description: 'Learn how to integrate MinIO with the Medusa server. Learn how to install the MinIO plugin on the Medusa server and configure it.'
 ---
 
 # MinIO

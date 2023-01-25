@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to override the price selection strategy. The price selection strategy is used to determine the best price based on a specific context. This guide also includes how to test it out.'
+description: 'Learn how to override the price selection strategy. The price selection strategy is used to determine the best price based on a specific context.'
 ---
 
 # How to Override Price Selection Strategy

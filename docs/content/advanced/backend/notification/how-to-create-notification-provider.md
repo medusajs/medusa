@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a notification provider in the Medusa server. A notification provider is used to send notifications to customers or users, for example to send an email to the customer. This guide explains the different methods available in a Notification provider.'
+description: 'Learn how to create a notification provider in the Medusa server. This guide explains the different methods available in a Notification provider.'
 ---
 
 # How to Create a Notification Provider

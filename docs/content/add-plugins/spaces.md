@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Spaces with the Medusa server. DigitalOcean Spaces can be used to store files and images from the Medusa server. Learn how to install and configure the Spaces plugin on the Medusa server.'
+description: 'Learn how to integrate Spaces with the Medusa server. Learn how to install and configure the Spaces plugin on the Medusa server.'
 ---
 
 # Spaces

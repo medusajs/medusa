@@ -1,5 +1,5 @@
 ---
-description: 'Learn what subscribers are in the Medusa server. Subscribers are used to listen to triggered events to perform an action. Example use cases of subscribers include sending a confirmation email to customers.'
+description: 'Learn what subscribers are in the Medusa server. Subscribers are used to listen to triggered events to perform an action.'
 ---
 
 # Subscribers

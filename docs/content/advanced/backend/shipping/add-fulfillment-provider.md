@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a fulfillment provider in the Medusa server. A fulfillment provider can be used to fulfill orders and deliver them to customers. This guide explains the different methods in the fulfillment provider.'
+description: 'Learn how to create a fulfillment provider in the Medusa server. This guide explains the different methods in the fulfillment provider.'
 ---
 
 # How to Add a Fulfillment Provider

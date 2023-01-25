@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a plugin in Medusa. A plugin can be used to implement custom functionalities or integrate third-party providers into the Medusa server. This guide explains how to develop, configure, test, and publish the plugins.'
+description: 'Learn how to create a plugin in Medusa. This guide explains how to develop, configure, test, and publish the plugins.'
 ---
 
 # How to Create a Plugin

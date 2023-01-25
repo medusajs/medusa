@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to create a subscriber in the Medusa server. A subscriber can be used to perform an action when an event is triggered. You can use subscribers to implement functionalities like sending an order confirmation email.'
+description: 'Learn how to create a subscriber in the Medusa server. You can use subscribers to implement functionalities like sending an order confirmation email.'
 ---
 
 # How to Create a Subscriber

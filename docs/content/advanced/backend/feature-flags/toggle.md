@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to toggle feature flags in the Medusa server. Feature flags guard experimental features in the Medusa server. This guide explains the steps required to toggle a feature flag.'
+description: 'Learn how to toggle feature flags in the Medusa server. This guide explains the steps required to toggle a feature flag.'
 ---
 
 # How to Toggle Feature Flags

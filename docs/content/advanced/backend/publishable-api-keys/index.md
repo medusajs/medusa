@@ -1,5 +1,5 @@
 ---
-description: 'Learn what publishable API keys are and how they can be used in the Medusa server. Publishable API keys can be used to scope API calls with an API key. Learn about the different relations between the Publishable API Keys and other entities.'
+description: 'Learn what publishable API keys are and how they can be used in the Medusa server. Publishable API keys can be used to scope API calls with an API key.'
 ---
 
 # Publishable API Keys Overview

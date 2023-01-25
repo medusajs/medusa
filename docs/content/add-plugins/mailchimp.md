@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Mailchimp with the Medusa server. Mailchimp is an email marketing service that can be used to create newsletters and subscriptions. Learn how to install the plugin on the Medusa server and how to add a subscription form.'
+description: 'Learn how to integrate Mailchimp with the Medusa server. Learn how to install the plugin on the Medusa server and how to add a subscription form.'
 ---
 
 # Mailchimp

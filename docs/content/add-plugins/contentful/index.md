@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate Contentful with the Medusa server. Contentful is a headless CMS server that provides rich CMS functionalities. Learn how to setup Contentful with Gatsby.'
+description: 'Learn how to integrate Contentful with the Medusa server and a Gatsby storefront. Contentful is a headless CMS server that provides rich CMS functionalities.'
 ---
 
 # Contentful

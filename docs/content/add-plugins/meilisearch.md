@@ -1,5 +1,5 @@
 ---
-description: 'Learn how to integrate MeiliSearch with the Medusa server. MeiliSearch is an open source search engine that can be integrated with ecommerce platforms. Learn how to install the MeiliSearch plugin on the Medusa server and how to integrate it into the storefront.'
+description: 'Learn how to integrate MeiliSearch with the Medusa server. Learn how to install the MeiliSearch plugin on the Medusa server and integrate it into the storefront.'
 ---
 
 # MeiliSearch
