@@ -17,6 +17,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeletePriceListPricesPricesReq"
+ * x-codegen:
+ *   method: deletePrices
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

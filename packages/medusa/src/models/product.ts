@@ -17,6 +17,7 @@ import { ProductCollection } from "./product-collection"
 import { ProductOption } from "./product-option"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
+import { ProductCategory } from "./product-category"
 import { ProductVariant } from "./product-variant"
 import { SalesChannel } from "./sales-channel"
 import { ShippingProfile } from "./shipping-profile"
@@ -76,6 +77,20 @@ export class Product extends SoftDeletableEntity {
     cascade: true,
   })
   variants: ProductVariant[]
+
+  @ManyToMany(() => ProductCategory, { cascade: ["remove", "soft-remove"] })
+  @JoinTable({
+    name: "product_category_product",
+    joinColumn: {
+      name: "product_category_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+  })
+  categories: ProductCategory[]
 
   @Index()
   @Column()

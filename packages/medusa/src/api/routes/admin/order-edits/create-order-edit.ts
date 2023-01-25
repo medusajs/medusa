@@ -18,6 +18,8 @@ import {
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrderEditsReq"
  * x-authenticated: true
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
