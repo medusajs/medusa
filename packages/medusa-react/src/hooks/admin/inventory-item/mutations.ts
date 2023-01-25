@@ -5,7 +5,7 @@ import {
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsReq,
 } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js/dist/index"
+import { Response } from "@medusajs/medusa-js"
 import {
   useMutation,
   UseMutationOptions,
