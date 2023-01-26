@@ -445,7 +445,6 @@ class ProductService extends TransactionBaseService {
         if (categories?.length) {
           const categoryIds = categories?.map((c) => c.id)
           const pcRepo = manager.getCustomRepository(this.productCategoryRepository_)
-
           const categoryRecords = await pcRepo.find({
             where: { id: In(categoryIds) },
             select: ["id"],
@@ -535,6 +534,7 @@ class ProductService extends TransactionBaseService {
         tags,
         type,
         sales_channels: salesChannels,
+        categories: categories,
         ...rest
       } = update
 
@@ -556,6 +556,21 @@ class ProductService extends TransactionBaseService {
 
       if (tags) {
         product.tags = await productTagRepo.upsertTags(tags)
+      }
+
+      if (isDefined(categories)) {
+        product.categories = []
+
+        if (categories?.length) {
+          const categoryIds = categories?.map((c) => c.id)
+          const pcRepo = manager.getCustomRepository(this.productCategoryRepository_)
+          const categoryRecords = await pcRepo.find({
+            where: { id: In(categoryIds) },
+            select: ["id"],
+          })
+
+          product.categories = categoryRecords
+        }
       }
 
       if (

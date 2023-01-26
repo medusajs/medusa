@@ -7,6 +7,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const { productCategorySeeder } = require("../../helpers/product-category-seeder")
+const { Product } = require("@medusajs/medusa")
 
 const {
   ProductVariant,
@@ -19,6 +20,7 @@ const priceListSeeder = require("../../helpers/price-list-seeder")
 const {
   simpleProductFactory,
   simpleDiscountFactory,
+  simpleProductCategoryFactory,
 } = require("../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
@@ -1468,6 +1470,69 @@ describe("/admin/products", () => {
           ]),
         })
       )
+    })
+
+    it("updates a product's categories", async () => {
+      const api = useApi()
+      const category = await simpleProductCategoryFactory(
+        dbConnection,
+        {
+          id: "existing-category",
+          name: "existing category",
+          products: [{ id: "test-product" }]
+        }
+      )
+
+      const product = await dbConnection.manager.findOne(
+        Product,
+        {
+          where: { id: "test-product" },
+          relations: ["categories"]
+        }
+      )
+
+      expect(product.categories).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "existing-category",
+          })
+        ])
+      )
+
+      const payload = {
+        categories: [{ id: "test-category-d2B" }],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product", payload, adminHeaders)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          id: "test-product",
+          handle: "test-product",
+          categories: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-category-d2B",
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("throws error if product categories input is incorreect", async () => {
+      const api = useApi()
+      const payload = {
+        categories: [{ incorrect: "test-category-d2B" }],
+      }
+
+      const error = await api
+        .post("/admin/products/test-product", payload, adminHeaders)
+        .catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data.type).toEqual("invalid_data")
+      expect(error.response.data.message).toEqual("property incorrect should not exist, id must be a string")
     })
   })
 
