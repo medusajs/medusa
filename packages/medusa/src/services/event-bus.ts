@@ -25,21 +25,39 @@ export default class EventBusService extends TransactionBaseService {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  constructor({
-    manager,
-    stagedJobService,
-    eventBusModuleService,
-  }: InjectedDependencies) {
+  constructor(
+    { manager, stagedJobService, eventBusModuleService }: InjectedDependencies,
+    configModule,
+    isSingleton = true
+  ) {
+    // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super(...arguments)
 
     this.manager_ = manager
     this.eventBusModuleService_ = eventBusModuleService
     this.stagedJobService_ = stagedJobService
 
-    if (process.env.NODE_ENV !== "test") {
+    if (process.env.NODE_ENV !== "test" && isSingleton) {
       this.startEnqueuer()
     }
+  }
+
+  withTransaction(transactionManager?: EntityManager): this {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new (this.constructor as any)(
+      this.__container__,
+      this.__configModule__,
+      false
+    )
+
+    cloned.manager_ = transactionManager
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
   }
 
   /**
@@ -114,7 +132,7 @@ export default class EventBusService extends TransactionBaseService {
       } as Partial<StagedJob>
 
       return await this.stagedJobService_
-        .withTransaction(this.transactionManager_)
+        .withTransaction(manager)
         .create(jobToCreate)
     }
 
@@ -132,22 +150,20 @@ export default class EventBusService extends TransactionBaseService {
   }
 
   async enqueuer_(): Promise<void> {
-    while (this.shouldEnqueuerRun) {
-      const listConfig = {
-        relations: [],
-        skip: 0,
-        take: 1000,
-      }
+    const listConfig = {
+      relations: [],
+      skip: 0,
+      take: 1000,
+    }
 
+    while (this.shouldEnqueuerRun) {
       const jobs = await this.stagedJobService_.list(listConfig)
 
       await Promise.all(
         jobs.map(async (job) => {
-          await this.eventBusModuleService_
+          return await this.eventBusModuleService_
             .emit(job.event_name, job.data, job.options)
-            .then(async () => {
-              await this.stagedJobService_.remove(job)
-            })
+            .then(async () => await this.stagedJobService_.remove(job))
         })
       )
 
