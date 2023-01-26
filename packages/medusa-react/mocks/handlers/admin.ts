@@ -1350,6 +1350,24 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/variants/:id/inventory", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        variant: {
+          ...fixtures.get("product_variant"),
+          sales_channel_availability: [
+            {
+              channel_name: "default channel",
+              channel_id: "1",
+              available_quantity: 10,
+            },
+          ],
+        },
+      })
+    )
+  }),
+
   rest.get("/admin/users/:id", (req, res, ctx) => {
     return res(
       ctx.status(200),
