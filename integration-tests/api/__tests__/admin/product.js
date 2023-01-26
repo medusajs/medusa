@@ -1520,6 +1520,33 @@ describe("/admin/products", () => {
       )
     })
 
+    it("remove all categories of a product", async () => {
+      const api = useApi()
+      const category = await simpleProductCategoryFactory(
+        dbConnection,
+        {
+          id: "existing-category",
+          name: "existing category",
+          products: [{ id: "test-product" }]
+        }
+      )
+
+      const payload = {
+        categories: [],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product", payload, adminHeaders)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          id: "test-product",
+          categories: [],
+        })
+      )
+    })
+
     it("throws error if product categories input is incorreect", async () => {
       const api = useApi()
       const payload = {
