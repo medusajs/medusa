@@ -60,7 +60,7 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
  * @param constraints
  *
  * @example
- * const q = buildQuery(
+ * const q = buildWhere(
  *   {
  *     id: "1234",
  *     test1: ["123", "12", "1"],
@@ -68,112 +68,16 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
  *     date: { gt: date },
  *     amount: { gt: 10 },
  *   },
- *   {
- *     select: [
- *       "order",
- *       "order.items",
- *       "order.swaps",
- *       "order.swaps.additional_items",
- *       "order.discounts",
- *       "order.discounts.rule",
- *       "order.claims",
- *       "order.claims.additional_items",
- *       "additional_items",
- *       "additional_items.variant",
- *       "return_order",
- *       "return_order.items",
- *       "return_order.shipping_method",
- *       "return_order.shipping_method.tax_lines",
- *     ],
- *     relations: [
- *       "order",
- *       "order.items",
- *       "order.swaps",
- *       "order.swaps.additional_items",
- *       "order.discounts",
- *       "order.discounts.rule",
- *       "order.claims",
- *       "order.claims.additional_items",
- *       "additional_items",
- *       "additional_items.variant",
- *       "return_order",
- *       "return_order.items",
- *       "return_order.shipping_method",
- *       "return_order.shipping_method.tax_lines",
- *     ],
- *     order: {
- *       id: "ASC",
- *       "items.id": "ASC",
- *       "items.variant.id": "ASC"
- *     }
- *   }
  *)
  *
  * // Output
  * {
- *   where: {
- *     id: "1234",
- *     test1: In(["123", "12", "1"]),
- *     test2: Not("this"),
- *     date: MoreThan(date),
- *     amount: MoreThan(10)
- *   },
- *   select: {
- *     order: {
- *       items: true,
- *       swaps: {
- *         additional_items: true,
- *       },
- *       discounts: {
- *         rule: true,
- *       },
- *       claims: {
- *         additional_items: true,
- *       },
- *     },
- *     additional_items: {
- *       variant: true,
- *     },
- *     return_order: {
- *       items: true,
- *       shipping_method: {
- *         tax_lines: true,
- *       },
- *     },
- *   },
- *   relations: {
- *     order: {
- *       items: true,
- *       swaps: {
- *         additional_items: true,
- *       },
- *       discounts: {
- *         rule: true,
- *       },
- *       claims: {
- *         additional_items: true,
- *       },
- *     },
- *     additional_items: {
- *       variant: true,
- *     },
- *     return_order: {
- *       items: true,
- *       shipping_method: {
- *         tax_lines: true,
- *       },
- *     },
- *   },
- *   order: {
- *     id: "ASC",
- *     items: {
- *       id: "ASC",
- *       variant: {
- *         id: "ASC"
- *       }
- *     }
- *   }
- * })
+ *    id: "1234",
+ *    test1: In(["123", "12", "1"]),
+ *    test2: Not("this"),
+ *    date: MoreThan(date),
+ *    amount: MoreThan(10)
+ * }
  */
 function buildWhere<TWhereKeys extends object, TEntity>(
   constraints: TWhereKeys
