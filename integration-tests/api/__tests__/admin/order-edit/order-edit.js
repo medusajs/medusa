@@ -37,7 +37,7 @@ describe("/admin/order-edits", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -1163,6 +1163,7 @@ describe("/admin/order-edits", () => {
         id: orderId1,
         fulfillment_status: "fulfilled",
         payment_status: "captured",
+        tax_rate: null,
         region: {
           id: "test-region",
           name: "Test region",
@@ -2574,7 +2575,7 @@ describe("/admin/order-edits", () => {
           shipping_total: 0,
           subtotal: 3000,
           tax_total: 100,
-          total: 1100,
+          total: 1000,
         })
       )
 
