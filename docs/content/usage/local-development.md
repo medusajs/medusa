@@ -1,3 +1,7 @@
+---
+description: 'Learn how to perform local development in the Medusa monorepo. This includes how to use the dev CLI tool and perform unit, integration, and plugin tests.'
+---
+
 # Local Development of Medusa Server and Monorepo
 
 In this document, you’ll learn how to customize Medusa’s core and run tests.

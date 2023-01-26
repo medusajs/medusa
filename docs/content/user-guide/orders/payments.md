@@ -1,6 +1,7 @@
 ---
 sidebar_position: 3
 sidebar_label: Manage Payments
+addHowToData: true
 ---
 
 # Manage Order's Payments

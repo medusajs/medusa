@@ -1,3 +1,7 @@
+---
+description: 'Learn how to install Medusa React in a React storefront. Medusa React is a React library that provides a set of utilities and hooks for interactive with the Medusa server.'
+---
+
 # Medusa React
 
 [Medusa React](https://www.npmjs.com/package/medusa-react) is a React library that provides a set of utilities and hooks for interacting seamlessly with the Medusa server. It can be used to build custom React-based storefronts or admin dashboards.
