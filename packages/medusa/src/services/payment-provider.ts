@@ -573,11 +573,17 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
-      // TODO: Waiting discussion output before taking care of the processor support
-      session.data = await provider
-        .withTransaction(transactionManager)
-        .updatePaymentData(paymentSession.data, data)
-      session.status = paymentSession.status
+      if (provider instanceof AbstractPaymentProcessor) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Updating payment session data is not supported by the provider ${paymentSession.provider_id}.`
+        )
+      } else {
+        session.data = await provider
+          .withTransaction(transactionManager)
+          .updatePaymentData(paymentSession.data, data)
+        session.status = paymentSession.status
+      }
 
       const sessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
