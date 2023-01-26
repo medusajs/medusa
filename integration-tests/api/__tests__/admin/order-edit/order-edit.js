@@ -2726,16 +2726,6 @@ describe("/admin/order-edits", () => {
           name: "Test region",
           tax_rate: 12.5,
         },
-        discounts: [
-          {
-            code: "DUMMY_DISCOUNT_TO_TRICK_TOTALS_SERVICE",
-            rule: {
-              type: "fixed",
-              allocation: "total",
-              value: 0,
-            },
-          },
-        ],
         line_items: [
           {
             adjustments: [

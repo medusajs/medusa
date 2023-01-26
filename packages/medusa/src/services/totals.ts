@@ -994,16 +994,6 @@ class TotalsService extends TransactionBaseService {
       excludeNonDiscounts: true,
     })
 
-    // we only support having free shipping and one other discount, so first
-    // find the discount, which is not free shipping.
-    const discount = cartOrOrder.discounts?.find(
-      ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
-    )
-
-    if (!discount) {
-      return 0
-    }
-
     const discountTotal = this.getLineItemAdjustmentsTotal(cartOrOrder)
 
     if (subtotal < 0) {
