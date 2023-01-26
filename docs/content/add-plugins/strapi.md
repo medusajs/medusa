@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Strapi with the Medusa server. Learn how to install the plugin and test two-way sync between the ecommerce and CMS services.'
+addHowToData: true
 ---
 
 # Strapi

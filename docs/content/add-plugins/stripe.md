@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Stripe with the Medusa server. Learn how to install the Stripe plugin on the Medusa server and integrate it into a storefront.'
+addHowToData: true
 ---
 
 # Stripe

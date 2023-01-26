@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Algolia with the Medusa server. Learn how to install the Algolia plugin into the Medusa server and how to integrate it into a storefront.'
+addHowToData: true
 ---
 
 # Algolia

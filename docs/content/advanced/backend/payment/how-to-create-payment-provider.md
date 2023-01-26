@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to create a payment provider in the Medusa server. This guide explains the different methods available in a fulfillment provider.'
+addHowToData: true
 ---
 
 # How to Create a Payment Provider

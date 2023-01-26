@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to create a fulfillment provider in the Medusa server. This guide explains the different methods in the fulfillment provider.'
+addHowToData: true
 ---
 
 # How to Add a Fulfillment Provider

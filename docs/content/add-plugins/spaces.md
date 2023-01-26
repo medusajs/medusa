@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Spaces with the Medusa server. Learn how to install and configure the Spaces plugin on the Medusa server.'
+addHowToData: true
 ---
 
 # Spaces

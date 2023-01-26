@@ -3,12 +3,11 @@ import Head from '@docusaurus/Head'
 import {useLocation} from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-export default function StructredDataHowTo ({ toc, title }) {
+export default function StructuredDataHowTo ({ toc, title }) {
   const location = useLocation();
   const { siteConfig: { url } } = useDocusaurusContext()
   const mainUrl = `${url}/${location.pathname}`
 
-  console.log(toc)
   return (
     <Head>
       <script type="application/ld+json">

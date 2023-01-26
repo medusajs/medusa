@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to override the price selection strategy. The price selection strategy is used to determine the best price based on a specific context.'
+addHowToData: true
 ---
 
 # How to Override Price Selection Strategy

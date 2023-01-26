@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Segment with the Medusa server. Learn how to add custom tracking with Segment and Medusa.'
+addHowToData: true
 ---
 
 # Segment

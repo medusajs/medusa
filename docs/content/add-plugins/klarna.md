@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Klarna as a payment provider with the Medusa server. Learn how to install Klarna and enable the payment provider in a region.'
+addHowToData: true
 ---
 
 # Klarna

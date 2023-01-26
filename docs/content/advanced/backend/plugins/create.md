@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to create a plugin in Medusa. This guide explains how to develop, configure, test, and publish the plugins.'
+addHowToData: true
 ---
 
 # How to Create a Plugin

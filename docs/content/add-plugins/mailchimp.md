@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Mailchimp with the Medusa server. Learn how to install the plugin on the Medusa server and how to add a subscription form.'
+addHowToData: true
 ---
 
 # Mailchimp

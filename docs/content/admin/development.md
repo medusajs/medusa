@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to set up the Medusa Admin repository for local development and customization. This includes cloning the GitHub repository and adding an upstream repository.'
+addHowToData: true
 ---
 
 # Customize Medusa Admin

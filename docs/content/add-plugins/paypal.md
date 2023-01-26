@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate PayPal with the Medusa server. Learn how to install the PayPal plugin on the Medusa server and integrate into a storefront.'
+addHowToData: true
 ---
 
 # PayPal

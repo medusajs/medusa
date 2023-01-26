@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate MinIO with the Medusa server. Learn how to install the MinIO plugin on the Medusa server and configure it.'
+addHowToData: true
 ---
 
 # MinIO

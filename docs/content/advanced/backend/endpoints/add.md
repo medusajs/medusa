@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to create endpoints in the Medusa server. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
+addHowToData: true
 ---
 
 # How to Create Endpoints

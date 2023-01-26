@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to toggle feature flags in the Medusa server. This guide explains the steps required to toggle a feature flag.'
+addHowToData: true
 ---
 
 # How to Toggle Feature Flags

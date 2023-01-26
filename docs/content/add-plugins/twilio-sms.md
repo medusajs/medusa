@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Twilio SMS with the Medusa server. Learn how to install the Twilio SMS plugin and test it out.'
+addHowToData: true
 ---
 
 # Twilio SMS

@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate MeiliSearch with the Medusa server. Learn how to install the MeiliSearch plugin on the Medusa server and integrate it into the storefront.'
+addHowToData: true
 ---
 
 # MeiliSearch

@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to integrate Slack with the Medusa server. Learn how to create and configure a Slack app and install the Slack plugin on the Medusa server.'
+addHowToData: true
 ---
 
 # Slack

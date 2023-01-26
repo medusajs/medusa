@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to add a middleware in Medusa. A middleware is a function that has access to the request and response objects and can be used to perform actions around an endpoint.'
+addHowToData: true
 ---
 
 # How to Add a Middleware

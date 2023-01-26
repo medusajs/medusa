@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to create a service in Medusa. This guide also includes how to use services in other services, subscribers, and endpoints.'
+addHowToData: true
 ---
 
 # Create a Service

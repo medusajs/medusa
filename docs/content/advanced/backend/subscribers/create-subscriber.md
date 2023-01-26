@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to create a subscriber in the Medusa server. You can use subscribers to implement functionalities like sending an order confirmation email.'
+addHowToData: true
 ---
 
 # How to Create a Subscriber

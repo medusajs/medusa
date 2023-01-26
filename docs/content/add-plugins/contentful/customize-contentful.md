@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to customize the Contentful integration with Medusa and how to customize the Gatsby storefront that is connected to Contentful.'
+addHowToData: true
 ---
 
 # Customize your Medusa and Contentful Integration

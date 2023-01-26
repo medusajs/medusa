@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to customize the import strategy in Medusa. The import strategy can be used to import entities such as products, prices in a price list, orders, or other entities.'
+addHowToData: true
 ---
 
 # How to Customize Import Strategy

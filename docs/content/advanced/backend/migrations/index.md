@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to create a migration in the Medusa server. This guide explains how to write and run migrations.'
+addHowToData: true
 ---
 
 # How to Create Migrations

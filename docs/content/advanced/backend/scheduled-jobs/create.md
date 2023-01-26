@@ -1,5 +1,6 @@
 ---
 description: 'Learn how to create a scheduled job in the Medusa server. The scheduled job in this example will simply change the status of draft products to published.'
+addHowToData: true
 ---
 
 # How to Create a Scheduled Job
