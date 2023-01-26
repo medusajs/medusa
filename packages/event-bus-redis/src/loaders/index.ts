@@ -4,8 +4,9 @@ export default async ({
   container,
   configModule,
   logger,
+  options
 }: LoaderOptions): Promise<void> => {
-  const redisUrl = configModule.projectConfig?.redis_url
+  const redisUrl = options?.redisUrl
 
   if (!redisUrl) {
     logger?.error(
