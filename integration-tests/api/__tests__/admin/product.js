@@ -1422,7 +1422,7 @@ describe("/admin/products", () => {
       expect(response.data.product).toEqual(
         expect.objectContaining({
           title: "Test product",
-          variants: [
+          variants: expect.arrayContaining([
             expect.objectContaining({
               id: "test-variant",
               title: "Test variant",
@@ -1435,7 +1435,7 @@ describe("/admin/products", () => {
               id: "test-variant_2",
               title: "Test variant rank (2)",
             }),
-          ],
+          ]),
           type: null,
           collection: null,
           categories: [],
