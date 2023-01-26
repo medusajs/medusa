@@ -26,7 +26,7 @@ export const useAdminCreateStockLocation = (
   return useMutation(
     (payload: AdminPostStockLocationsReq) =>
       client.admin.stockLocations.create(payload),
-    buildOptions(queryClient, [adminStockLocationsKeys.list()], options)
+    buildOptions(queryClient, [adminStockLocationsKeys.lists()], options)
   )
 }
 
