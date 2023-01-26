@@ -12,6 +12,7 @@ import {
   ProductType,
   ProductVariant,
   SalesChannel,
+  ProductCategory,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
@@ -443,12 +444,8 @@ class ProductService extends TransactionBaseService {
         product.categories = []
 
         if (categories?.length) {
-          const categoryIds = categories?.map((c) => c.id)
-          const pcRepo = manager.getCustomRepository(this.productCategoryRepository_)
-          const categoryRecords = await pcRepo.find({
-            where: { id: In(categoryIds) },
-            select: ["id"],
-          })
+          const categoryIds = categories.map((c) => c.id)
+          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
 
           product.categories = categoryRecords
         }
@@ -562,12 +559,8 @@ class ProductService extends TransactionBaseService {
         product.categories = []
 
         if (categories?.length) {
-          const categoryIds = categories?.map((c) => c.id)
-          const pcRepo = manager.getCustomRepository(this.productCategoryRepository_)
-          const categoryRecords = await pcRepo.find({
-            where: { id: In(categoryIds) },
-            select: ["id"],
-          })
+          const categoryIds = categories.map((c) => c.id)
+          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
 
           product.categories = categoryRecords
         }

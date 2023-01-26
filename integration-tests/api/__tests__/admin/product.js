@@ -6,8 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
-const { productCategorySeeder } = require("../../helpers/product-category-seeder")
-const { Product } = require("@medusajs/medusa")
+const { Product, ProductCategory } = require("@medusajs/medusa")
 
 const {
   ProductVariant,
@@ -27,6 +26,7 @@ const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(50000)
 
+const testProductId = "test-product"
 const adminHeaders = {
   headers: {
     Authorization: "Bearer test_token",
@@ -904,7 +904,6 @@ describe("/admin/products", () => {
   describe("POST /admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
-      await productCategorySeeder(dbConnection)
       await adminSeeder(dbConnection)
     })
 
@@ -922,7 +921,6 @@ describe("/admin/products", () => {
         type: { value: "test-type" },
         images: ["test-image.png", "test-image-2.png"],
         collection_id: "test-collection",
-        categories: [{ id: "test-category-d2B" }, { id: "test-category-d2A" }],
         tags: [{ value: "123" }, { value: "456" }],
         options: [{ title: "size" }, { title: "color" }],
         variants: [
@@ -1074,14 +1072,6 @@ describe("/admin/products", () => {
             ],
           },
         ],
-        categories: expect.arrayContaining([
-          expect.objectContaining({
-            id: "test-category-d2A",
-          }),
-          expect.objectContaining({
-            id: "test-category-d2B",
-          }),
-        ]),
       })
     })
 
@@ -1424,7 +1414,7 @@ describe("/admin/products", () => {
       expect(response.data.product).toEqual(
         expect.objectContaining({
           title: "Test product",
-          variants: expect.arrayContaining([
+          variants: [
             expect.objectContaining({
               id: "test-variant",
               title: "Test variant",
@@ -1437,7 +1427,7 @@ describe("/admin/products", () => {
               id: "test-variant_2",
               title: "Test variant rank (2)",
             }),
-          ]),
+          ],
           type: null,
           collection: null,
           categories: [],
@@ -1472,94 +1462,139 @@ describe("/admin/products", () => {
       )
     })
 
-    it("updates a product's categories", async () => {
-      const api = useApi()
-      const category = await simpleProductCategoryFactory(
-        dbConnection,
-        {
-          id: "existing-category",
-          name: "existing category",
-          products: [{ id: "test-product" }]
-        }
-      )
+    describe("Categories", () => {
+      let categoryWithProduct, categoryWithoutProduct
+      const categoryWithProductId = "category-with-product-id"
+      const categoryWithoutProductId = "category-without-product-id"
 
-      const product = await dbConnection.manager.findOne(
-        Product,
-        {
-          where: { id: "test-product" },
-          relations: ["categories"]
-        }
-      )
+      beforeEach(async () => {
+        const manager = dbConnection.manager
+        categoryWithProduct = await manager.create(ProductCategory, {
+          id: categoryWithProductId,
+          name: "category with Product",
+          products: [{ id: testProductId }],
+        })
+        await manager.save(categoryWithProduct)
 
-      expect(product.categories).toEqual(
-        expect.arrayContaining([
+        categoryWithoutProduct = await manager.create(ProductCategory, {
+          id: categoryWithoutProductId,
+          name: "category without product",
+        })
+        await manager.save(categoryWithoutProduct)
+      })
+
+      it("creates a product with categories associated to it", async () => {
+        const api = useApi()
+
+        const payload = {
+          title: "Test",
+          description: "test-product-description",
+          categories: [{ id: categoryWithProductId }, { id: categoryWithoutProductId }]
+        }
+
+        const response = await api
+          .post("/admin/products", payload, adminHeaders)
+          .catch(e => e)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
           expect.objectContaining({
-            id: "existing-category",
+            categories: [
+              expect.objectContaining({
+                id: categoryWithProductId,
+              }),
+              expect.objectContaining({
+                id: categoryWithoutProductId,
+              }),
+            ],
           })
-        ])
-      )
+        )
+      })
 
-      const payload = {
-        categories: [{ id: "test-category-d2B" }],
-      }
+      it("throws error when creating a product with invalid category ID", async () => {
+        const api = useApi()
+        const categoryNotFoundId = "category-doesnt-exist"
 
-      const response = await api
-        .post("/admin/products/test-product", payload, adminHeaders)
-
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          id: "test-product",
-          handle: "test-product",
-          categories: expect.arrayContaining([
-            expect.objectContaining({
-              id: "test-category-d2B",
-            }),
-          ]),
-        })
-      )
-    })
-
-    it("remove all categories of a product", async () => {
-      const api = useApi()
-      const category = await simpleProductCategoryFactory(
-        dbConnection,
-        {
-          id: "existing-category",
-          name: "existing category",
-          products: [{ id: "test-product" }]
+        const payload = {
+          title: "Test",
+          description: "test-product-description",
+          categories: [{ id: categoryNotFoundId }]
         }
-      )
 
-      const payload = {
-        categories: [],
-      }
+        const error = await api
+          .post("/admin/products", payload, adminHeaders)
+          .catch(e => e)
 
-      const response = await api
-        .post("/admin/products/test-product", payload, adminHeaders)
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data.type).toEqual("not_found")
+        expect(error.response.data.message).toEqual(`Product_category with product_category_id ${categoryNotFoundId} does not exist.`)
+      })
 
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          id: "test-product",
+      it("updates a product's categories", async () => {
+        const api = useApi()
+
+        const payload = {
+          categories: [{ id: categoryWithoutProductId }],
+        }
+
+        const response = await api
+          .post(`/admin/products/${testProductId}`, payload, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            id: testProductId,
+            handle: "test-product",
+            categories: [
+              expect.objectContaining({
+                id: categoryWithoutProductId,
+              }),
+            ],
+          })
+        )
+      })
+
+      it("remove all categories of a product", async () => {
+        const api = useApi()
+        const category = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: "existing-category",
+            name: "existing category",
+            products: [{ id: "test-product" }]
+          }
+        )
+
+        const payload = {
           categories: [],
-        })
-      )
-    })
+        }
 
-    it("throws error if product categories input is incorreect", async () => {
-      const api = useApi()
-      const payload = {
-        categories: [{ incorrect: "test-category-d2B" }],
-      }
+        const response = await api
+          .post("/admin/products/test-product", payload, adminHeaders)
 
-      const error = await api
-        .post("/admin/products/test-product", payload, adminHeaders)
-        .catch(e => e)
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            id: "test-product",
+            categories: [],
+          })
+        )
+      })
 
-      expect(error.response.status).toEqual(400)
-      expect(error.response.data.type).toEqual("invalid_data")
-      expect(error.response.data.message).toEqual("property incorrect should not exist, id must be a string")
+      it("throws error if product categories input is incorreect", async () => {
+        const api = useApi()
+        const payload = {
+          categories: [{ incorrect: "test-category-d2B" }],
+        }
+
+        const error = await api
+          .post("/admin/products/test-product", payload, adminHeaders)
+          .catch(e => e)
+
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.type).toEqual("invalid_data")
+        expect(error.response.data.message).toEqual("property incorrect should not exist, id must be a string")
+      })
     })
   })
 

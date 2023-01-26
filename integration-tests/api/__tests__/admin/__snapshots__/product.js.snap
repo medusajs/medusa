@@ -112,14 +112,7 @@ Array [
 
 exports[`/admin/products POST /admin/products creates a product 1`] = `
 Object {
-  "categories": ArrayContaining [
-    ObjectContaining {
-      "id": "test-category-d2A",
-    },
-    ObjectContaining {
-      "id": "test-category-d2B",
-    },
-  ],
+  "categories": Array [],
   "collection": Object {
     "created_at": Any<String>,
     "deleted_at": null,

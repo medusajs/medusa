@@ -279,6 +279,16 @@ class ProductVariantReq {
  *         id:
  *           description: The ID of an existing Sales channel.
  *           type: string
+ *   categories:
+ *     description: "Categories to add the Product to."
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a Product Category.
+ *           type: string
  *   variants:
  *     description: A list of Product Variants to create with the Product.
  *     type: array
