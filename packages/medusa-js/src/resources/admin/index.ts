@@ -34,6 +34,7 @@ import AdminVariantsResource from "./variants"
 import AdminPaymentCollectionsResource from "./payment-collections"
 import AdminPaymentsResource from "./payments"
 import AdminInventoryItemsResource from "./inventory-item"
+import AdminReservationsResource from "./reservations"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -66,6 +67,7 @@ class Admin extends BaseResource {
   public store = new AdminStoresResource(this.client)
   public shippingOptions = new AdminShippingOptionsResource(this.client)
   public regions = new AdminRegionsResource(this.client)
+  public reservations = new AdminReservationsResource(this.client)
   public notifications = new AdminNotificationsResource(this.client)
   public taxRates = new AdminTaxRatesResource(this.client)
   public uploads = new AdminUploadsResource(this.client)

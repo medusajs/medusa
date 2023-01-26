@@ -353,6 +353,61 @@ export const adminHandlers = [
     }
   ),
 
+  rest.get("/admin/reservations/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        reservations: fixtures.list("reservation"),
+      })
+    )
+  }),
+  rest.post("/admin/reservations/", (req, res, ctx) => {
+    const body = req.body as Record<string, any>
+    return res(
+      ctx.status(200),
+      ctx.json({
+        reservation: {
+          ...fixtures.get("reservation"),
+          ...body,
+        },
+      })
+    )
+  }),
+  rest.get("/admin/reservations/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        reservation: { ...fixtures.get("reservation"), id: req.params.id },
+      })
+    )
+  }),
+
+  rest.post("/admin/reservations/:id", (req, res, ctx) => {
+    const body = req.body as Record<string, any>
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        reservation: {
+          ...fixtures.get("reservation"),
+          ...body,
+          id: req.params.id,
+        },
+      })
+    )
+  }),
+
+  rest.delete("/admin/reservations/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "reservation",
+        deleted: true,
+      })
+    )
+  }),
+
   rest.post("/admin/return-reasons/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(
