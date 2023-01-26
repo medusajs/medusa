@@ -1,24 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "declaration": true,
+    "declarationMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "src",
-    "outDir": "."
+    "esModuleInterop": true,
+    "outDir": ".",
+    "rootDir": "src",
+    "jsx": "react"
   },
   "include": ["src"],
-  "exclude": ["node_modules", "../../node_modules"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["**/node_modules", "dashboard"]
 }

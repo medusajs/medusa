@@ -1,1 +1,8 @@
 *.tsbuildinfo
+
+# Output of `yarn build` command.
+api
+services
+commands
+utils
+types
