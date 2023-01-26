@@ -15,6 +15,9 @@ import { defaultStoreScope } from "."
  *   - (path) id=* {string} The ID of the Product Category
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.
  *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each product category.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: StoreGetProductCategoryParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -678,6 +678,28 @@ class ProductVariantService extends TransactionBaseService {
   }
 
   /**
+   * Check if the variant is assigned to at least one of the provided sales channels.
+   *
+   * @param id - product variant id
+   * @param salesChannelIds - an array of sales channel ids
+   */
+  async isVariantInSalesChannels(
+    id: string,
+    salesChannelIds: string[]
+  ): Promise<boolean> {
+    const variant = await this.retrieve(id, {
+      relations: ["product", "product.sales_channels"],
+    })
+
+    // TODO: reimplement this to use db level check
+    const productsSalesChannels = variant.product.sales_channels.map(
+      (channel) => channel.id
+    )
+
+    return productsSalesChannels.some((id) => salesChannelIds.includes(id))
+  }
+
+  /**
    * Creates a query object to be used for list queries.
    * @param selector - the selector to create the query from
    * @param config - the config to use for the query

@@ -6,6 +6,8 @@ import { ProductService } from "../../../../services"
  * summary: "List Tags Usage Number"
  * description: "Retrieves a list of Product Tags with how many times each is used."
  * x-authenticated: true
+ * x-codegen:
+ *   method: listTags
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -16,12 +16,16 @@ import { EntityManager } from "typeorm"
  * operationId: "PostOrdersOrderShippingMethods"
  * summary: "Add a Shipping Method"
  * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
- * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (body) price=* {integer} The price (excluding VAT) that should be charged for the Shipping Method
- *   - (body) option_id=* {string} The ID of the Shipping Option to create the Shipping Method from.
- *   - (body) data {object} The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderShippingMethodsReq"
+ * x-authenticated: true
+ * x-codegen:
+ *   method: addShippingMethod
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -98,6 +102,23 @@ export default async (req, res) => {
   res.status(200).json({ order })
 }
 
+/**
+ * @schema AdminPostOrdersOrderShippingMethodsReq
+ * type: object
+ * required:
+ *   - price
+ *   - option_id
+ * properties:
+ *   price:
+ *     type: number
+ *     description: The price (excluding VAT) that should be charged for the Shipping Method
+ *   option_id:
+ *     type: string
+ *     description: The ID of the Shipping Option to create the Shipping Method from.
+ *   date:
+ *     type: object
+ *     description: The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
+ */
 export class AdminPostOrdersOrderShippingMethodsReq {
   @IsInt()
   @IsNotEmpty()

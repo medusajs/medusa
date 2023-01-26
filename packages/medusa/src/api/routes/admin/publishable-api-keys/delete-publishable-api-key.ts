@@ -10,6 +10,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the PublishableApiKeys to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -11,6 +11,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * parameters:
  *   - (path) id=* {string} The ID of the PublishableApiKey.
  * x-authenticated: true
+ * x-codegen:
+ *   method: revoke
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

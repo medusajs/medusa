@@ -15,6 +15,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) offset {integer} How many products to skip in the result.
  *   - (query) limit {integer} Limit the number of products returned.
  *   - (query) filter {} Filter based on the search engine.
+ * x-codegen:
+ *   method: search
+ *   queryParams: StorePostSearchReq
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

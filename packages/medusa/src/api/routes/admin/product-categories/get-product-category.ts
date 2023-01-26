@@ -12,6 +12,11 @@ import { defaultAdminProductCategoryRelations } from "."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the results.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the results.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: AdminGetProductCategoryParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
