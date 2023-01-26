@@ -73,9 +73,3 @@ describe("useAdminPriceList hook", () => {
     expect(result.current.price_list).toEqual(priceList)
   })
 })
-
-// get inventory item
-
-// get inventory items
-
-// get location levels
