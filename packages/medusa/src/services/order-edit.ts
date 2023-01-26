@@ -542,72 +542,44 @@ export default class OrderEditService extends TransactionBaseService {
     await lineItemAdjustmentServiceTx.createAdjustments(localCart)
   }
 
-  /**
-   * Calculate totals for order edit items and decorate the items.
-   *
-   * @param orderEdit
-   */
-  async decorateItemsTotals(orderEdit: OrderEdit) {
+  async decorateTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
     const manager = this.transactionManager_ ?? this.manager_
-    const totalsServiceTx = this.totalsService_.withTransaction(manager)
-    const newTotalsServiceTx = this.newTotalsService_.withTransaction(manager)
-
     const { order_id, items } = await this.retrieve(orderEdit.id, {
       select: ["id", "order_id", "items"],
       relations: ["items", "items.tax_lines", "items.adjustments"],
     })
 
-    const order = await this.orderService_
-      .withTransaction(manager)
-      .retrieve(order_id, {
-        relations: [
-          "discounts",
-          "discounts.rule",
-          "gift_cards",
-          "region",
-          "items",
-          "items.variant",
-          "items.tax_lines",
-          "items.adjustments",
-          "region.tax_rates",
-          "shipping_methods",
-          "shipping_methods.tax_lines",
-        ],
-      })
+    const orderServiceTx = this.orderService_.withTransaction(manager)
 
-    const computedOrder = { ...order, items } as Order
-
-    const calculationContext = await totalsServiceTx.getCalculationContext(
-      computedOrder
-    )
-
-    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(
-      orderEdit.items,
-      {
-        includeTax: true,
-        calculationContext,
-      }
-    )
-
-    orderEdit.items.forEach((item) => {
-      Object.assign(item, itemsTotals[item.id])
+    const order = await orderServiceTx.retrieve(order_id, {
+      relations: [
+        "discounts",
+        "discounts.rule",
+        "gift_cards",
+        "region",
+        "items",
+        "items.tax_lines",
+        "items.adjustments",
+        "region.tax_rates",
+        "shipping_methods",
+        "shipping_methods.tax_lines",
+      ],
     })
+    const computedOrder = { ...order, items } as Order
+    await Promise.all([
+      await orderServiceTx.decorateTotals(computedOrder),
+      await orderServiceTx.decorateTotals(order),
+    ])
 
-    return orderEdit
-  }
-
-  async decorateTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
-    const totals = await this.getTotals(orderEdit.id)
-    orderEdit.discount_total = totals.discount_total
-    orderEdit.gift_card_total = totals.gift_card_total
-    orderEdit.gift_card_tax_total = totals.gift_card_tax_total
-    orderEdit.shipping_total = totals.shipping_total
-    orderEdit.subtotal = totals.subtotal
-    orderEdit.tax_total = totals.tax_total
-    orderEdit.total = totals.total
-    orderEdit.difference_due = totals.difference_due
-
-    await this.decorateItemsTotals(orderEdit)
+    orderEdit.items = computedOrder.items
+    orderEdit.discount_total = computedOrder.discount_total
+    orderEdit.gift_card_total = computedOrder.gift_card_total
+    orderEdit.gift_card_tax_total = computedOrder.gift_card_tax_total
+    orderEdit.shipping_total = computedOrder.shipping_total
+    orderEdit.subtotal = computedOrder.subtotal
+    orderEdit.tax_total = computedOrder.tax_total
+    orderEdit.total = computedOrder.total
+    orderEdit.difference_due = computedOrder.total - order.total
 
     return orderEdit
   }
