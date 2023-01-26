@@ -1,7 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { FindConditions, FindManyOptions, FindOneOptions } from "typeorm"
-import { EventBusService } from "../../interfaces"
 import { SalesChannel } from "../../models"
+import EventBusService from "../event-bus"
 import { StoreService } from "../index"
 import SalesChannelService from "../sales-channel"
 import { EventBusServiceMock } from "../__mocks__/event-bus"

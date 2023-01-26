@@ -1,4 +1,4 @@
-import { StagedJobServiceMock } from "@medusajs/medusa/dist/services/__mocks__/staged-job"
+import { StagedJobServiceMock } from "@medusajs/medusa/src/services/__mocks__/staged-job"
 import Bull from "bullmq"
 import { MockManager } from "medusa-test-utils"
 import EventBusService from "../event-bus-redis"

@@ -1,6 +1,5 @@
 import { ulid } from "ulid"
 import { StagedJob } from "../../models"
-import { TransactionBaseService } from "../transaction-base-service"
 
 export type Subscriber<T = unknown> = (
   data: T,
@@ -29,27 +28,19 @@ export interface IEventBusModuleService {
   ): Promise<StagedJob | void>
 }
 
-export abstract class AbstractEventBusModuleService extends TransactionBaseService {
-  protected eventToSubscribersMap_: Map<
-    string | symbol,
-    SubscriberDescriptor[]
-  > = new Map()
+export abstract class AbstractEventBusModuleService
+  implements IEventBusModuleService
+{
+  public eventToSubscribersMap_: Map<string | symbol, SubscriberDescriptor[]> =
+    new Map()
 
-  abstract emit<T>(
-    eventName: string,
-    data: T,
-    options?: unknown
-  ): Promise<StagedJob | void>
+  abstract emit<T>(eventName: string, data: T, options?: unknown): Promise<void>
 
   public subscribe(
     event: string | symbol,
     subscriber: Subscriber,
     context?: SubscriberContext
   ): this {
-    if (typeof subscriber !== "function") {
-      throw new Error("Subscriber must be a function")
-    }
-
     /**
      * If context is provided, we use the subscriberId from it
      * otherwise we generate a random using a ulid
@@ -77,13 +68,6 @@ export abstract class AbstractEventBusModuleService extends TransactionBaseServi
     return this
   }
 
-  /**
-   * Adds a function to a list of event subscribers.
-   * @param event - the event that the subscriber will listen for.
-   * @param subscriber - the function to be called when a certain event
-   * happens. Subscribers must return a Promise.
-   * @return this
-   */
   unsubscribe(
     event: string | symbol,
     subscriber: Subscriber,

@@ -1,8 +1,8 @@
 import {
-  AbstractEventBusService,
+  AbstractEventBusModuleService,
   Logger,
   MedusaContainer,
-  Subscriber,
+  Subscriber
 } from "@medusajs/medusa"
 import { EventEmitter } from "events"
 import { EntityManager } from "typeorm"
@@ -13,7 +13,7 @@ type InjectedDependencies = {
 
 const eventEmitter = new EventEmitter()
 
-export default class LocalEventBusService extends AbstractEventBusService {
+export default class LocalEventBusService extends AbstractEventBusModuleService {
   protected readonly container_: MedusaContainer & InjectedDependencies
   protected readonly logger_: Logger
   protected readonly manager_: EntityManager
@@ -30,9 +30,6 @@ export default class LocalEventBusService extends AbstractEventBusService {
     return this
   }
 
-  /**
-   * @return void
-   */
   async emit<T>(eventName: string, data: T): Promise<void> {
     const eventListenersCount = eventEmitter.listenerCount(eventName)
 

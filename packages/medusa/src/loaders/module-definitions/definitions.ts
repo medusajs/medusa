@@ -7,9 +7,9 @@ import {
 export const MODULE_DEFINITIONS: ModuleDefinition[] = [
   {
     key: "eventBus",
-    registrationName: "eventBusService",
+    registrationName: "eventBusModuleService",
     defaultPackage: "@medusajs/event-bus-local",
-    label: "EventBusService",
+    label: "EventBusModuleService",
     canOverride: true,
     isRequired: true,
     defaultModuleDeclaration: {

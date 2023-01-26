@@ -1,5 +1,10 @@
 import { EntityManager } from "typeorm"
-import { AbstractEventBusModuleService } from "../interfaces"
+import {
+  AbstractEventBusModuleService,
+  Subscriber,
+  SubscriberContext,
+  TransactionBaseService,
+} from "../interfaces"
 import { StagedJob } from "../models"
 import { sleep } from "../utils/sleep"
 import StagedJobService from "./staged-job"
@@ -7,12 +12,12 @@ import StagedJobService from "./staged-job"
 type InjectedDependencies = {
   manager: EntityManager
   stagedJobService: StagedJobService
-  eventBusService: AbstractEventBusModuleService
+  eventBusModuleService: AbstractEventBusModuleService
 }
 
-export default class EventBusService extends AbstractEventBusModuleService {
+export default class EventBusService extends TransactionBaseService {
   protected readonly stagedJobService_: StagedJobService
-  protected readonly eventBusService_: AbstractEventBusModuleService
+  protected readonly eventBusModuleService_: AbstractEventBusModuleService
 
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
@@ -23,14 +28,55 @@ export default class EventBusService extends AbstractEventBusModuleService {
   constructor({
     manager,
     stagedJobService,
-    eventBusService,
+    eventBusModuleService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
-    this.eventBusService_ = eventBusService
+    this.eventBusModuleService_ = eventBusModuleService
     this.stagedJobService_ = stagedJobService
+
+    if (process.env.NODE_ENV !== "test") {
+      this.startEnqueuer()
+    }
+  }
+
+  /**
+   * Adds a function to a list of event subscribers.
+   * @param event - the event that the subscriber will listen for.
+   * @param subscriber - the function to be called when a certain event
+   * happens. Subscribers must return a Promise.
+   * @param context - subscriber context
+   * @return this
+   */
+  public subscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context?: SubscriberContext
+  ): this {
+    if (typeof subscriber !== "function") {
+      throw new Error("Subscriber must be a function")
+    }
+
+    this.eventBusModuleService_.subscribe(event, subscriber, context)
+    return this
+  }
+
+  /**
+   * Removes function from the list of event subscribers.
+   * @param event - the event of the subcriber.
+   * @param subscriber - the function to be removed
+   * @param context - subscriber context
+   * @return this
+   */
+  unsubscribe(
+    event: string | symbol,
+    subscriber: Subscriber,
+    context: SubscriberContext
+  ): this {
+    this.eventBusModuleService_.unsubscribe(event, subscriber, context)
+    return this
   }
 
   /**
@@ -92,12 +138,8 @@ export default class EventBusService extends AbstractEventBusModuleService {
 
       await Promise.all(
         jobs.map(async (job) => {
-          await this.eventBusService_
-            .emit(
-              job.event_name,
-              { eventName: job.event_name, data: job.data },
-              job.options
-            )
+          await this.eventBusModuleService_
+            .emit(job.event_name, job.data, job.options)
             .then(async () => {
               await this.stagedJobService_.remove(job)
             })

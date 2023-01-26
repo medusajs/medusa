@@ -1,10 +1,8 @@
 import {
-  AbstractEventBusService,
+  AbstractEventBusModuleService,
   ConfigModule,
-  ConfigurableModuleDeclaration,
-  Logger,
-  MODULE_RESOURCE_TYPE,
-  StagedJob,
+  ConfigurableModuleDeclaration, Logger,
+  MODULE_RESOURCE_TYPE
 } from "@medusajs/medusa"
 import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
@@ -44,7 +42,7 @@ type EmitOptions = {
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
  */
-export default class RedisEventBusService extends AbstractEventBusService {
+export default class RedisEventBusService extends AbstractEventBusModuleService {
   protected readonly config_: ConfigModule
   protected readonly moduleOptions_: EventBusRedisModuleOptions
   protected readonly moduleDeclaration_: ConfigurableModuleDeclaration
@@ -110,7 +108,7 @@ export default class RedisEventBusService extends AbstractEventBusService {
     eventName: string,
     data: T,
     options: Record<string, unknown> & EmitOptions = { attempts: 1 }
-  ): Promise<StagedJob | void> {
+  ): Promise<void> {
     const opts: { removeOnComplete: boolean } & EmitOptions = {
       removeOnComplete: true,
       attempts: 1,

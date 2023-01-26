@@ -19865,9 +19865,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"integration-tests-event-bus-redis@workspace:integration-tests/modules/event-bus-redis":
+"integration-tests-modules@workspace:integration-tests/modules":
   version: 0.0.0-use.local
-  resolution: "integration-tests-event-bus-redis@workspace:integration-tests/modules/event-bus-redis"
+  resolution: "integration-tests-modules@workspace:integration-tests/modules"
   dependencies:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
