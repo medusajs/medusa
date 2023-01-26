@@ -11,7 +11,7 @@ export class ClaimTag extends SoftDeletableEntity {
   value: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -25,6 +25,11 @@ export class ClaimTag extends SoftDeletableEntity {
  * description: "Claim Tags are user defined tags that can be assigned to claim items for easy filtering and grouping."
  * type: object
  * required:
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - metadata
+ *   - updated_at
  *   - value
  * properties:
  *   id:
@@ -32,22 +37,24 @@ export class ClaimTag extends SoftDeletableEntity {
  *     description: The claim tag's ID
  *     example: ctag_01G8ZCC5Y63B95V6B5SHBZ91S4
  *   value:
- *     description: "The value that the claim tag holds"
  *     type: string
+ *     description: The value that the claim tag holds
  *     example: Damaged
  *   created_at:
  *     type: string
- *     description: "The date with timezone at which the resource was created."
+ *     description: The date with timezone at which the resource was created.
  *     format: date-time
  *   updated_at:
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
+ *     description: The date with timezone at which the resource was updated.
  *     format: date-time
  *   deleted_at:
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
+ *     description: The date with timezone at which the resource was deleted.
  *     format: date-time
  *   metadata:
+ *     nullable: true
  *     type: object
  *     description: An optional key-value map with additional details
  *     example: {car: "white"}

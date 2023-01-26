@@ -16,13 +16,13 @@ export class Oauth {
   application_name: string
 
   @Column({ nullable: true })
-  install_url: string
+  install_url: string | null
 
   @Column({ nullable: true })
-  uninstall_url: string
+  uninstall_url: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  data: Record<string, unknown>
+  data: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -36,32 +36,38 @@ export class Oauth {
  * description: "Represent an OAuth app"
  * type: object
  * required:
- *   - id
- *   - display_name
  *   - application_name
+ *   - data
+ *   - display_name
+ *   - id
+ *   - install_url
+ *   - uninstall_url
  * properties:
  *   id:
- *     type: string
  *     description: The app's ID
+ *     type: string
  *     example: example_app
  *   display_name:
- *     type: string
  *     description: The app's display name
+ *     type: string
  *     example: Example app
  *   application_name:
- *     type: string
  *     description: The app's name
+ *     type: string
  *     example: example
  *   install_url:
- *     type: string
  *     description: The URL to install the app
+ *     nullable: true
+ *     type: string
  *     format: uri
  *   uninstall_url:
- *     type: string
  *     description: The URL to uninstall the app
+ *     nullable: true
+ *     type: string
  *     format: uri
  *   data:
- *     type: object
  *     description: Any data necessary to the app.
+ *     nullable: true
+ *     type: object
  *     example: {}
  */

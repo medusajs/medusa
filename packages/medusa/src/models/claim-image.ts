@@ -20,13 +20,13 @@ export class ClaimImage extends SoftDeletableEntity {
 
   @ManyToOne(() => ClaimItem, (ci) => ci.images)
   @JoinColumn({ name: "claim_item_id" })
-  claim_item: ClaimItem
+  claim_item?: ClaimItem
 
   @Column()
   url: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -40,37 +40,44 @@ export class ClaimImage extends SoftDeletableEntity {
  * description: "Represents photo documentation of a claim."
  * type: object
  * required:
- *  - claim_item_id
- *  - url
+ *   - claim_item_id
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - metadata
+ *   - updated_at
+ *   - url
  * properties:
  *   id:
- *     type: string
  *     description: The claim image's ID
+ *     type: string
  *     example: cimg_01G8ZH853Y6TFXWPG5EYE81X63
  *   claim_item_id:
- *     type: string
  *     description: The ID of the claim item associated with the image
+ *     type: string
  *   claim_item:
  *     description: A claim item object. Available if the relation `claim_item` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/ClaimItem"
  *   url:
- *     type: string
  *     description: The URL of the image
+ *     type: string
  *     format: uri
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     nullable: true
+ *     description: The date with timezone at which the resource was deleted.
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
+ *     nullable: true
  *     description: An optional key-value map with additional details
+ *     type: object
  *     example: {car: "white"}
  */

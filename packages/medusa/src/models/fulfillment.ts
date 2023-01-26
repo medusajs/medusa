@@ -22,30 +22,30 @@ import { generateEntityId } from "../utils/generate-entity-id"
 export class Fulfillment extends BaseEntity {
   @Index()
   @Column({ nullable: true })
-  claim_order_id: string
+  claim_order_id: string | null
 
   @ManyToOne(() => ClaimOrder, (co) => co.fulfillments)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order?: ClaimOrder
 
   @Index()
   @Column({ nullable: true })
-  swap_id: string
+  swap_id: string | null
 
   @ManyToOne(() => Swap, (swap) => swap.fulfillments)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap?: Swap
 
   @Index()
   @Column({ nullable: true })
-  order_id: string
+  order_id: string | null
 
   @ManyToOne(() => Order, (o) => o.fulfillments)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: boolean
+  no_notification: boolean | null
 
   @Index()
   @Column()
@@ -56,7 +56,7 @@ export class Fulfillment extends BaseEntity {
 
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
-  provider: FulfillmentProvider
+  provider?: FulfillmentProvider
 
   @OneToMany(() => FulfillmentItem, (i) => i.fulfillment, {
     eager: true,
@@ -69,6 +69,9 @@ export class Fulfillment extends BaseEntity {
   })
   tracking_links: TrackingLink[]
 
+  /**
+   * @deprecated
+   */
   @DbAwareColumn({ type: "jsonb", default: [] })
   tracking_numbers: string[]
 
@@ -76,16 +79,16 @@ export class Fulfillment extends BaseEntity {
   data: Record<string, unknown>
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  shipped_at: Date
+  shipped_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at: Date
+  canceled_at: Date | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -99,39 +102,59 @@ export class Fulfillment extends BaseEntity {
  * description: "Fulfillments are created once store operators can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a provider, which is typically an external shipping aggregator, shipping partner og 3PL, most plugins will have asynchronous communications with these providers through webhooks in order to automatically update and synchronize the state of Fulfillments."
  * type: object
  * required:
- *  - provider_id
+ *   - canceled_at
+ *   - claim_order_id
+ *   - created_at
+ *   - data
+ *   - id
+ *   - idempotency_key
+ *   - items
+ *   - location_id
+ *   - metadata
+ *   - no_notification
+ *   - order_id
+ *   - provider_id
+ *   - shipped_at
+ *   - swap_id
+ *   - tracking_links
+ *   - tracking_numbers
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The cart's ID
+ *     type: string
  *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
  *   claim_order_id:
- *     description: "The id of the Claim that the Fulfillment belongs to."
+ *     description: The id of the Claim that the Fulfillment belongs to.
+ *     nullable: true
  *     type: string
  *     example: null
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/ClaimOrder"
  *   swap_id:
- *     description: "The id of the Swap that the Fulfillment belongs to."
+ *     description: The id of the Swap that the Fulfillment belongs to.
+ *     nullable: true
  *     type: string
  *     example: null
  *   swap:
  *     description: A swap object. Available if the relation `swap` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Swap"
  *   order_id:
- *     description: "The id of the Order that the Fulfillment belongs to."
+ *     description: The id of the Order that the Fulfillment belongs to.
+ *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Order"
  *   provider_id:
- *     description: "The id of the Fulfillment Provider responsible for handling the fulfillment"
+ *     description: The id of the Fulfillment Provider responsible for handling the fulfillment
  *     type: string
  *     example: manual
  *   location_id:
- *     description: "The id of the stock location the fulfillment will be shipped from"
+ *     description: The id of the stock location the fulfillment will be shipped from
+ *     nullable: true
  *     type: string
  *     example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   provider:
@@ -148,8 +171,8 @@ export class Fulfillment extends BaseEntity {
  *     items:
  *       $ref: "#/components/schemas/TrackingLink"
  *   tracking_numbers:
- *     deprecated: true
  *     description: The tracking numbers that can be used to track the status of the fulfillment.
+ *     deprecated: true
  *     type: array
  *     items:
  *       type: string
@@ -158,37 +181,38 @@ export class Fulfillment extends BaseEntity {
  *     type: object
  *     example: {}
  *   shipped_at:
- *     description: "The date with timezone at which the Fulfillment was shipped."
+ *     description: The date with timezone at which the Fulfillment was shipped.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   no_notification:
- *     description: "Flag for describing whether or not notifications related to this should be send."
+ *     description: Flag for describing whether or not notifications related to this should be send.
+ *     nullable: true
  *     type: boolean
  *     example: false
  *   canceled_at:
- *     description: "The date with timezone at which the Fulfillment was canceled."
+ *     description: The date with timezone at which the Fulfillment was canceled.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   idempotency_key:
- *     type: string
  *     description: Randomly generated key used to continue the completion of the fulfillment in case of failure.
+ *     nullable: true
+ *     type: string
  *     externalDocs:
  *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
  *       description: Learn more how to use the idempotency key.
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
- *     format: date-time
- *   deleted_at:
- *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

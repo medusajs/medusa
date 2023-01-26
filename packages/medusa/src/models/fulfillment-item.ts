@@ -13,11 +13,11 @@ export class FulfillmentItem {
 
   @ManyToOne(() => Fulfillment)
   @JoinColumn({ name: "fulfillment_id" })
-  fulfillment: Fulfillment
+  fulfillment?: Fulfillment
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item?: LineItem
 
   @Column({ type: "int" })
   quantity: number
@@ -34,21 +34,21 @@ export class FulfillmentItem {
  *   - quantity
  * properties:
  *   fulfillment_id:
- *     description: "The id of the Fulfillment that the Fulfillment Item belongs to."
+ *     description: The id of the Fulfillment that the Fulfillment Item belongs to.
  *     type: string
  *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
  *   item_id:
- *     description: "The id of the Line Item that the Fulfillment Item references."
+ *     description: The id of the Line Item that the Fulfillment Item references.
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   fulfillment:
  *     description: A fulfillment object. Available if the relation `fulfillment` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Fulfillment"
  *   item:
  *     description: Available if the relation `item` is expanded.
  *     $ref: "#/components/schemas/LineItem"
  *   quantity:
- *     description: "The quantity of the Line Item that is included in the Fulfillment."
+ *     description: The quantity of the Line Item that is included in the Fulfillment.
  *     type: integer
  *     example: 1
  */
