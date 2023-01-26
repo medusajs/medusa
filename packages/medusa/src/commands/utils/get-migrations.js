@@ -221,7 +221,7 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
     allModules.push({
       moduleDeclaration: loadedModule.moduleDeclaration,
       models: mod.models ?? [],
-      internalMigrations: moduleMigrations,
+      migrations: moduleMigrations,
       externalMigrations: isolatedMigrations,
     })
   }
@@ -243,7 +243,7 @@ export const getModuleSharedResources = (configModule, featureFlagsRouter) => {
       continue
     }
 
-    migrations = migrations.concat(mod.internalMigrations)
+    migrations = migrations.concat(mod.migrations)
 
     models = models.concat(mod.models ?? [])
   }
