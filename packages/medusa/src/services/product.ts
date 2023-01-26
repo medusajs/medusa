@@ -391,7 +391,7 @@ class ProductService extends TransactionBaseService {
       const optionRepo = manager.getCustomRepository(
         this.productOptionRepository_
       )
-console.log("productObject - ", productObject)
+
       const {
         options,
         tags,

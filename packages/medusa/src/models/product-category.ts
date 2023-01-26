@@ -52,19 +52,19 @@ export class ProductCategory extends SoftDeletableEntity {
   @TreeChildren({ cascade: true })
   category_children: ProductCategory[]
 
-  // @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
-  // @JoinTable({
-  //   name: "product_product_categories",
-  //   joinColumn: {
-  //     name: "product_id",
-  //     referencedColumnName: "id",
-  //   },
-  //   inverseJoinColumn: {
-  //     name: "product_category_id",
-  //     referencedColumnName: "id",
-  //   },
-  // })
-  // products: Product[]
+  @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
+  @JoinTable({
+    name: "product_product_categories",
+    joinColumn: {
+      name: "product_category_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+  })
+  products: Product[]
 
   @BeforeInsert()
   private beforeInsert(): void {
