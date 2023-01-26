@@ -4,7 +4,7 @@ export class productCategoryProduct1674455083104 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `
-        CREATE TABLE "product_category_product" (
+        CREATE TABLE "product_product_categories" (
           "product_category_id" character varying NOT NULL,
           "product_id" character varying NOT NULL,
           CONSTRAINT "FK_product_category_id" FOREIGN KEY ("product_category_id") REFERENCES product_category("id") ON DELETE CASCADE ON UPDATE NO ACTION,
@@ -16,21 +16,21 @@ export class productCategoryProduct1674455083104 implements MigrationInterface {
     await queryRunner.query(
       `
         CREATE UNIQUE INDEX "IDX_upcp_product_id_product_category_id"
-        ON "product_category_product" ("product_category_id", "product_id")
+        ON "product_product_categories" ("product_category_id", "product_id")
       `
     )
 
     await queryRunner.query(
       `
         CREATE INDEX "IDX_pcp_product_category_id"
-        ON "product_category_product" ("product_category_id")
+        ON "product_product_categories" ("product_category_id")
       `
     )
 
     await queryRunner.query(
       `
         CREATE INDEX "IDX_pcp_product_id"
-        ON "product_category_product" ("product_id")
+        ON "product_product_categories" ("product_id")
       `
     )
   }
@@ -40,6 +40,6 @@ export class productCategoryProduct1674455083104 implements MigrationInterface {
     await queryRunner.query(`DROP INDEX "IDX_pcp_product_category_id"`)
     await queryRunner.query(`DROP INDEX "IDX_pcp_product_id"`)
 
-    await queryRunner.query(`DROP TABLE "product_category_product"`)
+    await queryRunner.query(`DROP TABLE "product_product_categories"`)
   }
 }

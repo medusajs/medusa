@@ -438,8 +438,7 @@ console.log("productObject - ", productObject)
           }
         }
       }
-console.log("categories - ", categories)
-console.log("isDefined(categories) - ", isDefined(categories))
+
       if (isDefined(categories)) {
         product.categories = []
 
@@ -448,9 +447,10 @@ console.log("isDefined(categories) - ", isDefined(categories))
           const pcRepo = manager.getCustomRepository(this.productCategoryRepository_)
 
           const categoryRecords = await pcRepo.find({
-            where: { id: In(categoryIds) }
+            where: { id: In(categoryIds) },
+            select: ["id"],
           })
-console.log("categoryRecords - ", categoryRecords)
+
           product.categories = categoryRecords
         }
       }

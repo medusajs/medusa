@@ -97,7 +97,7 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
-console.log("validated - ", validated)
+
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const productVariantService: ProductVariantService = req.scope.resolve(

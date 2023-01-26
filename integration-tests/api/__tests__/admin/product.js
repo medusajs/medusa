@@ -1073,6 +1073,14 @@ describe("/admin/products", () => {
             ],
           },
         ],
+        categories: expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-category-d2A",
+          }),
+          expect.objectContaining({
+            id: "test-category-d2B",
+          }),
+        ]),
       })
     })
 
@@ -1431,6 +1439,7 @@ describe("/admin/products", () => {
           ],
           type: null,
           collection: null,
+          categories: [],
         })
       )
     })
