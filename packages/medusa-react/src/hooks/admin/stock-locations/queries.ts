@@ -22,13 +22,13 @@ export const useAdminStockLocations = (
   options?: UseQueryOptionsWrapper<
     Response<AdminStockLocationsListRes>,
     Error,
-    ReturnType<StockLocationsQueryKeys["lists"]>
+    ReturnType<StockLocationsQueryKeys["list"]>
   >
 ) => {
   const { client } = useMedusa()
 
   const { data, ...rest } = useQuery(
-    adminStockLocationsKeys.lists(),
+    adminStockLocationsKeys.list(query),
     () => client.admin.stockLocations.list(query),
     { ...options }
   )
