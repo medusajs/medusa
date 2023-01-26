@@ -15,6 +15,8 @@ import { TokenEvents } from "../../../../types/token"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostCustomersCustomerOrderClaimReq"
+ * x-codegen:
+ *   method: requestCustomerOrders
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

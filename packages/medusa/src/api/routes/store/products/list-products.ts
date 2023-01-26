@@ -10,6 +10,7 @@ import {
 import {
   CartService,
   ProductService,
+  ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -129,6 +130,12 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
  *   - (query) order {string} the field used to order the products.
+ *   - (query) cart_id {string} The id of the Cart to set prices based on.
+ *   - (query) region_id {string} The id of the Region to set prices based on.
+ *   - (query) currency_code {string} The currency code to use for price selection.
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -165,6 +172,8 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
@@ -208,13 +217,18 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const products = await pricingService.setProductPrices(rawProducts, {
+  const pricedProducts = await pricingService.setProductPrices(rawProducts, {
     cart_id: cart_id,
     region_id: regionId,
     currency_code: currencyCode,
     customer_id: req.user?.customer_id,
     include_discount_prices: true,
   })
+
+  const products = await productVariantInventoryService.setProductAvailability(
+    pricedProducts,
+    filterableFields.sales_channel_id
+  )
 
   res.json({
     products,

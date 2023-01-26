@@ -27,6 +27,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDraftOrdersDraftOrderLineItemsReq"
+ * x-codegen:
+ *   method: addLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

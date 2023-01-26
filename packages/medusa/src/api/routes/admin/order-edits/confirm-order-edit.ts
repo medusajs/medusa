@@ -14,6 +14,8 @@ import {
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the order edit.
+ * x-codegen:
+ *   method: confirm
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -11,6 +11,8 @@ import PriceListService from "../../../../services/price-list"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

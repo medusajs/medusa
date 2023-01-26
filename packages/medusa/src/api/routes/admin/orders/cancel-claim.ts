@@ -13,6 +13,8 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) claim_id=* {string} The ID of the Claim.
+ * x-codegen:
+ *   method: cancelClaim
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

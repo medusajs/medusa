@@ -12,6 +12,8 @@ import RegionService from "../../../../services/region"
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
  *   - (path) provider_id=* {string} The ID of the Fulfillment Provider.
+ * x-codegen:
+ *   method: deleteFulfillmentProvider
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

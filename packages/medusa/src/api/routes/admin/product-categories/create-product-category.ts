@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, IsBoolean } from "class-validator"
+import { IsNotEmpty, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -13,13 +13,15 @@ import { FindParams } from "../../../../types/common"
  * description: "Creates a Product Category."
  * x-authenticated: true
  * parameters:
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.
- *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each product category.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the results.
+ *   - (query) fields {string} (Comma separated) Which fields should be retrieved in the results.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductCategoriesReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -76,7 +78,7 @@ export default async (req: Request, res: Response) => {
 
   const productCategory = await productCategoryService.retrieve(
     created.id,
-    req.retrieveConfig,
+    req.retrieveConfig
   )
 
   res.status(200).json({ product_category: productCategory })

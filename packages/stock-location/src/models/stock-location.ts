@@ -16,8 +16,8 @@ export class StockLocation extends SoftDeletableEntity {
   name: string
 
   @Index()
-  @Column({ type: "text" })
-  address_id: string
+  @Column({ type: "text", nullable: true })
+  address_id: string | null
 
   @ManyToOne(() => StockLocationAddress)
   @JoinColumn({ name: "address_id" })

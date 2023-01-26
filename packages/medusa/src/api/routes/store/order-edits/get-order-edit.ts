@@ -8,6 +8,8 @@ import { OrderEditService } from "../../../../services"
  * description: "Retrieves a OrderEdit."
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
