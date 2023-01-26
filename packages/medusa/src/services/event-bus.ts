@@ -105,15 +105,20 @@ export default class EventBusService extends TransactionBaseService {
      * In case of a failing transaction, jobs stored in the database are removed
      * as part of the rollback.
      */
-    const jobToCreate = {
-      event_name: eventName,
-      data: data as unknown as Record<string, unknown>,
-      options,
-    } as Partial<StagedJob>
 
-    return await this.stagedJobService_
-      .withTransaction(manager)
-      .create(jobToCreate)
+    if (this.transactionManager_) {
+      const jobToCreate = {
+        event_name: eventName,
+        data: data as unknown as Record<string, unknown>,
+        options,
+      } as Partial<StagedJob>
+
+      return await this.stagedJobService_
+        .withTransaction(this.transactionManager_)
+        .create(jobToCreate)
+    }
+
+    await this.eventBusModuleService_.emit(eventName, data, options)
   }
 
   startEnqueuer(): void {

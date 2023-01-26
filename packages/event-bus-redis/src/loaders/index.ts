@@ -9,7 +9,7 @@ export default async ({
   const redisUrl = options?.redisUrl
 
   if (!redisUrl) {
-    logger?.error(
+    throw Error(
       "No `redis_url` provided in project config. It is required for the Redis Event Bus."
     )
   }

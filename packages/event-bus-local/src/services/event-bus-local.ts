@@ -10,7 +10,6 @@ import { EntityManager } from "typeorm"
 type InjectedDependencies = {
   logger: Logger
 }
-
 const eventEmitter = new EventEmitter()
 
 export default class LocalEventBusService extends AbstractEventBusModuleService {
@@ -19,15 +18,12 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
 
+
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
 
     this.logger_ = logger
-  }
-
-  withTransaction(transactionManager?: EntityManager) {
-    return this
   }
 
   async emit<T>(eventName: string, data: T): Promise<void> {
@@ -41,7 +37,13 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
       `Processing ${eventName} which has ${eventListenersCount} subscribers`
     )
 
-    eventEmitter.emit(eventName, data)
+    try {
+      eventEmitter.emit(eventName, data)
+    } catch (error) {
+      this.logger_.error(
+        `An error occurred while processing ${eventName}: ${error}`
+      )
+    }
   }
 
   subscribe(event: string | symbol, subscriber: Subscriber): this {

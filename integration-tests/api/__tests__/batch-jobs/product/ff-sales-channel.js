@@ -64,7 +64,6 @@ describe("Product import - Sales Channel", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_SALES_CHANNELS: true },
-      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
     })
     dbConnection = connection
