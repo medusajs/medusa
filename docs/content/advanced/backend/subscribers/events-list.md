@@ -2072,6 +2072,102 @@ Object of the following format:
 
 ---
 
+## Product Category Events
+
+This section holds all events related to product categories.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`product-category.created`
+
+</td>
+<td>
+
+Triggered when a product category is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, // string ID of category
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`product-category.updated`
+
+</td>
+<td>
+
+Triggered when a product category is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, // string ID of category
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`product-category.deleted`
+
+</td>
+<td>
+
+Triggered when a product category is deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, // string ID of category
+}
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+---
+
 ## Product Variant Events
 
 This section holds all events related to product variants.
