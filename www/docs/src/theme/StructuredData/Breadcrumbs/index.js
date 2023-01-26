@@ -1,9 +1,11 @@
 import React from 'react';
 import Head from '@docusaurus/Head';
 import { useSidebarBreadcrumbs } from '@docusaurus/theme-common/internal'
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export default function StructuredDataBreadcrumbs () {
   const breadcrumbs = useSidebarBreadcrumbs()
+  const { siteConfig: { url } } = useDocusaurusContext()
 
   return (
     <Head>
@@ -21,7 +23,7 @@ export default function StructuredDataBreadcrumbs () {
               "@type": "ListItem",
               "position": index + 1,
               "name": breadcrumb.label,
-              "item": breadcrumb.href
+              "item": `${url}/${breadcrumb.href}`
             }
           })
         })}
