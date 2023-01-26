@@ -15,7 +15,6 @@ module.exports = {
     ...globalTypedocOptions.plugin,
     "typedoc-plugin-merge-modules",
     "typedoc-plugin-reference-excluder",
-    "typedoc-monorepo-link-types",
     "typedoc-frontmatter-plugin",
   ],
   exclude: [
