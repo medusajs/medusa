@@ -1,5 +1,8 @@
-import { CacheService, ProductVariantService } from "../services"
-import EventBusService from "../services/event-bus"
+import {
+  CacheService,
+  EventBusService,
+  ProductVariantService,
+} from "../services"
 
 type ProductVariantUpdatedEventData = {
   id: string

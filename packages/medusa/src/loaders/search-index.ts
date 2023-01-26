@@ -1,5 +1,5 @@
 import { AbstractSearchService } from "../interfaces"
-import EventBusService from "../services/event-bus"
+import { EventBusService } from "../services"
 import { Logger, MedusaContainer } from "../types/global"
 
 export const SEARCH_INDEX_EVENT = "SEARCH_INDEX_EVENT"

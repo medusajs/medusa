@@ -1,6 +1,5 @@
 import { EntityManager } from "typeorm"
-import { CartService } from "../services"
-import EventBusService from "../services/event-bus"
+import { CartService, EventBusService } from "../services"
 
 type InjectedDependencies = {
   eventBusService: EventBusService

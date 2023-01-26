@@ -1,7 +1,9 @@
 import { EntityManager } from "typeorm"
-import { StrategyResolverService } from "../services"
-import BatchJobService from "../services/batch-job"
-import EventBusService from "../services/event-bus"
+import {
+  BatchJobService,
+  EventBusService,
+  StrategyResolverService,
+} from "../services"
 
 type InjectedDependencies = {
   eventBusService: EventBusService
