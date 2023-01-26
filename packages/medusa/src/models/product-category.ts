@@ -54,7 +54,7 @@ export class ProductCategory extends SoftDeletableEntity {
 
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
-    name: "product_product_categories",
+    name: "product_category_product",
     joinColumn: {
       name: "product_category_id",
       referencedColumnName: "id",
