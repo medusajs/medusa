@@ -471,8 +471,18 @@ describe("/store/products", () => {
           console.log(err)
         })
 
-      expect(response.data.products).toHaveLength(5)
-      expect(response.data.products).toEqual(
+      const products = response.data.products
+
+      expect(products).toHaveLength(5)
+
+      const testProduct = products.find((p) => p.id === testProductId)
+      expect(testProduct.variants).toHaveLength(3)
+
+      for (const variant of testProduct.variants) {
+        expect(variant.prices).toHaveLength(2)
+      }
+
+      expect(products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: testProductId1,
@@ -481,11 +491,11 @@ describe("/store/products", () => {
           expect.objectContaining({
             id: testProductId,
             collection_id: "test-collection",
-            variants: [
+            variants: expect.arrayContaining([
               expect.objectContaining({
                 original_price: 100,
                 calculated_price: 80,
-                prices: [
+                prices: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-price",
                     currency_code: "usd",
@@ -496,12 +506,12 @@ describe("/store/products", () => {
                     currency_code: "usd",
                     amount: 80,
                   }),
-                ],
+                ]),
               }),
               expect.objectContaining({
                 original_price: 100,
                 calculated_price: 80,
-                prices: [
+                prices: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-price1",
                     currency_code: "usd",
@@ -512,12 +522,12 @@ describe("/store/products", () => {
                     currency_code: "usd",
                     amount: 80,
                   }),
-                ],
+                ]),
               }),
               expect.objectContaining({
                 original_price: 100,
                 calculated_price: 80,
-                prices: [
+                prices: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-price2",
                     currency_code: "usd",
@@ -528,9 +538,9 @@ describe("/store/products", () => {
                     currency_code: "usd",
                     amount: 80,
                   }),
-                ],
+                ]),
               }),
-            ],
+            ]),
           }),
           expect.objectContaining({
             id: testProductFilteringId2,
