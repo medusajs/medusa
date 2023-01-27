@@ -4,6 +4,11 @@ import { IsType } from "../../../../utils/validators/is-type"
 import { IStockLocationService } from "../../../../interfaces"
 import { extendedFindParamsMixin } from "../../../../types/common"
 import { Request, Response } from "express"
+import {
+  SalesChannelLocationService,
+  SalesChannelService,
+} from "../../../../services"
+import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**
  * @oas [get] /stock-locations
@@ -133,14 +138,28 @@ export default async (req: Request, res: Response) => {
   const stockLocationService: IStockLocationService = req.scope.resolve(
     "stockLocationService"
   )
+  const channelLocationService: SalesChannelLocationService = req.scope.resolve(
+    "salesChannelLocationService"
+  )
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
 
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
-  const [locations, count] = await stockLocationService.listAndCount(
+  let [locations, count] = await stockLocationService.listAndCount(
     filterableFields,
     listConfig
   )
+
+  if (req.retrieveConfig?.relations?.includes("sales_channel")) {
+    locations = await joinSalesChannels(
+      locations,
+      channelLocationService,
+      salesChannelService
+    )
+  }
 
   res.status(200).json({
     stock_locations: locations,
