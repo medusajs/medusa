@@ -44,6 +44,7 @@ const DbTestUtil = {
     forceDelete = forceDelete || []
 
     const entities = this.db_.entityMetadatas
+
     const manager = this.db_.manager
 
     if (connectionType === "sqlite") {
@@ -126,10 +127,8 @@ module.exports = {
         getModuleSharedResources,
       } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
-      const { migrations: moduleMigrations } = getModuleSharedResources(
-        configModule,
-        featureFlagsRouter
-      )
+      const { migrations: moduleMigrations, models: moduleModels } =
+        getModuleSharedResources(configModule, featureFlagsRouter)
 
       const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
         featureFlagsRouter.isFeatureEnabled(flag)
@@ -142,7 +141,7 @@ module.exports = {
       const dbConnection = await createConnection({
         type: "postgres",
         url: DB_URL,
-        entities: enabledEntities,
+        entities: enabledEntities.concat(moduleModels),
         migrations: enabledMigrations.concat(moduleMigrations),
         extra: database_extra ?? {},
         name: "integration-tests",
