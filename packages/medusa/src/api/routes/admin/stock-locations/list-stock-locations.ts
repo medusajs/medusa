@@ -148,12 +148,18 @@ export default async (req: Request, res: Response) => {
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
+  if (listConfig.relations?.includes("sales_channel")) {
+    listConfig.relations = listConfig.relations.filter(
+      (r) => r !== "sales_channel"
+    )
+  }
+
   let [locations, count] = await stockLocationService.listAndCount(
     filterableFields,
     listConfig
   )
 
-  if (req.retrieveConfig?.relations?.includes("sales_channel")) {
+  if (listConfig.relations?.includes("sales_channel")) {
     locations = await joinSalesChannels(
       locations,
       channelLocationService,
