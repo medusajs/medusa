@@ -7,7 +7,7 @@ import middlewares, {
 
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import deleteProductCategory from "./delete-product-category"
-
+import { ProductBatchProductCategory } from "../../../../types/product-category"
 import { validateProductsExist } from "../../../middlewares/validators/product-existence"
 
 import getProductCategory, {
@@ -36,14 +36,15 @@ import addProductsBatch, {
 const route = Router()
 
 export default (app) => {
-  const atomicTransformQueryConfig = {
+  const retrieveTransformQueryConfig = {
     defaultFields: defaultProductCategoryFields,
     defaultRelations: defaultAdminProductCategoryRelations,
+    allowedRelations: allowedAdminProductCategoryRelations,
     isList: false,
   }
 
   const listTransformQueryConfig = {
-    ...atomicTransformQueryConfig,
+    ...retrieveTransformQueryConfig,
     isList: true,
   }
 
@@ -57,7 +58,7 @@ export default (app) => {
     "/",
     transformQuery(
       AdminPostProductCategoriesParams,
-      atomicTransformQueryConfig
+      retrieveTransformQueryConfig
     ),
     transformBody(AdminPostProductCategoriesReq),
     middlewares.wrap(createProductCategory)
@@ -71,7 +72,7 @@ export default (app) => {
 
   route.get(
     "/:id",
-    transformQuery(AdminGetProductCategoryParams, atomicTransformQueryConfig),
+    transformQuery(AdminGetProductCategoryParams, retrieveTransformQueryConfig),
     middlewares.wrap(getProductCategory)
   )
 
@@ -79,7 +80,7 @@ export default (app) => {
     "/:id",
     transformQuery(
       AdminPostProductCategoriesCategoryParams,
-      atomicTransformQueryConfig
+      retrieveTransformQueryConfig
     ),
     transformBody(AdminPostProductCategoriesCategoryReq),
     middlewares.wrap(updateProductCategory)
@@ -91,10 +92,12 @@ export default (app) => {
     "/:id/products/batch",
     transformQuery(
       AdminPostProductCategoriesCategoryProductsBatchParams,
-      atomicTransformQueryConfig
+      retrieveTransformQueryConfig
     ),
     transformBody(AdminPostProductCategoriesCategoryProductsBatchReq),
-    validateProductsExist((req) => req.body.product_ids),
+    validateProductsExist<ProductBatchProductCategory>(
+      (req) => req.body.product_ids
+    ),
     middlewares.wrap(addProductsBatch)
   )
 
@@ -107,6 +110,11 @@ export * from "./list-product-categories"
 export * from "./create-product-category"
 
 export const defaultAdminProductCategoryRelations = [
+  "parent_category",
+  "category_children",
+]
+
+export const allowedAdminProductCategoryRelations = [
   "parent_category",
   "category_children",
 ]

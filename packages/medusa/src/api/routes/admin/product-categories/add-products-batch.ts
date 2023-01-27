@@ -15,6 +15,8 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
+ *   - (query) expand {string} (Comma separated) Category fields to be expanded in the response.
+ *   - (query) fields {string} (Comma separated) Category fields to be retrieved in the response.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,7 +28,8 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/product-categories/afasf/products/batch' \
+ *       curl --location \
+ *       --request POST 'https://medusa-url.com/admin/product-categories/{product_category_id}/products/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
@@ -75,15 +78,19 @@ export default async (req: Request, res: Response): Promise<void> => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const productCategory = await manager.transaction(async (transactionManager) => {
+  await manager.transaction(async (transactionManager) => {
     return await productCategoryService
       .withTransaction(transactionManager)
       .addProducts(
         id,
         validatedBody.product_ids.map((p) => p.id),
-        req.retrieveConfig
       )
   })
+
+  const productCategory = await productCategoryService.retrieve(
+    id,
+    req.retrieveConfig
+  )
 
   res.status(200).json({ product_category: productCategory })
 }

@@ -59,7 +59,7 @@ class ProductCategoryService extends TransactionBaseService {
       take: 100,
       order: { created_at: "DESC" },
     },
-    treeSelector: QuerySelector<ProductCategory> = {},
+    treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
     const manager = this.transactionManager_ ?? this.manager_
     const productCategoryRepo = manager.getCustomRepository(
@@ -226,16 +226,13 @@ class ProductCategoryService extends TransactionBaseService {
    */
   async addProducts(
     productCategoryId: string,
-    productIds: string[],
-    config: FindConfig<ProductCategory> = {},
-  ): Promise<ProductCategory | never> {
+    productIds: string[]
+  ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const productCategoryRepository: ProductCategoryRepository =
         manager.getCustomRepository(this.productCategoryRepo_)
 
       await productCategoryRepository.addProducts(productCategoryId, productIds)
-
-      return await this.retrieve(productCategoryId, config)
     })
   }
 }

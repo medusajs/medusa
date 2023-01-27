@@ -568,5 +568,22 @@ describe("/admin/product-categories", () => {
         type: "not_found",
       })
     })
+
+    it("throws error trying to expand not allowed relations", async () => {
+      const api = useApi()
+      const payload = { product_ids: [] }
+
+      const error = await api.post(
+        `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
+        payload,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data).toEqual({
+        message: "Relations [products] are not valid",
+        type: "invalid_data",
+      })
+    })
   })
 })
