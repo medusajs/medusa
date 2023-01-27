@@ -6,6 +6,8 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
+const { Product, ProductCategory } = require("@medusajs/medusa")
+
 const {
   ProductVariant,
   ProductOptionValue,
@@ -17,12 +19,14 @@ const priceListSeeder = require("../../helpers/price-list-seeder")
 const {
   simpleProductFactory,
   simpleDiscountFactory,
+  simpleProductCategoryFactory,
 } = require("../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(50000)
 
+const testProductId = "test-product"
 const adminHeaders = {
   headers: {
     Authorization: "Bearer test_token",
@@ -1426,6 +1430,7 @@ describe("/admin/products", () => {
           ],
           type: null,
           collection: null,
+          categories: [],
         })
       )
     })
@@ -1455,6 +1460,141 @@ describe("/admin/products", () => {
           ]),
         })
       )
+    })
+
+    describe("Categories", () => {
+      let categoryWithProduct, categoryWithoutProduct
+      const categoryWithProductId = "category-with-product-id"
+      const categoryWithoutProductId = "category-without-product-id"
+
+      beforeEach(async () => {
+        const manager = dbConnection.manager
+        categoryWithProduct = await manager.create(ProductCategory, {
+          id: categoryWithProductId,
+          name: "category with Product",
+          products: [{ id: testProductId }],
+        })
+        await manager.save(categoryWithProduct)
+
+        categoryWithoutProduct = await manager.create(ProductCategory, {
+          id: categoryWithoutProductId,
+          name: "category without product",
+        })
+        await manager.save(categoryWithoutProduct)
+      })
+
+      it("creates a product with categories associated to it", async () => {
+        const api = useApi()
+
+        const payload = {
+          title: "Test",
+          description: "test-product-description",
+          categories: [{ id: categoryWithProductId }, { id: categoryWithoutProductId }]
+        }
+
+        const response = await api
+          .post("/admin/products", payload, adminHeaders)
+          .catch(e => e)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            categories: [
+              expect.objectContaining({
+                id: categoryWithProductId,
+              }),
+              expect.objectContaining({
+                id: categoryWithoutProductId,
+              }),
+            ],
+          })
+        )
+      })
+
+      it("throws error when creating a product with invalid category ID", async () => {
+        const api = useApi()
+        const categoryNotFoundId = "category-doesnt-exist"
+
+        const payload = {
+          title: "Test",
+          description: "test-product-description",
+          categories: [{ id: categoryNotFoundId }]
+        }
+
+        const error = await api
+          .post("/admin/products", payload, adminHeaders)
+          .catch(e => e)
+
+        expect(error.response.status).toEqual(404)
+        expect(error.response.data.type).toEqual("not_found")
+        expect(error.response.data.message).toEqual(`Product_category with product_category_id ${categoryNotFoundId} does not exist.`)
+      })
+
+      it("updates a product's categories", async () => {
+        const api = useApi()
+
+        const payload = {
+          categories: [{ id: categoryWithoutProductId }],
+        }
+
+        const response = await api
+          .post(`/admin/products/${testProductId}`, payload, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            id: testProductId,
+            handle: "test-product",
+            categories: [
+              expect.objectContaining({
+                id: categoryWithoutProductId,
+              }),
+            ],
+          })
+        )
+      })
+
+      it("remove all categories of a product", async () => {
+        const api = useApi()
+        const category = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: "existing-category",
+            name: "existing category",
+            products: [{ id: "test-product" }]
+          }
+        )
+
+        const payload = {
+          categories: [],
+        }
+
+        const response = await api
+          .post("/admin/products/test-product", payload, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product).toEqual(
+          expect.objectContaining({
+            id: "test-product",
+            categories: [],
+          })
+        )
+      })
+
+      it("throws error if product categories input is incorreect", async () => {
+        const api = useApi()
+        const payload = {
+          categories: [{ incorrect: "test-category-d2B" }],
+        }
+
+        const error = await api
+          .post("/admin/products/test-product", payload, adminHeaders)
+          .catch(e => e)
+
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.type).toEqual("invalid_data")
+        expect(error.response.data.message).toEqual("property incorrect should not exist, id must be a string")
+      })
     })
   })
 
