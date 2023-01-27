@@ -148,9 +148,9 @@ export default async (req: Request, res: Response) => {
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
-  if (listConfig.relations?.includes("sales_channel")) {
+  if (listConfig.relations?.includes("sales_channels")) {
     listConfig.relations = listConfig.relations.filter(
-      (r) => r !== "sales_channel"
+      (r) => r !== "sales_channels"
     )
   }
 
@@ -159,7 +159,7 @@ export default async (req: Request, res: Response) => {
     listConfig
   )
 
-  if (listConfig.relations?.includes("sales_channel")) {
+  if (listConfig.relations?.includes("sales_channels")) {
     locations = await joinSalesChannels(
       locations,
       channelLocationService,
