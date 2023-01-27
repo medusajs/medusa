@@ -4,7 +4,7 @@ type GetProductsRequiredParams = {
   id: string
 }
 
-export function validateProductsExist<T extends GetProductsRequiredParams>(
+export function validateProductsExist<T extends GetProductsRequiredParams = GetProductsRequiredParams>(
   getProducts: (req) => T[]
 ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {

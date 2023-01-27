@@ -2,7 +2,6 @@ import { Router } from "express"
 import "reflect-metadata"
 import { SalesChannel } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -64,7 +63,7 @@ export default (app) => {
   salesChannelRouter.post(
     "/products/batch",
     transformBody(AdminPostSalesChannelsChannelProductsBatchReq),
-    validateProductsExist<ProductBatchSalesChannel>((req) => req.body.product_ids),
+    validateProductsExist((req) => req.body.product_ids),
     middlewares.wrap(require("./add-product-batch").default)
   )
 

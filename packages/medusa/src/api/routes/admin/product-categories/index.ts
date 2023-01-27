@@ -7,7 +7,6 @@ import middlewares, {
 
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import deleteProductCategory from "./delete-product-category"
-import { ProductBatchProductCategory } from "../../../../types/product-category"
 import { validateProductsExist } from "../../../middlewares/validators/product-existence"
 
 import getProductCategory, {
@@ -95,9 +94,7 @@ export default (app) => {
       retrieveTransformQueryConfig
     ),
     transformBody(AdminPostProductCategoriesCategoryProductsBatchReq),
-    validateProductsExist<ProductBatchProductCategory>(
-      (req) => req.body.product_ids
-    ),
+    validateProductsExist((req) => req.body.product_ids),
     middlewares.wrap(addProductsBatch)
   )
 
