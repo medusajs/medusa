@@ -1,6 +1,8 @@
 import {
   AdminDeleteSalesChannelsChannelProductsBatchReq,
+  AdminDeleteSalesChannelsChannelStockLocationsReq,
   AdminPostSalesChannelsChannelProductsBatchReq,
+  AdminPostSalesChannelsChannelStockLocationsReq,
   AdminPostSalesChannelsReq,
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
@@ -16,6 +18,7 @@ import {
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminProductKeys } from "../products"
+import { adminStockLocationsKeys } from "../stock-locations"
 import { adminSalesChannelsKeys } from "./queries"
 
 /**
@@ -157,6 +160,74 @@ export const useAdminAddProductsToSalesChannel = (
         adminSalesChannelsKeys.lists(),
         adminSalesChannelsKeys.detail(id),
         adminProductKeys.list({ sales_channel_id: [id] }),
+      ],
+      options
+    )
+  )
+}
+
+/**
+ * Add a location to a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please install the stock location in your medusa backend project.
+ * @description Add a location to a sales channel
+ * @param id
+ * @param options
+ */
+export const useAdminAddLocationToSalesChannel = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    AdminPostSalesChannelsChannelStockLocationsReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostSalesChannelsChannelStockLocationsReq) => {
+      return client.admin.salesChannels.addLocation(id, payload)
+    },
+    buildOptions(
+      queryClient,
+      [
+        adminSalesChannelsKeys.lists(),
+        adminSalesChannelsKeys.detail(id),
+        adminStockLocationsKeys.all,
+      ],
+      options
+    )
+  )
+}
+
+/**
+ * Remove a location from a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please install the stock location in your medusa backend project.
+ * @description Remove a location from a sales channel
+ * @param id
+ * @param options
+ */
+export const useAdminRemoveLocationToSalesChannel = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    AdminDeleteSalesChannelsChannelStockLocationsReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminDeleteSalesChannelsChannelStockLocationsReq) => {
+      return client.admin.salesChannels.removeLocation(id, payload)
+    },
+    buildOptions(
+      queryClient,
+      [
+        adminSalesChannelsKeys.lists(),
+        adminSalesChannelsKeys.detail(id),
+        adminStockLocationsKeys.all,
       ],
       options
     )
