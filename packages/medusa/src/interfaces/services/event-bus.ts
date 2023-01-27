@@ -41,6 +41,9 @@ export abstract class AbstractEventBusModuleService
     subscriber: Subscriber,
     context?: SubscriberContext
   ): this {
+    if (typeof subscriber !== `function`) {
+      throw new Error("Subscriber must be a function")
+    }
     /**
      * If context is provided, we use the subscriberId from it
      * otherwise we generate a random using a ulid
@@ -73,6 +76,10 @@ export abstract class AbstractEventBusModuleService
     subscriber: Subscriber,
     context: SubscriberContext
   ): this {
+    if (typeof subscriber !== `function`) {
+      throw new Error("Subscriber must be a function")
+    }
+
     const existingSubscribers = this.eventToSubscribersMap_.get(event)
 
     if (existingSubscribers?.length) {

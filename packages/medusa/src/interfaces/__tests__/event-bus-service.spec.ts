@@ -1,12 +1,12 @@
 import { EntityManager } from "typeorm"
-import { AbstractEventBusService } from "../services/event-bus"
+import { AbstractEventBusModuleService } from "../services/event-bus"
 
-class EventBus extends AbstractEventBusService {
+class EventBus extends AbstractEventBusModuleService {
   protected manager_!: EntityManager
   protected transactionManager_!: EntityManager
 
   constructor(protected readonly container) {
-    super(container)
+    super()
     this.container = container
   }
 
