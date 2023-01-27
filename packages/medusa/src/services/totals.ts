@@ -456,6 +456,11 @@ class TotalsService extends TransactionBaseService {
         lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
       }
 
+      lineDiscounts = [
+        ...lineDiscounts,
+        ...this.getLineCustomAdjustmentsAmount(orderOrCart),
+      ]
+
       for (const ld of lineDiscounts) {
         if (allocationMap[ld.item.id]) {
           allocationMap[ld.item.id].discount = {
@@ -744,6 +749,51 @@ class TotalsService extends TransactionBaseService {
         item,
         amount: item.allow_discounts
           ? discountAdjustments.reduce(
+              (total, adjustment) => total + adjustment.amount,
+              0
+            )
+          : 0,
+      }
+    })
+  }
+
+  /**
+   * Returns the amount allocated to the line items of an order from custom adjustments
+   * (custom adjustment => adjustment on a line item not related to any discount).
+   *
+   * @param cartOrOrder - the cart or order to get line discount allocations for
+   * @return the amounts that custom adjustment have on the items in the cart or order
+   */
+  getLineCustomAdjustmentsAmount(cartOrOrder: {
+    items: LineItem[]
+    swaps?: Swap[]
+    claims?: ClaimOrder[]
+  }): LineDiscountAmount[] {
+    let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
+
+    // merge items from order with items from order swaps
+    if ("swaps" in cartOrOrder && cartOrOrder.swaps?.length) {
+      for (const s of cartOrOrder.swaps) {
+        merged = [...merged, ...s.additional_items]
+      }
+    }
+
+    if ("claims" in cartOrOrder && cartOrOrder.claims?.length) {
+      for (const c of cartOrOrder.claims) {
+        merged = [...merged, ...c.additional_items]
+      }
+    }
+
+    return merged.map((item) => {
+      const adjustments = item?.adjustments || []
+      const customAdjustments = adjustments.filter(
+        (adjustment) => adjustment.discount_id === null
+      )
+
+      return {
+        item,
+        amount: item.allow_discounts // TODO: should we ignore this flag because if a custom adjustment is set the user wants to "force" adjustment on this item
+          ? customAdjustments.reduce(
               (total, adjustment) => total + adjustment.amount,
               0
             )
