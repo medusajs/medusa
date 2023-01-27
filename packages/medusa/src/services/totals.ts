@@ -447,31 +447,30 @@ class TotalsService extends TransactionBaseService {
     const allocationMap: LineAllocationsMap = {}
 
     if (!options.exclude_discounts) {
-      let lineDiscounts: LineDiscountAmount[] = []
-
       const discount = orderOrCart.discounts?.find(
         ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
       )
-      if (discount) {
-        lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
-      }
 
-      lineDiscounts = [
-        ...lineDiscounts,
-        ...this.getLineCustomAdjustmentsAmount(orderOrCart),
-      ]
+      const lineDiscounts: LineDiscountAmount[] = this.getLineDiscounts(
+        orderOrCart,
+        discount
+      )
 
       for (const ld of lineDiscounts) {
         if (allocationMap[ld.item.id]) {
           allocationMap[ld.item.id].discount = {
-            amount: ld.amount,
-            unit_amount: Math.round(ld.amount / ld.item.quantity),
+            amount: ld.amount + ld.customAdjustmentsAmount,
+            unit_amount: Math.round(
+              (ld.amount + ld.customAdjustmentsAmount) / ld.item.quantity
+            ),
           }
         } else {
           allocationMap[ld.item.id] = {
             discount: {
-              amount: ld.amount,
-              unit_amount: Math.round(ld.amount / ld.item.quantity),
+              amount: ld.amount + ld.customAdjustmentsAmount,
+              unit_amount: Math.round(
+                (ld.amount + ld.customAdjustmentsAmount) / ld.item.quantity
+              ),
             },
           }
         }
@@ -722,7 +721,7 @@ class TotalsService extends TransactionBaseService {
       swaps?: Swap[]
       claims?: ClaimOrder[]
     },
-    discount: Discount
+    discount?: Discount
   ): LineDiscountAmount[] {
     let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
 
@@ -741,63 +740,24 @@ class TotalsService extends TransactionBaseService {
 
     return merged.map((item) => {
       const adjustments = item?.adjustments || []
-      const discountAdjustments = adjustments.filter(
-        (adjustment) => adjustment.discount_id === discount.id
-      )
+      const discountAdjustments = discount
+        ? adjustments.filter(
+            (adjustment) => adjustment.discount_id === discount.id
+          )
+        : []
 
-      return {
-        item,
-        amount: item.allow_discounts
-          ? discountAdjustments.reduce(
-              (total, adjustment) => total + adjustment.amount,
-              0
-            )
-          : 0,
-      }
-    })
-  }
-
-  /**
-   * Returns the amount allocated to the line items of an order from custom adjustments
-   * (custom adjustment => adjustment on a line item not related to any discount).
-   *
-   * @param cartOrOrder - the cart or order to get line discount allocations for
-   * @return the amounts that custom adjustment have on the items in the cart or order
-   */
-  getLineCustomAdjustmentsAmount(cartOrOrder: {
-    items: LineItem[]
-    swaps?: Swap[]
-    claims?: ClaimOrder[]
-  }): LineDiscountAmount[] {
-    let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
-
-    // merge items from order with items from order swaps
-    if ("swaps" in cartOrOrder && cartOrOrder.swaps?.length) {
-      for (const s of cartOrOrder.swaps) {
-        merged = [...merged, ...s.additional_items]
-      }
-    }
-
-    if ("claims" in cartOrOrder && cartOrOrder.claims?.length) {
-      for (const c of cartOrOrder.claims) {
-        merged = [...merged, ...c.additional_items]
-      }
-    }
-
-    return merged.map((item) => {
-      const adjustments = item?.adjustments || []
       const customAdjustments = adjustments.filter(
         (adjustment) => adjustment.discount_id === null
       )
 
+      const sumAdjustments = (total, adjustment) => total + adjustment.amount
+
       return {
         item,
-        amount: item.allow_discounts // TODO: should we ignore this flag because if a custom adjustment is set the user wants to "force" adjustment on this item
-          ? customAdjustments.reduce(
-              (total, adjustment) => total + adjustment.amount,
-              0
-            )
+        amount: item.allow_discounts
+          ? discountAdjustments.reduce(sumAdjustments, 0)
           : 0,
+        customAdjustmentsAmount: customAdjustments.reduce(sumAdjustments, 0),
       }
     })
   }
