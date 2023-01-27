@@ -7,12 +7,11 @@ import "reflect-metadata"
 import supertest from "supertest"
 import apiLoader from "../loaders/api"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
-import { moduleHelper } from "../loaders/module"
+import moduleLoader, { moduleHelper } from "../loaders/module"
+import registerModuleDefinitions from "../loaders/module-definitions"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import registerModuleDefinitions from "../loaders/module-definitions"
-import moduleLoader from "../loaders/module"
 
 const adminSessionOpts = {
   cookieName: "session",

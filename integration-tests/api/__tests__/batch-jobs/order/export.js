@@ -30,7 +30,6 @@ describe("Batchjob with type order-export", () => {
     medusaProcess = await setupServer({
       cwd,
       uploadDir: __dirname,
-      verbose: true,
     })
   })
 
