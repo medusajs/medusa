@@ -1,3 +1,8 @@
+---
+description: 'Learn how to create a notification provider in the Medusa server. This guide explains the different methods available in a Notification provider.'
+addHowToData: true
+---
+
 # How to Create a Notification Provider
 
 In this document, you’ll learn how to add a Notification Provider to your Medusa server.

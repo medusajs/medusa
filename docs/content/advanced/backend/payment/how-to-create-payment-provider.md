@@ -1,3 +1,8 @@
+---
+description: 'Learn how to create a payment provider in the Medusa server. This guide explains the different methods available in a fulfillment provider.'
+addHowToData: true
+---
+
 # How to Create a Payment Provider
 
 In this document, you’ll learn how to add a Payment Provider to your Medusa server. If you’re unfamiliar with the Payment architecture in Medusa, make sure to check out the [overview](./overview.md) first.

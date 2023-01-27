@@ -38,15 +38,11 @@ export default function Feedback ({
   }
 
   function submitFeedback (e, feedback = null) {
-    console.log(id, feedback, (feedback !== null && feedback) || (feedback === null && positiveFeedback) ? 'yes' : 'no')
     if (isBrowser) {
-      console.log("here1");
       if (window.analytics) {
-        console.log("here3");
         if (showForm) {
           setLoading(true);
         }
-        console.log("here4");
         window.analytics.track(event, {
           url: location.pathname,
           label: document.title,
@@ -54,17 +50,13 @@ export default function Feedback ({
           message,
           uuid: id
         }, function () {
-          console.log("here5");
           if (showForm) {
             setLoading(false);
-            console.log("here6");
             resetForm();
           }
         })
       } else {
-        console.log("here7");
         if (showForm) {
-          console.log("here8");
           resetForm();
         }
       }
