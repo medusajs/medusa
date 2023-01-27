@@ -90,9 +90,14 @@ A basic Medusa installation comes with the following scripts:
 ```json title=package.json
 "scripts": {
   "seed": "medusa seed -f ./data/seed.json",
-  "build": "babel src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\"",
+  "build": "babel src --d dist --ignore **/__tests__ --extensions \".ts,.js\"",
   "start": "medusa develop"
 }
+```
+
+Modify `build` script to
+```
+"build": "babel src --out-dir . --extensions \".ts,.js\"",
 ```
 
 The `seed` and `start` scripts aren't necessary for plugin development so you can remove them.
