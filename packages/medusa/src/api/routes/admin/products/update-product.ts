@@ -17,6 +17,7 @@ import {
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
+  ProductProductCategoryReq,
 } from "../../../../types/product"
 
 import { Type } from "class-transformer"
@@ -278,6 +279,16 @@ class ProductVariantReq {
  *         id:
  *           description: The ID of an existing Sales channel.
  *           type: string
+ *   categories:
+ *     description: "Categories to add the Product to."
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a Product Category.
+ *           type: string
  *   variants:
  *     description: A list of Product Variants to create with the Product.
  *     type: array
@@ -458,6 +469,12 @@ export class AdminPostProductsProductReq {
     IsArray(),
   ])
   sales_channels?: ProductSalesChannelReq[] | null
+
+  @IsOptional()
+  @Type(() => ProductProductCategoryReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  categories?: ProductProductCategoryReq[]
 
   @IsOptional()
   @Type(() => ProductVariantReq)

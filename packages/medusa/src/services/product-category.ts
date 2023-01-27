@@ -217,6 +217,24 @@ class ProductCategoryService extends TransactionBaseService {
         })
     })
   }
+
+  /**
+   * Add a batch of product to a product category
+   * @param productCategoryId - The id of the product category on which to add the products
+   * @param productIds - The products ids to attach to the product category
+   * @return the product category on which the products have been added
+   */
+  async addProducts(
+    productCategoryId: string,
+    productIds: string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository: ProductCategoryRepository =
+        manager.getCustomRepository(this.productCategoryRepo_)
+
+      await productCategoryRepository.addProducts(productCategoryId, productIds)
+    })
+  }
 }
 
 export default ProductCategoryService
