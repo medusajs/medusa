@@ -12,6 +12,9 @@ export default defineConfig({
   root: "dashboard",
   define: {
     __BASENAME__: JSON.stringify("/"),
+    __BACKEND__: JSON.stringify("http://localhost:9000"),
   },
-  cacheDir: "dashboard/.cache",
+  build: {
+    outDir: "dist",
+  },
 })

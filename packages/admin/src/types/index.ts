@@ -1,12 +1,13 @@
 export type PluginOptions = {
   serve?: boolean
-  base?: string
-}
-
-export type BuildOptions = {
-  base?: string
-  appDir?: string
-  outDir?: string
+  path?: string
+  build?: {
+    backend: string
+    outDir?: string
+  }
+  dev?: {
+    autoOpen?: boolean
+  }
 }
 
 export type CleanOptions = {

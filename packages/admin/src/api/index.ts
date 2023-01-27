@@ -7,10 +7,10 @@ import { PluginOptions } from "../types"
 export default function (_rootDirectory: string, options: PluginOptions) {
   const app = Router()
 
-  const { serve = true, base = "/app" } = options
+  const { serve = true, path = "/app" } = options
 
   if (serve) {
-    const dashboardPath = resolve(__dirname, "..", "..", "build")
+    const dashboardPath = resolve(__dirname, "../build")
     const htmlPath = resolve(dashboardPath, "index.html")
     const html = fse.readFileSync(htmlPath, "utf-8")
 
@@ -25,16 +25,16 @@ export default function (_rootDirectory: string, options: PluginOptions) {
       res.setHeader("Vary", "Origin, Cache-Control")
     }
 
-    app.get(base, sendHtml)
+    app.get(path, sendHtml)
     app.use(
-      "/",
+      path,
       express.static(dashboardPath, {
         setHeaders: setStaticHeaders,
       })
     )
-    app.get(`${base}/*`, sendHtml)
+    app.get(`${path}/*`, sendHtml)
   } else {
-    app.get(base, (_req, res) => {
+    app.get(path, (_req, res) => {
       res.send("Admin not enabled")
     })
   }

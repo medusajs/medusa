@@ -1,34 +1,57 @@
-import { getConfigFile } from "medusa-core-utils"
-import AdminService from "../services/admin"
-import { ConfigModule, PluginOptions } from "../types"
+import { resolve } from "path"
+import vite from "vite"
+import { loadConfig } from "../utils/load-config"
+import { reporter } from "../utils/reporter"
 
-export default function build() {
-  const admin = new AdminService()
+type BuildArgs = {
+  outDir?: string
+  backend?: string
+  path?: string
+}
 
-  const { configModule } = getConfigFile<ConfigModule>(
-    process.cwd(),
-    "medusa-config"
+export default async function build(args: BuildArgs) {
+  let { path, build, serve } = loadConfig()
+
+  /**
+   * If any of the args are provided, we override the config
+   */
+  if (Object.values(args).some((v) => !!v)) {
+    path = args.path || path
+    build = {
+      outDir: args.outDir || build.outDir,
+      backend: args.backend || build.backend,
+    }
+  }
+
+  const GLOBAL_VARIABLES = {
+    __BASENAME__: JSON.stringify(path),
+    __BACKEND__: JSON.stringify("/"),
+  }
+
+  let outDir = resolve(__dirname, "../build")
+
+  if (!serve && build) {
+    GLOBAL_VARIABLES.__BACKEND__ = JSON.stringify(build.backend)
+    outDir = build.outDir ? resolve(process.cwd(), build.outDir) : outDir
+  }
+
+  await reporter.spinner(
+    vite.build({
+      define: GLOBAL_VARIABLES,
+      base: path,
+      root: resolve(__dirname, "../dashboard"),
+      build: {
+        outDir: outDir,
+        emptyOutDir: true,
+      },
+      css: {
+        postcss: resolve(__dirname, "../dashboard/postcss.config.js"),
+      },
+    }),
+    {
+      message: "Building admin dashboard",
+      successMessage: "Successfully built admin dashboard",
+      errorMessage: "Failed to build admin dashboard",
+    }
   )
-
-  const plugin = configModule.plugins.find(
-    (p) =>
-      (typeof p === "string" && p === "@medusajs/admin") ||
-      (typeof p === "object" && p.resolve === "@medusajs/admin")
-  )
-
-  if (!plugin) {
-    console.error("Could not find @medusajs/admin in `medusa-config.js` file")
-    process.exit(1)
-  }
-
-  const buildConfig = {
-    base: "/app",
-  }
-
-  if (typeof plugin !== "string") {
-    const { options } = plugin as { options: PluginOptions }
-    buildConfig.base = options.base || buildConfig.base
-  }
-
-  admin.build(buildConfig)
 }
