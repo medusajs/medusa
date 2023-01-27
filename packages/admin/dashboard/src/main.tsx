@@ -1,4 +1,5 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { QueryClient } from "@tanstack/react-query"
+import { MedusaProvider } from "medusa-react"
 import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App"
@@ -16,8 +17,13 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
+    <MedusaProvider
+      baseUrl={__BACKEND__}
+      queryClientProviderProps={{
+        client: queryClient,
+      }}
+    >
       <App />
-    </QueryClientProvider>
+    </MedusaProvider>
   </React.StrictMode>
 )

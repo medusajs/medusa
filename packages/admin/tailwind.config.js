@@ -1,6 +1,11 @@
+const path = require("path")
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./dashboard/**/*.{js,jsx,ts,tsx}", "./dashboard/index.html"],
+  content: [
+    path.resolve(__dirname, "./dashboard/**/*.{js,jsx,ts,tsx}"),
+    path.resolve(__dirname, "./dashboard/index.html"),
+  ],
   theme: {
     extend: {},
   },

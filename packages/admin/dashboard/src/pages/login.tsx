@@ -1,6 +1,12 @@
+import { useAdminLogin } from "medusa-react"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+
 const Login = () => {
-  // const { mutate } = useAdminLogin()
-  // const navigate = useNavigate()
+  const [error, setError] = useState<string | null>(null)
+
+  const { mutate } = useAdminLogin()
+  const navigate = useNavigate()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -10,19 +16,17 @@ const Login = () => {
     const email = form.email.value
     const password = form.password.value
 
-    // mutate(
-    //   { email, password },
-    //   {
-    //     onSuccess: () => {
-    //       navigate("/dashboard")
-    //     },
-    //     onError: () => {
-    //       console.log("error")
-    //     },
-    //   }
-    // )
-
-    console.log(email, password)
+    mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          navigate("/")
+        },
+        onError: () => {
+          setError("Invalid email or password")
+        },
+      }
+    )
   }
 
   return (
@@ -34,6 +38,7 @@ const Login = () => {
         <input type="password" name="password" />
         <button type="submit">Login</button>
       </form>
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   )
 }

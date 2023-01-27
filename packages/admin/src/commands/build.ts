@@ -44,9 +44,6 @@ export default async function build(args: BuildArgs) {
         outDir: outDir,
         emptyOutDir: true,
       },
-      css: {
-        postcss: resolve(__dirname, "../dashboard/postcss.config.js"),
-      },
     }),
     {
       message: "Building admin dashboard",
