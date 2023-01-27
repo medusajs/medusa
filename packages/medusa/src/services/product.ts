@@ -1,7 +1,7 @@
 import { FlagRouter } from "../utils/flag-router"
 
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"

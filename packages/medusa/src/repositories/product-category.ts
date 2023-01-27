@@ -84,4 +84,21 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
 
     return await queryBuilder.getManyAndCount()
   }
+
+  async addProducts(
+    productCategoryId: string,
+    productIds: string[]
+  ): Promise<void> {
+    await this.createQueryBuilder()
+      .insert()
+      .into(ProductCategory.productCategoryProductJoinTable)
+      .values(
+        productIds.map((id) => ({
+          product_category_id: productCategoryId,
+          product_id: id,
+        }))
+      )
+      .orIgnore()
+      .execute()
+  }
 }
