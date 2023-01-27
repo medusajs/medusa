@@ -20,6 +20,7 @@ import {
 @Entity()
 @Tree("materialized-path")
 export class ProductCategory extends SoftDeletableEntity {
+  static productCategoryProductJoinTable = "product_category_product"
   static treeRelations = ["parent_category", "category_children"]
 
   @Column()
@@ -54,7 +55,7 @@ export class ProductCategory extends SoftDeletableEntity {
 
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
-    name: "product_category_product",
+    name: ProductCategory.productCategoryProductJoinTable,
     joinColumn: {
       name: "product_category_id",
       referencedColumnName: "id",
