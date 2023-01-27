@@ -1,7 +1,7 @@
 import { FlagRouter } from "../utils/flag-router"
 
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { EntityManager } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -61,6 +61,7 @@ class ProductService extends TransactionBaseService {
   protected readonly productTypeRepository_: typeof ProductTypeRepository
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
+  // eslint-disable-next-line max-len
   protected readonly productCategoryRepository_: typeof ProductCategoryRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
