@@ -7,7 +7,7 @@ import {
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 import { AwilixContainer } from "awilix"
 import { ConnectionOptions } from "typeorm/connection/ConnectionOptions"
-import { ConfigModule } from "../types/global"
+import { ConfigModule, DatabaseHostConfig } from "../types/global"
 
 type Options = {
   configModule: ConfigModule
@@ -27,7 +27,38 @@ export default async ({
     await getConnection().close()
   }
 
+  let hostConfig: DatabaseHostConfig = {
+    database: configModule.projectConfig.database_database,
+    url: configModule.projectConfig.database_url,
+    schema: configModule.projectConfig.database_schema,
+    logging: configModule.projectConfig.database_logging
+
+  }
+
+  if (configModule.projectConfig.database_host) {
+    hostConfig = {
+      host: configModule.projectConfig.database_host,
+      port: configModule.projectConfig.database_port,
+      database: configModule.projectConfig.database_database,
+      schema: configModule.projectConfig.database_schema,
+      logging: configModule.projectConfig.database_logging,
+      ssl: configModule.projectConfig.database_ssl,
+      username: configModule.projectConfig.database_username,
+      password: configModule.projectConfig.database_password,
+    }
+  }
+
   const connection = await createConnection({
+    type: configModule.projectConfig.database_type,
+    ...hostConfig,
+    extra: configModule.projectConfig.database_extra || {},
+    schema: configModule.projectConfig.database_schema,
+    entities,
+    namingStrategy: new ShortenedNamingStrategy(),
+    logging: configModule?.projectConfig.database_logging,
+  } as ConnectionOptions)
+
+  /*const connection = await createConnection({
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     database: configModule.projectConfig.database_database,
@@ -36,7 +67,7 @@ export default async ({
     entities,
     namingStrategy: new ShortenedNamingStrategy(),
     logging: configModule.projectConfig.database_logging || false,
-  } as ConnectionOptions)
+  } as ConnectionOptions)*/
 
   if (isSqlite) {
     await connection.query(`PRAGMA foreign_keys = OFF`)

@@ -21,14 +21,34 @@ const t = async function ({ directory }) {
   const featureFlagRouter = featureFlagLoader(configModule)
 
   const enabledMigrations = await getMigrations(directory, featureFlagRouter)
+  let hostConfig = {
+    database: configModule.projectConfig.database_database,
+    url: configModule.projectConfig.database_url,
+    schema: configModule.projectConfig.database_schema,
+    logging: configModule.projectConfig.database_logging
+
+  }
+
+  if (configModule.projectConfig.database_host) {
+    hostConfig = {
+      host: configModule.projectConfig.database_host,
+      port: configModule.projectConfig.database_port,
+      database: configModule.projectConfig.database_database,
+      schema: configModule.projectConfig.database_schema,
+      logging: configModule.projectConfig.database_logging,
+      ssl: configModule.projectConfig.database_ssl,
+      username: configModule.projectConfig.database_username,
+      password: configModule.projectConfig.database_password,
+    }
+  }
 
   const connection = await createConnection({
     type: configModule.projectConfig.database_type,
-    url: configModule.projectConfig.database_url,
-    schema: configModule.projectConfig.database_schema,
+    ...hostConfig,
     extra: configModule.projectConfig.database_extra || {},
+    schema: configModule.projectConfig.database_schema,
     migrations: enabledMigrations,
-    logging: true,
+    logging: configModule?.projectConfig.database_logging,
   })
 
   if (args[0] === "run") {

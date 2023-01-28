@@ -100,6 +100,30 @@ export type ModuleExports = {
   models?: Constructor<any>[]
 }
 
+export type DatabaseTlsOptions = {
+  ca: string | undefined
+  rejectUnauthorized: boolean | undefined
+}
+
+export type DatabaseHostConfig =
+  | {
+    database?: string
+    schema?: string
+    logging?: LoggerOptions
+    password?: string | (() => string) | (() => Promise<string>)
+    port?: number
+    host?: string
+    ssl?: boolean | DatabaseTlsOptions
+    username?: string
+  }
+  | {
+    database?: string
+    schema?: string
+    logging?: LoggerOptions
+    url?: string
+  }
+
+
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string
@@ -112,12 +136,23 @@ export type ConfigModule = {
     database_database?: string
     database_schema?: string
     database_logging: LoggerOptions
+    database_host?: string
+    database_port?: number
+    database_ssl?: DatabaseTlsOptions
+    database_username?: string
+    database_password?: string | (() => string) | (() => Promise<string>)
+
 
     database_extra?: Record<string, unknown> & {
       ssl: { rejectUnauthorized: false }
     }
     store_cors?: string
     admin_cors?: string
+    /**
+     * To allow you to add new project environment variables without having to change type definitions, 
+     * for any proprietary code that you may require
+     */
+    secureKeys?: { [key: string]: string }
   }
   featureFlags: Record<string, boolean | string>
   modules?: Record<
