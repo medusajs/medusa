@@ -19,7 +19,7 @@ export async function  resolveConfigProperties(obj): Promise<ConfigModule>  {
     if(process.env.NODE_ENV == "test" && !rootDir && !filename)
     {
       rootDirectory = `${__dirname}/__fixtures__/`;
-      filename="default-case-non-async-data-postgres.js"
+      filename="default-case-non-async-data-postgres"
     }
 
 	const configuration = getConfigFile(rootDirectory ?? process.cwd(), filename ?? `medusa-config`) as {
