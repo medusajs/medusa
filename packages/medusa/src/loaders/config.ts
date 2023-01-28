@@ -1,5 +1,6 @@
 import { getConfigFile } from "medusa-core-utils"
 import { ConfigModule } from "../types/global"
+import { asyncLoadConfig } from "../utils/async-load-config"
 import logger from "./logger"
 import registerModuleDefinitions from "./module-definitions"
 
@@ -19,15 +20,18 @@ export const handleConfigError = (error: Error): void => {
   process.exit(1)
 }
 
-export default (rootDirectory: string): ConfigModule => {
-  const { configModule, error } = getConfigFile<ConfigModule>(
+export default async (rootDirectory: string): Promise<ConfigModule> => {
+
+  const configModule = await asyncLoadConfig(rootDirectory,'medusa-config')
+
+  /* const { configModule, error } = getConfigFile<ConfigModule>(
     rootDirectory,
     `medusa-config`
   )
 
   if (error) {
     handleConfigError(error)
-  }
+  }*/
 
   if (!configModule?.projectConfig?.redis_url) {
     console.log(

@@ -5,6 +5,7 @@ import { handleConfigError } from "../loaders/config"
 import Logger from "../loaders/logger"
 
 import getMigrations from "./utils/get-migrations"
+import { asyncLoadConfig } from "../utils/async-load-config"
 
 const t = async function ({ directory }) {
   const args = process.argv
@@ -12,7 +13,9 @@ const t = async function ({ directory }) {
   args.shift()
   args.shift()
 
-  const { configModule, error } = getConfigFile(directory, `medusa-config`)
+  // const { configModule, error } = getConfigFile(directory, `medusa-config`)
+
+  const configModule = await asyncLoadConfig(directory, `medusa-config`)
 
   if (error) {
     handleConfigError(error)
