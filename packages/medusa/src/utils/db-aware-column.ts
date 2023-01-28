@@ -25,11 +25,11 @@ export function resolveDbType(pgSqlType: ColumnType,directory?:string,filename?:
     ) as any*/
     if(!directory)
     {
-      directory = "."
+      directory = process.cwd()
     }
     if(!filename)
     {
-      filename ='medusa-config.js'
+      filename ='medusa-config'
     }
     let configModule;
      asyncLoadConfig(directory,filename).then(config=>{
@@ -55,11 +55,11 @@ export function resolveDbGenerationStrategy(
     ) as any*/
     if(!directory)
     {
-      directory = "."
+      directory = process.cwd()
     }
     if(!filename)
     {
-      filename ='medusa-config.js'
+      filename ='medusa-config'
     }
     let configModule;
      asyncLoadConfig(directory,filename).then(config=>{
