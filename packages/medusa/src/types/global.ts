@@ -124,6 +124,7 @@ export type ConfigModule = {
     database_database?: string
     database_schema?: string
     database_logging: LoggerOptions
+    
 
     database_extra?: Record<string, unknown> & {
       ssl: { rejectUnauthorized: false }

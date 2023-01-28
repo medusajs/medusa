@@ -12,17 +12,17 @@ describe('async load tests', () => {
 		jest.clearAllTimers();
 	});
 
-	it('should aysnc load medusa-config with non-async', async () => {
+	it('should async load medusa-config with non-async', async () => {
 		await runLoadTest('default-case-non-async-data');
 	});
 
-	it('should aysnc load medusa-config with async data', async () => {
+	it('should async load medusa-config with async data', async () => {
 		await runLoadTest('async-parameter');
 	});
-	it('should aysnc load medusa-config with async function promising non-async data', async () => {
+	it('should async load medusa-config with async function promising non-async data', async () => {
 		await runLoadTest('async-function-with-non-async-data');
 	});
-	it('should aysnc load medusa-config with async function promising async data', async () => {
+	it('should async load medusa-config with async function promising async data', async () => {
 		await runLoadTest('async-function-with-async-parameter');
 	});
 });
