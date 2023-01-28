@@ -29,6 +29,7 @@ export async function  resolveConfigProperties(obj): Promise<ConfigModule>  {
 	};
   if (configuration.error) {
     handleConfigError(configuration.error)
+    throw new Error("config module load error")
   }
 	const configModule = await resolveConfigProperties(configuration.configModule);
 	return configModule;

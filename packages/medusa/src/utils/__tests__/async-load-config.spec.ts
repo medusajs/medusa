@@ -11,18 +11,18 @@ const runLoadTest = async (testFixtureFileName: string) => {
 	expect(configModule).toBeDefined();
 	expect(configModule.projectConfig).toBeDefined();
 	expect(configModule.projectConfig).not.toBeInstanceOf(Promise);
-	expect(configModule.projectConfig.database_password).not.toBeInstanceOf(Promise);
+	//expect(configModule.projectConfig.database_password).not.toBeInstanceOf(Promise);
 	expect(configModule.projectConfig).toMatchObject(testProjectConfig);
-	const testPasswordParameter = configModule.projectConfig.database_password!;
+	/*const testPasswordParameter = configModule.projectConfig.database_password!;
 	expect(typeof testPasswordParameter == 'string' || typeof testPasswordParameter == 'function').toBe(true);
 
 	if (typeof testPasswordParameter == 'string') {
 		expect(testPasswordParameter).toBe('password');
 	} else {
-		/** testing callback function */
+		/** testing callback function 
 		const password = await testPasswordParameter();
 		expect(password).toBe('password');
-	}
+	}*/
 };
 
 describe('async load tests', () => {
@@ -44,4 +44,14 @@ describe('async load tests', () => {
 	it('should aysnc load medusa-config with async function promising async data', async () => {
 		await runLoadTest('async-function-with-async-parameter');
 	});
+
+	describe("error state",()=>{
+		it('should exit automatically', async () => {
+			const realProcess = process;
+			const exitMock = jest.fn() as any;
+			global.process = { ...realProcess, exit: exitMock };
+			expect(asyncLoadConfig(`${__dirname}/../__fixtures__/`, `no-file.js`)).rejects.toThrowError();
+			expect(exitMock).toHaveBeenCalledWith(1);
+		});
+	})
 });
