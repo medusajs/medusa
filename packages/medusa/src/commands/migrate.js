@@ -4,9 +4,13 @@ import Logger from "../loaders/logger"
 import databaseLoader from "../loaders/database"
 import configModuleLoader from "../loaders/config"
 import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
-
+import { asyncLoadConfig } from "../utils/async-load-config"
 const getDataSource = async (directory) => {
-  const configModule = configModuleLoader(directory)
+  // const configModule = configModuleLoader(directory)
+  const configModule = await configModuleLoader(directory, `medusa-config`)
+
+ 
+
   const featureFlagRouter = featureFlagLoader(configModule)
   const { coreMigrations } = getMigrations(directory, featureFlagRouter)
   const { migrations: moduleMigrations } = getModuleSharedResources(
