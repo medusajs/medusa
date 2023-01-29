@@ -1,7 +1,7 @@
 import { StagedJobServiceMock } from "@medusajs/medusa/src/services/__mocks__/staged-job"
 import Bull from "bullmq"
 import { MockManager } from "medusa-test-utils"
-import EventBusService from "../event-bus-redis"
+import RedisEventBusService from "../event-bus-redis"
 
 jest.genMockFromModule("bullmq")
 jest.mock("bullmq")
@@ -12,13 +12,19 @@ const loggerMock = {
   error: jest.fn().mockReturnValue(console.log),
 }
 
-describe("EventBusService", () => {
+describe("RedisEventBusService", () => {
   describe("constructor", () => {
     let eventBus
     beforeAll(() => {
       jest.resetAllMocks()
+    })
 
-      eventBus = new EventBusService(
+    afterAll(async () => {
+      await eventBus.stopEnqueuer()
+    })
+
+    it("creates bull queue", () => {
+      eventBus = new RedisEventBusService(
         {
           manager: MockManager,
           logger: loggerMock,
@@ -30,17 +36,32 @@ describe("EventBusService", () => {
           resources: "shared",
         }
       )
-    })
 
-    afterAll(async () => {
-      await eventBus.stopEnqueuer()
-    })
-
-    it("creates bull queue", () => {
       expect(Bull).toHaveBeenCalledTimes(2)
-      expect(Bull).toHaveBeenCalledWith("EventBusService:queue", {
+      expect(Bull).toHaveBeenCalledWith("RedisEventBusService:queue", {
         createClient: expect.any(Function),
       })
+    })
+
+    it("throws on improper module declaration", () => {
+      try {
+        eventBus = new RedisEventBusService(
+          {
+            manager: MockManager,
+            logger: loggerMock,
+          },
+          {
+            redisUrl: "test-url",
+          },
+          {
+            resources: "isolated",
+          }
+        )
+      } catch (error) {
+        expect(error.message).toEqual(
+          "At the moment this module can only be used with shared resources"
+        )
+      }
     })
   })
 
@@ -48,10 +69,10 @@ describe("EventBusService", () => {
     let eventBus
 
     describe("successfully adds job to queue", () => {
-      beforeAll(() => {
+      beforeEach(() => {
         jest.resetAllMocks()
 
-        eventBus = new EventBusService(
+        eventBus = new RedisEventBusService(
           {
             manager: MockManager,
             logger: loggerMock,
@@ -63,16 +84,16 @@ describe("EventBusService", () => {
             resources: "shared",
           }
         )
-
-        eventBus.queue_.add.mockImplementationOnce(() => "hi")
-
-        eventBus.emit("eventName", { hi: "1234" })
       })
+
       afterAll(async () => {
         await eventBus.stopEnqueuer()
       })
 
       it("calls queue.add", () => {
+        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+        eventBus.emit("eventName", { hi: "1234" })
+
         expect(eventBus.queue_.add).toHaveBeenCalled()
       })
     })
@@ -85,7 +106,7 @@ describe("EventBusService", () => {
       beforeAll(async () => {
         jest.resetAllMocks()
 
-        eventBus = new EventBusService(
+        eventBus = new RedisEventBusService(
           {
             manager: MockManager,
             stagedJobService: StagedJobServiceMock,
@@ -125,7 +146,7 @@ describe("EventBusService", () => {
       beforeAll(async () => {
         jest.resetAllMocks()
 
-        eventBus = new EventBusService({
+        eventBus = new RedisEventBusService({
           manager: MockManager,
           logger: loggerMock,
         })
