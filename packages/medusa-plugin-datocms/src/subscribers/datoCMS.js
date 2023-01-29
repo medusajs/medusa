@@ -23,9 +23,9 @@ class DatoCMSSubscriber {
       await this.datoCMSService_.deleteRegionInDatoCMS(data)
     })
 
-    // this.eventBus_.subscribe("product-variant.created", async (data) => {
-    //   await this.datoCMSService_.createProductVariantInDatoCMS(data)
-    // })
+    this.eventBus_.subscribe("product-variant.created", async (data) => {
+      await this.datoCMSService_.createProductVariantInDatoCMS(data, true)
+    })
 
     this.eventBus_.subscribe("product-variant.updated", async (data) => {
       await this.datoCMSService_.updateProductVariantInDatoCMS(data)

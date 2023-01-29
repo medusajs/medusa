@@ -124,7 +124,6 @@ class DatoCMSService extends BaseService {
     return { region, fields }
   }
 
-  // completed
   async createRegionInDatoCMS(data) {
     const model = await this.getModel("region")
     if (!model) {
@@ -145,7 +144,6 @@ class DatoCMSService extends BaseService {
     }
   }
 
-  // completed
   async updateRegionInDatoCMS(data) {
     const model = await this.getModel("region")
     if (!model) {
@@ -188,7 +186,6 @@ class DatoCMSService extends BaseService {
     }
   }
 
-  // completed
   async deleteRegionInDatoCMS(data) {
     const model = await this.getModel("region")
     if (!model) {
@@ -260,7 +257,6 @@ class DatoCMSService extends BaseService {
     return { product, fields, variants }
   }
 
-  // subscribe to events
   async createProductInDatoCMS(data) {
     const model = await this.getModel("product")
     if (!model) {
@@ -304,7 +300,6 @@ class DatoCMSService extends BaseService {
       "collection_id",
       "thumbnail",
     ]
-    console.log(data)
 
     const found = data.fields.find((f) => updateFields.includes(f))
     if (!found) {
@@ -350,6 +345,9 @@ class DatoCMSService extends BaseService {
         return
       }
       await this.datoCMS_.items.destroy(product.id)
+      for (const variant of product.variants) {
+        await this.datoCMS_.items.destroy(variant)
+      }
     } catch (error) {
       throw error
     }
@@ -371,7 +369,7 @@ class DatoCMSService extends BaseService {
     return { variant, fields }
   }
 
-  async createProductVariantInDatoCMS(data) {
+  async createProductVariantInDatoCMS(data, fromSubcribe = false) {
     const model = await this.getModel("product_variant")
     if (!model) {
       return
@@ -384,6 +382,18 @@ class DatoCMSService extends BaseService {
         item_type: { type: 'item_type', id: model.id },
         ...fields,
       })
+
+      if (fromSubcribe) {
+        const product = await this.findItemByMedusaId_(data.product_id, "product")
+        if (product) {
+          await this.datoCMS_.items.update(product.id, {
+            variants: [...product.variants, entry.id]
+          })
+          await this.datoCMS_.items.publish(product.id, { recursive: true })
+        } else {
+          await this.createProductInDatoCMS({ id: data.product_id })
+        }
+      } 
 
       return entry
     } catch (error) {
