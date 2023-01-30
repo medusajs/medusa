@@ -1915,9 +1915,10 @@ describe("/admin/products", () => {
         ],
       }
 
+      const variantId = "test-variant"
       const response = await api
         .post(
-          "/admin/products/test-product/variants/test-variant",
+          `/admin/products/test-product/variants/${variantId}`,
           data,
           adminHeaders
         )
@@ -1927,9 +1928,12 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product.variants[0].prices.length).toEqual(2)
+      const variant = response.data.product.variants.find(
+        (v) => v.id === variantId
+      )
+      expect(variant.prices.length).toEqual(2)
 
-      expect(response.data.product.variants[0].prices).toEqual(
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             amount: 8000,
@@ -1958,9 +1962,10 @@ describe("/admin/products", () => {
         ],
       }
 
+      const variantId = "test-variant_3"
       const response = await api
         .post(
-          "/admin/products/test-product1/variants/test-variant_3",
+          `/admin/products/test-product1/variants/${variantId}`,
           data,
           adminHeaders
         )
@@ -1970,11 +1975,13 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product.variants[0].prices.length).toEqual(
-        data.prices.length
+      const variant = response.data.product.variants.find(
+        (v) => v.id === variantId
       )
 
-      expect(response.data.product.variants[0].prices).toEqual(
+      expect(variant.prices.length).toEqual(data.prices.length)
+
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             amount: 8000,
