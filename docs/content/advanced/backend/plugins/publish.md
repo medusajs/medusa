@@ -101,7 +101,7 @@ This section explains how to publish your plugin to NPM.
 
 Before you publish a plugin, you must [create an account on NPM](https://www.npmjs.com/signup).
 
-### Prepare Plugin
+### Run Prepare Command
 
 Before you publish or update your plugin, make sure to run the `prepare` command [defined earlier](#packagejson-checklist):
 
