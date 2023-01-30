@@ -4368,7 +4368,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/event-bus-redis@*, @medusajs/event-bus-redis@workspace:packages/event-bus-redis":
+"@medusajs/event-bus-redis@workspace:packages/event-bus-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-redis@workspace:packages/event-bus-redis"
   dependencies:
@@ -19856,23 +19856,6 @@ __metadata:
     "@babel/cli": ^7.12.10
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
-    "@medusajs/medusa": "*"
-    babel-preset-medusa-package: "*"
-    faker: ^5.5.3
-    jest: ^26.6.3
-    medusa-interfaces: "*"
-    typeorm: ^0.2.31
-  languageName: unknown
-  linkType: soft
-
-"integration-tests-modules@workspace:integration-tests/modules":
-  version: 0.0.0-use.local
-  resolution: "integration-tests-modules@workspace:integration-tests/modules"
-  dependencies:
-    "@babel/cli": ^7.12.10
-    "@babel/core": ^7.12.10
-    "@babel/node": ^7.12.10
-    "@medusajs/event-bus-redis": "*"
     "@medusajs/medusa": "*"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3

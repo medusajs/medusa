@@ -1,5 +1,4 @@
-import { StagedJobServiceMock } from "@medusajs/medusa/src/services/__mocks__/staged-job"
-import Bull from "bullmq"
+import { Queue, Worker } from "bullmq"
 import { MockManager } from "medusa-test-utils"
 import RedisEventBusService from "../event-bus-redis"
 
@@ -19,11 +18,7 @@ describe("RedisEventBusService", () => {
       jest.resetAllMocks()
     })
 
-    afterAll(async () => {
-      await eventBus.stopEnqueuer()
-    })
-
-    it("creates bull queue", () => {
+    it("Creates a queue + worker", () => {
       eventBus = new RedisEventBusService(
         {
           manager: MockManager,
@@ -37,13 +32,24 @@ describe("RedisEventBusService", () => {
         }
       )
 
-      expect(Bull).toHaveBeenCalledTimes(2)
-      expect(Bull).toHaveBeenCalledWith("RedisEventBusService:queue", {
-        createClient: expect.any(Function),
+      expect(Queue).toHaveBeenCalledTimes(1)
+      expect(Queue).toHaveBeenCalledWith("events-queue", {
+        connection: expect.any(Object),
+        prefix: "RedisEventBusService",
       })
+
+      expect(Worker).toHaveBeenCalledTimes(1)
+      expect(Worker).toHaveBeenCalledWith(
+        "events-queue",
+        expect.any(Function),
+        {
+          connection: expect.any(Object),
+          prefix: "RedisEventBusService",
+        }
+      )
     })
 
-    it("throws on improper module declaration", () => {
+    it("Throws on isolated module declaration", () => {
       try {
         eventBus = new RedisEventBusService(
           {
@@ -68,7 +74,7 @@ describe("RedisEventBusService", () => {
   describe("emit", () => {
     let eventBus
 
-    describe("successfully adds job to queue", () => {
+    describe("Successfully emits events", () => {
       beforeEach(() => {
         jest.resetAllMocks()
 
@@ -86,105 +92,179 @@ describe("RedisEventBusService", () => {
         )
       })
 
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
-      })
-
-      it("calls queue.add", () => {
+      it("Adds job to queue with default options", () => {
         eventBus.queue_.add.mockImplementationOnce(() => "hi")
         eventBus.emit("eventName", { hi: "1234" })
 
-        expect(eventBus.queue_.add).toHaveBeenCalled()
+        expect(eventBus.queue_.add).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.add).toHaveBeenCalledWith(
+          "eventName",
+          { eventName: "eventName", data: { hi: "1234" } },
+          {
+            attempts: 1,
+            removeOnComplete: true,
+          }
+        )
+      })
+
+      it("Adds job to queue with custom options", () => {
+        eventBus.queue_.add.mockImplementationOnce(() => "hi")
+        eventBus.emit(
+          "eventName",
+          { hi: "1234" },
+          { attempts: 3, backoff: 5000, delay: 1000 }
+        )
+
+        expect(eventBus.queue_.add).toHaveBeenCalledTimes(1)
+        expect(eventBus.queue_.add).toHaveBeenCalledWith(
+          "eventName",
+          { eventName: "eventName", data: { hi: "1234" } },
+          {
+            attempts: 3,
+            backoff: 5000,
+            delay: 1000,
+            removeOnComplete: true,
+          }
+        )
       })
     })
   })
 
-  describe("worker", () => {
+  describe("worker_", () => {
     let eventBus
     let result
-    describe("successfully runs the worker", () => {
-      beforeAll(async () => {
+
+    describe("Successfully processes the jobs", () => {
+      beforeEach(async () => {
         jest.resetAllMocks()
 
         eventBus = new RedisEventBusService(
           {
             manager: MockManager,
-            stagedJobService: StagedJobServiceMock,
             logger: loggerMock,
           },
-          {}
+          {
+            redisUrl: "test-url",
+          },
+          {
+            resources: "shared",
+          }
         )
+      })
+
+      it("Processes a simple event with no options", async () => {
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
 
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
         })
-      })
 
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
-      })
-
-      it("calls logger", () => {
-        expect(loggerMock.info).toHaveBeenCalled()
+        expect(loggerMock.info).toHaveBeenCalledTimes(1)
         expect(loggerMock.info).toHaveBeenCalledWith(
           "Processing eventName which has 1 subscribers"
         )
-      })
 
-      it("calls staged job service", () => {
-        expect(StagedJobServiceMock.list).toHaveBeenCalled()
-      })
-
-      it("returns array with hi", async () => {
         expect(result).toEqual(["hi"])
       })
-    })
 
-    describe("continue if errors occur", () => {
-      let eventBus
-      beforeAll(async () => {
-        jest.resetAllMocks()
-
-        eventBus = new RedisEventBusService({
-          manager: MockManager,
-          logger: loggerMock,
-        })
-
+      it("Processes event with failing subscribers", async () => {
         eventBus.subscribe("eventName", () => Promise.resolve("hi"))
-        eventBus.subscribe("eventName", () => Promise.resolve("hi2"))
-        eventBus.subscribe("eventName", () => Promise.resolve("hi3"))
         eventBus.subscribe("eventName", () => Promise.reject("fail1"))
+        eventBus.subscribe("eventName", () => Promise.resolve("hi2"))
         eventBus.subscribe("eventName", () => Promise.reject("fail2"))
-        eventBus.subscribe("eventName", () => Promise.reject("fail3"))
 
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
           update: (data) => data,
-          opts: { attempts: 1 },
         })
-      })
 
-      afterAll(async () => {
-        await eventBus.stopEnqueuer()
-      })
+        expect(loggerMock.info).toHaveBeenCalledTimes(1)
+        expect(loggerMock.info).toHaveBeenCalledWith(
+          "Processing eventName which has 4 subscribers"
+        )
 
-      it("calls logger warn on rejections", () => {
-        expect(loggerMock.warn).toHaveBeenCalledTimes(4)
+        expect(loggerMock.warn).toHaveBeenCalledTimes(3)
         expect(loggerMock.warn).toHaveBeenCalledWith(
           "An error occurred while processing eventName: fail1"
         )
         expect(loggerMock.warn).toHaveBeenCalledWith(
           "An error occurred while processing eventName: fail2"
         )
-        expect(loggerMock.warn).toHaveBeenCalledWith(
-          "An error occurred while processing eventName: fail3"
-        )
-      })
 
-      it("calls logger warn from retry not kicking in", () => {
         expect(loggerMock.warn).toHaveBeenCalledWith(
           "One or more subscribers of eventName failed. Retrying is not configured. Use 'attempts' option when emitting events."
+        )
+
+        expect(result).toEqual(["hi", "fail1", "hi2", "fail2"])
+      })
+
+      it("Retries processing when subcribers fail, if configured - final attempt", async () => {
+        eventBus.subscribe("eventName", async () => Promise.resolve("hi"), {
+          subscriberId: "1",
+        })
+        eventBus.subscribe("eventName", async () => Promise.reject("fail1"), {
+          subscriberId: "2",
+        })
+
+        result = await eventBus.worker_({
+          data: {
+            eventName: "eventName",
+            data: {},
+            completedSubscriberIds: ["1"],
+          },
+          attemptsMade: 1,
+          update: (data) => data,
+          opts: { attempts: 2 },
+        })
+
+        expect(loggerMock.warn).toHaveBeenCalledTimes(1)
+        expect(loggerMock.warn).toHaveBeenCalledWith(
+          "An error occurred while processing eventName: fail1"
+        )
+
+        expect(loggerMock.info).toHaveBeenCalledTimes(2)
+        expect(loggerMock.info).toHaveBeenCalledWith(
+          "Final retry attempt for eventName"
+        )
+        expect(loggerMock.info).toHaveBeenCalledWith(
+          "Retrying eventName which has 2 subscribers (1 of them failed)"
+        )
+
+        expect(result).toEqual(["fail1"])
+      })
+
+      it("Retries processing when subcribers fail, if configured - nth attempt", async () => {
+        eventBus.subscribe("eventName", async () => Promise.resolve("hi"), {
+          subscriberId: "1",
+        })
+        eventBus.subscribe("eventName", async () => Promise.reject("fail1"), {
+          subscriberId: "2",
+        })
+
+        result = await eventBus
+          .worker_({
+            data: {
+              eventName: "eventName",
+              data: {},
+              completedSubscriberIds: ["1"],
+            },
+            attemptsMade: 1,
+            update: (data) => data,
+            opts: { attempts: 3 },
+          })
+          .catch((err) => void 0)
+
+        expect(loggerMock.warn).toHaveBeenCalledTimes(2)
+        expect(loggerMock.warn).toHaveBeenCalledWith(
+          "An error occurred while processing eventName: fail1"
+        )
+        expect(loggerMock.warn).toHaveBeenCalledWith(
+          "One or more subscribers of eventName failed. Retrying..."
+        )
+
+        expect(loggerMock.info).toHaveBeenCalledTimes(1)
+        expect(loggerMock.info).toHaveBeenCalledWith(
+          "Retrying eventName which has 2 subscribers (1 of them failed)"
         )
       })
     })

@@ -1,7 +1,8 @@
 import {
   AbstractEventBusModuleService,
   ConfigModule,
-  ConfigurableModuleDeclaration, Logger,
+  ConfigurableModuleDeclaration,
+  Logger,
   MODULE_RESOURCE_TYPE
 } from "@medusajs/medusa"
 import { Job, Queue, Worker } from "bullmq"
@@ -147,7 +148,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         subscriber.id && !completedSubscribers.includes(subscriber.id)
     )
 
-    const isRetry = job.attemptsMade > 1
+    const isRetry = job.attemptsMade >= 1
     const currentAttempt = job.attemptsMade + 1
 
     const isFinalAttempt = job?.opts?.attempts === currentAttempt
@@ -185,17 +186,18 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       })
     )
 
+    
     // If the number of completed subscribers is different from the number of subcribers to process in current attempt, some of them failed
     const didSubscribersFail =
-      completedSubscribersInCurrentAttempt.length !==
-      subscribersInCurrentAttempt.length
-
+    completedSubscribersInCurrentAttempt.length !==
+    subscribersInCurrentAttempt.length
+    
     const isRetriesConfigured = job?.opts?.attempts! > 1
-
+    
     // Therefore, if retrying is configured, we try again
     const shouldRetry =
-      didSubscribersFail && isRetriesConfigured && !isFinalAttempt
-
+    didSubscribersFail && isRetriesConfigured && !isFinalAttempt
+    
     if (shouldRetry) {
       const updatedCompletedSubscribers = [
         ...completedSubscribers,
