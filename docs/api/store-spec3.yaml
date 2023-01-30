@@ -3313,7 +3313,7 @@ paths:
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
             3 })
 
-            medusa.store.productTags.list()
+            medusa.productTags.list()
 
             .then(({ product_tags }) => {
               console.log(product_tags.length);
@@ -3463,7 +3463,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.store.productTypes.list()
+            medusa.productTypes.list()
 
             .then(({ product_types }) => {
               console.log(product_types.length);

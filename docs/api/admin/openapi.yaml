@@ -562,7 +562,7 @@ components:
         ```tsx
 
         <MedusaProvider
-          apiKey='{api_token}'
+          apiKey='api_token}'
           //...
         >
 
