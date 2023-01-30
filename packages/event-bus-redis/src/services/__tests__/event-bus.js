@@ -3,7 +3,9 @@ import { MockManager } from "medusa-test-utils"
 import RedisEventBusService from "../event-bus-redis"
 
 jest.genMockFromModule("bullmq")
+jest.genMockFromModule("ioredis")
 jest.mock("bullmq")
+jest.mock("ioredis")
 
 const loggerMock = {
   info: jest.fn().mockReturnValue(console.log),
@@ -12,8 +14,9 @@ const loggerMock = {
 }
 
 describe("RedisEventBusService", () => {
+  let eventBus
+
   describe("constructor", () => {
-    let eventBus
     beforeAll(() => {
       jest.resetAllMocks()
     })
@@ -72,8 +75,6 @@ describe("RedisEventBusService", () => {
   })
 
   describe("emit", () => {
-    let eventBus
-
     describe("Successfully emits events", () => {
       beforeEach(() => {
         jest.resetAllMocks()
@@ -131,7 +132,6 @@ describe("RedisEventBusService", () => {
   })
 
   describe("worker_", () => {
-    let eventBus
     let result
 
     describe("Successfully processes the jobs", () => {
