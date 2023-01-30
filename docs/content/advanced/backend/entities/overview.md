@@ -26,7 +26,7 @@ The `SoftDeletableEntity` class extends the `BaseEntity` class and adds another 
 
 ## metadata Attribute
 
-Most entities in Medusa have a `metadata` attribute. This attribute is an object that can be used to store custom data related to that entity. In the database, this attribute is stored as a [JSONB](https://www.postgresql.org/docs/current/datatype-json.html#JSON-CONTAINMENT) column. On retrieval, the attribute is parsed into an object.
+Most entities in Medusa have a `metadata` attribute. This attribute is an object that can be used to store custom data related to that entity. In the database, this attribute is stored as a [JSON Binary (JSONB)](https://www.postgresql.org/docs/current/datatype-json.html#JSON-CONTAINMENT) column. On retrieval, the attribute is parsed into an object.
 
 Some example use cases for the `metadata` attribute include:
 
