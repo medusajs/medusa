@@ -1,0 +1,1 @@
+{"version":3,"file":"spinner-promise.d.ts","sourceRoot":"","sources":["../src/utils/spinner-promise.ts"],"names":[],"mappings":"AAEA,KAAK,cAAc,GAAG;IACpB,OAAO,EAAE,MAAM,CAAA;IACf,cAAc,CAAC,EAAE,MAAM,CAAA;IACvB,YAAY,CAAC,EAAE,MAAM,CAAA;CACtB,CAAA;AAED,eAAO,MAAM,OAAO,sEAEyB,cAAc,eAa1D,CAAA"}
