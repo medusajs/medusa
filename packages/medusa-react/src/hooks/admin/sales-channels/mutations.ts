@@ -198,8 +198,7 @@ export const useAdminAddLocationToSalesChannel = (
  * @param id
  * @param options
  */
-export const useAdminRemoveLocationToSalesChannel = (
-  id: string,
+export const useAdminRemoveLocationFromSalesChannel = (
   options?: UseMutationOptions<
     Response<AdminSalesChannelsRes>,
     Error,
@@ -213,5 +212,5 @@ export const useAdminRemoveLocationToSalesChannel = (
   const queryClient = useQueryClient()
   return useMutation(({ id, payload }) => {
     return client.admin.salesChannels.removeLocation(id, payload)
-  }, buildOptions(queryClient, [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id), adminStockLocationsKeys.all], options))
+  }, buildOptions(queryClient, [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.details(), adminStockLocationsKeys.all], options))
 }
