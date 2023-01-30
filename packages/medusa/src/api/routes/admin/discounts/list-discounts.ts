@@ -39,6 +39,9 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - (query) limit=20 {number} The number of items in the response
  *   - (query) offset=0 {number} The offset of items in response
  *   - (query) expand {string} Comma separated list of relations to include in the results.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetDiscountsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

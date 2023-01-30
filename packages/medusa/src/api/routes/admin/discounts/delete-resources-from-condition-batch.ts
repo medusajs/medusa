@@ -24,6 +24,8 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq"
+ * x-codegen:
+ *   method: deleteConditionResourceBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

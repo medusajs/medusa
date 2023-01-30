@@ -20,6 +20,8 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostStockLocationsLocationReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

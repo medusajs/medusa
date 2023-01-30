@@ -4,8 +4,10 @@ import middlewares, {
   transformQuery,
   transformBody,
 } from "../../../middlewares"
+
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import deleteProductCategory from "./delete-product-category"
+import { validateProductsExist } from "../../../middlewares/validators/product-existence"
 
 import getProductCategory, {
   AdminGetProductCategoryParams,
@@ -25,9 +27,26 @@ import updateProductCategory, {
   AdminPostProductCategoriesCategoryParams,
 } from "./update-product-category"
 
+import addProductsBatch, {
+  AdminPostProductCategoriesCategoryProductsBatchReq,
+  AdminPostProductCategoriesCategoryProductsBatchParams,
+} from "./add-products-batch"
+
 const route = Router()
 
 export default (app) => {
+  const retrieveTransformQueryConfig = {
+    defaultFields: defaultProductCategoryFields,
+    defaultRelations: defaultAdminProductCategoryRelations,
+    allowedRelations: allowedAdminProductCategoryRelations,
+    isList: false,
+  }
+
+  const listTransformQueryConfig = {
+    ...retrieveTransformQueryConfig,
+    isList: true,
+  }
+
   app.use(
     "/product-categories",
     isFeatureFlagEnabled("product_categories"),
@@ -36,46 +55,48 @@ export default (app) => {
 
   route.post(
     "/",
-    transformQuery(AdminPostProductCategoriesParams, {
-      defaultFields: defaultProductCategoryFields,
-      defaultRelations: defaultAdminProductCategoryRelations,
-      isList: false,
-    }),
+    transformQuery(
+      AdminPostProductCategoriesParams,
+      retrieveTransformQueryConfig
+    ),
     transformBody(AdminPostProductCategoriesReq),
     middlewares.wrap(createProductCategory)
   )
 
   route.get(
     "/",
-    transformQuery(AdminGetProductCategoriesParams, {
-      defaultFields: defaultProductCategoryFields,
-      defaultRelations: defaultAdminProductCategoryRelations,
-      isList: true,
-    }),
+    transformQuery(AdminGetProductCategoriesParams, listTransformQueryConfig),
     middlewares.wrap(listProductCategories)
   )
 
   route.get(
     "/:id",
-    transformQuery(AdminGetProductCategoryParams, {
-      defaultFields: defaultProductCategoryFields,
-      isList: false,
-    }),
+    transformQuery(AdminGetProductCategoryParams, retrieveTransformQueryConfig),
     middlewares.wrap(getProductCategory)
   )
 
   route.post(
     "/:id",
-    transformQuery(AdminPostProductCategoriesCategoryParams, {
-      defaultFields: defaultProductCategoryFields,
-      defaultRelations: defaultAdminProductCategoryRelations,
-      isList: false,
-    }),
+    transformQuery(
+      AdminPostProductCategoriesCategoryParams,
+      retrieveTransformQueryConfig
+    ),
     transformBody(AdminPostProductCategoriesCategoryReq),
     middlewares.wrap(updateProductCategory)
   )
 
   route.delete("/:id", middlewares.wrap(deleteProductCategory))
+
+  route.post(
+    "/:id/products/batch",
+    transformQuery(
+      AdminPostProductCategoriesCategoryProductsBatchParams,
+      retrieveTransformQueryConfig
+    ),
+    transformBody(AdminPostProductCategoriesCategoryProductsBatchReq),
+    validateProductsExist((req) => req.body.product_ids),
+    middlewares.wrap(addProductsBatch)
+  )
 
   return app
 }
@@ -86,6 +107,11 @@ export * from "./list-product-categories"
 export * from "./create-product-category"
 
 export const defaultAdminProductCategoryRelations = [
+  "parent_category",
+  "category_children",
+]
+
+export const allowedAdminProductCategoryRelations = [
   "parent_category",
   "category_children",
 ]

@@ -288,4 +288,37 @@ describe("ProductCategoryService", () => {
       )
     })
   })
+
+  describe("addProducts", () => {
+    const productCategoryRepository = {
+      ...MockRepository(),
+      addProducts: jest.fn().mockImplementation((id, productIds) => {
+        return Promise.resolve()
+      }),
+    }
+
+    const productCategoryService = new ProductCategoryService({
+      manager: MockManager,
+      productCategoryRepository,
+      eventBusService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should add a list of product to a sales channel", async () => {
+      const result = await productCategoryService.addProducts(
+        IdMap.getId("product-category-id"),
+        [IdMap.getId("product-id")]
+      )
+
+      expect(result).toBeUndefined()
+      expect(productCategoryRepository.addProducts).toHaveBeenCalledTimes(1)
+      expect(productCategoryRepository.addProducts).toHaveBeenCalledWith(
+        IdMap.getId("product-category-id"),
+        [IdMap.getId("product-id")]
+      )
+    })
+  })
 })

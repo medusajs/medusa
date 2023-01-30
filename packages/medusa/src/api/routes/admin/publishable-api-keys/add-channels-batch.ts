@@ -19,6 +19,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostPublishableApiKeySalesChannelsBatchReq"
+ * x-codegen:
+ *   method: addSalesChannelsBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

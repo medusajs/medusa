@@ -19,9 +19,13 @@ import { EntityManager } from "typeorm"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount to create the dynamic code from."
- *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
- *   - (body) usage_limit=1 {number} amount of times the discount can be applied.
- *   - (body) metadata {object} An optional set of key-value paris to hold additional information.
+ * requestBody:
+ *  content:
+ *    application/json:
+ *      schema:
+ *        $ref: "#/components/schemas/AdminPostDiscountsDiscountDynamicCodesReq"
+ * x-codegen:
+ *   method: createDynamicCode
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -92,6 +96,23 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+/**
+ * @schema AdminPostDiscountsDiscountDynamicCodesReq
+ * type: object
+ * required:
+ *   - code
+ * properties:
+ *   code:
+ *     type: string
+ *     description: A unique code that will be used to redeem the Discount
+ *   usage_limit:
+ *     type: number
+ *     description: Maximum times the discount can be used
+ *     default: 1
+ *   metadata:
+ *     type: object
+ *     description: An optional set of key-value pairs to hold additional information.
+ */
 export class AdminPostDiscountsDiscountDynamicCodesReq {
   @IsString()
   @IsNotEmpty()

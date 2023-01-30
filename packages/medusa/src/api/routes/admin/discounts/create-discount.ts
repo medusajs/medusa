@@ -32,13 +32,16 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * description: "Creates a Discount with a given set of rules that define how the Discount behaves."
  * parameters:
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
- *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each customer.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the results.
+ *   - (query) fields {string} (Comma separated) Which fields should be retrieved in the results.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDiscountsReq"
+ * x-codegen:
+ *   method: create
+ *   queryParams: AdminPostDiscountsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -16,6 +16,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  *   - (path) variant_id=* {string} The ID of the Product Variant.
+ * x-codegen:
+ *   method: deleteVariant
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
