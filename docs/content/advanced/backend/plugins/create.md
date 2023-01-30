@@ -1,11 +1,11 @@
 ---
-description: 'Learn how to create a plugin in Medusa. This guide explains how to develop, configure, test, and publish the plugins.'
+description: 'Learn how to create a plugin in Medusa. This guide explains how to develop, configure, and test a plugin.'
 addHowToData: true
 ---
 
 # How to Create a Plugin
 
-In this document, you’ll learn how to create a plugin and publish it. If you’re interested to learn more about what plugins are and where to find available official and community plugins, check out the [overview document](overview.md).
+In this document, you’ll learn how to create a plugin and some tips for develoment. If you’re interested to learn more about what plugins are and where to find available official and community plugins, check out the [overview document](overview.md).
 
 ## Prerequisites
 
@@ -39,10 +39,6 @@ By convention, all plugin names start with `medusa` followed by a descriptive na
 
 ## Changes to package.json
 
-### Rename Project Name
-
-Update the `name` field in the `package.json` file to the name of your plugin. This should be the same name that you chose when running the `medusa new` command.
-
 ### Change Dependencies
 
 A basic Medusa server installed with the `medusa new` command has dependencies similar to this:
@@ -67,7 +63,7 @@ A basic Medusa server installed with the `medusa new` command has dependencies s
 
 For a plugin, some dependencies are not necessary. You can remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa server, but not for a plugin.
 
-Additionally, you remove `@medusajs/medusa-cli` as you don’t need to use the Medusa CLI while developing a plugin.
+Additionally, you can remove `@medusajs/medusa-cli` as you don’t need to use the Medusa CLI while developing a plugin.
 
 Once you’re done making these changes, re-run the install command to update your `node_modules` directory:
 
@@ -75,64 +71,26 @@ Once you’re done making these changes, re-run the install command to update yo
 npm install
 ```
 
-This section includes recommended changes to your `package.json`. You can skip any of these changes if you don’t find them necessary to your plugin.
-
 ### Recommended: Change scripts
+
+It's recommended to remove the `seed` and `start` scripts from your `package.json` as they aren't necessary for plugin development.
+
+Furthermore, it's recommended to change the `build` command and add a new `watch` command:
+
+```json title=package.json
+"scripts": {
+  "build": "babel src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\"",
+  "watch": "babel -w src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\""
+}
+```
+
+The change to the `build` command ensures that the built files are placed as explained in the [plugin structure section](#plugin-structure). The `watch` command makes the [testing of the plugin](#test-your-plugin) easier.
 
 :::caution
 
 If you don't make changes to the `build` and `watch` commands, please be aware of the [expected plugin structure](#plugin-structure).
 
 :::
-
-A basic Medusa installation comes with the following scripts:
-
-```json title=package.json
-"scripts": {
-  "seed": "medusa seed -f ./data/seed.json",
-  "build": "babel src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\"",
-  "start": "medusa develop"
-}
-```
-
-The `seed` and `start` scripts aren't necessary for plugin development so you can remove them.
-
-It’s also recommended to add the `watch` script that automatically compiles your files if they are changed:
-
-```json title=package.json
-"watch": "babel -w src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\""
-```
-
-This is helpful when testing the plugin.
-
-:::note
-
-Testing the plugin is covered in a [later section](#test-your-plugin).
-
-:::
-
-Another recommended script is the `prepare` script that builds your files under a “production” environment:
-
-```json title=package.json
-"prepare": "cross-env NODE_ENV=production npm run build"
-```
-
-You would typically run this script before publishing your plugin.
-
-This script requires installing the package `cross-env` as a development dependency:
-
-```bash npm2yarn
-npm install --save-dev cross-env
-```
-
-### Recommended: Change Basic Info
-
-`package.json` holds information that further describes the package or the author that created the package. It is recommended to make the following changes:
-
-- `description`: Change this to a sentence that describes what your plugin does.
-- `author`: Your name and email.
-- `repository`: The repository that holds your plugin’s codebase.
-- `keywords`: This should hold the keywords that are related to your plugin. It’s recommended that all plugins use the keywords `medusa-plugin` or `medusa`.
 
 ---
 
@@ -355,116 +313,11 @@ It is safe to ignore any `cross-env: command not found` error you may receive.
 
 ---
 
-## NPM Ignore File
-
-Not all files that you use while developing your plugin are necessary to be published.
-
-For example, the files you add in the `src` directory are compiled to the root of the plugin directory before publishing. Then, when a developer installs your plugin, they’ll just be using the files in the root.
-
-So, you can ignore files and directories like `src` from the final published NPM package.
-
-To do that, create the file `.npmignore` with the following content:
-
-```bash title=.npmignore
-/lib
-node_modules
-.DS_store
-.env*
-/*.js
-!index.js
-yarn.lock
-src
-.gitignore
-.eslintrc
-.babelrc
-.prettierrc
-
-#These are files that are included in a
-#Medusa project and can be removed from a
-#plugin project
-medusa-config.js
-Dockerfile
-medusa-db.sql
-develop.sh
-```
-
----
-
 ## Publish Plugin
 
-Once you’re done developing your plugin you can publish the package on NPM’s registry so that other developers can benefit from it and use it.
+Once you're done with the development of the plugin, you can publish it to NPM so that other Medusa developers and users can use it.
 
-Before you publish a plugin, you must [create an account on NPM](https://www.npmjs.com/signup).
-
-### Prepare Plugin
-
-Before you publish or update your plugin, make sure to run the `prepare` command [defined earlier](#recommended-change-scripts):
-
-```bash npm2yarn
-npm run prepare
-```
-
-### Login
-
-In your terminal, log in with your NPM account:
-
-```bash
-npm login
-```
-
-You’ll be asked to enter your NPM email and password.
-
-### Publish Plugin Package
-
-Once you’re logged in, you can publish your package with the following command:
-
-```bash
-npm publish
-```
-
-Your package is then published on NPM and everyone can use it and install it.
-
-### Update Plugin
-
-To update your plugin at a later point, you can run the following command to change the NPM version:
-
-```bash
-npm version <type>
-```
-
-Where `<type>` indicates the type of version update you’re publishing. For example, it can be `major` or `minor`.
-
-You can see the [full list of types in NPM’s documentation](https://docs.npmjs.com/cli/v8/commands/npm-version).
-
-Then, publish the new update:
-
-```bash
-npm publish
-```
-
----
-
-## Add Plugin to Medusa’s Repository
-
-All officially-supported plugins are available in the [`packages` directory of the Medusa GitHub repository](https://github.com/medusajs/medusa/tree/master/packages).
-
-If you’re interested in adding your plugin, you need to create a new pull request (PR) where you add your plugin inside the `packages` directory. Our team will then review your plugin, and if it’s approved the PR will be merged and your plugin will be available on Medusa’s repository.
-
-:::note
-
-Before contributing to the Medusa repository, please check out the [contribution guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
-
-:::
-
----
-
-## Install a Plugin
-
-To install any published plugin, you can run the following command on any Medusa server project:
-
-```bash npm2yarn
-npm install medusa-plugin-custom
-```
+Please refer to [this guide on required steps to publish a plugin](./publish.md).
 
 ---
 

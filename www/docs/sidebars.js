@@ -401,6 +401,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "advanced/backend/plugins/publish",
+          label: "Publish a Plugin"
+        },
+        {
+          type: "doc",
           id: "advanced/backend/migrations/index",
           label: "Create a Migration"
         },
