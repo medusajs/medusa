@@ -1,6 +1,5 @@
-import { asClass, asFunction, asValue } from "awilix"
+import { asFunction, asValue } from "awilix"
 import { trackInstallation } from "medusa-telemetry"
-import { EntitySchema } from "typeorm"
 import {
   ClassConstructor,
   ConfigModule,
@@ -13,7 +12,7 @@ import {
   MODULE_SCOPE,
 } from "../types/global"
 import { ModulesHelper } from "../utils/module-helper"
-
+import { featureFlagRouter } from "./feature-flags"
 export const moduleHelper = new ModulesHelper()
 
 const registerModule = async (
@@ -87,6 +86,8 @@ const registerModule = async (
       )
     }).singleton(),
   })
+
+  featureFlagRouter.setFlag(resolution.definition.key, true)
 
   const moduleLoaders = loadedModule?.loaders || []
   try {

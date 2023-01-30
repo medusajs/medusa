@@ -5,6 +5,7 @@ import {
   IStockLocationService,
   TransactionBaseService,
 } from "../interfaces"
+import { inventoryModuleDefinition } from "../loaders/module-definitions/definitions"
 import { LineItem, Product, ProductVariant } from "../models"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import {
@@ -13,6 +14,7 @@ import {
   ReserveQuantityContext,
 } from "../types/inventory"
 import { PricedProduct, PricedVariant } from "../types/pricing"
+import { FlagRouter } from "../utils/flag-router"
 import {
   CacheService,
   ProductVariantService,
@@ -27,6 +29,7 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   stockLocationService: IStockLocationService
   inventoryService: IInventoryService
+  featureFlagRouter: FlagRouter
 }
 
 class ProductVariantInventoryService extends TransactionBaseService {
@@ -39,6 +42,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly stockLocationService_: IStockLocationService
   protected readonly inventoryService_: IInventoryService
   protected readonly cacheService_: CacheService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     manager,
@@ -47,6 +51,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     salesChannelInventoryService,
     productVariantService,
     inventoryService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -57,6 +62,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.stockLocationService_ = stockLocationService
     this.productVariantService_ = productVariantService
     this.inventoryService_ = inventoryService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -93,7 +99,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return true
     }
 
-    if (!this.inventoryService_) {
+    if (
+      !this.featureFlagRouter_.isFeatureEnabled(inventoryModuleDefinition.key)
+    ) {
       return productVariant.inventory_quantity >= quantity
     }
 

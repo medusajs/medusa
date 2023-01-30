@@ -30,6 +30,7 @@ import {
   UpdateProductVariantInput,
 } from "../types/product-variant"
 import { buildQuery, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
