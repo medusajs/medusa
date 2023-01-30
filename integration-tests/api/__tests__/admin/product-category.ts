@@ -33,7 +33,6 @@ describe("/admin/product-categories", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
-      verbose: true
     })
     dbConnection = connection
     medusaProcess = process

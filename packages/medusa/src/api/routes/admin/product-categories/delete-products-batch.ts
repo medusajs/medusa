@@ -75,7 +75,7 @@ export default async (req: Request, res: Response) => {
   const productCategoryService: ProductCategoryService = req.scope.resolve(
     "productCategoryService"
   )
-  console.log("route.start")
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (manager) => {
     return await productCategoryService.withTransaction(manager).removeProducts(
@@ -83,7 +83,7 @@ export default async (req: Request, res: Response) => {
       validatedBody.product_ids.map((p) => p.id)
     )
   })
-  console.log("route.fetching")
+
   const productCategory = await productCategoryService.retrieve(
     id,
     req.retrieveConfig

@@ -249,7 +249,7 @@ class ProductCategoryService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const productCategoryRepository: ProductCategoryRepository =
         manager.getCustomRepository(this.productCategoryRepo_)
-      console.log("service.removeProducts")
+
       await productCategoryRepository.removeProducts(
         productCategoryId,
         productIds

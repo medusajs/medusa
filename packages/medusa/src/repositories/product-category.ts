@@ -108,7 +108,6 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
     productCategoryId: string,
     productIds: string[]
   ): Promise<DeleteResult> {
-    console.log("repository.removeProducts")
     return await this.createQueryBuilder()
       .delete()
       .from(ProductCategory.productCategoryProductJoinTable)
