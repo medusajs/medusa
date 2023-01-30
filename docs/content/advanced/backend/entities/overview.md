@@ -24,6 +24,47 @@ The `SoftDeletableEntity` class extends the `BaseEntity` class and adds another 
 
 ---
 
+## metadata Attribute
+
+Most entities in Medusa have a `metadata` attribute. This attribute is an object that can be used to store custom data related to that entity. In the database, this attribute is stored as a [JSON Binary (JSONB)](https://www.postgresql.org/docs/current/datatype-json.html#JSON-CONTAINMENT) column. On retrieval, the attribute is parsed into an object.
+
+Some example use cases for the `metadata` attribute include:
+
+- Store an external ID of an entity related to a third-party integartion.
+- Store product customization such as personalization options.
+
+### Add and Update Metadata
+
+You can add or update metadata entities either through the REST APIs or through create and update methods in the entity's respective service.
+
+In the [admin REST APIs](/api/admin), you'll find that in create or update requests of some entities you can also set the `metadata`.
+
+In services, there are typically `create` or `update` methods that allow you to set or update the metadata.
+
+If you want to add a property to the `metadata` object or update a property in the `metadata` object, you can pass the `metadata` object with the properties you want to add or update in it. For example:
+
+```json
+{
+  // other data
+  "metadata": {
+    "is_b2b": true
+  }
+}
+```
+
+If you want to remove a property from the `metadata` object, you can pass the `metadata` object with the property you want to delete. The property should have an empty string value. For example:
+
+```json
+{
+  // other data
+  "metadata": {
+    "is_b2b": "" // this deletes the `is_b2b` property from `metadata`
+  }
+}
+```
+
+---
+
 ## See Also
 
 - [Create an entity](./index.md)
