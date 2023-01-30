@@ -1,6 +1,7 @@
 import resolveCwd from "resolve-cwd"
 
 import { ConfigModule, ModuleResolution } from "../../types/global"
+import { featureFlagRouter } from "../feature-flags"
 import MODULE_DEFINITIONS from "./definitions"
 
 export default ({ modules }: ConfigModule) => {
@@ -22,6 +23,9 @@ export default ({ modules }: ConfigModule) => {
           definition,
           options: {},
         }
+
+        featureFlagRouter[definition.key] = true
+
         continue
       }
     }
@@ -55,6 +59,8 @@ export default ({ modules }: ConfigModule) => {
           ? moduleConfiguration.options ?? {}
           : {},
     }
+
+    featureFlagRouter[definition.key] = true
   }
 
   return moduleResolutions
