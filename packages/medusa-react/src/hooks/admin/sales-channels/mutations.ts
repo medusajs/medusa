@@ -1,6 +1,5 @@
 import {
   AdminDeleteSalesChannelsChannelProductsBatchReq,
-  AdminDeleteSalesChannelsChannelStockLocationsReq,
   AdminPostSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsChannelStockLocationsReq,
   AdminPostSalesChannelsReq,
@@ -175,29 +174,20 @@ export const useAdminAddProductsToSalesChannel = (
  * @param options
  */
 export const useAdminAddLocationToSalesChannel = (
-  id: string,
   options?: UseMutationOptions<
     Response<AdminSalesChannelsRes>,
     Error,
-    AdminPostSalesChannelsChannelStockLocationsReq
+    {
+      id: string
+      payload: AdminPostSalesChannelsChannelStockLocationsReq
+    }
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminPostSalesChannelsChannelStockLocationsReq) => {
-      return client.admin.salesChannels.addLocation(id, payload)
-    },
-    buildOptions(
-      queryClient,
-      [
-        adminSalesChannelsKeys.lists(),
-        adminSalesChannelsKeys.detail(id),
-        adminStockLocationsKeys.all,
-      ],
-      options
-    )
-  )
+  return useMutation(({ id, payload }) => {
+    return client.admin.salesChannels.addLocation(id, payload)
+  }, buildOptions(queryClient, [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.details(), adminStockLocationsKeys.all], options))
 }
 
 /**
@@ -213,23 +203,15 @@ export const useAdminRemoveLocationToSalesChannel = (
   options?: UseMutationOptions<
     Response<AdminSalesChannelsRes>,
     Error,
-    AdminDeleteSalesChannelsChannelStockLocationsReq
+    {
+      id: string
+      payload: AdminPostSalesChannelsChannelStockLocationsReq
+    }
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(
-    (payload: AdminDeleteSalesChannelsChannelStockLocationsReq) => {
-      return client.admin.salesChannels.removeLocation(id, payload)
-    },
-    buildOptions(
-      queryClient,
-      [
-        adminSalesChannelsKeys.lists(),
-        adminSalesChannelsKeys.detail(id),
-        adminStockLocationsKeys.all,
-      ],
-      options
-    )
-  )
+  return useMutation(({ id, payload }) => {
+    return client.admin.salesChannels.removeLocation(id, payload)
+  }, buildOptions(queryClient, [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id), adminStockLocationsKeys.all], options))
 }
