@@ -32,6 +32,11 @@ import addProductsBatch, {
   AdminPostProductCategoriesCategoryProductsBatchParams,
 } from "./add-products-batch"
 
+import deleteProductsBatch, {
+  AdminDeleteProductCategoriesCategoryProductsBatchReq,
+  AdminDeleteProductCategoriesCategoryProductsBatchParams,
+} from "./delete-products-batch"
+
 const route = Router()
 
 export default (app) => {
@@ -96,6 +101,17 @@ export default (app) => {
     transformBody(AdminPostProductCategoriesCategoryProductsBatchReq),
     validateProductsExist((req) => req.body.product_ids),
     middlewares.wrap(addProductsBatch)
+  )
+
+  route.delete(
+    "/:id/products/batch",
+    transformQuery(
+      AdminDeleteProductCategoriesCategoryProductsBatchParams,
+      retrieveTransformQueryConfig
+    ),
+    transformBody(AdminDeleteProductCategoriesCategoryProductsBatchReq),
+    validateProductsExist((req) => req.body.product_ids),
+    middlewares.wrap(deleteProductsBatch)
   )
 
   return app

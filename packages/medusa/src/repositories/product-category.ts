@@ -4,6 +4,8 @@ import {
   Brackets,
   ILike,
   getConnection,
+  DeleteResult,
+  In,
 } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, Selector, QuerySelector } from "../types/common"
@@ -99,6 +101,21 @@ export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
         }))
       )
       .orIgnore()
+      .execute()
+  }
+
+  async removeProducts(
+    productCategoryId: string,
+    productIds: string[]
+  ): Promise<DeleteResult> {
+    console.log("repository.removeProducts")
+    return await this.createQueryBuilder()
+      .delete()
+      .from(ProductCategory.productCategoryProductJoinTable)
+      .where({
+        product_category_id: productCategoryId,
+        product_id: In(productIds),
+      })
       .execute()
   }
 }
