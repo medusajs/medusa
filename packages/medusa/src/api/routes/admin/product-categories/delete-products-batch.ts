@@ -19,12 +19,9 @@ import { FindParams } from "../../../../types/common"
  *   - (query) fields {string} (Comma separated) Category fields to be retrieved in the response.
  * requestBody:
  *   content:
- *       application/json:
- *         schema:
- *           type: object
- *           properties:
- *             product_category:
- *               $ref: "#/components/schemas/ProductCategory"
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/AdminDeleteProductCategoriesCategoryProductsBatchReq"
  * x-codegen:
  *   method: removeProducts
  * x-codeSamples:
@@ -52,7 +49,10 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminProductCategoriesRes"
+ *           type: object
+ *           properties:
+ *             product_category:
+ *               $ref: "#/components/schemas/ProductCategory"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
