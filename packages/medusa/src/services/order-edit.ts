@@ -26,6 +26,7 @@ import {
   TaxProviderService,
   TotalsService,
 } from "./index"
+import { pick } from "lodash"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -395,11 +396,11 @@ export default class OrderEditService extends TransactionBaseService {
         )
       }
 
-      const lineItem = await this.lineItemService_
-        .withTransaction(manager)
-        .retrieve(itemId, {
-          select: ["id", "order_edit_id", "original_item_id"],
-        })
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
+      const lineItem = await lineItemServiceTx.retrieve(itemId, {
+        select: ["id", "order_edit_id", "original_item_id"],
+      })
 
       if (lineItem.order_edit_id !== orderEditId) {
         throw new MedusaError(
@@ -432,11 +433,9 @@ export default class OrderEditService extends TransactionBaseService {
         })
       }
 
-      await this.lineItemService_
-        .withTransaction(manager)
-        .update(change.line_item_id!, {
-          quantity: data.quantity,
-        })
+      await lineItemServiceTx.update(change.line_item_id!, {
+        quantity: data.quantity,
+      })
 
       await this.refreshAdjustments(orderEditId)
     })
@@ -580,6 +579,11 @@ export default class OrderEditService extends TransactionBaseService {
     orderEdit.tax_total = computedOrder.tax_total
     orderEdit.total = computedOrder.total
     orderEdit.difference_due = computedOrder.total - order.total
+
+    // throw new MedusaError(
+    //   MedusaError.Types.INVALID_DATA,
+    //   JSON.stringify(pick(orderEdit, ["total", "discount_total"]))
+    // )
 
     return orderEdit
   }
