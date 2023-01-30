@@ -15,6 +15,7 @@ import ErrorPageContent from '@theme/ErrorPageContent';
 import styles from './styles.module.css';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import {useLocation} from '@docusaurus/router';
+import StructuredDataSearchbox from '../StructuredData/Searchbox';
 
 export default function Layout(props) {
   const {
@@ -49,12 +50,11 @@ export default function Layout(props) {
     }
   }, [isBrowser, location.pathname]);
 
-
   useKeyboardNavigation();
   return (
     <LayoutProvider>
       <PageMetadata title={title} description={description} />
-
+      {isBrowser && location.pathname === '/' && <StructuredDataSearchbox />}
       <SkipToContent />
 
       <Navbar />

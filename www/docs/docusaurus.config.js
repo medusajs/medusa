@@ -210,7 +210,7 @@ const config = {
             [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
           ],
           showLastUpdateTime: true,
-          breadcrumbs: false,
+          // breadcrumbs: false,
           async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
             const sidebarItems = await defaultSidebarItemsGenerator(args);
             return reverseSidebar(sidebarItems);

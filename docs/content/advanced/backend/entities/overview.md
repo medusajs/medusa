@@ -1,3 +1,7 @@
+---
+description: 'Learn what entities are in the Medusa server. There are entities in the Medusa server, and developers can create custom entities.'
+---
+
 # Entities
 
 In this document, you'll learn what Entities are in Medusa.
