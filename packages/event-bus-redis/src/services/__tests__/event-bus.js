@@ -157,6 +157,7 @@ describe("RedisEventBusService", () => {
 
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
+          opts: { attempts: 1 },
         })
 
         expect(loggerMock.info).toHaveBeenCalledTimes(1)
@@ -176,6 +177,7 @@ describe("RedisEventBusService", () => {
         result = await eventBus.worker_({
           data: { eventName: "eventName", data: {} },
           update: (data) => data,
+          opts: { attempts: 1 },
         })
 
         expect(loggerMock.info).toHaveBeenCalledTimes(1)
@@ -206,16 +208,18 @@ describe("RedisEventBusService", () => {
           subscriberId: "2",
         })
 
-        result = await eventBus.worker_({
-          data: {
-            eventName: "eventName",
-            data: {},
-            completedSubscriberIds: ["1"],
-          },
-          attemptsMade: 1,
-          update: (data) => data,
-          opts: { attempts: 2 },
-        })
+        result = await eventBus
+          .worker_({
+            data: {
+              eventName: "eventName",
+              data: {},
+              completedSubscriberIds: ["1"],
+            },
+            attemptsMade: 2,
+            update: (data) => data,
+            opts: { attempts: 2 },
+          })
+          .catch((error) => void 0)
 
         expect(loggerMock.warn).toHaveBeenCalledTimes(1)
         expect(loggerMock.warn).toHaveBeenCalledWith(
@@ -229,11 +233,9 @@ describe("RedisEventBusService", () => {
         expect(loggerMock.info).toHaveBeenCalledWith(
           "Retrying eventName which has 2 subscribers (1 of them failed)"
         )
-
-        expect(result).toEqual(["fail1"])
       })
 
-      it("Retries processing when subcribers fail, if configured - nth attempt", async () => {
+      it("Retries processing when subcribers fail, if configured", async () => {
         eventBus.subscribe("eventName", async () => Promise.resolve("hi"), {
           subscriberId: "1",
         })
@@ -248,7 +250,7 @@ describe("RedisEventBusService", () => {
               data: {},
               completedSubscriberIds: ["1"],
             },
-            attemptsMade: 1,
+            attemptsMade: 2,
             update: (data) => data,
             opts: { attempts: 3 },
           })

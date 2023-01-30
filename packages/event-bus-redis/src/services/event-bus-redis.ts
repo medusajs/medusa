@@ -148,10 +148,11 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         subscriber.id && !completedSubscribers.includes(subscriber.id)
     )
 
-    const isRetry = job.attemptsMade >= 1
-    const currentAttempt = job.attemptsMade + 1
+    const currentAttempt = job.attemptsMade
+    const isRetry = currentAttempt > 1
+    const configuredAttempts = job.opts.attempts
 
-    const isFinalAttempt = job?.opts?.attempts === currentAttempt
+    const isFinalAttempt =  currentAttempt === configuredAttempts
 
     if (isRetry) {
       if (isFinalAttempt) {
@@ -171,7 +172,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
-        return subscriber(data, eventName)
+        return await subscriber(data, eventName)
           .then((data) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)
@@ -192,7 +193,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     completedSubscribersInCurrentAttempt.length !==
     subscribersInCurrentAttempt.length
     
-    const isRetriesConfigured = job?.opts?.attempts! > 1
+    const isRetriesConfigured = configuredAttempts! > 1
     
     // Therefore, if retrying is configured, we try again
     const shouldRetry =
