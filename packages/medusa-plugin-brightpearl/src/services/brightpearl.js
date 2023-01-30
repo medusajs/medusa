@@ -219,7 +219,9 @@ class BrightpearlService extends BaseService {
       }
 
       const sku = brightpearlProduct.identity.sku
-      if (!sku) return
+      if (!sku) {
+        return
+      }
 
       const variant = await this.productVariantService_
         .retrieveBySKU(sku)
@@ -492,6 +494,7 @@ class BrightpearlService extends BaseService {
         "billing_address",
         "shipping_methods",
         "payments",
+        "sales_channel",
       ],
     })
 
@@ -512,7 +515,10 @@ class BrightpearlService extends BaseService {
       },
       ref: fromOrder.display_id,
       externalRef: fromOrder.id,
-      channelId: this.options.channel_id || `1`,
+      channelId:
+        fromOrder.sales_channel?.metadata?.bp_id ||
+        this.options.channel_id ||
+        `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId: this.options.default_status_id || `3`,
       customer: {
@@ -542,24 +548,23 @@ class BrightpearlService extends BaseService {
       rows: await this.getBrightpearlRows(fromOrder),
     }
 
-    return client.orders
-      .create(order)
-      .then(async (salesOrderId) => {
-        const order = await client.orders.retrieve(salesOrderId)
-        await client.warehouses
-          .createReservation(order, this.options.warehouse)
-          .catch((err) => {
-            console.log("Failed to allocate for order:", salesOrderId)
-          })
-        return salesOrderId
+    // .then(async (salesOrderId) => {
+    //   const order = await client.orders.retrieve(salesOrderId)
+    //   await client.warehouses
+    //     .createReservation(order, this.options.warehouse)
+    //     .catch((err) => {
+    //       console.log("Failed to allocate for order:", salesOrderId)
+    //     })
+    //   return salesOrderId
+    // })
+
+    return client.orders.create(order).then(async (salesOrderId) => {
+      return await this.orderService_.update(fromOrder.id, {
+        metadata: {
+          brightpearl_sales_order_id: salesOrderId,
+        },
       })
-      .then((salesOrderId) => {
-        return this.orderService_.update(fromOrder.id, {
-          metadata: {
-            brightpearl_sales_order_id: salesOrderId,
-          },
-        })
-      })
+    })
   }
 
   async createSwapPayment(fromSwapId) {

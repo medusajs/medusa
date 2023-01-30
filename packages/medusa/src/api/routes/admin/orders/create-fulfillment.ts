@@ -126,7 +126,7 @@ export default async (req, res) => {
       pvInventoryService.withTransaction(transactionManager)
 
     if (validated.location_id) {
-      await updateInventoryAndReservations(
+      await updateInventoryAndReservationsOnFulfillmentCreation(
         fulfillments.filter((f) => !existingFulfillmentMap[f.id]),
         {
           inventoryService: pvInventoryServiceTx,
@@ -144,7 +144,7 @@ export default async (req, res) => {
   res.json({ order })
 }
 
-const updateInventoryAndReservations = async (
+export const updateInventoryAndReservationsOnFulfillmentCreation = async (
   fulfillments: Fulfillment[],
   context: {
     inventoryService: ProductVariantInventoryService
