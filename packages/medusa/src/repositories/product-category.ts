@@ -124,6 +124,4 @@ export const ProductCategoryRepository = dataSource
     },
   })
 
-
-
-
+export default ProductCategoryRepository
