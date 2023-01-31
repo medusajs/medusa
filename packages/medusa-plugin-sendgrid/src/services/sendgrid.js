@@ -32,6 +32,7 @@ class SendGridService extends NotificationService {
       fulfillmentProviderService,
       totalsService,
       productVariantService,
+      giftCardService,
     },
     options
   ) {
@@ -50,6 +51,7 @@ class SendGridService extends NotificationService {
     this.fulfillmentService_ = fulfillmentService
     this.totalsService_ = totalsService
     this.productVariantService_ = productVariantService
+    this.giftCardService_ = giftCardService
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -580,20 +582,16 @@ class SendGridService extends NotificationService {
     const giftCard = await this.giftCardService_.retrieve(id, {
       relations: ["region", "order"],
     })
-
-    if (!giftCard.order) {
-      return
-    }
-
     const taxRate = giftCard.region.tax_rate / 100
-
-    const locale = await this.extractLocale(order)
+    const locale = giftCard.order ? await this.extractLocale(order) : null;
+    const email = giftCard.order ? giftCard.order.email : giftCard.metadata.email;
 
     return {
       ...giftCard,
       locale,
-      email: giftCard.order.email,
-      display_value: giftCard.value * (1 + taxRate),
+      email,
+      display_value: `${this.humanPrice_((giftCard.value * 1+ taxRate), giftCard.region.currency_code)} ${giftCard.region.currency_code}`,
+      message: giftCard.metadata?.message || giftCard.metadata?.personal_message
     }
   }
 

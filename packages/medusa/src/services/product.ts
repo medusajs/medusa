@@ -13,9 +13,11 @@ import {
   ProductType,
   ProductVariant,
   SalesChannel,
+  ProductCategory,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import { ProductRepository } from "../repositories/product"
+import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
@@ -39,6 +41,7 @@ type InjectedDependencies = {
   productTypeRepository: typeof ProductTypeRepository
   productTagRepository: typeof ProductTagRepository
   imageRepository: typeof ImageRepository
+  productCategoryRepository: typeof ProductCategoryRepository
   productVariantService: ProductVariantService
   searchService: SearchService
   eventBusService: EventBusService
@@ -55,6 +58,8 @@ class ProductService extends TransactionBaseService {
   protected readonly productTypeRepository_: typeof ProductTypeRepository
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
+  // eslint-disable-next-line max-len
+  protected readonly productCategoryRepository_: typeof ProductCategoryRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
@@ -76,6 +81,7 @@ class ProductService extends TransactionBaseService {
     productVariantService,
     productTypeRepository,
     productTagRepository,
+    productCategoryRepository,
     imageRepository,
     searchService,
     featureFlagRouter,
@@ -89,6 +95,7 @@ class ProductService extends TransactionBaseService {
     this.productVariantRepository_ = productVariantRepository
     this.eventBus_ = eventBusService
     this.productVariantService_ = productVariantService
+    this.productCategoryRepository_ = productCategoryRepository
     this.productTypeRepository_ = productTypeRepository
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
@@ -378,6 +385,7 @@ class ProductService extends TransactionBaseService {
         type,
         images,
         sales_channels: salesChannels,
+        categories: categories,
         ...rest
       } = productObject
 
@@ -415,6 +423,17 @@ class ProductService extends TransactionBaseService {
               (id) => ({ id } as SalesChannel)
             )
           }
+        }
+      }
+
+      if (isDefined(categories)) {
+        product.categories = []
+
+        if (categories?.length) {
+          const categoryIds = categories.map((c) => c.id)
+          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
+
+          product.categories = categoryRecords
         }
       }
 
@@ -496,6 +515,7 @@ class ProductService extends TransactionBaseService {
         tags,
         type,
         sales_channels: salesChannels,
+        categories: categories,
         ...rest
       } = update
 
@@ -517,6 +537,17 @@ class ProductService extends TransactionBaseService {
 
       if (tags) {
         product.tags = await productTagRepo.upsertTags(tags)
+      }
+
+      if (isDefined(categories)) {
+        product.categories = []
+
+        if (categories?.length) {
+          const categoryIds = categories.map((c) => c.id)
+          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
+
+          product.categories = categoryRecords
+        }
       }
 
       if (
