@@ -1,5 +1,5 @@
 import path from "path"
-import { Product } from "@medusajs/medusa"
+import { Product, ProductCategory } from "@medusajs/medusa"
 import { In } from "typeorm"
 
 import startServerWithEnvironment from "../../../helpers/start-server-with-environment"
@@ -32,7 +32,7 @@ describe("/admin/product-categories", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true }
+      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
     })
     dbConnection = connection
     medusaProcess = process
@@ -577,6 +577,133 @@ describe("/admin/product-categories", () => {
         `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
         payload,
         adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data).toEqual({
+        message: "Relations [products] are not valid",
+        type: "invalid_data",
+      })
+    })
+  })
+
+  describe("DELETE /admin/product-categories/:id/products/batch", () => {
+    let testProduct1, testProduct2
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      testProduct1 = await simpleProductFactory(dbConnection, {
+        id: "test-product-1",
+        title: "test product 1",
+      })
+
+      testProduct2 = await simpleProductFactory(dbConnection, {
+        id: "test-product-2",
+        title: "test product 2",
+      })
+
+      productCategory = await simpleProductCategoryFactory(dbConnection, {
+        id: "test-category",
+        name: "test category",
+        products: [testProduct1, testProduct2]
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should remove products from a product category", async () => {
+      const api = useApi()
+
+      const payload = {
+        product_ids: [{ id: testProduct2.id }],
+      }
+
+      const response = await api.delete(
+        `/admin/product-categories/${productCategory.id}/products/batch`,
+        {
+          ...adminHeaders,
+          data: payload,
+        }
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product_category).toEqual(
+        expect.objectContaining({
+          id: productCategory.id,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
+
+      const products = await dbConnection.manager.find(Product, {
+        where: { id: In([testProduct1.id, testProduct2.id]) },
+        relations: ["categories"],
+      })
+
+      expect(products[0].categories).toEqual([
+        expect.objectContaining({
+          id: productCategory.id
+        })
+      ])
+
+      expect(products[1].categories).toEqual([])
+    })
+
+    it("throws error when product ID is invalid", async () => {
+      const api = useApi()
+
+      const payload = {
+        product_ids: [{ id: "product-id-invalid" }],
+      }
+
+      const error = await api.delete(
+        `/admin/product-categories/${productCategory.id}/products/batch`,
+        {
+          ...adminHeaders,
+          data: payload,
+        }
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data).toEqual({
+        errors: ["Products product-id-invalid do not exist"],
+        message: "Provided request body contains errors. Please check the data and retry the request"
+      })
+    })
+
+    it("throws error when category ID is invalid", async () => {
+      const api = useApi()
+      const payload = { product_ids: [] }
+
+      const error = await api.delete(
+        `/admin/product-categories/invalid-category-id/products/batch`,
+        {
+          ...adminHeaders,
+          data: payload,
+        }
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(404)
+      expect(error.response.data).toEqual({
+        message: "ProductCategory with id: invalid-category-id was not found",
+        type: "not_found",
+      })
+    })
+
+    it("throws error trying to expand not allowed relations", async () => {
+      const api = useApi()
+      const payload = { product_ids: [] }
+
+      const error = await api.delete(
+        `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
+        {
+          ...adminHeaders,
+          data: payload,
+        }
       ).catch(e => e)
 
       expect(error.response.status).toEqual(400)

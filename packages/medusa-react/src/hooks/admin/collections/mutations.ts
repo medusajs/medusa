@@ -12,9 +12,9 @@ import {
   UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query"
-import { adminCollectionKeys } from "."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminCollectionKeys } from "./queries"
 
 export const useAdminCreateCollection = (
   options?: UseMutationOptions<

@@ -1,3 +1,8 @@
+---
+description: 'Learn how to manually calculate taxes during checkout in the Medusa server. There are different methods including using endpoints or services.'
+addHowToData: true
+---
+
 # Calculate Taxes Manually in Checkout
 
 In this document, you’ll learn how to manually calculate taxes during checkout if you have automatic tax calculation disabled in a region.
