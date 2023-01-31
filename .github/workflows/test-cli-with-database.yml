@@ -59,7 +59,8 @@ jobs:
 
       - name: Create Medusa project
         run: |
-          medusa new cli-test
+          # TODO: Remove when merged
+          medusa new cli-test https://github.com/medusajs/medusa-starter-default/tree/next
         working-directory: ..
 
       - name: Install postgres config
