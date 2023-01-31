@@ -2592,22 +2592,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/core@npm:^1.0.5":
-  version: 1.1.0
-  resolution: "@floating-ui/core@npm:1.1.0"
-  checksum: 427c95953f99c58647c3eee50d75770fddc19416cea152403010527135e8c88479352a8cbb4aeb09949cf283522861d815bf77dff5207b64dc8dd3b623bf57a3
-  languageName: node
-  linkType: hard
-
-"@floating-ui/dom@npm:^1.0.4":
-  version: 1.1.0
-  resolution: "@floating-ui/dom@npm:1.1.0"
-  dependencies:
-    "@floating-ui/core": ^1.0.5
-  checksum: 8cae2d59f32bce8d742a414477ee62854affbcb7ae318598adebadec36d43c01dccaf5004d73a9dd26683d393bb69fb1e8181970b8d7939f529512ab1ad672d2
-  languageName: node
-  linkType: hard
-
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -4686,7 +4670,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.3.1, classnames@npm:^2.3.2":
+"classnames@npm:^2.3.1":
   version: 2.3.2
   resolution: "classnames@npm:2.3.2"
   checksum: cd50ead57b4f97436aaa9f9885c6926323efc7c2bea8e3d4eb10e4e972aa6a1cfca1c7a0e06f8a199ca7498d4339e30bb6002e589e61c9f21248cbf3e8b0b18d
@@ -5572,9 +5556,7 @@ __metadata:
     prism-react-renderer: ^1.3.1
     react: ^17.0.1
     react-dom: ^17.0.1
-    react-tooltip: ^5.7.0
     react-transition-group: ^4.4.5
-    react-uuid: ^2.0.0
     redocusaurus: ^1.4.0
     url-loader: ^4.1.1
   languageName: unknown
@@ -9895,19 +9877,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tooltip@npm:^5.7.0":
-  version: 5.7.0
-  resolution: "react-tooltip@npm:5.7.0"
-  dependencies:
-    "@floating-ui/dom": ^1.0.4
-    classnames: ^2.3.2
-  peerDependencies:
-    react: ">=16.14.0"
-    react-dom: ">=16.14.0"
-  checksum: b9bbf50fe227ef478d98512f075b5dabc02f020256dcb825a36b8b7aa905764ce838f0dc382ca7f16279ab99327f8106fc38c14e619db07d937a5f0c37bc83fe
-  languageName: node
-  linkType: hard
-
 "react-transition-group@npm:^4.4.5":
   version: 4.4.5
   resolution: "react-transition-group@npm:4.4.5"
@@ -9920,13 +9889,6 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: 2ba754ba748faefa15f87c96dfa700d5525054a0141de8c75763aae6734af0740e77e11261a1e8f4ffc08fd9ab78510122e05c21c2d79066c38bb6861a886c82
-  languageName: node
-  linkType: hard
-
-"react-uuid@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "react-uuid@npm:2.0.0"
-  checksum: 91f35c83911a2072f181eee0092b45f9ea3590d22268cf8418721756d53205dd9029a873b36a00913807651a0ea5548cc0fc60bad8c4f09bcd7cb03e6ae39ecf
   languageName: node
   linkType: hard
 
