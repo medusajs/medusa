@@ -11,7 +11,6 @@ class DatoCMSSubscriber {
     this.eventBus_ = eventBusService
 
     this.eventBus_.subscribe("region.created", async (data) => {
-      console.log(data)
       await this.datoCMSService_.createRegionInDatoCMS(data)
     })
 

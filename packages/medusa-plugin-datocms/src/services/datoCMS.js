@@ -391,6 +391,7 @@ class DatoCMSService extends BaseService {
           })
           await this.datoCMS_.items.publish(product.id, { recursive: true })
         } else {
+          // TODO: check if variant created is not duplicate
           await this.createProductInDatoCMS({ id: data.product_id })
         }
       } 
@@ -464,6 +465,84 @@ class DatoCMSService extends BaseService {
         return
       }
       await this.datoCMS_.items.destroy(variant.id)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateProductFromDatoCMSToMedusa(entityId) {
+    try {
+      const productDatoCMS = await this.datoCMS_.items.find(entityId)
+      // const ignore = await this.shouldIgnore_(productDatoCMS.medusa_id, "medusa")
+      // if (ignore) {
+      //   return
+      // }
+      const itemType = await this.datoCMS_.itemTypes.find(product.item_type)
+      if (itemType.api_key !== "product") {
+        throw new Error("Not a product")
+      }
+
+      const productMedusa = await this.productService_.retrieve(productDatoCMS.medusa_id, {
+        select: [
+          "id",
+          "handle",
+          "title",
+          "subtitle",
+          "description",
+          "thumbnail",
+        ],
+      })
+
+      const fields = ['title', 'subtitle', 'description', 'handle']
+      const updateFields = {}
+      for (const field of fields) {
+        const customField = this.getCustomField(field, "product")
+        if (productDatoCMS[customField] !== productMedusa[field]) {
+          updateFields[field] = productDatoCMS[customField]
+        }
+      }
+
+      // TODO update thumbnail
+
+      if (Object.keys(updateFields).length > 0) {
+        await this.productService_.update(productMedusa.id, updateFields)
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateProductVariantFromDatoCMSToMedusa(entityId) {
+    try {
+      const productVariantDatoCMS = await this.datoCMS_.items.find(entityId)
+      // const ignore = await this.shouldIgnore_(productVariantDatoCMS.medusa_id, "medusa")
+      // if (ignore) {
+      //   return
+      // }
+      const itemType = await this.datoCMS_.itemTypes.find(product.item_type)
+      if (itemType.api_key !== "product_variant") {
+        throw new Error("Not a product variant")
+      }
+
+      const productVariantMedusa = await this.productVariantService_.retrieve(productVariantDatoCMS.medusa_id, {
+        select: [
+          "id",
+          "title",
+        ],
+      })
+
+      const fields = ['title']
+      const updateFields = {}
+      for (const field of fields) {
+        const customField = this.getCustomField(field, "product")
+        if (productVariantDatoCMS[customField] !== productVariantMedusa[field]) {
+          updateFields[field] = productVariantDatoCMS[customField]
+        }
+      }
+
+      if (Object.keys(updateFields).length > 0) {
+        await this.productService_.update(productMedusa.id, updateFields)
+      }
     } catch (error) {
       throw error
     }
