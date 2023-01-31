@@ -1,10 +1,15 @@
 import path from "path"
+import { Product } from "@medusajs/medusa"
+import { In } from "typeorm"
 
 import startServerWithEnvironment from "../../../helpers/start-server-with-environment"
 import { useApi } from "../../../helpers/use-api"
 import { useDb } from "../../../helpers/use-db"
 import adminSeeder from "../../helpers/admin-seeder"
-import { simpleProductCategoryFactory } from "../../factories"
+import {
+  simpleProductCategoryFactory,
+  simpleProductFactory,
+} from "../../factories"
 
 jest.setTimeout(30000)
 
@@ -27,7 +32,7 @@ describe("/admin/product-categories", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
       cwd,
-      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
+      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true }
     })
     dbConnection = connection
     medusaProcess = process
@@ -460,6 +465,125 @@ describe("/admin/product-categories", () => {
           }),
         })
       )
+    })
+  })
+
+  describe("POST /admin/product-categories/:id/products/batch", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      productCategory = await simpleProductCategoryFactory(dbConnection, {
+        id: "test-category",
+        name: "test category",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should add products to a product category", async () => {
+      const api = useApi()
+      const testProduct1 = await simpleProductFactory(dbConnection, {
+        id: "test-product-1",
+        title: "test product 1",
+      })
+
+      const testProduct2 = await simpleProductFactory(dbConnection, {
+        id: "test-product-2",
+        title: "test product 2",
+      })
+
+      const payload = {
+        product_ids: [{ id: testProduct1.id }, { id: testProduct2.id }],
+      }
+
+      const response = await api.post(
+        `/admin/product-categories/${productCategory.id}/products/batch`,
+        payload,
+        adminHeaders
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product_category).toEqual(
+        expect.objectContaining({
+          id: productCategory.id,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
+
+      const products = await dbConnection.manager.find(Product, {
+        where: { id: In([testProduct1.id, testProduct2.id]) },
+        relations: ["categories"],
+      })
+
+      expect(products[0].categories).toEqual([
+        expect.objectContaining({
+          id: productCategory.id
+        })
+      ])
+
+      expect(products[1].categories).toEqual([
+        expect.objectContaining({
+          id: productCategory.id
+        })
+      ])
+    })
+
+    it("throws error when product ID is invalid", async () => {
+      const api = useApi()
+
+      const payload = {
+        product_ids: [{ id: "product-id-invalid" }],
+      }
+
+      const error = await api.post(
+        `/admin/product-categories/${productCategory.id}/products/batch`,
+        payload,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data).toEqual({
+        errors: ["Products product-id-invalid do not exist"],
+        message: "Provided request body contains errors. Please check the data and retry the request"
+      })
+    })
+
+    it("throws error when category ID is invalid", async () => {
+      const api = useApi()
+      const payload = { product_ids: [] }
+
+      const error = await api.post(
+        `/admin/product-categories/invalid-category-id/products/batch`,
+        payload,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(404)
+      expect(error.response.data).toEqual({
+        message: "ProductCategory with id: invalid-category-id was not found",
+        type: "not_found",
+      })
+    })
+
+    it("throws error trying to expand not allowed relations", async () => {
+      const api = useApi()
+      const payload = { product_ids: [] }
+
+      const error = await api.post(
+        `/admin/product-categories/invalid-category-id/products/batch?expand=products`,
+        payload,
+        adminHeaders
+      ).catch(e => e)
+
+      expect(error.response.status).toEqual(400)
+      expect(error.response.data).toEqual({
+        message: "Relations [products] are not valid",
+        type: "invalid_data",
+      })
     })
   })
 })
