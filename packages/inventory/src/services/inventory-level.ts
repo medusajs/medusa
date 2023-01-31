@@ -239,7 +239,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return parseInt(result.quantity)
+    return parseFloat(result.quantity)
   }
 
   /**
@@ -266,7 +266,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return parseInt(result.quantity)
+    return parseFloat(result.quantity)
   }
 
   /**
@@ -293,6 +293,6 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return parseInt(result.quantity)
+    return parseFloat(result.quantity)
   }
 }
