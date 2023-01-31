@@ -35,19 +35,19 @@ export class OrderItemChange extends SoftDeletableEntity {
 
   @ManyToOne(() => OrderEdit, (oe) => oe.changes)
   @JoinColumn({ name: "order_edit_id" })
-  order_edit: OrderEdit
+  order_edit?: OrderEdit
 
   @Column({ nullable: true })
-  original_line_item_id?: string
+  original_line_item_id: string | null
 
-  @ManyToOne(() => LineItem, { nullable: true })
+  @ManyToOne(() => LineItem)
   @JoinColumn({ name: "original_line_item_id" })
   original_line_item?: LineItem
 
   @Column({ nullable: true })
-  line_item_id?: string
+  line_item_id: string | null
 
-  @OneToOne(() => LineItem, { nullable: true })
+  @OneToOne(() => LineItem)
   @JoinColumn({ name: "line_item_id" })
   line_item?: LineItem
 
@@ -63,52 +63,61 @@ export class OrderItemChange extends SoftDeletableEntity {
  * description: "Represents an order edit item change"
  * type: object
  * required:
- *   - type
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - line_item_id
  *   - order_edit_id
+ *   - original_line_item_id
+ *   - type
+ *   - updated_at
  * properties:
  *   id:
  *     type: string
  *     description: The order item change's ID
  *     example: oic_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   type:
- *     type: string
  *     description: The order item change's status
+ *     type: string
  *     enum:
  *       - item_add
  *       - item_remove
  *       - item_update
  *   order_edit_id:
- *     type: string
  *     description: The ID of the order edit
+ *     type: string
  *     example: oe_01G2SG30J8C85S4A5CHM2S1NS2
  *   order_edit:
  *     description: Available if the relation `order_edit` is expanded.
  *     $ref: "#/components/schemas/OrderEdit"
  *   original_line_item_id:
- *      type: string
  *      description: The ID of the original line item in the order
+ *      nullable: true
+ *      type: string
  *      example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   original_line_item:
  *      description: Available if the relation `original_line_item` is expanded.
  *      $ref: "#/components/schemas/LineItem"
  *   line_item_id:
- *      type: string
  *      description: The ID of the cloned line item.
+ *      nullable: true
+ *      type: string
  *      example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   line_item:
  *      description: Available if the relation `line_item` is expanded.
  *      $ref: "#/components/schemas/LineItem"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
  *     type: object

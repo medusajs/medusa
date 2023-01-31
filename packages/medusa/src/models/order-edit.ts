@@ -32,7 +32,7 @@ export class OrderEdit extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.edits)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order
 
   @OneToMany(() => OrderItemChange, (oic) => oic.order_edit, {
     cascade: true,
@@ -40,59 +40,59 @@ export class OrderEdit extends BaseEntity {
   changes: OrderItemChange[]
 
   @Column({ nullable: true })
-  internal_note?: string
+  internal_note: string | null
 
   @Column()
   created_by: string // customer, user, third party, etc.
 
   @Column({ nullable: true })
-  requested_by?: string // customer or user ID
+  requested_by: string | null // customer or user ID
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  requested_at?: Date
+  requested_at: Date | null
 
   @Column({ nullable: true })
-  confirmed_by?: string // customer or user ID
+  confirmed_by: string | null // customer or user ID
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  confirmed_at?: Date
+  confirmed_at: Date | null
 
   @Column({ nullable: true })
-  declined_by?: string // customer or user ID
+  declined_by: string | null // customer or user ID
 
   @Column({ nullable: true })
-  declined_reason?: string
+  declined_reason: string | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  declined_at?: Date
+  declined_at: Date | null
 
   @Column({ nullable: true })
-  canceled_by?: string
+  canceled_by: string | null // customer or user ID
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at?: Date
+  canceled_at: Date | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order_edit)
   items: LineItem[]
 
   @Index()
   @Column({ nullable: true })
-  payment_collection_id: string
+  payment_collection_id: string | null
 
   @OneToOne(() => PaymentCollection)
   @JoinColumn({ name: "payment_collection_id" })
-  payment_collection: PaymentCollection
+  payment_collection?: PaymentCollection
 
   // Computed
-  shipping_total: number
-  discount_total: number
-  tax_total: number | null
-  total: number
-  subtotal: number
-  gift_card_total: number
-  gift_card_tax_total: number
+  shipping_total?: number
+  discount_total?: number
+  tax_total?: number
+  total?: number
+  subtotal?: number
+  gift_card_total?: number
+  gift_card_tax_total?: number
 
-  difference_due: number
+  difference_due?: number
 
   status: OrderEditStatus
 
@@ -126,93 +126,126 @@ export class OrderEdit extends BaseEntity {
  * description: "Order edit keeps track of order items changes."
  * type: object
  * required:
- *   - order_id
- *   - order
+ *   - canceled_at
+ *   - canceled_by
  *   - changes
+ *   - confirmed_by
+ *   - confirmed_at
+ *   - created_at
  *   - created_by
+ *   - declined_at
+ *   - declined_by
+ *   - declined_reason
+ *   - id
+ *   - internal_note
+ *   - items
+ *   - order_id
+ *   - payment_collection_id
+ *   - requested_at
+ *   - requested_by
+ *   - status
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The order edit's ID
+ *     type: string
  *     example: oe_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order_id:
- *     type: string
  *     description: The ID of the order that is edited
+ *     type: string
  *     example: order_01G2SG30J8C85S4A5CHM2S1NS2
  *   order:
  *     description: Available if the relation `order` is expanded.
  *     $ref: "#/components/schemas/Order"
  *   changes:
- *     type: array
  *     description: Available if the relation `changes` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/OrderItemChange"
  *   internal_note:
- *     description: "An optional note with additional details about the order edit."
+ *     description: An optional note with additional details about the order edit.
+ *     nullable: true
  *     type: string
  *     example: Included two more items B to the order.
  *   created_by:
+ *     description: The unique identifier of the user or customer who created the order edit.
+ *     nullable: true
  *     type: string
- *     description: "The unique identifier of the user or customer who created the order edit."
  *   requested_by:
+ *     description: The unique identifier of the user or customer who requested the order edit.
+ *     nullable: true
  *     type: string
- *     description: "The unique identifier of the user or customer who requested the order edit."
  *   requested_at:
+ *     description: The date with timezone at which the edit was requested.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the edit was requested."
  *     format: date-time
  *   confirmed_by:
+ *     description: The unique identifier of the user or customer who confirmed the order edit.
+ *     nullable: true
  *     type: string
- *     description: "The unique identifier of the user or customer who confirmed the order edit."
  *   confirmed_at:
+ *     description: The date with timezone at which the edit was confirmed.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the edit was confirmed."
  *     format: date-time
  *   declined_by:
+ *     description: The unique identifier of the user or customer who declined the order edit.
+ *     nullable: true
  *     type: string
- *     description: "The unique identifier of the user or customer who declined the order edit."
  *   declined_at:
+ *     description: The date with timezone at which the edit was declined.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the edit was declined."
  *     format: date-time
  *   declined_reason:
- *     description: "An optional note why  the order edit is declined."
+ *     description: An optional note why  the order edit is declined.
+ *     nullable: true
  *     type: string
+ *   canceled_by:
+ *     description: The unique identifier of the user or customer who cancelled the order edit.
+ *     nullable: true
+ *     type: string
+ *   canceled_at:
+ *     description: The date with timezone at which the edit was cancelled.
+ *     nullable: true
+ *     type: string
+ *     format: date-time
  *   subtotal:
- *     type: integer
  *     description: The total of subtotal
+ *     type: integer
  *     example: 8000
  *   discount_total:
- *     type: integer
  *     description: The total of discount
+ *     type: integer
  *     example: 800
  *   shipping_total:
- *     type: integer
  *     description: The total of the shipping amount
+ *     type: integer
  *     example: 800
  *   gift_card_total:
- *     type: integer
  *     description: The total of the gift card amount
+ *     type: integer
  *     example: 800
  *   gift_card_tax_total:
- *     type: integer
  *     description: The total of the gift card tax amount
+ *     type: integer
  *     example: 800
  *   tax_total:
- *     type: integer
  *     description: The total of tax
+ *     type: integer
  *     example: 0
  *   total:
- *     type: integer
  *     description: The total amount of the edited order.
+ *     type: integer
  *     example: 8200
  *   difference_due:
- *     type: integer
  *     description: The difference between the total amount of the order and total amount of edited order.
+ *     type: integer
  *     example: 8200
  *   status:
- *     type: string
  *     description: The status of the order edit.
+ *     type: string
  *     enum:
  *       - confirmed
  *       - declined
@@ -220,23 +253,24 @@ export class OrderEdit extends BaseEntity {
  *       - created
  *       - canceled
  *   items:
- *     type: array
  *     description: Available if the relation `items` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   payment_collection_id:
- *     type: string
  *     description: The ID of the payment collection
+ *     nullable: true
+ *     type: string
  *     example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   payment_collection:
  *     description: Available if the relation `payment_collection` is expanded.
  *     $ref: "#/components/schemas/PaymentCollection"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  */

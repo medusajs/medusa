@@ -26,7 +26,7 @@ export class ProductVariant extends SoftDeletableEntity {
 
   @ManyToOne(() => Product, (product) => product.variants, { eager: true })
   @JoinColumn({ name: "product_id" })
-  product: Product
+  product?: Product
 
   @OneToMany(() => MoneyAmount, (ma) => ma.variant, {
     cascade: true,
@@ -36,22 +36,22 @@ export class ProductVariant extends SoftDeletableEntity {
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  sku: string
+  sku: string | null
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  barcode: string
+  barcode: string | null
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  ean: string
+  ean: string | null
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  upc: string
+  upc: string | null
 
   @Column({ nullable: true, default: 0, select: false })
-  variant_rank: number
+  variant_rank: number | null
 
   @Column({ type: "int" })
   inventory_quantity: number
@@ -63,28 +63,28 @@ export class ProductVariant extends SoftDeletableEntity {
   manage_inventory: boolean
 
   @Column({ nullable: true })
-  hs_code: string
+  hs_code: string | null
 
   @Column({ nullable: true })
-  origin_country: string
+  origin_country: string | null
 
   @Column({ nullable: true })
-  mid_code: string
+  mid_code: string | null
 
   @Column({ nullable: true })
-  material: string
+  material: string | null
 
   @Column({ type: "int", nullable: true })
-  weight: number
+  weight: number | null
 
   @Column({ type: "int", nullable: true })
-  length: number
+  length: number | null
 
   @Column({ type: "int", nullable: true })
-  height: number
+  height: number | null
 
   @Column({ type: "int", nullable: true })
-  width: number
+  width: number | null
 
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
     cascade: true,
@@ -92,7 +92,7 @@ export class ProductVariant extends SoftDeletableEntity {
   options: ProductOptionValue[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -106,88 +106,122 @@ export class ProductVariant extends SoftDeletableEntity {
  * description: "Product Variants represent a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations."
  * type: object
  * required:
- *   - title
- *   - product_id
+ *   - allow_backorder
+ *   - barcode
+ *   - created_at
+ *   - deleted_at
+ *   - ean
+ *   - height
+ *   - hs_code
+ *   - id
  *   - inventory_quantity
+ *   - length
+ *   - manage_inventory
+ *   - material
+ *   - metadata
+ *   - mid_code
+ *   - options
+ *   - origin_country
+ *   - prices
+ *   - product_id
+ *   - sku
+ *   - title
+ *   - upc
+ *   - updated_at
+ *   - variant_rank
+ *   - weight
+ *   - width
  * properties:
  *   id:
- *     type: string
  *     description: The product variant's ID
+ *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   title:
- *     description: "A title that can be displayed for easy identification of the Product Variant."
+ *     description: A title that can be displayed for easy identification of the Product Variant.
  *     type: string
  *     example: Small
  *   product_id:
- *     description: "The ID of the Product that the Product Variant belongs to."
+ *     description: The ID of the Product that the Product Variant belongs to.
  *     type: string
  *     example: prod_01G1G5V2MBA328390B5AXJ610F
  *   product:
  *     description: A product object. Available if the relation `product` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Product"
  *   prices:
  *     description: The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation `prices` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/MoneyAmount"
  *   sku:
- *     description: "The unique stock keeping unit used to identify the Product Variant. This will usually be a unqiue identifer for the item that is to be shipped, and can be referenced across multiple systems."
+ *     description: The unique stock keeping unit used to identify the Product Variant. This will usually be a unqiue identifer for the item that is to be shipped, and can be referenced across multiple systems.
+ *     nullable: true
  *     type: string
  *     example: shirt-123
  *   barcode:
- *     description: "A generic field for a GTIN number that can be used to identify the Product Variant."
+ *     description: A generic field for a GTIN number that can be used to identify the Product Variant.
+ *     nullable: true
  *     type: string
  *     example: null
  *   ean:
- *     description: "An EAN barcode number that can be used to identify the Product Variant."
+ *     description: An EAN barcode number that can be used to identify the Product Variant.
+ *     nullable: true
  *     type: string
  *     example: null
  *   upc:
- *     description: "A UPC barcode number that can be used to identify the Product Variant."
+ *     description: A UPC barcode number that can be used to identify the Product Variant.
+ *     nullable: true
  *     type: string
  *     example: null
  *   variant_rank:
  *     description: The ranking of this variant
+ *     nullable: true
  *     type: number
  *     default: 0
  *   inventory_quantity:
- *     description: "The current quantity of the item that is stocked."
+ *     description: The current quantity of the item that is stocked.
  *     type: integer
  *     example: 100
  *   allow_backorder:
- *     description: "Whether the Product Variant should be purchasable when `inventory_quantity` is 0."
+ *     description: Whether the Product Variant should be purchasable when `inventory_quantity` is 0.
  *     type: boolean
  *     default: false
  *   manage_inventory:
- *     description: "Whether Medusa should manage inventory for the Product Variant."
+ *     description: Whether Medusa should manage inventory for the Product Variant.
  *     type: boolean
  *     default: true
  *   hs_code:
- *     description: "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers."
+ *     description: The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     nullable: true
  *     type: string
  *     example: null
  *   origin_country:
- *     description: "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers."
+ *     description: The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     nullable: true
  *     type: string
  *     example: null
  *   mid_code:
- *     description: "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers."
+ *     description: The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     nullable: true
  *     type: string
  *     example: null
  *   material:
- *     description: "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers."
+ *     description: The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     nullable: true
  *     type: string
  *     example: null
  *   weight:
- *     description: "The weight of the Product Variant. May be used in shipping rate calculations."
+ *     description: The weight of the Product Variant. May be used in shipping rate calculations.
+ *     nullable: true
  *     type: number
  *     example: null
  *   height:
- *     description: "The height of the Product Variant. May be used in shipping rate calculations."
+ *     description: The height of the Product Variant. May be used in shipping rate calculations.
+ *     nullable: true
  *     type: number
  *     example: null
  *   width:
- *     description: "The width of the Product Variant. May be used in shipping rate calculations."
+ *     description: The width of the Product Variant. May be used in shipping rate calculations.
+ *     nullable: true
  *     type: number
  *     example: null
  *   length:
@@ -200,19 +234,21 @@ export class ProductVariant extends SoftDeletableEntity {
  *     items:
  *       $ref: "#/components/schemas/ProductOptionValue"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

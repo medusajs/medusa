@@ -36,7 +36,7 @@ export class Refund extends BaseEntity {
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @OneToOne(() => Payment, { nullable: true })
+  @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
   payment: Payment
 
