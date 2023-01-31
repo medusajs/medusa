@@ -2,15 +2,18 @@ import {
   SalesChannelLocationService,
   SalesChannelService,
 } from "../../../../../services"
-import { StockLocationDTO } from "../../../../../types/stock-location"
+import {
+  StockLocationDTO,
+  StockLocationExpandedDTO,
+} from "../../../../../types/stock-location"
 
 const joinSalesChannels = async (
   locations: StockLocationDTO[],
   channelLocationService: SalesChannelLocationService,
   salesChannelService: SalesChannelService
-): Promise<StockLocationDTO[]> => {
+): Promise<StockLocationExpandedDTO[]> => {
   return await Promise.all(
-    locations.map(async (location) => {
+    locations.map(async (location: StockLocationExpandedDTO) => {
       const salesChannelIds = await channelLocationService.listSalesChannels(
         location.id
       )
@@ -18,7 +21,7 @@ const joinSalesChannels = async (
         id: salesChannelIds,
       })
 
-      location["sales_channels"] = salesChannels
+      location.sales_channels = salesChannels
 
       return location
     })
