@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: 'Medusa admin allows merchants to manage gift cards. Merchants can manage main and custom gift cards.'
 ---
 
 # Gift Cards Overview

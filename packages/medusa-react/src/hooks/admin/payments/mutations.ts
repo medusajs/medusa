@@ -11,9 +11,9 @@ import {
   AdminRefundRes,
 } from "@medusajs/medusa"
 
-import { adminPaymentQueryKeys } from "."
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminPaymentQueryKeys } from "./queries"
 
 export const useAdminPaymentsCapturePayment = (
   id: string,
