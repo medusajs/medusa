@@ -1,3 +1,7 @@
+---
+description: 'Learn what Plugins are and how they are used in Medusa. Plugins are re-usable customizations that can be added to a Medusa server.'
+---
+
 # Plugins
 
 In this document, you’ll get an overview of plugins in Medusa, where to find them, and how to install them. If you want to learn how to create a plugin, check out [this guide](create.md) instead.
@@ -54,5 +58,6 @@ For community plugins, please refer to the installation instructions of that plu
 
 ## See Also
 
-- [Create your own plugin](create.md)
+- [Create a plugin](create.md)
+- [Publish a plugin](publish.md)
 - [Create a fulfillment provider](../shipping/add-fulfillment-provider.md) or a [payment provider](../payment/how-to-create-payment-provider.md)

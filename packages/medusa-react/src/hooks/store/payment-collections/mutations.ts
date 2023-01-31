@@ -13,9 +13,9 @@ import {
   StorePostPaymentCollectionsBatchSessionsReq,
 } from "@medusajs/medusa"
 
-import { paymentCollectionQueryKeys } from "."
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { paymentCollectionQueryKeys } from "./queries"
 
 export const useManageMultiplePaymentSessions = (
   id: string,

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require("path")
 const fs = require("fs")
 const docsPath = path.join(__dirname, "../../docs/content")
@@ -16,18 +17,11 @@ const config = {
   url: "https://docs.medusajs.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
   plugins: [
-    [
-      "docusaurus2-dotenv",
-      {
-        path: "./.env", // The path to your environment variables.
-        systemvars: true, // Set to true if you would rather load all system variables as well (useful for CI purposes)
-      },
-    ],
     [
       "docusaurus-plugin-segment",
       {
@@ -210,7 +204,7 @@ const config = {
             [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
           ],
           showLastUpdateTime: true,
-          breadcrumbs: false,
+          // breadcrumbs: false,
           async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
             const sidebarItems = await defaultSidebarItemsGenerator(args);
             return reverseSidebar(sidebarItems);

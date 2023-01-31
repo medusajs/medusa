@@ -15,10 +15,10 @@ import {
   AdminPostOrderEditsReq,
 } from "@medusajs/medusa"
 
-import { adminOrderEditsKeys } from "."
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminOrderKeys } from "../orders"
+import { adminOrderEditsKeys } from "./queries"
 
 export const useAdminCreateOrderEdit = (
   options?: UseMutationOptions<

@@ -1,3 +1,8 @@
+---
+description: 'Learn how to integrate Twilio SMS with the Medusa server. Learn how to install the Twilio SMS plugin and test it out.'
+addHowToData: true
+---
+
 # Twilio SMS
 
 In this document, you’ll learn about the Twilio SMS Plugin, what it does, and how to use it in Medusa.

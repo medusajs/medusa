@@ -1,3 +1,7 @@
+---
+description: 'Learn what Services are in the Medusa server. Services represent bundled helper methods that you want to use across the server.'
+---
+
 # Services
 
 In this document, you'll learn about what Services are in Medusa.
