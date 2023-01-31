@@ -235,6 +235,27 @@ class ProductCategoryService extends TransactionBaseService {
       await productCategoryRepository.addProducts(productCategoryId, productIds)
     })
   }
+
+  /**
+   * Remove a batch of product from a product category
+   * @param productCategoryId - The id of the product category on which to remove the products
+   * @param productIds - The products ids to remove from the product category
+   * @return the product category on which the products have been removed
+   */
+  async removeProducts(
+    productCategoryId: string,
+    productIds: string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository: ProductCategoryRepository =
+        manager.getCustomRepository(this.productCategoryRepo_)
+
+      await productCategoryRepository.removeProducts(
+        productCategoryId,
+        productIds
+      )
+    })
+  }
 }
 
 export default ProductCategoryService
