@@ -1978,9 +1978,9 @@ describe("/admin/products", () => {
       const variant = response.data.product.variants.find(
         (v) => v.id === variantId
       )
-      expect(variant3.prices.length).toEqual(data.prices.length)
+      expect(variant.prices.length).toEqual(data.prices.length)
 
-      expect(variant3.prices).toEqual(
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             amount: 8000,
