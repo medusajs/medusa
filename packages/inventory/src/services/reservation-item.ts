@@ -1,9 +1,8 @@
 import {
   buildQuery,
-  CreateReservationItemInput,
-  EventBusService,
-  FilterableReservationItemProps,
+  CreateReservationItemInput, FilterableReservationItemProps,
   FindConfig,
+  IEventBusService,
   TransactionBaseService,
   UpdateReservationItemInput
 } from "@medusajs/medusa"
@@ -14,7 +13,7 @@ import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
 
 type InjectedDependencies = {
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   manager: EntityManager
   inventoryLevelService: InventoryLevelService
 }
@@ -29,7 +28,7 @@ export default class ReservationItemService extends TransactionBaseService {
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
-  protected readonly eventBusService_: EventBusService
+  protected readonly eventBusService_: IEventBusService
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor({

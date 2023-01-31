@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
 import { StagedJob } from "../../models"
 
@@ -19,6 +20,16 @@ export type EventHandler<T = unknown> = (
   data: T,
   eventName: string
 ) => Promise<void>
+
+export interface IEventBusService {
+  emit<T>(
+    eventName: string,
+    data: T,
+    options?: unknown
+  ): Promise<StagedJob | void>
+
+  withTransaction(manager: EntityManager): this
+}
 
 export interface IEventBusModuleService {
   emit<T>(

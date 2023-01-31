@@ -1,11 +1,12 @@
 import { EntityManager } from "typeorm"
 import {
   AbstractEventBusModuleService,
+  IEventBusService,
   Subscriber,
   SubscriberContext,
-  TransactionBaseService,
 } from "../interfaces"
 import { StagedJob } from "../models"
+import { ConfigModule } from "../types/global"
 import { sleep } from "../utils/sleep"
 import StagedJobService from "./staged-job"
 
@@ -15,7 +16,8 @@ type InjectedDependencies = {
   eventBusModuleService: AbstractEventBusModuleService
 }
 
-export default class EventBusService extends TransactionBaseService {
+export default class EventBusService implements IEventBusService {
+  protected readonly config_: ConfigModule
   protected readonly stagedJobService_: StagedJobService
   protected readonly eventBusModuleService_: AbstractEventBusModuleService
 
@@ -27,13 +29,14 @@ export default class EventBusService extends TransactionBaseService {
 
   constructor(
     { manager, stagedJobService, eventBusModuleService }: InjectedDependencies,
-    configModule,
+    config,
     isSingleton = true
   ) {
     // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
 
+    this.config_ = config
     this.manager_ = manager
     this.eventBusModuleService_ = eventBusModuleService
     this.stagedJobService_ = stagedJobService
@@ -49,8 +52,12 @@ export default class EventBusService extends TransactionBaseService {
     }
 
     const cloned = new (this.constructor as any)(
-      this.__container__,
-      this.__configModule__,
+      {
+        manager: transactionManager,
+        stagedJobService: this.stagedJobService_,
+        eventBusModuleService: this.eventBusModuleService_,
+      },
+      this.config_,
       false
     )
 
@@ -167,7 +174,6 @@ export default class EventBusService extends TransactionBaseService {
         })
       )
 
-      // TODO: Refactor to a sleeper with exponential backoff and make it configurable
       await sleep(3000)
     }
   }

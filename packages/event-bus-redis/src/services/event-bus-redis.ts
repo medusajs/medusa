@@ -50,14 +50,11 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected readonly logger_: Logger
 
   protected queue_: Queue
-  protected shouldEnqueuerRun: boolean
-  protected enqueue_: Promise<void>
 
   constructor(
     { logger, configModule }: InjectedDependencies,
     moduleOptions: EventBusRedisModuleOptions = {},
-    moduleDeclaration: ConfigurableModuleDeclaration,
-    singleton = true
+    moduleDeclaration: ConfigurableModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
@@ -74,9 +71,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     this.config_ = configModule
     this.logger_ = logger
 
-    if (singleton && moduleOptions.redisUrl) {
-      this.connect()
-    }
+    this.connect()
   }
 
   connect(): void {
