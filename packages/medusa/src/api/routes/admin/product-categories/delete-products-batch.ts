@@ -24,6 +24,7 @@ import { FindParams } from "../../../../types/common"
  *         $ref: "#/components/schemas/AdminDeleteProductCategoriesCategoryProductsBatchReq"
  * x-codegen:
  *   method: removeProducts
+ *   queryParams: AdminDeleteProductCategoriesCategoryProductsBatchParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
