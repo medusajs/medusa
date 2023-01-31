@@ -68,7 +68,7 @@ describe("/store/carts", () => {
 
       const defaultProfile = await manager.findOne(ShippingProfile, {
         where: {
-          type: "default",
+          type: ShippingProfile.default,
         },
       })
       await manager.insert(Product, {

@@ -74,7 +74,7 @@ class DatabaseFactory {
 
     await templateDbDataSource.runMigrations()
 
-    await templateDbDataSource.close()
+    await templateDbDataSource.destroy()
 
     return dataSource
   }
