@@ -19,8 +19,6 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import EventBusService from "./event-bus"
-import RegionService from "./region"
 import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,
@@ -30,6 +28,8 @@ import {
   UpdateProductVariantInput,
 } from "../types/product-variant"
 import { buildQuery, setMetadata } from "../utils"
+import EventBusService from "./event-bus"
+import RegionService from "./region"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -362,7 +362,6 @@ class ProductVariantService extends TransactionBaseService {
           await this.setCurrencyPrice(variantId, price)
         }
       }
-
       await moneyAmountRepo.remove(obsoletePrices)
     })
   }

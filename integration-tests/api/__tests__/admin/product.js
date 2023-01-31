@@ -20,6 +20,7 @@ const {
   simpleProductFactory,
   simpleDiscountFactory,
   simpleProductCategoryFactory,
+  simpleRegionFactory,
 } = require("../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
@@ -42,6 +43,7 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
+      verbose: true,
     })
   })
 
@@ -1463,7 +1465,8 @@ describe("/admin/products", () => {
     })
 
     describe("Categories", () => {
-      let categoryWithProduct, categoryWithoutProduct
+      let categoryWithProduct
+      let categoryWithoutProduct
       const categoryWithProductId = "category-with-product-id"
       const categoryWithoutProductId = "category-without-product-id"
 
@@ -1489,12 +1492,15 @@ describe("/admin/products", () => {
         const payload = {
           title: "Test",
           description: "test-product-description",
-          categories: [{ id: categoryWithProductId }, { id: categoryWithoutProductId }]
+          categories: [
+            { id: categoryWithProductId },
+            { id: categoryWithoutProductId },
+          ],
         }
 
         const response = await api
           .post("/admin/products", payload, adminHeaders)
-          .catch(e => e)
+          .catch((e) => e)
 
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
@@ -1518,16 +1524,18 @@ describe("/admin/products", () => {
         const payload = {
           title: "Test",
           description: "test-product-description",
-          categories: [{ id: categoryNotFoundId }]
+          categories: [{ id: categoryNotFoundId }],
         }
 
         const error = await api
           .post("/admin/products", payload, adminHeaders)
-          .catch(e => e)
+          .catch((e) => e)
 
         expect(error.response.status).toEqual(404)
         expect(error.response.data.type).toEqual("not_found")
-        expect(error.response.data.message).toEqual(`Product_category with product_category_id ${categoryNotFoundId} does not exist.`)
+        expect(error.response.data.message).toEqual(
+          `Product_category with product_category_id ${categoryNotFoundId} does not exist.`
+        )
       })
 
       it("updates a product's categories", async () => {
@@ -1537,8 +1545,11 @@ describe("/admin/products", () => {
           categories: [{ id: categoryWithoutProductId }],
         }
 
-        const response = await api
-          .post(`/admin/products/${testProductId}`, payload, adminHeaders)
+        const response = await api.post(
+          `/admin/products/${testProductId}`,
+          payload,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
@@ -1556,21 +1567,21 @@ describe("/admin/products", () => {
 
       it("remove all categories of a product", async () => {
         const api = useApi()
-        const category = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: "existing-category",
-            name: "existing category",
-            products: [{ id: "test-product" }]
-          }
-        )
+        const category = await simpleProductCategoryFactory(dbConnection, {
+          id: "existing-category",
+          name: "existing category",
+          products: [{ id: "test-product" }],
+        })
 
         const payload = {
           categories: [],
         }
 
-        const response = await api
-          .post("/admin/products/test-product", payload, adminHeaders)
+        const response = await api.post(
+          "/admin/products/test-product",
+          payload,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
@@ -1589,11 +1600,13 @@ describe("/admin/products", () => {
 
         const error = await api
           .post("/admin/products/test-product", payload, adminHeaders)
-          .catch(e => e)
+          .catch((e) => e)
 
         expect(error.response.status).toEqual(400)
         expect(error.response.data.type).toEqual("invalid_data")
-        expect(error.response.data.message).toEqual("property incorrect should not exist, id must be a string")
+        expect(error.response.data.message).toEqual(
+          "property incorrect should not exist, id must be a string"
+        )
       })
     })
   })
@@ -1991,6 +2004,98 @@ describe("/admin/products", () => {
           expect.objectContaining({
             amount: 900,
             currency_code: "eur",
+          }),
+        ])
+      )
+    })
+
+    it("successfully deletes a region price", async () => {
+      const api = useApi()
+
+      const createRegionPricePayload = {
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 1000,
+          },
+          {
+            region_id: "test-region",
+            amount: 8000,
+          },
+          {
+            currency_code: "eur",
+            amount: 900,
+          },
+        ],
+      }
+
+      const variantId = "test-variant_3"
+
+      const createRegionPriceResponse = await api.post(
+        "/admin/products/test-product1/variants/test-variant_3",
+        createRegionPricePayload,
+        adminHeaders
+      )
+
+      const initialPriceArray =
+        createRegionPriceResponse.data.product.variants.find(
+          (v) => v.id === variantId
+        ).prices
+
+      expect(createRegionPriceResponse.status).toEqual(200)
+      expect(initialPriceArray).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 8000,
+            currency_code: "usd",
+            region_id: "test-region",
+          }),
+          expect.objectContaining({
+            amount: 900,
+            currency_code: "eur",
+          }),
+          expect.objectContaining({
+            amount: 1000,
+            currency_code: "usd",
+          }),
+        ])
+      )
+
+      const deleteRegionPricePayload = {
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 1000,
+          },
+          {
+            currency_code: "eur",
+            amount: 900,
+          },
+        ],
+      }
+
+      const deleteRegionPriceResponse = await api.post(
+        "/admin/products/test-product1/variants/test-variant_3",
+        deleteRegionPricePayload,
+        adminHeaders
+      )
+
+      const finalPriceArray =
+        deleteRegionPriceResponse.data.product.variants.find(
+          (v) => v.id === variantId
+        ).prices
+
+      expect(deleteRegionPriceResponse.status).toEqual(200)
+      expect(finalPriceArray.length).toEqual(2)
+      expect(finalPriceArray).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 900,
+            currency_code: "eur",
+          }),
+          expect.objectContaining({
+            amount: 1000,
+            currency_code: "usd",
           }),
         ])
       )

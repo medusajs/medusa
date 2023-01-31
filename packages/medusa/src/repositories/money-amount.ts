@@ -8,12 +8,12 @@ import {
   Repository,
   WhereExpressionBuilder,
 } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { MoneyAmount } from "../models/money-amount"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -27,20 +27,36 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     variantId: string,
     prices: Price[]
   ): Promise<MoneyAmount[]> {
-    const pricesNotInPricesPayload = await this.createQueryBuilder()
+    const existingPricesInPayload = await this.createQueryBuilder()
       .where({
         variant_id: variantId,
         price_list_id: IsNull(),
       })
       .andWhere(
         new Brackets((qb) => {
-          qb.where({
-            currency_code: Not(In(prices.map((p) => p.currency_code))),
-          }).orWhere({ region_id: Not(In(prices.map((p) => p.region_id))) })
+          prices.forEach((price) => {
+            qb.orWhere(
+              new Brackets((qb) => {
+                qb.where({
+                  currency_code: price.currency_code,
+                  region_id: IsNull(),
+                }).orWhere({ region_id: price.region_id })
+              })
+            )
+          })
         })
       )
       .getMany()
-    return pricesNotInPricesPayload
+
+    const obsoletePrices = await this.createQueryBuilder()
+      .where({
+        variant_id: variantId,
+        price_list_id: IsNull(),
+        id: Not(In(existingPricesInPayload.map((p) => p.id))),
+      })
+      .getMany()
+
+    return obsoletePrices
   }
 
   public async upsertVariantCurrencyPrice(
