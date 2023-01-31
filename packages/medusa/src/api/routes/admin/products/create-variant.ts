@@ -247,8 +247,7 @@ export default async (req, res) => {
 
       await productVariantInventoryServiceTx.attachInventoryItem(
         variant.id,
-        inventoryItem.id,
-        validated.inventory_quantity
+        inventoryItem.id
       )
     }
 

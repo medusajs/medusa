@@ -12,9 +12,9 @@ export const buildLevelsByInventoryItemId = (
   inventoryLevels: InventoryLevelDTO[],
   locationIds: string[]
 ) => {
-  const filteredLevels = inventoryLevels.filter((level) =>
-    locationIds?.includes(level.location_id)
-  )
+  const filteredLevels = inventoryLevels.filter((level) => {
+    return !locationIds.length || locationIds.includes(level.location_id)
+  })
 
   return filteredLevels.reduce((acc, level) => {
     acc[level.inventory_item_id] = acc[level.inventory_item_id] ?? []
@@ -58,6 +58,7 @@ export const joinLevels = async (
     locationIds,
     inventoryService
   )
+
   return inventoryItems.map((inventoryItem) => ({
     ...inventoryItem,
     location_levels: levelsByItemId[inventoryItem.id] || [],
