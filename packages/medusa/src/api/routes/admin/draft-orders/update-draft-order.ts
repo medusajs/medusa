@@ -33,6 +33,8 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDraftOrdersDraftOrderReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -14,6 +14,9 @@ import { Return } from "../../../../models"
  * parameters:
  *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
  *   - (query) offset=0 {number} The offset of the list returned.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetReturnsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
