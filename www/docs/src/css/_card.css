@@ -41,6 +41,10 @@ html[data-theme="dark"] .card {
   border: 1px solid var(--ifm-color-primary);
 }
 
+.card + p {
+  margin-top: var(--ifm-base-margin-vertical);
+}
+
 @media screen and (min-width: 992px) {
   .cards-grid.grid-4 {
     grid-template-columns: repeat(3, 1fr);
