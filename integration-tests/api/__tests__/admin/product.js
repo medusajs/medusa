@@ -20,7 +20,6 @@ const {
   simpleProductFactory,
   simpleDiscountFactory,
   simpleProductCategoryFactory,
-  simpleRegionFactory,
 } = require("../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
@@ -43,7 +42,6 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      verbose: true,
     })
   })
 
