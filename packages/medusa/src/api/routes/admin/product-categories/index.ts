@@ -37,6 +37,8 @@ import deleteProductsBatch, {
   AdminDeleteProductCategoriesCategoryProductsBatchParams,
 } from "./delete-products-batch"
 
+import { ProductCategory } from "../../../../models"
+
 const route = Router()
 
 export default (app) => {
@@ -141,3 +143,14 @@ export const defaultProductCategoryFields = [
   "created_at",
   "updated_at",
 ]
+
+/**
+ * @schema AdminProductCategoriesRes
+ * type: object
+ * properties:
+ *   product_category:
+ *     $ref: "#/components/schemas/ProductCategory"
+ */
+export type AdminProductCategoriesRes = {
+  product_category: ProductCategory
+}
