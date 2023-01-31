@@ -1,3 +1,8 @@
+---
+description: 'Learn how to integrate SendGrid with the Medusa server. Learn how to install the SendGrid plugin and test it out.'
+addHowToData: true
+---
+
 # SendGrid
 
 In this document, you’ll learn about the [SendGrid plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-sendgrid), what it does, and how to use it.
@@ -3608,8 +3613,9 @@ You don’t have to create a template for every type in the reference. You can s
   ```json noReport
   Object {
     "code": Any<String>,
-    "value": 4,
+    "value": 100,
     "balance": 100,
+    "display_value": "100.00",
     "region": Object {
       "automatic_taxes": true,
       "created_at": Any<Date>,
@@ -3937,7 +3943,7 @@ const plugins = [
       order_placed_template: process.env.SENDGRID_ORDER_PLACED_ID,
       localization: {
         "de-DE": { // locale key
-          order_placed_template: 
+          order_placed_template:
             process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
         },
       },
