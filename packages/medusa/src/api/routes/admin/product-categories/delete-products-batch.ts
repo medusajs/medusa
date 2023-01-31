@@ -8,10 +8,10 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /product-categories/{id}/products/batch
- * operationId: "PostProductCategoriesCategoryProductsBatch"
- * summary: "Add Products to a category"
- * description: "Assign a batch of products to a product category."
+ * @oas [delete] /product-categories/{id}/products/batch
+ * operationId: "DeleteProductCategoriesCategoryProductsBatch"
+ * summary: "Delete Products"
+ * description: "Remove a list of products from a product category."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
@@ -21,15 +21,15 @@ import { FindParams } from "../../../../types/common"
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminPostProductCategoriesCategoryProductsBatchReq"
+ *         $ref: "#/components/schemas/AdminDeleteProductCategoriesCategoryProductsBatchReq"
  * x-codegen:
- *   method: addProducts
+ *   method: removeProducts
+ *   queryParams: AdminDeleteProductCategoriesCategoryProductsBatchParams
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location \
- *       --request POST 'https://medusa-url.com/admin/product-categories/{product_category_id}/products/batch' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
@@ -64,24 +64,22 @@ import { FindParams } from "../../../../types/common"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req: Request, res: Response): Promise<void> => {
-  const validatedBody =
-    req.validatedBody as AdminPostProductCategoriesCategoryProductsBatchReq
 
+export default async (req: Request, res: Response) => {
   const { id } = req.params
+  const validatedBody =
+    req.validatedBody as AdminDeleteProductCategoriesCategoryProductsBatchReq
 
   const productCategoryService: ProductCategoryService = req.scope.resolve(
     "productCategoryService"
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await productCategoryService
-      .withTransaction(transactionManager)
-      .addProducts(
-        id,
-        validatedBody.product_ids.map((p) => p.id),
-      )
+  await manager.transaction(async (manager) => {
+    return await productCategoryService.withTransaction(manager).removeProducts(
+      id,
+      validatedBody.product_ids.map((p) => p.id)
+    )
   })
 
   const productCategory = await productCategoryService.retrieve(
@@ -93,13 +91,13 @@ export default async (req: Request, res: Response): Promise<void> => {
 }
 
 /**
- * @schema AdminPostProductCategoriesCategoryProductsBatchReq
+ * @schema AdminDeleteProductCategoriesCategoryProductsBatchReq
  * type: object
  * required:
  *   - product_ids
  * properties:
  *   product_ids:
- *     description: The IDs of the products to add to the Product Category
+ *     description: The IDs of the products to delete from the Product Category.
  *     type: array
  *     items:
  *       type: object
@@ -107,14 +105,15 @@ export default async (req: Request, res: Response): Promise<void> => {
  *         - id
  *       properties:
  *         id:
+ *           description: The ID of a product
  *           type: string
- *           description: The ID of the product
  */
-export class AdminPostProductCategoriesCategoryProductsBatchReq {
+export class AdminDeleteProductCategoriesCategoryProductsBatchReq {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductBatchProductCategory)
   product_ids: ProductBatchProductCategory[]
 }
 
-export class AdminPostProductCategoriesCategoryProductsBatchParams extends FindParams {}
+// eslint-disable-next-line max-len
+export class AdminDeleteProductCategoriesCategoryProductsBatchParams extends FindParams {}
