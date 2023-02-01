@@ -49,7 +49,7 @@ export class Notification extends BaseEntity {
   parent_notification?: Notification
 
   @OneToMany(() => Notification, (noti) => noti.parent_notification)
-  resends: Notification[]
+  resends?: Notification[]
 
   @Column({ nullable: true })
   provider_id: string | null
@@ -77,7 +77,6 @@ export class Notification extends BaseEntity {
  *   - id
  *   - parent_id
  *   - provider_id
- *   - resends
  *   - resource_type
  *   - resource_id
  *   - to

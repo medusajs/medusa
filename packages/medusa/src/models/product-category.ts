@@ -62,7 +62,7 @@ export class ProductCategory extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  products: Product[]
+  products?: Product[]
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -91,7 +91,6 @@ export class ProductCategory extends SoftDeletableEntity {
  *   - mpath
  *   - name
  *   - parent_category_id
- *   - products
  *   - updated_at
  * properties:
  *   id:

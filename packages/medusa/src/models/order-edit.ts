@@ -37,7 +37,7 @@ export class OrderEdit extends BaseEntity {
   @OneToMany(() => OrderItemChange, (oic) => oic.order_edit, {
     cascade: true,
   })
-  changes: OrderItemChange[]
+  changes?: OrderItemChange[]
 
   @Column({ nullable: true })
   internal_note: string | null
@@ -73,7 +73,7 @@ export class OrderEdit extends BaseEntity {
   canceled_at: Date | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order_edit)
-  items: LineItem[]
+  items?: LineItem[]
 
   @Index()
   @Column({ nullable: true })
@@ -128,7 +128,6 @@ export class OrderEdit extends BaseEntity {
  * required:
  *   - canceled_at
  *   - canceled_by
- *   - changes
  *   - confirmed_by
  *   - confirmed_at
  *   - created_at
@@ -138,7 +137,6 @@ export class OrderEdit extends BaseEntity {
  *   - declined_reason
  *   - id
  *   - internal_note
- *   - items
  *   - order_id
  *   - payment_collection_id
  *   - requested_at

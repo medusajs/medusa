@@ -162,7 +162,7 @@ export class Order extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount[]
+  discounts?: Discount[]
 
   @ManyToMany(() => GiftCard, { cascade: ["insert"] })
   @JoinTable({
@@ -176,32 +176,32 @@ export class Order extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard[]
+  gift_cards?: GiftCard[]
 
   @OneToMany(() => ShippingMethod, (method) => method.order, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @OneToMany(() => Payment, (payment) => payment.order, { cascade: ["insert"] })
-  payments: Payment[]
+  payments?: Payment[]
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.order, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments?: Fulfillment[]
 
   @OneToMany(() => Return, (ret) => ret.order, { cascade: ["insert"] })
-  returns: Return[]
+  returns?: Return[]
 
   @OneToMany(() => ClaimOrder, (co) => co.order, { cascade: ["insert"] })
-  claims: ClaimOrder[]
+  claims?: ClaimOrder[]
 
   @OneToMany(() => Refund, (ref) => ref.order, { cascade: ["insert"] })
-  refunds: Refund[]
+  refunds?: Refund[]
 
   @OneToMany(() => Swap, (swap) => swap.order, { cascade: ["insert"] })
-  swaps: Swap[]
+  swaps?: Swap[]
 
   @Column({ nullable: true })
   draft_order_id: string | null
@@ -211,15 +211,15 @@ export class Order extends BaseEntity {
   draft_order?: DraftOrder
 
   @OneToMany(() => OrderEdit, (oe) => oe.order)
-  edits: OrderEdit[]
+  edits?: OrderEdit[]
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
     cascade: ["insert"],
   })
-  items: LineItem[]
+  items?: LineItem[]
 
   @OneToMany(() => GiftCardTransaction, (gc) => gc.order)
-  gift_card_transactions: GiftCardTransaction[]
+  gift_card_transactions?: GiftCardTransaction[]
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date | null
@@ -280,36 +280,24 @@ export class Order extends BaseEntity {
  *   - billing_address_id
  *   - canceled_at
  *   - cart_id
- *   - claims
  *   - created_at
  *   - currency_code
  *   - customer_id
  *   - draft_order_id
- *   - discounts
  *   - display_id
- *   - edits
  *   - email
  *   - external_id
  *   - fulfillment_status
- *   - fulfillments
- *   - gift_card_transactions
- *   - gift_cards
  *   - id
  *   - idempotency_key
- *   - items
  *   - metadata
  *   - no_notification
  *   - object
  *   - payment_status
- *   - payments
- *   - refunds
  *   - region_id
- *   - returns
  *   - sales_channel_id
  *   - shipping_address_id
- *   - shipping_methods
  *   - status
- *   - swaps
  *   - tax_rate
  *   - updated_at
  * properties:

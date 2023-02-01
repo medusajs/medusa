@@ -66,7 +66,7 @@ export class Discount extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  regions: Region[]
+  regions?: Region[]
 
   @Column({ type: Number, nullable: true })
   usage_limit: number | null
@@ -104,7 +104,6 @@ export class Discount extends SoftDeletableEntity {
  *   - metadata
  *   - parent_discount
  *   - parent_discount_id
- *   - regions
  *   - rule_id
  *   - starts_at
  *   - updated_at

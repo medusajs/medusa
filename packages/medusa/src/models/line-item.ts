@@ -70,12 +70,12 @@ export class LineItem extends BaseEntity {
   claim_order?: ClaimOrder
 
   @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
-  tax_lines: LineItemTaxLine[]
+  tax_lines?: LineItemTaxLine[]
 
   @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
     cascade: ["insert"],
   })
-  adjustments: LineItemAdjustment[]
+  adjustments?: LineItemAdjustment[]
 
   @Column({ nullable: true, type: "varchar" })
   original_item_id: string | null
@@ -161,7 +161,6 @@ export class LineItem extends BaseEntity {
  * description: "Line Items represent purchasable units that can be added to a Cart for checkout. When Line Items are purchased they will get copied to the resulting order and can eventually be referenced in Fulfillments and Returns. Line Items may also be created when processing Swaps and Claims."
  * type: object
  * required:
- *   - adjustments
  *   - allow_discounts
  *   - cart_id
  *   - claim_order_id
@@ -181,7 +180,6 @@ export class LineItem extends BaseEntity {
  *   - shipped_quantity
  *   - should_merge
  *   - swap_id
- *   - tax_lines
  *   - thumbnail
  *   - title
  *   - unit_price

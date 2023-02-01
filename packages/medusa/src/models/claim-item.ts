@@ -31,7 +31,7 @@ export class ClaimItem extends SoftDeletableEntity {
   @OneToMany(() => ClaimImage, (ci) => ci.claim_item, {
     cascade: ["insert", "remove"],
   })
-  images: ClaimImage[]
+  images?: ClaimImage[]
 
   @Index()
   @Column()
@@ -78,10 +78,10 @@ export class ClaimItem extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  tags: ClaimTag[]
+  tags?: ClaimTag[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -99,7 +99,6 @@ export class ClaimItem extends SoftDeletableEntity {
  *   - created_at
  *   - deleted_at
  *   - id
- *   - images
  *   - item_id
  *   - note
  *   - quantity
@@ -137,7 +136,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     description: A variant object. Available if the relation `variant` is expanded.
  *     $ref: "#/components/schemas/ProductVariant"
  *   reason:
- *     description: "The reason for the claim"
+ *     description: The reason for the claim
  *     type: string
  *     enum:
  *       - missing_item
@@ -173,6 +172,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     format: date-time
  *   metadata:
  *     description: An optional key-value map with additional details
+ *     nullable: true
  *     type: object
  *     example: {car: "white"}
  */

@@ -38,7 +38,7 @@ export class DiscountRule extends SoftDeletableEntity {
   allocation: AllocationType | null
 
   @OneToMany(() => DiscountCondition, (conditions) => conditions.discount_rule)
-  conditions: DiscountCondition[]
+  conditions?: DiscountCondition[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
@@ -56,7 +56,6 @@ export class DiscountRule extends SoftDeletableEntity {
  * type: object
  * required:
  *   - allocation
- *   - conditions
  *   - created_at
  *   - deleted_at
  *   - id

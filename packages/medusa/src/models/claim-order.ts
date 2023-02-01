@@ -60,10 +60,10 @@ export class ClaimOrder extends SoftDeletableEntity {
   fulfillment_status: ClaimFulfillmentStatus
 
   @OneToMany(() => ClaimItem, (ci) => ci.claim_order)
-  claim_items: ClaimItem[]
+  claim_items?: ClaimItem[]
 
   @OneToMany(() => LineItem, (li) => li.claim_order, { cascade: ["insert"] })
-  additional_items: LineItem[]
+  additional_items?: LineItem[]
 
   @DbAwareColumn({ type: "enum", enum: ClaimType })
   type: ClaimType
@@ -90,12 +90,12 @@ export class ClaimOrder extends SoftDeletableEntity {
   @OneToMany(() => ShippingMethod, (method) => method.claim_order, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.claim_order, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments?: Fulfillment[]
 
   @Column({ type: "int", nullable: true })
   refund_amount: number | null
@@ -124,13 +124,10 @@ export class ClaimOrder extends SoftDeletableEntity {
  * description: "Claim Orders represent a group of faulty or missing items. Each claim order consists of a subset of items associated with an original order, and can contain additional information about fulfillments and returns."
  * type: object
  * required:
- *   - additional_items
  *   - canceled_at
- *   - claim_items
  *   - created_at
  *   - deleted_at
  *   - fulfillment_status
- *   - fulfillments
  *   - id
  *   - idempotency_key
  *   - metadata
@@ -139,7 +136,6 @@ export class ClaimOrder extends SoftDeletableEntity {
  *   - payment_status
  *   - refund_amount
  *   - shipping_address_id
- *   - shipping_methods
  *   - type
  *   - updated_at
  * properties:

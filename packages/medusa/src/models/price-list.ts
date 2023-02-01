@@ -50,12 +50,12 @@ export class PriceList extends SoftDeletableEntity {
   @ManyToMany(() => CustomerGroup, (cg) => cg.price_lists, {
     onDelete: "CASCADE",
   })
-  customer_groups: CustomerGroup[]
+  customer_groups?: CustomerGroup[]
 
   @OneToMany(() => MoneyAmount, (moneyAmount) => moneyAmount.price_list, {
     onDelete: "CASCADE",
   })
-  prices: MoneyAmount[]
+  prices?: MoneyAmount[]
 
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax?: boolean
@@ -73,13 +73,11 @@ export class PriceList extends SoftDeletableEntity {
  * type: object
  * required:
  *   - created_at
- *   - customer_groups
  *   - deleted_at
  *   - description
  *   - ends_at
  *   - id
  *   - name
- *   - prices
  *   - starts_at
  *   - status
  *   - type

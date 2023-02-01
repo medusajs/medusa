@@ -10,19 +10,14 @@
  *   - created_at
  *   - customer_id
  *   - deleted_at
- *   - discounts
- *   - gift_cards
  *   - email
  *   - id
  *   - idempotency_key
- *   - items
  *   - metadata
  *   - payment_authorized_at
  *   - payment_id
- *   - payment_session
  *   - region_id
  *   - shipping_address_id
- *   - shipping_methods
  *   - type
  *   - updated_at
  * properties:
@@ -270,7 +265,7 @@ export class Cart extends SoftDeletableEntity {
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
     cascade: ["insert", "remove"],
   })
-  items: LineItem[]
+  items?: LineItem[]
 
   @Index()
   @Column()
@@ -292,7 +287,7 @@ export class Cart extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount[]
+  discounts?: Discount[]
 
   @ManyToMany(() => GiftCard)
   @JoinTable({
@@ -306,7 +301,7 @@ export class Cart extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard[]
+  gift_cards?: GiftCard[]
 
   @Index()
   @Column({ nullable: true })
@@ -321,7 +316,7 @@ export class Cart extends SoftDeletableEntity {
   @OneToMany(() => PaymentSession, (paymentSession) => paymentSession.cart, {
     cascade: true,
   })
-  payment_sessions: PaymentSession[]
+  payment_sessions?: PaymentSession[]
 
   @Index()
   @Column({ nullable: true })
@@ -334,7 +329,7 @@ export class Cart extends SoftDeletableEntity {
   @OneToMany(() => ShippingMethod, (method) => method.cart, {
     cascade: ["soft-remove", "remove"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @DbAwareColumn({ type: "enum", enum: CartType, default: "default" })
   type: CartType

@@ -62,12 +62,12 @@ export class Fulfillment extends BaseEntity {
     eager: true,
     cascade: true,
   })
-  items: FulfillmentItem[]
+  items?: FulfillmentItem[]
 
   @OneToMany(() => TrackingLink, (tl) => tl.fulfillment, {
     cascade: ["insert"],
   })
-  tracking_links: TrackingLink[]
+  tracking_links?: TrackingLink[]
 
   /**
    * @deprecated
@@ -108,7 +108,6 @@ export class Fulfillment extends BaseEntity {
  *   - data
  *   - id
  *   - idempotency_key
- *   - items
  *   - location_id
  *   - metadata
  *   - no_notification
@@ -116,7 +115,6 @@ export class Fulfillment extends BaseEntity {
  *   - provider_id
  *   - shipped_at
  *   - swap_id
- *   - tracking_links
  *   - tracking_numbers
  *   - updated_at
  * properties:

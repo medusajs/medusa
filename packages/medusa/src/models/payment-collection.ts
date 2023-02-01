@@ -71,7 +71,7 @@ export class PaymentCollection extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  payment_sessions: PaymentSession[]
+  payment_sessions?: PaymentSession[]
 
   @ManyToMany(() => Payment)
   @JoinTable({
@@ -85,7 +85,7 @@ export class PaymentCollection extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  payments: Payment[]
+  payments?: Payment[]
 
   @DbAwareColumn({ type: "jsonb" })
   metadata: Record<string, unknown>
@@ -113,8 +113,6 @@ export class PaymentCollection extends SoftDeletableEntity {
  *   - deleted_at
  *   - description
  *   - id
- *   - payment_sessions
- *   - payments
  *   - region_id
  *   - status
  *   - type

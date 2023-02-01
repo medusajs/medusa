@@ -65,18 +65,18 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  images: Image[]
+  images?: Image[]
 
   @Column({ type: "text", nullable: true })
   thumbnail: string | null
 
   @OneToMany(() => ProductOption, (productOption) => productOption.product)
-  options: ProductOption[]
+  options?: ProductOption[]
 
   @OneToMany(() => ProductVariant, (variant) => variant.product, {
     cascade: true,
   })
-  variants: ProductVariant[]
+  variants?: ProductVariant[]
 
   @ManyToMany(() => ProductCategory, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
@@ -90,7 +90,7 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  categories: ProductCategory[]
+  categories?: ProductCategory[]
 
   @Index()
   @Column()
@@ -150,7 +150,7 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  tags: ProductTag[]
+  tags?: ProductTag[]
 
   @Column({ default: true })
   discountable: boolean
@@ -175,7 +175,7 @@ export class Product extends SoftDeletableEntity {
       },
     }),
   ])
-  sales_channels: SalesChannel[]
+  sales_channels?: SalesChannel[]
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -194,7 +194,6 @@ export class Product extends SoftDeletableEntity {
  * description: "Products are a grouping of Product Variants that have common properties such as images and descriptions. Products can have multiple options which define the properties that Product Variants differ by."
  * type: object
  * required:
- *   - categories
  *   - collection_id
  *   - created_at
  *   - deleted_at
@@ -205,23 +204,18 @@ export class Product extends SoftDeletableEntity {
  *   - height
  *   - hs_code
  *   - id
- *   - images
  *   - is_giftcard
  *   - length
  *   - material
  *   - mid_code
- *   - options
  *   - origin_country
  *   - profile_id
- *   - sales_channels
  *   - status
  *   - subtitle
- *   - tags
  *   - type_id
  *   - thumbnail
  *   - title
  *   - updated_at
- *   - variants
  *   - weight
  *   - width
  * properties:

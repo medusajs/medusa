@@ -16,7 +16,7 @@ export class ProductCollection extends SoftDeletableEntity {
   handle: string | null
 
   @OneToMany(() => Product, (product) => product.collection)
-  products: Product[]
+  products?: Product[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
@@ -42,7 +42,6 @@ export class ProductCollection extends SoftDeletableEntity {
  *   - deleted_at
  *   - handle
  *   - id
- *   - products
  *   - title
  *   - updated_at
  * properties:

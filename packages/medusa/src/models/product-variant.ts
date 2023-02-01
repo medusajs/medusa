@@ -32,7 +32,7 @@ export class ProductVariant extends SoftDeletableEntity {
     cascade: true,
     onDelete: "CASCADE",
   })
-  prices: MoneyAmount[]
+  prices?: MoneyAmount[]
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
@@ -89,7 +89,7 @@ export class ProductVariant extends SoftDeletableEntity {
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
     cascade: true,
   })
-  options: ProductOptionValue[]
+  options?: ProductOptionValue[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
@@ -120,9 +120,7 @@ export class ProductVariant extends SoftDeletableEntity {
  *   - material
  *   - metadata
  *   - mid_code
- *   - options
  *   - origin_country
- *   - prices
  *   - product_id
  *   - sku
  *   - title
