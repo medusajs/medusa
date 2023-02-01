@@ -30,7 +30,7 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
     category_id?: {
       value: string[]
     }
-    category_children?: boolean
+    include_category_children?: boolean
     discount_condition_id?: string
   }
 }
@@ -64,8 +64,9 @@ export class ProductRepository extends Repository<Product> {
     const categories = optionsWithoutRelations?.where?.category_id
     delete optionsWithoutRelations?.where?.category_id
 
-    const category_children = optionsWithoutRelations?.where?.category_children
-    delete optionsWithoutRelations?.where?.category_children
+    const include_category_children =
+      optionsWithoutRelations?.where?.include_category_children
+    delete optionsWithoutRelations?.where?.include_category_children
 
     const discount_condition_id =
       optionsWithoutRelations?.where?.discount_condition_id
@@ -109,25 +110,32 @@ export class ProductRepository extends Repository<Product> {
     if (categories) {
       let categoryIds = categories.value
 
-      if (category_children) {
-        const categoryRepository = this.manager.getTreeRepository(ProductCategory)
-        const categories = await categoryRepository.find({ where: { id: In(categoryIds) }})
+      if (include_category_children) {
+        const categoryRepository =
+          this.manager.getTreeRepository(ProductCategory)
+        const categories = await categoryRepository.find({
+          where: { id: In(categoryIds) },
+        })
 
         categoryIds = []
         for (const category of categories) {
-          const categoryChildren = await categoryRepository.findDescendantsTree(category)
+          const categoryChildren = await categoryRepository.findDescendantsTree(
+            category
+          )
 
           const getAllIdsRecursively = (productCategory: ProductCategory) => {
-            let result = [productCategory.id];
+            let result = [productCategory.id]
 
-            (productCategory.category_children || []).forEach(child => {
+            ;(productCategory.category_children || []).forEach((child) => {
               result = result.concat(getAllIdsRecursively(child))
             })
 
             return result
           }
 
-          categoryIds = categoryIds.concat(getAllIdsRecursively(categoryChildren))
+          categoryIds = categoryIds.concat(
+            getAllIdsRecursively(categoryChildren)
+          )
         }
       }
 
@@ -135,8 +143,8 @@ export class ProductRepository extends Repository<Product> {
         qb.innerJoin(
           `${productAlias}.categories`,
           "categories",
-          "categories.id IN (:...categories_ids)",
-          { categories_ids: categoryIds }
+          "categories.id IN (:...categoryIds)",
+          { categoryIds }
         )
       }
     }

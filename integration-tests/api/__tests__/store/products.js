@@ -520,10 +520,29 @@ describe("/store/products", () => {
         )
       })
 
+      it("returns a list of products in product category without category children explicitly set to false", async () => {
+        const api = useApi()
+        const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(1)
+        expect(response.data.products).toEqual(
+          [
+            expect.objectContaining({
+              id: testProductId,
+            }),
+          ]
+        )
+      })
+
       it("returns a list of products in product category with category children", async () => {
         const api = useApi()
 
-        const params = `category_id[]=${categoryWithProductId}&category_children=true`
+        const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
         const response = await api
           .get(
             `/store/products?${params}`,
@@ -549,7 +568,7 @@ describe("/store/products", () => {
       it("returns no products when product category with category children does not have products", async () => {
         const api = useApi()
 
-        const params = `category_id[]=${categoryWithoutProductId}&category_children=true`
+        const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
         const response = await api
           .get(
             `/store/products?${params}`,

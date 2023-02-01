@@ -129,12 +129,12 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *     name: category_id
  *     style: form
  *     explode: false
- *     description: Category ids to search for.
+ *     description: Category ids to filter by.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) category_children {boolean} Search for products with category including children.
+ *   - (query) include_category_children {boolean} Include category children when filtering by category_id.
  *   - (query) offset=0 {integer} How many products to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
@@ -320,7 +320,7 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
-  category_children?: boolean
+  include_category_children?: boolean
 
   @IsOptional()
   @ValidateNested()

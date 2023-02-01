@@ -86,7 +86,7 @@ export class FilterableProductProps {
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
-  category_children?: boolean
+  include_category_children?: boolean
 
   @IsOptional()
   @ValidateNested()
