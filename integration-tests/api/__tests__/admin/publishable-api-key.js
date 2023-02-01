@@ -1,8 +1,6 @@
 const path = require("path")
 const { IdMap } = require("medusa-test-utils")
 
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
@@ -39,9 +37,7 @@ describe("Publishable API keys", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({
-      cwd,
-    })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {

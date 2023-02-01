@@ -1,9 +1,9 @@
-import { BeforeInsert, Column } from "typeorm"
+import { BeforeInsert, Column, Entity } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
-import { resolveDbType } from "../utils/db-aware-column"
-import { generateEntityId } from "../utils"
+import { generateEntityId, resolveDbType } from "../utils"
 
+@Entity()
 export class PublishableApiKey extends BaseEntity {
   @Column({ type: "varchar", nullable: true })
   created_by: string | null
