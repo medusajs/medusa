@@ -5,6 +5,7 @@ import {
   ICacheService,
 } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
 
 type InjectedDependencies = {}
 
@@ -12,6 +13,9 @@ class InMemoryCacheService
   extends TransactionBaseService
   implements ICacheService
 {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   protected readonly store = new Map()
 
   private readonly timestamps = new Map()

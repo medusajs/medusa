@@ -34,7 +34,7 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
     canOverride: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
-      resources: MODULE_RESOURCE_TYPE.ISOLATED,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
 ]
