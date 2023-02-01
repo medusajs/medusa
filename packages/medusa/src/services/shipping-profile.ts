@@ -260,7 +260,14 @@ class ShippingProfileService extends TransactionBaseService {
         )
       }
 
-      const created = profileRepository.create(profile)
+      const { metadata, ...rest } = profile
+
+      const created = profileRepository.create(rest)
+
+      if (metadata) {
+        created.metadata = setMetadata(created, metadata)
+      }
+
       const result = await profileRepository.save(created)
       return result
     })
