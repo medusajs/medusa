@@ -83,6 +83,16 @@ import { FilterableProductProps } from "../../../../types/product"
  *       type: array
  *       items:
  *         type: string
+ *   - in: query
+ *     name: category_id
+ *     style: form
+ *     explode: false
+ *     description: Category ids to search for.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) category_children {boolean} Search for products with category including children.
  *   - (query) title {string} title to search for.
  *   - (query) description {string} description to search for.
  *   - (query) handle {string} handle to search for.
