@@ -38,7 +38,7 @@ export class Return extends BaseEntity {
     eager: true,
     cascade: ["insert"],
   })
-  items: ReturnItem[]
+  items?: ReturnItem[]
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -46,7 +46,7 @@ export class Return extends BaseEntity {
 
   @OneToOne(() => Swap, (swap) => swap.return_order)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap?: Swap
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -54,7 +54,7 @@ export class Return extends BaseEntity {
 
   @OneToOne(() => ClaimOrder, (co) => co.return_order)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order?: ClaimOrder
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -62,25 +62,25 @@ export class Return extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.returns)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order
 
   @OneToOne(() => ShippingMethod, (method) => method.return_order, {
     cascade: true,
   })
-  shipping_method: ShippingMethod
+  shipping_method?: ShippingMethod
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  shipping_data: Record<string, unknown> | null
 
   @Index()
   @Column({ nullable: true, type: "text" })
   location_id: string | null
 
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  shipping_data: Record<string, unknown>
-
   @Column({ type: "int" })
   refund_amount: number
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  received_at: Date
+  received_at: Date | null
 
   @Column({ type: "boolean", nullable: true })
   no_notification: boolean | null
@@ -103,14 +103,27 @@ export class Return extends BaseEntity {
  * description: "Return orders hold information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can be used as part of a Swap."
  * type: object
  * required:
+ *   - claim_order_id
+ *   - created_at
+ *   - id
+ *   - idempotency_key
+ *   - location_id
+ *   - metadata
+ *   - no_notification
+ *   - order_id
+ *   - received_at
  *   - refund_amount
+ *   - shipping_data
+ *   - status
+ *   - swap_id
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The return's ID
+ *     type: string
  *     example: ret_01F0YET7XPCMF8RZ0Y151NZV2V
  *   status:
- *     description: "Status of the Return."
+ *     description: Status of the Return.
  *     type: string
  *     enum:
  *       - requested
@@ -124,63 +137,74 @@ export class Return extends BaseEntity {
  *     items:
  *       $ref: "#/components/schemas/ReturnItem"
  *   swap_id:
- *     description: "The ID of the Swap that the Return is a part of."
+ *     description: The ID of the Swap that the Return is a part of.
+ *     nullable: true
  *     type: string
  *     example: null
  *   swap:
  *     description: A swap object. Available if the relation `swap` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Swap"
  *   order_id:
- *     description: "The ID of the Order that the Return is made from."
+ *     description: The ID of the Order that the Return is made from.
+ *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Order"
  *   claim_order_id:
- *     description: "The ID of the Claim that the Return is a part of."
+ *     description: The ID of the Claim that the Return is a part of.
+ *     nullable: true
  *     type: string
  *     example: null
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/ClaimOrder"
  *   shipping_method:
  *     description: The Shipping Method that will be used to send the Return back. Can be null if the Customer facilitates the return shipment themselves. Available if the relation `shipping_method` is expanded.
- *     type: array
- *     items:
- *       $ref: "#/components/schemas/ShippingMethod"
+ *     $ref: "#/components/schemas/ShippingMethod"
  *   shipping_data:
- *     description: "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment."
+ *     description: Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.
+ *     nullable: true
  *     type: object
  *     example: {}
+ *   location_id:
+ *     description: The id of the stock location the return will be added back.
+ *     nullable: true
+ *     type: string
+ *     example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   refund_amount:
- *     description: "The amount that should be refunded as a result of the return."
+ *     description: The amount that should be refunded as a result of the return.
  *     type: integer
  *     example: 1000
  *   no_notification:
- *     description: "When set to true, no notification will be sent related to this return."
+ *     description: When set to true, no notification will be sent related to this return.
+ *     nullable: true
  *     type: boolean
  *     example: false
  *   idempotency_key:
- *     type: string
  *     description: Randomly generated key used to continue the completion of the return in case of failure.
+ *     nullable: true
+ *     type: string
  *     externalDocs:
  *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
  *       description: Learn more how to use the idempotency key.
  *   received_at:
- *     description: "The date with timezone at which the return was received."
+ *     description: The date with timezone at which the return was received.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

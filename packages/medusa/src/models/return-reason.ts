@@ -22,24 +22,24 @@ export class ReturnReason extends SoftDeletableEntity {
   label: string
 
   @Column({ nullable: true })
-  description: string
+  description: string | null
 
   @Column({ nullable: true })
   parent_return_reason_id: string | null
 
   @ManyToOne(() => ReturnReason, { cascade: ["soft-remove"] })
   @JoinColumn({ name: "parent_return_reason_id" })
-  parent_return_reason: ReturnReason | null
+  parent_return_reason?: ReturnReason
 
   @OneToMany(
     () => ReturnReason,
     (return_reason) => return_reason.parent_return_reason,
     { cascade: ["insert", "soft-remove"] }
   )
-  return_reason_children: ReturnReason[]
+  return_reason_children?: ReturnReason[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -53,28 +53,37 @@ export class ReturnReason extends SoftDeletableEntity {
  * description: "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned."
  * type: object
  * required:
- *   - value
+ *   - created_at
+ *   - deleted_at
+ *   - description
+ *   - id
  *   - label
+ *   - metadata
+ *   - parent_return_reason_id
+ *   - updated_at
+ *   - value
  * properties:
  *   id:
+ *     description: The return reason's ID
  *     type: string
- *     description: The cart's ID
  *     example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
  *   description:
- *     description: "A description of the Reason."
+ *     description: A description of the Reason.
+ *     nullable: true
  *     type: string
  *     example: Items that are damaged
  *   label:
- *     description: "A text that can be displayed to the Customer as a reason."
+ *     description: A text that can be displayed to the Customer as a reason.
  *     type: string
  *     example: Damaged goods
  *   value:
- *     description: "The value to identify the reason by."
+ *     description: The value to identify the reason by.
  *     type: string
  *     example: damaged
  *   parent_return_reason_id:
- *     type: string
  *     description: The ID of the parent reason.
+ *     nullable: true
+ *     type: string
  *     example: null
  *   parent_return_reason:
  *     description: Available if the relation `parent_return_reason` is expanded.
@@ -91,11 +100,13 @@ export class ReturnReason extends SoftDeletableEntity {
  *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

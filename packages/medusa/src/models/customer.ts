@@ -94,7 +94,6 @@ export class Customer extends SoftDeletableEntity {
  *   - id
  *   - last_name
  *   - metadata
- *   - password_hash
  *   - phone
  *   - updated_at
  * properties:

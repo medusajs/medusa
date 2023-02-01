@@ -21,7 +21,7 @@ export class ShippingMethodTaxLine extends TaxLine {
 
   @ManyToOne(() => ShippingMethod, (sm) => sm.tax_lines)
   @JoinColumn({ name: "shipping_method_id" })
-  shipping_method: ShippingMethod
+  shipping_method?: ShippingMethod
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -35,14 +35,32 @@ export class ShippingMethodTaxLine extends TaxLine {
  * description: "Shipping Method Tax Line"
  * type: object
  * required:
+ *   - code
+ *   - created_at
+ *   - id
  *   - shipping_method_id
- *   - rate
+ *   - metadata
  *   - name
+ *   - rate
+ *   - updated_at
  * properties:
  *   id:
  *     type: string
  *     description: The line item tax line's ID
- *     example: smtl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
+ *     example: litl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
+ *   code:
+ *     description: A code to identify the tax type by
+ *     nullable: true
+ *     type: string
+ *     example: tax01
+ *   name:
+ *     description: A human friendly name for the tax
+ *     type: string
+ *     example: Tax Example
+ *   rate:
+ *     description: "The numeric rate to charge tax by"
+ *     type: number
+ *     example: 10
  *   shipping_method_id:
  *     type: string
  *     description: The ID of the line item
@@ -50,28 +68,17 @@ export class ShippingMethodTaxLine extends TaxLine {
  *   shipping_method:
  *     description: Available if the relation `shipping_method` is expanded.
  *     $ref: "#/components/schemas/ShippingMethod"
- *   code:
- *     description: "A code to identify the tax type by"
- *     type: string
- *     example: tax01
- *   name:
- *     description: "A human friendly name for the tax"
- *     type: string
- *     example: Tax Example
- *   rate:
- *     description: "The numeric rate to charge tax by"
- *     type: number
- *     example: 10
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */
