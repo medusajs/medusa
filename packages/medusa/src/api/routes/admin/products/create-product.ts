@@ -40,6 +40,7 @@ import {
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
 import { DistributedTransaction } from "../../../../utils/transaction"
+import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /products
@@ -106,6 +107,7 @@ import { DistributedTransaction } from "../../../../utils/transaction"
 export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
 
+  const logger: Logger = req.scope.resolve("logger")
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const productVariantService: ProductVariantService = req.scope.resolve(
@@ -191,7 +193,7 @@ export default async (req, res) => {
             await revertVariantTransaction(
               transactionDependencies,
               transaction
-            ).catch((e) => void 0)
+            ).catch(() => logger.warn("Transaction couldn't be reverted."))
           })
         )
 

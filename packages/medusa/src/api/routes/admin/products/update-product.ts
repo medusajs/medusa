@@ -42,6 +42,7 @@ import {
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
 import { IInventoryService } from "../../../../interfaces"
+import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /products/{id}
@@ -111,6 +112,7 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostProductsProductReq, req.body)
 
+  const logger: Logger = req.scope.resolve("logger")
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const productVariantService: ProductVariantService = req.scope.resolve(
@@ -202,7 +204,7 @@ export default async (req, res) => {
               await revertVariantTransaction(
                 transactionDependencies,
                 transaction
-              ).catch((e) => void 0)
+              ).catch(() => logger.warn("Transaction couldn't be reverted."))
             })
           )
 
