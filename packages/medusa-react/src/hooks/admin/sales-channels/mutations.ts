@@ -170,7 +170,6 @@ export const useAdminAddProductsToSalesChannel = (
  * @experimental This feature is under development and may change in the future.
  * To use this feature please install the stock location in your medusa backend project.
  * @description Add a location to a sales channel
- * @param id
  * @param options
  */
 export const useAdminAddLocationToSalesChannel = (
@@ -195,7 +194,6 @@ export const useAdminAddLocationToSalesChannel = (
  * @experimental This feature is under development and may change in the future.
  * To use this feature please install the stock location in your medusa backend project.
  * @description Remove a location from a sales channel
- * @param id
  * @param options
  */
 export const useAdminRemoveLocationFromSalesChannel = (
