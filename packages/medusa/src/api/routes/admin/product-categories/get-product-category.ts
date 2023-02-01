@@ -18,6 +18,16 @@ import { defaultAdminProductCategoryRelations } from "."
  *   method: retrieve
  *   queryParams: AdminGetProductCategoryParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.productCategories.retrieve(product_category_id)
+ *       .then(({ product_category }) => {
+ *         console.log(product_category.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
