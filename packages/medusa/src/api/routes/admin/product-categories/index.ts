@@ -32,6 +32,13 @@ import addProductsBatch, {
   AdminPostProductCategoriesCategoryProductsBatchParams,
 } from "./add-products-batch"
 
+import deleteProductsBatch, {
+  AdminDeleteProductCategoriesCategoryProductsBatchReq,
+  AdminDeleteProductCategoriesCategoryProductsBatchParams,
+} from "./delete-products-batch"
+
+import { ProductCategory } from "../../../../models"
+
 const route = Router()
 
 export default (app) => {
@@ -98,6 +105,17 @@ export default (app) => {
     middlewares.wrap(addProductsBatch)
   )
 
+  route.delete(
+    "/:id/products/batch",
+    transformQuery(
+      AdminDeleteProductCategoriesCategoryProductsBatchParams,
+      retrieveTransformQueryConfig
+    ),
+    transformBody(AdminDeleteProductCategoriesCategoryProductsBatchReq),
+    validateProductsExist((req) => req.body.product_ids),
+    middlewares.wrap(deleteProductsBatch)
+  )
+
   return app
 }
 
@@ -125,3 +143,14 @@ export const defaultProductCategoryFields = [
   "created_at",
   "updated_at",
 ]
+
+/**
+ * @schema AdminProductCategoriesRes
+ * type: object
+ * properties:
+ *   product_category:
+ *     $ref: "#/components/schemas/ProductCategory"
+ */
+export type AdminProductCategoriesRes = {
+  product_category: ProductCategory
+}

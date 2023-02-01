@@ -23,7 +23,9 @@ export const buildOptions = <
       }
 
       if (queryKey !== undefined) {
-        queryClient.invalidateQueries(queryKey)
+        queryKey.forEach((key) => {
+          queryClient.invalidateQueries({ queryKey: key as QueryKey })
+        })
       }
     },
   }

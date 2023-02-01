@@ -1,3 +1,8 @@
+---
+description: 'Learn how to implement customer-related functionalities for admins using the REST APIs. This includes how to list customers, add a new customer and edit the details of a customer.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -31,6 +36,12 @@ This guide includes code snippets to send requests to your Medusa server using M
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
 
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+
 ### Authenticated Admin User
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
@@ -51,6 +62,34 @@ medusa.admin.customers.list()
 .then(({ customers, limit, offset, count }) => {
   console.log(customers.length)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { Customer } from "@medusajs/medusa"
+import { useAdminCustomers } from "medusa-react"
+
+const Customers = () => {
+  const { customers, isLoading } = useAdminCustomers()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {customers && !customers.length && <span>No customers</span>}
+      {customers && customers.length > 0 && (
+        <ul>
+          {customers.map((customer: Customer) => (
+            <li key={customer.id}>{customer.first_name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Customers
 ```
 
 </TabItem>
@@ -113,6 +152,38 @@ medusa.admin.customers.create({
 .then(({ customer }) => {
   console.log(customer.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateCustomer } from "medusa-react"
+
+const CreateCustomer = () => {
+  const createCustomer = useAdminCreateCustomer()
+  // ...
+
+  const handleCreate = () => {
+    // ...
+    createCustomer.mutate({
+      first_name,
+      last_name,
+      email,
+      password,
+    })
+  }
+
+  // ...
+  
+  return (
+    <form>
+      {/* Render form */}
+    </form>
+  )
+}
+
+export default CreateCustomer
 ```
 
 </TabItem>
@@ -185,6 +256,38 @@ medusa.admin.customers.update(customerId, {
 .then(({ customer }) => {
   console.log(customer.id)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateCustomer } from "medusa-react"
+
+const UpdateCustomer = () => {
+  const updateCustomer = useAdminUpdateCustomer(customerId)
+  // ...
+
+  const handleUpdate = () => {
+    // ...
+    updateCustomer.mutate({
+      email,
+      password,
+      first_name,
+      last_name,
+    })
+  }
+
+  // ...
+  
+  return (
+    <form>
+      {/* Render form */}
+    </form>
+  )
+}
+
+export default UpdateCustomer
 ```
 
 </TabItem>

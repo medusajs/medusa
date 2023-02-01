@@ -543,15 +543,28 @@ components:
         of `{api_token}`. This is where you must pass the API token.
 
 
-        If you're alternatively following along with the JS Client request
-        samples, you must provide the `apiKey` option when creating the Medusa
-        client:
+        If you're following along with the JS Client request samples, you must
+        provide the `apiKey` option when creating the Medusa client:
 
 
-        ```js
+        ```ts
 
         const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3,
         apiKey: '{api_token}' })
+
+        ```
+
+
+        If you're using Medusa React, you can pass the `apiKey` prop to
+        `MedusaProvider`:
+
+
+        ```tsx
+
+        <MedusaProvider
+          apiKey='{api_token}'
+          //...
+        >
 
         ```
       scheme: bearer
