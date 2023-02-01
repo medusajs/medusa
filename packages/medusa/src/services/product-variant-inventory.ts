@@ -1,6 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import {
+  IEventBusService,
   IInventoryService,
   IStockLocationService,
   TransactionBaseService,
@@ -15,6 +16,7 @@ import {
 import { PricedProduct, PricedVariant } from "../types/pricing"
 import {
   CacheService,
+  EventBusService,
   ProductVariantService,
   SalesChannelInventoryService,
   SalesChannelLocationService,
@@ -27,9 +29,14 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   stockLocationService: IStockLocationService
   inventoryService: IInventoryService
+  eventBusService: EventBusService
 }
 
 class ProductVariantInventoryService extends TransactionBaseService {
+  static readonly Events = {
+    RESERVATION_CREATED: "product_variant_inventory.reservation_created",
+  }
+
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -39,6 +46,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly stockLocationService_: IStockLocationService
   protected readonly inventoryService_: IInventoryService
   protected readonly cacheService_: CacheService
+  protected readonly eventBusService_: EventBusService
 
   constructor({
     manager,
@@ -47,6 +55,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     salesChannelInventoryService,
     productVariantService,
     inventoryService,
+    eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -57,6 +66,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.stockLocationService_ = stockLocationService
     this.productVariantService_ = productVariantService
     this.inventoryService_ = inventoryService
+    this.eventBusService_ = eventBusService
   }
 
   /**
@@ -390,7 +400,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationId = locations[0]
     }
 
-    return await Promise.all(
+    const location = await this.stockLocationService_.retrieve(
+      locationId as string
+    )
+
+    const reservationItems = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_
@@ -403,6 +417,19 @@ class ProductVariantInventoryService extends TransactionBaseService {
           })
       })
     )
+
+    // emit event
+    await this.eventBusService_.emit(
+      ProductVariantInventoryService.Events.RESERVATION_CREATED,
+      {
+        variant_id: variantId,
+        quantity,
+        locationId,
+        reservationItems: reservationItems.map((i) => i.id),
+      }
+    )
+
+    return reservationItems
   }
 
   /**

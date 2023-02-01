@@ -1,3 +1,5 @@
+import { ProductVariantInventoryService } from "@medusajs/medusa"
+
 class OrderSubscriber {
   constructor({
     eventBusService,
@@ -45,6 +47,15 @@ class OrderSubscriber {
       this.registerSwapPayment
     )
     eventBusService.subscribe("swap.received", this.registerSwap)
+
+    eventBusService.subscribe(
+      ProductVariantInventoryService.Events.RESERVATION_CREATED,
+      this.registerMedusaReservation
+    )
+  }
+
+  registerMedusaReservation = (data) => {
+    return this.brightpearlService_.createReservation(data)
   }
 
   sendToBrightpearl = (data) => {

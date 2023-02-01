@@ -14,6 +14,7 @@ class BrightpearlService extends BaseService {
       swapService,
       claimService,
       discountService,
+      stockLocationService,
     },
     options
   ) {
@@ -29,6 +30,7 @@ class BrightpearlService extends BaseService {
     this.oauthService_ = oauthService
     this.swapService_ = swapService
     this.claimService_ = claimService
+    this.stockLocationService_ = stockLocationService
   }
 
   async getClient() {
@@ -363,6 +365,64 @@ class BrightpearlService extends BaseService {
           console.log(err.response.data.errors)
         })
     }
+  }
+
+  async createReservation(eventData) {
+    // TODO cut this down to size
+    const { variant_id, quantity, reservationItems, locationId } = eventData
+    const client = await this.getClient()
+
+    let warehouse = this.options.warehouse
+
+    if (locationId && this.stockLocationService_) {
+      const location = await this.stockLocationService_.retrieve(locationId)
+      if (
+        location &&
+        location.metadata &&
+        location.metadata.brightpearl_warehouse_id
+      ) {
+        warehouse = location.metadata.brightpearl_warehouse_id
+      }
+    }
+    const variant = await this.productVariantService_.retrieve(variant_id)
+
+    // fetch order
+    // TODO this doesn't work with reservations that don't have a line item
+    // suggestion: create a reservations as we have done with
+    const order = { id: "test" }
+
+    let reservation = await client.warehouses.retrieveReservation(order.id)
+
+    if (!reservation) {
+      order.lineItems = {}
+      reservation = await client.warehouses.createReservation(order, warehouse)
+
+      // race conditions
+      if (reservation.errors) {
+        reservation = await client.warehouses.retrieveReservation(order.id)
+      }
+    }
+
+    const bpProduct = await this.retrieveProductBySKU(variant.sku)
+
+    const payload = {
+      products: [
+        {
+          productId: bpProduct.id,
+          quantity,
+        },
+      ],
+    }
+
+    return client.warehouses.updateReservation(order.id, payload)
+
+    // .then(async (salesOrderId) => {
+    //   const order = await client.orders.retrieve(salesOrderId)
+    // await client.warehouses.createReservation(order, warehouse).catch((err) => {
+    // console.log("Failed to allocate for order:", salesOrderId)
+    // })
+    //   return salesOrderId
+    // })
   }
 
   async createSalesCredit(fromOrder, fromReturn) {

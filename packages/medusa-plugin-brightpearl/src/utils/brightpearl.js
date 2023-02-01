@@ -198,6 +198,17 @@ class BrightpearlClient {
           data,
         })
       },
+      updateReservation: (orderId, data) => {
+        return this.client_
+          .request({
+            url: `/warehouse-service/order/${orderId}/reservation`,
+            method: "POST",
+            data: {
+              products: data,
+            },
+          })
+          .then(({ data }) => data.response)
+      },
       createReservation: (order, warehouse) => {
         const id = order.id
         const data = order.rows.map((r) => ({
