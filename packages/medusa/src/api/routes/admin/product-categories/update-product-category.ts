@@ -57,10 +57,7 @@ import { FindParams } from "../../../../types/common"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            product_category:
- *              $ref: "#/components/schemas/ProductCategory"
+ *          $ref: "#/components/schemas/AdminProductCategoriesCategoryRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

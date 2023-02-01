@@ -6,7 +6,7 @@ import {
   AdminPostProductCategoriesCategoryParams,
   AdminProductCategoriesCategoryDeleteRes,
   AdminProductCategoriesListRes,
-  AdminProductCategoriesRes,
+  AdminProductCategoriesCategoryRes,
   AdminGetProductCategoryParams,
 } from "@medusajs/medusa"
 import qs from "qs"
@@ -24,7 +24,7 @@ class AdminProductCategoriesResource extends BaseResource {
     productCategoryId: string,
     query?: AdminGetProductCategoryParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminProductCategoriesRes> {
+  ): ResponsePromise<AdminProductCategoriesCategoryRes> {
     let path = `/admin/product-categories/${productCategoryId}`
 
     if (query) {
@@ -42,7 +42,7 @@ class AdminProductCategoriesResource extends BaseResource {
   create(
     payload: AdminPostProductCategoriesReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminProductCategoriesRes> {
+  ): ResponsePromise<AdminProductCategoriesCategoryRes> {
     const path = `/admin/product-categories`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -57,7 +57,7 @@ class AdminProductCategoriesResource extends BaseResource {
     productCategoryId: string,
     payload: AdminPostProductCategoriesCategoryParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminProductCategoriesRes> {
+  ): ResponsePromise<AdminProductCategoriesCategoryRes> {
     const path = `/admin/product-categories/${productCategoryId}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -109,7 +109,7 @@ class AdminProductCategoriesResource extends BaseResource {
     productCategoryId: string,
     payload: AdminDeleteProductCategoriesCategoryProductsBatchReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminProductCategoriesRes> {
+  ): ResponsePromise<AdminProductCategoriesCategoryRes> {
     const path = `/admin/product-categories/${productCategoryId}/products/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
@@ -125,7 +125,7 @@ class AdminProductCategoriesResource extends BaseResource {
     productCategoryId: string,
     payload: AdminPostProductCategoriesCategoryProductsBatchReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminProductCategoriesRes> {
+  ): ResponsePromise<AdminProductCategoriesCategoryRes> {
     const path = `/admin/product-categories/${productCategoryId}/products/batch`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

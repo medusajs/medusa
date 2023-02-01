@@ -24,6 +24,7 @@ import { FindParams } from "../../../../types/common"
  *         $ref: "#/components/schemas/AdminPostProductCategoriesCategoryProductsBatchReq"
  * x-codegen:
  *   method: addProducts
+ *   queryParams: AdminPostProductCategoriesCategoryProductsBatchParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -66,7 +67,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminProductCategoriesRes"
+ *           $ref: "#/components/schemas/AdminProductCategoriesCategoryRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

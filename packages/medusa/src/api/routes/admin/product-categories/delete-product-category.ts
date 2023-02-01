@@ -35,7 +35,7 @@ import { ProductCategoryService } from "../../../../services"
  * tags:
  *   - Product Category
  * responses:
- *   200:
+ *   "200":
  *     description: OK
  *     content:
  *       application/json:

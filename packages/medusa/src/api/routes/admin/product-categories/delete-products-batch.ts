@@ -61,12 +61,12 @@ import { FindParams } from "../../../../types/common"
  * tags:
  *   - Product Category
  * responses:
- *   200:
+ *   "200":
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminProductCategoriesRes"
+ *           $ref: "#/components/schemas/AdminProductCategoriesCategoryRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -149,13 +149,13 @@ export const defaultProductCategoryFields = [
 ]
 
 /**
- * @schema AdminProductCategoriesRes
+ * @schema AdminProductCategoriesCategoryRes
  * type: object
  * properties:
  *   product_category:
  *     $ref: "#/components/schemas/ProductCategory"
  */
-export type AdminProductCategoriesRes = {
+export type AdminProductCategoriesCategoryRes = {
   product_category: ProductCategory
 }
 
