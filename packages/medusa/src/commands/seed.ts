@@ -23,7 +23,7 @@ import {
 } from "../services"
 import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
-import getMigrations from "./utils/get-migrations"
+import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
 
 type SeedOptions = {
   directory: string
@@ -58,7 +58,12 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
   const dbType = configModule.projectConfig.database_type
   if (migrate && dbType !== "sqlite") {
-    const migrationDirs = await getMigrations(directory, featureFlagRouter)
+    const { coreMigrations } = getMigrations(directory, featureFlagRouter)
+
+    const { migrations: moduleMigrations } = getModuleSharedResources(
+      configModule,
+      featureFlagRouter
+    )
 
     const connectionOptions = {
       type: configModule.projectConfig.database_type,
@@ -66,7 +71,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       schema: configModule.projectConfig.database_schema,
       url: configModule.projectConfig.database_url,
       extra: configModule.projectConfig.database_extra || {},
-      migrations: migrationDirs,
+      migrations: coreMigrations.concat(moduleMigrations),
       logging: true,
     } as ConnectionOptions
 
@@ -91,9 +96,15 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const regionService: RegionService = container.resolve("regionService")
   const productService: ProductService = container.resolve("productService")
   /* eslint-disable */
-  const productVariantService: ProductVariantService = container.resolve("productVariantService")
-  const shippingOptionService: ShippingOptionService = container.resolve("shippingOptionService")
-  const shippingProfileService: ShippingProfileService = container.resolve("shippingProfileService")
+  const productVariantService: ProductVariantService = container.resolve(
+    "productVariantService"
+  )
+  const shippingOptionService: ShippingOptionService = container.resolve(
+    "shippingOptionService"
+  )
+  const shippingProfileService: ShippingProfileService = container.resolve(
+    "shippingProfileService"
+  )
   /* eslint-enable */
 
   await manager.transaction(async (tx) => {
