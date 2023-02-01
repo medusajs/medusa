@@ -94,10 +94,12 @@ export default async (req: Request, res: Response) => {
 
       await orderEditTx.decorateTotals(orderEdit)
 
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        JSON.stringify(pick(orderEdit, ["total", "discount_total"]))
-      )
+      // throw new MedusaError(
+      //   MedusaError.Types.INVALID_DATA,
+      //   JSON.stringify(
+      //     orderEdit.items.map((i) => pick(i, ["items", "quantity"]))
+      //   )
+      // )
 
       return orderEdit
     }

@@ -541,12 +541,28 @@ export default class OrderEditService extends TransactionBaseService {
     await lineItemAdjustmentServiceTx.createAdjustments(localCart)
   }
 
+  async decorateTotalsOld(orderEdit: OrderEdit): Promise<OrderEdit> {
+    const totals = await this.getTotals(orderEdit.id)
+    orderEdit.discount_total = totals.discount_total
+    orderEdit.gift_card_total = totals.gift_card_total
+    orderEdit.gift_card_tax_total = totals.gift_card_tax_total
+    orderEdit.shipping_total = totals.shipping_total
+    orderEdit.subtotal = totals.subtotal
+    orderEdit.tax_total = totals.tax_total
+    orderEdit.total = totals.total
+    orderEdit.difference_due = totals.difference_due
+
+    return orderEdit
+  }
+
   async decorateTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
     const manager = this.transactionManager_ ?? this.manager_
-    const { order_id, items } = await this.retrieve(orderEdit.id, {
-      select: ["id", "order_id", "items"],
-      relations: ["items", "items.tax_lines", "items.adjustments"],
-    })
+    const { order_id, items } = orderEdit
+
+    //   await this.retrieve(orderEdit.id, {
+    //   select: ["id", "order_id", "items"],
+    //   relations: ["items", "items.tax_lines", "items.adjustments"],
+    // })
 
     const orderServiceTx = this.orderService_.withTransaction(manager)
 
@@ -564,7 +580,7 @@ export default class OrderEditService extends TransactionBaseService {
         "shipping_methods.tax_lines",
       ],
     })
-    const computedOrder = { ...order, items } as Order
+    const computedOrder = { ...order, items: [...items] } as Order
     await Promise.all([
       await orderServiceTx.decorateTotals(computedOrder),
       await orderServiceTx.decorateTotals(order),
@@ -582,7 +598,7 @@ export default class OrderEditService extends TransactionBaseService {
 
     // throw new MedusaError(
     //   MedusaError.Types.INVALID_DATA,
-    //   JSON.stringify(pick(orderEdit, ["total", "discount_total"]))
+    //   JSON.stringify(orderEdit.items.map((i) => pick(i, ["items", "quantity"])))
     // )
 
     return orderEdit
