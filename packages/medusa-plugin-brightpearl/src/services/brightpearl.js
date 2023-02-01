@@ -1,3 +1,4 @@
+import { updateInventoryAndReservationsOnFulfillmentCreation } from "@medusajs/medusa"
 import { MedusaError, humanizeAmount } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
@@ -15,6 +16,8 @@ class BrightpearlService extends BaseService {
       claimService,
       discountService,
       stockLocationService,
+      inventoryService,
+      salesChannelLocationService,
     },
     options
   ) {
@@ -31,6 +34,8 @@ class BrightpearlService extends BaseService {
     this.swapService_ = swapService
     this.claimService_ = claimService
     this.stockLocationService_ = stockLocationService
+    this.inventoryService_ = inventoryService
+    this.salesChannelLocationService_ = salesChannelLocationService
   }
 
   async getClient() {
@@ -1230,6 +1235,7 @@ class BrightpearlService extends BaseService {
       const order = await client.orders.retrieve(goodsOut.orderId)
 
       // Only relevant for medusa orders check channel id
+      // TODO: re-consider this check
       if (order.channelId !== parseInt(this.options.channel_id)) {
         return
       }
@@ -1273,12 +1279,71 @@ class BrightpearlService extends BaseService {
         }
       }
 
-      return this.orderService_
+      const { fulfillments: existingFulfillments } = await this.orderService_
+        .withTransaction(m)
+        .retrieve(id, {
+          relations: ["fulfillments"],
+        })
+
+      const medusaOrder = this.orderService_
         .withTransaction(m)
         .createFulfillment(order.externalRef, lines, {
           metadata: { goods_out_note: id },
         })
+
+      if (this.inventoryService_ && this.stockLocationService_) {
+        const existingFulfillmentMap = new Map(
+          existingFulfillments.map((fulfillment) => [
+            fulfillment.id,
+            fulfillment,
+          ])
+        )
+
+        const bpLocation = goodsOut.warehouseId
+
+        const fulfillmentLocation =
+          await this.getMedusaLocationFromBrightPearlWarehouse(
+            bpLocation,
+            medusaOrder.sales_channel_id,
+            { transactionManager: m }
+          )
+
+        await updateInventoryAndReservationsOnFulfillmentCreation(
+          [
+            medusaOrder.fulfillments.filter(
+              (f) => !existingFulfillmentMap[f.id]
+            ),
+          ],
+          {
+            inventoryService: this.inventoryService_,
+            locationId: fulfillmentLocation.id,
+          }
+        )
+      }
+
+      return medusaOrder
     }, "SERIALIZABLE")
+  }
+
+  async getMedusaLocationFromBrightPearlWarehouse(
+    bpLocationId,
+    sales_channel_id,
+    context
+  ) {
+    // list locations
+    const locationIds = await this.salesChannelLocationService_
+      .withTransaction(context.transactionManager)
+      .listLocations(sales_channel_id)
+
+    const locations = await this.stockLocationService_
+      .withTransaction(context.transactionManager)
+      .list({ id: locationIds })
+
+    const fulfillmentLocation = locations.find(
+      (location) => location.metadata?.bp_id === bpLocationId
+    )
+
+    return fulfillmentLocation
   }
 
   async createCustomer(fromOrder) {
