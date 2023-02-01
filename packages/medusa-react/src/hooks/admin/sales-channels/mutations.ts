@@ -177,15 +177,17 @@ export const useAdminAddLocationToSalesChannel = (
     Response<AdminSalesChannelsRes>,
     Error,
     {
-      id: string
-      payload: AdminPostSalesChannelsChannelStockLocationsReq
+      sales_channel_id: string
+      location_id: string
     }
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(({ id, payload }) => {
-    return client.admin.salesChannels.addLocation(id, payload)
+  return useMutation(({ sales_channel_id, location_id }) => {
+    return client.admin.salesChannels.addLocation(sales_channel_id, {
+      location_id,
+    })
   }, buildOptions(queryClient, [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.details(), adminStockLocationsKeys.all], options))
 }
 
@@ -201,14 +203,16 @@ export const useAdminRemoveLocationFromSalesChannel = (
     Response<AdminSalesChannelsRes>,
     Error,
     {
-      id: string
-      payload: AdminPostSalesChannelsChannelStockLocationsReq
+      sales_channel_id: string
+      location_id: string
     }
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
-  return useMutation(({ id, payload }) => {
-    return client.admin.salesChannels.removeLocation(id, payload)
+  return useMutation(({ sales_channel_id, location_id }) => {
+    return client.admin.salesChannels.removeLocation(sales_channel_id, {
+      location_id,
+    })
   }, buildOptions(queryClient, [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.details(), adminStockLocationsKeys.all], options))
 }
