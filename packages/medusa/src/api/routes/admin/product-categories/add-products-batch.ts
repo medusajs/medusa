@@ -24,7 +24,24 @@ import { FindParams } from "../../../../types/common"
  *         $ref: "#/components/schemas/AdminPostProductCategoriesCategoryProductsBatchReq"
  * x-codegen:
  *   method: addProducts
+ *   queryParams: AdminPostProductCategoriesCategoryProductsBatchParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.productCategories.addProducts(product_category_id, {
+ *         product_ids: [
+ *           {
+ *             id: product_id
+ *           }
+ *         ]
+ *       })
+ *       .then(({ product_category }) => {
+ *         console.log(product_category.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -50,7 +67,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminProductCategoriesRes"
+ *           $ref: "#/components/schemas/AdminProductCategoriesCategoryRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -80,7 +97,7 @@ export default async (req: Request, res: Response): Promise<void> => {
       .withTransaction(transactionManager)
       .addProducts(
         id,
-        validatedBody.product_ids.map((p) => p.id),
+        validatedBody.product_ids.map((p) => p.id)
       )
   })
 
@@ -117,4 +134,5 @@ export class AdminPostProductCategoriesCategoryProductsBatchReq {
   product_ids: ProductBatchProductCategory[]
 }
 
+// eslint-disable-next-line max-len
 export class AdminPostProductCategoriesCategoryProductsBatchParams extends FindParams {}
