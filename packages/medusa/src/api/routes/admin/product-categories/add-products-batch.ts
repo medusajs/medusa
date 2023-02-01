@@ -96,7 +96,7 @@ export default async (req: Request, res: Response): Promise<void> => {
       .withTransaction(transactionManager)
       .addProducts(
         id,
-        validatedBody.product_ids.map((p) => p.id),
+        validatedBody.product_ids.map((p) => p.id)
       )
   })
 
@@ -133,4 +133,5 @@ export class AdminPostProductCategoriesCategoryProductsBatchReq {
   product_ids: ProductBatchProductCategory[]
 }
 
+// eslint-disable-next-line max-len
 export class AdminPostProductCategoriesCategoryProductsBatchParams extends FindParams {}
