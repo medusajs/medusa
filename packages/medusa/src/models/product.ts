@@ -82,11 +82,11 @@ export class Product extends SoftDeletableEntity {
   @JoinTable({
     name: "product_category_product",
     joinColumn: {
-      name: "product_category_id",
+      name: "product_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
-      name: "product_id",
+      name: "product_category_id",
       referencedColumnName: "id",
     },
   })
@@ -320,6 +320,12 @@ export class Product extends SoftDeletableEntity {
  *     items:
  *       type: object
  *       description: A sales channel object.
+ *   categories:
+ *     description: The product's associated categories. Available if the relation `categories` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: A category object.
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

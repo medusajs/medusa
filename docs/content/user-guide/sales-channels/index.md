@@ -1,16 +1,11 @@
 ---
 sidebar_position: 1
+description: 'Medusa admin allows merchants to manage their sales channels. Merchants can separate products into multiple sales channels.'
 ---
 
 # Sales Channels Overview
 
 In this document, you’ll get an overview of sales channels in Medusa and learn about their importance in your ecommerce store.
-
-:::note
-
-Sales Channels are currently in beta mode and need to be [manually enabled in your store using feature flags](../../advanced/backend/feature-flags/toggle.md). If you’re unsure how that works, please contact your technical team.
-
-:::
 
 ## Overview
 

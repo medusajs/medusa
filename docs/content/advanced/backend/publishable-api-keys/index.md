@@ -1,3 +1,7 @@
+---
+description: 'Learn what publishable API keys are and how they can be used in the Medusa server. Publishable API keys can be used to scope API calls with an API key.'
+---
+
 # Publishable API Keys Overview
 
 In this document, you’ll learn about Publishable API Keys and their usage.

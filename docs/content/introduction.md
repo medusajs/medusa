@@ -1,3 +1,7 @@
+---
+description: 'Medusa is composed of three architectures: Medusa server, admin dashboard, and storefront. It also provides advanced ecommerce features such as order management and automated RMA flows.'
+---
+
 # Overview
 
 ## Architecture
@@ -38,7 +42,7 @@ Your customers use the Storefront to view products and make orders. Medusa provi
 - [Sales Channels](./user-guide/sales-channels/index.md): Create multiple sales channels and control which sales channels products are available in.
 - [Bulk Import](./user-guide/products/import.mdx): Bulk import strategies for different entities including [products](./advanced/admin/import-products.mdx) and [price lists](./advanced/admin/import-prices.mdx).
 - [Bulk Export](./user-guide/products/export.mdx): Bulk export strategies for different entities including [products](./user-guide/products/export.mdx) and [orders](./user-guide/orders/export.mdx).
-- Complete Customization Capabilities: Aside from all the features that Medusa provides, it is completely customizable providing capabilities to create custom [endpoints](./advanced/backend/endpoints/add.md), [services](./advanced/backend/services/create-service.md), [subscribers](./advanced/backend/subscribers/create-subscriber.md), [batch job strategies](./advanced/backend/batch-jobs/create.md), and much more!
+- Complete Customization Capabilities: Aside from all the features that Medusa provides, it is completely customizable providing capabilities to create custom [endpoints](./advanced/backend/endpoints/add.md), [services](./advanced/backend/services/create-service.md), [subscribers](./advanced/backend/subscribers/create-subscriber.md), [batch job strategies](./advanced/backend/batch-jobs/create.mdx), and much more!
 
 ---
 

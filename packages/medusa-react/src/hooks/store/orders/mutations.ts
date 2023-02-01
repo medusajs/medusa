@@ -10,9 +10,9 @@ import {
   StorePostCustomersCustomerOrderClaimReq,
 } from "@medusajs/medusa"
 
-import { orderKeys } from "."
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { orderKeys } from "./queries"
 
 export const useRequestOrderAccess = (
   options?: UseMutationOptions<

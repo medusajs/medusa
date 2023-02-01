@@ -169,7 +169,10 @@ export class ProductRepository extends Repository<Product> {
             "variants.deleted_at IS NULL"
           )
 
-          order["variants.variant_rank"] = "ASC"
+          if (!Object.keys(order).some((key) => key.startsWith("variants"))) {
+            // variant_rank being select false, apply the filter here directly
+            querybuilder.addOrderBy(`${toplevel}.variant_rank`, "ASC")
+          }
         } else {
           querybuilder = querybuilder.leftJoinAndSelect(
             `products.${toplevel}`,
