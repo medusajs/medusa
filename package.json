@@ -77,8 +77,8 @@
     "generate:entities": "typedoc --options typedoc.entities.js",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
     "generate:announcement": "node ./scripts/doc-change-release.js",
-    "develop": "NODE_ENV=development ts-node --transpile-only ./integration-tests/development/server.js",
-    "develop:create:db": "NODE_ENV=development ts-node --transpile-only ./integration-tests/development/create-database.js",
+    "develop": "ts-node --transpile-only ./integration-tests/development/server.js",
+    "develop:create:db": "ts-node --transpile-only ./integration-tests/development/create-database.js",
     "release:next": "changeset publish --no-git-tags --snapshot --tag next",
     "version:next": "changeset version --snapshot next",
     "check:freshness": "node ./scripts/freshness-check.js"

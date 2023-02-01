@@ -1,5 +1,6 @@
 const path = require("path")
 
+const { getConfigFile } = require("medusa-core-utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
@@ -43,6 +44,7 @@ const DbTestUtil = {
     forceDelete = forceDelete || []
 
     const entities = this.db_.entityMetadatas
+
     const manager = this.db_.manager
 
     if (dataSourceType === "sqlite") {
@@ -79,16 +81,14 @@ const instance = DbTestUtil
 
 module.exports = {
   initDb: async function ({ cwd, database_extra }) {
-    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
-    const { projectConfig, featureFlags } = require(configPath)
+    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const { projectConfig, featureFlags } = configModule
 
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default
 
     const featureFlagsRouter = featureFlagsLoader({ featureFlags })
-
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
-
     const entities = modelsLoader({}, { register: false })
 
     if (projectConfig.database_type === "sqlite") {
@@ -124,11 +124,14 @@ module.exports = {
 
       const {
         getEnabledMigrations,
+        getModuleSharedResources,
       } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
-      const enabledMigrations = await getEnabledMigrations(
-        [migrationDir],
-        (flag) => featureFlagsRouter.isFeatureEnabled(flag)
+      const { migrations: moduleMigrations, models: moduleModels } =
+        getModuleSharedResources(configModule, featureFlagsRouter)
+
+      const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
+        featureFlagsRouter.isFeatureEnabled(flag)
       )
 
       const enabledEntities = entities.filter(
@@ -138,8 +141,8 @@ module.exports = {
       const dbDataSource = new DataSource({
         type: "postgres",
         url: DB_URL,
-        entities: enabledEntities,
-        migrations: enabledMigrations,
+        entities: enabledEntities.concat(moduleModels),
+        migrations: enabledMigrations.concat(moduleMigrations),
         extra: database_extra ?? {},
         name: "integration-tests",
       })

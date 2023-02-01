@@ -1,38 +1,40 @@
 import { asValue, createContainer } from "awilix"
-import { getConfigFile } from "medusa-core-utils"
 import featureFlagLoader from "../loaders/feature-flags"
-import { handleConfigError } from "../loaders/config"
 import Logger from "../loaders/logger"
 import databaseLoader from "../loaders/database"
+import configModuleLoader from "../loaders/config"
+import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
 
-import getMigrations from "./utils/get-migrations"
-
-const t = async function ({ directory }) {
-  const args = process.argv
-  args.shift()
-  args.shift()
-  args.shift()
-
-  const { configModule, error } = getConfigFile(directory, `medusa-config`)
-
-  if (error) {
-    handleConfigError(error)
-  }
-
+const getDataSource = async (directory) => {
+  const configModule = configModuleLoader(directory)
   const featureFlagRouter = featureFlagLoader(configModule)
-
-  const enabledMigrations = await getMigrations(directory, featureFlagRouter)
+  const { coreMigrations } = getMigrations(directory, featureFlagRouter)
+  const { migrations: moduleMigrations } = getModuleSharedResources(
+    configModule,
+    featureFlagRouter
+  )
 
   const container = createContainer()
   container.register("db_entities", asValue([]))
-  const dataSource = await databaseLoader({
+
+  return await databaseLoader({
     container,
     configModule,
     customOptions: {
-      migrations: enabledMigrations,
+      migrations: coreMigrations.concat(moduleMigrations),
       logging: "all",
     },
   })
+}
+
+const main = async function ({ directory }) {
+  const args = process.argv
+
+  args.shift()
+  args.shift()
+  args.shift()
+
+  const dataSource = await getDataSource(directory)
 
   if (args[0] === "run") {
     await dataSource.runMigrations()
@@ -52,4 +54,4 @@ const t = async function ({ directory }) {
   }
 }
 
-export default t
+export default main
