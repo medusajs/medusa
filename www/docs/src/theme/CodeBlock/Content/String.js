@@ -103,7 +103,7 @@ export default function CodeBlockString({
             </Tooltip>
           )}
           {!noCopy && (
-            <CopyButton buttonClassName='code-action' text={code}>
+            <CopyButton buttonClassName='code-action code-action-copy' text={code}>
               <ThemedImage alt='Copy to Clipboard' sources={{
                 light: useBaseUrl('/img/clipboard-copy.png'),
                 dark: useBaseUrl('/img/clipboard-copy-dark.png')

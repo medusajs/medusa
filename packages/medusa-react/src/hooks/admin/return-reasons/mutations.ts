@@ -9,9 +9,9 @@ import {
   UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query"
-import { adminReturnReasonKeys } from "."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminReturnReasonKeys } from "./queries"
 
 export const useAdminCreateReturnReason = (
   options?: UseMutationOptions<

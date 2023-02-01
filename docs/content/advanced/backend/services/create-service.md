@@ -1,3 +1,8 @@
+---
+description: 'Learn how to create a service in Medusa. This guide also includes how to use services in other services, subscribers, and endpoints.'
+addHowToData: true
+---
+
 # Create a Service
 
 In this document, you’ll learn how you can create a [Service](./overview.md) and use it across your Medusa server just like any of the core services.

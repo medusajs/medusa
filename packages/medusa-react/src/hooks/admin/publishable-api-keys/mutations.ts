@@ -13,9 +13,9 @@ import {
   AdminPublishableApiKeysRes,
 } from "@medusajs/medusa"
 
-import { adminPublishableApiKeysKeys } from "."
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminPublishableApiKeysKeys } from "./queries"
 
 export const useAdminCreatePublishableApiKey = (
   options?: UseMutationOptions<

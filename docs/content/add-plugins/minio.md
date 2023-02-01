@@ -1,3 +1,8 @@
+---
+description: 'Learn how to integrate MinIO with the Medusa server. Learn how to install the MinIO plugin on the Medusa server and configure it.'
+addHowToData: true
+---
+
 # MinIO
 
 This document will guide you through installing the MinIO file service plugin on your Medusa server.
