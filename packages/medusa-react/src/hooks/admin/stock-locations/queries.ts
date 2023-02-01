@@ -30,7 +30,7 @@ export const useAdminStockLocations = (
   const { data, ...rest } = useQuery(
     adminStockLocationsKeys.list(query),
     () => client.admin.stockLocations.list(query),
-    { ...options }
+    options
   )
 
   return { ...data, ...rest } as const
