@@ -142,10 +142,9 @@ describe("ShippingProfileService", () => {
     })
 
     it("add product to profile successfully", async () => {
-      await profileService.addProduct(
-        IdMap.getId("validId"),
-        IdMap.getId("product2")
-      )
+      await profileService.addProducts(IdMap.getId("validId"), [
+        IdMap.getId("product2"),
+      ])
 
       expect(productService.update).toBeCalledTimes(1)
       expect(productService.update).toBeCalledWith(IdMap.getId("product2"), {
@@ -317,10 +316,9 @@ describe("ShippingProfileService", () => {
     })
 
     it("add shipping option to profile successfully", async () => {
-      await profileService.addShippingOption(
-        IdMap.getId("validId"),
-        IdMap.getId("freeShipping")
-      )
+      await profileService.addShippingOptions(IdMap.getId("validId"), [
+        IdMap.getId("freeShipping"),
+      ])
 
       expect(shippingOptionService.update).toBeCalledTimes(1)
       expect(shippingOptionService.update).toBeCalledWith(
