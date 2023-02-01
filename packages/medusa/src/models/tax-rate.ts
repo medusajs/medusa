@@ -134,7 +134,7 @@ export class TaxRate extends BaseEntity {
  *     description: The products that belong to this tax rate. Available if the relation `products` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/Product"t.
+ *       $ref: "#/components/schemas/Product"
  *   product_types:
  *     description: The product types that belong to this tax rate. Available if the relation `product_types` is expanded.
  *     type: array
@@ -144,7 +144,7 @@ export class TaxRate extends BaseEntity {
  *     type: array
  *     description: The shipping options that belong to this tax rate. Available if the relation `shipping_options` is expanded.
  *     items:
- *       $ref: "#/components/schemas/ShippingOption
+ *       $ref: "#/components/schemas/ShippingOption"
  *   product_count:
  *     description: The count of products
  *     type: integer

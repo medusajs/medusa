@@ -196,7 +196,7 @@ export class ShippingMethod {
  *     description: The total amount of the shipping
  *     type: integer
  *     example: 8200
- *    tax_total:
+ *   tax_total:
  *     description: The total of tax
  *     type: integer
  *     example: 0
