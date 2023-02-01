@@ -237,7 +237,7 @@ export class Order extends BaseEntity {
   external_id: string | null
 
   @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
-  sales_channel_id: string | null
+  sales_channel_id?: string | null
 
   @FeatureFlagDecorators("sales_channels", [
     ManyToOne(() => SalesChannel),
@@ -295,7 +295,6 @@ export class Order extends BaseEntity {
  *   - object
  *   - payment_status
  *   - region_id
- *   - sales_channel_id
  *   - shipping_address_id
  *   - status
  *   - tax_rate

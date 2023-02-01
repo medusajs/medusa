@@ -134,11 +134,12 @@
  *       user_agent: "PostmanRuntime/7.29.2"
  *   sales_channel_id:
  *     description: The sales channel ID the cart is associated with.
+ *     nullable: true
  *     type: string
  *     example: null
  *   sales_channel:
  *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/SalesChannel"
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string
@@ -350,7 +351,7 @@ export class Cart extends SoftDeletableEntity {
   metadata: Record<string, unknown> | null
 
   @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
-  sales_channel_id: string | null
+  sales_channel_id?: string | null
 
   @FeatureFlagDecorators("sales_channels", [
     ManyToOne(() => SalesChannel),

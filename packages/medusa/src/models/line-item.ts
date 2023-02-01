@@ -342,6 +342,7 @@ export class LineItem extends BaseEntity {
  *   includes_tax:
  *     description: "[EXPERIMENTAL] Indicates if the line item unit_price include tax"
  *     type: boolean
+ *     default: false
  *   original_item_id:
  *     description: The id of the original line item
  *     nullable: true

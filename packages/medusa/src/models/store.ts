@@ -61,7 +61,7 @@ export class Store extends BaseEntity {
   metadata: Record<string, unknown> | null
 
   @FeatureFlagColumn("sales_channels", { nullable: true, type: "text" })
-  default_sales_channel_id: string | null
+  default_sales_channel_id?: string | null
 
   @FeatureFlagDecorators("sales_channels", [
     OneToOne(() => SalesChannel),
@@ -84,7 +84,6 @@ export class Store extends BaseEntity {
  *   - created_at
  *   - default_currency_code
  *   - default_location_id
- *   - default_sales_channel_id
  *   - id
  *   - invite_link_template
  *   - metadata

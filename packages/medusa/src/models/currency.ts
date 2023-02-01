@@ -53,4 +53,5 @@ export class Currency {
  *  includes_tax:
  *    description: "[EXPERIMENTAL] Does the currency prices include tax"
  *    type: boolean
+ *    default: false
  */

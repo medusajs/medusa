@@ -168,6 +168,7 @@ export class ShippingOption extends SoftDeletableEntity {
  *   includes_tax:
  *     description: "[EXPERIMENTAL] Does the shipping option price include tax"
  *     type: boolean
+ *     default: false
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string
