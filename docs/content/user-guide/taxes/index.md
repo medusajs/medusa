@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: 'Medusa admin allows merchants to manage their taxes. Merchants can specify and configure taxes per region.'
 ---
 
 # Taxes Overview

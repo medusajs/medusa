@@ -1,7 +1,12 @@
+---
+description: 'Learn how to implement the order-claim flow in the storefront. This includes allowing customers to claim their orders, and verify a claim to an order.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# How to Implement Claim Order Flow
+# How to Implement Claim Order Flow in Storefront
 
 In this document, you’ll learn how to implement the claim order flow in a storefront to allow customers to claim their orders.
 
@@ -44,9 +49,15 @@ It is also assumed you already have a storefront set up. It can be a custom stor
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ### Handle Order Claim Request Event
 
@@ -71,7 +82,7 @@ To allow the customer to claim an order, send a request to the Claim an Order en
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.orders.claimOrders({
   order_ids: [
     order_id,
@@ -88,7 +99,7 @@ medusa.orders.claimOrders({
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```tsx
+```ts
 fetch(`<SERVER_URL>/store/orders/batch/customer/token`, {
   method: "POST",
   credentials: "include",
@@ -129,7 +140,7 @@ Then, you send a request to the Verify Claim Order endpoint:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.orders.confirmRequest({
   token,
 })
@@ -142,9 +153,31 @@ medusa.orders.confirmRequest({
 ```
 
 </TabItem>
-<TabItem value="fetch" label="Fetch API">
+<TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
+import { useGrantOrderAccess } from "medusa-react"
+
+const ClaimOrder = () => {
+  const grantOrderAccess = useGrantOrderAccess()
+  // ...
+
+  const handleVerifyOrderClaim = (token: string) => {
+    grantOrderAccess.mutate(({
+      token,
+    }))
+  }
+
+  // ...
+}
+
+export default ClaimOrder
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
 fetch(`<SERVER_URL>/store/orders/customer/confirm`, {
   method: "POST",
   credentials: "include",

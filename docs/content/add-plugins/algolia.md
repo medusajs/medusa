@@ -1,3 +1,8 @@
+---
+description: 'Learn how to integrate Algolia with the Medusa server. Learn how to install the Algolia plugin into the Medusa server and how to integrate it into a storefront.'
+addHowToData: true
+---
+
 # Algolia
 
 In this document, you’ll learn how to install the [Algolia plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-algolia) and use it on both your Medusa Server and your storefront.
