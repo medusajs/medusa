@@ -36,9 +36,9 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  background-color: var(--ifm-primary-btn-background-color);
-  border: 1px solid var(--ifm-primary-btn-border-color);
-  color: var(--ifm-primary-btn-color);
+  background-color: var(--ifm-secondary-btn-background-color);
+  border: 1px solid var(--ifm-secondary-btn-border-color);
+  color: var(--ifm-secondary-btn-color);
 }
 
 .feedback-btn:focus {

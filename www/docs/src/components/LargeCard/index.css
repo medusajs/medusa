@@ -1,0 +1,95 @@
+.large-card {
+  background-color: var(--large-card-bg);
+  border: 1px solid var(--large-card-border-color);
+  border-radius: 8px;
+  padding: 24px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: var(--ifm-base-margin-vertical);
+}
+
+.large-card-heading {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.large-card-icon-wrapper {
+  width: var(--large-card-icon-wrapper-size);
+  height: var(--large-card-icon-wrapper-size);
+  border: 1px solid var(--large-card-icon-wrapper-border-color);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.large-card-icon {
+  width: var(--large-card-icon-size);
+  height: var(--large-card-icon-size);
+}
+
+.large-card-title {
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--ifm-color-primary);
+  font-weight: var(--ifm-heading-font-weight);
+}
+
+.large-card-action-wrapper {
+  margin-top: 32px;
+}
+
+.large-card-action {
+  display: block;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: var(--ifm-secondary-btn-background-color);
+  color: var(--ifm-secondary-btn-color) !important;
+  transition: all .2s;
+  border-radius: 8px;
+  border: 1px solid var(--ifm-base-border-color);
+}
+
+.large-card-action:hover {
+  background-color: var(--ifm-secondary-btn-hover-background-color);
+}
+
+/* .large-card-content {
+  margin-top: 16px;
+  margin-bottom: 16px;
+} */
+
+.large-card-content ul {
+  padding-left: 0px;
+}
+
+.large-card-content li {
+  padding-left: 24px;
+  position: relative;
+}
+
+.large-card-content li:before {
+  content: '';
+  background-image: url('/img/list-dot.png');
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 0;
+  top: 2px;
+}
+
+.large-card-content li::marker {
+  /* color: #6E56CF;
+  width: 6px;
+  height: 6px;
+  padding: 6px;
+  border: 1px solid #6E56CF;
+  border-radius: 9999px; */
+  content: none;
+  /* padding-inline-start: 2ch; */
+}

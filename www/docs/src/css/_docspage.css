@@ -111,8 +111,8 @@ html:not([data-theme="dark"]) .doc-footer {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  background-color: var(--ifm-primary-btn-background-color);
-  border: 1px solid var(--ifm-primary-btn-border-color);
+  background-color: var(--ifm-secondary-btn-background-color);
+  border: 1px solid var(--ifm-secondary-btn-border-color);
 }
 
 .theme-edit-this-page:hover {
@@ -121,7 +121,7 @@ html:not([data-theme="dark"]) .doc-footer {
 
 .theme-edit-this-page,
 .theme-edit-this-page:hover {
-  color: var(--ifm-primary-btn-color);
+  color: var(--ifm-secondary-btn-color);
 }
 
 .theme-last-updated {
@@ -155,10 +155,10 @@ details > div {
   }
 }
 
-@media screen and (min-width: 966px) {
+/* @media screen and (min-width: 966px) {
   [class*=docItemContainer] > article {
     margin-left: 50px;
     margin-right: 50px;
     max-width: none
   }
-}
+} */
