@@ -90,10 +90,10 @@ export default async (req, res) => {
  *   name:
  *     description: The name of the Shipping Profile
  *     type: string
- *  type:
- *   description: The type of the Shipping Profile
- *   type: string
- *   enum: [default, gift_card, custom]
+ *   type:
+ *     description: The type of the Shipping Profile
+ *     type: string
+ *     enum: [default, gift_card, custom]
  */
 export class AdminPostShippingProfilesReq {
   @IsString()
