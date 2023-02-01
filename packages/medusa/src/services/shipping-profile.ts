@@ -284,7 +284,7 @@ class ShippingProfileService extends TransactionBaseService {
         this.shippingProfileRepository_
       )
 
-      const profile = await this.retrieve(profileId, {
+      let profile = await this.retrieve(profileId, {
         relations: [
           "products",
           "products.profile",
@@ -295,27 +295,22 @@ class ShippingProfileService extends TransactionBaseService {
 
       const { metadata, products, shipping_options, ...rest } = update
 
-      if (metadata) {
-        profile.metadata = setMetadata(profile, metadata)
-      }
-
       if (products) {
-        const productServiceTx = this.productService_.withTransaction(manager)
-        for (const pId of products) {
-          await productServiceTx.update(pId, {
-            profile_id: profile.id,
-          })
-        }
+        profile = await this.withTransaction(manager).addProducts(
+          profile.id,
+          products
+        )
       }
 
       if (shipping_options) {
-        const shippingOptionServiceTx =
-          this.shippingOptionService_.withTransaction(manager)
-        for (const oId of shipping_options) {
-          await shippingOptionServiceTx.update(oId, {
-            profile_id: profile.id,
-          })
-        }
+        profile = await this.withTransaction(manager).addShippingOptions(
+          profile.id,
+          shipping_options
+        )
+      }
+
+      if (metadata) {
+        profile.metadata = setMetadata(profile, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -352,22 +347,31 @@ class ShippingProfileService extends TransactionBaseService {
   }
 
   /**
-   * Adds a product to a profile. The method is idempotent, so multiple calls
-   * with the same product variant will have the same result.
-   * @param profileId - the profile to add the product to.
-   * @param productId - the product to add.
+   * Adds an array of products to the profile.
+   * @param profileId - the profile to add the products to.
+   * @param productIds - the products to add.
    * @return the result of update
    */
-  async addProduct(
+  async addProducts(
     profileId: string,
-    productId: string
+    productIds: string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      await this.productService_
-        .withTransaction(manager)
-        .update(productId, { profile_id: profileId })
+      const productServiceTx = this.productService_.withTransaction(manager)
+      for (const pId of productIds) {
+        await productServiceTx.update(pId, {
+          profile_id: profileId,
+        })
+      }
 
-      return await this.retrieve(profileId)
+      return await this.retrieve(profileId, {
+        relations: [
+          "products",
+          "products.profile",
+          "shipping_options",
+          "shipping_options.profile",
+        ],
+      })
     })
   }
 
@@ -375,20 +379,30 @@ class ShippingProfileService extends TransactionBaseService {
    * Adds a shipping option to the profile. The shipping option can be used to
    * fulfill the products in the products field.
    * @param profileId - the profile to apply the shipping option to
-   * @param optionId - the option to add to the profile
+   * @param optionIds - the option to add to the profile
    * @return the result of the model update operation
    */
-  async addShippingOption(
+  async addShippingOptions(
     profileId: string,
-    optionId: string
+    optionIds: string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      await this.shippingOptionService_
-        .withTransaction(manager)
-        .update(optionId, { profile_id: profileId })
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
+      for (const oId of optionIds) {
+        await shippingOptionServiceTx.update(oId, {
+          profile_id: profileId,
+        })
+      }
 
-      const updated = await this.retrieve(profileId)
-      return updated
+      return await this.retrieve(profileId, {
+        relations: [
+          "products",
+          "products.profile",
+          "shipping_options",
+          "shipping_options.profile",
+        ],
+      })
     })
   }
 

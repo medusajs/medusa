@@ -1,18 +1,18 @@
 import { FlagRouter } from "../utils/flag-router"
 
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { EntityManager } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
+  ProductCategory,
   ProductOption,
   ProductTag,
   ProductType,
   ProductVariant,
   SalesChannel,
-  ProductCategory,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
@@ -446,7 +446,9 @@ class ProductService extends TransactionBaseService {
 
         if (categories?.length) {
           const categoryIds = categories.map((c) => c.id)
-          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
+          const categoryRecords = categoryIds.map(
+            (id) => ({ id } as ProductCategory)
+          )
 
           product.categories = categoryRecords
         }
@@ -561,7 +563,9 @@ class ProductService extends TransactionBaseService {
 
         if (categories?.length) {
           const categoryIds = categories.map((c) => c.id)
-          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
+          const categoryRecords = categoryIds.map(
+            (id) => ({ id } as ProductCategory)
+          )
 
           product.categories = categoryRecords
         }

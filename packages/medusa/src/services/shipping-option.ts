@@ -663,6 +663,10 @@ class ShippingOptionService extends TransactionBaseService {
         optionWithValidatedPrice.admin_only = update.admin_only
       }
 
+      if (isDefined(update.profile_id)) {
+        optionWithValidatedPrice.profile_id = update.profile_id
+      }
+
       if (
         this.featureFlagRouter_.isFeatureEnabled(
           TaxInclusivePricingFeatureFlag.key
