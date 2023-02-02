@@ -142,7 +142,7 @@ describe("ShippingProfileService", () => {
     })
 
     it("add product to profile successfully", async () => {
-      await profileService.addProducts(IdMap.getId("validId"), [
+      await profileService.addProduct(IdMap.getId("validId"), [
         IdMap.getId("product2"),
       ])
 
@@ -316,7 +316,7 @@ describe("ShippingProfileService", () => {
     })
 
     it("add shipping option to profile successfully", async () => {
-      await profileService.addShippingOptions(IdMap.getId("validId"), [
+      await profileService.addShippingOption(IdMap.getId("validId"), [
         IdMap.getId("freeShipping"),
       ])
 

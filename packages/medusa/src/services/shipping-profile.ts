@@ -303,14 +303,14 @@ class ShippingProfileService extends TransactionBaseService {
       const { metadata, products, shipping_options, ...rest } = update
 
       if (products) {
-        profile = await this.withTransaction(manager).addProducts(
+        profile = await this.withTransaction(manager).addProduct(
           profile.id,
           products
         )
       }
 
       if (shipping_options) {
-        profile = await this.withTransaction(manager).addShippingOptions(
+        profile = await this.withTransaction(manager).addShippingOption(
           profile.id,
           shipping_options
         )
@@ -354,19 +354,26 @@ class ShippingProfileService extends TransactionBaseService {
   }
 
   /**
-   * Adds an array of products to the profile.
+   * Adds a product of an array of products to the profile.
    * @param profileId - the profile to add the products to.
-   * @param productIds - the products to add.
+   * @param productId - the ID of the product or multiple products to add.
    * @return the result of update
    */
-  async addProducts(
+  async addProduct(
     profileId: string,
-    productIds: string[]
+    productId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
       const productServiceTx = this.productService_.withTransaction(manager)
-      for (const pId of productIds) {
-        await productServiceTx.update(pId, {
+
+      if (Array.isArray(productId)) {
+        for (const pId of productId) {
+          await productServiceTx.update(pId, {
+            profile_id: profileId,
+          })
+        }
+      } else {
+        await productServiceTx.update(productId, {
           profile_id: profileId,
         })
       }
@@ -386,18 +393,24 @@ class ShippingProfileService extends TransactionBaseService {
    * Adds a shipping option to the profile. The shipping option can be used to
    * fulfill the products in the products field.
    * @param profileId - the profile to apply the shipping option to
-   * @param optionIds - the option to add to the profile
+   * @param optionId - the ID of the option or multiple options to add to the profile
    * @return the result of the model update operation
    */
-  async addShippingOptions(
+  async addShippingOption(
     profileId: string,
-    optionIds: string[]
+    optionId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
       const shippingOptionServiceTx =
         this.shippingOptionService_.withTransaction(manager)
-      for (const oId of optionIds) {
-        await shippingOptionServiceTx.update(oId, {
+      if (Array.isArray(optionId)) {
+        for (const oId of optionId) {
+          await shippingOptionServiceTx.update(oId, {
+            profile_id: profileId,
+          })
+        }
+      } else {
+        await shippingOptionServiceTx.update(optionId, {
           profile_id: profileId,
         })
       }
