@@ -1,7 +1,7 @@
 import * as path from "path"
 import { mkdir, writeFile } from "fs/promises"
 import swaggerInline from "swagger-inline"
-import OpenAPIParser from "@apidevtools/swagger-parser"
+import OpenAPIParser from "@readme/openapi-parser"
 import { defaultMetadataStorage } from "class-transformer/cjs/storage"
 import { getMetadataStorage } from "class-validator"
 import { IOptions } from "class-validator-jsonschema/build/options"
