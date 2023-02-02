@@ -96,18 +96,24 @@ export class ClaimItem extends SoftDeletableEntity {
  * type: object
  * required:
  *   - claim_order_id
+ *   - created_at
+ *   - deleted_at
+ *   - id
  *   - item_id
- *   - variant_id
- *   - reason
+ *   - metadata
+ *   - note
  *   - quantity
+ *   - reason
+ *   - updated_at
+ *   - variant_id
  * properties:
  *   id:
- *     type: string
  *     description: The claim item's ID
+ *     type: string
  *     example: citm_01G8ZH853Y6TFXWPG5EYE81X63
  *   images:
- *     type: array
  *     description: Available if the relation `images` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/ClaimImage"
  *   claim_order_id:
@@ -115,23 +121,26 @@ export class ClaimItem extends SoftDeletableEntity {
  *     type: string
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/ClaimOrder"
  *   item_id:
  *     description: The ID of the line item that the claim item refers to.
  *     type: string
  *     example: item_01G8ZM25TN49YV9EQBE2NC27KC
  *   item:
  *     description: Available if the relation `item` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   variant_id:
- *     description: "The ID of the product variant that is claimed."
+ *     description: The ID of the product variant that is claimed.
  *     type: string
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
  *     description: A variant object. Available if the relation `variant` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/ProductVariant"
  *   reason:
- *     description: "The reason for the claim"
+ *     description: The reason for the claim
  *     type: string
  *     enum:
  *       - missing_item
@@ -139,32 +148,35 @@ export class ClaimItem extends SoftDeletableEntity {
  *       - production_failure
  *       - other
  *   note:
- *     description: "An optional note about the claim, for additional information"
+ *     description: An optional note about the claim, for additional information
+ *     nullable: true
  *     type: string
  *     example: "I don't like it."
  *   quantity:
- *     description: "The quantity of the item that is being claimed; must be less than or equal to the amount purchased in the original order."
+ *     description: The quantity of the item that is being claimed; must be less than or equal to the amount purchased in the original order.
  *     type: integer
  *     example: 1
  *   tags:
- *     description: "User defined tags for easy filtering and grouping. Available if the relation 'tags' is expanded."
+ *     description: User defined tags for easy filtering and grouping. Available if the relation 'tags' is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/ClaimTag"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */
