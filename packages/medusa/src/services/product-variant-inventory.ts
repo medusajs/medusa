@@ -249,13 +249,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * Attach a variant to an inventory item
    * @param variantId variant id
    * @param inventoryItemId inventory item id
-   * @param quantity quantity of variant to attach
+   * @param requiredQuantity quantity of variant to attach
    * @returns the variant inventory item
    */
   async attachInventoryItem(
     variantId: string,
     inventoryItemId: string,
-    quantity?: number
+    requiredQuantity?: number
   ): Promise<ProductVariantInventoryItem> {
     const manager = this.transactionManager_ || this.manager_
 
@@ -289,14 +289,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let quantityToStore = 1
-    if (typeof quantity !== "undefined") {
-      if (quantity < 1) {
+    if (typeof requiredQuantity !== "undefined") {
+      if (requiredQuantity < 1) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Quantity must be greater than 0"
         )
       } else {
-        quantityToStore = quantity
+        quantityToStore = requiredQuantity
       }
     }
 
