@@ -38,7 +38,7 @@ describe("/admin/order-edits", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -2483,8 +2483,6 @@ describe("/admin/order-edits", () => {
       )
       expect(item2.adjustments).toHaveLength(1)
 
-      console.log(pick(response.data.order_edit, ["discount_total", "total"]))
-
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
           id: orderEditId,
@@ -2572,13 +2570,15 @@ describe("/admin/order-edits", () => {
               ]),
             }),
           ]),
-          // discount_total: 2000,
+          // rounding issue since we are allocating 1/3 of the discount to one item and 2/3 to the other item where both cost 10
+          // resulting in adjustment amounts like: 1333...
+          discount_total: 2001,
+          total: 1099,
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
           subtotal: 3000,
           tax_total: 100,
-          // total: 1000,
         })
       )
 
