@@ -73,8 +73,8 @@ export class OrderItemChange extends SoftDeletableEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The order item change's ID
+ *     type: string
  *     example: oic_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   type:
  *     description: The order item change's status
@@ -119,8 +119,4 @@ export class OrderItemChange extends SoftDeletableEntity {
  *     nullable: true
  *     type: string
  *     format: date-time
- *   metadata:
- *     type: object
- *     description: An optional key-value map with additional details
- *     example: {car: "white"}
  */

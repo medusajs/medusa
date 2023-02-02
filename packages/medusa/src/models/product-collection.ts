@@ -42,12 +42,13 @@ export class ProductCollection extends SoftDeletableEntity {
  *   - deleted_at
  *   - handle
  *   - id
+ *   - metadata
  *   - title
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The product collection's ID
+ *     type: string
  *     example: pcol_01F0YESBFAZ0DV6V831JXWH0BG
  *   title:
  *     description: The title that the Product Collection is identified by.

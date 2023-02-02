@@ -134,6 +134,7 @@ export class Swap extends SoftDeletableEntity {
  *   - fulfillment_status
  *   - id
  *   - idempotency_key
+ *   - metadata
  *   - no_notification
  *   - order_id
  *   - payment_status
@@ -141,8 +142,8 @@ export class Swap extends SoftDeletableEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The swap's ID
+ *     type: string
  *     example: swap_01F0YET86Y9G92D3YDR9Y6V676
  *   fulfillment_status:
  *     description: The status of the Fulfillment of the Swap.
@@ -218,17 +219,6 @@ export class Swap extends SoftDeletableEntity {
  *   cart:
  *     description: A cart object. Available if the relation `cart` is expanded.
  *     $ref: "#/components/schemas/Cart"
- *   allow_backorder:
- *     description: If true, swaps can be completed with items out of stock
- *     type: boolean
- *     default: false
- *   idempotency_key:
- *     description: Randomly generated key used to continue the completion of the swap in case of failure.
- *     nullable: true
- *     type: string
- *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
- *       description: Learn more how to use the idempotency key.
  *   confirmed_at:
  *     description: The date with timezone at which the Swap was confirmed by the Customer.
  *     nullable: true
@@ -244,6 +234,17 @@ export class Swap extends SoftDeletableEntity {
  *     nullable: true
  *     type: boolean
  *     example: false
+ *   allow_backorder:
+ *     description: If true, swaps can be completed with items out of stock
+ *     type: boolean
+ *     default: false
+ *   idempotency_key:
+ *     description: Randomly generated key used to continue the completion of the swap in case of failure.
+ *     nullable: true
+ *     type: string
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       description: Learn more how to use the idempotency key.
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string

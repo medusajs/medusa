@@ -71,13 +71,13 @@ export class ClaimImage extends SoftDeletableEntity {
  *     type: string
  *     format: date-time
  *   deleted_at:
- *     nullable: true
  *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
  *     format: date-time
  *   metadata:
- *     nullable: true
  *     description: An optional key-value map with additional details
+ *     nullable: true
  *     type: object
  *     example: {car: "white"}
  */

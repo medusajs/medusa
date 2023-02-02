@@ -61,8 +61,8 @@ export class ProductOptionValue extends SoftDeletableEntity {
  *   - variant_id
  * properties:
  *   id:
- *     type: string
  *     description: The product option value's ID
+ *     type: string
  *     example: optval_01F0YESHR7S6ECD03RF6W12DSJ
  *   value:
  *     description: The value that the Product Variant has defined for the specific Product Option (e.g. if the Product Option is \"Size\" this value could be `Small`, `Medium` or `Large`).
@@ -70,7 +70,6 @@ export class ProductOptionValue extends SoftDeletableEntity {
  *     example: large
  *   option_id:
  *     description: The ID of the Product Option that the Product Option Value is defined for.
- *     nullable: true
  *     type: string
  *     example: opt_01F0YESHQBZVKCEXJ24BS6PCX3
  *   option:

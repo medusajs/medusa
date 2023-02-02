@@ -67,19 +67,19 @@ export class ReturnReason extends SoftDeletableEntity {
  *     description: The return reason's ID
  *     type: string
  *     example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
+ *   value:
+ *     description: The value to identify the reason by.
+ *     type: string
+ *     example: damaged
+ *   label:
+ *     description: A text that can be displayed to the Customer as a reason.
+ *     type: string
+ *     example: Damaged goods
  *   description:
  *     description: A description of the Reason.
  *     nullable: true
  *     type: string
  *     example: Items that are damaged
- *   label:
- *     description: A text that can be displayed to the Customer as a reason.
- *     type: string
- *     example: Damaged goods
- *   value:
- *     description: The value to identify the reason by.
- *     type: string
- *     example: damaged
  *   parent_return_reason_id:
  *     description: The ID of the parent reason.
  *     nullable: true

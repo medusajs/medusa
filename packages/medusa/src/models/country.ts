@@ -45,12 +45,13 @@ export class Country {
  * description: "Country details"
  * type: object
  * required:
+ *   - display_name
  *   - id
  *   - iso_2
  *   - iso_3
- *   - num_code
  *   - name
- *   - display_name
+ *   - num_code
+ *   - region_id
  * properties:
  *   id:
  *     description: The country's ID

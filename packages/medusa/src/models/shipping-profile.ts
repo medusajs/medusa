@@ -50,8 +50,8 @@ export class ShippingProfile extends SoftDeletableEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The shipping profile's ID
+ *     type: string
  *     example: sp_01G1G5V239ENSZ5MV4JAR737BM
  *   name:
  *     description: The name given to the Shipping profile - this may be displayed to the Customer.

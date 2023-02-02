@@ -108,8 +108,8 @@ export class ShippingOption extends SoftDeletableEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The shipping option's ID
+ *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   name:
  *     description: The name given to the Shipping Option - this may be displayed to the Customer.

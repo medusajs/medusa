@@ -56,8 +56,7 @@ export class CustomerGroup extends SoftDeletableEntity {
  *     description: The customers that belong to the customer group. Available if the relation `customers` is expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A customer object.
+ *       $ref: "#/components/schemas/Customer"
  *   price_lists:
  *     description: The price lists that are associated with the customer group. Available if the relation `price_lists` is expanded.
  *     type: array

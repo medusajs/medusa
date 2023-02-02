@@ -55,6 +55,7 @@ export class ReturnItem {
  * required:
  *   - is_requested
  *   - item_id
+ *   - metadata
  *   - note
  *   - quantity
  *   - reason_id
@@ -66,13 +67,13 @@ export class ReturnItem {
  *     description: The id of the Return that the Return Item belongs to.
  *     type: string
  *     example: ret_01F0YET7XPCMF8RZ0Y151NZV2V
- *   return_order:
- *     description: Available if the relation `return_order` is expanded.
- *     $ref: "#/components/schemas/Return"
  *   item_id:
  *     description: The id of the Line Item that the Return Item references.
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
+ *   return_order:
+ *     description: Available if the relation `return_order` is expanded.
+ *     $ref: "#/components/schemas/Return"
  *   item:
  *     description: Available if the relation `item` is expanded.
  *     $ref: "#/components/schemas/LineItem"

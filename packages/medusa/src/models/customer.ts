@@ -43,7 +43,7 @@ export class Customer extends SoftDeletableEntity {
   shipping_addresses?: Address[]
 
   @Column({ nullable: true, select: false })
-  password_hash: string | null
+  password_hash?: string | null
 
   @Column({ nullable: true })
   phone: string | null

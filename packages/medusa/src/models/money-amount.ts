@@ -75,6 +75,7 @@ export class MoneyAmount extends SoftDeletableEntity {
  * required:
  *   - amount
  *   - created_at
+ *   - currency_code
  *   - deleted_at
  *   - id
  *   - max_quantity
@@ -149,8 +150,4 @@ export class MoneyAmount extends SoftDeletableEntity {
  *     nullable: true
  *     type: string
  *     format: date-time
- *   metadata:
- *     type: object
- *     description: An optional key-value map with additional details
- *     example: {car: "white"}
  */

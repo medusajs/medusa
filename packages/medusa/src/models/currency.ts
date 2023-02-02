@@ -27,9 +27,9 @@ export class Currency {
  * type: object
  * required:
  *   - code
+ *   - name
  *   - symbol
  *   - symbol_native
- *   - name
  * properties:
  *  code:
  *    description: The 3 character ISO code for the currency.

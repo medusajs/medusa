@@ -16,6 +16,7 @@
  *   - metadata
  *   - payment_authorized_at
  *   - payment_id
+ *   - payment_session
  *   - region_id
  *   - shipping_address_id
  *   - type

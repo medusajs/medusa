@@ -45,8 +45,8 @@ export class LineItemTaxLine extends TaxLine {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The line item tax line's ID
+ *     type: string
  *     example: litl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
  *   code:
  *     description: A code to identify the tax type by
@@ -58,7 +58,7 @@ export class LineItemTaxLine extends TaxLine {
  *     type: string
  *     example: Tax Example
  *   rate:
- *     description: "The numeric rate to charge tax by"
+ *     description: The numeric rate to charge tax by
  *     type: number
  *     example: 10
  *   item_id:

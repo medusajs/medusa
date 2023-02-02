@@ -139,30 +139,6 @@ export class ShippingMethod {
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
  *     $ref: "#/components/schemas/Order"
- *   return_id:
- *     description: The id of the Return that the Shipping Method is used on.
- *     nullable: true
- *     type: string
- *     example: null
- *   return_order:
- *     description: A return object. Available if the relation `return_order` is expanded.
- *     $ref: "#/components/schemas/Return"
- *   swap_id:
- *     description: The id of the Swap that the Shipping Method is used on.
- *     nullable: true
- *     type: string
- *     example: null
- *   swap:
- *     description: A swap object. Available if the relation `swap` is expanded.
- *     $ref: "#/components/schemas/Swap"
- *   cart_id:
- *     description: The id of the Cart that the Shipping Method is used on.
- *     nullable: true
- *     type: string
- *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
- *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
- *     $ref: "#/components/schemas/Cart"
  *   claim_order_id:
  *     description: The id of the Claim that the Shipping Method is used on.
  *     nullable: true
@@ -171,6 +147,30 @@ export class ShippingMethod {
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
  *     $ref: "#/components/schemas/ClaimOrder"
+ *   cart_id:
+ *     description: The id of the Cart that the Shipping Method is used on.
+ *     nullable: true
+ *     type: string
+ *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
+ *   cart:
+ *     description: A cart object. Available if the relation `cart` is expanded.
+ *     $ref: "#/components/schemas/Cart"
+ *   swap_id:
+ *     description: The id of the Swap that the Shipping Method is used on.
+ *     nullable: true
+ *     type: string
+ *     example: null
+ *   swap:
+ *     description: A swap object. Available if the relation `swap` is expanded.
+ *     $ref: "#/components/schemas/Swap"
+ *   return_id:
+ *     description: The id of the Return that the Shipping Method is used on.
+ *     nullable: true
+ *     type: string
+ *     example: null
+ *   return_order:
+ *     description: A return object. Available if the relation `return_order` is expanded.
+ *     $ref: "#/components/schemas/Return"
  *   tax_lines:
  *     description: Available if the relation `tax_lines` is expanded.
  *     type: array

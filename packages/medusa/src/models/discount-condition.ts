@@ -143,9 +143,9 @@ export class DiscountCondition extends SoftDeletableEntity {
  * required:
  *   - created_at
  *   - deleted_at
- *   - discount_rule
  *   - discount_rule_id
  *   - id
+ *   - metadata
  *   - operator
  *   - type
  *   - updated_at
@@ -180,7 +180,6 @@ export class DiscountCondition extends SoftDeletableEntity {
  *     description: products associated with this condition if type = products. Available if the relation `products` is expanded.
  *     type: array
  *     items:
- *       description: A product object.
  *       $ref: "#/components/schemas/Product"
  *   product_types:
  *     description: Product types associated with this condition if type = product_types. Available if the relation `product_types` is expanded.

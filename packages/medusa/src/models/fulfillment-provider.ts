@@ -25,5 +25,5 @@ export class FulfillmentProvider {
  *   is_installed:
  *     description: Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`.
  *     type: boolean
- *     example: true
+ *     default: true
  */

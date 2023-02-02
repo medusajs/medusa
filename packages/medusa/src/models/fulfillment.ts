@@ -51,12 +51,12 @@ export class Fulfillment extends BaseEntity {
   @Column()
   provider_id: string
 
-  @Column({ nullable: true, type: "text" })
-  location_id: string | null
-
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
   provider?: FulfillmentProvider
+
+  @Column({ nullable: true, type: "text" })
+  location_id: string | null
 
   @OneToMany(() => FulfillmentItem, (i) => i.fulfillment, {
     eager: true,
@@ -119,7 +119,7 @@ export class Fulfillment extends BaseEntity {
  *   - updated_at
  * properties:
  *   id:
- *     description: The cart's ID
+ *     description: The fulfillment's ID
  *     type: string
  *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
  *   claim_order_id:
@@ -150,14 +150,14 @@ export class Fulfillment extends BaseEntity {
  *     description: The id of the Fulfillment Provider responsible for handling the fulfillment
  *     type: string
  *     example: manual
+ *   provider:
+ *     description: Available if the relation `provider` is expanded.
+ *     $ref: "#/components/schemas/FulfillmentProvider"
  *   location_id:
  *     description: The id of the stock location the fulfillment will be shipped from
  *     nullable: true
  *     type: string
  *     example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
- *   provider:
- *     description: Available if the relation `provider` is expanded.
- *     $ref: "#/components/schemas/FulfillmentProvider"
  *   items:
  *     description: The Fulfillment Items in the Fulfillment - these hold information about how many of each Line Item has been fulfilled. Available if the relation `items` is expanded.
  *     type: array
@@ -184,7 +184,7 @@ export class Fulfillment extends BaseEntity {
  *     type: string
  *     format: date-time
  *   no_notification:
- *     description: Flag for describing whether or not notifications related to this should be send.
+ *     description: Flag for describing whether or not notifications related to this should be sent.
  *     nullable: true
  *     type: boolean
  *     example: false

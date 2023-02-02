@@ -167,7 +167,6 @@ export class OrderEdit extends BaseEntity {
  *     example: Included two more items B to the order.
  *   created_by:
  *     description: The unique identifier of the user or customer who created the order edit.
- *     nullable: true
  *     type: string
  *   requested_by:
  *     description: The unique identifier of the user or customer who requested the order edit.

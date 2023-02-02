@@ -81,7 +81,7 @@ export class ClaimOrder extends SoftDeletableEntity {
 
   @Index()
   @Column({ nullable: true })
-  shipping_address_id: string
+  shipping_address_id: string | null
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
@@ -233,8 +233,9 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     type: string
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  *   no_notification:
  *     description: Flag for describing whether or not notifications related to this should be send.

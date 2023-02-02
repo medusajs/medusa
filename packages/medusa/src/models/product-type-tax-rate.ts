@@ -46,6 +46,7 @@ export class ProductTypeTaxRate {
  * type: object
  * required:
  *   - created_at
+ *   - metadata
  *   - product_type_id
  *   - rate_id
  *   - updated_at

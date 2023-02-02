@@ -58,6 +58,7 @@ export class DiscountRule extends SoftDeletableEntity {
  *   - allocation
  *   - created_at
  *   - deleted_at
+ *   - description
  *   - id
  *   - metadata
  *   - type

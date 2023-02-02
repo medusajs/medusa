@@ -73,7 +73,7 @@ export class Invite extends SoftDeletableEntity {
  *   accepted:
  *     description: Whether the invite was accepted or not.
  *     type: boolean
- *     example: false
+ *     default: false
  *   token:
  *     description: The token used to accept the invite.
  *     type: string
@@ -82,12 +82,12 @@ export class Invite extends SoftDeletableEntity {
  *     type: string
  *     format: date-time
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
  *     description: The date with timezone at which the resource was deleted.

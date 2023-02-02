@@ -140,14 +140,14 @@ export class LineItem extends BaseEntity {
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax?: boolean
 
-  refundable?: number | null
-  subtotal?: number | null
-  tax_total?: number | null
-  total?: number | null
-  original_total?: number | null
-  original_tax_total?: number | null
-  discount_total?: number | null
-  gift_card_total?: number | null
+  refundable?: number
+  subtotal?: number
+  tax_total?: number
+  total?: number
+  original_total?: number
+  original_tax_total?: number
+  discount_total?: number
+  gift_card_total?: number
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -187,8 +187,8 @@ export class LineItem extends BaseEntity {
  *   - variant_id
  * properties:
  *   id:
+ *     description: The line item's ID
  *     type: string
- *     description: The cart's ID
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   cart_id:
  *     description: The ID of the Cart that the Line Item belongs to.
@@ -221,7 +221,7 @@ export class LineItem extends BaseEntity {
  *     example: null
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/ClaimOrder"
  *   tax_lines:
  *     description: Available if the relation `tax_lines` is expanded.
  *     type: array
@@ -250,19 +250,19 @@ export class LineItem extends BaseEntity {
  *   is_return:
  *     description: Is the item being returned
  *     type: boolean
- *     example: false
+ *     default: false
  *   is_giftcard:
  *     description: Flag to indicate if the Line Item is a Gift Card.
  *     type: boolean
- *     example: false
+ *     default: false
  *   should_merge:
  *     description: Flag to indicate if new Line Items with the same variant should be merged or added as an additional Line Item.
  *     type: boolean
- *     example: false
+ *     default: true
  *   allow_discounts:
  *     description: Flag to indicate if the Line Item should be included when doing discount calculations.
  *     type: boolean
- *     example: false
+ *     default: false
  *   has_shipping:
  *     description: Flag to indicate if the Line Item has fulfillment associated with it.
  *     nullable: true
@@ -301,42 +301,34 @@ export class LineItem extends BaseEntity {
  *     example: 0
  *   refundable:
  *     description: The amount that can be refunded from the given Line Item. Takes taxes and discounts into consideration.
- *     nullable: true
  *     type: integer
  *     example: 0
  *   subtotal:
  *     description: The subtotal of the line item
- *     nullable: true
  *     type: integer
  *     example: 8000
  *   tax_total:
  *     description: The total of tax of the line item
- *     nullable: true
  *     type: integer
  *     example: 0
  *   total:
  *     description: The total amount of the line item
- *     nullable: true
  *     type: integer
  *     example: 8000
  *   original_total:
  *     description: The original total amount of the line item
- *     nullable: true
  *     type: integer
  *     example: 8000
  *   original_tax_total:
  *     description: The original tax total amount of the line item
- *     nullable: true
  *     type: integer
  *     example: 0
  *   discount_total:
  *     description: The total of discount of the line item
- *     nullable: true
  *     type: integer
  *     example: 0
  *   gift_card_total:
  *     description: The total of the gift card of the line item
- *     nullable: true
  *     type: integer
  *     example: 0
  *   includes_tax:

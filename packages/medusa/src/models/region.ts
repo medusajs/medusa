@@ -118,6 +118,7 @@ export class Region extends SoftDeletableEntity {
  *   - deleted_at
  *   - gift_cards_taxable
  *   - id
+ *   - metadata
  *   - name
  *   - tax_code
  *   - tax_provider_id
@@ -205,7 +206,8 @@ export class Region extends SoftDeletableEntity {
  *     type: string
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

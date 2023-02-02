@@ -207,6 +207,7 @@ export class Product extends SoftDeletableEntity {
  *   - is_giftcard
  *   - length
  *   - material
+ *   - metadata
  *   - mid_code
  *   - origin_country
  *   - profile_id
@@ -291,6 +292,11 @@ export class Product extends SoftDeletableEntity {
  *     nullable: true
  *     type: number
  *     example: null
+ *   length:
+ *     description: The length of the Product Variant. May be used in shipping rate calculations.
+ *     nullable: true
+ *     type: number
+ *     example: null
  *   height:
  *     description: The height of the Product Variant. May be used in shipping rate calculations.
  *     nullable: true
@@ -298,11 +304,6 @@ export class Product extends SoftDeletableEntity {
  *     example: null
  *   width:
  *     description: The width of the Product Variant. May be used in shipping rate calculations.
- *     nullable: true
- *     type: number
- *     example: null
- *   length:
- *     description: The length of the Product Variant. May be used in shipping rate calculations.
  *     nullable: true
  *     type: number
  *     example: null

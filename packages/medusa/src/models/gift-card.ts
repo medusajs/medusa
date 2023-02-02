@@ -83,8 +83,8 @@ export class GiftCard extends SoftDeletableEntity {
  *   - value
  * properties:
  *   id:
+ *     description: The gift card's ID
  *     type: string
- *     description: The cart's ID
  *     example: gift_01G8XKBPBQY2R7RBET4J7E0XQZ
  *   code:
  *     description: The unique code that identifies the Gift Card. This is used by the Customer to redeem the value of the Gift Card.
@@ -116,7 +116,7 @@ export class GiftCard extends SoftDeletableEntity {
  *   is_disabled:
  *     description: Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied to carts.
  *     type: boolean
- *     example: false
+ *     default: false
  *   ends_at:
  *     description: The time at which the Gift Card can no longer be used.
  *     nullable: true
@@ -124,6 +124,7 @@ export class GiftCard extends SoftDeletableEntity {
  *     format: date-time
  *   tax_rate:
  *     description: The gift card's tax rate that will be applied on calculating totals
+ *     nullable: true
  *     type: number
  *     example: 0
  *   created_at:

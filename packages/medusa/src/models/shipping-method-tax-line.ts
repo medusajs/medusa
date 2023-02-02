@@ -45,8 +45,8 @@ export class ShippingMethodTaxLine extends TaxLine {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The line item tax line's ID
+ *     type: string
  *     example: litl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
  *   code:
  *     description: A code to identify the tax type by
@@ -62,8 +62,8 @@ export class ShippingMethodTaxLine extends TaxLine {
  *     type: number
  *     example: 10
  *   shipping_method_id:
- *     type: string
  *     description: The ID of the line item
+ *     type: string
  *     example: sm_01F0YET7DR2E7CYVSDHM593QG2
  *   shipping_method:
  *     description: Available if the relation `shipping_method` is expanded.

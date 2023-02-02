@@ -46,6 +46,7 @@ export class DiscountConditionCustomerGroup {
  *   - condition_id
  *   - created_at
  *   - customer_group_id
+ *   - metadata
  *   - updated_at
  * properties:
  *   customer_group_id:

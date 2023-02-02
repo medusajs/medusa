@@ -70,6 +70,7 @@ export class Refund extends BaseEntity {
  *   - amount
  *   - created_at
  *   - id
+ *   - idempotency_key
  *   - metadata
  *   - note
  *   - order_id

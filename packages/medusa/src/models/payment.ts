@@ -78,7 +78,7 @@ export class Payment extends BaseEntity {
   metadata: Record<string, unknown> | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -109,8 +109,8 @@ export class Payment extends BaseEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The payment's ID
+ *     type: string
  *     example: pay_01G2SJNT6DEEWDFNAJ4XWDTHKE
  *   swap_id:
  *     description: The ID of the Swap that the Payment is used for.
@@ -119,14 +119,14 @@ export class Payment extends BaseEntity {
  *     example: null
  *   swap:
  *     description: A swap object. Available if the relation `swap` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Swap"
  *   cart_id:
  *     description: The id of the Cart that the Payment Session is created for.
  *     nullable: true
  *     type: string
  *   cart:
  *     description: A cart object. Available if the relation `cart` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Cart"
  *   order_id:
  *     description: The ID of the Order that the Payment is used for.
  *     nullable: true
@@ -134,7 +134,7 @@ export class Payment extends BaseEntity {
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/Order"
  *   amount:
  *     description: The amount that the Payment has been authorized for.
  *     type: integer
@@ -174,6 +174,7 @@ export class Payment extends BaseEntity {
  *     format: date-time
  *   idempotency_key:
  *     description: Randomly generated key used to continue the completion of a payment in case of failure.
+ *     nullable: true
  *     type: string
  *     externalDocs:
  *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key

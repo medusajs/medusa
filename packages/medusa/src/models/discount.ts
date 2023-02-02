@@ -102,7 +102,6 @@ export class Discount extends SoftDeletableEntity {
  *   - is_disabled
  *   - is_dynamic
  *   - metadata
- *   - parent_discount
  *   - parent_discount_id
  *   - rule_id
  *   - starts_at
@@ -161,8 +160,7 @@ export class Discount extends SoftDeletableEntity {
  *     description: The Regions in which the Discount can be used. Available if the relation `regions` is expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A region object.
+ *       $ref: "#/components/schemas/Region"
  *   usage_limit:
  *     description: The maximum number of times that a discount can be used.
  *     nullable: true

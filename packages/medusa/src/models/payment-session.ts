@@ -87,11 +87,12 @@ export class PaymentSession extends BaseEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The payment session's ID
+ *     type: string
  *     example: ps_01G901XNSRM2YS3ASN9H5KG3FZ
  *   cart_id:
  *     description: The id of the Cart that the Payment Session is created for.
+ *     nullable: true
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:

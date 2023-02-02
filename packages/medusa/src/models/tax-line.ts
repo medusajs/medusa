@@ -31,8 +31,8 @@ export class TaxLine extends BaseEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The tax line's ID
+ *     type: string
  *     example: tl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
  *   code:
  *     description: A code to identify the tax type by

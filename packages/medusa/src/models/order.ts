@@ -301,14 +301,9 @@ export class Order extends BaseEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The order's ID
- *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
- *   object:
- *     description: The object type.
- *     deprecated: true
  *     type: string
- *     default: order
+ *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   status:
  *     description: The order's status
  *     type: string
@@ -341,7 +336,7 @@ export class Order extends BaseEntity {
  *       - awaiting
  *       - captured
  *       - partially_refunded
- *       - refuneded
+ *       - refunded
  *       - canceled
  *       - requires_action
  *     default: not_paid

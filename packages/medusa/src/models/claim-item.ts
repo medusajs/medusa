@@ -100,6 +100,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *   - deleted_at
  *   - id
  *   - item_id
+ *   - metadata
  *   - note
  *   - quantity
  *   - reason

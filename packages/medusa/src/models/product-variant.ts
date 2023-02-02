@@ -51,7 +51,7 @@ export class ProductVariant extends SoftDeletableEntity {
   upc: string | null
 
   @Column({ nullable: true, default: 0, select: false })
-  variant_rank: number | null
+  variant_rank?: number | null
 
   @Column({ type: "int" })
   inventory_quantity: number
@@ -126,7 +126,6 @@ export class ProductVariant extends SoftDeletableEntity {
  *   - title
  *   - upc
  *   - updated_at
- *   - variant_rank
  *   - weight
  *   - width
  * properties:
@@ -212,6 +211,11 @@ export class ProductVariant extends SoftDeletableEntity {
  *     nullable: true
  *     type: number
  *     example: null
+ *   length:
+ *     description: "The length of the Product Variant. May be used in shipping rate calculations."
+ *     nullable: true
+ *     type: number
+ *     example: null
  *   height:
  *     description: The height of the Product Variant. May be used in shipping rate calculations.
  *     nullable: true
@@ -220,10 +224,6 @@ export class ProductVariant extends SoftDeletableEntity {
  *   width:
  *     description: The width of the Product Variant. May be used in shipping rate calculations.
  *     nullable: true
- *     type: number
- *     example: null
- *   length:
- *     description: "The length of the Product Variant. May be used in shipping rate calculations."
  *     type: number
  *     example: null
  *   options:

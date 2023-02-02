@@ -31,7 +31,7 @@ export class User extends SoftDeletableEntity {
   last_name: string | null
 
   @Column({ nullable: true, select: false })
-  password_hash: string | null
+  password_hash?: string | null
 
   @Column({ nullable: true })
   api_token: string | null
@@ -58,6 +58,7 @@ export class User extends SoftDeletableEntity {
  *   - first_name
  *   - id
  *   - last_name
+ *   - metadata
  *   - role
  *   - updated_at
  * properties:

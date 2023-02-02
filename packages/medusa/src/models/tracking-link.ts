@@ -43,13 +43,14 @@ export class TrackingLink extends SoftDeletableEntity {
  *   - fulfillment_id
  *   - id
  *   - idempotency_key
+ *   - metadata
  *   - tracking_number
  *   - updated_at
  *   - url
  * properties:
  *   id:
- *     type: string
  *     description: The tracking link's ID
+ *     type: string
  *     example: tlink_01G8ZH853Y6TFXWPG5EYE81X63
  *   url:
  *     description: The URL at which the status of the shipment can be tracked.
@@ -58,7 +59,6 @@ export class TrackingLink extends SoftDeletableEntity {
  *     format: uri
  *   tracking_number:
  *     description: The tracking number given by the shipping carrier.
- *     nullable: true
  *     type: string
  *     format: RH370168054CN
  *   fulfillment_id:

@@ -48,6 +48,7 @@ export class ProductOption extends SoftDeletableEntity {
  *   - created_at
  *   - deleted_at
  *   - id
+ *   - metadata
  *   - product_id
  *   - title
  *   - updated_at

@@ -27,6 +27,7 @@ export class ProductType extends SoftDeletableEntity {
  *   - created_at
  *   - deleted_at
  *   - id
+ *   - metadata
  *   - updated_at
  *   - value
  * properties:

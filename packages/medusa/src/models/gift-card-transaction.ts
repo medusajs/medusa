@@ -78,7 +78,7 @@ export class GiftCardTransaction {
  *     example: gift_01G8XKBPBQY2R7RBET4J7E0XQZ
  *   gift_card:
  *     description: A gift card object. Available if the relation `gift_card` is expanded.
- *     type: object
+ *     $ref: "#/components/schemas/GiftCard"
  *   order_id:
  *     description: The ID of the Order that the Gift Card was used to pay for.
  *     type: string

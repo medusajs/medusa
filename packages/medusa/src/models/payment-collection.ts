@@ -113,14 +113,15 @@ export class PaymentCollection extends SoftDeletableEntity {
  *   - deleted_at
  *   - description
  *   - id
+ *   - metadata
  *   - region_id
  *   - status
  *   - type
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The payment collection's ID
+ *     type: string
  *     example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   type:
  *     description: The type of the payment collection
@@ -142,11 +143,11 @@ export class PaymentCollection extends SoftDeletableEntity {
  *     type: string
  *   amount:
  *     description: Amount of the payment collection.
- *     type: number
+ *     type: integer
  *   authorized_amount:
  *     description: Authorized amount of the payment collection.
  *     nullable: true
- *     type: number
+ *     type: integer
  *   region_id:
  *     description: The region's ID
  *     type: string
@@ -191,7 +192,8 @@ export class PaymentCollection extends SoftDeletableEntity {
  *     type: string
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

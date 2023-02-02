@@ -25,7 +25,7 @@ export class ProductCategory extends SoftDeletableEntity {
 
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column({ nullable: false })
-  handle: string | null
+  handle: string
 
   @Column()
   is_active: Boolean
@@ -94,8 +94,8 @@ export class ProductCategory extends SoftDeletableEntity {
  *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The product category's ID
+ *     type: string
  *     example: pcat_01G2SG30J8C85S4A5CHM2S1NS2
  *   name:
  *     description: The product category's name
