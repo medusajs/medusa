@@ -54,7 +54,7 @@ export class DiscountCondition extends SoftDeletableEntity {
 
   @ManyToOne(() => DiscountRule, (dr) => dr.conditions)
   @JoinColumn({ name: "discount_rule_id" })
-  discount_rule: DiscountRule
+  discount_rule?: DiscountRule | null
 
   @ManyToMany(() => Product)
   @JoinTable({
@@ -68,7 +68,7 @@ export class DiscountCondition extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  products: Product[]
+  products?: Product[]
 
   @ManyToMany(() => ProductType)
   @JoinTable({
@@ -82,7 +82,7 @@ export class DiscountCondition extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  product_types: ProductType[]
+  product_types?: ProductType[]
 
   @ManyToMany(() => ProductTag)
   @JoinTable({
@@ -96,7 +96,7 @@ export class DiscountCondition extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  product_tags: ProductTag[]
+  product_tags?: ProductTag[]
 
   @ManyToMany(() => ProductCollection)
   @JoinTable({
@@ -110,7 +110,7 @@ export class DiscountCondition extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  product_collections: ProductCollection[]
+  product_collections?: ProductCollection[]
 
   @ManyToMany(() => CustomerGroup)
   @JoinTable({
@@ -124,10 +124,10 @@ export class DiscountCondition extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  customer_groups: CustomerGroup[]
+  customer_groups?: CustomerGroup[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

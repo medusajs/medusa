@@ -26,21 +26,21 @@ export class Discount extends SoftDeletableEntity {
 
   @Index()
   @Column({ nullable: true })
-  rule_id: string
+  rule_id: string | null
 
   @ManyToOne(() => DiscountRule, { cascade: true })
   @JoinColumn({ name: "rule_id" })
-  rule: DiscountRule
+  rule?: DiscountRule | null
 
   @Column()
   is_disabled: boolean
 
   @Column({ nullable: true })
-  parent_discount_id: string
+  parent_discount_id: string | null
 
   @ManyToOne(() => Discount)
   @JoinColumn({ name: "parent_discount_id" })
-  parent_discount: Discount
+  parent_discount?: Discount | null
 
   @Column({
     type: resolveDbType("timestamptz"),
@@ -66,7 +66,7 @@ export class Discount extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  regions: Region[]
+  regions?: Region[]
 
   @Column({ type: Number, nullable: true })
   usage_limit: number | null
@@ -75,7 +75,7 @@ export class Discount extends SoftDeletableEntity {
   usage_count: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private upperCaseCodeAndTrim(): void {

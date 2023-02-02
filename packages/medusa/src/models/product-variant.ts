@@ -26,32 +26,32 @@ export class ProductVariant extends SoftDeletableEntity {
 
   @ManyToOne(() => Product, (product) => product.variants, { eager: true })
   @JoinColumn({ name: "product_id" })
-  product: Product
+  product?: Product | null
 
   @OneToMany(() => MoneyAmount, (ma) => ma.variant, {
     cascade: true,
     onDelete: "CASCADE",
   })
-  prices: MoneyAmount[]
+  prices?: MoneyAmount[]
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  sku: string
+  sku: string | null
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  barcode: string
+  barcode: string | null
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  ean: string
+  ean: string | null
 
   @Column({ nullable: true })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  upc: string
+  upc: string | null
 
   @Column({ nullable: true, default: 0, select: false })
-  variant_rank: number
+  variant_rank?: number | null
 
   @Column({ type: "int" })
   inventory_quantity: number
@@ -63,36 +63,36 @@ export class ProductVariant extends SoftDeletableEntity {
   manage_inventory: boolean
 
   @Column({ nullable: true })
-  hs_code: string
+  hs_code: string | null
 
   @Column({ nullable: true })
-  origin_country: string
+  origin_country: string | null
 
   @Column({ nullable: true })
-  mid_code: string
+  mid_code: string | null
 
   @Column({ nullable: true })
-  material: string
+  material: string | null
 
   @Column({ type: "int", nullable: true })
-  weight: number
+  weight: number | null
 
   @Column({ type: "int", nullable: true })
-  length: number
+  length: number | null
 
   @Column({ type: "int", nullable: true })
-  height: number
+  height: number | null
 
   @Column({ type: "int", nullable: true })
-  width: number
+  width: number | null
 
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
     cascade: true,
   })
-  options: ProductOptionValue[]
+  options?: ProductOptionValue[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

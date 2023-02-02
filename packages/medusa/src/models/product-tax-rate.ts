@@ -21,12 +21,12 @@ export class ProductTaxRate {
 
   @ManyToOne(() => Product, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_id" })
-  product?: Product
+  product?: Product | null
 
   // Note the onDelete config here
   @ManyToOne(() => TaxRate, { onDelete: "CASCADE" })
   @JoinColumn({ name: "rate_id" })
-  tax_rate?: TaxRate
+  tax_rate?: TaxRate | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -35,7 +35,7 @@ export class ProductTaxRate {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 }
 
 /**

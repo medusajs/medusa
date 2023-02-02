@@ -17,7 +17,7 @@ import { generateEntityId } from "../utils/generate-entity-id"
 @Entity()
 export class Notification extends BaseEntity {
   @Column({ nullable: true })
-  event_name: string
+  event_name: string | null
 
   @Index()
   @Column()
@@ -33,7 +33,7 @@ export class Notification extends BaseEntity {
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
-  customer: Customer
+  customer?: Customer | null
 
   @Column()
   to: string
@@ -42,21 +42,21 @@ export class Notification extends BaseEntity {
   data: Record<string, unknown>
 
   @Column({ nullable: true })
-  parent_id: string
+  parent_id: string | null
 
   @ManyToOne(() => Notification)
   @JoinColumn({ name: "parent_id" })
-  parent_notification: Notification
+  parent_notification?: Notification | null
 
   @OneToMany(() => Notification, (noti) => noti.parent_notification)
-  resends: Notification[]
+  resends?: Notification[]
 
   @Column({ nullable: true })
-  provider_id: string
+  provider_id: string | null
 
   @ManyToOne(() => NotificationProvider)
   @JoinColumn({ name: "provider_id" })
-  provider: NotificationProvider
+  provider?: NotificationProvider | null
 
   @BeforeInsert()
   private beforeInsert(): void {

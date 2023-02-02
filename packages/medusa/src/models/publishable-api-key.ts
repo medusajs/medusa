@@ -15,7 +15,7 @@ export class PublishableApiKey extends BaseEntity {
   revoked_by: string | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  revoked_at?: Date
+  revoked_at: Date | null
 
   @Column()
   title: string

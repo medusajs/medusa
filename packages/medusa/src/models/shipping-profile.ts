@@ -21,13 +21,13 @@ export class ShippingProfile extends SoftDeletableEntity {
   type: ShippingProfileType
 
   @OneToMany(() => Product, (product) => product.profile)
-  products: Product[]
+  products?: Product[]
 
   @OneToMany(() => ShippingOption, (so) => so.profile)
-  shipping_options: ShippingOption[]
+  shipping_options?: ShippingOption[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

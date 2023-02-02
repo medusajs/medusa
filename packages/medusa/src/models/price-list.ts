@@ -30,10 +30,7 @@ export class PriceList extends SoftDeletableEntity {
   @DbAwareColumn({ type: "enum", enum: PriceListStatus, default: "draft" })
   status: PriceListStatus
 
-  @Column({
-    type: resolveDbType("timestamptz"),
-    nullable: true,
-  })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   starts_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
@@ -53,15 +50,15 @@ export class PriceList extends SoftDeletableEntity {
   @ManyToMany(() => CustomerGroup, (cg) => cg.price_lists, {
     onDelete: "CASCADE",
   })
-  customer_groups: CustomerGroup[]
+  customer_groups?: CustomerGroup[]
 
   @OneToMany(() => MoneyAmount, (moneyAmount) => moneyAmount.price_list, {
     onDelete: "CASCADE",
   })
-  prices: MoneyAmount[]
+  prices?: MoneyAmount[]
 
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
-  includes_tax: boolean
+  includes_tax?: boolean
 
   @BeforeInsert()
   private beforeInsert(): undefined | void {

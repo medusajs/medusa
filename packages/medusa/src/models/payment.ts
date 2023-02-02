@@ -25,27 +25,27 @@ import { generateEntityId } from "../utils/generate-entity-id"
 export class Payment extends BaseEntity {
   @Index()
   @Column({ nullable: true })
-  swap_id: string
+  swap_id: string | null
 
   @OneToOne(() => Swap)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap?: Swap | null
 
   @Index()
   @Column({ nullable: true })
-  cart_id: string
+  cart_id: string | null
 
   @ManyToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart?: Cart | null
 
   @Index()
   @Column({ nullable: true })
-  order_id: string
+  order_id: string | null
 
   @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @Column({ type: "int" })
   amount: number
@@ -56,7 +56,7 @@ export class Payment extends BaseEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
+  currency?: Currency | null
 
   @Column({ type: "int", default: 0 })
   amount_refunded: number
@@ -69,16 +69,16 @@ export class Payment extends BaseEntity {
   data: Record<string, unknown>
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  captured_at: Date | string
+  captured_at: Date | string | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at: Date | string
+  canceled_at: Date | string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @BeforeInsert()
   private beforeInsert(): void {

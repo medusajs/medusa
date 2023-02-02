@@ -31,7 +31,7 @@ export class ClaimItem extends SoftDeletableEntity {
   @OneToMany(() => ClaimImage, (ci) => ci.claim_item, {
     cascade: ["insert", "remove"],
   })
-  images: ClaimImage[]
+  images?: ClaimImage[]
 
   @Index()
   @Column()
@@ -39,7 +39,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ClaimOrder, (co) => co.claim_items)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order?: ClaimOrder | null
 
   @Index()
   @Column()
@@ -47,7 +47,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item?: LineItem | null
 
   @Index()
   @Column()
@@ -55,13 +55,13 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant?: ProductVariant | null
 
   @DbAwareColumn({ type: "enum", enum: ClaimReason })
   reason: ClaimReason
 
   @Column({ nullable: true })
-  note: string
+  note: string | null
 
   @Column({ type: "int" })
   quantity: number
@@ -78,10 +78,10 @@ export class ClaimItem extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  tags: ClaimTag[]
+  tags?: ClaimTag[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

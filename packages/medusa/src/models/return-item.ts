@@ -15,11 +15,11 @@ export class ReturnItem {
 
   @ManyToOne(() => Return)
   @JoinColumn({ name: "return_id" })
-  return_order: Return
+  return_order?: Return | null
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item?: LineItem | null
 
   @Column({ type: "int" })
   quantity: number
@@ -28,23 +28,23 @@ export class ReturnItem {
   is_requested: boolean
 
   @Column({ type: "int", nullable: true })
-  requested_quantity: number
+  requested_quantity: number | null
 
   @Column({ type: "int", nullable: true })
-  received_quantity: number
+  received_quantity: number | null
 
   @Column({ nullable: true })
-  reason_id: string
+  reason_id: string | null
 
   @ManyToOne(() => ReturnReason)
   @JoinColumn({ name: "reason_id" })
-  reason: ReturnReason
+  reason?: ReturnReason | null
 
   @Column({ nullable: true })
-  note: string
+  note: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 }
 
 /**

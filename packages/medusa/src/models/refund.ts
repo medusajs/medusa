@@ -26,34 +26,34 @@ export enum RefundReason {
 export class Refund extends BaseEntity {
   @Index()
   @Column({ nullable: true })
-  order_id: string
+  order_id: string | null
 
   @Index()
   @Column({ nullable: true })
-  payment_id: string
+  payment_id: string | null
 
   @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
-  @OneToOne(() => Payment, { nullable: true })
+  @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
-  payment: Payment
+  payment?: Payment | null
 
   @Column({ type: "int" })
   amount: number
 
   @Column({ nullable: true })
-  note: string
+  note: string | null
 
   @DbAwareColumn({ type: "enum", enum: RefundReason })
   reason: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @BeforeInsert()
   private beforeInsert(): void {

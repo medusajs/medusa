@@ -21,17 +21,17 @@ export class ProductOption extends SoftDeletableEntity {
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
     cascade: ["soft-remove", "remove"],
   })
-  values: ProductOptionValue[]
+  values?: ProductOptionValue[]
 
   @Column()
   product_id: string
 
   @ManyToOne(() => Product, (product) => product.options)
   @JoinColumn({ name: "product_id" })
-  product: Product
+  product?: Product | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

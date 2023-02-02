@@ -26,7 +26,7 @@ export class GiftCardTransaction {
 
   @ManyToOne(() => GiftCard)
   @JoinColumn({ name: "gift_card_id" })
-  gift_card: GiftCard
+  gift_card?: GiftCard | null
 
   @Index()
   @Column()
@@ -34,7 +34,7 @@ export class GiftCardTransaction {
 
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @Column("int")
   amount: number
@@ -43,7 +43,7 @@ export class GiftCardTransaction {
   created_at: Date
 
   @Column({ nullable: true })
-  is_taxable: boolean
+  is_taxable: boolean | null
 
   @Column({ type: "real", nullable: true })
   tax_rate: number | null

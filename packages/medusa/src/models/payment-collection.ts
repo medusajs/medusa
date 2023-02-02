@@ -49,7 +49,7 @@ export class PaymentCollection extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region?: Region | null
 
   @Index()
   @Column()
@@ -57,7 +57,7 @@ export class PaymentCollection extends SoftDeletableEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
+  currency?: Currency | null
 
   @ManyToMany(() => PaymentSession)
   @JoinTable({
@@ -71,7 +71,7 @@ export class PaymentCollection extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  payment_sessions: PaymentSession[]
+  payment_sessions?: PaymentSession[]
 
   @ManyToMany(() => Payment)
   @JoinTable({
@@ -85,10 +85,10 @@ export class PaymentCollection extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  payments: Payment[]
+  payments?: Payment[]
 
-  @DbAwareColumn({ type: "jsonb" })
-  metadata: Record<string, unknown>
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null
 
   @Column()
   created_by: string

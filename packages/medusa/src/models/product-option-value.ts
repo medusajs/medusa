@@ -24,7 +24,7 @@ export class ProductOptionValue extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductOption, (option) => option.values)
   @JoinColumn({ name: "option_id" })
-  option: ProductOption
+  option?: ProductOption | null
 
   @Index()
   @Column()
@@ -34,10 +34,10 @@ export class ProductOptionValue extends SoftDeletableEntity {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant?: ProductVariant | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

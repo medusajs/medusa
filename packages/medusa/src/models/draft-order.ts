@@ -36,34 +36,34 @@ export class DraftOrder extends BaseEntity {
 
   @Index()
   @Column({ nullable: true })
-  cart_id: string
+  cart_id: string | null
 
   @OneToOne(() => Cart, { onDelete: "CASCADE" })
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart?: Cart | null
 
   @Index()
   @Column({ nullable: true })
-  order_id: string
+  order_id: string | null
 
   @OneToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
-  canceled_at: Date
+  canceled_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  completed_at: Date
+  completed_at: Date | null
 
   @Column({ nullable: true })
-  no_notification_order: boolean
+  no_notification_order: boolean | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {

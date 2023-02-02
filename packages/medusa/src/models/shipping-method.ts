@@ -38,11 +38,11 @@ export class ShippingMethod {
 
   @Index()
   @Column({ nullable: true })
-  order_id: string
+  order_id: string | null
 
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @Index()
   @Column({ nullable: true })
@@ -50,40 +50,40 @@ export class ShippingMethod {
 
   @ManyToOne(() => ClaimOrder)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order?: ClaimOrder | null
 
   @Index()
   @Column({ nullable: true })
-  cart_id: string
+  cart_id: string | null
 
   @ManyToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart?: Cart | null
 
   @Index()
   @Column({ nullable: true })
-  swap_id: string
+  swap_id: string | null
 
   @ManyToOne(() => Swap)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap?: Swap | null
 
   @Index()
   @Column({ nullable: true })
-  return_id: string
+  return_id: string | null
 
   @OneToOne(() => Return, (ret) => ret.shipping_method)
   @JoinColumn({ name: "return_id" })
-  return_order: Return
+  return_order?: Return | null
 
   @ManyToOne(() => ShippingOption, { eager: true })
   @JoinColumn({ name: "shipping_option_id" })
-  shipping_option: ShippingOption
+  shipping_option?: ShippingOption | null
 
   @OneToMany(() => ShippingMethodTaxLine, (tl) => tl.shipping_method, {
     cascade: ["insert"],
   })
-  tax_lines: ShippingMethodTaxLine[]
+  tax_lines?: ShippingMethodTaxLine[]
 
   @Column({ type: "int" })
   price: number
@@ -92,7 +92,7 @@ export class ShippingMethod {
   data: Record<string, unknown>
 
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
-  includes_tax: boolean
+  includes_tax?: boolean
 
   subtotal?: number
   total?: number

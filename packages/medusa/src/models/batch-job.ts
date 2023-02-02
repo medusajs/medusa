@@ -27,42 +27,44 @@ export class BatchJob extends SoftDeletableEntity {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "created_by" })
-  created_by_user: User
+  created_by_user?: User | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  context: Record<string, unknown>
+  context: Record<string, unknown> | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  result: {
-    count?: number
-    advancement_count?: number
-    progress?: number
-    errors?: (BatchJobResultError | string)[]
-    stat_descriptors?: BatchJobResultStatDescriptor[]
-    file_key?: string
-    file_size?: number
-  } & Record<string, unknown>
+  result:
+    | ({
+        count?: number
+        advancement_count?: number
+        progress?: number
+        errors?: (BatchJobResultError | string)[]
+        stat_descriptors?: BatchJobResultStatDescriptor[]
+        file_key?: string
+        file_size?: number
+      } & Record<string, unknown>)
+    | null
 
   @Column({ type: "boolean", nullable: false, default: false })
   dry_run = false
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  pre_processed_at?: Date
+  pre_processed_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  processing_at?: Date
+  processing_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  confirmed_at?: Date
+  confirmed_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  completed_at?: Date
+  completed_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at?: Date
+  canceled_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  failed_at?: Date
+  failed_at: Date | null
 
   status: BatchJobStatus
 

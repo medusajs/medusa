@@ -31,15 +31,15 @@ export class GiftCard extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region?: Region | null
 
   @Index()
   @Column({ nullable: true })
-  order_id: string
+  order_id: string | null
 
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @Column({ default: false })
   is_disabled: boolean
@@ -48,13 +48,13 @@ export class GiftCard extends SoftDeletableEntity {
     type: resolveDbType("timestamptz"),
     nullable: true,
   })
-  ends_at: Date
+  ends_at: Date | null
 
   @Column({ type: "real", nullable: true })
   tax_rate: number | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

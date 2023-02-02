@@ -26,14 +26,14 @@ export class Note extends SoftDeletableEntity {
   resource_id: string
 
   @Column({ nullable: true })
-  author_id: string
+  author_id: string | null
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "author_id" })
-  author: User
+  author?: User | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

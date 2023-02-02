@@ -29,7 +29,7 @@ export class ShippingOptionRequirement {
 
   @ManyToOne(() => ShippingOption)
   @JoinColumn({ name: "shipping_option_id" })
-  shipping_option: ShippingOption
+  shipping_option?: ShippingOption | null
 
   @DbAwareColumn({ type: "enum", enum: RequirementType })
   type: RequirementType
@@ -38,7 +38,7 @@ export class ShippingOptionRequirement {
   amount: number
 
   @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
+  deleted_at: Date | null
 
   @BeforeInsert()
   private beforeInsert(): void {

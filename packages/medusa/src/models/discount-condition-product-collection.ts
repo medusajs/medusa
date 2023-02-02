@@ -21,11 +21,11 @@ export class DiscountConditionProductCollection {
 
   @ManyToOne(() => ProductCollection, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_collection_id" })
-  product_collection?: ProductCollection
+  product_collection?: ProductCollection | null
 
   @ManyToOne(() => DiscountCondition, { onDelete: "CASCADE" })
   @JoinColumn({ name: "condition_id" })
-  discount_condition?: DiscountCondition
+  discount_condition?: DiscountCondition | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -34,7 +34,7 @@ export class DiscountConditionProductCollection {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 }
 
 /**

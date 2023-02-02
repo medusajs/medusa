@@ -8,7 +8,7 @@ import { generateEntityId } from "../utils/generate-entity-id"
 @Entity()
 export class TrackingLink extends SoftDeletableEntity {
   @Column({ nullable: true })
-  url: string
+  url: string | null
 
   @Column()
   tracking_number: string
@@ -18,13 +18,13 @@ export class TrackingLink extends SoftDeletableEntity {
 
   @ManyToOne(() => Fulfillment, (ful) => ful.tracking_links)
   @JoinColumn({ name: "fulfillment_id" })
-  fulfillment: Fulfillment
+  fulfillment?: Fulfillment | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

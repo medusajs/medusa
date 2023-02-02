@@ -6,7 +6,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany
+  OneToMany,
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
@@ -39,11 +39,11 @@ import { Swap } from "./swap"
 export class LineItem extends BaseEntity {
   @Index()
   @Column({ nullable: true })
-  cart_id: string
+  cart_id: string | null
 
   @ManyToOne(() => Cart, (cart) => cart.items)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart?: Cart | null
 
   @Index()
   @Column({ nullable: true })
@@ -51,37 +51,37 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @Index()
   @Column({ nullable: true })
-  swap_id: string
+  swap_id: string | null
 
   @ManyToOne(() => Swap, (swap) => swap.additional_items)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap?: Swap | null
 
   @Index()
   @Column({ nullable: true })
-  claim_order_id: string
+  claim_order_id: string | null
 
   @ManyToOne(() => ClaimOrder, (co) => co.additional_items)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order?: ClaimOrder | null
 
   @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
-  tax_lines: LineItemTaxLine[]
+  tax_lines?: LineItemTaxLine[]
 
   @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
     cascade: ["insert"],
   })
-  adjustments: LineItemAdjustment[]
+  adjustments?: LineItemAdjustment[]
 
   @Column({ nullable: true, type: "varchar" })
-  original_item_id?: string | null
+  original_item_id: string | null
 
   @Column({ nullable: true, type: "varchar" })
-  order_edit_id?: string | null
+  order_edit_id: string | null
 
   @ManyToOne(() => OrderEdit, (orderEdit) => orderEdit.items)
   @JoinColumn({ name: "order_edit_id" })
@@ -120,7 +120,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => ProductVariant, { eager: true })
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant?: ProductVariant | null
 
   @Column({ type: "int" })
   quantity: number
@@ -135,19 +135,19 @@ export class LineItem extends BaseEntity {
   shipped_quantity: number | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
-  includes_tax: boolean
+  includes_tax?: boolean
 
-  refundable?: number | null
-  subtotal?: number | null
-  tax_total?: number | null
-  total?: number | null
-  original_total?: number | null
-  original_tax_total?: number | null
-  discount_total?: number | null
-  gift_card_total?: number | null
+  refundable?: number
+  subtotal?: number
+  tax_total?: number
+  total?: number
+  original_total?: number
+  original_tax_total?: number
+  discount_total?: number
+  gift_card_total?: number
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -23,22 +23,22 @@ export class IdempotencyKey {
   created_at: Date
 
   @DbAwareColumn({ type: "timestamptz", nullable: true })
-  locked_at: Date
+  locked_at: Date | null
 
   @Column({ nullable: true })
-  request_method: string
+  request_method: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  request_params: Record<string, unknown>
+  request_params: Record<string, unknown> | null
 
   @Column({ nullable: true })
-  request_path: string
+  request_path: string | null
 
   @Column({ type: "int", nullable: true })
-  response_code: number
+  response_code: number | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  response_body: Record<string, unknown>
+  response_body: Record<string, unknown> | null
 
   @Column({ default: "started" })
   recovery_point: string

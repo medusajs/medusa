@@ -11,7 +11,7 @@ export class ClaimTag extends SoftDeletableEntity {
   value: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

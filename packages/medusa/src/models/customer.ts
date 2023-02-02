@@ -26,10 +26,10 @@ export class Customer extends SoftDeletableEntity {
   email: string
 
   @Column({ nullable: true })
-  first_name: string
+  first_name: string | null
 
   @Column({ nullable: true })
-  last_name: string
+  last_name: string | null
 
   @Index()
   @Column({ nullable: true })
@@ -37,22 +37,22 @@ export class Customer extends SoftDeletableEntity {
 
   @OneToOne(() => Address)
   @JoinColumn({ name: "billing_address_id" })
-  billing_address: Address
+  billing_address?: Address | null
 
   @OneToMany(() => Address, (address) => address.customer)
-  shipping_addresses: Address[]
+  shipping_addresses?: Address[]
 
   @Column({ nullable: true, select: false })
-  password_hash: string
+  password_hash?: string | null
 
   @Column({ nullable: true })
-  phone: string
+  phone: string | null
 
   @Column({ default: false })
   has_account: boolean
 
   @OneToMany(() => Order, (order) => order.customer)
-  orders: Order[]
+  orders?: Order[]
 
   @JoinTable({
     name: "customer_group_customers",
@@ -68,10 +68,10 @@ export class Customer extends SoftDeletableEntity {
   @ManyToMany(() => CustomerGroup, (cg) => cg.customers, {
     onDelete: "CASCADE",
   })
-  groups: CustomerGroup[]
+  groups?: CustomerGroup[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

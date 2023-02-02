@@ -21,7 +21,7 @@ export class ShippingMethodTaxLine extends TaxLine {
 
   @ManyToOne(() => ShippingMethod, (sm) => sm.tax_lines)
   @JoinColumn({ name: "shipping_method_id" })
-  shipping_method: ShippingMethod
+  shipping_method?: ShippingMethod | null
 
   @BeforeInsert()
   private beforeInsert(): void {

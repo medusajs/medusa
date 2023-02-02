@@ -21,7 +21,7 @@ export class LineItemTaxLine extends TaxLine {
 
   @ManyToOne(() => LineItem, (li) => li.tax_lines)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item?: LineItem | null
 
   @BeforeInsert()
   private beforeInsert(): void {

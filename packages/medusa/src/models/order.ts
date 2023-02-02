@@ -98,11 +98,11 @@ export class Order extends BaseEntity {
 
   @Index()
   @Column({ nullable: true })
-  cart_id: string
+  cart_id: string | null
 
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart?: Cart | null
 
   @Index()
   @Column()
@@ -110,26 +110,26 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Customer, { cascade: ["insert"] })
   @JoinColumn({ name: "customer_id" })
-  customer: Customer
+  customer?: Customer | null
 
   @Column()
   email: string
 
   @Index()
   @Column({ nullable: true })
-  billing_address_id: string
+  billing_address_id: string | null
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "billing_address_id" })
-  billing_address: Address
+  billing_address?: Address | null
 
   @Index()
   @Column({ nullable: true })
-  shipping_address_id: string
+  shipping_address_id: string | null
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address?: Address | null
 
   @Index()
   @Column()
@@ -137,7 +137,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region?: Region | null
 
   @Index()
   @Column()
@@ -145,7 +145,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
+  currency?: Currency | null
 
   @Column({ type: "real", nullable: true })
   tax_rate: number | null
@@ -162,7 +162,7 @@ export class Order extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount[]
+  discounts?: Discount[]
 
   @ManyToMany(() => GiftCard, { cascade: ["insert"] })
   @JoinTable({
@@ -176,86 +176,86 @@ export class Order extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard[]
+  gift_cards?: GiftCard[]
 
   @OneToMany(() => ShippingMethod, (method) => method.order, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @OneToMany(() => Payment, (payment) => payment.order, { cascade: ["insert"] })
-  payments: Payment[]
+  payments?: Payment[]
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.order, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments?: Fulfillment[]
 
   @OneToMany(() => Return, (ret) => ret.order, { cascade: ["insert"] })
-  returns: Return[]
+  returns?: Return[]
 
   @OneToMany(() => ClaimOrder, (co) => co.order, { cascade: ["insert"] })
-  claims: ClaimOrder[]
+  claims?: ClaimOrder[]
 
   @OneToMany(() => Refund, (ref) => ref.order, { cascade: ["insert"] })
-  refunds: Refund[]
+  refunds?: Refund[]
 
   @OneToMany(() => Swap, (swap) => swap.order, { cascade: ["insert"] })
-  swaps: Swap[]
+  swaps?: Swap[]
 
   @Column({ nullable: true })
-  draft_order_id: string
+  draft_order_id: string | null
 
   @OneToOne(() => DraftOrder)
   @JoinColumn({ name: "draft_order_id" })
-  draft_order: DraftOrder
+  draft_order?: DraftOrder | null
 
   @OneToMany(() => OrderEdit, (oe) => oe.order)
-  edits: OrderEdit[]
+  edits?: OrderEdit[]
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
     cascade: ["insert"],
   })
-  items: LineItem[]
+  items?: LineItem[]
 
   @OneToMany(() => GiftCardTransaction, (gc) => gc.order)
-  gift_card_transactions: GiftCardTransaction[]
+  gift_card_transactions?: GiftCardTransaction[]
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
-  canceled_at: Date
+  canceled_at: Date | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: boolean
+  no_notification: boolean | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @Column({ type: "varchar", nullable: true })
   external_id: string | null
 
   @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
-  sales_channel_id: string | null
+  sales_channel_id?: string | null
 
   @FeatureFlagDecorators("sales_channels", [
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
-  sales_channel: SalesChannel
+  sales_channel?: SalesChannel | null
 
   // Total fields
-  shipping_total: number
-  discount_total: number
-  tax_total: number | null
-  refunded_total: number
-  total: number
-  subtotal: number
-  paid_total: number
-  refundable_amount: number
-  gift_card_total: number
-  gift_card_tax_total: number
+  discount_total?: number
+  gift_card_tax_total?: number
+  gift_card_total?: number
+  paid_total?: number
+  refundable_amount?: number
+  refunded_total?: number
+  shipping_total?: number
+  subtotal?: number
+  tax_total?: number
+  total?: number
 
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {

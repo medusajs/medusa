@@ -35,21 +35,21 @@ export class OrderItemChange extends SoftDeletableEntity {
 
   @ManyToOne(() => OrderEdit, (oe) => oe.changes)
   @JoinColumn({ name: "order_edit_id" })
-  order_edit: OrderEdit
+  order_edit?: OrderEdit | null
 
   @Column({ nullable: true })
-  original_line_item_id?: string
+  original_line_item_id: string | null
 
-  @ManyToOne(() => LineItem, { nullable: true })
+  @ManyToOne(() => LineItem)
   @JoinColumn({ name: "original_line_item_id" })
-  original_line_item?: LineItem
+  original_line_item?: LineItem | null
 
   @Column({ nullable: true })
-  line_item_id?: string
+  line_item_id: string | null
 
-  @OneToOne(() => LineItem, { nullable: true })
+  @OneToOne(() => LineItem)
   @JoinColumn({ name: "line_item_id" })
-  line_item?: LineItem
+  line_item?: LineItem | null
 
   @BeforeInsert()
   private beforeInsert(): void {

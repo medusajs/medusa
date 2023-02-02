@@ -13,7 +13,7 @@ export class TaxLine extends BaseEntity {
   code: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 }
 
 /**

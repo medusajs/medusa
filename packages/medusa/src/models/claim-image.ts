@@ -20,13 +20,13 @@ export class ClaimImage extends SoftDeletableEntity {
 
   @ManyToOne(() => ClaimItem, (ci) => ci.images)
   @JoinColumn({ name: "claim_item_id" })
-  claim_item: ClaimItem
+  claim_item?: ClaimItem | null
 
   @Column()
   url: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -21,7 +21,7 @@ export class Address extends SoftDeletableEntity {
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
-  customer: Customer | null
+  customer?: Customer | null
 
   @Column({ type: "varchar", nullable: true })
   company: string | null
@@ -46,7 +46,7 @@ export class Address extends SoftDeletableEntity {
 
   @ManyToOne(() => Country)
   @JoinColumn({ name: "country_code", referencedColumnName: "iso_2" })
-  country: Country | null
+  country?: Country | null
 
   @Column({ type: "varchar", nullable: true })
   province: string | null
@@ -58,7 +58,7 @@ export class Address extends SoftDeletableEntity {
   phone: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

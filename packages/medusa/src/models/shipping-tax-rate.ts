@@ -21,11 +21,11 @@ export class ShippingTaxRate {
 
   @ManyToOne(() => ShippingOption, { onDelete: "CASCADE" })
   @JoinColumn({ name: "shipping_option_id" })
-  shipping_option?: ShippingOption
+  shipping_option?: ShippingOption | null
 
   @ManyToOne(() => TaxRate, { onDelete: "CASCADE" })
   @JoinColumn({ name: "rate_id" })
-  tax_rate?: TaxRate
+  tax_rate?: TaxRate | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -34,7 +34,7 @@ export class ShippingTaxRate {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 }
 
 /**

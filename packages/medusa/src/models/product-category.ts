@@ -4,17 +4,15 @@ import { kebabCase } from "lodash"
 import { Product } from "."
 import {
   BeforeInsert,
-  Index,
-  Entity,
-  Tree,
   Column,
-  PrimaryGeneratedColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  Tree,
   TreeChildren,
   TreeParent,
-  TreeLevelColumn,
-  JoinColumn,
-  ManyToMany,
-  JoinTable,
 } from "typeorm"
 
 @Entity()
@@ -43,7 +41,7 @@ export class ProductCategory extends SoftDeletableEntity {
 
   @TreeParent()
   @JoinColumn({ name: "parent_category_id" })
-  parent_category: ProductCategory | null
+  parent_category?: ProductCategory | null
 
   // Typeorm also keeps track of the category's parent at all times.
   @Column()
@@ -64,7 +62,7 @@ export class ProductCategory extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  products: Product[]
+  products?: Product[]
 
   @BeforeInsert()
   private beforeInsert(): void {

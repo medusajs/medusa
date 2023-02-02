@@ -16,13 +16,13 @@ export class Oauth {
   application_name: string
 
   @Column({ nullable: true })
-  install_url: string
+  install_url: string | null
 
   @Column({ nullable: true })
-  uninstall_url: string
+  uninstall_url: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  data: Record<string, unknown>
+  data: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

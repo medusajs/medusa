@@ -22,53 +22,56 @@ import { generateEntityId } from "../utils/generate-entity-id"
 export class Fulfillment extends BaseEntity {
   @Index()
   @Column({ nullable: true })
-  claim_order_id: string
+  claim_order_id: string | null
 
   @ManyToOne(() => ClaimOrder, (co) => co.fulfillments)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order?: ClaimOrder | null
 
   @Index()
   @Column({ nullable: true })
-  swap_id: string
+  swap_id: string | null
 
   @ManyToOne(() => Swap, (swap) => swap.fulfillments)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap?: Swap | null
 
   @Index()
   @Column({ nullable: true })
-  order_id: string
+  order_id: string | null
 
   @ManyToOne(() => Order, (o) => o.fulfillments)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: boolean
+  no_notification: boolean | null
 
   @Index()
   @Column()
   provider_id: string
 
-  @Column({ nullable: true, type: "text" })
-  location_id: string | null
-
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
-  provider: FulfillmentProvider
+  provider?: FulfillmentProvider | null
+
+  @Column({ nullable: true, type: "text" })
+  location_id: string | null
 
   @OneToMany(() => FulfillmentItem, (i) => i.fulfillment, {
     eager: true,
     cascade: true,
   })
-  items: FulfillmentItem[]
+  items?: FulfillmentItem[]
 
   @OneToMany(() => TrackingLink, (tl) => tl.fulfillment, {
     cascade: ["insert"],
   })
-  tracking_links: TrackingLink[]
+  tracking_links?: TrackingLink[]
 
+  /**
+   * @deprecated
+   */
   @DbAwareColumn({ type: "jsonb", default: [] })
   tracking_numbers: string[]
 
@@ -76,16 +79,16 @@ export class Fulfillment extends BaseEntity {
   data: Record<string, unknown>
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  shipped_at: Date
+  shipped_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at: Date
+  canceled_at: Date | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @BeforeInsert()
   private beforeInsert(): void {

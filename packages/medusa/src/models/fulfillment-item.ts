@@ -13,11 +13,11 @@ export class FulfillmentItem {
 
   @ManyToOne(() => Fulfillment)
   @JoinColumn({ name: "fulfillment_id" })
-  fulfillment: Fulfillment
+  fulfillment?: Fulfillment | null
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item?: LineItem | null
 
   @Column({ type: "int" })
   quantity: number

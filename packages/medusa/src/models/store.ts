@@ -29,7 +29,7 @@ export class Store extends BaseEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "default_currency_code", referencedColumnName: "code" })
-  default_currency: Currency
+  default_currency?: Currency | null
 
   @ManyToMany(() => Currency)
   @JoinTable({
@@ -43,7 +43,7 @@ export class Store extends BaseEntity {
       referencedColumnName: "code",
     },
   })
-  currencies: Currency[]
+  currencies?: Currency[]
 
   @Column({ nullable: true, type: "text" })
   swap_link_template: string | null
@@ -55,19 +55,19 @@ export class Store extends BaseEntity {
   invite_link_template: string | null
 
   @Column({ nullable: true })
-  default_location_id: string
+  default_location_id: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
   @FeatureFlagColumn("sales_channels", { nullable: true, type: "text" })
-  default_sales_channel_id: string | null
+  default_sales_channel_id?: string | null
 
   @FeatureFlagDecorators("sales_channels", [
     OneToOne(() => SalesChannel),
     JoinColumn({ name: "default_sales_channel_id" }),
   ])
-  default_sales_channel: SalesChannel
+  default_sales_channel?: SalesChannel | null
 
   @BeforeInsert()
   private beforeInsert(): void {

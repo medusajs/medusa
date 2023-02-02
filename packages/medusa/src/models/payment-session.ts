@@ -34,7 +34,7 @@ export class PaymentSession extends BaseEntity {
 
   @ManyToOne(() => Cart, (cart) => cart.payment_sessions)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart?: Cart | null
 
   @Index()
   @Column()
@@ -53,13 +53,13 @@ export class PaymentSession extends BaseEntity {
   data: Record<string, unknown>
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @Column({ type: "integer", nullable: true })
-  amount: number
+  amount: number | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  payment_authorized_at: Date
+  payment_authorized_at: Date | null
 
   @BeforeInsert()
   private beforeInsert(): void {

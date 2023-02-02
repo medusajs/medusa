@@ -56,61 +56,61 @@ export class Swap extends SoftDeletableEntity {
 
   @ManyToOne(() => Order, (o) => o.swaps)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @OneToMany(() => LineItem, (item) => item.swap, { cascade: ["insert"] })
-  additional_items: LineItem[]
+  additional_items?: LineItem[]
 
   @OneToOne(() => Return, (ret) => ret.swap, { cascade: ["insert"] })
-  return_order: Return
+  return_order?: Return | null
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.swap, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments?: Fulfillment[]
 
   @OneToOne(() => Payment, (p) => p.swap, { cascade: ["insert"] })
-  payment: Payment
+  payment?: Payment | null
 
   @Column({ type: "int", nullable: true })
-  difference_due: number
+  difference_due: number | null
 
   @Column({ nullable: true })
-  shipping_address_id: string
+  shipping_address_id: string | null
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address?: Address | null
 
   @OneToMany(() => ShippingMethod, (method) => method.swap, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @Column({ nullable: true })
-  cart_id: string
+  cart_id: string | null
 
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart?: Cart | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  confirmed_at: Date
+  confirmed_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at: Date
+  canceled_at: Date | null
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: boolean
+  no_notification: boolean | null
 
   @Column({ type: "boolean", default: false })
   allow_backorder: boolean
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

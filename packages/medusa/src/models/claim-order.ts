@@ -1,15 +1,12 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
-  UpdateDateColumn,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
@@ -63,10 +60,10 @@ export class ClaimOrder extends SoftDeletableEntity {
   fulfillment_status: ClaimFulfillmentStatus
 
   @OneToMany(() => ClaimItem, (ci) => ci.claim_order)
-  claim_items: ClaimItem[]
+  claim_items?: ClaimItem[]
 
   @OneToMany(() => LineItem, (li) => li.claim_order, { cascade: ["insert"] })
-  additional_items: LineItem[]
+  additional_items?: LineItem[]
 
   @DbAwareColumn({ type: "enum", enum: ClaimType })
   type: ClaimType
@@ -77,52 +74,43 @@ export class ClaimOrder extends SoftDeletableEntity {
 
   @ManyToOne(() => Order, (o) => o.claims)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @OneToOne(() => Return, (ret) => ret.claim_order)
-  return_order: Return
+  return_order?: Return | null
 
   @Index()
   @Column({ nullable: true })
-  shipping_address_id: string
+  shipping_address_id: string | null
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address?: Address | null
 
   @OneToMany(() => ShippingMethod, (method) => method.claim_order, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.claim_order, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments?: Fulfillment[]
 
   @Column({ type: "int", nullable: true })
-  refund_amount: number
+  refund_amount: number | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at: Date
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
+  canceled_at: Date | null
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: boolean
+  no_notification: boolean | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @BeforeInsert()
   private beforeInsert(): void {

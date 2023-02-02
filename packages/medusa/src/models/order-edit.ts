@@ -32,65 +32,65 @@ export class OrderEdit extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.edits)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @OneToMany(() => OrderItemChange, (oic) => oic.order_edit, {
     cascade: true,
   })
-  changes: OrderItemChange[]
+  changes?: OrderItemChange[]
 
   @Column({ nullable: true })
-  internal_note?: string
+  internal_note: string | null
 
   @Column()
   created_by: string // customer, user, third party, etc.
 
   @Column({ nullable: true })
-  requested_by?: string // customer or user ID
+  requested_by: string | null // customer or user ID
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  requested_at?: Date
+  requested_at: Date | null
 
   @Column({ nullable: true })
-  confirmed_by?: string // customer or user ID
+  confirmed_by: string | null // customer or user ID
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  confirmed_at?: Date
+  confirmed_at: Date | null
 
   @Column({ nullable: true })
-  declined_by?: string // customer or user ID
+  declined_by: string | null // customer or user ID
 
   @Column({ nullable: true })
-  declined_reason?: string
+  declined_reason: string | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  declined_at?: Date
+  declined_at: Date | null
 
   @Column({ nullable: true })
-  canceled_by?: string
+  canceled_by: string | null // customer or user ID
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at?: Date
+  canceled_at: Date | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order_edit)
-  items: LineItem[]
+  items?: LineItem[]
 
   @Index()
   @Column({ nullable: true })
-  payment_collection_id: string
+  payment_collection_id: string | null
 
   @OneToOne(() => PaymentCollection)
   @JoinColumn({ name: "payment_collection_id" })
-  payment_collection: PaymentCollection
+  payment_collection?: PaymentCollection | null
 
   // Computed
-  shipping_total: number
-  discount_total: number
-  tax_total: number | null
-  total: number
-  subtotal: number
-  gift_card_total: number
-  gift_card_tax_total: number
+  shipping_total?: number
+  discount_total?: number
+  tax_total?: number
+  total?: number
+  subtotal?: number
+  gift_card_total?: number
+  gift_card_tax_total?: number
 
   difference_due: number
 

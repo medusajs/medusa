@@ -65,18 +65,18 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  images: Image[]
+  images?: Image[]
 
   @Column({ type: "text", nullable: true })
   thumbnail: string | null
 
   @OneToMany(() => ProductOption, (productOption) => productOption.product)
-  options: ProductOption[]
+  options?: ProductOption[]
 
   @OneToMany(() => ProductVariant, (variant) => variant.product, {
     cascade: true,
   })
-  variants: ProductVariant[]
+  variants?: ProductVariant[]
 
   @ManyToMany(() => ProductCategory, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
@@ -90,7 +90,7 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  categories: ProductCategory[]
+  categories?: ProductCategory[]
 
   @Index()
   @Column()
@@ -98,7 +98,7 @@ export class Product extends SoftDeletableEntity {
 
   @ManyToOne(() => ShippingProfile)
   @JoinColumn({ name: "profile_id" })
-  profile: ShippingProfile
+  profile?: ShippingProfile | null
 
   @Column({ type: "int", nullable: true })
   weight: number | null
@@ -129,14 +129,14 @@ export class Product extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductCollection)
   @JoinColumn({ name: "collection_id" })
-  collection: ProductCollection
+  collection?: ProductCollection | null
 
   @Column({ type: "text", nullable: true })
   type_id: string | null
 
   @ManyToOne(() => ProductType)
   @JoinColumn({ name: "type_id" })
-  type: ProductType
+  type?: ProductType | null
 
   @ManyToMany(() => ProductTag)
   @JoinTable({
@@ -150,7 +150,7 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  tags: ProductTag[]
+  tags?: ProductTag[]
 
   @Column({ default: true })
   discountable: boolean
@@ -175,7 +175,7 @@ export class Product extends SoftDeletableEntity {
       },
     }),
   ])
-  sales_channels: SalesChannel[]
+  sales_channels?: SalesChannel[]
 
   @BeforeInsert()
   private beforeInsert(): void {

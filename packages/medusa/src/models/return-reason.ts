@@ -22,24 +22,24 @@ export class ReturnReason extends SoftDeletableEntity {
   label: string
 
   @Column({ nullable: true })
-  description: string
+  description: string | null
 
   @Column({ nullable: true })
   parent_return_reason_id: string | null
 
   @ManyToOne(() => ReturnReason, { cascade: ["soft-remove"] })
   @JoinColumn({ name: "parent_return_reason_id" })
-  parent_return_reason: ReturnReason | null
+  parent_return_reason?: ReturnReason | null
 
   @OneToMany(
     () => ReturnReason,
     (return_reason) => return_reason.parent_return_reason,
     { cascade: ["insert", "soft-remove"] }
   )
-  return_reason_children: ReturnReason[]
+  return_reason_children?: ReturnReason[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

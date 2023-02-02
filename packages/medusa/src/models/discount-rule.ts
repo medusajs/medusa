@@ -19,7 +19,7 @@ export enum AllocationType {
 @Entity()
 export class DiscountRule extends SoftDeletableEntity {
   @Column({ nullable: true })
-  description: string
+  description: string | null
 
   @DbAwareColumn({
     type: "enum",
@@ -35,13 +35,13 @@ export class DiscountRule extends SoftDeletableEntity {
     enum: AllocationType,
     nullable: true,
   })
-  allocation: AllocationType
+  allocation: AllocationType | null
 
   @OneToMany(() => DiscountCondition, (conditions) => conditions.discount_rule)
-  conditions: DiscountCondition[]
+  conditions?: DiscountCondition[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

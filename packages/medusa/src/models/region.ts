@@ -33,16 +33,16 @@ export class Region extends SoftDeletableEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
+  currency?: Currency | null
 
   @Column({ type: "real" })
   tax_rate: number
 
   @OneToMany(() => TaxRate, (tr) => tr.region)
-  tax_rates: TaxRate[] | null
+  tax_rates?: TaxRate[]
 
   @Column({ nullable: true })
-  tax_code: string
+  tax_code: string | null
 
   @Column({ default: true })
   gift_cards_taxable: boolean
@@ -51,14 +51,14 @@ export class Region extends SoftDeletableEntity {
   automatic_taxes: boolean
 
   @OneToMany(() => Country, (c) => c.region)
-  countries: Country[]
+  countries?: Country[]
 
   @Column({ type: "text", nullable: true })
   tax_provider_id: string | null
 
   @ManyToOne(() => TaxProvider)
   @JoinColumn({ name: "tax_provider_id" })
-  tax_provider: TaxProvider
+  tax_provider?: TaxProvider | null
 
   @ManyToMany(() => PaymentProvider, {
     eager: true,
@@ -75,7 +75,7 @@ export class Region extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  payment_providers: PaymentProvider[]
+  payment_providers?: PaymentProvider[]
 
   @ManyToMany(() => FulfillmentProvider, {
     eager: true,
@@ -92,13 +92,13 @@ export class Region extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  fulfillment_providers: FulfillmentProvider[]
+  fulfillment_providers?: FulfillmentProvider[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
-  includes_tax: boolean
+  includes_tax?: boolean
 
   @BeforeInsert()
   private beforeInsert(): void {

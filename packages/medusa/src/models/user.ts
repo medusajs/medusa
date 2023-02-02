@@ -25,19 +25,19 @@ export class User extends SoftDeletableEntity {
   email: string
 
   @Column({ nullable: true })
-  first_name: string
+  first_name: string | null
 
   @Column({ nullable: true })
-  last_name: string
+  last_name: string | null
 
   @Column({ nullable: true, select: false })
-  password_hash: string
+  password_hash?: string | null
 
   @Column({ nullable: true })
-  api_token: string
+  api_token: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

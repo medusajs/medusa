@@ -22,7 +22,7 @@ export class MoneyAmount extends SoftDeletableEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency?: Currency
+  currency?: Currency | null
 
   @Column({ type: "int" })
   amount: number
@@ -41,7 +41,7 @@ export class MoneyAmount extends SoftDeletableEntity {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "price_list_id" })
-  price_list: PriceList | null
+  price_list?: PriceList | null
 
   @Index()
   @Column({ nullable: true })
@@ -51,15 +51,15 @@ export class MoneyAmount extends SoftDeletableEntity {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant?: ProductVariant | null
 
   @Index()
   @Column({ nullable: true })
-  region_id: string
+  region_id: string | null
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region?: Region
+  region?: Region | null
 
   @BeforeInsert()
   private beforeInsert(): undefined | void {

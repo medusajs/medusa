@@ -15,15 +15,15 @@ export class CustomerGroup extends SoftDeletableEntity {
   @ManyToMany(() => Customer, (customer) => customer.groups, {
     onDelete: "CASCADE",
   })
-  customers: Customer[]
+  customers?: Customer[]
 
   @ManyToMany(() => PriceList, (priceList) => priceList.customer_groups, {
     onDelete: "CASCADE",
   })
-  price_lists: PriceList[]
+  price_lists?: PriceList[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

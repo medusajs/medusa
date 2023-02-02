@@ -21,11 +21,11 @@ export class DiscountConditionCustomerGroup {
 
   @ManyToOne(() => CustomerGroup, { onDelete: "CASCADE" })
   @JoinColumn({ name: "customer_group_id" })
-  customer_group?: CustomerGroup
+  customer_group?: CustomerGroup | null
 
   @ManyToOne(() => DiscountCondition, { onDelete: "CASCADE" })
   @JoinColumn({ name: "condition_id" })
-  discount_condition?: DiscountCondition
+  discount_condition?: DiscountCondition | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -34,7 +34,7 @@ export class DiscountConditionCustomerGroup {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 }
 
 /**

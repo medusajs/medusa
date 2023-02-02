@@ -213,32 +213,32 @@ export class Cart extends SoftDeletableEntity {
   readonly object = "cart"
 
   @Column({ nullable: true })
-  email: string
+  email: string | null
 
   @Index()
   @Column({ nullable: true })
-  billing_address_id: string
+  billing_address_id: string | null
 
   @ManyToOne(() => Address, {
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "billing_address_id" })
-  billing_address: Address
+  billing_address?: Address | null
 
   @Index()
   @Column({ nullable: true })
-  shipping_address_id: string
+  shipping_address_id: string | null
 
   @ManyToOne(() => Address, {
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address | null
+  shipping_address?: Address | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
     cascade: ["insert", "remove"],
   })
-  items: LineItem[]
+  items?: LineItem[]
 
   @Index()
   @Column()
@@ -246,7 +246,7 @@ export class Cart extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region?: Region | null
 
   @ManyToMany(() => Discount)
   @JoinTable({
@@ -260,7 +260,7 @@ export class Cart extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount[]
+  discounts?: Discount[]
 
   @ManyToMany(() => GiftCard)
   @JoinTable({
@@ -274,74 +274,74 @@ export class Cart extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard[]
+  gift_cards?: GiftCard[]
 
   @Index()
   @Column({ nullable: true })
-  customer_id: string
+  customer_id: string | null
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
-  customer: Customer
+  customer?: Customer | null
 
   payment_session: PaymentSession | null
 
   @OneToMany(() => PaymentSession, (paymentSession) => paymentSession.cart, {
     cascade: true,
   })
-  payment_sessions: PaymentSession[]
+  payment_sessions?: PaymentSession[]
 
   @Index()
   @Column({ nullable: true })
-  payment_id: string
+  payment_id: string | null
 
   @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
-  payment: Payment
+  payment?: Payment | null
 
   @OneToMany(() => ShippingMethod, (method) => method.cart, {
     cascade: ["soft-remove", "remove"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @DbAwareColumn({ type: "enum", enum: CartType, default: "default" })
   type: CartType
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  completed_at: Date
+  completed_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  payment_authorized_at: Date
+  payment_authorized_at: Date | null
 
   @Column({ nullable: true })
-  idempotency_key: string
+  idempotency_key: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  context: Record<string, unknown>
+  context: Record<string, unknown> | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
-  sales_channel_id: string | null
+  sales_channel_id?: string | null
 
   @FeatureFlagDecorators("sales_channels", [
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
-  sales_channel: SalesChannel
+  sales_channel?: SalesChannel | null
 
-  shipping_total?: number
   discount_total?: number
-  item_tax_total?: number | null
-  shipping_tax_total?: number | null
-  tax_total?: number | null
-  refunded_total?: number
-  total?: number
-  subtotal?: number
-  refundable_amount?: number
-  gift_card_total?: number
   gift_card_tax_total?: number
+  gift_card_total?: number
+  item_tax_total?: number
+  refundable_amount?: number
+  refunded_total?: number
+  shipping_tax_total?: number
+  shipping_total?: number
+  subtotal?: number
+  tax_total?: number
+  total?: number
 
   @AfterLoad()
   private afterLoad(): void {

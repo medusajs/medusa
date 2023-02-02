@@ -28,24 +28,24 @@ export class LineItemAdjustment {
 
   @ManyToOne(() => LineItem, (li) => li.adjustments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item?: LineItem | null
 
   @Column()
   description: string
 
   @ManyToOne(() => Discount)
   @JoinColumn({ name: "discount_id" })
-  discount: Discount
+  discount?: Discount | null
 
   @Index()
   @Column({ nullable: true })
-  discount_id: string
+  discount_id: string | null
 
   @Column({ type: "int" })
   amount: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

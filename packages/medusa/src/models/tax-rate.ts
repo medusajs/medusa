@@ -32,10 +32,10 @@ export class TaxRate extends BaseEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region?: Region | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @ManyToMany(() => Product)
   @JoinTable({
@@ -49,7 +49,7 @@ export class TaxRate extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  products: Product[]
+  products?: Product[]
 
   @ManyToMany(() => ProductType)
   @JoinTable({
@@ -63,7 +63,7 @@ export class TaxRate extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  product_types: ProductType[]
+  product_types?: ProductType[]
 
   @ManyToMany(() => ShippingOption)
   @JoinTable({
@@ -77,7 +77,7 @@ export class TaxRate extends BaseEntity {
       referencedColumnName: "id",
     },
   })
-  shipping_options: ShippingOption[]
+  shipping_options?: ShippingOption[]
 
   // TODO: consider custom DTO instead
   product_count?: number

@@ -36,7 +36,7 @@ export class Country {
 
   @ManyToOne(() => Region, (r) => r.countries)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region?: Region | null
 }
 
 /**

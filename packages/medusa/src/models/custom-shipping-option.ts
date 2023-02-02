@@ -26,18 +26,18 @@ export class CustomShippingOption extends SoftDeletableEntity {
 
   @ManyToOne(() => ShippingOption)
   @JoinColumn({ name: "shipping_option_id" })
-  shipping_option: ShippingOption
+  shipping_option?: ShippingOption | null
 
   @Index()
   @Column({ nullable: true })
-  cart_id: string
+  cart_id: string | null
 
   @ManyToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart?: Cart | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {

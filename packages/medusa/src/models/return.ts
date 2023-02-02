@@ -38,7 +38,7 @@ export class Return extends BaseEntity {
     eager: true,
     cascade: ["insert"],
   })
-  items: ReturnItem[]
+  items?: ReturnItem[]
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -46,7 +46,7 @@ export class Return extends BaseEntity {
 
   @OneToOne(() => Swap, (swap) => swap.return_order)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap?: Swap | null
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -54,7 +54,7 @@ export class Return extends BaseEntity {
 
   @OneToOne(() => ClaimOrder, (co) => co.return_order)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order?: ClaimOrder | null
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -62,25 +62,25 @@ export class Return extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.returns)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order?: Order | null
 
   @OneToOne(() => ShippingMethod, (method) => method.return_order, {
     cascade: true,
   })
-  shipping_method: ShippingMethod
+  shipping_method?: ShippingMethod | null
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  shipping_data: Record<string, unknown> | null
 
   @Index()
   @Column({ nullable: true, type: "text" })
   location_id: string | null
 
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  shipping_data: Record<string, unknown>
-
   @Column({ type: "int" })
   refund_amount: number
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  received_at: Date
+  received_at: Date | null
 
   @Column({ type: "boolean", nullable: true })
   no_notification: boolean | null

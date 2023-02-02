@@ -13,13 +13,13 @@ export class ProductCollection extends SoftDeletableEntity {
 
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column({ nullable: true })
-  handle: string
+  handle: string | null
 
   @OneToMany(() => Product, (product) => product.collection)
-  products: Product[]
+  products?: Product[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private createHandleIfNotProvided(): void {

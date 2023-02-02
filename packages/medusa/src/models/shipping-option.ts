@@ -36,7 +36,7 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region?: Region | null
 
   @Index()
   @Column()
@@ -44,7 +44,7 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @ManyToOne(() => ShippingProfile)
   @JoinColumn({ name: "profile_id" })
-  profile: ShippingProfile
+  profile?: ShippingProfile | null
 
   @Index()
   @Column()
@@ -52,7 +52,7 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
-  provider: FulfillmentProvider
+  provider?: FulfillmentProvider | null
 
   @DbAwareColumn({ type: "enum", enum: ShippingOptionPriceType })
   price_type: ShippingOptionPriceType
@@ -69,16 +69,16 @@ export class ShippingOption extends SoftDeletableEntity {
   @OneToMany(() => ShippingOptionRequirement, (req) => req.shipping_option, {
     cascade: ["insert"],
   })
-  requirements: ShippingOptionRequirement[]
+  requirements?: ShippingOptionRequirement[]
 
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
-  includes_tax: boolean
+  includes_tax?: boolean
 
   @BeforeInsert()
   private beforeInsert(): void {
