@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-instanceof",
+    "@babel/plugin-transform-classes"
+  ],
+  "presets": ["@babel/preset-env"],
+  "env": {
+    "test": {
+      "plugins": ["@babel/plugin-transform-runtime"]
+    }
+  }
+}
