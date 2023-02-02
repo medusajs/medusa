@@ -44,6 +44,7 @@ describe("Inventory Items endpoints", () => {
       dbConnection,
       {
         id: "test-product",
+        variants: [],
       },
       100
     )
@@ -77,12 +78,13 @@ describe("Inventory Items endpoints", () => {
       adminHeaders
     )
 
-    const variant = response.data.product.variants.find(
-      (variant) => variant.sku === "MY_SKU"
-    )
+    const variant = response.data.product.variants[0]
 
     variantId = variant.id
-    inventoryItems = await prodVarInventoryService.listByVariant(variantId)
+
+    inventoryItems = await prodVarInventoryService.listInventoryItemsByVariant(
+      variantId
+    )
 
     const stockRes = await api.post(
       `/admin/stock-locations`,
@@ -127,7 +129,7 @@ describe("Inventory Items endpoints", () => {
   describe("Inventory Items", () => {
     it("Create, update and delete inventory location level", async () => {
       const api = useApi()
-      const inventoryItemId = inventoryItems[0].inventory_item_id
+      const inventoryItemId = inventoryItems[0].id
 
       await api.post(
         `/admin/inventory-items/${inventoryItemId}/location-levels`,
@@ -181,7 +183,7 @@ describe("Inventory Items endpoints", () => {
 
     it("Update inventory item", async () => {
       const api = useApi()
-      const inventoryItemId = inventoryItems[0].inventory_item_id
+      const inventoryItemId = inventoryItems[0].id
 
       const response = await api.post(
         `/admin/inventory-items/${inventoryItemId}`,
@@ -207,7 +209,7 @@ describe("Inventory Items endpoints", () => {
 
     it("Retrieve an inventory item", async () => {
       const api = useApi()
-      const inventoryItemId = inventoryItems[0].inventory_item_id
+      const inventoryItemId = inventoryItems[0].id
 
       await api.post(
         `/admin/inventory-items/${inventoryItemId}/location-levels`,
@@ -278,7 +280,7 @@ describe("Inventory Items endpoints", () => {
 
     it("List inventory items", async () => {
       const api = useApi()
-      const inventoryItemId = inventoryItems[0].inventory_item_id
+      const inventoryItemId = inventoryItems[0].id
 
       await api.post(
         `/admin/inventory-items/${inventoryItemId}/location-levels`,
