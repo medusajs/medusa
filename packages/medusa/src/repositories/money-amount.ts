@@ -27,7 +27,8 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     variantId: string,
     prices: Price[]
   ): Promise<MoneyAmount[]> {
-    const existingPricesInPayload = await this.createQueryBuilder()
+    const existingPricesIdsQuery = this.createQueryBuilder()
+      .select("id")
       .where({
         variant_id: variantId,
         price_list_id: IsNull(),
@@ -46,14 +47,14 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
           })
         })
       )
-      .getMany()
 
-    const obsoletePrices = await this.createQueryBuilder()
+    const obsoletePrices = await this.createQueryBuilder("ma")
       .where({
         variant_id: variantId,
         price_list_id: IsNull(),
-        id: Not(In(existingPricesInPayload.map((p) => p.id))),
       })
+      .andWhere(`ma.id NOT IN (${existingPricesIdsQuery.getQuery()})`)
+      .setParameters(existingPricesIdsQuery.getParameters())
       .getMany()
 
     return obsoletePrices
