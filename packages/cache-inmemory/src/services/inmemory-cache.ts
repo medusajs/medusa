@@ -11,6 +11,9 @@ import { CacheRecord } from "../types"
 
 type InjectedDependencies = {}
 
+/**
+ * Class represents basic, in-memory, cache store.
+ */
 class InMemoryCacheService
   extends TransactionBaseService
   implements ICacheService
@@ -41,6 +44,10 @@ class InMemoryCacheService
     }
   }
 
+  /**
+   * Retrieve data from the cache.
+   * @param key - cache key
+   */
   async get<T>(key: string): Promise<T | null> {
     const record: CacheRecord<T> | undefined = this.store.get(key)
 
@@ -51,6 +58,12 @@ class InMemoryCacheService
     return record.data
   }
 
+  /**
+   * Set data to the cache.
+   * @param key - cache key under which the data is stored
+   * @param data - data to be stored in the cache
+   * @param ttl - expiration time in milliseconds
+   */
   async set<T>(key: string, data: T, ttl: number = this.ttl): Promise<void> {
     const record: CacheRecord<T> = { data, expire: ttl + Date.now() }
 
@@ -70,6 +83,10 @@ class InMemoryCacheService
     this.store.set(key, record)
   }
 
+  /**
+   * Delete data from the cache.
+   * @param key - cache key
+   */
   async invalidate(key: string): Promise<void> {
     if (this.timoutRefs[key]) {
       clearTimeout(this.timoutRefs[key])
@@ -78,6 +95,9 @@ class InMemoryCacheService
     this.store.delete(key)
   }
 
+  /**
+   * Delete the entire cache.
+   */
   async clear() {
     Object.keys(this.timoutRefs).map((k) => delete this.timoutRefs[k])
     this.store.clear()

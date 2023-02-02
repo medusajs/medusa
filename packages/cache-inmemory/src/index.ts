@@ -1,10 +1,9 @@
-import InMemoryCacheService from "./services/inmemory-cache"
-import ConnectionLoader from "./loaders/connection"
-
 import { ModuleExports } from "@medusajs/medusa"
 
+import InMemoryCacheService from "./services/inmemory-cache"
+
+const loaders = []
 const service = InMemoryCacheService
-const loaders = [ConnectionLoader]
 
 const moduleDefinition: ModuleExports = {
   service,
