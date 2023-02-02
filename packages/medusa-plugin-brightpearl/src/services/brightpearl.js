@@ -98,7 +98,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -107,7 +107,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -241,6 +241,9 @@ class BrightpearlService extends BaseService {
               inventory_quantity: onHand,
             })
         })
+
+        if (this.inventoryService_) {
+        }
       }
     }
   }
