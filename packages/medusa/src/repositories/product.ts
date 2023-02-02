@@ -6,7 +6,7 @@ import {
   In,
   Repository,
 } from "typeorm"
-import { PriceList, Product, SalesChannel } from "../models"
+import { PriceList, Product, SalesChannel, ProductCategory } from "../models"
 import {
   ExtendedFindConfig,
   Selector,
@@ -27,6 +27,10 @@ export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   where: DefaultWithoutRelations["where"] & {
     price_list_id?: FindOperator<PriceList>
     sales_channel_id?: FindOperator<SalesChannel>
+    category_id?: {
+      value: string[]
+    }
+    include_category_children?: boolean
     discount_condition_id?: string
   }
 }
@@ -56,6 +60,13 @@ export class ProductRepository extends Repository<Product> {
 
     const sales_channels = optionsWithoutRelations?.where?.sales_channel_id
     delete optionsWithoutRelations?.where?.sales_channel_id
+
+    const categories = optionsWithoutRelations?.where?.category_id
+    delete optionsWithoutRelations?.where?.category_id
+
+    const include_category_children =
+      optionsWithoutRelations?.where?.include_category_children
+    delete optionsWithoutRelations?.where?.include_category_children
 
     const discount_condition_id =
       optionsWithoutRelations?.where?.discount_condition_id
@@ -94,6 +105,48 @@ export class ProductRepository extends Repository<Product> {
         "sales_channels.id IN (:...sales_channels_ids)",
         { sales_channels_ids: sales_channels.value }
       )
+    }
+
+    if (categories) {
+      let categoryIds = categories.value
+
+      if (include_category_children) {
+        const categoryRepository =
+          this.manager.getTreeRepository(ProductCategory)
+        const categories = await categoryRepository.find({
+          where: { id: In(categoryIds) },
+        })
+
+        categoryIds = []
+        for (const category of categories) {
+          const categoryChildren = await categoryRepository.findDescendantsTree(
+            category
+          )
+
+          const getAllIdsRecursively = (productCategory: ProductCategory) => {
+            let result = [productCategory.id]
+
+            ;(productCategory.category_children || []).forEach((child) => {
+              result = result.concat(getAllIdsRecursively(child))
+            })
+
+            return result
+          }
+
+          categoryIds = categoryIds.concat(
+            getAllIdsRecursively(categoryChildren)
+          )
+        }
+      }
+
+      if (categoryIds.length) {
+        qb.innerJoin(
+          `${productAlias}.categories`,
+          "categories",
+          "categories.id IN (:...categoryIds)",
+          { categoryIds }
+        )
+      }
     }
 
     if (discount_condition_id) {
@@ -220,6 +273,7 @@ export class ProductRepository extends Repository<Product> {
   ): Promise<[Product[], number]> {
     let count: number
     let entities: Product[]
+
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations, {
         withDeleted: idsOrOptionsWithoutRelations.withDeleted ?? false,
