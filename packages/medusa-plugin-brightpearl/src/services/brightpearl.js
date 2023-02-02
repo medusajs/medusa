@@ -18,6 +18,7 @@ class BrightpearlService extends BaseService {
       stockLocationService,
       inventoryService,
       salesChannelLocationService,
+      logger,
     },
     options
   ) {
@@ -36,6 +37,7 @@ class BrightpearlService extends BaseService {
     this.stockLocationService_ = stockLocationService
     this.inventoryService_ = inventoryService
     this.salesChannelLocationService_ = salesChannelLocationService
+    this.logger_ = logger
   }
 
   async getClient() {
@@ -207,6 +209,7 @@ class BrightpearlService extends BaseService {
   }
 
   async updateInventory(productId) {
+    this.logger_.info("updating inventory")
     const client = await this.getClient()
     const availability = await client.products
       .retrieveAvailability(productId)
@@ -243,6 +246,10 @@ class BrightpearlService extends BaseService {
         })
 
         if (this.inventoryService_) {
+          this.logger_.info("we have an inventoryservice")
+          // GET location id from bp
+          // Get medusa location
+          // update external reservation in sales channel for variant
         }
       }
     }
