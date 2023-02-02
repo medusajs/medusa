@@ -1,3 +1,8 @@
+---
+description: 'Learn how to handle the order claim event in the Medusa server. When the event is triggered, you can send an email to the customer to inform them about it.'
+addHowToData: true
+---
+
 # How to Handle Order Claim Event
 
 In this document, you’ll learn how to handle the order claim event and send a confirmation email when the event is triggered.

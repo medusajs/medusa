@@ -20,6 +20,7 @@ import {
 @Entity()
 @Tree("materialized-path")
 export class ProductCategory extends SoftDeletableEntity {
+  static productCategoryProductJoinTable = "product_category_product"
   static treeRelations = ["parent_category", "category_children"]
 
   @Column()
@@ -54,13 +55,13 @@ export class ProductCategory extends SoftDeletableEntity {
 
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
-    name: "product_category_product",
+    name: ProductCategory.productCategoryProductJoinTable,
     joinColumn: {
-      name: "product_id",
+      name: "product_category_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
-      name: "product_category_id",
+      name: "product_id",
       referencedColumnName: "id",
     },
   })
@@ -122,6 +123,12 @@ export class ProductCategory extends SoftDeletableEntity {
  *   parent_category:
  *     description: A product category object. Available if the relation `parent_category` is expanded.
  *     type: object
+ *   products:
+ *     description: products associated with category. Available if the relation `products` is expanded.
+ *     type: array
+ *     items:
+ *       type: object
+ *       description: A product object.
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."
