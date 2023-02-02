@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 sidebar_label: Overview
+description: 'Medusa Admin allows merchants to manage orders. Merchants can view order information, capture payment, create shipments and fulfillments, and more.'
 ---
 
 # Orders Overview

@@ -22,7 +22,20 @@ import { FindParams } from "../../../../types/common"
  *         $ref: "#/components/schemas/AdminPostProductCategoriesReq"
  * x-codegen:
  *   method: create
+ *   queryParams: AdminPostProductCategoriesParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.productCategories.create({
+ *         name: "Skinny Jeans",
+ *       })
+ *       .then(({ product_category }) => {
+ *         console.log(product_category.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -30,7 +43,7 @@ import { FindParams } from "../../../../types/common"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "name": "Jeans",
+ *           "name": "Skinny Jeans",
  *       }'
  * security:
  *   - api_token: []
@@ -43,10 +56,7 @@ import { FindParams } from "../../../../types/common"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            product_category:
- *              $ref: "#/components/schemas/ProductCategory"
+ *          $ref: "#/components/schemas/AdminProductCategoriesCategoryRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

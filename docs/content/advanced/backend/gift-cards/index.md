@@ -1,3 +1,7 @@
+---
+description: 'Learn what gift cards are and how they work in the Medusa server. Learn about the relations between Gift Cards and other entities.'
+---
+
 # Gift Cards
 
 In this document, you’ll learn about Gift Cards and how they work in Medusa.

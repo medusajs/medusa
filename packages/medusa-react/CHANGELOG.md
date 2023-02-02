@@ -1,5 +1,11 @@
 # Change Log
 
+## 4.0.3
+
+### Patch Changes
+
+- [#3099](https://github.com/medusajs/medusa/pull/3099) [`6293fccc6`](https://github.com/medusajs/medusa/commit/6293fccc650411d27a9823a5f63f286d08ff2174) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - hotfix(medusa-react): Fixes an issue where queries weren't properly invalidated on successful mutations
+
 ## 4.0.2
 
 ### Patch Changes

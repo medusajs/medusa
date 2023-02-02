@@ -1,3 +1,7 @@
+---
+description: 'Learn how the events system is implemented in Medusa. It is built on a publish-subscribe architecture. The Medusa core publishes events when certain actions take place.'
+---
+
 # Events Architecture
 
 In this document, you'll learn how the events system is implemented in Medusa.

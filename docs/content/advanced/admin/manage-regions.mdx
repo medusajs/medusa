@@ -1,3 +1,8 @@
+---
+description: 'Learn how to implement region-related functionalities for admins using the REST APIs. This includes how to list regions, and create, update, and delete regions.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -35,9 +40,15 @@ It is assumed that you already have a Medusa server installed and set up. If not
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
@@ -54,7 +65,7 @@ You can retrieve regions available on your server using the [List Regions](/api/
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.admin.regions.list()
 .then(({ regions, limit, offset, count }) => {
   console.log(regions.length)
@@ -63,9 +74,37 @@ medusa.admin.regions.list()
 ```
 
 </TabItem>
-<TabItem value="fetch" label="Fetch API">
+<TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
+import { Region } from "@medusajs/medusa"
+import { useAdminRegions } from "medusa-react"
+
+const Regions = () => {
+  const { regions, isLoading } = useAdminRegions()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {regions && !regions.length && <span>No Regions</span>}
+      {regions && regions.length > 0 && (
+        <ul>
+          {regions.map((region: Region) => (
+            <li key={region.id}>{region.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Regions
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
 fetch(`<SERVER_URL>/admin/regions`, {
   credentials: "include",
 })
@@ -100,7 +139,7 @@ You can create a region by sending a request to the [Create a Region](/api/admin
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.admin.regions.create({
   name: "Europe",
   currency_code: "eur",
@@ -121,9 +160,42 @@ medusa.admin.regions.create({
 ```
 
 </TabItem>
-<TabItem value="fetch" label="Fetch API">
+<TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
+import { useAdminCreateRegion } from "medusa-react"
+
+const CreateRegion = () => {
+  const createRegion = useAdminCreateRegion()
+  // ...
+
+  const handleCreate = () => {
+    createRegion.mutate({
+      name: "Europe",
+      currency_code: "eur",
+      tax_rate: 0,
+      payment_providers: [
+        "manual",
+      ],
+      fulfillment_providers: [
+        "manual",
+      ],
+      countries: [
+        "DK",
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default CreateRegion
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
 fetch(`<SERVER_URL>/admin/regions`, {
   credentials: "include",
   method: "POST",
@@ -198,7 +270,7 @@ Alternatively, you can update the details of a region using the [Update a Region
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.admin.regions.update(regionId, {
   countries: [
     "DK",
@@ -211,9 +283,34 @@ medusa.admin.regions.update(regionId, {
 ```
 
 </TabItem>
-<TabItem value="fetch" label="Fetch API">
+<TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
+import { useAdminUpdateRegion } from "medusa-react"
+
+const UpdateRegion = () => {
+  const updateRegion = useAdminUpdateRegion(regionId)
+  // ...
+
+  const handleUpdate = () => {
+    updateRegion.mutate({
+      countries: [
+        "DK",
+        "DE",
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default UpdateRegion
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
 fetch(`<SERVER_URL>/admin/regions/${regionId}`, {
   credentials: "include",
   method: "POST",
@@ -269,7 +366,7 @@ You can add a shipping option to a region by sending a request to the [Create Sh
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.admin.shippingOptions.create({
   name: "PostFake",
   region_id: regionId,
@@ -285,9 +382,37 @@ medusa.admin.shippingOptions.create({
 ```
 
 </TabItem>
-<TabItem value="fetch" label="Fetch API">
+<TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
+import { useAdminCreateShippingOption } from "medusa-react"
+
+const Region = () => {
+  const createShippingOption = useAdminCreateShippingOption()
+  // ...
+
+  const handleCreate = () => {
+    createShippingOption.mutate({
+      name: "PostFake",
+      region_id: regionId,
+      provider_id: "manual",
+      data: {
+      },
+      price_type: "flat_rate",
+      amount: 1000,
+    })
+  }
+
+  // ...
+}
+
+export default Region
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
 fetch(`<SERVER_URL>/admin/shipping-options`, {
   credentials: "include",
   method: "POST",
@@ -357,7 +482,7 @@ You can delete a region by sending a request to the [Delete a Region](/api/admin
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
+```ts
 medusa.admin.regions.delete(regionId)
 .then(({ id, object, deleted }) => {
   console.log(id)
@@ -365,9 +490,29 @@ medusa.admin.regions.delete(regionId)
 ```
 
 </TabItem>
-<TabItem value="fetch" label="Fetch API">
+<TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
+import { useAdminDeleteRegion } from "medusa-react"
+
+const Region = () => {
+  const deleteRegion = useAdminDeleteRegion(regionId)
+  // ...
+
+  const handleDelete = () => {
+    deleteRegion.mutate()
+  }
+
+  // ...
+}
+
+export default Region
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
 fetch(`<SERVER_URL>/admin/regions/${regionId}`, {
   credentials: "include",
   method: "DELETE",
