@@ -60,10 +60,28 @@ export const products = {
       },
     ],
   },
+  multipleVariants: {
+    id: IdMap.getId("multipleVariants"),
+    title: "Multiple Variants",
+    variants: [
+      {
+        id: IdMap.getId("variant_1"),
+        title: "Variant 1",
+      },
+      {
+        id: IdMap.getId("variant_2"),
+        title: "Variant 2",
+      },
+      {
+        id: IdMap.getId("variant_3"),
+        title: "Variant 3",
+      },
+    ],
+  },
 }
 
 export const ProductServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
   create: jest.fn().mockImplementation((data) => {
@@ -134,6 +152,9 @@ export const ProductServiceMock = {
     }
     if (productId === IdMap.getId("variantsWithPrices")) {
       return Promise.resolve(products.variantsWithPrices)
+    }
+    if (productId === IdMap.getId("multipleVariants")) {
+      return Promise.resolve(products.multipleVariants)
     }
     return Promise.resolve(undefined)
   }),
