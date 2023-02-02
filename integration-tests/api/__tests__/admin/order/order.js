@@ -127,6 +127,84 @@ describe("/admin/orders", () => {
         updated_at: expect.any(String),
       })
     })
+
+    it("creates a billing address", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `update "order" set billing_address_id = null where id = 'test-order'`
+      )
+
+      const response = await api
+        .post(
+          "/admin/orders/test-order",
+          {
+            billing_address: {
+              first_name: "asafas",
+              last_name: "safas",
+              address_1: "asfsa",
+              city: "safas",
+              country_code: "us",
+              postal_code: "3243",
+            },
+          },
+          adminReqConfig
+        )
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order.billing_address).toEqual(
+        expect.objectContaining({
+          first_name: "asafas",
+          last_name: "safas",
+          address_1: "asfsa",
+          city: "safas",
+          country_code: "us",
+          postal_code: "3243",
+        })
+      )
+    })
+
+    it("creates a shipping address", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `update "order" set shipping_address_id = null where id = 'test-order'`
+      )
+
+      const response = await api
+        .post(
+          "/admin/orders/test-order",
+          {
+            shipping_address: {
+              first_name: "asafas",
+              last_name: "safas",
+              address_1: "asfsa",
+              city: "safas",
+              country_code: "us",
+              postal_code: "3243",
+            },
+          },
+          adminReqConfig
+        )
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order.shipping_address).toEqual(
+        expect.objectContaining({
+          first_name: "asafas",
+          last_name: "safas",
+          address_1: "asfsa",
+          city: "safas",
+          country_code: "us",
+          postal_code: "3243",
+        })
+      )
+    })
   })
 
   describe("GET /admin/orders", () => {

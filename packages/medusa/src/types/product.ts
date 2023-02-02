@@ -75,13 +75,18 @@ export class FilterableProductProps {
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
 
+  @IsString()
+  @IsOptional()
+  discount_condition_id?: string
+
   @IsArray()
   @IsOptional()
   category_id?: string[]
 
-  @IsString()
+  @IsBoolean()
   @IsOptional()
-  discount_condition_id?: string
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  include_category_children?: boolean
 
   @IsOptional()
   @ValidateNested()
@@ -258,4 +263,12 @@ export class ProductTypeReq {
 
   @IsString()
   value: string
+}
+
+export type ProductFilterOptions = {
+  price_list_id?: FindOperator<PriceList>
+  sales_channel_id?: FindOperator<SalesChannel>
+  category_id?: FindOperator<ProductCategory>
+  include_category_children?: boolean
+  discount_condition_id?: string
 }

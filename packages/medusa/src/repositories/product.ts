@@ -5,10 +5,13 @@ import {
   In,
   SelectQueryBuilder,
 } from "typeorm"
-import { PriceList, Product, SalesChannel } from "../models"
+import { PriceList, Product, SalesChannel, ProductCategory } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { isObject } from "../utils"
+import {
+  ProductFilterOptions,
+} from "../types/product"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -55,41 +58,29 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
   async findAndCount(
     options: ExtendedFindConfig<
-      Product & {
-        price_list_id?: FindOperator<PriceList>
-        sales_channel_id?: FindOperator<SalesChannel>
-        discount_condition_id?: string
-      }
+      Product & ProductFilterOptions
     >,
     q?: string
   ): Promise<[Product[], number]> {
-    const queryBuilder = this.prepareQueryBuilder_(options, q)
+    const queryBuilder = await this.prepareQueryBuilder_(options, q)
     return await queryBuilder.getManyAndCount()
   },
 
   async findOne(
     options: ExtendedFindConfig<
-      Product & {
-        price_list_id?: FindOperator<PriceList>
-        sales_channel_id?: FindOperator<SalesChannel>
-        discount_condition_id?: string
-      }
+      Product & ProductFilterOptions
     >
   ): Promise<Product | null> {
-    const queryBuilder = this.prepareQueryBuilder_(options)
+    const queryBuilder = await this.prepareQueryBuilder_(options)
     return await queryBuilder.getOne()
   },
 
-  prepareQueryBuilder_(
+  async prepareQueryBuilder_(
     options: ExtendedFindConfig<
-      Product & {
-        price_list_id?: FindOperator<PriceList>
-        sales_channel_id?: FindOperator<SalesChannel>
-        discount_condition_id?: string
-      }
+      Product & ProductFilterOptions
     >,
     q?: string
-  ): SelectQueryBuilder<Product> {
+  ): Promise<SelectQueryBuilder<Product>> {
     const options_ = { ...options }
 
     const productAlias = "product"
@@ -209,6 +200,59 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       delete options_.where.sales_channel_id
     }
 
+    if (options_.where.category_id) {
+      const includeCategoryChildren = options_.where.include_category_children || false
+      const joinMethod = options_.relations.category_id
+        ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.innerJoin.bind(queryBuilder)
+
+      let categoryIds = (options_.where.category_id as FindOperator<string[]>)
+        .value
+
+      // Same comment as in the tags if block above + inner join is only doable using the query builder and not the options
+      if (includeCategoryChildren) {
+        const categoryRepository =
+          this.manager.getTreeRepository(ProductCategory)
+        const categories = await categoryRepository.find({
+          where: { id: In(categoryIds) },
+        })
+
+        categoryIds = []
+        for (const category of categories) {
+          const categoryChildren = await categoryRepository.findDescendantsTree(
+            category
+          )
+
+          const getAllIdsRecursively = (productCategory: ProductCategory) => {
+            let result = [productCategory.id]
+
+            ;(productCategory.category_children || []).forEach((child) => {
+              result = result.concat(getAllIdsRecursively(child))
+            })
+
+            return result
+          }
+
+          categoryIds = categoryIds.concat(
+            getAllIdsRecursively(categoryChildren)
+          )
+        }
+      }
+
+      joinMethod(
+        `${productAlias}.categories`,
+        "categories",
+        "categories.id IN (:...categoryIds)",
+        {
+          categoryIds,
+        }
+      )
+
+      delete options_.where.category_id
+    }
+
+    delete options_.where.include_category_children
+
     if (options_.where.discount_condition_id) {
       // inner join is only doable using the query builder and not the options
 
@@ -265,4 +309,5 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     return queryBuilder
   },
 })
+
 export default ProductRepository

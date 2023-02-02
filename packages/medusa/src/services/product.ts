@@ -29,6 +29,7 @@ import {
   ProductOptionInput,
   ProductSelector,
   UpdateProductInput,
+  ProductFilterOptions,
 } from "../types/product"
 import { buildQuery, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
@@ -149,11 +150,7 @@ class ProductService extends TransactionBaseService {
 
     const { q, ...productSelector } = selector
     const query = buildQuery(productSelector, config) as ExtendedFindConfig<
-      Product & {
-        price_list_id?: FindOperator<PriceList>
-        sales_channel_id?: FindOperator<SalesChannel>
-        discount_condition_id?: string
-      }
+      Product & ProductFilterOptions
     >
 
     return await productRepo.findAndCount(query, q)
