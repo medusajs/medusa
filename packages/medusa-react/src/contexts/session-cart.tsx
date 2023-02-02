@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react"
-import { useLocalStorage } from "../hooks/utils"
-import { RegionInfo, ProductVariant } from "../types"
 import { getVariantPrice } from "../helpers"
-import { isArray, isEmpty, isObject } from "lodash"
+import { useLocalStorage } from "../hooks/utils"
+import { ProductVariant, RegionInfo } from "../types"
+import { isArray, isEmpty, isObject } from "../utils"
 
 interface Item {
   variant: ProductVariant
@@ -72,7 +72,7 @@ const reducer = (state: SessionCartState, action: Action) => {
     }
     case ACTION_TYPES.ADD_ITEM: {
       const duplicateVariantIndex = state.items.findIndex(
-        item => item.variant.id === action.payload?.variant?.id
+        (item) => item.variant.id === action.payload?.variant?.id
       )
       if (duplicateVariantIndex !== -1) {
         state.items.splice(duplicateVariantIndex, 1)
@@ -81,7 +81,7 @@ const reducer = (state: SessionCartState, action: Action) => {
       return generateCartState(state, items)
     }
     case ACTION_TYPES.UPDATE_ITEM: {
-      const items = state.items.map(item =>
+      const items = state.items.map((item) =>
         item.variant.id === action.payload.id
           ? { ...item, ...action.payload.item }
           : item
@@ -91,7 +91,7 @@ const reducer = (state: SessionCartState, action: Action) => {
     }
     case ACTION_TYPES.REMOVE_ITEM: {
       const items = state.items.filter(
-        item => item.variant.id !== action.payload.id
+        (item) => item.variant.id !== action.payload.id
       )
       return generateCartState(state, items)
     }
@@ -122,7 +122,7 @@ export const generateCartState = (state: SessionCartState, items: Item[]) => {
 }
 
 const generateItems = (region: RegionInfo, items: Item[]) => {
-  return items.map(item => ({
+  return items.map((item) => ({
     ...item,
     total: getVariantPrice(item.variant, region),
   }))
@@ -171,7 +171,7 @@ export const SessionCartProvider = ({
   }
 
   const getItem = (id: string) => {
-    return state.items.find(item => item.variant.id === id)
+    return state.items.find((item) => item.variant.id === id)
   }
 
   const setItems = (items: Item[]) => {

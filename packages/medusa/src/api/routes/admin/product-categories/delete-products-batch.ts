@@ -26,6 +26,22 @@ import { FindParams } from "../../../../types/common"
  *   method: removeProducts
  *   queryParams: AdminDeleteProductCategoriesCategoryProductsBatchParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.productCategories.removeProducts(product_category_id, {
+ *         product_ids: [
+ *           {
+ *             id: product_id
+ *           }
+ *         ]
+ *       })
+ *       .then(({ product_category }) => {
+ *         console.log(product_category.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -45,12 +61,12 @@ import { FindParams } from "../../../../types/common"
  * tags:
  *   - Product Category
  * responses:
- *   200:
+ *   "200":
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminProductCategoriesRes"
+ *           $ref: "#/components/schemas/AdminProductCategoriesCategoryRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

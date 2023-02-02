@@ -75,13 +75,18 @@ export class FilterableProductProps {
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
 
+  @IsString()
+  @IsOptional()
+  discount_condition_id?: string
+
   @IsArray()
   @IsOptional()
   category_id?: string[]
 
-  @IsString()
+  @IsBoolean()
   @IsOptional()
-  discount_condition_id?: string
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  include_category_children?: boolean
 
   @IsOptional()
   @ValidateNested()
