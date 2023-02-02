@@ -333,7 +333,7 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        jest.spyOn(orderEditService, "getTotals").mockResolvedValue({
+        jest.spyOn(orderEditService, "decorateTotals").mockResolvedValue({
           difference_due: 1500,
         } as any)
 

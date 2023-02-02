@@ -154,69 +154,6 @@ export default class OrderEditService extends TransactionBaseService {
     return orderEdits
   }
 
-  /**
-   * Compute and return the different totals from the order edit id
-   * @param orderEditId
-   */
-  async getTotals(orderEditId: string): Promise<{
-    shipping_total: number
-    gift_card_total: number
-    gift_card_tax_total: number
-    discount_total: number
-    tax_total: number | null
-    subtotal: number
-    difference_due: number
-    total: number
-  }> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const { order_id, items } = await this.retrieve(orderEditId, {
-      select: ["id", "order_id", "items"],
-      relations: ["items", "items.tax_lines", "items.adjustments"],
-    })
-
-    const order = await this.orderService_
-      .withTransaction(manager)
-      .retrieve(order_id, {
-        relations: [
-          "discounts",
-          "discounts.rule",
-          "gift_cards",
-          "region",
-          "items",
-          "items.tax_lines",
-          "items.adjustments",
-          "region.tax_rates",
-          "shipping_methods",
-          "shipping_methods.tax_lines",
-        ],
-      })
-    const computedOrder = { ...order, items } as Order
-
-    const totalsServiceTx = this.totalsService_.withTransaction(manager)
-
-    const shipping_total = await totalsServiceTx.getShippingTotal(computedOrder)
-    const { total: gift_card_total, tax_total: gift_card_tax_total } =
-      await totalsServiceTx.getGiftCardTotal(computedOrder)
-    const discount_total = await totalsServiceTx.getDiscountTotal(computedOrder)
-    const tax_total = await totalsServiceTx.getTaxTotal(computedOrder)
-    const subtotal = await totalsServiceTx.getSubtotal(computedOrder)
-    const total = await totalsServiceTx.getTotal(computedOrder)
-
-    const orderTotal = await totalsServiceTx.getTotal(order)
-    const difference_due = total - orderTotal
-
-    return {
-      shipping_total,
-      gift_card_total,
-      gift_card_tax_total,
-      discount_total,
-      tax_total,
-      subtotal,
-      total,
-      difference_due,
-    }
-  }
-
   async create(
     data: CreateOrderEditInput,
     context: { createdBy: string }
