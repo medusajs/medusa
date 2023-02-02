@@ -330,6 +330,19 @@ export class ProductRepository extends Repository<Product> {
     return result[0]
   }
 
+  public async bulkSetShippingProfile(
+    productIds: string[],
+    shippingProfileId: string
+  ): Promise<Product[]> {
+    await this.createQueryBuilder()
+      .update(Product)
+      .set({ profile_id: shippingProfileId })
+      .where({ id: In(productIds) })
+      .execute()
+
+    return this.findByIds(productIds)
+  }
+
   public async bulkAddToCollection(
     productIds: string[],
     collectionId: string

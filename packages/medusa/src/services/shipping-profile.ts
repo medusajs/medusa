@@ -303,17 +303,11 @@ class ShippingProfileService extends TransactionBaseService {
       const { metadata, products, shipping_options, ...rest } = update
 
       if (products) {
-        profile = await this.withTransaction(manager).addProduct(
-          profile.id,
-          products
-        )
+        profile = await this.addProduct(profile.id, products)
       }
 
       if (shipping_options) {
-        profile = await this.withTransaction(manager).addShippingOption(
-          profile.id,
-          shipping_options
-        )
+        profile = await this.addShippingOption(profile.id, shipping_options)
       }
 
       if (metadata) {
@@ -364,19 +358,14 @@ class ShippingProfileService extends TransactionBaseService {
     productId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const productServiceTx = this.productService_.withTransaction(manager)
+      const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      if (Array.isArray(productId)) {
-        for (const pId of productId) {
-          await productServiceTx.update(pId, {
-            profile_id: profileId,
-          })
-        }
-      } else {
-        await productServiceTx.update(productId, {
-          profile_id: profileId,
-        })
-      }
+      const { id } = await this.retrieve(profileId)
+
+      await productRepo.bulkSetShippingProfile(
+        Array.isArray(productId) ? productId : [productId],
+        id
+      )
 
       return await this.retrieve(profileId, {
         relations: [
@@ -403,14 +392,9 @@ class ShippingProfileService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const shippingOptionServiceTx =
         this.shippingOptionService_.withTransaction(manager)
-      if (Array.isArray(optionId)) {
-        for (const oId of optionId) {
-          await shippingOptionServiceTx.update(oId, {
-            profile_id: profileId,
-          })
-        }
-      } else {
-        await shippingOptionServiceTx.update(optionId, {
+
+      for (const oId of Array.isArray(optionId) ? optionId : [optionId]) {
+        await shippingOptionServiceTx.update(oId, {
           profile_id: profileId,
         })
       }
