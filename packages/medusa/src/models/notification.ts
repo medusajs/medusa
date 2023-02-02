@@ -33,7 +33,7 @@ export class Notification extends BaseEntity {
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
-  customer?: Customer
+  customer?: Customer | null
 
   @Column()
   to: string
@@ -46,7 +46,7 @@ export class Notification extends BaseEntity {
 
   @ManyToOne(() => Notification)
   @JoinColumn({ name: "parent_id" })
-  parent_notification?: Notification
+  parent_notification?: Notification | null
 
   @OneToMany(() => Notification, (noti) => noti.parent_notification)
   resends?: Notification[]
@@ -56,7 +56,7 @@ export class Notification extends BaseEntity {
 
   @ManyToOne(() => NotificationProvider)
   @JoinColumn({ name: "provider_id" })
-  provider?: NotificationProvider
+  provider?: NotificationProvider | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -106,6 +106,7 @@ export class Notification extends BaseEntity {
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
  *     description: A customer object. Available if the relation `customer` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Customer"
  *   to:
  *     description: The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id
@@ -122,6 +123,7 @@ export class Notification extends BaseEntity {
  *     example: noti_01G53V9Y6CKMCGBM1P0X7C28RX
  *   parent_notification:
  *     description: Available if the relation `parent_notification` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Notification"
  *   resends:
  *     description: The resends that have been completed after the original Notification. Available if the relation `resends` is expanded.
@@ -135,6 +137,7 @@ export class Notification extends BaseEntity {
  *     example: sengrid
  *   provider:
  *     description: Available if the relation `provider` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/NotificationProvider"
  *   created_at:
  *     description: The date with timezone at which the resource was created.

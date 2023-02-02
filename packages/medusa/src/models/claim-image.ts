@@ -20,7 +20,7 @@ export class ClaimImage extends SoftDeletableEntity {
 
   @ManyToOne(() => ClaimItem, (ci) => ci.images)
   @JoinColumn({ name: "claim_item_id" })
-  claim_item?: ClaimItem
+  claim_item?: ClaimItem | null
 
   @Column()
   url: string
@@ -57,6 +57,7 @@ export class ClaimImage extends SoftDeletableEntity {
  *     type: string
  *   claim_item:
  *     description: A claim item object. Available if the relation `claim_item` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ClaimItem"
  *   url:
  *     description: The URL of the image

@@ -43,7 +43,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Cart, (cart) => cart.items)
   @JoinColumn({ name: "cart_id" })
-  cart?: Cart
+  cart?: Cart | null
 
   @Index()
   @Column({ nullable: true })
@@ -51,7 +51,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: "order_id" })
-  order?: Order
+  order?: Order | null
 
   @Index()
   @Column({ nullable: true })
@@ -59,7 +59,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => Swap, (swap) => swap.additional_items)
   @JoinColumn({ name: "swap_id" })
-  swap?: Swap
+  swap?: Swap | null
 
   @Index()
   @Column({ nullable: true })
@@ -67,7 +67,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => ClaimOrder, (co) => co.additional_items)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order?: ClaimOrder
+  claim_order?: ClaimOrder | null
 
   @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
   tax_lines?: LineItemTaxLine[]
@@ -85,7 +85,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => OrderEdit, (orderEdit) => orderEdit.items)
   @JoinColumn({ name: "order_edit_id" })
-  order_edit?: OrderEdit
+  order_edit?: OrderEdit | null
 
   @Column()
   title: string
@@ -120,7 +120,7 @@ export class LineItem extends BaseEntity {
 
   @ManyToOne(() => ProductVariant, { eager: true })
   @JoinColumn({ name: "variant_id" })
-  variant?: ProductVariant
+  variant?: ProductVariant | null
 
   @Column({ type: "int" })
   quantity: number
@@ -197,6 +197,7 @@ export class LineItem extends BaseEntity {
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
  *     description: A cart object. Available if the relation `cart` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   order_id:
  *     description: The ID of the Order that the Line Item belongs to.
@@ -205,6 +206,7 @@ export class LineItem extends BaseEntity {
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   swap_id:
  *     description: The id of the Swap that the Line Item belongs to.
@@ -213,6 +215,7 @@ export class LineItem extends BaseEntity {
  *     example: null
  *   swap:
  *     description: A swap object. Available if the relation `swap` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Swap"
  *   claim_order_id:
  *     description: The id of the Claim that the Line Item belongs to.
@@ -221,6 +224,7 @@ export class LineItem extends BaseEntity {
  *     example: null
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ClaimOrder"
  *   tax_lines:
  *     description: Available if the relation `tax_lines` is expanded.
@@ -232,6 +236,18 @@ export class LineItem extends BaseEntity {
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/LineItemAdjustment"
+ *   original_item_id:
+ *     description: The id of the original line item
+ *     nullable: true
+ *     type: string
+ *   order_edit_id:
+ *     description: The ID of the order edit to which a cloned item belongs
+ *     nullable: true
+ *     type: string
+ *   order_edit:
+ *     description: The order edit joined. Available if the relation `order_edit` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/OrderEdit"
  *   title:
  *     description: The title of the Line Item, this should be easily identifiable by the Customer.
  *     type: string
@@ -279,6 +295,7 @@ export class LineItem extends BaseEntity {
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
  *     description: A product variant object. The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ProductVariant"
  *   quantity:
  *     description: The quantity of the content in the Line Item.
@@ -335,17 +352,6 @@ export class LineItem extends BaseEntity {
  *     description: "[EXPERIMENTAL] Indicates if the line item unit_price include tax"
  *     type: boolean
  *     default: false
- *   original_item_id:
- *     description: The id of the original line item
- *     nullable: true
- *     type: string
- *   order_edit_id:
- *     description: The ID of the order edit to which a cloned item belongs
- *     nullable: true
- *     type: string
- *   order_edit:
- *     description: The order edit joined. Available if the relation `order_edit` is expanded.
- *     $ref: "#/components/schemas/OrderEdit"
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string

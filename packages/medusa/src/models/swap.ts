@@ -56,13 +56,13 @@ export class Swap extends SoftDeletableEntity {
 
   @ManyToOne(() => Order, (o) => o.swaps)
   @JoinColumn({ name: "order_id" })
-  order?: Order
+  order?: Order | null
 
   @OneToMany(() => LineItem, (item) => item.swap, { cascade: ["insert"] })
   additional_items?: LineItem[]
 
   @OneToOne(() => Return, (ret) => ret.swap, { cascade: ["insert"] })
-  return_order?: Return
+  return_order?: Return | null
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.swap, {
     cascade: ["insert"],
@@ -70,7 +70,7 @@ export class Swap extends SoftDeletableEntity {
   fulfillments?: Fulfillment[]
 
   @OneToOne(() => Payment, (p) => p.swap, { cascade: ["insert"] })
-  payment?: Payment
+  payment?: Payment | null
 
   @Column({ type: "int", nullable: true })
   difference_due: number | null
@@ -80,7 +80,7 @@ export class Swap extends SoftDeletableEntity {
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address?: Address
+  shipping_address?: Address | null
 
   @OneToMany(() => ShippingMethod, (method) => method.swap, {
     cascade: ["insert"],
@@ -92,7 +92,7 @@ export class Swap extends SoftDeletableEntity {
 
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart?: Cart
+  cart?: Cart | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   confirmed_at: Date | null
@@ -176,6 +176,7 @@ export class Swap extends SoftDeletableEntity {
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   additional_items:
  *     description: The new Line Items to ship to the Customer. Available if the relation `additional_items` is expanded.
@@ -184,6 +185,7 @@ export class Swap extends SoftDeletableEntity {
  *       $ref: "#/components/schemas/LineItem"
  *   return_order:
  *     description: A return order object. The Return that is issued for the return part of the Swap. Available if the relation `return_order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Return"
  *   fulfillments:
  *     description: The Fulfillments used to send the new Line Items. Available if the relation `fulfillments` is expanded.
@@ -192,6 +194,7 @@ export class Swap extends SoftDeletableEntity {
  *       $ref: "#/components/schemas/Fulfillment"
  *   payment:
  *     description: The Payment authorized when the Swap requires an additional amount to be charged from the Customer. Available if the relation `payment` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Payment"
  *   difference_due:
  *     description: The difference that is paid or refunded as a result of the Swap. May be negative when the amount paid for the returned items exceed the total of the new Products.
@@ -205,6 +208,7 @@ export class Swap extends SoftDeletableEntity {
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
  *     description: Available if the relation `shipping_address` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_methods:
  *     description: The Shipping Methods used to fulfill the additional items purchased. Available if the relation `shipping_methods` is expanded.
@@ -218,6 +222,7 @@ export class Swap extends SoftDeletableEntity {
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
  *     description: A cart object. Available if the relation `cart` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   confirmed_at:
  *     description: The date with timezone at which the Swap was confirmed by the Customer.

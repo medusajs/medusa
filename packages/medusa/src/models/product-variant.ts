@@ -26,7 +26,7 @@ export class ProductVariant extends SoftDeletableEntity {
 
   @ManyToOne(() => Product, (product) => product.variants, { eager: true })
   @JoinColumn({ name: "product_id" })
-  product?: Product
+  product?: Product | null
 
   @OneToMany(() => MoneyAmount, (ma) => ma.variant, {
     cascade: true,
@@ -143,6 +143,7 @@ export class ProductVariant extends SoftDeletableEntity {
  *     example: prod_01G1G5V2MBA328390B5AXJ610F
  *   product:
  *     description: A product object. Available if the relation `product` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Product"
  *   prices:
  *     description: The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation `prices` is expanded.

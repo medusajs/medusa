@@ -36,7 +36,7 @@ export class Country {
 
   @ManyToOne(() => Region, (r) => r.countries)
   @JoinColumn({ name: "region_id" })
-  region?: Region
+  region?: Region | null
 }
 
 /**
@@ -93,5 +93,6 @@ export class Country {
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
  *     description: A region object. Available if the relation `region` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Region"
  */

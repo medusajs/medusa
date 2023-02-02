@@ -21,7 +21,7 @@ export class ShippingMethodTaxLine extends TaxLine {
 
   @ManyToOne(() => ShippingMethod, (sm) => sm.tax_lines)
   @JoinColumn({ name: "shipping_method_id" })
-  shipping_method?: ShippingMethod
+  shipping_method?: ShippingMethod | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -67,6 +67,7 @@ export class ShippingMethodTaxLine extends TaxLine {
  *     example: sm_01F0YET7DR2E7CYVSDHM593QG2
  *   shipping_method:
  *     description: Available if the relation `shipping_method` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ShippingMethod"
  *   created_at:
  *     description: The date with timezone at which the resource was created.

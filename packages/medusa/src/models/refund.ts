@@ -34,11 +34,11 @@ export class Refund extends BaseEntity {
 
   @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
-  order?: Order
+  order?: Order | null
 
   @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
-  payment?: Payment
+  payment?: Payment | null
 
   @Column({ type: "int" })
   amount: number
@@ -89,6 +89,7 @@ export class Refund extends BaseEntity {
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   payment_id:
  *     description: The payment's ID if available
@@ -97,6 +98,7 @@ export class Refund extends BaseEntity {
  *     example: pay_01G8ZCC5W42ZNY842124G7P5R9
  *   payment:
  *     description: Available if the relation `payment` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Payment"
  *   amount:
  *     description: The amount that has be refunded to the Customer.

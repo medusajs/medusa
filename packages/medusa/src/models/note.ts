@@ -30,7 +30,7 @@ export class Note extends SoftDeletableEntity {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "author_id" })
-  author?: User
+  author?: User | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
@@ -80,6 +80,7 @@ export class Note extends SoftDeletableEntity {
  *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
  *   author:
  *     description: Available if the relation `author` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/User"
  *   created_at:
  *     description: The date with timezone at which the resource was created.

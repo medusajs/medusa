@@ -26,7 +26,7 @@ export class GiftCardTransaction {
 
   @ManyToOne(() => GiftCard)
   @JoinColumn({ name: "gift_card_id" })
-  gift_card?: GiftCard
+  gift_card?: GiftCard | null
 
   @Index()
   @Column()
@@ -34,7 +34,7 @@ export class GiftCardTransaction {
 
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order?: Order
+  order?: Order | null
 
   @Column("int")
   amount: number
@@ -78,6 +78,7 @@ export class GiftCardTransaction {
  *     example: gift_01G8XKBPBQY2R7RBET4J7E0XQZ
  *   gift_card:
  *     description: A gift card object. Available if the relation `gift_card` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/GiftCard"
  *   order_id:
  *     description: The ID of the Order that the Gift Card was used to pay for.
@@ -85,6 +86,7 @@ export class GiftCardTransaction {
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   amount:
  *     description: The amount that was used from the Gift Card.

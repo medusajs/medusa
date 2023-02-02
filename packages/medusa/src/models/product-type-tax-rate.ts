@@ -23,11 +23,11 @@ export class ProductTypeTaxRate {
 
   @ManyToOne(() => ProductType, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_type_id" })
-  product_type?: ProductType
+  product_type?: ProductType | null
 
   @ManyToOne(() => TaxRate, { onDelete: "CASCADE" })
   @JoinColumn({ name: "rate_id" })
-  tax_rate?: TaxRate
+  tax_rate?: TaxRate | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -57,6 +57,7 @@ export class ProductTypeTaxRate {
  *     example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   product_type:
  *     description: Available if the relation `product_type` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ProductType"
  *   rate_id:
  *     description: The id of the Tax Rate
@@ -64,6 +65,7 @@ export class ProductTypeTaxRate {
  *     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
  *   tax_rate:
  *     description: Available if the relation `tax_rate` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/TaxRate"
  *   created_at:
  *     description: The date with timezone at which the resource was created.

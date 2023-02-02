@@ -18,7 +18,7 @@ export class TrackingLink extends SoftDeletableEntity {
 
   @ManyToOne(() => Fulfillment, (ful) => ful.tracking_links)
   @JoinColumn({ name: "fulfillment_id" })
-  fulfillment?: Fulfillment
+  fulfillment?: Fulfillment | null
 
   @Column({ nullable: true })
   idempotency_key: string | null
@@ -67,6 +67,7 @@ export class TrackingLink extends SoftDeletableEntity {
  *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
  *   fulfillment:
  *     description: Available if the relation `fulfillment` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Fulfillment"
  *   idempotency_key:
  *     description: Randomly generated key used to continue the completion of a process in case of failure.

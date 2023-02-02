@@ -49,7 +49,7 @@ export class PaymentCollection extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region?: Region
+  region?: Region | null
 
   @Index()
   @Column()
@@ -57,7 +57,7 @@ export class PaymentCollection extends SoftDeletableEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency?: Currency
+  currency?: Currency | null
 
   @ManyToMany(() => PaymentSession)
   @JoinTable({
@@ -154,6 +154,7 @@ export class PaymentCollection extends SoftDeletableEntity {
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
  *     description: Available if the relation `region` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   currency_code:
  *     description: The 3 character ISO code for the currency.
@@ -164,6 +165,7 @@ export class PaymentCollection extends SoftDeletableEntity {
  *       description: See a list of codes.
  *   currency:
  *     description: Available if the relation `currency` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   payment_sessions:
  *     description: Available if the relation `payment_sessions` is expanded.

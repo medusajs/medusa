@@ -54,7 +54,7 @@ export class DiscountCondition extends SoftDeletableEntity {
 
   @ManyToOne(() => DiscountRule, (dr) => dr.conditions)
   @JoinColumn({ name: "discount_rule_id" })
-  discount_rule?: DiscountRule
+  discount_rule?: DiscountRule | null
 
   @ManyToMany(() => Product)
   @JoinTable({
@@ -175,6 +175,7 @@ export class DiscountCondition extends SoftDeletableEntity {
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   discount_rule:
  *     description: Available if the relation `discount_rule` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/DiscountRule"
  *   products:
  *     description: products associated with this condition if type = products. Available if the relation `products` is expanded.

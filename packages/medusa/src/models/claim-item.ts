@@ -39,7 +39,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ClaimOrder, (co) => co.claim_items)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order?: ClaimOrder
+  claim_order?: ClaimOrder | null
 
   @Index()
   @Column()
@@ -47,7 +47,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item?: LineItem
+  item?: LineItem | null
 
   @Index()
   @Column()
@@ -55,7 +55,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
-  variant?: ProductVariant
+  variant?: ProductVariant | null
 
   @DbAwareColumn({ type: "enum", enum: ClaimReason })
   reason: ClaimReason
@@ -121,6 +121,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     type: string
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ClaimOrder"
  *   item_id:
  *     description: The ID of the line item that the claim item refers to.
@@ -128,6 +129,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     example: item_01G8ZM25TN49YV9EQBE2NC27KC
  *   item:
  *     description: Available if the relation `item` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   variant_id:
  *     description: The ID of the product variant that is claimed.
@@ -135,6 +137,7 @@ export class ClaimItem extends SoftDeletableEntity {
  *     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
  *   variant:
  *     description: A variant object. Available if the relation `variant` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ProductVariant"
  *   reason:
  *     description: The reason for the claim

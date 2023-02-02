@@ -102,7 +102,7 @@ export class Order extends BaseEntity {
 
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart?: Cart
+  cart?: Cart | null
 
   @Index()
   @Column()
@@ -110,7 +110,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Customer, { cascade: ["insert"] })
   @JoinColumn({ name: "customer_id" })
-  customer?: Customer
+  customer?: Customer | null
 
   @Column()
   email: string
@@ -121,7 +121,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "billing_address_id" })
-  billing_address?: Address
+  billing_address?: Address | null
 
   @Index()
   @Column({ nullable: true })
@@ -129,7 +129,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address?: Address
+  shipping_address?: Address | null
 
   @Index()
   @Column()
@@ -137,7 +137,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region?: Region
+  region?: Region | null
 
   @Index()
   @Column()
@@ -145,7 +145,7 @@ export class Order extends BaseEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency?: Currency
+  currency?: Currency | null
 
   @Column({ type: "real", nullable: true })
   tax_rate: number | null
@@ -208,7 +208,7 @@ export class Order extends BaseEntity {
 
   @OneToOne(() => DraftOrder)
   @JoinColumn({ name: "draft_order_id" })
-  draft_order?: DraftOrder
+  draft_order?: DraftOrder | null
 
   @OneToMany(() => OrderEdit, (oe) => oe.order)
   edits?: OrderEdit[]
@@ -243,7 +243,7 @@ export class Order extends BaseEntity {
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
-  sales_channel?: SalesChannel
+  sales_channel?: SalesChannel | null
 
   // Total fields
   discount_total?: number
@@ -351,6 +351,7 @@ export class Order extends BaseEntity {
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
  *     description: A cart object. Available if the relation `cart` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   customer_id:
  *     description: The ID of the customer associated with the order
@@ -358,6 +359,7 @@ export class Order extends BaseEntity {
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
  *     description: A customer object. Available if the relation `customer` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Customer"
  *   email:
  *     description: The email associated with the order
@@ -370,6 +372,7 @@ export class Order extends BaseEntity {
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
  *     description: Available if the relation `billing_address` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
  *     description: The ID of the shipping address associated with the order
@@ -378,6 +381,7 @@ export class Order extends BaseEntity {
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
  *     description: Available if the relation `shipping_address` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   region_id:
  *     description: The region's ID
@@ -385,6 +389,7 @@ export class Order extends BaseEntity {
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
  *     description: A region object. Available if the relation `region` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   currency_code:
  *     description: The 3 character currency code that is used in the order
@@ -395,6 +400,7 @@ export class Order extends BaseEntity {
  *       description: See a list of codes.
  *   currency:
  *     description: Available if the relation `currency` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   tax_rate:
  *     description: The order's tax rate
@@ -453,6 +459,7 @@ export class Order extends BaseEntity {
  *     example: null
  *   draft_order:
  *     description: A draft order object. Available if the relation `draft_order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/DraftOrder"
  *   items:
  *     description: The line items that belong to the order. Available if the relation `items` is expanded.
@@ -498,6 +505,7 @@ export class Order extends BaseEntity {
  *     example: null
  *   sales_channel:
  *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/SalesChannel"
  *   shipping_total:
  *     type: integer

@@ -34,7 +34,7 @@ export class PaymentSession extends BaseEntity {
 
   @ManyToOne(() => Cart, (cart) => cart.payment_sessions)
   @JoinColumn({ name: "cart_id" })
-  cart?: Cart
+  cart?: Cart | null
 
   @Index()
   @Column()
@@ -97,6 +97,7 @@ export class PaymentSession extends BaseEntity {
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
  *     description: A cart object. Available if the relation `cart` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   provider_id:
  *     description: The id of the Payment Provider that is responsible for the Payment Session

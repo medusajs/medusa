@@ -40,7 +40,7 @@ export class DraftOrder extends BaseEntity {
 
   @OneToOne(() => Cart, { onDelete: "CASCADE" })
   @JoinColumn({ name: "cart_id" })
-  cart?: Cart
+  cart?: Cart | null
 
   @Index()
   @Column({ nullable: true })
@@ -48,7 +48,7 @@ export class DraftOrder extends BaseEntity {
 
   @OneToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order?: Order
+  order?: Order | null
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date | null
@@ -120,6 +120,7 @@ export class DraftOrder extends BaseEntity {
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
  *     description: A cart object. Available if the relation `cart` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   order_id:
  *     description: The ID of the order associated with the draft order.
@@ -128,6 +129,7 @@ export class DraftOrder extends BaseEntity {
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   canceled_at:
  *     description: The date the draft order was canceled at.

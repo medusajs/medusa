@@ -46,7 +46,7 @@ export class Return extends BaseEntity {
 
   @OneToOne(() => Swap, (swap) => swap.return_order)
   @JoinColumn({ name: "swap_id" })
-  swap?: Swap
+  swap?: Swap | null
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -54,7 +54,7 @@ export class Return extends BaseEntity {
 
   @OneToOne(() => ClaimOrder, (co) => co.return_order)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order?: ClaimOrder
+  claim_order?: ClaimOrder | null
 
   @Index()
   @Column({ nullable: true, type: "text" })
@@ -62,12 +62,12 @@ export class Return extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.returns)
   @JoinColumn({ name: "order_id" })
-  order?: Order
+  order?: Order | null
 
   @OneToOne(() => ShippingMethod, (method) => method.return_order, {
     cascade: true,
   })
-  shipping_method?: ShippingMethod
+  shipping_method?: ShippingMethod | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   shipping_data: Record<string, unknown> | null
@@ -143,15 +143,8 @@ export class Return extends BaseEntity {
  *     example: null
  *   swap:
  *     description: A swap object. Available if the relation `swap` is expanded.
- *     $ref: "#/components/schemas/Swap"
- *   order_id:
- *     description: The ID of the Order that the Return is made from.
  *     nullable: true
- *     type: string
- *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
- *   order:
- *     description: An order object. Available if the relation `order` is expanded.
- *     $ref: "#/components/schemas/Order"
+ *     $ref: "#/components/schemas/Swap"
  *   claim_order_id:
  *     description: The ID of the Claim that the Return is a part of.
  *     nullable: true
@@ -159,9 +152,20 @@ export class Return extends BaseEntity {
  *     example: null
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ClaimOrder"
+ *   order_id:
+ *     description: The ID of the Order that the Return is made from.
+ *     nullable: true
+ *     type: string
+ *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
+ *   order:
+ *     description: An order object. Available if the relation `order` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/Order"
  *   shipping_method:
  *     description: The Shipping Method that will be used to send the Return back. Can be null if the Customer facilitates the return shipment themselves. Available if the relation `shipping_method` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ShippingMethod"
  *   shipping_data:
  *     description: Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.

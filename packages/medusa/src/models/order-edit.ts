@@ -32,7 +32,7 @@ export class OrderEdit extends BaseEntity {
 
   @ManyToOne(() => Order, (o) => o.edits)
   @JoinColumn({ name: "order_id" })
-  order?: Order
+  order?: Order | null
 
   @OneToMany(() => OrderItemChange, (oic) => oic.order_edit, {
     cascade: true,
@@ -81,7 +81,7 @@ export class OrderEdit extends BaseEntity {
 
   @OneToOne(() => PaymentCollection)
   @JoinColumn({ name: "payment_collection_id" })
-  payment_collection?: PaymentCollection
+  payment_collection?: PaymentCollection | null
 
   // Computed
   shipping_total?: number
@@ -154,6 +154,7 @@ export class OrderEdit extends BaseEntity {
  *     example: order_01G2SG30J8C85S4A5CHM2S1NS2
  *   order:
  *     description: Available if the relation `order` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   changes:
  *     description: Available if the relation `changes` is expanded.
@@ -261,6 +262,7 @@ export class OrderEdit extends BaseEntity {
  *     example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   payment_collection:
  *     description: Available if the relation `payment_collection` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/PaymentCollection"
  *   created_at:
  *     description: The date with timezone at which the resource was created.

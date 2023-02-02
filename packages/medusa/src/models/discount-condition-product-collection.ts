@@ -21,11 +21,11 @@ export class DiscountConditionProductCollection {
 
   @ManyToOne(() => ProductCollection, { onDelete: "CASCADE" })
   @JoinColumn({ name: "product_collection_id" })
-  product_collection?: ProductCollection
+  product_collection?: ProductCollection | null
 
   @ManyToOne(() => DiscountCondition, { onDelete: "CASCADE" })
   @JoinColumn({ name: "condition_id" })
-  discount_condition?: DiscountCondition
+  discount_condition?: DiscountCondition | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -59,9 +59,11 @@ export class DiscountConditionProductCollection {
  *     example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   product_collection:
  *     description: Available if the relation `product_collection` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/ProductCollection"
  *   discount_condition:
  *     description: Available if the relation `discount_condition` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/DiscountCondition"
  *   created_at:
  *     description: The date with timezone at which the resource was created.

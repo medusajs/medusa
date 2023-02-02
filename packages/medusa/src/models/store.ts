@@ -29,7 +29,7 @@ export class Store extends BaseEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "default_currency_code", referencedColumnName: "code" })
-  default_currency?: Currency
+  default_currency?: Currency | null
 
   @ManyToMany(() => Currency)
   @JoinTable({
@@ -67,7 +67,7 @@ export class Store extends BaseEntity {
     OneToOne(() => SalesChannel),
     JoinColumn({ name: "default_sales_channel_id" }),
   ])
-  default_sales_channel?: SalesChannel
+  default_sales_channel?: SalesChannel | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -109,6 +109,7 @@ export class Store extends BaseEntity {
  *       description: See a list of codes.
  *   default_currency:
  *     description: Available if the relation `default_currency` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   currencies:
  *     description: The currencies that are enabled for the Store. Available if the relation `currencies` is expanded.
@@ -142,6 +143,7 @@ export class Store extends BaseEntity {
  *     example: null
  *   default_sales_channel:
  *     description: A sales channel object. Available if the relation `default_sales_channel` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/SalesChannel"
  *   created_at:
  *     description: The date with timezone at which the resource was created.

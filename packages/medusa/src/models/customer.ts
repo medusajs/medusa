@@ -37,7 +37,7 @@ export class Customer extends SoftDeletableEntity {
 
   @OneToOne(() => Address)
   @JoinColumn({ name: "billing_address_id" })
-  billing_address?: Address
+  billing_address?: Address | null
 
   @OneToMany(() => Address, (address) => address.customer)
   shipping_addresses?: Address[]
@@ -122,6 +122,7 @@ export class Customer extends SoftDeletableEntity {
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
  *     description: Available if the relation `billing_address` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_addresses:
  *     description: Available if the relation `shipping_addresses` is expanded.

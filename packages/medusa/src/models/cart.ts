@@ -38,6 +38,7 @@
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
  *     description: Available if the relation `billing_address` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
  *     description: The shipping address's ID
@@ -46,6 +47,7 @@
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
  *     description: Available if the relation `shipping_address` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   items:
  *     description: Available if the relation `items` is expanded.
@@ -58,6 +60,7 @@
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
  *     description: A region object. Available if the relation `region` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   discounts:
  *     description: Available if the relation `discounts` is expanded.
@@ -76,6 +79,7 @@
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
  *     description: A customer object. Available if the relation `customer` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Customer"
  *   payment_session:
  *     description: The selected payment session in the cart.
@@ -93,6 +97,7 @@
  *     example: pay_01G8ZCC5W42ZNY842124G7P5R9
  *   payment:
  *     description: Available if the relation `payment` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Payment"
  *   shipping_methods:
  *     description: The shipping methods added to the cart.
@@ -140,6 +145,7 @@
  *     example: null
  *   sales_channel:
  *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/SalesChannel"
  *   created_at:
  *     description: The date with timezone at which the resource was created.
@@ -252,7 +258,7 @@ export class Cart extends SoftDeletableEntity {
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "billing_address_id" })
-  billing_address?: Address
+  billing_address?: Address | null
 
   @Index()
   @Column({ nullable: true })
@@ -262,7 +268,7 @@ export class Cart extends SoftDeletableEntity {
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address?: Address
+  shipping_address?: Address | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
     cascade: ["insert", "remove"],
@@ -275,7 +281,7 @@ export class Cart extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region?: Region
+  region?: Region | null
 
   @ManyToMany(() => Discount)
   @JoinTable({
@@ -311,7 +317,7 @@ export class Cart extends SoftDeletableEntity {
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
-  customer?: Customer
+  customer?: Customer | null
 
   payment_session: PaymentSession | null
 
@@ -326,7 +332,7 @@ export class Cart extends SoftDeletableEntity {
 
   @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
-  payment?: Payment
+  payment?: Payment | null
 
   @OneToMany(() => ShippingMethod, (method) => method.cart, {
     cascade: ["soft-remove", "remove"],
@@ -358,7 +364,7 @@ export class Cart extends SoftDeletableEntity {
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
-  sales_channel?: SalesChannel
+  sales_channel?: SalesChannel | null
 
   discount_total?: number
   gift_card_tax_total?: number

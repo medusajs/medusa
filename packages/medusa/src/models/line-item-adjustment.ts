@@ -28,14 +28,14 @@ export class LineItemAdjustment {
 
   @ManyToOne(() => LineItem, (li) => li.adjustments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "item_id" })
-  item?: LineItem
+  item?: LineItem | null
 
   @Column()
   description: string
 
   @ManyToOne(() => Discount)
   @JoinColumn({ name: "discount_id" })
-  discount?: Discount
+  discount?: Discount | null
 
   @Index()
   @Column({ nullable: true })
@@ -76,6 +76,7 @@ export class LineItemAdjustment {
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   item:
  *     description: Available if the relation `item` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   description:
  *     description: The line item's adjustment description
@@ -88,6 +89,7 @@ export class LineItemAdjustment {
  *     example: disc_01F0YESMW10MGHWJKZSDDMN0VN
  *   discount:
  *     description: Available if the relation `discount` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Discount"
  *   amount:
  *     description: The adjustment amount
