@@ -37,7 +37,6 @@ module.exports = {
     inventoryService: {
       scope: "internal",
       resources: "shared",
-      option: { configMedusa: "abc" },
       resolve: "@medusajs/inventory",
     },
   },
