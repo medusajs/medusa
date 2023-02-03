@@ -17,8 +17,8 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import {
-  ProductSalesChannelReq,
   ProductProductCategoryReq,
+  ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
@@ -29,18 +29,19 @@ import {
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
+import { IInventoryService } from "../../../../interfaces"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
-import { IInventoryService } from "../../../../interfaces"
 
+import { Logger } from "../../../../types/global"
+import { DistributedTransaction } from "../../../../utils/transaction"
+import ContainsDuplicates from "../../../../utils/validators/array-contains-duplicates"
 import {
   createVariantTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { DistributedTransaction } from "../../../../utils/transaction"
-import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /products
@@ -565,6 +566,7 @@ export class AdminPostProductsReq {
   collection_id?: string
 
   @IsOptional()
+  @ContainsDuplicates("value")
   @Type(() => ProductTagReq)
   @ValidateNested({ each: true })
   @IsArray()

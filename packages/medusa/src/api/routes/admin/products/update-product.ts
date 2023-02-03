@@ -19,30 +19,31 @@ import {
   ProductVariantService,
 } from "../../../../services"
 import {
+  ProductProductCategoryReq,
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
-  ProductProductCategoryReq,
 } from "../../../../types/product"
 
 import { Type } from "class-transformer"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { IInventoryService } from "../../../../interfaces"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus, ProductVariant } from "../../../../models"
+import { ProductStatus } from "../../../../models"
+import { Logger } from "../../../../types/global"
 import {
   CreateProductVariantInput,
   ProductVariantPricesUpdateReq,
 } from "../../../../types/product-variant"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { validator } from "../../../../utils/validator"
-import { MedusaError } from "medusa-core-utils"
 import { DistributedTransaction } from "../../../../utils/transaction"
+import { validator } from "../../../../utils/validator"
+import ContainsDuplicates from "../../../../utils/validators/array-contains-duplicates"
 import {
   createVariantTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { IInventoryService } from "../../../../interfaces"
-import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /products/{id}
@@ -568,6 +569,7 @@ export class AdminPostProductsProductReq {
   @Type(() => ProductTagReq)
   @ValidateNested({ each: true })
   @IsArray()
+  @ContainsDuplicates("value")
   tags?: ProductTagReq[]
 
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [

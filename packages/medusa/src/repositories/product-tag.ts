@@ -1,3 +1,4 @@
+import { uniqBy } from "lodash"
 import { EntityRepository, In, Repository } from "typeorm"
 import { ProductTag } from "../models/product-tag"
 import { ExtendedFindConfig, Selector } from "../types/common"
@@ -51,7 +52,7 @@ export class ProductTagRepository extends Repository<ProductTag> {
 
     const upsertedTags: ProductTag[] = []
 
-    for (const tag of tags) {
+    for (const tag of uniqBy(tags, "value")) {
       const aTag = existingTagsMap.get(tag.value)
       if (aTag) {
         upsertedTags.push(aTag)
