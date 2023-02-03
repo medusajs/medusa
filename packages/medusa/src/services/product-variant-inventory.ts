@@ -509,11 +509,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
 
       for (const inventoryLevel of inventoryLevels) {
-        const pvInventoryItem = pviMap[inventoryLevel.inventory_item_id]
+        const pvInventoryItem = pviMap.get(inventoryLevel.inventory_item_id)
 
         if (
           !pvInventoryItem ||
-          pvInventoryItem.quantity * item.quantity >
+          pvInventoryItem.required_quantity * item.quantity >
             inventoryLevel.stocked_quantity
         ) {
           throw new MedusaError(

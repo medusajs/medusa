@@ -13,12 +13,14 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import {
+  FulfillmentService,
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
+import logger from "../../../../loaders/logger"
 
 /**
  * @oas [post] /orders/{id}/fulfillment
@@ -115,7 +117,7 @@ export default async (req, res) => {
       existingFulfillments.map((fulfillment) => [fulfillment.id, fulfillment])
     )
 
-    const { fulfillments } = await orderService
+    await orderService
       .withTransaction(transactionManager)
       .createFulfillment(id, validated.items, {
         metadata: validated.metadata,
@@ -126,6 +128,16 @@ export default async (req, res) => {
       pvInventoryService.withTransaction(transactionManager)
 
     if (validated.location_id) {
+      const { fulfillments } = await orderService
+        .withTransaction(transactionManager)
+        .retrieve(id, {
+          relations: [
+            "fulfillments",
+            "fulfillments.items",
+            "fulfillments.items.item",
+          ],
+        })
+
       await updateInventoryAndReservations(
         fulfillments.filter((f) => !existingFulfillmentMap[f.id]),
         {
@@ -153,33 +165,35 @@ const updateInventoryAndReservations = async (
 ) => {
   const { inventoryService, locationId } = context
 
-  fulfillments.map(async ({ items }) => {
-    await inventoryService.validateInventoryAtLocation(
-      items.map(({ item, quantity }) => ({ ...item, quantity } as LineItem)),
-      locationId
-    )
+  await Promise.all(
+    fulfillments.map(async ({ items }) => {
+      await inventoryService.validateInventoryAtLocation(
+        items.map(({ item, quantity }) => ({ ...item, quantity } as LineItem)),
+        locationId
+      )
 
-    await Promise.all(
-      items.map(async ({ item, quantity }) => {
-        if (!item.variant_id) {
-          return
-        }
+      await Promise.all(
+        items.map(async ({ item, quantity }) => {
+          if (!item.variant_id) {
+            return
+          }
 
-        await inventoryService.adjustReservationsQuantityByLineItem(
-          item.id,
-          item.variant_id,
-          locationId,
-          -quantity
-        )
+          await inventoryService.adjustReservationsQuantityByLineItem(
+            item.id,
+            item.variant_id,
+            locationId,
+            -quantity
+          )
 
-        await inventoryService.adjustInventory(
-          item.variant_id,
-          locationId,
-          -quantity
-        )
-      })
-    )
-  })
+          await inventoryService.adjustInventory(
+            item.variant_id,
+            locationId,
+            -quantity
+          )
+        })
+      )
+    })
+  )
 }
 
 /**
