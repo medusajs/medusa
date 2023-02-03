@@ -111,7 +111,7 @@ export type ConfigModule = {
   projectConfig: {
     redis_url?: string
 
-    session_options: SessionOptions
+    session_options?: SessionOptions
 
     jwt_secret?: string
     cookie_secret?: string
