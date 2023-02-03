@@ -7,6 +7,7 @@ import {
 } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { RedisCacheModuleOptions } from "../types"
 
 const DEFAULT_CACHE_TIME = 30 // 30 seconds
 const EXPIRY_MODE = "EX" // "EX" stands for an expiry time in second
@@ -24,15 +25,18 @@ class RedisCacheService
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
+  protected TTL: number
+
   constructor(
-    deps: InjectedDependencies,
-    options?: unknown,
+    { redisClient }: InjectedDependencies,
+    options: RedisCacheModuleOptions = {},
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
 
-    this.redis_ = deps.redisClient // TODO: check how this is handled
+    this.redis_ = redisClient
+    this.TTL = options.defaultTTL || DEFAULT_CACHE_TIME
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(
@@ -52,7 +56,7 @@ class RedisCacheService
   async set(
     key: string,
     data: Record<string, unknown>,
-    ttl: number = DEFAULT_CACHE_TIME
+    ttl: number = this.TTL
   ): Promise<void> {
     ttl = Number(process.env.CACHE_TTL ?? ttl)
     if (ttl === 0) {

@@ -7,7 +7,9 @@ import {
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
-import { CacheRecord } from "../types"
+import { CacheRecord, InMemoryCacheModuleOptions } from "../types"
+
+const DEFAULT_TTL = 30 // seconds
 
 type InjectedDependencies = {}
 
@@ -21,20 +23,20 @@ class InMemoryCacheService
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly store = new Map<string, CacheRecord<any>>()
-  protected readonly timoutRefs = {}
+  protected TTL: number
 
-  protected ttl: number
+  protected readonly timoutRefs = {}
+  protected readonly store = new Map<string, CacheRecord<any>>()
 
   constructor(
     deps: InjectedDependencies,
-    options?: unknown,
+    options: InMemoryCacheModuleOptions = {},
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
     // @ts-ignore
     super(...arguments)
 
-    // TODO: if ttl passed in the config set it as `this.ttl`
+    this.TTL = options.defaultTTL || DEFAULT_TTL
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
       throw new MedusaError(
@@ -62,10 +64,10 @@ class InMemoryCacheService
    * Set data to the cache.
    * @param key - cache key under which the data is stored
    * @param data - data to be stored in the cache
-   * @param ttl - expiration time in milliseconds
+   * @param ttl - expiration time in seconds
    */
-  async set<T>(key: string, data: T, ttl: number = this.ttl): Promise<void> {
-    const record: CacheRecord<T> = { data, expire: ttl + Date.now() }
+  async set<T>(key: string, data: T, ttl: number = this.TTL): Promise<void> {
+    const record: CacheRecord<T> = { data, expire: ttl * 1000 + Date.now() }
 
     const oldRecord = this.store.get(key)
 

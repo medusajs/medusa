@@ -8,3 +8,10 @@ export type CacheRecord<T> = {
    */
   expire: number
 }
+
+export type InMemoryCacheModuleOptions = {
+  /**
+   * Time to keep data in cache (in seconds)
+   */
+  defaultTTL?: number
+}
