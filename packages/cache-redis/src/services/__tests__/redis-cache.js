@@ -1,4 +1,5 @@
 import { MockManager } from "medusa-test-utils"
+
 import { RedisCacheService } from "../index"
 
 jest.genMockFromModule("ioredis")
@@ -11,15 +12,30 @@ const loggerMock = {
 }
 
 describe("RedisCacheService", () => {
-  let eventBus
+  let cacheService
 
-  describe("constructor", () => {
-    beforeAll(() => {
-      jest.resetAllMocks()
-    })
+  beforeAll(() => {
+    jest.resetAllMocks()
+  })
 
-    it("Creates a RedisCacheService", () => {
-      eventBus = new RedisCacheService(
+  it("Creates a RedisCacheService", () => {
+    cacheService = new RedisCacheService(
+      {
+        manager: MockManager,
+        logger: loggerMock,
+      },
+      {
+        redisUrl: "test-url",
+      },
+      {
+        resources: "shared",
+      }
+    )
+  })
+
+  it("Throws on isolated module declaration", () => {
+    try {
+      cacheService = new RedisCacheService(
         {
           manager: MockManager,
           logger: loggerMock,
@@ -28,30 +44,13 @@ describe("RedisCacheService", () => {
           redisUrl: "test-url",
         },
         {
-          resources: "shared",
+          resources: "isolated",
         }
       )
-    })
-
-    it("Throws on isolated module declaration", () => {
-      try {
-        eventBus = new RedisCacheService(
-          {
-            manager: MockManager,
-            logger: loggerMock,
-          },
-          {
-            redisUrl: "test-url",
-          },
-          {
-            resources: "isolated",
-          }
-        )
-      } catch (error) {
-        expect(error.message).toEqual(
-          "At the moment this module can only be used with shared resources"
-        )
-      }
-    })
+    } catch (error) {
+      expect(error.message).toEqual(
+        "At the moment this module can only be used with shared resources"
+      )
+    }
   })
 })

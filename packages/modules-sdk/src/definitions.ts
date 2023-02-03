@@ -28,7 +28,7 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] = [
   {
     key: "cacheService",
     registrationName: "cacheService",
-    defaultPackage: "@medusa/cache-inmemory",
+    defaultPackage: "@medusajs/cache-inmemory",
     label: "InMemoryCacheService",
     isRequired: true,
     canOverride: true,
