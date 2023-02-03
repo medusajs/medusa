@@ -8,9 +8,9 @@ import {
   UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query"
-import { adminCurrenciesKeys } from "."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminCurrenciesKeys } from "./queries"
 
 export const useAdminUpdateCurrency = (
   code: string,

@@ -6,7 +6,7 @@ export const simpleProductCategoryFactory = async (
   data: Partial<ProductCategory> = {}
 ): Promise<ProductCategory> => {
   const manager = connection.manager
-  const address = manager.create(ProductCategory, data)
+  const category = manager.create(ProductCategory, data)
 
-  return await manager.save(address)
+  return await manager.save(category)
 }

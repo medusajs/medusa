@@ -1,3 +1,8 @@
+---
+description: 'Learn how to implement the cart functionality in your storefront using the REST APIs. This includes creating a cart, updating a cart, adding products to the cart, and more.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -17,10 +22,6 @@ This document does not cover implementing the checkout flow. You can refer to [t
 
 :::
 
-### Glossary
-
-- **Line Item**: When products are added to the cart in Medusa, they are referred to as line items. Line items have, by default, the same properties and attributes as a product. However, you can customize line items specifically for a cart if necessary.
-
 ---
 
 ## Prerequisites
@@ -33,9 +34,17 @@ It is also assumed you already have a storefront set up. It can be a custom stor
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../js-client/overview.md) and have [created an instance of the client](../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../medusa-react/overview.md#usage).
+
+It's also assumed you already have [used CartProvider higher in your component tree](../medusa-react/overview.md#cartprovider).
 
 ---
 
@@ -46,7 +55,7 @@ You can create a cart with the following code snippet:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.create()
 .then(({ cart }) => {
   localStorage.setItem("cart_id", cart.id)
@@ -56,9 +65,33 @@ medusa.carts.create()
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  const { cart, createCart } = useCart()
+
+  const handleCreateCart = () => {
+    createCart.mutate(
+      {}, // create an empty cart
+      {
+        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id),
+      }
+    )
+  }
+  
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts`, {
   method: "POST",
   credentials: "include",
@@ -92,6 +125,32 @@ medusa.carts.create({
   // assuming you have a state variable to store the cart
   setCart(cart)
 })
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  const { cart, createCart } = useCart()
+
+  const handleCreateCart = () => {
+    createCart.mutate(
+      {
+        region_id,
+      },
+      {
+        onSuccess: ({ cart }) => localStorage.setItem("cart_id", cart.id),
+      }
+    )
+  }
+  
+  // ...
+}
+
+export default Cart
 ```
 
 </TabItem>
@@ -138,7 +197,7 @@ You can retrieve the cart at any given point using its ID with the following cod
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 const id = localStorage.getItem("cart_id")
 
 if (id) {
@@ -148,9 +207,24 @@ if (id) {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React" default>
+
+```tsx
+import { useGetCart } from "medusa-react"
+
+const Cart = () => {
+  const { cart, isLoading } = useGetCart(cart_id)
+  
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 const id = localStorage.getItem("cart_id")
 
 if (id) {
@@ -186,7 +260,7 @@ You can use the following snippet to update any of the cart’s data:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.update(cartId, {
   region_id,
 })
@@ -194,9 +268,32 @@ medusa.carts.update(cartId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const { updateCart } = useCart()
+
+  const changeRegionId = (region_id: string) => {
+    updateCart.mutate({
+      region_id,
+    })
+  }
+
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
@@ -229,7 +326,7 @@ You can do that using the same update operation:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.update(cartId, {
   customer_id,
 })
@@ -237,9 +334,32 @@ medusa.carts.update(cartId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const { updateCart } = useCart()
+
+  const changeCustomerId = (customer_id: string) => {
+    updateCart.mutate({
+      customer_id,
+    })
+  }
+
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
@@ -268,7 +388,7 @@ You can do that using the same update operation:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.update(cartId, {
   email: "user@example.com",
 })
@@ -276,9 +396,32 @@ medusa.carts.update(cartId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const { updateCart } = useCart()
+
+  const changeEmail = (email: string) => {
+    updateCart.mutate({
+      email,
+    })
+  }
+
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
   method: "POST",
   credentials: "include",
@@ -311,6 +454,30 @@ medusa.carts.lineItems.create(cartId, {
   quantity: 1,
 })
 .then(({ cart }) => setCart(cart))
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCreateLineItem } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const createLineItem = useCreateLineItem(cart_id)
+
+  const handleAddItem = () => {
+    createLineItem.mutate({
+      variant_id,
+      quantity,
+    })
+  }
+
+  // ...
+}
+
+export default Cart
 ```
 
 </TabItem>
@@ -356,7 +523,7 @@ To update a line item's quantity in the cart, you can use the following code sni
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.lineItems.update(cartId, lineItemId, {
   quantity: 3,
 })
@@ -364,9 +531,33 @@ medusa.carts.lineItems.update(cartId, lineItemId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useUpdateLineItem } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const updateLineItem = useUpdateLineItem(cart_id)
+
+  const handleUpdateItem = () => {
+    updateLineItem.mutate({
+      lineId,
+      quantity: 3,
+    })
+  }
+
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
   method: "POST",
   credentials: "include",
@@ -397,15 +588,38 @@ To delete a line item from the cart, you can use the following code snippet:
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.lineItems.delete(cartId, lineItemId)
 .then(({ cart }) => setCart(cart))
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useDeleteLineItem } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const deleteLineItem = useDeleteLineItem(cart_id)
+
+  const handleDeleteItem = () => {
+    deleteLineItem.mutate({
+      lineId,
+    })
+  }
+
+  // ...
+}
+
+export default Cart
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/line-items/${lineItemId}`, {
   method: "DELETE",
   credentials: "include",

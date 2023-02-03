@@ -1,3 +1,8 @@
+---
+description: 'Learn how to integrate Spaces with the Medusa server. Learn how to install and configure the Spaces plugin on the Medusa server.'
+addHowToData: true
+---
+
 # Spaces
 
 In this document, you’ll learn how to install the [Spaces plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-file-spaces) on your Medusa server and use it for storage.

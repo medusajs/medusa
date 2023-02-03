@@ -1,3 +1,8 @@
+---
+description: 'Learn how to implement customer group functionalities for admins using the REST APIs. This includes listing customer groups, creating a customer group, managing customers in the group, and more.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -23,9 +28,15 @@ It is assumed that you already have a Medusa server installed and set up. If not
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../js-client/overview.md) installed and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
 
 ### Authenticated Admin User
 
@@ -42,7 +53,7 @@ You can create a customer group by sending a request to the Create Customer Grou
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.customerGroups.create({
   name: "VIP",
 })
@@ -52,9 +63,37 @@ medusa.admin.customerGroups.create({
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCreateCustomerGroup } from "medusa-react"
+
+const CreateCustomerGroup = () => {
+  const createCustomerGroup = useAdminCreateCustomerGroup()
+  // ...
+
+  const handleCreate = () => {
+    createCustomerGroup.mutate({
+      name,
+    })
+  }
+
+  // ...
+  
+  return (
+    <form>
+      {/* Render form */}
+    </form>
+  )
+}
+
+export default CreateCustomerGroup
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/admin/customer-groups`, {
   method: "POST",
   credentials: "include",
@@ -97,7 +136,7 @@ You can get a list of all customer groups by sending a request to the List Custo
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.customerGroups.list()
 .then(({ customer_groups, limit, offset, count }) => {
   console.log(customer_groups.length)
@@ -105,9 +144,39 @@ medusa.admin.customerGroups.list()
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { CustomerGroup } from "@medusajs/medusa"
+import { useAdminCustomerGroups } from "medusa-react"
+
+const CustomerGroups = () => {
+  const { customer_groups, isLoading } = useAdminCustomerGroups()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {customer_groups && !customer_groups.length && (
+        <span>No Customer Groups</span>
+      )}
+      {customer_groups && customer_groups.length > 0 && (
+        <ul>
+          {customer_groups.map((customerGroup: CustomerGroup) => (
+            <li key={customerGroup.id}>{customerGroup.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default CustomerGroups
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/admin/customer-groups`, {
   credentials: "include",
 })
@@ -141,7 +210,7 @@ You can retrieve a single customer group by sending a request to the Get a Custo
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.customerGroups.retrieve(customerGroupId)
 .then(({ customer_group }) => {
   console.log(customer_group.id)
@@ -149,9 +218,31 @@ medusa.admin.customerGroups.retrieve(customerGroupId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminCustomerGroup } from "medusa-react"
+
+const CustomerGroup = () => {
+  const { customer_group, isLoading } = useAdminCustomerGroup(
+    customerGroupId
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {customer_group && <span>{customer_group.name}</span>}
+    </div>
+  )
+}
+
+export default CustomerGroup
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
   credentials: "include",
 })
@@ -183,7 +274,7 @@ You can update a customer group’s data by sending a request to the Update Cust
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.customerGroups.update(customerGroupId, {
   metadata: {
 		is_seller: true,
@@ -195,9 +286,37 @@ medusa.admin.customerGroups.update(customerGroupId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminUpdateCustomerGroup } from "medusa-react"
+
+const UpdateCustomerGroup = () => {
+  const updateCustomerGroup = useAdminUpdateCustomerGroup(customerGroupId)
+  // ..
+
+  const handleUpdate = () => {
+    updateCustomerGroup.mutate({
+      name,
+    })
+  }
+
+  // ...
+  
+  return (
+    <form>
+      {/* Render form */}
+    </form>
+  )
+}
+
+export default UpdateCustomerGroup
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
   method: "POST",
   credentials: "include",
@@ -244,7 +363,7 @@ You can delete a customer group by sending a request to the Delete a Customer Gr
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.customerGroups.delete(customerGroupId)
 .then(({ id, object, deleted }) => {
   console.log(id)
@@ -252,9 +371,29 @@ medusa.admin.customerGroups.delete(customerGroupId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminDeleteCustomerGroup } from "medusa-react"
+
+const CustomerGroup = () => {
+  const deleteCustomerGroup = useAdminDeleteCustomerGroup(customerGroupId)
+  // ...
+
+  const handleDeleteCustomerGroup = () => {
+    deleteCustomerGroup.mutate()
+  }
+
+  // ...
+}
+
+export default CustomerGroup
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}`, {
 	method: "DELETE",
   credentials: "include",
@@ -289,7 +428,7 @@ You can add a customer to a group by sending a request to the Customer Group’s
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.customerGroups.addCustomers(customerGroupId, {
   customer_ids: [
     {
@@ -303,9 +442,35 @@ medusa.admin.customerGroups.addCustomers(customerGroupId, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useAdminAddCustomersToCustomerGroup } from "medusa-react"
+
+const CustomerGroup = () => {
+  const addCustomers = useAdminAddCustomersToCustomerGroup(customerGroupId)
+  // ...
+
+  const handleAddCustomers= (customerId: string) => {
+    addCustomers.mutate({
+      customer_ids: [
+        {
+          id: customerId,
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default CustomerGroup
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(
   `<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
   {
@@ -357,7 +522,7 @@ You can retrieve a list of all customers in a customer group using the List Cust
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.customerGroups.listCustomers(customerGroupId)
 .then(({ customers, count, offset, limit }) => {
   console.log(customers.length)
@@ -365,9 +530,39 @@ medusa.admin.customerGroups.listCustomers(customerGroupId)
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { Customer } from "@medusajs/medusa"
+import { useAdminCustomerGroupCustomers } from "medusa-react"
+
+const CustomerGroup = () => {
+  const { customers, isLoading } = useAdminCustomerGroupCustomers(
+    customerGroupId
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {customers && !customers.length && <span>No customers</span>}
+      {customers && customers.length > 0 && (
+        <ul>
+          {customers.map((customer: Customer) => (
+            <li key={customer.id}>{customer.first_name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default CustomerGroup
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers`, {
   credentials: "include",
 })
@@ -403,7 +598,7 @@ You can remove customers from a customer group by sending a request to the Remov
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.admin.customerGroups.removeCustomers(customer_group_id, {
   customer_ids: [
     {
@@ -417,9 +612,38 @@ medusa.admin.customerGroups.removeCustomers(customer_group_id, {
 ```
 
 </TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { Customer } from "@medusajs/medusa"
+import { useAdminRemoveCustomersFromCustomerGroup } from "medusa-react"
+
+const CustomerGroup = () => {
+  const removeCustomers = useAdminRemoveCustomersFromCustomerGroup(
+    customerGroupId
+  )
+  // ...
+
+  const handleRemoveCustomer = (customer_id: string) => {
+    removeCustomers.mutate({
+      customer_ids: [
+        {
+          id: customer_id,
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default CustomerGroup
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(
   `<SERVER_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
   {

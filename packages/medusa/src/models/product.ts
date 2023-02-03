@@ -82,11 +82,11 @@ export class Product extends SoftDeletableEntity {
   @JoinTable({
     name: "product_category_product",
     joinColumn: {
-      name: "product_category_id",
+      name: "product_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
-      name: "product_id",
+      name: "product_category_id",
       referencedColumnName: "id",
     },
   })
@@ -276,7 +276,7 @@ export class Product extends SoftDeletableEntity {
  *     items:
  *       $ref: "#/components/schemas/ProductVariant"
  *   categories:
- *     description: Available if the relation `category_children` are expanded.
+ *     description: The product's associated categories. Available if the relation `categories` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/ProductCategory"
