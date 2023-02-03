@@ -16,6 +16,7 @@ import styles from './styles.module.css';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import {useLocation} from '@docusaurus/router';
 import StructuredDataSearchbox from '../StructuredData/Searchbox';
+import "react-tooltip/dist/react-tooltip.css"
 
 export default function Layout(props) {
   const {
