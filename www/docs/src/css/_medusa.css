@@ -1,0 +1,143 @@
+/** Light theme/default **/
+:root {
+  /** Backgrounds **/
+  --medusa-bg-subtle: #F8F9FA;
+  --medusa-bg-subtle-hover: #ECEEF0;
+  --medusa-bg-subtle-pressed: #E6E8EB;
+  --medusa-bg-base: #FFFFFF;
+  --medusa-bg-base-hover: #F8F9FA;
+  --medusa-bg-base-pressed: #F1F3F5;
+  --medusa-bg-component: #F1F3F5;
+  --medusa-bg-field: #F8F9FA;
+  --medusa-bg-field-hover: #F1F3F5;
+  --medusa-bg-highlight: #EDE9FE;
+  --medusa-bg-toggle-off: #C1C8CD;
+  --medusa-bg-overlay: rgba(17, 24, 28, 0.4);
+  --medusa-bg-interactive: #6E56CF;
+
+  /** Borders **/
+  --medusa-border-base: #E6E8EB;
+  --medusa-border-strong: #D7DBDF;
+  --medusa-border-focus: #6E56CF;
+  --medusa-border-focus-inset: #FFFFFF;
+  --medusa-border-interactive: #6E56CF;
+
+  /** Text **/
+  --medusa-text-primary: #1C1C1F;
+  --medusa-text-secondary: #687076;
+  --medusa-text-placeholder: #889096;
+  --medusa-text-disabled: #C1C8CD;
+  --medusa-text-on-color: #FFFFFF;
+  --medusa-text-interactive: #6E56CF;
+  --medusa-text-interactive-hover: #644FC1;
+  --medusa-text-error: #E5484D;
+
+  /** Buttons **/
+  --medusa-button-primary: #6E56CF;
+  --medusa-button-primary-hover: #644FC1;
+  --medusa-button-primary-pressed: #5746AF;
+  --medusa-button-secondary: #FFFFFF;
+  --medusa-button-secondary-hover: #F8F9FA;
+  --medusa-button-secondary-pressed: #F1F3F5;
+
+  /** Icons **/
+  --medusa-icon-primary: #11181C;
+  --medusa-icon-secondary: #687076;
+  --medusa-icon-placeholder: #889096;
+  --medusa-icon-disabled: #C1C8CD;
+  --medusa-icon-on-color: #FFFFFF;
+  --medusa-icon-interactive: #6E56CF;
+  --medusa-icon-interactive-hover: #644FC1;
+  --medusa-icon-error: #E5484D;
+
+  /** Code Block **/
+  --medusa-code-block: #1C1C1F;
+
+  /** Code Tabs **/
+  --medusa-code-tabs-bg: #161616;
+  --medusa-code-tab: #1C1C1F;
+  --medusa-code-tab-hover: rgba(141, 141, 141, 0.16);
+  --medusa-code-tab-border: #3E3E44;
+  --medusa-code-tab-text: #A09FA6;
+  --medusa-code-tab-active-text: #EDEDEF;
+  --medusa-code-tab-title: #A09FA6;
+
+  /** Tooltip **/
+  --medusa-tooltip: var(--medusa-bg-base);
+  --medusa-tooltip-border: var(--medusa-border-base);
+  --medusa-tooltip-shadow: var(--medusa-tooltip-shadow);
+  --medusa-tooltip-text: var(--medusa-text-secondary);
+
+  /** Shadow **/
+  --medusa-shadow-overlay: 0px 2px 16px rgba(0, 0, 0, 0.08);
+
+  /** Typography **/
+  --medusa-body-regular-size: 14px;
+  --medusa-body-regular-line-height: 24px;
+  --medusa-body-regular-font-weight: 400;
+  --medusa-h1-size: 32px;
+  --medusa-h1-line-height: 44px;
+  --medusa-h1-weight: 500;
+  --medusa-h2-size: 24px;
+  --medusa-h2-line-height: 32px;
+  --medusa-h2-weight: 500;
+  --medusa-h3-size: 18px;
+  --medusa-h3-line-height: 28px;
+  --medusa-h3-weight: 500;
+}
+
+/** Dark theme **/
+html[data-theme="dark"] {
+  /** Backgrounds **/
+  --medusa-bg-subtle: #161618;
+  --medusa-bg-subtle-hover: #232326;
+  --medusa-bg-subtle-pressed: #28282C;
+  --medusa-bg-base: #1C1C1F;
+  --medusa-bg-base-hover: #28282C;
+  --medusa-bg-base-pressed: #2E2E32;
+  --medusa-bg-component: #2E2E32;
+  --medusa-bg-field: #232326;
+  --medusa-bg-field-hover: #28282C;
+  --medusa-bg-highlight: #2C2250;
+  --medusa-bg-toggle-off: #3E3E44;
+  --medusa-bg-overlay: rgba(22, 22, 24, 0.7);
+  --medusa-bg-interactive: #6E56CF;
+
+  /** Borders **/
+  --medusa-border-base: #2E2E32;
+  --medusa-border-strong: #3E3E44;
+  --medusa-border-focus: #6E56CF;
+  --medusa-border-focus-inset: #1C1C1F;
+  --medusa-border-interactive: #6E56CF;
+
+  /** Text **/
+  --medusa-text-primary: #EDEDEF;
+  --medusa-text-secondary: #A09FA6;
+  --medusa-text-placeholder: #706F78;
+  --medusa-text-disabled: #504F57;
+  --medusa-text-on-color: #FFFFFF;
+  --medusa-text-interactive: #6E56CF;
+  --medusa-text-interactive-hover: #7C66DC;
+  --medusa-text-error: #E5484D;
+
+  /** Buttons **/
+  --medusa-button-primary: #6E56CF;
+  --medusa-button-primary-hover: #7C66DC;
+  --medusa-button-primary-pressed: #9E8CFC;
+  --medusa-button-secondary: #232326;
+  --medusa-button-secondary-hover: #2E2E32;
+  --medusa-button-secondary-pressed: #2E2E32;
+
+  /** Icons **/
+  --medusa-icon-primary: #EDEDEF;
+  --medusa-icon-secondary: #A09FA6;
+  --medusa-icon-placeholder: #706F78;
+  --medusa-icon-disabled: #504F57;
+  --medusa-icon-on-color: #FFFFFF;
+  --medusa-icon-interactive: #6E56CF;
+  --medusa-icon-interactive-hover: #7C66DC;
+  --medusa-icon-error: #E5484D;
+
+  /** Shadow **/
+  --medusa-shadow-overlay: 0px 2px 16px rgba(0, 0, 0, 0.32);
+}

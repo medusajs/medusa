@@ -4,7 +4,7 @@ const theme = {
   ...palenightTheme,
   plain: {
     color: palenightTheme.plain.color,
-    backgroundColor: '#262626'
+    backgroundColor: '#1C1C1F'
   }
 }
 

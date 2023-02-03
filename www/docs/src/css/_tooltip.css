@@ -13,7 +13,7 @@
   background-color: var(--ifm-tooltip-background-color);
   border: 1px solid var(--ifm-tooltip-border-color);
   border-radius: 8px;
-  color: var(--ifm-color-content);
+  color: var(--medusa-tooltip-text);
   font-size: 12px;
   font-weight: 500;
   line-height: 20px;

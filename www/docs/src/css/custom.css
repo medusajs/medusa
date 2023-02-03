@@ -6,6 +6,7 @@
  */
 
 /* You can override the default Infima variables here. */
+@import url('./_medusa.css');
 @import url('./_variables.css');
 
 @import url('./_card.css');

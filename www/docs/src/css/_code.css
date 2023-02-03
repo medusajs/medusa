@@ -52,7 +52,7 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 }
 
 .code-header {
-  background-color: #161616;
+  background-color: var(--medusa-code-tabs-bg);
   display: flex;
   justify-content: space-between;
   border-radius: var(--ifm-code-border-radius) var(--ifm-code-border-radius) 0px 0px;
@@ -178,7 +178,7 @@ html:not([data-theme="dark"]) .theme-code-block:not(.no-header-block) {
     top: 0;
     width: calc(10% + 24px);
     height: 100%;
-    background: linear-gradient(90deg, #17171700, #262626 24px);
+    background: linear-gradient(90deg, #1C1C1F00, #1C1C1F 24px);
   }
 
   .prism-code:not(:hover)::-webkit-scrollbar-thumb,

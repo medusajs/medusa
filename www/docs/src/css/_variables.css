@@ -5,41 +5,45 @@
 :root {
   /* Base Styles */
   --ifm-global-radius: 8px;
-  --ifm-hr-background-color: #E5E7EB;
+  --ifm-hr-background-color: var(--medusa-border-base);
   --ifm-base-margin-vertical: 32px;
   --ifm-hr-margin-vertical: calc(var(--ifm-base-margin-vertical) * 2);
   
   /* Colors */
-  --ifm-color-primary: #11181C;
-  --ifm-background-color: #F8F9FA;
-  --ifm-background-surface-color: #FFFFFF;
+  --ifm-color-primary: var(--medusa-text-primary);
+  --ifm-background-color: var(--medusa-bg-base);
+  --ifm-background-surface-color: var(--medusa-bg-subtle);
   --ifm-medusa-gray: #f0f0f0;
-  --ifm-color-content: #687076;
+  --ifm-color-content: var(--medusa-text-secondary) !important;
   --ifm-primary-gradient: linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%,
   #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%);
-  --ifm-base-border-color: #E6E8EB;
-  --ifm-strong-border-color: #D7DBDF;
-  --ifm-focus-border-color: #6E56CF;
+  --ifm-base-border-color: var(--medusa-border-base);
+  --ifm-strong-border-color: var(--medusa-border-strong);
+  --ifm-focus-border-color: var(--medusa-border-focus);
 
   /* Fonts */
-  --ifm-code-font-size: 14px;
+  --ifm-code-font-size: var(--medusa-body-regular-size);
   --ifm-font-family-base: "Inter",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
   --ifm-font-family-monospace: 'Roboto Mono',SFMono-Regular, Menlo, Monaco, Consolas,'Liberation Mono', 'Courier New', monospace;
-  --ifm-font-size-base: 14px;
-  --ifm-line-height-base: 24px;
+  --ifm-font-size-base: var(--medusa-body-regular-size);
+  --ifm-line-height-base: var(--medusa-body-regular-line-height);
+  --ifm-font-weight-base: var(--medusa-body-regular-font-weight);
 
   /* Headings */
   --ifm-color-headers: var(--ifm-color-primary);
-  --ifm-heading-font-weight: 500;
-  --ifm-heading-line-height: 24px;
-  --ifm-h1-font-size: 30px;
-  --ifm-h1-line-height: 48px;
-  --ifm-h2-font-size: 24px;
-  --ifm-h2-line-height: 36px;
-  --ifm-h4-font-size: 14px;
+  --ifm-h1-font-size: var(--medusa-h1-size);
+  --ifm-h1-line-height: var(--medusa-h1-line-height);
+  --ifm-h1-weight: var(--medusa-h1-weight);
+  --ifm-h2-font-size: var(--medusa-h2-size);
+  --ifm-h2-line-height: var(--medusa-h2-line-height);
+  --ifm-h2-weight: var(--medusa-h2-weight);
+  --ifm-h3-font-size: var(--medusa-h3-size);
+  --ifm-h3-line-height: var(--medusa-h3-line-height);
+  --ifm-h3-weight: var(--medusa-h3-weight);
+  --ifm-h4-font-size: var(--ifm-font-size-base);
 
   /* Links */
-  --ifm-link-color: #4B5563;
+  --ifm-link-color: var(--medusa-text-interactive);
   --ifm-link-weight: 600;
 
   /* Sidebar */
@@ -50,26 +54,27 @@
   --ifm-docs-page-max-width: var(--ifm-container-width-xl);
 
   /* Toc */
-  --ifm-toc-border-color: #f0f0f0;
-  --ifm-toc-link-color: #6B7280;
-  --ifm-toc-padding-horizontal: 9px;
-  --ifm-toc-link-active: #111827;
-  --ifm-toc-divider-color: #E5E7EB;
-  --ifm-toc-link-padding-left: 16px;
+  --ifm-toc-border-color: var(--medusa-border-base);
+  --ifm-toc-link-color: var(--medusa-text-secondary);
+  --ifm-toc-padding-horizontal: 16px;
+  --ifm-toc-link-active: var(--medusa-text-primary);
+  --ifm-toc-divider-color: var(--medusa-border-base);
+  --ifm-toc-link-padding-left: 11px;
 
   /* Navbar */
-  --ifm-navbar-shadow: 0px 1px 0px 0px #E5E7EB;
+  --ifm-navbar-background-color: var(--ifm-background-color);
+  --ifm-navbar-shadow: 0px 1px 0px 0px var(--medusa-border-base);
   --ifm-navbar-padding-top: 16px;
   --ifm-navbar-padding-bottom: 17px;
   --ifm-navbar-padding-vertical: 16px;
   --ifm-navbar-padding-horizontal: 24px;
   --ifm-navbar-height: 57px;
-  --ifm-navbar-link-hover-color: #111827;
-  --ifm-navbar-link-color: #6B7280;
+  --ifm-navbar-link-hover-color: var(--medusa-text-primary);
+  --ifm-navbar-link-color: var(--medusa-text-secondary);
 
   /* Color Mode toggler */
-  --mode-tabs-bg: #F3F4F6;
-  --mode-button-text-color: #6B7280;
+  --mode-tabs-bg: var(--medusa-button-secondary);
+  --mode-button-text-color: var(--medusa-icon-secondary);
   --mode-button-active-bg: #FFFFFF;
   --mode-button-active-border-color: #E5E7EB;
   --mode-button-active-text-color: #111827;
@@ -78,41 +83,43 @@
   --ifm-container-width-xl: 960px;
 
   /* Notes */
-  --ifm-note-background: #F9FAFB;
-  --ifm-note-border-color: #E5E7EB;
-  --ifm-note-text-color: #4B5563;
+  --ifm-note-background: var(--ifm-background-surface-color);
+  --ifm-note-border-color: var(--medusa-border-base);
+  --ifm-note-text-color: var(--medusa-text-secondary);
 
-  /* Code */
+  /* Inline Code */
   --ifm-code-border-radius: 8px;
   --ifm-code-padding-horizontal: 8px;
-  --ifm-code-border-color: #E5E7EB;
-  --ifm-code-background: #F9FAFB;
-  --ifm-code-color: #4B5563;
-  --ifm-code-tabs-color: #6F6F6F;
-  --ifm-code-tabs-active-bg: transparent;
-  --ifm-code-tabs-active-color: #F4F4F4;
-  --ifm-code-action-hover-bg: rgba(141, 141, 141, 0.16);
+  --ifm-code-border-color: var(--medusa-border-base);
+  --ifm-code-background: var(--medusa-bg-base) !important;
+  --ifm-code-color: var(--medusa-text-secondary);
+
+  /* Code Blocks */
+  --ifm-pre-background: var(--medusa-code-block);
+  --ifm-code-tabs-color: var(--medusa-code-tab-text);
+  --ifm-code-tabs-active-bg: var(--medusa-code-tab);
+  --ifm-code-tabs-active-color: var(--medusa-code-tab-active-text);
+  --ifm-code-action-hover-bg: var(--medusa-code-tab-hover);
   --ifm-pre-padding: 16px;
   --docusaurus-highlighted-code-line-bg: #393939;
-  --ifm-code-title-color: #737373;
+  --ifm-code-title-color: var(--medusa-code-tab-title);
 
   /* Tooltip */
-  --ifm-tooltip-background-color: #fff;
-  --ifm-tooltip-border-color: #E5E7EB;
-  --ifm-tooltip-box-shadow-color: rgba(17, 24, 39, 0.08);
+  --ifm-tooltip-background-color: var(--medusa-tooltip);
+  --ifm-tooltip-border-color: var(--medusa-tooltip-border);
+  --ifm-tooltip-box-shadow-color: var(--medusa-tooltip-shadow);
   --rt-opacity: 1 !important;
   --rt-color-dark: var(--ifm-tooltip-background-color) !important;
   --rt-color-white: var(--ifm-color-content) !important;
 
   /* Buttons */
-  --ifm-primary-btn-background-color: #6E56CF;
+  --ifm-primary-btn-background-color: var(--medusa-button-primary);
+  --ifm-primary-btn-hover-background-color: var(--medusa-button-primary-hover);
   --ifm-primary-btn-color: var(--ifm-color-primary);
   --ifm-primary-btn-border-color: var(--ifm-base-border-color);
-  --ifm-secondary-btn-background-color: #644FC1;
-  --ifm-secondary-btn-background-color: #FFFFFF;
   --ifm-secondary-btn-color: var(--ifm-color-primary);
   --ifm-secondary-btn-border-color: var(--ifm-base-border-color);
-  --ifm-secondary-btn-hover-background-color: #F8F9FA;
+  --ifm-secondary-btn-hover-background-color: var(--medusa-button-secondary-hover);
 
   /* Footer */
   --ifm-footer-border-color: #E5E7EB;
@@ -145,14 +152,14 @@
   --docsearch-hit-title-color: #000000;
 
   /* Announcement Bar */
-  --ifm-announcement-bar-bg: #FFFFFF;
-  --ifm-announcement-bar-border-color: #E5E7EB;
-  --ifm-announcement-bar-hover-bg: #F9FAFB;
-  --ifm-announcement-bar-icon-bg: #F3F4F6;
+  --ifm-announcement-bar-bg: var(--medusa-bg-base);
+  --ifm-announcement-bar-border-color: var(--medusa-border-base);
+  --ifm-announcement-bar-hover-bg: var(--medusa-bg-base-hover);
+  --ifm-announcement-bar-icon-bg: var(--medusa-icon-interactive);
   --ifm-announcement-bar-icon-border-color: var(--ifm-announcement-bar-border-color);
   --ifm-announcement-bar-title-color: var(--ifm-color-headers);
   --ifm-announcement-bar-text-color: var(--ifm-color-content);
-  --ifm-announcement-bar-close-icon-color: #9CA3AF;
+  --ifm-announcement-bar-close-icon-color: var(--medusa-icon-disabled);
 
   /* Large Card */
   --large-card-bg: var(--ifm-background-surface-color);
@@ -164,73 +171,20 @@
 }
 
 html[data-theme="dark"] {
-  /* Base Styles */
-  --ifm-hr-background-color: #2D2D2D;
 
   /* Colors */
-  --ifm-color-primary: #EDEDEF;
-  --ifm-background-color: #161618;
-  --ifm-background-surface-color: #1C1C1F;
   --ifm-medusa-gray: #292929;
-  --ifm-color-content: #7E7D86;
-  --ifm-base-border-color: #2E2E32;
-  --ifm-strong-border-color: #3E3E44;
-
-  /* Headings */
-  /* --ifm-color-headers: #F3F3F3; */
-
-  /* Links */
-  --ifm-link-color: #8A8A8A;
+  --ifm-background-color: var(--medusa-bg-subtle);
+  --ifm-background-surface-color: var(--medusa-bg-base);
 
   /* Sidebar */
   --ifm-menu-color: rgba(255, 255, 255, 0.5);
   --ifm-menu-active: #fff;
 
-  /* Toc */
-  --ifm-toc-border-color: #333;
-  --ifm-toc-link-active: #F3F3F3;
-  --ifm-toc-link-color: #737373;
-  --ifm-toc-divider-color: #393939;
-
-  /* Navbar */
-  --ifm-navbar-background-color: #161616;
-  --ifm-navbar-shadow: 0px 1px 0px 0px #2D2D2D;
-  --ifm-navbar-link-hover-color: #F3F3F3;
-  --ifm-navbar-link-color: #8A8A8A;
-
   /* Color Mode toggler */
-  --mode-tabs-bg: #222222;
-  --mode-button-text-color: #8A8A8A;
   --mode-button-active-bg: #161616;
   --mode-button-active-border-color: #393939;
   --mode-button-active-text-color: #F3F3F3;
-
-  /* Notes */
-  --ifm-note-background: #222222;
-  --ifm-note-border-color: #393939;
-  --ifm-note-text-color: #8A8A8A;
-
-  /* Code */
-  --ifm-code-border-color: #393939;
-  --ifm-code-background: #222222;
-  --ifm-code-color: #8A8A8A;
-  --ifm-code-tabs-active-bg: #222222;
-  --ifm-code-tabs-active-color: #F3F3F3;
-  --ifm-code-action-hover-bg: rgba(255, 255, 255, 0.05);
-
-  /* Tooltip */
-  --ifm-tooltip-background-color: #222222;
-  --ifm-tooltip-border-color: #393939;
-
-  /* Buttons */
-  --ifm-primary-btn-background-color: #6E56CF;
-  --ifm-primary-btn-color: var(--ifm-color-primary);
-  --ifm-primary-btn-border-color: var(--ifm-base-border-color);
-  --ifm-primary-btn-hover-background-color: #7C66DC;
-  --ifm-secondary-btn-background-color: #232326;
-  --ifm-secondary-btn-color: var(--ifm-color-primary);
-  --ifm-secondary-btn-border-color: var(--ifm-base-border-color);
-  --ifm-secondary-btn-hover-background-color: #2E2E32;
 
   /* Footer */
   --ifm-footer-border-color: #3E3F41;
@@ -256,14 +210,6 @@ html[data-theme="dark"] {
   --docsearch-hit-icon-color: #737373;
   --docsearch-hit-border-color: #393939;
   --docsearch-hit-title-color: #F3F3F3;
-
-  /* Announcement Bar */
-  --ifm-announcement-bar-bg: #222222;
-  --ifm-announcement-bar-border-color: #2D2D2D;
-  --ifm-announcement-bar-hover-bg: #2D2D2D;
-  --ifm-announcement-bar-icon-bg: #393939;
-  --ifm-announcement-bar-icon-border-color: #393939;
-  --ifm-announcement-bar-text-color: #737373;
 
   /* Tabs */
   --ifm-tabs-color-active: #F3F3F3;
