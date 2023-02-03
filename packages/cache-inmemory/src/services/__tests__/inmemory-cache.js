@@ -9,15 +9,29 @@ const loggerMock = {
 }
 
 describe("InMemoryCacheService", () => {
-  let eventBus
+  let inMemoryCache
+  beforeAll(() => {
+    jest.resetAllMocks()
+  })
 
-  describe("constructor", () => {
-    beforeAll(() => {
-      jest.resetAllMocks()
-    })
+  it("Creates a InMemoryCacheService", () => {
+    inMemoryCache = new InMemoryCacheService(
+      {
+        manager: MockManager,
+        logger: loggerMock,
+      },
+      {
+        // redisUrl: "test-url",
+      },
+      {
+        resources: "shared",
+      }
+    )
+  })
 
-    it("Creates a InMemoryCacheService", () => {
-      eventBus = new InMemoryCacheService(
+  it("Throws on isolated module declaration", () => {
+    try {
+      inMemoryCache = new InMemoryCacheService(
         {
           manager: MockManager,
           logger: loggerMock,
@@ -26,30 +40,74 @@ describe("InMemoryCacheService", () => {
           // redisUrl: "test-url",
         },
         {
-          resources: "shared",
+          resources: "isolated",
         }
       )
-    })
+    } catch (error) {
+      expect(error.message).toEqual(
+        "At the moment this module can only be used with shared resources"
+      )
+    }
+  })
 
-    it("Throws on isolated module declaration", () => {
-      try {
-        eventBus = new InMemoryCacheService(
-          {
-            manager: MockManager,
-            logger: loggerMock,
-          },
-          {
-            // redisUrl: "test-url",
-          },
-          {
-            resources: "isolated",
-          }
-        )
-      } catch (error) {
-        expect(error.message).toEqual(
-          "At the moment this module can only be used with shared resources"
-        )
+  it("Stores and retrieves data", async () => {
+    inMemoryCache = new InMemoryCacheService(
+      {
+        manager: MockManager,
+        logger: loggerMock,
+      },
+      {
+        // redisUrl: "test-url",
+      },
+      {
+        resources: "shared",
       }
-    })
+    )
+
+    await inMemoryCache.set("cache-key", { data: "value" })
+
+    expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
+  })
+
+  it("Invalidates data", async () => {
+    inMemoryCache = new InMemoryCacheService(
+      {
+        manager: MockManager,
+        logger: loggerMock,
+      },
+      {
+        // redisUrl: "test-url",
+      },
+      {
+        resources: "shared",
+      }
+    )
+
+    await inMemoryCache.set("cache-key", { data: "value" })
+
+    await inMemoryCache.invalidate("cache-key")
+
+    expect(await inMemoryCache.get("cache-key")).toEqual(null)
+  })
+
+  it("Removes data after TTL", async () => {
+    inMemoryCache = new InMemoryCacheService(
+      {
+        manager: MockManager,
+        logger: loggerMock,
+      },
+      {
+        // redisUrl: "test-url",
+      },
+      {
+        resources: "shared",
+      }
+    )
+
+    await inMemoryCache.set("cache-key", { data: "value" }, 1000)
+
+    await new Promise((res) => setTimeout(res, 1000))
+
+    expect(await inMemoryCache.get("cache-key")).toEqual(null)
   })
 })
