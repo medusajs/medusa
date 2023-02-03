@@ -27,13 +27,14 @@ class PayPalProviderService extends PaymentService {
     this.options_ = options
 
     let environment
-    if (this.options_.sandbox) {
-      environment = new PayPal.core.SandboxEnvironment(
+    if (this.options_.sandbox === "false" || !this.options_.sandbox) {
+      environment = new PayPal.core.LiveEnvironment(
         options.client_id,
         options.client_secret
       )
+      
     } else {
-      environment = new PayPal.core.LiveEnvironment(
+      environment = new PayPal.core.SandboxEnvironment(
         options.client_id,
         options.client_secret
       )
