@@ -58,5 +58,6 @@ For community plugins, please refer to the installation instructions of that plu
 
 ## See Also
 
-- [Create your own plugin](create.md)
+- [Create a plugin](create.md)
+- [Publish a plugin](publish.md)
 - [Create a fulfillment provider](../shipping/add-fulfillment-provider.md) or a [payment provider](../payment/how-to-create-payment-provider.md)
