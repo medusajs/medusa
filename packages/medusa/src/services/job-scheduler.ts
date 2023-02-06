@@ -13,6 +13,10 @@ type ScheduledJobHandler<T = unknown> = (
   eventName: string
 ) => Promise<void>
 
+export type CreateJobOptions = {
+  keepExisting?: boolean
+}
+
 export default class JobSchedulerService {
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
@@ -102,21 +106,34 @@ export default class JobSchedulerService {
    * @param handler - the handler to call on the job
    * @return void
    */
-  create<T>(
+  async create<T>(
     eventName: string,
     data: T,
     schedule: string,
-    handler: ScheduledJobHandler
-  ): void {
+    handler: ScheduledJobHandler,
+    options: CreateJobOptions
+  ): Promise<void> {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler(eventName, handler)
 
-    this.queue_.add(
-      {
-        eventName,
-        data,
-      },
-      { repeat: { cron: schedule } }
-    )
+    const jobToCreate = {
+      eventName,
+      data,
+    }
+    const repeatOpts = { repeat: { cron: schedule } }
+
+    if (options?.keepExisting) {
+      return await this.queue_.add(eventName, jobToCreate, repeatOpts)
+    }
+
+    const existingJobs = (await this.queue_.getRepeatableJobs()) ?? []
+
+    const existingJob = existingJobs.find((job) => job.name === eventName)
+
+    if (existingJob) {
+      await this.queue_.removeRepeatableByKey(existingJob.key)
+    }
+
+    return await this.queue_.add(eventName, jobToCreate, repeatOpts)
   }
 }
