@@ -1,46 +1,19 @@
-.tooltip-container {
-  position: relative;
+.react-tooltip {
+  border: 1px solid var(--ifm-tooltip-border-color) !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+  box-shadow: 0px 2px 16px var(--ifm-tooltip-box-shadow-color) !important;
+  padding: 8px 16px !important;
 }
 
-.tooltip-box {
-  position: absolute;
-  top: calc(-100% - 17px);
-  z-index: 100000;
-  padding: 8px 16px;
-  max-width: 170px;
-  text-align: center;
-
-  background-color: var(--ifm-tooltip-background-color);
-  border: 1px solid var(--ifm-tooltip-border-color);
-  border-radius: 8px;
-  color: var(--ifm-color-content);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 20px;
-  box-shadow: 0px 2px 16px var(--ifm-tooltip-box-shadow-color);
-
-  opacity: 0;
-  transition: opacity .3s ease-out;
-  visibility: hidden;
-  width: max-content;
-  will-change: opacity,visibility;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.tooltip-box.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-@media screen and (min-width: 876px) {
-  .inline-tooltip {
-    display: inline-block;
-  }
+.react-tooltip-arrow {
+  display: none;
 }
 
 @media screen and (max-width: 875px) {
-  .tooltip-box {
+  .react-tooltip {
     display: none;
   }
 }
