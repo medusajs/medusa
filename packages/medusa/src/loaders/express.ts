@@ -1,9 +1,9 @@
+import createStore from "connect-redis"
+import cookieParser from "cookie-parser"
 import { Express } from "express"
 import session from "express-session"
-import cookieParser from "cookie-parser"
 import morgan from "morgan"
-import redis, { RedisConfig } from "redis"
-import createStore from "connect-redis"
+import redis from "redis"
 import { ConfigModule } from "../types/global"
 
 type Options = {
@@ -22,17 +22,17 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
     sameSite = "none"
   }
 
-  const { cookie_secret } = configModule.projectConfig
+  const { cookie_secret, session_options } = configModule.projectConfig
   const sessionOpts = {
-    resave: true,
-    saveUninitialized: true,
+    resave: session_options?.resave ?? true,
+    saveUninitialized: session_options?.saveUninitialized ?? true,
     cookieName: "session",
     proxy: true,
-    secret: cookie_secret,
+    secret: session_options?.secret ?? cookie_secret,
     cookie: {
       sameSite,
       secure,
-      maxAge: 10 * 60 * 60 * 1000,
+      maxAge: session_options?.ttl ?? 10 * 60 * 60 * 1000,
     },
     store: null,
   }
