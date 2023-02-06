@@ -499,6 +499,25 @@ export class ProductRepository extends Repository<Product> {
     )
   }
 
+  /**
+   * Upserts shipping profile for products
+   * @param ids IDs of products to update
+   * @param shippingProfileId ID of shipping profile to assign to products
+   * @returns updated products
+   */
+  public async upsertShippingProfile(
+    ids: string[],
+    shippingProfileId: string
+  ): Promise<Product[]> {
+    await this.createQueryBuilder()
+      .update(Product)
+      .set({ profile_id: shippingProfileId })
+      .where({ id: In(ids) })
+      .execute()
+
+    return await this.findByIds(ids)
+  }
+
   private _cleanOptions(
     options: FindWithoutRelationsOptions
   ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {

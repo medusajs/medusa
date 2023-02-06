@@ -33,7 +33,7 @@ import {
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -922,6 +922,31 @@ class ProductService extends TransactionBaseService {
         .withTransaction(manager)
         .emit(ProductService.Events.UPDATED, product)
       return product
+    })
+  }
+
+  /**
+   *
+   * @param productIds ID or IDs of the products to update
+   * @param profileId Shipping profile ID to update the shipping options with
+   * @returns updated shipping options
+   */
+  async updateShippingProfile(
+    productIds: string | string[],
+    profileId: string
+  ): Promise<Product[]> {
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const ids = isString(productIds) ? [productIds] : productIds
+
+      const products = await productRepo.upsertShippingProfile(ids, profileId)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, products)
+
+      return products
     })
   }
 

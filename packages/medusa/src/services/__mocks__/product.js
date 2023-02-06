@@ -63,7 +63,7 @@ export const products = {
 }
 
 export const ProductServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
   create: jest.fn().mockImplementation((data) => {
@@ -106,6 +106,7 @@ export const ProductServiceMock = {
   deleteOption: jest
     .fn()
     .mockReturnValue(Promise.resolve(products.productWithOptions)),
+  updateshippingProfiles: jest.fn().mockReturnValue(Promise.resolve()),
   retrieveVariants: jest.fn().mockImplementation((productId) => {
     if (productId === IdMap.getId("product1")) {
       return Promise.resolve([

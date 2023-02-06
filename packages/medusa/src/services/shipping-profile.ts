@@ -15,7 +15,7 @@ import {
   CreateShippingProfile,
   UpdateShippingProfile,
 } from "../types/shipping-profile"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import ProductService from "./product"
 import ShippingOptionService from "./shipping-option"
@@ -358,13 +358,11 @@ class ShippingProfileService extends TransactionBaseService {
     productId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productServiceTx = this.productService_.withTransaction(manager)
 
-      const { id } = await this.retrieve(profileId)
-
-      await productRepo.bulkSetShippingProfile(
-        Array.isArray(productId) ? productId : [productId],
-        id
+      await productServiceTx.updateShippingProfile(
+        isString(productId) ? [productId] : productId,
+        profileId
       )
 
       return await this.retrieve(profileId, {
@@ -393,11 +391,10 @@ class ShippingProfileService extends TransactionBaseService {
       const shippingOptionServiceTx =
         this.shippingOptionService_.withTransaction(manager)
 
-      for (const oId of Array.isArray(optionId) ? optionId : [optionId]) {
-        await shippingOptionServiceTx.update(oId, {
-          profile_id: profileId,
-        })
-      }
+      await shippingOptionServiceTx.updateShippingProfile(
+        isString(optionId) ? [optionId] : optionId,
+        profileId
+      )
 
       return await this.retrieve(profileId, {
         relations: [
