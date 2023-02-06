@@ -1,5 +1,4 @@
 import { CartService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm"
 
 /**
@@ -10,6 +9,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the Payment Provider that created the Payment Session to be refreshed.
+ * x-codegen:
+ *   method: refreshPaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -32,9 +33,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -57,14 +56,7 @@ export default async (req, res) => {
       .withTransaction(transactionManager)
       .refreshPaymentSession(id, provider_id)
   })
-  const cart = await cartService.retrieve(id, {
-    select: [
-      "subtotal",
-      "tax_total",
-      "shipping_total",
-      "discount_total",
-      "total",
-    ],
+  const data = await cartService.retrieveWithTotals(id, {
     relations: [
       "region",
       "region.countries",
@@ -75,6 +67,5 @@ export default async (req, res) => {
     ],
   })
 
-  const data = await decorateLineItemsWithTotals(cart, req)
   res.status(200).json({ cart: data })
 }

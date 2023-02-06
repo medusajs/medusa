@@ -2,7 +2,6 @@ import { IsObject } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { EntityManager } from "typeorm"
 
 /**
@@ -13,7 +12,13 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the payment provider.
- *   - (body) data=* {object} The data to update the payment session with.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartPaymentSessionUpdateReq"
+ * x-codegen:
+ *   method: updatePaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -44,9 +49,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -78,15 +81,24 @@ export default async (req, res) => {
       .updatePaymentSession(id, validated.data)
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  const data = await decorateLineItemsWithTotals(cart, req)
 
   res.status(200).json({ cart: data })
 }
 
+/**
+ * @schema StorePostCartsCartPaymentSessionUpdateReq
+ * type: object
+ * required:
+ *   - data
+ * properties:
+ *   data:
+ *     type: object
+ *     description: The data to update the payment session with.
+ */
 export class StorePostCartsCartPaymentSessionUpdateReq {
   @IsObject()
   data: Record<string, unknown>

@@ -50,9 +50,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              product:
-                $ref: ../components/schemas/product.yaml
+            $ref: ../components/schemas/StoreProductsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

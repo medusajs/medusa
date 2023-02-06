@@ -1,13 +1,18 @@
 import cors from "cors"
 import { Router } from "express"
+import { parseCorsOrigins } from "medusa-core-utils"
 import middlewares from "../../middlewares"
+import productTypesRoutes from "../admin/product-types"
 import authRoutes from "./auth"
 import cartRoutes from "./carts"
 import collectionRoutes from "./collections"
 import customerRoutes from "./customers"
 import giftCardRoutes from "./gift-cards"
-import orderRoutes from "./orders"
 import orderEditRoutes from "./order-edits"
+import orderRoutes from "./orders"
+import paymentCollectionRoutes from "./payment-collections"
+import productCategoryRoutes from "./product-categories"
+import productTagsRoutes from "./product-tags"
 import productRoutes from "./products"
 import regionRoutes from "./regions"
 import returnReasonRoutes from "./return-reasons"
@@ -24,17 +29,21 @@ export default (app, container, config) => {
   const storeCors = config.store_cors || ""
   route.use(
     cors({
-      origin: storeCors.split(","),
+      origin: parseCorsOrigins(storeCors),
       credentials: true,
     })
   )
+
+  const featureFlagRouter = container.resolve("featureFlagRouter")
 
   route.use(middlewares.authenticateCustomer())
 
   authRoutes(route)
   collectionRoutes(route)
   customerRoutes(route, container)
-  productRoutes(route)
+  productRoutes(route, featureFlagRouter)
+  productTagsRoutes(route)
+  productTypesRoutes(route)
   orderRoutes(route)
   orderEditRoutes(route)
   cartRoutes(route, container)
@@ -45,6 +54,8 @@ export default (app, container, config) => {
   returnRoutes(route)
   giftCardRoutes(route)
   returnReasonRoutes(route)
+  paymentCollectionRoutes(route)
+  productCategoryRoutes(route)
 
   return app
 }

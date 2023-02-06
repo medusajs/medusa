@@ -1,47 +1,66 @@
+---
+description: 'Learn how to create a notification provider in the Medusa server. This guide explains the different methods available in a Notification provider.'
+addHowToData: true
+---
+
 # How to Create a Notification Provider
 
-In this document, you’ll learn how to add a Notification Provider to your Medusa server. If you’re unfamiliar with the Notification architecture in Medusa, it is recommended to check out the [architecture overview](overview.md) first.
+In this document, you’ll learn how to add a Notification Provider to your Medusa server.
 
-## Overview
+:::note
 
-A Notification Provider is the custom or third-party service used to handle sending alerts to customers or users when an event occurs.
-
-For example, you can use SendGrid to send a confirmation email to a customer after they place an order. SendGrid in this example is a Notification Provider.
-
-:::tip
-
-If you’re interested in using SendGrid to send Notifications, you can use the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin instead of using your own.
+If you’re unfamiliar with the Notification architecture in Medusa, it is recommended to check out the [architecture overview](overview.md) first.
 
 :::
-
-Adding a Notification Provider is as simple as creating a [Service](../services/create-service.md) file in `src/services`. A Notification Provider is essentially a Service that extends the `NotificationService` from `medusa-interfaces`.
-
-:::info
-
-Notification Providers are loaded and installed at the server startup.
-
-:::
-
-After creating the Notification Provider Service, you must create a [Subscriber](../subscribers/create-subscriber.md) that subscribes the Notification Provider to specific events.
 
 ## Prerequisites
 
-Before you start creating a Notification Provider, you need to install a [Medusa server](../../../quickstart/quick-start.md).
+Before you start creating a Notification Provider, you need to install a [Medusa server](../../../quickstart/quick-start.mdx).
 
-You also need to install and configure Redis. You can check out the documentation “[Set Up Your Development Environment](../../../tutorial/0-set-up-your-development-environment.mdx)” for help.
+You also need to [setup Redis](../../../tutorial/0-set-up-your-development-environment.mdx#redis) and [configure it with the Medusa server](../../../usage/configurations.md#redis).
+
+---
 
 ## Create a Notification Provider
 
-The first step to creating a Notification Provider is to create a file in `src/services` with the following content:
+Creating a Notification Provider is as simple as creating a TypeScript or JavaScript file in `src/services`. The name of the file is the name of the provider (for example, `sendgrid.ts`). A Notification Provider is essentially a Service that extends the `AbstractNotificationService` from `@medusajs/medusa`.
 
-```jsx
-import { NotificationService } from "medusa-interfaces";
+For example, create the file `src/services/email-sender.ts` with the following content:
 
-class EmailSenderService extends NotificationService {
+```ts title=src/services/email-sender.ts
+import { AbstractNotificationService } from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
+
+class EmailSenderService extends AbstractNotificationService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
+
+  sendNotification(
+    event: string, 
+    data: unknown, 
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    throw new Error("Method not implemented.")
+  }
+  resendNotification(
+    notification: unknown,
+    config: unknown,
+    attachmentGenerator: unknown
+  ): Promise<{
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    throw new Error("Method not implemented.")
+  }
 
 }
 
-export default EmailSenderService;
+export default EmailSenderService
 ```
 
 Where `EmailSenderService` is the name of your Notification Provider Service.
@@ -64,8 +83,11 @@ The value of this property is also used later when you want to subscribe the Not
 
 For example, in the class you created in the previous code snippet you can add the following property:
 
-```jsx
-static identifier = "email-sender";
+```ts
+class EmailSenderService extends AbstractNotificationService {
+  static identifier = "email-sender"
+  // ...
+}
 ```
 
 ### constructor
@@ -84,13 +106,27 @@ You can learn more about plugins and how to create them in the [Plugins](../plug
 
 Continuing on with the previous example, if you want to use the [`OrderService`](../../../references/services/classes/OrderService.md) later when sending notifications, you can inject it into the constructor:
 
-```jsx
-constructor({ orderService }, options) {
-  //you can access options here in case you're
-  //using a plugin
-  super();
+```ts
+import { 
+  AbstractNotificationService, 
+  OrderService,
+} from "@medusajs/medusa"
 
-  this.orderService = orderService;
+class EmailSenderService extends AbstractNotificationService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
+  static identifier = "email-sender"
+  protected orderService: OrderService
+
+  constructor(container, options) {
+    super(container)
+    // you can access options here in case you're
+    // using a plugin
+
+    this.orderService = container.orderService
+  }
+
+  // ...
 }
 ```
 
@@ -100,7 +136,7 @@ When an event is triggered that your Notification Provider is registered as a ha
 
 In this method, you can perform the necessary operation to send the Notification. Following the example above, you can send an email to the customer when they place an order.
 
-This method receives 3 parameters:
+This method receives three parameters:
 
 1. `eventName`: This is the name of the event that was triggered. For example, `order.placed`.
 2. `eventData`: This is the data payload of the event that was triggered. For example, if the `order.placed` event is triggered, the `eventData` object contains the property `id` which is the ID of the order that was placed.
@@ -119,23 +155,35 @@ This method must return an object containing two properties:
 
 Continuing with the previous example you can have the following implementation of the `sendNotification` method:
 
-```jsx
-async sendNotification(eventName, eventData, attachmentGenerator) {
-  if (eventName === 'order.placed') {
-    //retrieve order
-    const order = await this.orderService.retrieve(eventData.id);
-    //TODO send email
+```ts
+class EmailSenderService extends AbstractNotificationService {
+  // ...
+  async sendNotification(
+    event: string,
+    data: any,
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    if (event === "order.placed") {
+      // retrieve order
+      const order = await this.orderService.retrieve(data.id)
+      // TODO send email
 
-    console.log('Notification sent');
-    return {
-      to: order.email,
-      data: {
-        //any data necessary to send the email
-        //for example:
-        subject: 'You placed a new order!',
-        items: order.items
+      console.log("Notification sent")
+      return {
+        to: order.email,
+        status: "done",
+        data: {
+          // any data necessary to send the email
+          // for example:
+          subject: "You placed a new order!",
+          items: order.items,
+        },
       }
-    };
+    }
   }
 }
 ```
@@ -156,7 +204,7 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 Using the [Resend Notification endpoint](https://docs.medusajs.com/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../../references/services/classes/NotificationService.md) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
 
-This method receives 3 parameters:
+This method receives three parameters:
 
 1. `notification`: This is the original Notification record that was created after you sent the notification with `sendNotification`. You can get an overview of the entity and its attributes in the [architecture overview](overview.md#notification-entity-overview), but most notably it includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of the object you return in `sendNotification`.
 2. `config`: In the Resend Notification endpoint you may specify an alternative receiver of the notification using the `to` request body parameter. For example, you may want to resend the order confirmation email to a different email. If that’s the case, you have access to it in the `config` parameter object. Otherwise, `config` will be an empty object.
@@ -169,17 +217,30 @@ Similarly to the `sendNotification` method, this method must return an object co
 
 Continuing with the previous example you can have the following implementation of the `resendNotification` method:
 
-```jsx
-resendNotification(notification, config, attachmentGenerator) {
-  //check if the receiver of the notification should be changed
-  const to = config.to ? config.to : notification.to;
+```ts
+class EmailSenderService extends AbstractNotificationService {
+  // ...
+  async resendNotification(
+    notification: any,
+    config: any,
+    attachmentGenerator: unknown
+  ): Promise<{ 
+      to: string; 
+      status: string; 
+      data: Record<string, unknown>; 
+    }> {
+    // check if the receiver of the notification should be changed
+    const to: string = config.to ? config.to : notification.to
 
-  //TODO resend the notification using the same data that is saved under notification.data
+    // TODO resend the notification using the same data
+    // that is saved under notification.data
 
-  console.log('Notification resent');
-  return {
-    to,
-    data: notification.data //you can also make changes to the data
+    console.log("Notification resent")
+    return {
+      to,
+      status: "done",
+      data: notification.data, // you can also make changes to the data
+    }
   }
 }
 ```
@@ -196,6 +257,8 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 :::
 
+---
+
 ## Create a Subscriber
 
 After creating your Notification Provider Service, you must create a Subscriber that registers this Service as a notification handler of events.
@@ -208,14 +271,15 @@ This section will not cover the basics of Subscribers. You can read the [Subscri
 
 Following the previous example, to make sure the `email-sender` Notification Provider handles the `order.placed` event, create the file `src/subscribers/notification.js` with the following content:
 
-```jsx
+```ts title=src/subscribers/notification.js
 class NotificationSubscriber {
   constructor({ notificationService }) {
-    notificationService.subscribe('order.placed', 'email-sender');
+    notificationService.subscribe("order.placed", "email-sender")
   }
+  // ...
 }
 
-export default NotificationSubscriber;
+export default NotificationSubscriber
 ```
 
 This subscriber accesses the `notificationService` using dependency injection. The `notificationService` contains a `subscribe` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that is subscribing to that event.
@@ -226,13 +290,15 @@ Notice that the value of the `identifier` static property defined in the `EmailS
 
 :::
 
+---
+
 ## Test Sending Notifications with your Notification Provider
 
 Make sure you've configured Redis with your Medusa server as explained in the Prerequisites section and that the Redis service is running.
 
 Then, start by running your Medusa server:
 
-```bash
+```bash npm2yarn
 npm run start
 ```
 
@@ -240,11 +306,13 @@ Then, place an order either using the [REST APIs](https://docs.medusajs.com/api/
 
 :::tip
 
-If you don’t have a storefront installed you can get started with either our [Next.js](../../../starters/nextjs-medusa-starter.md) or [Gatsby](../../../starters/gatsby-medusa-starter.md) starter storefronts in minutes.
+If you don’t have a storefront installed you can get started with either the [Next.js](../../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../../starters/gatsby-medusa-starter.mdx) starter storefronts in minutes.
 
 :::
 
 After placing an order, you can see in your console the message “Notification Sent”. If you added your own notification sending logic, you should receive an email or alternatively the type of notification you’ve set up.
+
+---
 
 ## Test Resending Notifications with your Notification Provider
 
@@ -256,17 +324,20 @@ You must be authenticated as an admin user before sending this request. You can 
 
 :::
 
-![List Notifications Request](https://i.imgur.com/iF1rZX1.png)
+![List Notifications Request](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001650/Medusa%20Docs/Screenshots/iF1rZX1_msps2t.png)
 
 Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/admin/#tag/Notification/operation/PostNotificationsNotificationResend) endpoint using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. You should see the message “Notification Resent” in your console and if you implemented your own logic for resending the notification it will be resent.
 
-![Resend Notifications Request](https://i.imgur.com/0zFfPed.png)
+![Resend Notifications Request](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001659/Medusa%20Docs/Screenshots/0zFfPed_og7one.png)
 
 This request returns the same notification object as the List Notifications endpoint, but it now has a new object in the `resends` array. This is the resent notification. If you supplied a `to` parameter in the request body, you should see its value in the `to` property of the resent notification object.
 
-## What’s Next 🚀
+---
 
-- Check out the [list of events](../subscribers/events-list.md) you can listen to.
-- Check out the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin for easy integration of email notifications.
-- Learn how to [create your own plugin](../plugins/create.md).
-- Learn more about [Subscribers](../subscribers/create-subscriber.md) and [Services](../services/create-service.md).
+## See Also
+
+- [Events reference](../subscribers/events-list.md)
+- [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
+- [Create a Subscriber](../subscribers/create-subscriber.md)
+- [Create a Service](../services/create-service.md)
+- [Create a Plugin](../plugins/create.md)

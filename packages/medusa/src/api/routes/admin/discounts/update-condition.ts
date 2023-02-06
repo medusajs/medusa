@@ -1,13 +1,9 @@
-import { IsOptional, IsString } from "class-validator"
-import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-
+import { Request, Response } from "express"
 import { AdminUpsertConditionsReq } from "../../../../types/discount"
-import { Discount } from "../../../../models"
 import DiscountConditionService from "../../../../services/discount-condition"
 import { DiscountService } from "../../../../services"
 import { EntityManager } from "typeorm"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}
@@ -24,32 +20,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           products:
- *              type: array
- *              description: list of product IDs if the condition is applied on products.
- *              items:
- *                type: string
- *           product_types:
- *              type: array
- *              description: list of product type IDs if the condition is applied on product types.
- *              items:
- *                type: string
- *           product_collections:
- *              type: array
- *              description: list of product collection IDs if the condition is applied on product collections.
- *              items:
- *                type: string
- *           product_tags:
- *              type: array
- *              description: list of product tag IDs if the condition is applied on product tags.
- *              items:
- *                type: string
- *           customer_groups:
- *              type: array
- *              description: list of customer group IDs if the condition is applied on customer groups.
- *              items:
- *                type: string
+ *         $ref: "#/components/schemas/AdminPostDiscountsDiscountConditionsCondition"
+ * x-codegen:
+ *   method: updateCondition
+ *   queryParams: AdminPostDiscountsDiscountConditionsConditionParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -87,9 +61,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -104,18 +76,8 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { discount_id, condition_id } = req.params
-
-  const validatedCondition = await validator(
-    AdminPostDiscountsDiscountConditionsCondition,
-    req.body
-  )
-
-  const validatedParams = await validator(
-    AdminPostDiscountsDiscountConditionsConditionParams,
-    req.query
-  )
 
   const conditionService: DiscountConditionService = req.scope.resolve(
     "discountConditionService"
@@ -128,7 +90,7 @@ export default async (req, res) => {
   let discount = await discountService.retrieve(discount_id)
 
   const updateObj = {
-    ...validatedCondition,
+    ...(req.validatedBody as AdminPostDiscountsDiscountConditionsCondition),
     rule_id: discount.rule_id,
     id: condition.id,
   }
@@ -140,27 +102,43 @@ export default async (req, res) => {
       .upsertCondition(updateObj)
   })
 
-  const config = getRetrieveConfig<Discount>(
-    defaultAdminDiscountsFields,
-    defaultAdminDiscountsRelations,
-    validatedParams?.fields?.split(",") as (keyof Discount)[],
-    validatedParams?.expand?.split(",")
-  )
-
-  discount = await discountService.retrieve(discount.id, config)
+  discount = await discountService.retrieve(discount.id, req.retrieveConfig)
 
   res.status(200).json({ discount })
 }
 
+/**
+ * @schema AdminPostDiscountsDiscountConditionsCondition
+ * type: object
+ * properties:
+ *   products:
+ *      type: array
+ *      description: list of product IDs if the condition is applied on products.
+ *      items:
+ *        type: string
+ *   product_types:
+ *      type: array
+ *      description: list of product type IDs if the condition is applied on product types.
+ *      items:
+ *        type: string
+ *   product_collections:
+ *      type: array
+ *      description: list of product collection IDs if the condition is applied on product collections.
+ *      items:
+ *        type: string
+ *   product_tags:
+ *      type: array
+ *      description: list of product tag IDs if the condition is applied on product tags.
+ *      items:
+ *        type: string
+ *   customer_groups:
+ *      type: array
+ *      description: list of customer group IDs if the condition is applied on customer groups.
+ *      items:
+ *        type: string
+ */
 // eslint-disable-next-line max-len
 export class AdminPostDiscountsDiscountConditionsCondition extends AdminUpsertConditionsReq {}
 
-export class AdminPostDiscountsDiscountConditionsConditionParams {
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}
+// eslint-disable-next-line max-len
+export class AdminPostDiscountsDiscountConditionsConditionParams extends FindParams {}

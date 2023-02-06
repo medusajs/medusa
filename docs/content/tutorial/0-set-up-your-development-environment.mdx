@@ -1,8 +1,12 @@
+---
+description: 'Learn how to set up your development environment while using Medusa. This guide includes how to install Node.js, Git, Medusa CLI tool, PostgreSQL, and Redis.'
+---
+
 import styles from './development.module.css';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Set up your development environment
+# Set up Development Environment
 
 This document will guide you to set up your development environment to efficiently and properly use Medusa.
 
@@ -12,21 +16,13 @@ To get your development environment ready you need to install the following tool
 
 ### Node.js
 
-:::info
-
-Node.js is an environment that can execute JavaScript code outside of the browser, making it possible to run on a server. 
-
-Node.js has a bundled package manager called NPM. NPM helps you install "packages" which are small pieces of code that you can leverage in your Node.js applications. Medusa's core is itself a package distributed via NPM and so are all of the plugins that exist around the core.
-
-:::
-
 Node.js is the environment that makes it possible for Medusa to run, so you must install Node.js on your computer to start Medusa development.
 
 :::caution
 
 Medusa supports versions 14 and 16 of Node.js. You can check your Node.js version using the following command:
 
-```bash
+```bash noReport
 node -v
 ```
 
@@ -57,7 +53,7 @@ For other Linux distributions, you can check out [Node.js’s guide](https://nod
 
 You can use the following commands to install Node.js on macOS:
 
-<Tabs>
+<Tabs groupId="homebrew" wrapperClassName='code-tabs'>
 <TabItem value="homebrew" label="Homebrew">
 
 ```bash
@@ -68,7 +64,12 @@ brew install node
 <TabItem value="no-homebrew" label="Without Homebrew">
 
 ```bash
-curl "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+curl \
+ "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- \
+  https://nodejs.org/dist/latest/ | sed -nE \ 
+  's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" \
+  > "$HOME/Downloads/node-latest.pkg" && 
+  sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
 ```
 
 </TabItem>
@@ -85,12 +86,6 @@ Make sure that you have Xcode command line tools installed; if not,  run the fol
 </Tabs>
 
 ### Git
-
-:::info
-
-Git is a version control system that keeps track of files within a project and makes it possible to do things like going back in history if you have made mistakes or collaborate with teammates without overriding each other's work.
-
-:::
 
 Medusa uses Git behind the scenes when you create a new project so you'll have to install it on your computer to get started.
 
@@ -136,17 +131,31 @@ You can install Medusa’s CLI with the following command:
 npm install @medusajs/medusa-cli -g
 ```
 
-## Optional Tools
+You can check that Medusa was installed by running the following command:
 
-These tools are not required to have to run a Medusa server, but we highly recommend that you have them installed.
+```bash noReport
+medusa -v
+```
 
-### PostgreSQL
+:::note
 
-:::info
-
-PostgreSQL is an open-source relational database system with more than 30 years of active development. It is robust, reliable, and ensures data integrity so there's no need to worry about those when you scale your project.
+If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../troubleshooting/cli-installation-errors.mdx).
 
 :::
+
+---
+
+## Install Medusa Server
+
+If you're not interested in installing the optional tools and want to get started quickly, check out the [quickstart guide](../quickstart/quick-start.mdx).
+
+---
+
+## Optional Tools
+
+These tools are not required to have to run a Medusa server, but it's highly recommended that you have them installed.
+
+### PostgreSQL
 
 Although you can use an SQLite database with Medusa which would require no necessary database installations, it is recommended to use a PostgreSQL database for your server.
 
@@ -167,8 +176,10 @@ You can [download the PostgreSQL Windows installer](https://www.postgresql.org/d
 If you’re using Ubuntu, you can use the following commands to download and install PostgreSQL:
 
 ```bash
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo sh -c \
+  'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - \
+  https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt-get update
 sudo apt-get -y install postgresql
 ```
@@ -186,7 +197,9 @@ You can download PostgreSQL on your macOS using [the installer on their website]
 Make sure the Docker Desktop app is running, then run the following command to quickly spin up a PostgreSQL instance:
 
 ```bash
-docker run --name postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=medusa-docker -p 5432:5432 -d postgres
+docker run --name postgres -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres -e \
+  POSTGRES_DB=medusa-docker -p 5432:5432 -d postgres
 ```
 
 Where:
@@ -201,12 +214,6 @@ Where:
 </Tabs>
 
 ### Redis
-
-:::info
-
-Redis is an open-source in-memory data structure store. It can be used for distributing and emitting messages and caching, among other purposes.
-
-:::
 
 Medusa uses Redis as the event queue in the server. If you want to use subscribers to handle events such as when an order is placed and perform actions based on the events, then you need to install and configure Redis.
 
@@ -241,9 +248,11 @@ sudo service redis-server start
 If you use Ubuntu you can use the following commands to install Redis:
 
 ```bash
-curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+curl -fsSL https://packages.redis.io/gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 
-echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" \
+  | sudo tee /etc/apt/sources.list.d/redis.list
 
 sudo apt-get update
 sudo apt-get install redis
@@ -271,8 +280,11 @@ To install Redis without Homebrew you can check out [Redis’s guide on installi
 </TabItem>
 </Tabs>
 
-## What’s Next 🚀
+---
 
-- Learn how to [configure your Medusa server](../usage/configurations.md).
-- Learn how to install a storefront with [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](./../starters/gatsby-medusa-starter.md).
-- Learn how to install the [Medusa Admin](../admin/quickstart.md).
+## See Also
+
+- [Install Medusa server](../quickstart/quick-start.mdx)
+- [Configure your Medusa server](../usage/configurations.md).
+- Install a storefront with [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](./../starters/gatsby-medusa-starter.mdx).
+- [Install the Medusa Admin](../admin/quickstart.mdx).

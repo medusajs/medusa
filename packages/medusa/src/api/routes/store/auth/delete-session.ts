@@ -4,6 +4,8 @@
  * summary: "Customer Log out"
  * description: "Destroys a Customer's authenticated session."
  * x-authenticated: true
+ * x-codegen:
+ *   method: deleteSession
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -31,6 +33,6 @@
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  req.session.jwt = {}
+  req.session.jwt_store = {}
   res.json({})
 }

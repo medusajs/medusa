@@ -1,10 +1,13 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { v4 } from "uuid"
 import { TransactionBaseService } from "../interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
 import { IdempotencyKeyRepository } from "../repositories/idempotency-key"
 import { IdempotencyKey } from "../models"
-import { CreateIdempotencyKeyInput } from "../types/idempotency-key"
+import {
+  CreateIdempotencyKeyInput,
+  IdempotencyCallbackResult,
+} from "../types/idempotency-key"
 
 const KEY_LOCKED_TIMEOUT = 1000
 
@@ -80,6 +83,13 @@ class IdempotencyKeyService extends TransactionBaseService {
    * @return idempotency key
    */
   async retrieve(idempotencyKey: string): Promise<IdempotencyKey | never> {
+    if (!isDefined(idempotencyKey)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"idempotencyKey" must be defined`
+      )
+    }
+
     const idempotencyKeyRepo = this.manager_.getCustomRepository(
       this.idempotencyKeyRepository_
     )
@@ -163,36 +173,26 @@ class IdempotencyKeyService extends TransactionBaseService {
    */
   async workStage(
     idempotencyKey: string,
-    callback: (transactionManager: EntityManager) => Promise<
-      | {
-          recovery_point?: string
-          response_code?: number
-          response_body?: Record<string, unknown>
-        }
-      | never
-    >
-  ): Promise<{ key?: IdempotencyKey; error?: unknown }> {
-    try {
-      return await this.atomicPhase_(async (manager) => {
-        const { recovery_point, response_code, response_body } = await callback(
-          manager
-        )
+    callback: (
+      transactionManager: EntityManager
+    ) => Promise<IdempotencyCallbackResult | never>
+  ): Promise<IdempotencyKey> {
+    return await this.atomicPhase_(async (manager) => {
+      const { recovery_point, response_code, response_body } = await callback(
+        manager
+      )
 
-        const data: DeepPartial<IdempotencyKey> = {
-          recovery_point: recovery_point ?? "finished",
-        }
+      const data: DeepPartial<IdempotencyKey> = {
+        recovery_point: recovery_point ?? "finished",
+      }
 
-        if (!recovery_point) {
-          data.response_body = response_body
-          data.response_code = response_code
-        }
+      if (!recovery_point) {
+        data.response_body = response_body
+        data.response_code = response_code
+      }
 
-        const key = await this.update(idempotencyKey, data)
-        return { key }
-      }, "SERIALIZABLE")
-    } catch (err) {
-      return { error: err }
-    }
+      return await this.update(idempotencyKey, data)
+    })
   }
 }
 

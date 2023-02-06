@@ -7,20 +7,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - resource_id
-            - resource_type
-            - value
-          properties:
-            resource_id:
-              type: string
-              description: The ID of the resource which the Note relates to.
-            resource_type:
-              type: string
-              description: The type of resource which the Note relates to.
-            value:
-              type: string
-              description: The content of the Note to create.
+          $ref: ../components/schemas/AdminPostNotesReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -41,9 +28,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              note:
-                $ref: ../components/schemas/note.yaml
+            $ref: ../components/schemas/AdminNotesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -99,20 +84,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              notes:
-                type: array
-                items:
-                  $ref: ../components/schemas/note.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/AdminNotesListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

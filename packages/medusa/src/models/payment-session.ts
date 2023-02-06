@@ -9,9 +9,9 @@ import {
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
-import { Cart } from "./cart"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {
   AUTHORIZED = "authorized",
@@ -22,12 +22,15 @@ export enum PaymentSessionStatus {
 }
 
 @Unique("OneSelected", ["cart_id", "is_selected"])
-@Unique("UniqPaymentSessionCartIdProviderId", ["cart_id", "provider_id"])
+@Index("UniqPaymentSessionCartIdProviderId", ["cart_id", "provider_id"], {
+  unique: true,
+  where: "cart_id IS NOT NULL",
+})
 @Entity()
 export class PaymentSession extends BaseEntity {
   @Index()
-  @Column()
-  cart_id: string
+  @Column({ nullable: true })
+  cart_id: string | null
 
   @ManyToOne(() => Cart, (cart) => cart.payment_sessions)
   @JoinColumn({ name: "cart_id" })
@@ -40,6 +43,9 @@ export class PaymentSession extends BaseEntity {
   @Column({ type: "boolean", nullable: true })
   is_selected: boolean | null
 
+  @Column({ type: "boolean", default: false })
+  is_initiated: boolean
+
   @DbAwareColumn({ type: "enum", enum: PaymentSessionStatus })
   status: string
 
@@ -49,6 +55,12 @@ export class PaymentSession extends BaseEntity {
   @Column({ nullable: true })
   idempotency_key: string
 
+  @Column({ type: "integer", nullable: true })
+  amount: number
+
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
+  payment_authorized_at: Date
+
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ps")
@@ -56,10 +68,10 @@ export class PaymentSession extends BaseEntity {
 }
 
 /**
- * @schema payment_session
+ * @schema PaymentSession
  * title: "Payment Session"
  * description: "Payment Sessions are created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, who is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for capture/refunds/etc."
- * x-resourceId: payment_session
+ * type: object
  * required:
  *   - cart_id
  *   - provider_id
@@ -84,6 +96,11 @@ export class PaymentSession extends BaseEntity {
  *     description: "A flag to indicate if the Payment Session has been selected as the method that will be used to complete the purchase."
  *     type: boolean
  *     example: true
+ *   is_initiated:
+ *     description: "A flag to indicate if a communication with the third party provider has been initiated."
+ *     type: boolean
+ *     example: true
+ *     default: false
  *   status:
  *     description: "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires_more` to indicate that further actions are to be completed by the Customer."
  *     type: string

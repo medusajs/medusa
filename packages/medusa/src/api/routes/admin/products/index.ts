@@ -1,6 +1,6 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { Product, ProductTag, ProductType } from "../../../.."
+import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
 import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { PricedProduct } from "../../../../types/pricing"
 import { FlagRouter } from "../../../../utils/flag-router"
@@ -73,7 +73,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(FindParams, {
       defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
-      allowedFields: allowedAdminProductFields,
       isList: false,
     }),
     middlewares.wrap(require("./get-product").default)
@@ -84,7 +83,6 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(AdminGetProductsParams, {
       defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
-      allowedFields: allowedAdminProductFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-products").default)
@@ -102,6 +100,7 @@ export const defaultAdminProductRelations = [
   "tags",
   "type",
   "collection",
+  "categories",
 ]
 
 export const defaultAdminProductFields: (keyof Product)[] = [
@@ -134,45 +133,24 @@ export const defaultAdminProductFields: (keyof Product)[] = [
 
 export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 
-export const allowedAdminProductFields = [
-  "id",
-  "title",
-  "subtitle",
-  "status",
-  "external_id",
-  "description",
-  "handle",
-  "is_giftcard",
-  "discountable",
-  "thumbnail",
-  "profile_id",
-  "collection_id",
-  "type_id",
-  "weight",
-  "length",
-  "height",
-  "width",
-  "hs_code",
-  "origin_country",
-  "mid_code",
-  "material",
-  "created_at",
-  "updated_at",
-  "deleted_at",
-  "metadata",
-]
-
-export const allowedAdminProductRelations = [
-  "variants",
-  "variants.prices",
-  "images",
-  "options",
-  "tags",
-  "type",
-  "collection",
-  "sales_channels",
-]
-
+/**
+ * @schema AdminProductsDeleteOptionRes
+ * type: object
+ * properties:
+ *   option_id:
+ *     type: string
+ *     description: The ID of the deleted Product Option
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: option
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ *   product:
+ *     $ref: "#/components/schemas/Product"
+ */
 export type AdminProductsDeleteOptionRes = {
   option_id: string
   object: "option"
@@ -180,6 +158,24 @@ export type AdminProductsDeleteOptionRes = {
   product: Product
 }
 
+/**
+ * @schema AdminProductsDeleteVariantRes
+ * type: object
+ * properties:
+ *   variant_id:
+ *     type: string
+ *     description: The ID of the deleted Product Variant.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: product-variant
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ *   product:
+ *     $ref: "#/components/schemas/Product"
+ */
 export type AdminProductsDeleteVariantRes = {
   variant_id: string
   object: "product-variant"
@@ -187,24 +183,120 @@ export type AdminProductsDeleteVariantRes = {
   product: Product
 }
 
+/**
+ * @schema AdminProductsDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Product.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: product
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
 export type AdminProductsDeleteRes = {
   id: string
   object: "product"
   deleted: boolean
 }
 
+/**
+ * @schema AdminProductsListRes
+ * type: object
+ * properties:
+ *   products:
+ *     type: array
+ *     items:
+ *       oneOf:
+ *         - $ref: "#/components/schemas/Product"
+ *         - $ref: "#/components/schemas/PricedProduct"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminProductsListRes = PaginatedResponse & {
   products: (PricedProduct | Product)[]
 }
 
+/**
+ * @schema AdminProductsListVariantsRes
+ * type: object
+ * properties:
+ *   variants:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ProductVariant"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
+export type AdminProductsListVariantsRes = PaginatedResponse & {
+  variants: ProductVariant[]
+}
+
+/**
+ * @schema AdminProductsListTypesRes
+ * type: object
+ * properties:
+ *   types:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ProductType"
+ */
 export type AdminProductsListTypesRes = {
   types: ProductType[]
 }
 
+/**
+ * @schema AdminProductsListTagsRes
+ * type: object
+ * properties:
+ *   tags:
+ *     type: array
+ *     items:
+ *       properties:
+ *         id:
+ *           description: The ID of the tag.
+ *           type: string
+ *         usage_count:
+ *           description: The number of products that use this tag.
+ *           type: string
+ *         value:
+ *           description: The value of the tag.
+ *           type: string
+ */
 export type AdminProductsListTagsRes = {
-  tags: ProductTag[]
+  tags: Array<
+    Pick<ProductTag, "id" | "value"> & {
+      usage_count: number
+    }
+  >
 }
 
+/**
+ * @schema AdminProductsRes
+ * type: object
+ * properties:
+ *   product:
+ *     $ref: "#/components/schemas/Product"
+ */
 export type AdminProductsRes = {
   product: Product
 }

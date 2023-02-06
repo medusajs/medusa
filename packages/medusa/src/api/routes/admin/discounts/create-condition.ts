@@ -1,13 +1,12 @@
-import { Discount, DiscountConditionOperator } from "../../../../models"
-import { IsOptional, IsString } from "class-validator"
-import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { Request, Response } from "express"
+import { DiscountConditionOperator } from "../../../../models"
+import { IsString } from "class-validator"
 
 import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import DiscountConditionService from "../../../../services/discount-condition"
 import { DiscountService } from "../../../../services"
 import { EntityManager } from "typeorm"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /discounts/{discount_id}/conditions
@@ -23,38 +22,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - operator
- *         properties:
- *           operator:
- *              description: Operator of the condition
- *              type: string
- *              enum: [in, not_in]
- *           products:
- *              type: array
- *              description: list of product IDs if the condition is applied on products.
- *              items:
- *                type: string
- *           product_types:
- *              type: array
- *              description: list of product type IDs if the condition is applied on product types.
- *              items:
- *                type: string
- *           product_collections:
- *              type: array
- *              description: list of product collection IDs if the condition is applied on product collections.
- *              items:
- *                type: string
- *           product_tags:
- *              type: array
- *              description: list of product tag IDs if the condition is applied on product tags.
- *              items:
- *                type: string
- *           customer_groups:
- *              type: array
- *              description: list of customer group IDs if the condition is applied on customer groups.
- *              items:
- *                type: string
+ *         $ref: "#/components/schemas/AdminPostDiscountsDiscountConditions"
+ * x-codegen:
+ *   method: createCondition
+ *   queryParams: AdminPostDiscountsDiscountConditionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -89,9 +60,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -105,19 +74,8 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { discount_id } = req.params
-
-  const validatedCondition = await validator(
-    AdminPostDiscountsDiscountConditions,
-    req.body
-  )
-
-  const validatedParams = await validator(
-    AdminPostDiscountsDiscountConditionsParams,
-    req.query
-  )
-
   const conditionService: DiscountConditionService = req.scope.resolve(
     "discountConditionService"
   )
@@ -130,35 +88,56 @@ export default async (req, res) => {
     return await conditionService
       .withTransaction(transactionManager)
       .upsertCondition({
-        ...validatedCondition,
+        ...(req.validatedBody as AdminPostDiscountsDiscountConditions),
         rule_id: discount.rule_id,
       })
   })
 
-  const config = getRetrieveConfig<Discount>(
-    defaultAdminDiscountsFields,
-    defaultAdminDiscountsRelations,
-    validatedParams?.fields?.split(",") as (keyof Discount)[],
-    validatedParams?.expand?.split(",")
-  )
-
-  discount = await discountService.retrieve(discount.id, config)
+  discount = await discountService.retrieve(discount.id, req.retrieveConfig)
 
   res.status(200).json({ discount })
 }
 
+/**
+ * @schema AdminPostDiscountsDiscountConditions
+ * type: object
+ * required:
+ *   - operator
+ * properties:
+ *   operator:
+ *      description: Operator of the condition
+ *      type: string
+ *      enum: [in, not_in]
+ *   products:
+ *      type: array
+ *      description: list of product IDs if the condition is applied on products.
+ *      items:
+ *        type: string
+ *   product_types:
+ *      type: array
+ *      description: list of product type IDs if the condition is applied on product types.
+ *      items:
+ *        type: string
+ *   product_collections:
+ *      type: array
+ *      description: list of product collection IDs if the condition is applied on product collections.
+ *      items:
+ *        type: string
+ *   product_tags:
+ *      type: array
+ *      description: list of product tag IDs if the condition is applied on product tags.
+ *      items:
+ *        type: string
+ *   customer_groups:
+ *      type: array
+ *      description: list of customer group IDs if the condition is applied on customer groups.
+ *      items:
+ *        type: string
+ */
 // eslint-disable-next-line max-len
 export class AdminPostDiscountsDiscountConditions extends AdminUpsertConditionsReq {
   @IsString()
   operator: DiscountConditionOperator
 }
 
-export class AdminPostDiscountsDiscountConditionsParams {
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}
+export class AdminPostDiscountsDiscountConditionsParams extends FindParams {}

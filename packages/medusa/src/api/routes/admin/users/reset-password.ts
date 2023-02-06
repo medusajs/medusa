@@ -18,21 +18,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - token
- *           - password
- *         properties:
- *           email:
- *             description: "The Users email."
- *             type: string
- *             format: email
- *           token:
- *             description: "The token generated from the 'password-token' endpoint."
- *             type: string
- *           password:
- *             description: "The Users new password."
- *             type: string
- *             format: password
+ *         $ref: "#/components/schemas/AdminResetPasswordRequest"
+ * x-codegen:
+ *   method: resetPassword
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -68,9 +56,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             user:
- *               $ref: "#/components/schemas/user"
+ *           $ref: "#/components/schemas/AdminUserRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -134,6 +120,26 @@ export type payload = {
   user_id: string
   password: string
 }
+
+/**
+ * @schema AdminResetPasswordRequest
+ * type: object
+ * required:
+ *   - token
+ *   - password
+ * properties:
+ *   email:
+ *     description: "The Users email."
+ *     type: string
+ *     format: email
+ *   token:
+ *     description: "The token generated from the 'password-token' endpoint."
+ *     type: string
+ *   password:
+ *     description: "The Users new password."
+ *     type: string
+ *     format: password
+ */
 export class AdminResetPasswordRequest {
   @IsEmail()
   @IsOptional()

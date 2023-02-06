@@ -1,20 +1,14 @@
-import { MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { DeepPartial, EntityManager, ILike } from "typeorm"
 import { CustomerService } from "."
 import { CustomerGroup } from ".."
-import { CustomerGroupRepository } from "../repositories/customer-group"
-import { FindConfig } from "../types/common"
 import {
-  CustomerGroupUpdate,
-  FilterableCustomerGroupProps,
-} from "../types/customer-groups"
-import {
-  buildQuery,
-  formatException,
-  isDefined,
-  PostgresError,
-  setMetadata,
-} from "../utils"
+  CustomerGroupRepository,
+  FindWithoutRelationsOptions,
+} from "../repositories/customer-group"
+import { FindConfig, Selector } from "../types/common"
+import { CustomerGroupUpdate } from "../types/customer-groups"
+import { buildQuery, isString, PostgresError, setMetadata } from "../utils"
 import { TransactionBaseService } from "../interfaces"
 
 type CustomerGroupConstructorProps = {
@@ -35,6 +29,7 @@ class CustomerGroupService extends TransactionBaseService {
     customerGroupRepository,
     customerService,
   }: CustomerGroupConstructorProps) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -42,18 +37,25 @@ class CustomerGroupService extends TransactionBaseService {
     this.customerService_ = customerService
   }
 
-  async retrieve(id: string, config = {}): Promise<CustomerGroup> {
+  async retrieve(customerGroupId: string, config = {}): Promise<CustomerGroup> {
+    if (!isDefined(customerGroupId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"customerGroupId" must be defined`
+      )
+    }
+
     const cgRepo = this.manager_.getCustomRepository(
       this.customerGroupRepository_
     )
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: customerGroupId }, config)
 
     const customerGroup = await cgRepo.findOne(query)
     if (!customerGroup) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `CustomerGroup with id ${id} was not found`
+        `CustomerGroup with id ${customerGroupId} was not found`
       )
     }
 
@@ -107,26 +109,8 @@ class CustomerGroupService extends TransactionBaseService {
         )
         return await cgRepo.addCustomers(id, ids)
       },
-      async (error: any) => {
-        if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          await this.retrieve(id)
-
-          const existingCustomers = await this.customerService_.list({
-            id: ids,
-          })
-
-          const nonExistingCustomers = ids.filter(
-            (cId) => existingCustomers.findIndex((el) => el.id === cId) === -1
-          )
-
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `The following customer ids do not exist: ${JSON.stringify(
-              nonExistingCustomers.join(", ")
-            )}`
-          )
-        }
-        throw formatException(error)
+      async (e: any) => {
+        await this.handleCreationFail(id, ids, e)
       }
     )
   }
@@ -195,15 +179,14 @@ class CustomerGroupService extends TransactionBaseService {
    * @return  the result of the find operation
    */
   async list(
-    selector: FilterableCustomerGroupProps = {},
+    selector: Selector<CustomerGroup> & {
+      q?: string
+      discount_condition_id?: string
+    } = {},
     config: FindConfig<CustomerGroup>
   ): Promise<CustomerGroup[]> {
-    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
-      this.customerGroupRepository_
-    )
-
-    const query = buildQuery(selector, config)
-    return await cgRepo.find(query)
+    const [customerGroups] = await this.listAndCount(selector, config)
+    return customerGroups
   }
 
   /**
@@ -214,7 +197,10 @@ class CustomerGroupService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: FilterableCustomerGroupProps = {},
+    selector: Selector<CustomerGroup> & {
+      q?: string
+      discount_condition_id?: string
+    } = {},
     config: FindConfig<CustomerGroup>
   ): Promise<[CustomerGroup[], number]> {
     const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
@@ -222,7 +208,7 @@ class CustomerGroupService extends TransactionBaseService {
     )
 
     let q
-    if ("q" in selector) {
+    if (isString(selector.q)) {
       q = selector.q
       delete selector.q
     }
@@ -230,13 +216,15 @@ class CustomerGroupService extends TransactionBaseService {
     const query = buildQuery(selector, config)
 
     if (q) {
-      const where = query.where
+      query.where.name = ILike(`%${q}%`)
+    }
 
-      delete where.name
-
-      query.where = ((qb: SelectQueryBuilder<CustomerGroup>): void => {
-        qb.where(where).andWhere([{ name: ILike(`%${q}%`) }])
-      }) as any
+    if (query.where.discount_condition_id) {
+      const { relations, ...query_ } = query
+      return await cgRepo.findWithRelationsAndCount(
+        relations,
+        query_ as FindWithoutRelationsOptions
+      )
     }
 
     return await cgRepo.findAndCount(query)
@@ -268,6 +256,32 @@ class CustomerGroupService extends TransactionBaseService {
     await cgRepo.removeCustomers(id, ids)
 
     return customerGroup
+  }
+
+  private async handleCreationFail(
+    id: string,
+    ids: string[],
+    error: any
+  ): Promise<never> {
+    if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
+      await this.retrieve(id)
+
+      const existingCustomers = await this.customerService_.list({
+        id: ids,
+      })
+
+      const nonExistingCustomers = ids.filter(
+        (cId) => existingCustomers.findIndex((el) => el.id === cId) === -1
+      )
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The following customer ids do not exist: ${JSON.stringify(
+          nonExistingCustomers.join(", ")
+        )}`
+      )
+    }
+    throw error
   }
 }
 

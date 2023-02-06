@@ -1,5 +1,34 @@
 # Change Log
 
+## 1.3.6
+
+### Patch Changes
+
+- [#3010](https://github.com/medusajs/medusa/pull/3010) [`142c8aa70`](https://github.com/medusajs/medusa/commit/142c8aa70f583d9b11a6add2b8f988e9ba4cf979) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Payment collection should provider the region_id, total and id in the partial cart data
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+- Updated dependencies [[`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2)]:
+  - medusa-interfaces@1.3.4
+
+## 1.3.5
+
+### Patch Changes
+
+- [#2808](https://github.com/medusajs/medusa/pull/2808) [`0a9c89185`](https://github.com/medusajs/medusa/commit/0a9c891853c4d16b553d38268a3408ca1daa71f0) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - chore: explicitly add devDependencies for monorepo peerDependencies
+
+- Updated dependencies [[`7cced6006`](https://github.com/medusajs/medusa/commit/7cced6006a9a6f9108009e9f3e191e9f3ba1b168)]:
+  - medusa-core-utils@1.1.37
+
+## 1.3.4
+
+### Patch Changes
+
+- [#2381](https://github.com/medusajs/medusa/pull/2381) [`a908a7716`](https://github.com/medusajs/medusa/commit/a908a7716c94222f340531a5b13db0867b511519) Thanks [@srindom](https://github.com/srindom)! - Rely on cart totals in payment providers
+
+- Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81)]:
+  - medusa-core-utils@1.1.32
+
 ## 1.3.3
 
 ### Patch Changes

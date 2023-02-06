@@ -1,10 +1,7 @@
-import { IsOptional, IsString } from "class-validator"
-import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-
-import { Discount } from "../../../../models"
+import { Request, Response } from "express"
 import DiscountService from "../../../../services/discount"
-import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
+
 /**
  * @oas [get] /discounts/code/{code}
  * operationId: "GetDiscountsDiscountCode"
@@ -15,6 +12,9 @@ import { validator } from "../../../../utils/validator"
  *   - (path) code=* {string} The code of the Discount
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: retrieveByCode
+ *   queryParams: AdminGetDiscountsDiscountCodeParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,9 +42,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -58,33 +56,16 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { code } = req.params
 
-  const validated = await validator(
-    AdminGetDiscountsDiscountCodeParams,
-    req.query
-  )
-
-  const config = getRetrieveConfig<Discount>(
-    defaultAdminDiscountsFields,
-    defaultAdminDiscountsRelations,
-    validated?.fields?.split(",") as (keyof Discount)[],
-    validated?.expand?.split(",")
-  )
-
   const discountService: DiscountService = req.scope.resolve("discountService")
-  const discount = await discountService.retrieveByCode(code, config)
+  const discount = await discountService.retrieveByCode(
+    code,
+    req.retrieveConfig
+  )
 
   res.status(200).json({ discount })
 }
 
-export class AdminGetDiscountsDiscountCodeParams {
-  @IsOptional()
-  @IsString()
-  expand?: string
-
-  @IsOptional()
-  @IsString()
-  fields?: string
-}
+export class AdminGetDiscountsDiscountCodeParams extends FindParams {}

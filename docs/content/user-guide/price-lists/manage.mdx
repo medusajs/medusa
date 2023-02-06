@@ -1,0 +1,175 @@
+---
+sidebar_position: 2
+description: 'This user guide explains how to manage price lists on the Medusa admin. Learn how to create, edit, and delete price lists.'
+addHowToData: true
+---
+
+import UiIcon from '@site/src/components/UiIcon';
+
+# Manage Price Lists
+
+In this document, you’ll learn how to create, update, and delete price lists and their related information.
+
+## Create a Price List
+
+To create a price list:
+
+1. Go to the Pricing page.
+2. Click on the “Add price list” button at the top right.
+
+This opens the form to create the price list in a new window. The form is split into different sections.
+
+### Price List Type
+
+In this section, choose the type of the price list. It can be either a Sale or an Override.
+
+### General
+
+In this section, enter the name and description of the price list. Both fields are required.
+
+### Configuration
+
+In this section, you can choose some optional configurations that determine how the price list will be applied:
+
+1. To specify the start or end dates:
+    1. Toggle the “Price overrides has a start date” or “Price overrides has an expiry date” fields.
+    2. Choose the date and time.
+2. To specify customer groups that this price list will be applied for:
+    1. Toggle the “Customer availability” field.
+    2. In the Customer Groups field, choose at least one customer group.
+
+### Prices
+
+In this section, you must choose at least one product and specify the prices you want to apply to at least one of its variants.
+
+1. To add product prices:
+    1. Click on the “Add Products Manually” button.
+    2. Choose at least one product from the list.
+    3. Click the Save button. The products will then be seen under the Prices section.
+    4. For each product you added:
+        1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999131/Medusa%20Docs/UI%20Icons/1hL8NiW_lqmjcq.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999150/Medusa%20Docs/UI%20Icons/8LtkPqW_jyqz5i.png" alt="plus" /> icon at its right.
+        2. To add the same price for all variants:
+            1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to any of the variants.
+            2. Choose “Edit Prices” from the dropdown.
+            3. In the new window, choose the “Apply on all variants” option.
+            4. Enter the price for each currency.
+            5. Click on the “Save and close” button.
+        3. To add a price for each variant:
+            1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to a variant.
+            2. Choose “Edit Prices” from the dropdown.
+            3. In the new window, choose the “Apply overrides on selected variants” option.
+            4. Choose the variants that you want to apply the current pricing to.
+            5. Enter the price for each currency.
+            6. Click on the “Save and close” button.
+        4. To remove a variant from the price list:
+            1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the variant.
+            2. Click on the Remove from List button.
+2. To remove products from the prices list:
+    1. Click on the “Add Products Manually” button.
+    2. Uncheck the products you previously added and want to remove.
+    3. Click on the Save button.
+
+### Save the Price List
+
+To save the price list you can either:
+
+1. Click the “Save as draft” button to save the price list without publishing it;
+2. Or click the “Publish price list” button to save and publish the price list.
+
+---
+
+## View Price List Details
+
+To view a price list’s details:
+
+1. Go to the Pricing page.
+2. Click on the price list you want to view.
+
+---
+
+## Change Price List Status
+
+:::info
+
+Publishing a price list makes it and its prices available to customers. Unpublishing a price list makes it and its prices unavailable to customers.
+
+:::
+
+To change a price list’s status:
+
+1. Go to the Pricing page.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the price list.
+3. Based on the current status, click on the Unpublish or Publish links in the dropdown to change the status.
+
+---
+
+## Edit Price List’s Configurations
+
+To edit a price list’s information and configurations:
+
+1. Go to the price list’s details page.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon in the first section.
+3. Choose “Edit price list details”.
+4. This opens a form in a new window that has the [same sections as the Create Price List form](#create-a-price-list), except for the Prices section. You can edit the price list’s general information, customer groups, and start and end dates.
+5. Once you’re done making changes, click on the Save changes button.
+
+---
+
+## Manage Prices
+
+### Add Product Prices
+
+To add new product prices:
+
+1. Go to the price list’s details page.
+2. In the Prices section, click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
+3. Click on “Edit manually” in the dropdown.
+4. This opens a new window with a form similar to the [Prices section in the Create form](#prices). You can search for or manually add products.
+5. Once you’re done, click on the “Save changes” button.
+
+### Edit a Product’s Prices
+
+To edit the prices in the price list:
+
+1. Go to the price list’s details page.
+2. Find the product you want to edit in the Prices section.
+3. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to it.
+4. Choose “Edit prices” from the dropdown.
+5. In the new window:
+    1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999131/Medusa%20Docs/UI%20Icons/1hL8NiW_lqmjcq.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999150/Medusa%20Docs/UI%20Icons/8LtkPqW_jyqz5i.png" alt="plus" /> icon next to the product’s name to expand the list of variants.
+    2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999494/Medusa%20Docs/UI%20Icons/RxZhOoi_sismq2.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999509/Medusa%20Docs/UI%20Icons/iKh5Q7h_iuwp7r.png" alt="right arrow" /> icon next to the variant you want to edit.
+    3. Edit the prices of the variant for each currency.
+    4. Once you’re done, click on the “Save and close” button.
+6. Once you’re done editing the product’s prices, click on the Save button.
+
+### Delete a Product’s Prices
+
+:::warning
+
+Deleting a product’s prices in a price list cannot be undone.
+
+:::
+
+To delete all the prices of a product in a price list:
+
+1. Go to the price list’s details page.
+2. Find the product you want to edit in the Prices section.
+3. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to it.
+4. Click on “Remove product” in the dropdown.
+
+---
+
+## Delete Price List
+
+:::caution
+
+Deleting a price list cannot be undone. Prices defined in the price list will no longer be available for the customers.
+
+:::
+
+To delete a price list:
+
+1. Go to the Pricing page.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the price list you want to delete.
+3. Click on Delete in the dropdown.
+4. Confirm deleting the price list by clicking the “Yes, confirm” button in the pop-up.

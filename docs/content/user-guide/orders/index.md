@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 sidebar_label: Overview
+description: 'Medusa Admin allows merchants to manage orders. Merchants can view order information, capture payment, create shipments and fulfillments, and more.'
 ---
 
 # Orders Overview
@@ -39,5 +40,5 @@ In the list, you can see order details such as ID, the ID of the order the draft
 - [Manage Draft Orders](./drafts.mdx)
 - [Manage Order Returns](./returns.mdx)
 - [Manage Order Claims](./claims.mdx)
-- [Manage Order Exchanges](./swaps.md)
+- [Manage Order Exchanges](./exchange.mdx)
 - [Export Orders](./export.mdx)

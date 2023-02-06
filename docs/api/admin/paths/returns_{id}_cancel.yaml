@@ -29,9 +29,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              order:
-                $ref: ../components/schemas/order.yaml
+            $ref: ../components/schemas/AdminReturnsCancelRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

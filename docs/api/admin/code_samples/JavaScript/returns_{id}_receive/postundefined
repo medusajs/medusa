@@ -9,6 +9,6 @@ medusa.admin.returns.receive(return_id, {
     }
   ]
 })
-.then(({ return }) => {
-  console.log(return.id);
+.then((data) => {
+  console.log(data.return.id);
 });

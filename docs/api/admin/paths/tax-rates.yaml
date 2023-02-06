@@ -26,38 +26,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - code
-            - name
-            - region_id
-          properties:
-            code:
-              type: string
-              description: A code to identify the tax type by
-            name:
-              type: string
-              description: A human friendly name for the tax
-            region_id:
-              type: string
-              description: The ID of the Region that the rate belongs to
-            rate:
-              type: number
-              description: The numeric rate to charge
-            products:
-              type: array
-              description: The IDs of the products associated with this tax rate
-              items:
-                type: string
-            shipping_options:
-              type: array
-              description: The IDs of the shipping options associated with this tax rate
-              items:
-                type: string
-            product_types:
-              type: array
-              description: The IDs of the types of products associated with this tax rate
-              items:
-                type: string
+          $ref: ../components/schemas/AdminPostTaxRatesReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -78,9 +47,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              tax_rate:
-                $ref: ../components/schemas/tax_rate.yaml
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -192,20 +159,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              tax_rates:
-                type: array
-                items:
-                  $ref: ../components/schemas/tax_rate.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/AdminTaxRatesListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

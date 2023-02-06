@@ -1,5 +1,32 @@
 # Change Log
 
+## 1.0.20
+
+### Patch Changes
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+- Updated dependencies [[`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2)]:
+  - medusa-interfaces@1.3.4
+
+## 1.0.19
+
+### Patch Changes
+
+- [#2979](https://github.com/medusajs/medusa/pull/2979) [`a2df11fc1`](https://github.com/medusajs/medusa/commit/a2df11fc10c5f91d492233fe094a65022d2590aa) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-manual): Correct wrongly used input data
+
+## 1.0.18
+
+### Patch Changes
+
+- [#2808](https://github.com/medusajs/medusa/pull/2808) [`0a9c89185`](https://github.com/medusajs/medusa/commit/0a9c891853c4d16b553d38268a3408ca1daa71f0) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - chore: explicitly add devDependencies for monorepo peerDependencies
+
+## 1.0.17
+
+### Patch Changes
+
+- [#2254](https://github.com/medusajs/medusa/pull/2254) [`1024ac1a3`](https://github.com/medusajs/medusa/commit/1024ac1a3679180eb9097e33d13776dc6f4b4a75) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-payment-manual): Add missing update method
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,25 +34,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package medusa-payment-manual
 
-
-
-
-
 ## [1.0.15](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.14...medusa-payment-manual@1.0.15) (2021-12-29)
 
 **Note:** Version bump only for package medusa-payment-manual
 
-
-
-
-
 ## [1.0.14](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.13...medusa-payment-manual@1.0.14) (2021-12-17)
 
 **Note:** Version bump only for package medusa-payment-manual
-
-
-
-
 
 ## [1.0.13](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.12...medusa-payment-manual@1.0.13) (2021-12-08)
 

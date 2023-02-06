@@ -1,11 +1,10 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, ILike, SelectQueryBuilder } from "typeorm"
-import { ProductType } from "../models/product-type"
+import { EntityManager, ILike } from "typeorm"
+import { ProductType } from "../models"
 import { ProductTypeRepository } from "../repositories/product-type"
-import { FindConfig } from "../types/common"
-import { FilterableProductTypeProps } from "../types/product"
+import { FindConfig, Selector } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { buildQuery, isString } from "../utils"
 
 class ProductTypeService extends TransactionBaseService {
   protected manager_: EntityManager
@@ -21,7 +20,7 @@ class ProductTypeService extends TransactionBaseService {
   }
 
   /**
-   * Gets a product by id.
+   * Gets a product type by id.
    * Throws in case of DB Error and if product was not found.
    * @param id - id of the product to get.
    * @param config - object that defines what should be included in the
@@ -40,7 +39,7 @@ class ProductTypeService extends TransactionBaseService {
     if (!type) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Product with id: ${id} was not found`
+        `Product type with id: ${id} was not found`
       )
     }
 
@@ -54,29 +53,33 @@ class ProductTypeService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductTypeProps = {},
+    selector: Selector<ProductType> & {
+      q?: string
+      discount_condition_id?: string
+    } = {},
     config: FindConfig<ProductType> = { skip: 0, take: 20 }
   ): Promise<ProductType[]> {
-    const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
-
-    const query = buildQuery(selector, config)
-    return await typeRepo.find(query)
+    const [productTypes] = await this.listAndCount(selector, config)
+    return productTypes
   }
 
   /**
-   * Lists product tags and adds count.
+   * Lists product types and adds count.
    * @param selector - the query object for find
    * @param config - the config to be used for find
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: FilterableProductTypeProps = {},
+    selector: Selector<ProductType> & {
+      q?: string
+      discount_condition_id?: string
+    } = {},
     config: FindConfig<ProductType> = { skip: 0, take: 20 }
   ): Promise<[ProductType[], number]> {
     const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
 
-    let q: string | undefined = undefined
-    if ("q" in selector) {
+    let q
+    if (isString(selector.q)) {
       q = selector.q
       delete selector.q
     }
@@ -84,13 +87,16 @@ class ProductTypeService extends TransactionBaseService {
     const query = buildQuery(selector, config)
 
     if (q) {
-      const where = query.where
+      query.where.value = ILike(`%${q}%`)
+    }
 
-      delete where.value
-
-      query.where = (qb: SelectQueryBuilder<ProductType>): void => {
-        qb.where(where).andWhere([{ value: ILike(`%${q}%`) }])
-      }
+    if (query.where.discount_condition_id) {
+      const discountConditionId = query.where.discount_condition_id as string
+      delete query.where.discount_condition_id
+      return await typeRepo.findAndCountByDiscountConditionId(
+        discountConditionId,
+        query
+      )
     }
 
     return await typeRepo.findAndCount(query)

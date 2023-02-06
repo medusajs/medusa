@@ -2,11 +2,11 @@ import { Router } from "express"
 import { Customer, Order } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
-import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
 import {
-  defaultStoreOrdersRelations,
   defaultStoreOrdersFields,
+  defaultStoreOrdersRelations,
 } from "../orders"
+import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
 
 const route = Router()
 
@@ -34,7 +34,7 @@ export default (app, container) => {
   )
 
   // Authenticated endpoints
-  route.use(middlewares.authenticate())
+  route.use(middlewares.requireCustomerAuthentication())
 
   route.get("/me", middlewares.wrap(require("./get-customer").default))
   route.post("/me", middlewares.wrap(require("./update-customer").default))
@@ -111,14 +111,55 @@ export const allowedStoreCustomersFields = [
   "metadata",
 ]
 
+/**
+ * @schema StoreCustomersRes
+ * type: object
+ * properties:
+ *   customer:
+ *     $ref: "#/components/schemas/Customer"
+ */
 export type StoreCustomersRes = {
   customer: Omit<Customer, "password_hash">
 }
 
+/**
+ * @schema StoreCustomersListOrdersRes
+ * type: object
+ * properties:
+ *   orders:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Order"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type StoreCustomersListOrdersRes = PaginatedResponse & {
   orders: Order[]
 }
 
+/**
+ * @schema StoreCustomersListPaymentMethodsRes
+ * type: object
+ * properties:
+ *   payment_methods:
+ *     type: array
+ *     items:
+ *       type: object
+ *       properties:
+ *         provider_id:
+ *           type: string
+ *           description: The id of the Payment Provider where the payment method is saved.
+ *         data:
+ *           type: object
+ *           description: The data needed for the Payment Provider to use the saved payment method.
+ */
 export type StoreCustomersListPaymentMethodsRes = {
   payment_methods: {
     provider_id: string

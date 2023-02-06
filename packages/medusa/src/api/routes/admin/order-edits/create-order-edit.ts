@@ -1,7 +1,7 @@
-import { Request, Response } from "express"
-import { OrderEditService } from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { OrderEditService } from "../../../../services"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
@@ -12,7 +12,14 @@ import {
  * operationId: "PostOrderEdits"
  * summary: "Create an OrderEdit"
  * description: "Creates an OrderEdit."
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/AdminPostOrderEditsReq"
  * x-authenticated: true
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -20,7 +27,7 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdit.create({ order_id, internal_note })
+ *       medusa.admin.orderEdits.create({ order_id })
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
@@ -28,8 +35,9 @@ import {
  *     label: cURL
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/admin/order-edits' \
- *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "order_id": "my_order_id", "internal_note": "my_optional_note" }'
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{ "order_id": "my_order_id", "internal_note": "my_optional_note" }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -41,9 +49,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -64,13 +70,13 @@ export default async (req: Request, res: Response) => {
   const manager = req.scope.resolve("manager") as EntityManager
 
   const data = req.validatedBody as AdminPostOrderEditsReq
-  const loggedInUserId = (req.user?.id ?? req.user?.userId) as string
+  const createdBy = (req.user?.id ?? req.user?.userId) as string
 
   const createdOrderEdit = await manager.transaction(
     async (transactionManager) => {
       return await orderEditService
         .withTransaction(transactionManager)
-        .create(data, { loggedInUserId })
+        .create(data, { createdBy })
     }
   )
 
@@ -83,6 +89,19 @@ export default async (req: Request, res: Response) => {
   return res.json({ order_edit: orderEdit })
 }
 
+/**
+ * @schema AdminPostOrderEditsReq
+ * type: object
+ * required:
+ *   - order_id
+ * properties:
+ *   order_id:
+ *     description: The ID of the order to create the edit for.
+ *     type: string
+ *   internal_note:
+ *     description: An optional note to create for the order edit.
+ *     type: string
+ */
 export class AdminPostOrderEditsReq {
   @IsString()
   order_id: string
@@ -90,4 +109,8 @@ export class AdminPostOrderEditsReq {
   @IsOptional()
   @IsString()
   internal_note?: string
+
+  @IsOptional()
+  @IsString()
+  created_by?: string
 }

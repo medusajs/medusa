@@ -7,13 +7,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - address
-          properties:
-            address:
-              description: The Address to add to the Customer.
-              anyOf:
-                - $ref: ../components/schemas/address.yaml
+          $ref: ../components/schemas/StorePostCustomersCustomerAddressesReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -33,9 +27,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              customer:
-                $ref: ../components/schemas/customer.yaml
+            $ref: ../components/schemas/StoreCustomersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

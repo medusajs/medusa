@@ -15,16 +15,9 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           title:
- *             type: string
- *             description:  The title to identify the Collection by.
- *           handle:
- *             type: string
- *             description:  An optional handle to be used in slugs, if none is provided we will kebab-case the title.
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostCollectionsCollectionReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -58,9 +51,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            collection:
- *              $ref: "#/components/schemas/product_collection"
+ *          $ref: "#/components/schemas/AdminCollectionsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -96,6 +87,20 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ collection })
 }
 
+/**
+ * @schema AdminPostCollectionsCollectionReq
+ * type: object
+ * properties:
+ *   title:
+ *     type: string
+ *     description:  The title to identify the Collection by.
+ *   handle:
+ *     type: string
+ *     description:  An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostCollectionsCollectionReq {
   @IsString()
   @IsOptional()

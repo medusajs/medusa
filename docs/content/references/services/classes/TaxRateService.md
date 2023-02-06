@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`
 
   ↳ **`TaxRateService`**
 
@@ -20,61 +20,107 @@
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:28](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L28)
+[packages/medusa/src/services/tax-rate.ts:33](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L33)
 
 ## Properties
 
-### manager\_
+### \_\_configModule\_\_
 
-• `Private` **manager\_**: `EntityManager`
+• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:22](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L22)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+
+___
+
+### \_\_container\_\_
+
+• `Protected` `Readonly` **\_\_container\_\_**: `any`
+
+#### Inherited from
+
+TransactionBaseService.\_\_container\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[packages/medusa/src/services/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L25)
 
 ___
 
 ### productService\_
 
-• `Private` **productService\_**: [`ProductService`](ProductService.md)
+• `Protected` `Readonly` **productService\_**: [`ProductService`](ProductService.md)
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:23](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L23)
+[packages/medusa/src/services/tax-rate.ts:28](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L28)
 
 ___
 
 ### productTypeService\_
 
-• `Private` **productTypeService\_**: [`ProductTypeService`](ProductTypeService.md)
+• `Protected` `Readonly` **productTypeService\_**: [`ProductTypeService`](ProductTypeService.md)
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:24](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L24)
+[packages/medusa/src/services/tax-rate.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L29)
 
 ___
 
 ### shippingOptionService\_
 
-• `Private` **shippingOptionService\_**: [`ShippingOptionService`](ShippingOptionService.md)
+• `Protected` `Readonly` **shippingOptionService\_**: [`ShippingOptionService`](ShippingOptionService.md)
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L25)
+[packages/medusa/src/services/tax-rate.ts:30](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L30)
 
 ___
 
 ### taxRateRepository\_
 
-• `Private` **taxRateRepository\_**: typeof `TaxRateRepository`
+• `Protected` `Readonly` **taxRateRepository\_**: typeof `TaxRateRepository`
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:26](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L26)
+[packages/medusa/src/services/tax-rate.ts:31](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L31)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[packages/medusa/src/services/tax-rate.ts:26](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L26)
 
 ## Methods
 
@@ -96,7 +142,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:197](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L197)
+[packages/medusa/src/services/tax-rate.ts:190](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L190)
 
 ___
 
@@ -118,13 +164,13 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:233](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L233)
+[packages/medusa/src/services/tax-rate.ts:226](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L226)
 
 ___
 
 ### addToShippingOption
 
-▸ **addToShippingOption**(`id`, `optionIds`, `replace?`): `Promise`<`ShippingTaxRate`\>
+▸ **addToShippingOption**(`id`, `optionIds`, `replace?`): `Promise`<`ShippingTaxRate`[]\>
 
 #### Parameters
 
@@ -136,11 +182,50 @@ ___
 
 #### Returns
 
-`Promise`<`ShippingTaxRate`\>
+`Promise`<`ShippingTaxRate`[]\>
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:273](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L273)
+[packages/medusa/src/services/tax-rate.ts:266](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L266)
+
+___
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
@@ -160,7 +245,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:104](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L104)
+[packages/medusa/src/services/tax-rate.ts:97](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L97)
 
 ___
 
@@ -180,7 +265,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:135](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L135)
+[packages/medusa/src/services/tax-rate.ts:128](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L128)
 
 ___
 
@@ -201,7 +286,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:63](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L63)
+[packages/medusa/src/services/tax-rate.ts:49](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L49)
 
 ___
 
@@ -222,7 +307,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:74](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L74)
+[packages/medusa/src/services/tax-rate.ts:60](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L60)
 
 ___
 
@@ -243,7 +328,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:321](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L321)
+[packages/medusa/src/services/tax-rate.ts:314](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L314)
 
 ___
 
@@ -263,7 +348,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:331](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L331)
+[packages/medusa/src/services/tax-rate.ts:324](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L324)
 
 ___
 
@@ -284,7 +369,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:143](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L143)
+[packages/medusa/src/services/tax-rate.ts:136](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L136)
 
 ___
 
@@ -305,7 +390,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:161](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L161)
+[packages/medusa/src/services/tax-rate.ts:154](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L154)
 
 ___
 
@@ -326,19 +411,19 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:179](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L179)
+[packages/medusa/src/services/tax-rate.ts:172](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L172)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<`TaxRate`\>
+▸ **retrieve**(`taxRateId`, `config?`): `Promise`<`TaxRate`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `string` |
+| `taxRateId` | `string` |
 | `config` | `FindConfig`<`TaxRate`\> |
 
 #### Returns
@@ -347,7 +432,31 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:85](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L85)
+[packages/medusa/src/services/tax-rate.ts:71](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L71)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -368,24 +477,28 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:120](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L120)
+[packages/medusa/src/services/tax-rate.ts:113](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/tax-rate.ts#L113)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager`): [`TaxRateService`](TaxRateService.md)
+▸ **withTransaction**(`transactionManager?`): [`TaxRateService`](TaxRateService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `transactionManager` | `EntityManager` |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`TaxRateService`](TaxRateService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:44](https://github.com/medusajs/medusa/blob/3efeb6b84/packages/medusa/src/services/tax-rate.ts#L44)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

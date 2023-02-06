@@ -4,12 +4,14 @@ import { OrderEditService } from "../../../../services"
 /**
  * @oas [delete] /order-edits/{id}/changes/{change_id}
  * operationId: "DeleteOrderEditsOrderEditItemChange"
- * summary: "Delete an Order Edit Item Change"
+ * summary: "Delete a Line Item Change"
  * description: "Deletes an Order Edit Item Change"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete.
  *   - (path) change_id=* {string} The ID of the Order Edit Item Change to delete.
+ * x-codegen:
+ *   method: deleteItemChange
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -17,7 +19,7 @@ import { OrderEditService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.deleteItemChange(item_change_id, order_edit_id)
+ *       medusa.admin.orderEdits.deleteItemChange(order_edit_id, item_change_id)
  *         .then(({ id, object, deleted }) => {
  *           console.log(id)
  *         })
@@ -37,18 +39,7 @@ import { OrderEditService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Order Edit Item Change.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               format: item_change
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Order Edit Item Change was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminOrderEditItemChangeDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  */

@@ -3,7 +3,6 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -13,7 +12,13 @@ import { validator } from "../../../../utils/validator"
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
  * parameters:
  *   - (path) id=* {string} The ID of the Cart.
- *   - (body) provider_id=* {string} The ID of the Payment Provider.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartPaymentSessionReq"
+ * x-codegen:
+ *   method: setPaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,9 +47,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -73,15 +76,24 @@ export default async (req, res) => {
       .setPaymentSession(id, validated.provider_id)
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  const data = await decorateLineItemsWithTotals(cart, req)
   res.status(200).json({ cart: data })
 }
 
+/**
+ * @schema StorePostCartsCartPaymentSessionReq
+ * type: object
+ * required:
+ *   - provider_id
+ * properties:
+ *   provider_id:
+ *     type: string
+ *     description: The ID of the Payment Provider.
+ */
 export class StorePostCartsCartPaymentSessionReq {
   @IsString()
   provider_id: string

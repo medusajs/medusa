@@ -2,48 +2,14 @@
 
 ## Classes
 
-- [AdminGetReturnsParams](../classes/internal-19.AdminGetReturnsParams.md)
-- [AdminPostReturnsReturnReceiveReq](../classes/internal-19.AdminPostReturnsReturnReceiveReq.md)
-- [Item](../classes/internal-19.Item.md)
+- [AdminGetProductTypesParams](../classes/internal-19.AdminGetProductTypesParams.md)
 
 ## Type Aliases
 
-### AdminReturnsCancelRes
+### AdminProductTypesListRes
 
-Ƭ **AdminReturnsCancelRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `order` | [`Order`](../classes/internal.Order.md) |
+Ƭ **AdminProductTypesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `product_types`: [`ProductType`](../classes/internal.ProductType.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/returns/index.d.ts:6
-
-___
-
-### AdminReturnsListRes
-
-Ƭ **AdminReturnsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `returns`: [`Return`](../classes/internal.Return.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/returns/index.d.ts:9
-
-___
-
-### AdminReturnsRes
-
-Ƭ **AdminReturnsRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `return` | [`Return`](../classes/internal.Return.md) |
-
-#### Defined in
-
-medusa/dist/api/routes/admin/returns/index.d.ts:12
+medusa/dist/api/routes/admin/product-types/index.d.ts:9

@@ -1,34 +1,25 @@
+---
+description: 'Learn how to create an entity in the Medusa server. This guide also explains how to create a repository and access and delete the entity.'
+addHowToData: true
+---
+
 # Create an Entity
 
 In this document, you’ll learn how you can create an [Entity](overview.md).
-
-## Prerequisites
-
-It’s recommended to create a `tsconfig.json` file in the root of your Medusa server with the following content:
-
-```jsx
-{
-  "compilerOptions": {
-    "experimentalDecorators": true
-  }
-}
-```
-
-This will remove any errors that show up in your IDE related to experimental decorators.
 
 ## Create the Entity
 
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
 
-```tsx
-import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
-import { BaseEntity} from "@medusajs/medusa";
+```ts title=src/models/post.ts
+import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
+import { BaseEntity } from "@medusajs/medusa"
 import { generateEntityId } from "@medusajs/medusa/dist/utils"
 
 @Entity()
 export class Post extends BaseEntity {
-  @Column({type: 'varchar'})
-  title: string | null;
+  @Column({ type: "varchar" })
+  title: string | null
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -45,12 +36,12 @@ To generate an ID for your entity that matches the IDs generated for Medusa’s 
 
 If you want the entity to also be soft deletable then it should extend `SoftDeletableEntity` instead:
 
-```tsx
-import { SoftDeletableEntity } from "@medusajs/medusa";
+```ts
+import { SoftDeletableEntity } from "@medusajs/medusa"
 
 @Entity()
 export class Post extends SoftDeletableEntity {
-  //...
+  // ...
 }
 ```
 
@@ -64,9 +55,9 @@ You can learn more about Migrations, how to create them, and how to run them in 
 
 ### Create a Repository
 
-Entities data can be easily accessed and modified using Typeorm [Repositories](https://typeorm.io/working-with-repository). To create a repository, create a file in `src/repositories`. For example, here’s a repository `PostRepository` that resides in `src/repositories/post.ts`:
+Entities data can be easily accessed and modified using Typeorm [Repositories](https://typeorm.io/working-with-repository). To create a repository, create a file in `src/repositories`. For example, here’s a repository `PostRepository` created in `src/repositories/post.ts`:
 
-```tsx
+```ts title=src/repositories/post.ts
 import { EntityRepository, Repository } from "typeorm"
 
 import { Post } from "../models/post"
@@ -83,6 +74,8 @@ Be careful with your file names as it can cause unclear errors in Typeorm. Make 
 
 :::
 
+---
+
 ## Access a Custom Entity
 
 :::note
@@ -97,31 +90,32 @@ npm run build
 
 You can access your custom entity data in the database in services or subscribers using the repository. For example, here’s a service that lists all posts:
 
-```tsx
-import { TransactionBaseService } from '@medusajs/medusa';
+```ts
+import { TransactionBaseService } from "@medusajs/medusa"
 
 class PostService extends TransactionBaseService {
   constructor({ postRepository, manager }) {
-    super({ postRepository, manager });
+    super({ postRepository, manager })
 
-    this.postRepository = postRepository;
-    this.manager_ = manager;
+    this.postRepository = postRepository
+    this.manager_ = manager
   }
 
   async list() {
-    const postRepository = this.manager_.getCustomRepository(this.postRepository);
-    return await postRepository.find();
+    const postRepository = this.manager_
+      .getCustomRepository(this.postRepository)
+    return await postRepository.find()
   }
 }
 
-export default PostService;
+export default PostService
 ```
 
 In the constructor, you can use dependency injection to get access to instances of services and repositories. Here, you initialize class fields `postRepository` and `manager`. The `manager` is a [Typeorm Entity Manager](https://typeorm.io/working-with-entity-manager).
 
 Then, in the method `list`, you can obtain an instance of the `PostRepository` using `this.manager_.getCustomRepository` passing it `this.postRepository` as a parameter. This lets you use [Custom Repositories with Typeorm](https://typeorm.io/custom-repository) to create custom methods in your repository that work with the data in your database.
 
-After getting an instance of the repository, you can then use [Typeorm’s Repository methods](https://typeorm.io/repository-api) to perform CRUD (Create, Read, Update, Delete) operations on your entity.
+After getting an instance of the repository, you can then use [Typeorm’s Repository methods](https://typeorm.io/repository-api) to perform Create, Read, Update, and Delete (CRUD) operations on your entity.
 
 If you need access to your entity in endpoints, you can then use the methods you define in the service.
 
@@ -135,12 +129,14 @@ This same usage of repositories can be done in subscribers as well.
 
 To delete soft-deletable entities that extend the `SoftDeletableEntity` class, you can use the repository method `softDelete` method:
 
-```tsx
-await postRepository.softDelete(post.id);
+```ts
+await postRepository.softDelete(post.id)
 ```
 
-## What’s Next 🚀
+---
 
-- Check out Medusa's entities in the [Entities' reference](../../../references/entities/classes/Address.md).
-- Learn about [migrations](../migrations/overview.md).
-- Learn more about [Services](../services/create-service.md) and how to use them.
+## See Also
+
+- [Entities' reference](../../../references/entities/classes/Address.md)
+- [Migrations Overview](../migrations/overview.md)
+- [Create a Services](../services/create-service.md)

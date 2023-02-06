@@ -2,15 +2,39 @@
 
 ## Classes
 
-- [AdminGetProductTypesPaginationParams](../classes/internal-15.AdminGetProductTypesPaginationParams.md)
-- [AdminGetProductTypesParams](../classes/internal-15.AdminGetProductTypesParams.md)
+- [AdminUpdatePaymentCollectionsReq](../classes/internal-15.AdminUpdatePaymentCollectionsReq.md)
+- [GetPaymentCollectionsParams](../classes/internal-15.GetPaymentCollectionsParams.md)
 
 ## Type Aliases
 
-### AdminProductTypesListRes
+### AdminPaymentCollectionDeleteRes
 
-Ƭ **AdminProductTypesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `product_types`: [`ProductType`](../classes/internal.ProductType.md)[]  }
+Ƭ **AdminPaymentCollectionDeleteRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `deleted` | `boolean` |
+| `id` | `string` |
+| `object` | ``"payment_collection"`` |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/product-types/index.d.ts:9
+medusa/dist/api/routes/admin/payment-collections/index.d.ts:10
+
+___
+
+### AdminPaymentCollectionsRes
+
+Ƭ **AdminPaymentCollectionsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `payment_collection` | [`PaymentCollection`](../classes/internal.PaymentCollection.md) |
+
+#### Defined in
+
+medusa/dist/api/routes/admin/payment-collections/index.d.ts:7

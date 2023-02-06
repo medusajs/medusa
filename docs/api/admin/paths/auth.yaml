@@ -36,9 +36,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              user:
-                $ref: ../components/schemas/user.yaml
+            $ref: ../components/schemas/AdminAuthRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -110,9 +108,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              user:
-                $ref: ../components/schemas/user.yaml
+            $ref: ../components/schemas/AdminAuthRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

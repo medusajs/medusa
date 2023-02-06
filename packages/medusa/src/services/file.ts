@@ -17,6 +17,14 @@ class DefaultFileService extends AbstractFileService {
       "Please add a file service plugin in order to manipulate files in Medusa"
     )
   }
+  async uploadProtected(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult> {
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Please add a file service plugin in order to manipulate files in Medusa"
+    )
+  }
   async delete(fileData: Record<string, any>): Promise<void> {
     throw new MedusaError(
       MedusaError.Types.UNEXPECTED_STATE,

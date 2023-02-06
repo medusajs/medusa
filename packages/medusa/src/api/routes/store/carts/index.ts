@@ -1,5 +1,6 @@
-import { Router } from "express"
 import "reflect-metadata"
+import { RequestHandler, Router } from "express"
+
 import { Cart, Order, Swap } from "../../../../"
 import { DeleteResponse, FindParams } from "../../../../types/common"
 import middlewares, {
@@ -8,6 +9,10 @@ import middlewares, {
 } from "../../../middlewares"
 import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
+import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
+import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 
 const route = Router()
 
@@ -17,7 +22,7 @@ export default (app, container) => {
 
   app.use("/carts", route)
 
-  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+  if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
     defaultStoreCartRelations.push("sales_channel")
   }
 
@@ -37,10 +42,21 @@ export default (app, container) => {
     middlewares.wrap(require("./get-cart").default)
   )
 
-  route.post(
-    "/",
+  const createMiddlewares = [
     middlewareService.usePreCartCreation(),
     transformBody(StorePostCartReq),
+  ]
+
+  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
+    createMiddlewares.push(
+      extendRequestParams as unknown as RequestHandler,
+      validateSalesChannelParam as unknown as RequestHandler
+    )
+  }
+
+  route.post(
+    "/",
+    ...createMiddlewares,
     middlewares.wrap(require("./create-cart").default)
   )
 
@@ -121,14 +137,7 @@ export default (app, container) => {
   return app
 }
 
-export const defaultStoreCartFields: (keyof Cart)[] = [
-  "subtotal",
-  "tax_total",
-  "shipping_total",
-  "discount_total",
-  "gift_card_total",
-  "total",
-]
+export const defaultStoreCartFields: (keyof Cart)[] = []
 
 export const defaultStoreCartRelations = [
   "gift_cards",
@@ -147,10 +156,42 @@ export const defaultStoreCartRelations = [
   "discounts.rule",
 ]
 
+/**
+ * @schema StoreCartsRes
+ * type: object
+ * properties:
+ *   cart:
+ *     $ref: "#/components/schemas/Cart"
+ */
 export type StoreCartsRes = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
 }
 
+/**
+ * @schema StoreCompleteCartRes
+ * type: object
+ * properties:
+ *   type:
+ *     type: string
+ *     description: The type of the data property.
+ *     enum: [order, cart, swap]
+ *   data:
+ *     type: object
+ *     description: The data of the result object. Its type depends on the type field.
+ *     oneOf:
+ *       - type: object
+ *         allOf:
+ *           - description: Cart was successfully authorized and order was placed successfully.
+ *           - $ref: "#/components/schemas/Order"
+ *       - type: object
+ *         allOf:
+ *           - description: Cart was successfully authorized but requires further actions.
+ *           - $ref: "#/components/schemas/Cart"
+ *       - type: object
+ *         allOf:
+ *           - description: When cart is used for a swap and it has been completed successfully.
+ *           - $ref: "#/components/schemas/Swap"
+ */
 export type StoreCompleteCartRes =
   | {
       type: "cart"

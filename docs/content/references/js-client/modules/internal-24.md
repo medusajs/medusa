@@ -2,30 +2,48 @@
 
 ## Classes
 
-- [AdminGetSwapsParams](../classes/internal-24.AdminGetSwapsParams.md)
+- [AdminGetReturnsParams](../classes/internal-24.AdminGetReturnsParams.md)
+- [AdminPostReturnsReturnReceiveReq](../classes/internal-24.AdminPostReturnsReturnReceiveReq.md)
+- [Item](../classes/internal-24.Item.md)
 
 ## Type Aliases
 
-### AdminSwapsListRes
+### AdminReturnsCancelRes
 
-Ƭ **AdminSwapsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `swaps`: [`Swap`](../classes/internal.Swap.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/swaps/index.d.ts:7
-
-___
-
-### AdminSwapsRes
-
-Ƭ **AdminSwapsRes**: `Object`
+Ƭ **AdminReturnsCancelRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `swap` | [`Swap`](../classes/internal.Swap.md) |
+| `order` | [`Order`](../classes/internal.Order.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/swaps/index.d.ts:10
+medusa/dist/api/routes/admin/returns/index.d.ts:6
+
+___
+
+### AdminReturnsListRes
+
+Ƭ **AdminReturnsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `returns`: [`Return`](../classes/internal.Return.md)[]  }
+
+#### Defined in
+
+medusa/dist/api/routes/admin/returns/index.d.ts:9
+
+___
+
+### AdminReturnsRes
+
+Ƭ **AdminReturnsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `return` | [`Return`](../classes/internal.Return.md) |
+
+#### Defined in
+
+medusa/dist/api/routes/admin/returns/index.d.ts:12

@@ -32,14 +32,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - products
-          properties:
-            products:
-              type: array
-              description: The IDs of the products to associate with this tax rate
-              items:
-                type: string
+          $ref: ../components/schemas/AdminPostTaxRatesTaxRateProductsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -60,9 +53,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              tax_rate:
-                $ref: ../components/schemas/tax_rate.yaml
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -109,14 +100,7 @@ delete:
     content:
       application/json:
         schema:
-          required:
-            - products
-          properties:
-            products:
-              type: array
-              description: The IDs of the products to remove association with this tax rate
-              items:
-                type: string
+          $ref: ../components/schemas/AdminDeleteTaxRatesTaxRateProductsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -138,9 +122,7 @@ delete:
       content:
         application/json:
           schema:
-            properties:
-              tax_rate:
-                $ref: ../components/schemas/tax_rate.yaml
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

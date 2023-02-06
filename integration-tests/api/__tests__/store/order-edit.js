@@ -3,8 +3,11 @@ const path = require("path")
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { useDb, initDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
+const {
+  getClientAuthenticationCookie,
+} = require("../../helpers/client-authentication")
 const {
   simpleOrderEditFactory,
 } = require("../../factories/simple-order-edit-factory")
@@ -16,24 +19,28 @@ const {
   simpleLineItemFactory,
   simpleProductFactory,
   simpleOrderFactory,
+  simpleCustomerFactory,
 } = require("../../factories")
 const { OrderEditItemChangeType } = require("@medusajs/medusa")
+const setupServer = require("../../../helpers/setup-server")
 
 jest.setTimeout(30000)
 
-describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
+describe("/store/order-edits", () => {
   let medusaProcess
   let dbConnection
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [process, connection] = await startServerWithEnvironment({
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({
       cwd,
-      env: { MEDUSA_FF_ORDER_EDITING: true },
-      verbose: false,
     })
-    dbConnection = connection
-    medusaProcess = process
+
+    await simpleCustomerFactory(dbConnection, {
+      id: "customer",
+      email: "test@medusajs.com",
+    })
   })
 
   afterAll(async () => {
@@ -164,7 +171,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
     it("gets order edit", async () => {
       const api = useApi()
 
-      const response = await api.get(`/store/order-edits/${orderEditId}`)
+      const response = await api.get(`/store/order-edits/${orderEditId}`, {
+        headers: {
+          Cookie: await getClientAuthenticationCookie(api),
+        },
+      })
 
       expect(response.status).toEqual(200)
       expect(response.data.order_edit).toEqual(
@@ -218,7 +229,14 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
       const api = useApi()
 
       const err = await api
-        .get(`/store/order-edits/${orderEditId}?fields=internal_note,order_id`)
+        .get(
+          `/store/order-edits/${orderEditId}?fields=internal_note,order_id`,
+          {
+            headers: {
+              Cookie: await getClientAuthenticationCookie(api),
+            },
+          }
+        )
         .catch((e) => e)
 
       expect(err.response.data.message).toBe(
@@ -265,6 +283,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         `/store/order-edits/${declineableOrderEdit.id}/decline`,
         {
           declined_reason: "wrong color",
+        },
+        {
+          headers: {
+            Cookie: await getClientAuthenticationCookie(api),
+          },
         }
       )
 
@@ -283,6 +306,11 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
         `/store/order-edits/${declinedOrderEdit.id}/decline`,
         {
           declined_reason: "wrong color",
+        },
+        {
+          headers: {
+            Cookie: await getClientAuthenticationCookie(api),
+          },
         }
       )
 
@@ -302,15 +330,94 @@ describe("[MEDUSA_FF_ORDER_EDITING] /store/order-edits", () => {
 
       const api = useApi()
       await api
-        .post(`/store/order-edits/${confirmedOrderEdit.id}/decline`, {
-          declined_reason: "wrong color",
-        })
+        .post(
+          `/store/order-edits/${confirmedOrderEdit.id}/decline`,
+          {
+            declined_reason: "wrong color",
+          },
+          {
+            headers: {
+              Cookie: await getClientAuthenticationCookie(api),
+            },
+          }
+        )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.message).toEqual(
             `Cannot decline an order edit with status confirmed.`
           )
         })
+    })
+  })
+
+  describe("POST /store/order-edits/:id/complete", () => {
+    let requestedOrderEdit
+    let confirmedOrderEdit
+    let createdOrderEdit
+
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+
+      requestedOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        id: IdMap.getId("order-edit-1"),
+        created_by: "admin_user",
+        requested_at: new Date(),
+      })
+
+      confirmedOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        id: IdMap.getId("order-edit-2"),
+        created_by: "admin_user",
+        confirmed_at: new Date(),
+        confirmed_by: "admin_user",
+      })
+
+      createdOrderEdit = await simpleOrderEditFactory(dbConnection, {
+        id: IdMap.getId("order-edit-3"),
+        created_by: "admin_user",
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it("idempotently complete an already confirmed order edit", async () => {
+      const api = useApi()
+      const result = await api.post(
+        `/store/order-edits/${confirmedOrderEdit.id}/complete`,
+        undefined,
+        {
+          headers: {
+            Cookie: await getClientAuthenticationCookie(api),
+          },
+        }
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.order_edit).toEqual(
+        expect.objectContaining({
+          id: confirmedOrderEdit.id,
+          status: "confirmed",
+          confirmed_at: expect.any(String),
+        })
+      )
+    })
+
+    it("fails to complete a non requested order edit", async () => {
+      const api = useApi()
+      const err = await api
+        .post(`/store/order-edits/${createdOrderEdit.id}/complete`, undefined, {
+          headers: {
+            Cookie: await getClientAuthenticationCookie(api),
+          },
+        })
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toBe(
+        `Cannot complete an order edit with status created`
+      )
     })
   })
 })

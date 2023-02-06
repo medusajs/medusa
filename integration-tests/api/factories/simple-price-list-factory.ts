@@ -1,9 +1,9 @@
 import {
-  PriceList,
-  MoneyAmount,
-  PriceListType,
-  PriceListStatus,
   CustomerGroup,
+  MoneyAmount,
+  PriceList,
+  PriceListStatus,
+  PriceListType,
 } from "@medusajs/medusa"
 import faker from "faker"
 import { Connection } from "typeorm"
@@ -42,7 +42,7 @@ export const simplePriceListFactory = async (
 
   const listId = data.id || `simple-price-list-${Math.random() * 1000}`
 
-  let customerGroups = []
+  let customerGroups: CustomerGroup[] = []
   if (typeof data.customer_groups !== "undefined") {
     customerGroups = await Promise.all(
       data.customer_groups.map((group) =>

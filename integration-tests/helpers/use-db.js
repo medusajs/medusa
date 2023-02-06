@@ -1,5 +1,6 @@
 const path = require("path")
 
+const { getConfigFile } = require("medusa-core-utils")
 const { dropDatabase } = require("pg-god")
 const { createConnection } = require("typeorm")
 const dbFactory = require("./use-template-db")
@@ -43,6 +44,7 @@ const DbTestUtil = {
     forceDelete = forceDelete || []
 
     const entities = this.db_.entityMetadatas
+
     const manager = this.db_.manager
 
     if (connectionType === "sqlite") {
@@ -59,7 +61,8 @@ const DbTestUtil = {
         continue
       }
 
-      await manager.query(`DELETE FROM "${entity.tableName}";`)
+      await manager.query(`DELETE
+                           FROM "${entity.tableName}";`)
     }
     if (connectionType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = ON`)
@@ -77,31 +80,16 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd }) {
-    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
-    const { projectConfig, featureFlags } = require(configPath)
+  initDb: async function ({ cwd, database_extra }) {
+    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const { projectConfig, featureFlags } = configModule
 
-    const featureFlagsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `feature-flags`
-    )).default
+    const featureFlagsLoader =
+      require("@medusajs/medusa/dist/loaders/feature-flags").default
 
     const featureFlagsRouter = featureFlagsLoader({ featureFlags })
 
-    const modelsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `models`
-    )).default
+    const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
 
     const entities = modelsLoader({}, { register: false })
 
@@ -112,6 +100,7 @@ module.exports = {
         database: projectConfig.database_database,
         synchronize: true,
         entities,
+        extra: database_extra ?? {},
       })
 
       instance.setDb(dbConnection)
@@ -119,10 +108,11 @@ module.exports = {
     } else {
       await dbFactory.createFromTemplate(DB_NAME)
 
-      // get migraitons with enabled featureflags
+      // get migrations with enabled featureflags
       const migrationDir = path.resolve(
         path.join(
-          cwd,
+          __dirname,
+          `../../`,
           `node_modules`,
           `@medusajs`,
           `medusa`,
@@ -132,20 +122,16 @@ module.exports = {
         )
       )
 
-      const { getEnabledMigrations } = require(path.join(
-        cwd,
-        `node_modules`,
-        `@medusajs`,
-        `medusa`,
-        `dist`,
-        `commands`,
-        `utils`,
-        `get-migrations`
-      ))
+      const {
+        getEnabledMigrations,
+        getModuleSharedResources,
+      } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
-      const enabledMigrations = await getEnabledMigrations(
-        [migrationDir],
-        (flag) => featureFlagsRouter.isFeatureEnabled(flag)
+      const { migrations: moduleMigrations, models: moduleModels } =
+        getModuleSharedResources(configModule, featureFlagsRouter)
+
+      const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
+        featureFlagsRouter.isFeatureEnabled(flag)
       )
 
       const enabledEntities = entities.filter(
@@ -155,8 +141,10 @@ module.exports = {
       const dbConnection = await createConnection({
         type: "postgres",
         url: DB_URL,
-        entities: enabledEntities,
-        migrations: enabledMigrations,
+        entities: enabledEntities.concat(moduleModels),
+        migrations: enabledMigrations.concat(moduleMigrations),
+        extra: database_extra ?? {},
+        name: "integration-tests",
       })
 
       await dbConnection.runMigrations()

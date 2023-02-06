@@ -1,13 +1,14 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import DiscountService from "../discount"
 import { FlagRouter } from "../../utils/flag-router"
+import DiscountService from "../discount"
+import { TotalsServiceMock } from "../__mocks__/totals"
+import { newTotalsServiceMock } from "../__mocks__/new-totals"
 
 const featureFlagRouter = new FlagRouter({})
 
 describe("DiscountService", () => {
   describe("create", () => {
     const discountRepository = MockRepository({})
-
     const discountRuleRepository = MockRepository({})
 
     const regionService = {
@@ -52,6 +53,21 @@ describe("DiscountService", () => {
       }
     })
 
+    it("fails to create a discount without regions", async () => {
+      const err = await discountService.create({
+        code: "test",
+        rule: {
+          type: "fixed",
+          allocation: "total",
+          value: 20,
+        },
+      }).catch(e => e)
+
+      expect(err.type).toEqual("invalid_data")
+      expect(err.message).toEqual("Discount must have atleast 1 region")
+      expect(discountRepository.create).toHaveBeenCalledTimes(0)
+    })
+
     it("successfully creates discount", async () => {
       await discountService.create({
         code: "test",
@@ -74,7 +90,7 @@ describe("DiscountService", () => {
 
       expect(discountRepository.create).toHaveBeenCalledTimes(1)
       expect(discountRepository.create).toHaveBeenCalledWith({
-        code: "TEST",
+        code: "test",
         rule: expect.anything(),
         regions: [{ id: IdMap.getId("france") }],
       })
@@ -106,7 +122,7 @@ describe("DiscountService", () => {
 
       expect(discountRepository.create).toHaveBeenCalledTimes(1)
       expect(discountRepository.create).toHaveBeenCalledWith({
-        code: "TEST",
+        code: "test",
         rule: expect.anything(),
         regions: [{ id: IdMap.getId("france") }],
         starts_at: new Date("03/14/2021"),
@@ -140,7 +156,7 @@ describe("DiscountService", () => {
 
       expect(discountRepository.create).toHaveBeenCalledTimes(1)
       expect(discountRepository.create).toHaveBeenCalledWith({
-        code: "TEST",
+        code: "test",
         rule: expect.anything(),
         regions: [{ id: IdMap.getId("france") }],
         starts_at: new Date("03/14/2021"),
@@ -217,6 +233,17 @@ describe("DiscountService", () => {
 
     it("successfully finds discount by code", async () => {
       await discountService.retrieveByCode("10%OFF")
+      expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(discountRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          code: "10%OFF",
+          is_dynamic: false,
+        },
+      })
+    })
+
+    it("successfully trims, uppdercases, and finds discount by code", async () => {
+      await discountService.retrieveByCode(" 10%Off ")
       expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
       expect(discountRepository.findOne).toHaveBeenCalledWith({
         where: {
@@ -590,8 +617,20 @@ describe("DiscountService", () => {
     })
 
     const totalsService = {
-      getSubtotal: () => {
+      ...TotalsServiceMock,
+      getSubtotal: async () => {
         return 1100
+      },
+    }
+
+    const newTotalsService = {
+      ...newTotalsServiceMock,
+      getLineItemTotals: async () => {
+        return [
+          {
+            subtotal: 1100,
+          },
+        ]
       },
     }
 
@@ -599,6 +638,7 @@ describe("DiscountService", () => {
       manager: MockManager,
       discountRepository,
       totalsService,
+      newTotalsService,
       featureFlagRouter,
     })
 
@@ -620,21 +660,31 @@ describe("DiscountService", () => {
     })
 
     it("correctly calculates fixed + total discount", async () => {
+      let item = {
+        unit_price: 400,
+        quantity: 2,
+        allow_discounts: true,
+      }
+
       const adjustment1 = await discountService.calculateDiscountForLineItem(
         "disc_fixed_total",
+        item,
         {
-          unit_price: 400,
-          quantity: 2,
-          allow_discounts: true,
+          items: [item],
         }
       )
 
+      item = {
+        unit_price: 300,
+        quantity: 1,
+        allow_discounts: true,
+      }
+
       const adjustment2 = await discountService.calculateDiscountForLineItem(
         "disc_fixed_total",
+        item,
         {
-          unit_price: 300,
-          quantity: 1,
-          allow_discounts: true,
+          items: [item],
         }
       )
 

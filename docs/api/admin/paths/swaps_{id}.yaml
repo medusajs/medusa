@@ -30,9 +30,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              swap:
-                $ref: ../components/schemas/swap.yaml
+            $ref: ../components/schemas/AdminSwapsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

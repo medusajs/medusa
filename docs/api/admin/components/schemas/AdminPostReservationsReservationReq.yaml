@@ -1,0 +1,11 @@
+type: object
+properties:
+  location_id:
+    description: The id of the location of the reservation
+    type: string
+  quantity:
+    description: The id of the reservation item
+    type: number
+  metadata:
+    description: An optional set of key-value pairs with additional information.
+    type: object

@@ -2,22 +2,23 @@
 
 ## Classes
 
-- [Item](../classes/internal-41.Item.md)
-- [ReturnShipping](../classes/internal-41.ReturnShipping.md)
-- [StorePostReturnsReq](../classes/internal-41.StorePostReturnsReq.md)
+- [ShippingAddressPayload](../classes/internal-41.ShippingAddressPayload.md)
+- [StoreGetOrdersParams](../classes/internal-41.StoreGetOrdersParams.md)
+- [StorePostCustomersCustomerAcceptClaimReq](../classes/internal-41.StorePostCustomersCustomerAcceptClaimReq.md)
+- [StorePostCustomersCustomerOrderClaimReq](../classes/internal-41.StorePostCustomersCustomerOrderClaimReq.md)
 
 ## Type Aliases
 
-### StoreReturnsRes
+### StoreOrdersRes
 
-Ƭ **StoreReturnsRes**: `Object`
+Ƭ **StoreOrdersRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `return` | [`Return`](../classes/internal.Return.md) |
+| `order` | [`Order`](../classes/internal.Order.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/store/returns/index.d.ts:4
+medusa/dist/api/routes/store/orders/index.d.ts:9

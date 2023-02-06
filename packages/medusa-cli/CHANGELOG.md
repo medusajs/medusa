@@ -1,5 +1,28 @@
 # Change Log
 
+## 1.3.6
+
+### Patch Changes
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+- Updated dependencies [[`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2)]:
+  - medusa-telemetry@0.0.16
+
+## 1.3.5
+
+### Patch Changes
+
+- Updated dependencies [[`a76762418`](https://github.com/medusajs/medusa/commit/a76762418877e675977540dc95e095492873af44)]:
+  - medusa-telemetry@0.0.15
+
+## 1.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`cfb24d72f`](https://github.com/medusajs/medusa/commit/cfb24d72fa303a6755e8579c46d3c7f36278b120)]:
+  - medusa-telemetry@0.0.14
+
 ## 1.3.3
 
 ### Patch Changes

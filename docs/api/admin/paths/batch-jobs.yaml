@@ -7,41 +7,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - type
-            - context
-          properties:
-            type:
-              type: string
-              description: The type of batch job to start.
-              example: product-export
-            context:
-              type: object
-              description: >-
-                Additional infomration regarding the batch to be used for
-                processing.
-              example:
-                shape:
-                  prices:
-                    - region: null
-                      currency_code: eur
-                  dynamicImageColumnCount: 4
-                  dynamicOptionColumnCount: 2
-                list_config:
-                  skip: 0
-                  take: 50
-                  order:
-                    created_at: DESC
-                  relations:
-                    - variants
-                    - variant.prices
-                    - images
-            dry_run:
-              type: boolean
-              description: >-
-                Set a batch job in dry_run mode to get some information on what
-                will be done without applying any modifications.
-              default: false
+          $ref: ../components/schemas/AdminPostBatchesReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -62,9 +28,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              batch_job:
-                $ref: ../components/schemas/batch_job.yaml
+            $ref: ../components/schemas/AdminBatchJobRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -338,20 +302,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              batch_jobs:
-                type: array
-                items:
-                  $ref: ../components/schemas/batch_job.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/AdminBatchJobListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -15,6 +15,7 @@ import { Type } from "class-transformer"
  *   - (query) q {string} Query used for searching customer group names.
  *   - (query) offset=0 {integer} How many groups to skip in the result.
  *   - (query) order {string} the field used to order the customer groups.
+ *   - (query) discount_condition_id {string} The discount condition id on which to filter the customer groups.
  *   - in: query
  *     name: id
  *     style: form
@@ -99,6 +100,9 @@ import { Type } from "class-transformer"
  *            format: date
  *   - (query) limit=10 {integer} Limit the number of customer groups returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer groups of the result.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetCustomerGroupsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -108,7 +112,7 @@ import { Type } from "class-transformer"
  *       // must be previously logged in or use api token
  *       medusa.admin.customerGroups.list()
  *       .then(({ customer_groups, limit, offset, count }) => {
- *         console.log(customer_groups.id);
+ *         console.log(customer_groups.length);
  *       });
  *   - lang: Shell
  *     label: cURL
@@ -126,20 +130,7 @@ import { Type } from "class-transformer"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer_groups:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/customer_group"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminCustomerGroupsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -1,3 +1,8 @@
+---
+description: 'Learn how to integrate Twilio SMS with the Medusa server. Learn how to install the Twilio SMS plugin and test it out.'
+addHowToData: true
+---
+
 # Twilio SMS
 
 In this document, you’ll learn about the Twilio SMS Plugin, what it does, and how to use it in Medusa.
@@ -14,15 +19,21 @@ This plugin only gives you access to the Twilio SMS API but does not implement s
 
 :::
 
+---
+
 ## Prerequisites
 
-Before going further with this guide make sure you have a Medusa server set up. You can follow our [Quickstart guide](../quickstart/quick-start.md) if you don’t.
+Before going further with this guide make sure you have a Medusa server set up. You can follow the [Quickstart guide](../quickstart/quick-start.mdx) if you don’t.
 
 You also must have a [Twilio account created](https://www.twilio.com/sms) so if you don’t already please go ahead and create one.
 
+---
+
 ## Retrieve Credentials
 
-For the [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms), you need three credentials from your Twilio account: Account SID, Auth Token, and a Twilio phone number to send from. You can find these 3 from your [Twilio Console’s homepage](https://console.twilio.com).
+For the [Twilio SMS plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-twilio-sms), you need three credentials from your Twilio account: Account SID, Auth Token, and a Twilio phone number to send from. You can find these three from your [Twilio Console’s homepage](https://console.twilio.com).
+
+---
 
 ## Install Plugin
 
@@ -44,19 +55,21 @@ Make sure to replace `<YOUR_ACCOUNT_SID>`, `<YOUR_AUTH_TOKEN>`, and `<YOUR_TWILI
 
 Finally, add the plugin and its options in the `medusa-config.js` file to the `plugins` array:
 
-```jsx
+```jsx title=medusa-config.js
 const plugins = [
-  ...,
+  // ...
   {
     resolve: `medusa-plugin-twilio-sms`,
     options: {
       account_sid: process.env.TWILIO_SMS_ACCOUNT_SID,
       auth_token: process.env.TWILIO_SMS_AUTH_TOKEN,
-      from_number: process.env.TWILIO_SMS_FROM_NUMBER
-    }
-  }
-];
+      from_number: process.env.TWILIO_SMS_FROM_NUMBER,
+    },
+  },
+]
 ```
+
+---
 
 ## Example Usage of the Plugin
 
@@ -72,30 +85,30 @@ For this example to work, you’ll need to install and configure Redis on your s
 
 Create the file `src/services/sms.js` in your Medusa server with the following content:
 
-```jsx
+```jsx title=src/services/sms.js
 class SmsSubscriber {
   constructor({ twilioSmsService, orderService, eventBusService }) {
-    this.twilioSmsService_ = twilioSmsService;
-    this.orderService = orderService;
+    this.twilioSmsService_ = twilioSmsService
+    this.orderService = orderService
 
-    eventBusService.subscribe("order.placed", this.sendSMS);
+    eventBusService.subscribe("order.placed", this.sendSMS)
   }
 
   sendSMS = async (data) => {
     const order = await this.orderService.retrieve(data.id, {
-      relations: ['shipping_address']
-    });
+      relations: ["shipping_address"],
+    })
 
     if (order.shipping_address.phone) {
       this.twilioSmsService_.sendSms({
         to: order.shipping_address.phone,
-        body: 'We have received your order #' + data.id,
+        body: "We have received your order #" + data.id,
       })
     }
-  };
+  }
 }
 
-export default SmsSubscriber;
+export default SmsSubscriber
 ```
 
 In the `constructor`, you resolve the `twilioSmsService` and `orderService` using dependency injection to use it later in the `sendSMS` method.
@@ -110,7 +123,7 @@ If you create an order now on your storefront, you should receive a message from
 
 :::tip
 
-If you don’t have a storefront set up yet, you can install one of our [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefronts.
+If you don’t have a storefront set up yet, you can install one of the [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](../starters/gatsby-medusa-starter.mdx) storefronts.
 
 :::
 
@@ -120,9 +133,11 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 
 :::
 
-![Twilio Dashboard](https://i.imgur.com/MXtQMiL.png)
+![Twilio Dashboard](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001219/Medusa%20Docs/Stripe/MXtQMiL_kb7kxe.png)
 
-## What’s Next 🚀
+---
 
-- Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
-- Install the [Medusa admin](../admin/quickstart.md) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.
+## See Also
+
+- [Notifications Overview](../advanced/backend/notification/overview.md).
+- Install the [Medusa admin](../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

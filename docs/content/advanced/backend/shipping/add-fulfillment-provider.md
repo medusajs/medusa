@@ -1,3 +1,8 @@
+---
+description: 'Learn how to create a fulfillment provider in the Medusa server. This guide explains the different methods in the fulfillment provider.'
+addHowToData: true
+---
+
 # How to Add a Fulfillment Provider
 
 In this document, you’ll learn how to add a fulfillment provider to a Medusa server. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](overview.md).
@@ -19,21 +24,23 @@ Also, the fulfillment provider class should have a static property `identifier`.
 
 Fulfillment providers are loaded and installed on the server startup.
 
+---
+
 ## Create a Fulfillment Provider
 
-The first step is to create the file that will hold the fulfillment provider class in `src/services`:
+The first step is to create a JavaScript or TypeScript file under `src/services`. For example, create the file `src/services/my-fulfillment.ts` with the following content:
 
-```jsx
+```ts title=src/services/my-fulfillment.ts
 import { FulfillmentService } from "medusa-interfaces"
 
 class MyFulfillmentService extends FulfillmentService {
 
 }
 
-export default MyFulfillmentService;
+export default MyFulfillmentService
 ```
 
-Fulfillment provider services should extend `FulfillmentService` imported from `medusa-interfaces`.
+Fulfillment provider services must extend the `FulfillmentService` class imported from `medusa-interfaces`.
 
 :::note
 
@@ -49,27 +56,33 @@ The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installe
 
 The value of this property will also be used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin/#tag/Region/operation/PostRegionsRegionFulfillmentProviders) to a region.
 
-```jsx
+```ts
 import { FulfillmentService } from "medusa-interfaces"
 
 class MyFulfillmentService extends FulfillmentService {
-  static identifier = 'my-fulfillment';
+  static identifier = "my-fulfillment"
 }
 
-export default MyFulfillmentService;
+export default MyFulfillmentService
 ```
 
 ### constructor
 
-You can use the `constructor` of your fulfillment provider to have access to different services in Medusa through dependency injection.
+You can use the `constructor` of your fulfillment provider to have access to different services in Medusa through dependency injection. You can access any services you create in Medusa in the first parameter.
 
 You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
 
-Additionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
+Additionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa server and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter.
 
-```jsx
-constructor({}, options) {
-  //you can access options here
+For example:
+
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  constructor(container, options) {
+    super(container)
+    // you can access options here
+  }
 }
 ```
 
@@ -77,28 +90,31 @@ constructor({}, options) {
 
 When the admin is creating shipping options available for customers during checkout, they choose one of the fulfillment options provided by underlying fulfillment providers.
 
-For example, if you’re integrating UPS as a fulfillment provider, you might support 2 fulfillment options: UPS Express Shipping and UPS Access Point.
+For example, if you’re integrating UPS as a fulfillment provider, you might support two fulfillment options: UPS Express Shipping and UPS Access Point.
 
 These fulfillment options are defined in the `getFulfillmentOptions` method. This method should return an array of options.
 
 For example:
 
-```jsx
-async getFulfillmentOptions () {
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async getFulfillmentOptions() {
     return [
       {
-        id: 'my-fulfillment'
+        id: "my-fulfillment",
       },
       {
-        id: 'my-fulfillment-dynamic'
-      }
-    ];
+        id: "my-fulfillment-dynamic",
+      },
+    ]
   }
+}
 ```
 
 When the admin chooses one of those fulfillment options, the data of the chosen fulfillment option is stored in the `data` property of the shipping option created. This property is used to add any additional data you need to fulfill the order with the third-party provider.
 
-For that reason, the fulfillment option does not have any required structure and can be of any format that works for your integration.
+For that reason, the fulfillment option doesn't have any required structure and can be of any format that works for your integration.
 
 ### validateOption
 
@@ -110,9 +126,12 @@ This method returns a boolean. If the result is false, an error is thrown and th
 
 For example, you can use this method to ensure that the `id` in the `data` object is correct:
 
-```jsx
-async validateOption (data) {
-    return data.id == 'my-fulfillment';
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async validateOption(data) {
+      return data.id == "my-fulfillment"
+  }
 }
 ```
 
@@ -124,7 +143,7 @@ When the customer chooses a shipping option on checkout, the shipping option and
 
 `validateFulfillmentOption` is called when a `POST` request is sent to [`/carts/:id/shipping-methods`](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
 
-This method accepts 3 parameters:
+This method accepts three parameters:
 
 1. The shipping option data.
 2. The `data` object passed in the body of the request.
@@ -138,14 +157,17 @@ If everything is valid, this method must return a value that will be stored in t
 
 For example:
 
-```jsx
-async validateFulfillmentData(optionData, data, cart) {
-  if (data.id !== "my-fulfillment") {
-    throw new Error("invalid data");
-  }
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async validateFulfillmentData(optionData, data, cart) {
+    if (data.id !== "my-fulfillment") {
+      throw new Error("invalid data")
+    }
 
-  return {
-    ...data
+    return {
+      ...data,
+    }
   }
 }
 ```
@@ -156,7 +178,7 @@ After an order is placed, it can be fulfilled either manually by the admin or us
 
 This method gives you access to the fulfillment being created as well as other details in case you need to perform any additional actions with the third-party provider.
 
-This method accepts 4 parameters:
+This method accepts four parameters:
 
 1. The data of the shipping method associated with the order.
 2. An array of items in the order to be fulfilled. The admin can choose all or some of the items to fulfill.
@@ -167,15 +189,18 @@ You can use the `data` property in the shipping method (first parameter) to acce
 
 Here is a basic implementation of `createFulfillment` for a fulfillment provider that does not interact with any third-party provider to create the fulfillment:
 
-```jsx
-createFulfillment(
-  methodData,
-  fulfillmentItems,
-  fromOrder,
-  fulfillment
-) {
-  // No data is being sent anywhere
-  return Promise.resolve({})
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  createFulfillment(
+    methodData,
+    fulfillmentItems,
+    fromOrder,
+    fulfillment
+  ) {
+    // No data is being sent anywhere
+    return Promise.resolve({})
+  }
 }
 ```
 
@@ -200,9 +225,12 @@ This method receives as a parameter the `data` object sent with the request that
 
 For example:
 
-```jsx
-canCalculate(data) {
-  return data.id === 'my-fulfillment-dynamic';
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  canCalculate(data) {
+    return data.id === "my-fulfillment-dynamic"
+  }
 }
 ```
 
@@ -210,7 +238,7 @@ canCalculate(data) {
 
 This method is called on checkout when the shipping method is being created if the `price_type` of the selected shipping option is `calculated`.
 
-This method receives 3 parameters:
+This method receives three parameters:
 
 1. The `data` parameter of the selected shipping option.
 2. The `data` parameter sent with [the request](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
@@ -218,17 +246,23 @@ This method receives 3 parameters:
 
 If your fulfillment provider does not provide any dynamically calculated rates you can keep the function empty:
 
-```jsx
-calculatePrice() {
-
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  calculatePrice() {
+    // leave empty
+  }
 }
 ```
 
 Otherwise, you can use it to calculate the price with a custom logic. For example:
 
-```jsx
-calculatePrice (optionData, data, cart) {
-  return cart.items.length * 1000;
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  calculatePrice(optionData, data, cart) {
+    return cart.items.length * 1000
+  }
 }
 ```
 
@@ -244,9 +278,12 @@ It receives the return created as a parameter. The value it returns is set to th
 
 This is the basic implementation of the method for a fulfillment provider that does not contact with a third-party provider to fulfill the return:
 
-```jsx
-createReturn(returnOrder) {
-  return Promise.resolve({})
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  createReturn(returnOrder) {
+    return Promise.resolve({})
+  }
 }
 ```
 
@@ -260,13 +297,17 @@ This method receives the fulfillment being cancelled as a parameter.
 
 This is the basic implementation of the method for a fulfillment provider that does not interact with a third-party provider to cancel the fulfillment:
 
-```jsx
-cancelFulfillment(fulfillment) {
-  return Promise.resolve({})
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  cancelFulfillment(fulfillment) {
+    return Promise.resolve({})
+  }
 }
 ```
 
-## What’s Next 🚀
+---
 
-- Check out the [Webshipper plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-webshipper) for an example of a fulfillment provider that interacts with a third-party providers.
-- Check out the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-payment-manual) for a basic implementation of a fulfillment provider.
+## See Also
+
+- Example Implementations: [Webshipper plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-webshipper) and the [manual fulfillment plugin](https://github.com/medusajs/medusa/tree/cab5821f55cfa448c575a20250c918b7fc6835c9/packages/medusa-fulfillment-manual)

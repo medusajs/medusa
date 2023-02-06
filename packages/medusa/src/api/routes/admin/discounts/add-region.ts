@@ -13,6 +13,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Discount.
  *   - (path) region_id=* {string} The ID of the Region.
+ * x-codegen:
+ *   method: addRegion
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -40,9 +42,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

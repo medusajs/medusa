@@ -4,7 +4,6 @@ import LineItemService from "../line-item"
 import { PricingServiceMock } from "../__mocks__/pricing"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
-
 ;[true, false].forEach((isTaxInclusiveEnabled) => {
   describe(`tax inclusive flag set to: ${isTaxInclusiveEnabled}`, () => {
     describe("LineItemService", () => {
@@ -32,9 +31,7 @@ import { RegionServiceMock } from "../__mocks__/region"
         }
 
         const productVariantService = {
-          withTransaction: function () {
-            return this
-          },
+          ...ProductVariantServiceMock,
           retrieve: (query) => {
             if (query === IdMap.getId("test-giftcard")) {
               return {
@@ -58,15 +55,25 @@ import { RegionServiceMock } from "../__mocks__/region"
             }
           },
           getRegionPrice: () => 100,
+          list: jest.fn().mockImplementation(async (selector) => {
+            return (selector.id || []).map((id) => ({
+              id,
+              title: "Test variant",
+              product: {
+                title: "Test product",
+                thumbnail: "",
+                discountable: false,
+                is_giftcard: true,
+              },
+            }))
+          }),
         }
 
         const pricingService = {
-          withTransaction: function () {
-            return this
-          },
-          getProductVariantPricingById: () => {
+          ...PricingServiceMock,
+          getProductVariantsPricing: () => {
             return {
-              calculated_price: 100,
+              [IdMap.getId("test-giftcard")]: { calculated_price: 100 },
             }
           },
           getProductVariantPricing: () => {
@@ -106,15 +113,17 @@ import { RegionServiceMock } from "../__mocks__/region"
           })
 
           expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
-          expect(lineItemRepository.create).toHaveBeenCalledWith({
-            variant_id: IdMap.getId("test-variant"),
-            cart_id: IdMap.getId("test-cart"),
-            title: "Test product",
-            description: "Test variant",
-            thumbnail: "",
-            unit_price: 100,
-            quantity: 1,
-          })
+          expect(lineItemRepository.create).toHaveBeenCalledWith([
+            {
+              variant_id: IdMap.getId("test-variant"),
+              cart_id: IdMap.getId("test-cart"),
+              title: "Test product",
+              description: "Test variant",
+              thumbnail: "",
+              unit_price: 100,
+              quantity: 1,
+            },
+          ])
         })
 
         it("successfully create a line item with price and quantity", async () => {
@@ -126,12 +135,14 @@ import { RegionServiceMock } from "../__mocks__/region"
           })
 
           expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
-          expect(lineItemRepository.create).toHaveBeenCalledWith({
-            variant_id: IdMap.getId("test-variant"),
-            cart_id: IdMap.getId("test-cart"),
-            unit_price: 50,
-            quantity: 2,
-          })
+          expect(lineItemRepository.create).toHaveBeenCalledWith([
+            {
+              variant_id: IdMap.getId("test-variant"),
+              cart_id: IdMap.getId("test-cart"),
+              unit_price: 50,
+              quantity: 2,
+            },
+          ])
         })
 
         it("successfully create a line item giftcard", async () => {
@@ -147,8 +158,7 @@ import { RegionServiceMock } from "../__mocks__/region"
           })
 
           expect(lineItemRepository.create).toHaveBeenCalledTimes(2)
-          expect(lineItemRepository.create).toHaveBeenNthCalledWith(
-            2,
+          expect(lineItemRepository.create).toHaveBeenNthCalledWith(2, [
             expect.objectContaining({
               allow_discounts: false,
               variant_id: IdMap.getId("test-giftcard"),
@@ -161,8 +171,8 @@ import { RegionServiceMock } from "../__mocks__/region"
               is_giftcard: true,
               should_merge: true,
               metadata: {},
-            })
-          )
+            }),
+          ])
         })
       })
 
@@ -190,6 +200,7 @@ import { RegionServiceMock } from "../__mocks__/region"
         const lineItemService = new LineItemService({
           manager: MockManager,
           lineItemRepository,
+          productVariantService: ProductVariantServiceMock,
         })
 
         beforeEach(async () => {
@@ -329,9 +340,7 @@ describe("LineItemService", () => {
       }
 
       const productVariantService = {
-        withTransaction: function () {
-          return this
-        },
+        ...ProductVariantServiceMock,
         retrieve: (query) => {
           if (query === IdMap.getId("test-giftcard")) {
             return {
@@ -355,16 +364,26 @@ describe("LineItemService", () => {
           }
         },
         getRegionPrice: () => 100,
+        list: jest.fn().mockImplementation(async (selector) => {
+          return (selector.id || []).map((id) => ({
+            id,
+            title: "Test variant",
+            product: {
+              title: "Test product",
+              thumbnail: "",
+            },
+          }))
+        }),
       }
 
       const pricingService = {
-        withTransaction: function () {
-          return this
-        },
-        getProductVariantPricingById: () => {
+        ...PricingServiceMock,
+        getProductVariantsPricing: () => {
           return {
-            calculated_price: 100,
-            calculated_price_includes_tax: true,
+            [IdMap.getId("test-variant")]: {
+              calculated_price: 100,
+              calculated_price_includes_tax: true,
+            },
           }
         },
         getProductVariantPricing: () => {
@@ -408,11 +427,56 @@ describe("LineItemService", () => {
           thumbnail: "",
           variant_id: IdMap.getId("test-variant"),
           quantity: 1,
+          order_edit_id: null,
           allow_discounts: undefined,
           is_giftcard: undefined,
           metadata: {},
           should_merge: true,
           includes_tax: true,
+          variant: expect.objectContaining({
+            id: expect.any(String),
+            product: expect.objectContaining({
+              thumbnail: "",
+              title: "Test product",
+            }),
+            title: "Test variant",
+          }),
+        })
+      })
+
+      it("successfully create a line item with tax inclusive set to true by passing an object", async () => {
+        await lineItemService.generate(
+          {
+            variantId: IdMap.getId("test-variant"),
+            quantity: 1,
+          },
+          {
+            region_id: IdMap.getId("test-region"),
+          }
+        )
+
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith({
+          unit_price: 100,
+          title: "Test product",
+          description: "Test variant",
+          thumbnail: "",
+          variant_id: IdMap.getId("test-variant"),
+          quantity: 1,
+          allow_discounts: undefined,
+          order_edit_id: null,
+          is_giftcard: undefined,
+          metadata: {},
+          should_merge: true,
+          includes_tax: true,
+          variant: expect.objectContaining({
+            id: expect.any(String),
+            product: expect.objectContaining({
+              thumbnail: "",
+              title: "Test product",
+            }),
+            title: "Test variant",
+          }),
         })
       })
     })
@@ -440,9 +504,7 @@ describe("LineItemService", () => {
       }
 
       const productVariantService = {
-        withTransaction: function () {
-          return this
-        },
+        ...ProductVariantServiceMock,
         retrieve: (query) => {
           if (query === IdMap.getId("test-giftcard")) {
             return {
@@ -456,26 +518,30 @@ describe("LineItemService", () => {
               },
             }
           }
-          return {
-            id: IdMap.getId("test-variant"),
-            title: "Test variant",
-            product: {
-              title: "Test product",
-              thumbnail: "",
-            },
-          }
         },
         getRegionPrice: () => 100,
+        list: jest.fn().mockImplementation(async (selector) => {
+          return (selector.id || []).map((id) => {
+            return {
+              id,
+              title: "Test variant",
+              product: {
+                title: "Test product",
+                thumbnail: "",
+              },
+            }
+          })
+        }),
       }
 
       const pricingService = {
-        withTransaction: function () {
-          return this
-        },
-        getProductVariantPricingById: () => {
+        ...PricingServiceMock,
+        getProductVariantsPricing: () => {
           return {
-            calculated_price: 100,
-            calculated_price_includes_tax: false,
+            [IdMap.getId("test-variant")]: {
+              calculated_price: 100,
+              calculated_price_includes_tax: false,
+            },
           }
         },
         getProductVariantPricing: () => {
@@ -520,10 +586,55 @@ describe("LineItemService", () => {
           variant_id: IdMap.getId("test-variant"),
           quantity: 1,
           allow_discounts: undefined,
+          order_edit_id: null,
           is_giftcard: undefined,
           metadata: {},
           should_merge: true,
           includes_tax: false,
+          variant: expect.objectContaining({
+            id: expect.any(String),
+            product: expect.objectContaining({
+              thumbnail: "",
+              title: "Test product",
+            }),
+            title: "Test variant",
+          }),
+        })
+      })
+
+      it("successfully create a line item with tax inclusive set to false by passing an object", async () => {
+        await lineItemService.generate(
+          {
+            variantId: IdMap.getId("test-variant"),
+            quantity: 1,
+          },
+          {
+            region_id: IdMap.getId("test-region"),
+          }
+        )
+
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith({
+          unit_price: 100,
+          title: "Test product",
+          description: "Test variant",
+          thumbnail: "",
+          variant_id: IdMap.getId("test-variant"),
+          quantity: 1,
+          allow_discounts: undefined,
+          is_giftcard: undefined,
+          order_edit_id: null,
+          metadata: {},
+          should_merge: true,
+          includes_tax: false,
+          variant: expect.objectContaining({
+            id: expect.any(String),
+            product: expect.objectContaining({
+              thumbnail: "",
+              title: "Test product",
+            }),
+            title: "Test variant",
+          }),
         })
       })
     })

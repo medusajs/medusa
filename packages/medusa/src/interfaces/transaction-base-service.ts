@@ -7,7 +7,8 @@ export abstract class TransactionBaseService {
 
   protected constructor(
     protected readonly __container__: any,
-    protected readonly __configModule__?: Record<string, unknown>
+    protected readonly __configModule__?: Record<string, unknown>,
+    protected readonly __moduleDeclaration__?: Record<string, unknown>
   ) {}
 
   withTransaction(transactionManager?: EntityManager): this {
@@ -16,13 +17,12 @@ export abstract class TransactionBaseService {
     }
 
     const cloned = new (this.constructor as any)(
-      {
-        ...this.__container__,
-        manager: transactionManager,
-      },
-      this.__configModule__
+      this.__container__,
+      this.__configModule__,
+      this.__moduleDeclaration__
     )
 
+    cloned.manager_ = transactionManager
     cloned.transactionManager_ = transactionManager
 
     return cloned

@@ -10,6 +10,8 @@ import RegionService from "../../../../services/region"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -37,9 +39,7 @@ import RegionService from "../../../../services/region"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

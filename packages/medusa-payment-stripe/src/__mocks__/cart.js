@@ -91,6 +91,8 @@ export const carts = {
         customer: IdMap.getId("not-lebron"),
       },
     },
+    region: { currency_code: "usd" },
+    total: 100,
     shipping_address: {},
     billing_address: {},
     discounts: [],
@@ -185,6 +187,9 @@ export const carts = {
 }
 
 export const CartServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   retrieve: jest.fn().mockImplementation((cartId) => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)

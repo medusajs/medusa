@@ -9,7 +9,7 @@ get:
       description: The number of types to return.
       schema:
         type: integer
-        default: 10
+        default: 20
     - in: query
       name: offset
       description: The number of items to skip before the results.
@@ -19,6 +19,11 @@ get:
     - in: query
       name: order
       description: The field to sort items by.
+      schema:
+        type: string
+    - in: query
+      name: discount_condition_id
+      description: The discount condition id on which to filter the product types.
       schema:
         type: string
     - in: query
@@ -108,18 +113,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              product_types:
-                $ref: ../components/schemas/product_type.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/AdminProductTypesListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -16,28 +16,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - email
- *           - password
- *         properties:
- *           email:
- *             description: "The Users email."
- *             type: string
- *             format: email
- *           first_name:
- *             description: "The name of the User."
- *             type: string
- *           last_name:
- *             description: "The name of the User."
- *             type: string
- *           role:
- *             description: "Userrole assigned to the user."
- *             type: string
- *             enum: [admin, member, developer]
- *           password:
- *             description: "The Users password."
- *             type: string
- *             format: password
+ *         $ref: "#/components/schemas/AdminCreateUserRequest"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -73,9 +54,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             user:
- *               $ref: "#/components/schemas/user"
+ *           $ref: "#/components/schemas/AdminUserRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -105,6 +84,32 @@ export default async (req, res) => {
   res.status(200).json({ user: _.omit(user, ["password_hash"]) })
 }
 
+/**
+ * @schema AdminCreateUserRequest
+ * type: object
+ * required:
+ *   - email
+ *   - password
+ * properties:
+ *   email:
+ *     description: "The Users email."
+ *     type: string
+ *     format: email
+ *   first_name:
+ *     description: "The name of the User."
+ *     type: string
+ *   last_name:
+ *     description: "The name of the User."
+ *     type: string
+ *   role:
+ *     description: "Userrole assigned to the user."
+ *     type: string
+ *     enum: [admin, member, developer]
+ *   password:
+ *     description: "The Users password."
+ *     type: string
+ *     format: password
+ */
 export class AdminCreateUserRequest {
   @IsEmail()
   email: string

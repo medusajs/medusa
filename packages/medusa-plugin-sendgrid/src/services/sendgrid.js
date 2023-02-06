@@ -31,6 +31,7 @@ class SendGridService extends NotificationService {
       fulfillmentProviderService,
       totalsService,
       productVariantService,
+      giftCardService,
     },
     options
   ) {
@@ -49,6 +50,7 @@ class SendGridService extends NotificationService {
     this.fulfillmentService_ = fulfillmentService
     this.totalsService_ = totalsService
     this.productVariantService_ = productVariantService
+    this.giftCardService_ = giftCardService
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -129,6 +131,8 @@ class SendGridService extends NotificationService {
           eventData,
           attachmentGenerator
         )
+      case "order.refund_created":
+        return this.orderRefundCreatedData(eventData, attachmentGenerator)
       default:
         return {}
     }
@@ -166,6 +170,8 @@ class SendGridService extends NotificationService {
           return map.customer_password_reset_template
         case "restock-notification.restocked":
           return map.medusa_restock_template
+        case "order.refund_created":
+          return map.order_refund_created_template
         default:
           return null
       }
@@ -203,6 +209,8 @@ class SendGridService extends NotificationService {
         return this.options_.customer_password_reset_template
       case "restock-notification.restocked":
         return this.options_.medusa_restock_template
+      case "order.refund_created":
+        return this.options_.order_refund_created_template
       default:
         return null
     }
@@ -573,20 +581,16 @@ class SendGridService extends NotificationService {
     const giftCard = await this.giftCardService_.retrieve(id, {
       relations: ["region", "order"],
     })
-
-    if (!giftCard.order) {
-      return
-    }
-
     const taxRate = giftCard.region.tax_rate / 100
-
-    const locale = await this.extractLocale(order)
+    const locale = giftCard.order ? await this.extractLocale(order) : null;
+    const email = giftCard.order ? giftCard.order.email : giftCard.metadata.email;
 
     return {
       ...giftCard,
       locale,
-      email: giftCard.order.email,
-      display_value: giftCard.value * (1 + taxRate),
+      email,
+      display_value: `${this.humanPrice_((giftCard.value * 1+ taxRate), giftCard.region.currency_code)} ${giftCard.region.currency_code}`,
+      message: giftCard.metadata?.message || giftCard.metadata?.personal_message
     }
   }
 
@@ -1153,6 +1157,30 @@ class SendGridService extends NotificationService {
 
   customerPasswordResetData(data) {
     return data
+  }
+
+  async orderRefundCreatedData({ id, refund_id }) {
+    const order = await this.orderService_.retrieveWithTotals(id, {
+      select: [
+        "total",
+      ],
+      relations: [
+        "refunds",
+        "items",
+      ]
+    })
+
+    const refund = order.refunds.find((refund) => refund.id === refund_id)
+
+    return {
+      order,
+      refund,
+      refund_amount: `${this.humanPrice_(
+        refund.amount,
+        order.currency_code
+      )} ${order.currency_code}`,
+      email: order.email
+    }
   }
 
   processItems_(items, taxRate, currencyCode) {

@@ -8,6 +8,8 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  * description: "Retrieves a list of Shipping Options available to a cart."
  * parameters:
  *   - (path) cart_id {string} The id of the Cart.
+ * x-codegen:
+ *   method: listCartOptions
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,11 +32,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_options:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/shipping_option"
+ *           $ref: "#/components/schemas/StoreShippingOptionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -55,15 +53,8 @@ export default async (req, res) => {
     "shippingProfileService"
   )
 
-  const cart = await cartService.retrieve(cart_id, {
-    select: ["subtotal"],
-    relations: [
-      "region",
-      "items",
-      "items.adjustments",
-      "items.variant",
-      "items.variant.product",
-    ],
+  const cart = await cartService.retrieveWithTotals(cart_id, {
+    relations: ["items.variant", "items.variant.product"],
   })
 
   const options = await shippingProfileService.fetchCartOptions(cart)

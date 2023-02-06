@@ -1,7 +1,7 @@
 import { FlagRouter } from "../utils/flag-router"
 
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { EntityManager, In } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -12,12 +12,14 @@ import {
   ProductType,
   ProductVariant,
   SalesChannel,
+  ProductCategory,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
   FindWithoutRelationsOptions,
   ProductRepository,
 } from "../repositories/product"
+import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
@@ -28,10 +30,10 @@ import {
   FilterableProductProps,
   FindProductConfig,
   ProductOptionInput,
+  ProductSelector,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, isDefined, setMetadata } from "../utils"
-import { formatException } from "../utils/exception-formatter"
+import { buildQuery, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -42,6 +44,7 @@ type InjectedDependencies = {
   productTypeRepository: typeof ProductTypeRepository
   productTagRepository: typeof ProductTagRepository
   imageRepository: typeof ImageRepository
+  productCategoryRepository: typeof ProductCategoryRepository
   productVariantService: ProductVariantService
   searchService: SearchService
   eventBusService: EventBusService
@@ -58,6 +61,8 @@ class ProductService extends TransactionBaseService {
   protected readonly productTypeRepository_: typeof ProductTypeRepository
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
+  // eslint-disable-next-line max-len
+  protected readonly productCategoryRepository_: typeof ProductCategoryRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
@@ -79,6 +84,7 @@ class ProductService extends TransactionBaseService {
     productVariantService,
     productTypeRepository,
     productTagRepository,
+    productCategoryRepository,
     imageRepository,
     searchService,
     featureFlagRouter,
@@ -92,6 +98,7 @@ class ProductService extends TransactionBaseService {
     this.productVariantRepository_ = productVariantRepository
     this.eventBus_ = eventBusService
     this.productVariantService_ = productVariantService
+    this.productCategoryRepository_ = productCategoryRepository
     this.productTypeRepository_ = productTypeRepository
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
@@ -108,7 +115,7 @@ class ProductService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductProps | Selector<Product> = {},
+    selector: ProductSelector,
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -116,20 +123,8 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<Product[]> {
-    const manager = this.manager_
-    const productRepo = manager.getCustomRepository(this.productRepository_)
-
-    const { q, query, relations } = this.prepareListQuery_(selector, config)
-    if (q) {
-      const [products] = await productRepo.getFreeTextSearchResultsAndCount(
-        q,
-        query,
-        relations
-      )
-      return products
-    }
-
-    return await productRepo.findWithRelations(relations, query)
+    const [products] = await this.listAndCount(selector, config)
+    return products
   }
 
   /**
@@ -144,7 +139,7 @@ class ProductService extends TransactionBaseService {
    *   as the second element.
    */
   async listAndCount(
-    selector: FilterableProductProps | Selector<Product>,
+    selector: ProductSelector,
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -194,6 +189,13 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<Product> {
+    if (!isDefined(productId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ id: productId }, config)
   }
 
@@ -208,6 +210,13 @@ class ProductService extends TransactionBaseService {
     productHandle: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
+    if (!isDefined(productHandle)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productHandle" must be defined`
+      )
+    }
+
     return await this.retrieve_({ handle: productHandle }, config)
   }
 
@@ -222,6 +231,13 @@ class ProductService extends TransactionBaseService {
     externalId: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
+    if (!isDefined(externalId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"externalId" must be defined`
+      )
+    }
+
     return await this.retrieve_({ external_id: externalId }, config)
   }
 
@@ -337,6 +353,29 @@ class ProductService extends TransactionBaseService {
   }
 
   /**
+   * Check if the product is assigned to at least one of the provided sales channels.
+   *
+   * @param id - product id
+   * @param salesChannelIds - an array of sales channel ids
+   */
+  async isProductInSalesChannels(
+    id: string,
+    salesChannelIds: string[]
+  ): Promise<boolean> {
+    const product = await this.retrieve_(
+      { id },
+      { relations: ["sales_channels"] }
+    )
+
+    // TODO: reimplement this to use db level check
+    const productsSalesChannels = product.sales_channels.map(
+      (channel) => channel.id
+    )
+
+    return productsSalesChannels.some((id) => salesChannelIds.includes(id))
+  }
+
+  /**
    * Creates a product.
    * @param productObject - the product to create
    * @return resolves to the creation result.
@@ -361,6 +400,7 @@ class ProductService extends TransactionBaseService {
         type,
         images,
         sales_channels: salesChannels,
+        categories: categories,
         ...rest
       } = productObject
 
@@ -373,61 +413,68 @@ class ProductService extends TransactionBaseService {
         rest.discountable = false
       }
 
-      try {
-        let product = productRepo.create(rest)
+      let product = productRepo.create(rest)
 
-        if (images?.length) {
-          product.images = await imageRepo.upsertImages(images)
-        }
+      if (images?.length) {
+        product.images = await imageRepo.upsertImages(images)
+      }
 
-        if (tags?.length) {
-          product.tags = await productTagRepo.upsertTags(tags)
-        }
+      if (tags?.length) {
+        product.tags = await productTagRepo.upsertTags(tags)
+      }
 
-        if (typeof type !== `undefined`) {
-          product.type_id = (await productTypeRepo.upsertType(type))?.id || null
-        }
+      if (typeof type !== `undefined`) {
+        product.type_id = (await productTypeRepo.upsertType(type))?.id || null
+      }
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
-        ) {
-          if (isDefined(salesChannels)) {
-            product.sales_channels = []
-            if (salesChannels?.length) {
-              const salesChannelIds = salesChannels?.map((sc) => sc.id)
-              product.sales_channels = salesChannelIds?.map(
-                (id) => ({ id } as SalesChannel)
-              )
-            }
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        if (isDefined(salesChannels)) {
+          product.sales_channels = []
+          if (salesChannels?.length) {
+            const salesChannelIds = salesChannels?.map((sc) => sc.id)
+            product.sales_channels = salesChannelIds?.map(
+              (id) => ({ id } as SalesChannel)
+            )
           }
         }
-
-        product = await productRepo.save(product)
-
-        product.options = await Promise.all(
-          (options ?? []).map(async (option) => {
-            const res = optionRepo.create({
-              ...option,
-              product_id: product.id,
-            })
-            await optionRepo.save(res)
-            return res
-          })
-        )
-
-        const result = await this.retrieve(product.id, {
-          relations: ["options"],
-        })
-
-        await this.eventBus_
-          .withTransaction(manager)
-          .emit(ProductService.Events.CREATED, {
-            id: result.id,
-          })
-        return result
-      } catch (error) {
-        throw formatException(error)
       }
+
+      if (isDefined(categories)) {
+        product.categories = []
+
+        if (categories?.length) {
+          const categoryIds = categories.map((c) => c.id)
+          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
+
+          product.categories = categoryRecords
+        }
+      }
+
+      product = await productRepo.save(product)
+
+      product.options = await Promise.all(
+        (options ?? []).map(async (option) => {
+          const res = optionRepo.create({
+            ...option,
+            product_id: product.id,
+          })
+          await optionRepo.save(res)
+          return res
+        })
+      )
+
+      const result = await this.retrieve(product.id, {
+        relations: ["options"],
+      })
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.CREATED, {
+          id: result.id,
+        })
+      return result
     })
   }
 
@@ -457,7 +504,7 @@ class ProductService extends TransactionBaseService {
       )
       const imageRepo = manager.getCustomRepository(this.imageRepository_)
 
-      const relations = ["variants", "tags", "images"]
+      const relations = ["tags", "images"]
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
@@ -479,12 +526,12 @@ class ProductService extends TransactionBaseService {
       })
 
       const {
-        variants,
         metadata,
         images,
         tags,
         type,
         sales_channels: salesChannels,
+        categories: categories,
         ...rest
       } = update
 
@@ -508,6 +555,17 @@ class ProductService extends TransactionBaseService {
         product.tags = await productTagRepo.upsertTags(tags)
       }
 
+      if (isDefined(categories)) {
+        product.categories = []
+
+        if (categories?.length) {
+          const categoryIds = categories.map((c) => c.id)
+          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
+
+          product.categories = categoryRecords
+        }
+      }
+
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
       ) {
@@ -522,59 +580,8 @@ class ProductService extends TransactionBaseService {
         }
       }
 
-      if (variants) {
-        // Iterate product variants and update their properties accordingly
-        for (const variant of product.variants) {
-          const exists = variants.find((v) => v.id && variant.id === v.id)
-          if (!exists) {
-            await productVariantRepo.remove(variant)
-          }
-        }
-
-        const newVariants: ProductVariant[] = []
-        for (const [i, newVariant] of variants.entries()) {
-          const variant_rank = i
-
-          if (newVariant.id) {
-            const variant = product.variants.find((v) => v.id === newVariant.id)
-
-            if (!variant) {
-              throw new MedusaError(
-                MedusaError.Types.NOT_FOUND,
-                `Variant with id: ${newVariant.id} is not associated with this product`
-              )
-            }
-
-            const saved = await this.productVariantService_
-              .withTransaction(manager)
-              .update(variant, {
-                ...newVariant,
-                variant_rank,
-                product_id: variant.product_id,
-              })
-
-            newVariants.push(saved)
-          } else {
-            // If the provided variant does not have an id, we assume that it
-            // should be created
-            const created = await this.productVariantService_
-              .withTransaction(manager)
-              .create(product.id, {
-                ...newVariant,
-                variant_rank,
-                options: newVariant.options || [],
-                prices: newVariant.prices || [],
-              })
-
-            newVariants.push(created)
-          }
-        }
-
-        product.variants = newVariants
-      }
-
       for (const [key, value] of Object.entries(rest)) {
-        if (typeof value !== `undefined`) {
+        if (isDefined(value)) {
           product[key] = value
         }
       }
@@ -812,6 +819,7 @@ class ProductService extends TransactionBaseService {
 
       const productOption = await productOptionRepo.findOne({
         where: { id: optionId, product_id: productId },
+        relations: ["values"],
       })
 
       if (!productOption) {

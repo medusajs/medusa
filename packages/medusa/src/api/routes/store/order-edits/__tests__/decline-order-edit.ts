@@ -1,10 +1,9 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
-import OrderEditingFeatureFlag from "../../../../../loaders/feature-flags/order-editing"
 
-describe("GET /store/order-edits/:id", () => {
-  describe("successfully gets an order edit", () => {
+describe("GET /store/order-edits/:id/decline", () => {
+  describe("successfully decline an order edit", () => {
     const orderEditId = IdMap.getId("testDeclineOrderEdit")
     let subject
 
@@ -18,7 +17,6 @@ describe("GET /store/order-edits/:id", () => {
         `/store/order-edits/${orderEditId}/decline`,
         {
           payload,
-          flags: [OrderEditingFeatureFlag],
         }
       )
     })

@@ -10,12 +10,19 @@ import {
 /**
  * @oas [post] /order-edits/{id}/items/{item_id}
  * operationId: "PostOrderEditsEditLineItemsLineItem"
- * summary: "Create or update the order edit change holding the line item changes"
+ * summary: "Upsert Line Item Change"
  * description: "Create or update the order edit change holding the line item changes"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order Edit to delete.
+ *   - (path) id=* {string} The ID of the Order Edit to update.
  *   - (path) item_id=* {string} The ID of the order edit item to update.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/AdminPostOrderEditsEditLineItemsLineItemReq"
+ * x-codegen:
+ *   method: updateLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -23,16 +30,19 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id)
+ *       medusa.admin.orderEdits.updateLineItem(order_edit_id, line_item_id, {
+ *           quantity: 5
+ *         })
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
- *       --header 'Authorization: Bearer {api_token}'
- *       -d '{ "quantity": 5 }'
+ *       curl --location --request POST 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
+ *       --header 'Authorization: Bearer {api_token}' \
+ *       --header 'Content-Type: application/json' \
+ *       --data-raw '{ "quantity": 5 }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -44,9 +54,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -88,6 +96,16 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * @schema AdminPostOrderEditsEditLineItemsLineItemReq
+ * type: object
+ * required:
+ *   - quantity
+ * properties:
+ *   quantity:
+ *     description: The quantity to update
+ *     type: number
+ */
 export class AdminPostOrderEditsEditLineItemsLineItemReq {
   @IsNumber()
   quantity: number

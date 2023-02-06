@@ -1,5 +1,71 @@
 # Change Log
 
+## 1.1.51
+
+### Patch Changes
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+- Updated dependencies [[`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2)]:
+  - medusa-interfaces@1.3.4
+
+## 1.1.50
+
+### Patch Changes
+
+- [#2808](https://github.com/medusajs/medusa/pull/2808) [`0a9c89185`](https://github.com/medusajs/medusa/commit/0a9c891853c4d16b553d38268a3408ca1daa71f0) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - chore: explicitly add devDependencies for monorepo peerDependencies
+
+- [#2743](https://github.com/medusajs/medusa/pull/2743) [`c8724da50`](https://github.com/medusajs/medusa/commit/c8724da50300b94255c5fb4ffe9904be279b5923) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa,medusa-payment-stripe): Move database mutation from plugin to core
+
+- Updated dependencies [[`7cced6006`](https://github.com/medusajs/medusa/commit/7cced6006a9a6f9108009e9f3e191e9f3ba1b168)]:
+  - medusa-core-utils@1.1.37
+
+## 1.1.49
+
+### Patch Changes
+
+- [#2666](https://github.com/medusajs/medusa/pull/2666) [`63d2a0eb1`](https://github.com/medusajs/medusa/commit/63d2a0eb1bb55301cb4d3c6399c04c59d376c1f6) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-plugin-stripe): Correct hooks import
+
+- Updated dependencies [[`1b21af87a`](https://github.com/medusajs/medusa/commit/1b21af87ab80c18013f0f44434e59b873c2313aa)]:
+  - medusa-core-utils@1.1.36
+
+## 1.1.48
+
+### Patch Changes
+
+- [#2607](https://github.com/medusajs/medusa/pull/2607) [`e09f6e8a1`](https://github.com/medusajs/medusa/commit/e09f6e8a1e4a759fe70664bea0538c61b7cea70a) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): handle webhook sirialization failure
+
+- [#2603](https://github.com/medusajs/medusa/pull/2603) [`9e91a50df`](https://github.com/medusajs/medusa/commit/9e91a50df17b4f542db8d9678b5f489218511adb) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-stripe): missing transaction on create payment
+
+## 1.1.47
+
+### Patch Changes
+
+- [#2581](https://github.com/medusajs/medusa/pull/2581) [`04e894ec3`](https://github.com/medusajs/medusa/commit/04e894ec39e1008be893a6cf313c3822a085579c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Support provider specific intent options
+
+## 1.1.46
+
+### Patch Changes
+
+- [`715bdf6b1`](https://github.com/medusajs/medusa/commit/715bdf6b159d6eb291d3c489ab32a80f9eadcfb9) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Patch bump Stripe plugin
+
+## 1.1.45
+
+### Patch Changes
+
+- [`a014e3623`](https://github.com/medusajs/medusa/commit/a014e3623c64f747e7496abccb8d0c7c01093d8b) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Support automatic payment methods
+
+## 1.1.44
+
+### Patch Changes
+
+- [#2381](https://github.com/medusajs/medusa/pull/2381) [`a908a7716`](https://github.com/medusajs/medusa/commit/a908a7716c94222f340531a5b13db0867b511519) Thanks [@srindom](https://github.com/srindom)! - Rely on cart totals in payment providers
+
+* [#1790](https://github.com/medusajs/medusa/pull/1790) [`df62e618b`](https://github.com/medusajs/medusa/commit/df62e618bcc365ef376b96705d63b465b48b0191) Thanks [@adrien2p](https://github.com/adrien2p)! - Migrate Stripe providers to the new AbstractPaymentService
+
+* Updated dependencies [[`7dc8d3a0c`](https://github.com/medusajs/medusa/commit/7dc8d3a0c90ce06e3f11a6a46dec1f9ec3f26e81)]:
+  - medusa-core-utils@1.1.32
+
 ## 1.1.43
 
 ### Patch Changes

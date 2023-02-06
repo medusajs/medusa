@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { Customer } from "./../../../.."
 import middlewares from "../../../middlewares"
+import { Customer } from "./../../../.."
 
 const route = Router()
 
@@ -9,7 +9,7 @@ export default (app) => {
 
   route.get(
     "/",
-    middlewares.authenticate(),
+    middlewares.requireCustomerAuthentication(),
     middlewares.wrap(require("./get-session").default)
   )
   route.get("/:email", middlewares.wrap(require("./exists").default))
@@ -19,10 +19,25 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema StoreAuthRes
+ * type: object
+ * properties:
+ *   customer:
+ *     $ref: "#/components/schemas/Customer"
+ */
 export type StoreAuthRes = {
   customer: Customer
 }
 
+/**
+ * @schema StoreGetAuthEmailRes
+ * type: object
+ * properties:
+ *   exists:
+ *     type: boolean
+ *     description: Whether email exists or not.
+ */
 export type StoreGetAuthEmailRes = {
   exists: boolean
 }
