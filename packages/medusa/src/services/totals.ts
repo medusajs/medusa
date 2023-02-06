@@ -457,20 +457,18 @@ class TotalsService extends TransactionBaseService {
       )
 
       for (const ld of lineDiscounts) {
+        const adjustmentAmount = ld.amount + ld.customAdjustmentsAmount
+
         if (allocationMap[ld.item.id]) {
           allocationMap[ld.item.id].discount = {
-            amount: ld.amount + ld.customAdjustmentsAmount,
-            unit_amount: Math.round(
-              (ld.amount + ld.customAdjustmentsAmount) / ld.item.quantity
-            ),
+            amount: adjustmentAmount,
+            unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
           }
         } else {
           allocationMap[ld.item.id] = {
             discount: {
-              amount: ld.amount + ld.customAdjustmentsAmount,
-              unit_amount: Math.round(
-                (ld.amount + ld.customAdjustmentsAmount) / ld.item.quantity
-              ),
+              amount: adjustmentAmount,
+              unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
             },
           }
         }

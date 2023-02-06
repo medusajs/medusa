@@ -268,7 +268,7 @@ describe("Line Item Adjustments", () => {
       await doAfterEach()
     })
 
-    test("Delete only adjustments of the removed discount and keep 'custom' adjustments", async () => {
+    it("Delete only adjustments of the removed discount and keep 'custom' adjustments", async () => {
       const api = useApi()
 
       const response = await api.delete(
