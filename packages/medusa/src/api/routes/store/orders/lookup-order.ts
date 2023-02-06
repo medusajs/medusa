@@ -8,7 +8,6 @@ import {
 import { Type } from "class-transformer"
 
 import { OrderService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
@@ -84,7 +83,7 @@ import { FindParams } from "../../../../types/common"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetOrdersParams, req.query)
+  const validated = req.validatedQuery as StoreGetOrdersParams
 
   const orderService: OrderService = req.scope.resolve("orderService")
 

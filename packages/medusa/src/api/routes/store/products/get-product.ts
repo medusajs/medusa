@@ -10,7 +10,6 @@ import {
 } from "../../../../services"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { FlagRouter } from "../../../../utils/flag-router"
-import { validator } from "../../../../utils/validator"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -75,7 +74,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(StoreGetProductsProductParams, req.query)
+  const validated = req.validatedQuery as StoreGetProductsProductParams
 
   const customer_id = req.user?.customer_id
 
