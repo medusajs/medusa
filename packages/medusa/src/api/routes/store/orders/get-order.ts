@@ -1,6 +1,8 @@
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
 
 import { OrderService } from "../../../../services"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [get] /orders/{id}
@@ -9,6 +11,8 @@ import { OrderService } from "../../../../services"
  * description: "Retrieves an Order"
  * parameters:
  *   - (path) id=* {string} The id of the Order.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the result.
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
@@ -54,5 +58,9 @@ export default async (req, res) => {
     relations: defaultStoreOrdersRelations,
   })
 
-  res.json({ order })
+  res.json({
+    order: cleanResponseData(order, req.allowedProperties || []),
+  })
 }
+
+export class StoreGetOrderParams extends FindParams {}
