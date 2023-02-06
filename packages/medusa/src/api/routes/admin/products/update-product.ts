@@ -12,7 +12,12 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { PricingService, ProductService } from "../../../../services"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../../../../services"
 import {
   ProductSalesChannelReq,
   ProductTagReq,
@@ -23,10 +28,21 @@ import {
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus } from "../../../../models"
-import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
+import { ProductStatus, ProductVariant } from "../../../../models"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesUpdateReq,
+} from "../../../../types/product-variant"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
+import { MedusaError } from "medusa-core-utils"
+import { DistributedTransaction } from "../../../../utils/transaction"
+import {
+  createVariantTransaction,
+  revertVariantTransaction,
+} from "./transaction/create-product-variant"
+import { IInventoryService } from "../../../../interfaces"
+import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /products/{id}
@@ -96,14 +112,106 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostProductsProductReq, req.body)
 
+  const logger: Logger = req.scope.resolve("logger")
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
+    const { variants } = validated
+    delete validated.variants
+
     await productService
       .withTransaction(transactionManager)
       .update(id, validated)
+
+    if (!variants) {
+      return
+    }
+
+    const product = await productService
+      .withTransaction(transactionManager)
+      .retrieve(id, {
+        relations: ["variants"],
+      })
+
+    // Iterate product variants and update their properties accordingly
+    for (const variant of product.variants) {
+      const exists = variants.find((v) => v.id && variant.id === v.id)
+      if (!exists) {
+        await productVariantService
+          .withTransaction(transactionManager)
+          .delete(variant.id)
+      }
+    }
+
+    const allVariantTransactions: DistributedTransaction[] = []
+    const transactionDependencies = {
+      manager: transactionManager,
+      inventoryService,
+      productVariantInventoryService,
+      productVariantService,
+    }
+
+    for (const [index, newVariant] of variants.entries()) {
+      const variantRank = index
+
+      if (newVariant.id) {
+        const variant = product.variants.find((v) => v.id === newVariant.id)
+
+        if (!variant) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Variant with id: ${newVariant.id} is not associated with this product`
+          )
+        }
+
+        await productVariantService
+          .withTransaction(transactionManager)
+          .update(variant, {
+            ...newVariant,
+            variant_rank: variantRank,
+            product_id: variant.product_id,
+          })
+      } else {
+        // If the provided variant does not have an id, we assume that it
+        // should be created
+
+        try {
+          const input = {
+            ...newVariant,
+            variant_rank: variantRank,
+            options: newVariant.options || [],
+            prices: newVariant.prices || [],
+          }
+
+          const varTransation = await createVariantTransaction(
+            transactionDependencies,
+            product.id,
+            input as CreateProductVariantInput
+          )
+          allVariantTransactions.push(varTransation)
+        } catch (e) {
+          await Promise.all(
+            allVariantTransactions.map(async (transaction) => {
+              await revertVariantTransaction(
+                transactionDependencies,
+                transaction
+              ).catch(() => logger.warn("Transaction couldn't be reverted."))
+            })
+          )
+
+          throw e
+        }
+      }
+    }
   })
 
   const rawProduct = await productService.retrieve(id, {
