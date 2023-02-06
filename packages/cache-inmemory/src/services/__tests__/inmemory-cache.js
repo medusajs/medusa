@@ -20,9 +20,7 @@ describe("InMemoryCacheService", () => {
         manager: MockManager,
         logger: loggerMock,
       },
-      {
-        // redisUrl: "test-url",
-      },
+      {},
       {
         resources: "shared",
       }
@@ -36,9 +34,7 @@ describe("InMemoryCacheService", () => {
           manager: MockManager,
           logger: loggerMock,
         },
-        {
-          // redisUrl: "test-url",
-        },
+        {},
         {
           resources: "isolated",
         }
@@ -56,9 +52,7 @@ describe("InMemoryCacheService", () => {
         manager: MockManager,
         logger: loggerMock,
       },
-      {
-        // redisUrl: "test-url",
-      },
+      {},
       {
         resources: "shared",
       }
@@ -75,9 +69,7 @@ describe("InMemoryCacheService", () => {
         manager: MockManager,
         logger: loggerMock,
       },
-      {
-        // redisUrl: "test-url",
-      },
+      {},
       {
         resources: "shared",
       }
@@ -96,9 +88,7 @@ describe("InMemoryCacheService", () => {
         manager: MockManager,
         logger: loggerMock,
       },
-      {
-        // redisUrl: "test-url",
-      },
+      {},
       {
         resources: "shared",
       }
