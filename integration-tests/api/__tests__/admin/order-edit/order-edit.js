@@ -20,7 +20,6 @@ const {
   simpleRegionFactory,
 } = require("../../../factories")
 const setupServer = require("../../../../helpers/setup-server")
-const { pick } = require("lodash")
 
 jest.setTimeout(30000)
 

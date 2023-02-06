@@ -105,6 +105,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/order-edits", () => {
         expect.objectContaining({
           items: expect.arrayContaining([
             expect.objectContaining({
+              // 2x items | unit_price: 10000 (tax incl.) | 25% tax
               original_item_id: lineItemId1,
               subtotal: 2 * 8000,
               discount_total: 0,

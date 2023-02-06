@@ -6,8 +6,6 @@ import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
-import { MedusaError } from "medusa-core-utils"
-import { pick } from "lodash"
 
 /**
  * @oas [post] /order-edits/{id}/items/{item_id}

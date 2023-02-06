@@ -26,7 +26,6 @@ import {
   TaxProviderService,
   TotalsService,
 } from "./index"
-import { pick } from "lodash"
 
 type InjectedDependencies = {
   manager: EntityManager
