@@ -126,23 +126,30 @@ export default async ({
 
   await entityManager.transaction(async (manager: EntityManager) => {
     await storeService.withTransaction(manager).create()
+    const profileServiceTx = profileService.withTransaction(manager)
 
     const context = { container, manager, logger }
-    await registerPaymentProvider(context)
-    await registerNotificationProvider(context)
-    await registerFulfillmentProvider(context)
-    await registerTaxProvider(context)
 
-    const profileServiceTx = profileService.withTransaction(manager)
-    await profileServiceTx.createDefault()
-    await profileServiceTx.createGiftCardDefault()
+    await Promise.all([
+      await registerPaymentProvider(context),
+      await registerNotificationProvider(context),
+      await registerFulfillmentProvider(context),
+      await registerTaxProvider(context),
+      await profileServiceTx.createDefault(),
+      await profileServiceTx.createGiftCardDefault(),
+      async () => {
+        const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
+          SalesChannelFeatureFlag.key
+        )
+        if (isSalesChannelEnabled) {
+          return await salesChannelService
+            .withTransaction(manager)
+            .createDefault()
+        }
 
-    const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
-      SalesChannelFeatureFlag.key
-    )
-    if (isSalesChannelEnabled) {
-      await salesChannelService.withTransaction(manager).createDefault()
-    }
+        return
+      },
+    ])
   })
 }
 
