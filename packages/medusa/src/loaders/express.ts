@@ -24,7 +24,7 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
 
   const { cookie_secret, session_options } = configModule.projectConfig
   const sessionOpts = {
-    name: session_options?.name ?? 'connect.sid',
+    name: session_options?.name ?? "connect.sid",
     resave: session_options?.resave ?? true,
     rolling: session_options?.rolling ?? false,
     saveUninitialized: session_options?.saveUninitialized ?? true,
