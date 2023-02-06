@@ -144,7 +144,6 @@ export const defaultStoreCartRelations = [
   "region",
   "items",
   "items.variant",
-  "items.variant.product",
   "items.adjustments",
   "payment",
   "shipping_address",

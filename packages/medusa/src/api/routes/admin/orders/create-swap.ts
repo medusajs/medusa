@@ -143,12 +143,10 @@ export default async (req, res) => {
                     relations: [
                       "items",
                       "items.variant",
-                      "items.variant.product",
                       "items.tax_lines",
                       "swaps",
                       "swaps.additional_items",
                       "swaps.additional_items.variant",
-                      "swaps.additional_items.variant.product",
                       "swaps.additional_items.tax_lines",
                     ],
                   })
