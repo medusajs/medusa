@@ -447,26 +447,28 @@ class TotalsService extends TransactionBaseService {
     const allocationMap: LineAllocationsMap = {}
 
     if (!options.exclude_discounts) {
-      let lineDiscounts: LineDiscountAmount[] = []
-
       const discount = orderOrCart.discounts?.find(
         ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
       )
-      if (discount) {
-        lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
-      }
+
+      const lineDiscounts: LineDiscountAmount[] = this.getLineDiscounts(
+        orderOrCart,
+        discount
+      )
 
       for (const ld of lineDiscounts) {
+        const adjustmentAmount = ld.amount + ld.customAdjustmentsAmount
+
         if (allocationMap[ld.item.id]) {
           allocationMap[ld.item.id].discount = {
-            amount: ld.amount,
-            unit_amount: Math.round(ld.amount / ld.item.quantity),
+            amount: adjustmentAmount,
+            unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
           }
         } else {
           allocationMap[ld.item.id] = {
             discount: {
-              amount: ld.amount,
-              unit_amount: Math.round(ld.amount / ld.item.quantity),
+              amount: adjustmentAmount,
+              unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
             },
           }
         }
@@ -717,7 +719,7 @@ class TotalsService extends TransactionBaseService {
       swaps?: Swap[]
       claims?: ClaimOrder[]
     },
-    discount: Discount
+    discount?: Discount
   ): LineDiscountAmount[] {
     let merged: LineItem[] = [...(cartOrOrder.items ?? [])]
 
@@ -736,18 +738,24 @@ class TotalsService extends TransactionBaseService {
 
     return merged.map((item) => {
       const adjustments = item?.adjustments || []
-      const discountAdjustments = adjustments.filter(
-        (adjustment) => adjustment.discount_id === discount.id
+      const discountAdjustments = discount
+        ? adjustments.filter(
+            (adjustment) => adjustment.discount_id === discount.id
+          )
+        : []
+
+      const customAdjustments = adjustments.filter(
+        (adjustment) => adjustment.discount_id === null
       )
+
+      const sumAdjustments = (total, adjustment) => total + adjustment.amount
 
       return {
         item,
         amount: item.allow_discounts
-          ? discountAdjustments.reduce(
-              (total, adjustment) => total + adjustment.amount,
-              0
-            )
+          ? discountAdjustments.reduce(sumAdjustments, 0)
           : 0,
+        customAdjustmentsAmount: customAdjustments.reduce(sumAdjustments, 0),
       }
     })
   }
@@ -993,16 +1001,6 @@ class TotalsService extends TransactionBaseService {
     const subtotal = await this.getSubtotal(cartOrOrder, {
       excludeNonDiscounts: true,
     })
-
-    // we only support having free shipping and one other discount, so first
-    // find the discount, which is not free shipping.
-    const discount = cartOrOrder.discounts?.find(
-      ({ rule }) => rule.type !== DiscountRuleType.FREE_SHIPPING
-    )
-
-    if (!discount) {
-      return 0
-    }
 
     const discountTotal = this.getLineItemAdjustmentsTotal(cartOrOrder)
 

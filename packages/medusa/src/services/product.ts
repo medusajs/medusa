@@ -1,18 +1,18 @@
 import { FlagRouter } from "../utils/flag-router"
 
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { EntityManager } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Product,
+  ProductCategory,
   ProductOption,
   ProductTag,
   ProductType,
   ProductVariant,
   SalesChannel,
-  ProductCategory,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
@@ -33,7 +33,7 @@ import {
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -446,7 +446,9 @@ class ProductService extends TransactionBaseService {
 
         if (categories?.length) {
           const categoryIds = categories.map((c) => c.id)
-          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
+          const categoryRecords = categoryIds.map(
+            (id) => ({ id } as ProductCategory)
+          )
 
           product.categories = categoryRecords
         }
@@ -560,7 +562,9 @@ class ProductService extends TransactionBaseService {
 
         if (categories?.length) {
           const categoryIds = categories.map((c) => c.id)
-          const categoryRecords = categoryIds.map((id) => ({ id } as ProductCategory))
+          const categoryRecords = categoryIds.map(
+            (id) => ({ id } as ProductCategory)
+          )
 
           product.categories = categoryRecords
         }
@@ -866,6 +870,31 @@ class ProductService extends TransactionBaseService {
         .withTransaction(manager)
         .emit(ProductService.Events.UPDATED, product)
       return product
+    })
+  }
+
+  /**
+   *
+   * @param productIds ID or IDs of the products to update
+   * @param profileId Shipping profile ID to update the shipping options with
+   * @returns updated shipping options
+   */
+  async updateShippingProfile(
+    productIds: string | string[],
+    profileId: string
+  ): Promise<Product[]> {
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const ids = isString(productIds) ? [productIds] : productIds
+
+      const products = await productRepo.upsertShippingProfile(ids, profileId)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, products)
+
+      return products
     })
   }
 
