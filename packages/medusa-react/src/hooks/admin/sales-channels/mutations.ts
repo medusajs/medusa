@@ -1,7 +1,6 @@
 import {
   AdminDeleteSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsChannelProductsBatchReq,
-  AdminPostSalesChannelsChannelStockLocationsReq,
   AdminPostSalesChannelsReq,
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
