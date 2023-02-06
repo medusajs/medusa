@@ -10,9 +10,9 @@ import {
   StorePostOrderEditsOrderEditDecline,
 } from "@medusajs/medusa"
 
-import { orderEditQueryKeys } from "."
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { orderEditQueryKeys } from "./queries"
 
 export const useDeclineOrderEdit = (
   id: string,

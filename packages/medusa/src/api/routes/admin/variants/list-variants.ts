@@ -64,6 +64,9 @@ import { IsType } from "../../../../utils/validators/is-type"
  *             gte:
  *               type: number
  *               description: filter by inventory quantity greater than or equal to this number
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetVariantsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -3,7 +3,11 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
-const { simpleProductFactory } = require("../../factories")
+const {
+  simpleProductFactory,
+  simpleProductCategoryFactory
+} = require("../../factories")
+
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
 
@@ -449,6 +453,131 @@ describe("/store/products", () => {
         )
       }
     })
+
+    describe("Product Category filtering", () => {
+      let categoryWithProduct, categoryWithoutProduct, nestedCategoryWithProduct, nested2CategoryWithProduct
+      const nestedCategoryWithProductId = "nested-category-with-product-id"
+      const nested2CategoryWithProductId = "nested2-category-with-product-id"
+      const categoryWithProductId = "category-with-product-id"
+      const categoryWithoutProductId = "category-without-product-id"
+
+      beforeEach(async () => {
+        const manager = dbConnection.manager
+        categoryWithProduct = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: categoryWithProductId,
+            name: "category with Product",
+            products: [{ id: testProductId }],
+          }
+        )
+
+        nestedCategoryWithProduct = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: nestedCategoryWithProductId,
+            name: "nested category with Product1",
+            parent_category: categoryWithProduct,
+            products: [{ id: testProductId1 }],
+          }
+        )
+
+        nested2CategoryWithProduct = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: nested2CategoryWithProductId,
+            name: "nested2 category with Product1",
+            parent_category: nestedCategoryWithProduct,
+            products: [{ id: testProductFilteringId1 }],
+          }
+        )
+
+        categoryWithoutProduct = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: categoryWithoutProductId,
+            name: "category without product",
+          }
+        )
+      })
+
+      it("returns a list of products in product category without category children", async () => {
+        const api = useApi()
+        const params = `category_id[]=${categoryWithProductId}`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(1)
+        expect(response.data.products).toEqual(
+          [
+            expect.objectContaining({
+              id: testProductId,
+            }),
+          ]
+        )
+      })
+
+      it("returns a list of products in product category without category children explicitly set to false", async () => {
+        const api = useApi()
+        const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(1)
+        expect(response.data.products).toEqual(
+          [
+            expect.objectContaining({
+              id: testProductId,
+            }),
+          ]
+        )
+      })
+
+      it("returns a list of products in product category with category children", async () => {
+        const api = useApi()
+
+        const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(3)
+        expect(response.data.products).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: testProductId1,
+            }),
+            expect.objectContaining({
+              id: testProductId,
+            }),
+            expect.objectContaining({
+              id: testProductFilteringId1,
+            })
+          ])
+        )
+      })
+
+      it("returns no products when product category with category children does not have products", async () => {
+        const api = useApi()
+
+        const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(0)
+      })
+    })
   })
 
   describe("list params", () => {
@@ -471,8 +600,18 @@ describe("/store/products", () => {
           console.log(err)
         })
 
-      expect(response.data.products).toHaveLength(5)
-      expect(response.data.products).toEqual(
+      const products = response.data.products
+
+      expect(products).toHaveLength(5)
+
+      const testProduct = products.find((p) => p.id === testProductId)
+      expect(testProduct.variants).toHaveLength(3)
+
+      for (const variant of testProduct.variants) {
+        expect(variant.prices).toHaveLength(2)
+      }
+
+      expect(products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: testProductId1,
@@ -481,11 +620,11 @@ describe("/store/products", () => {
           expect.objectContaining({
             id: testProductId,
             collection_id: "test-collection",
-            variants: [
+            variants: expect.arrayContaining([
               expect.objectContaining({
                 original_price: 100,
                 calculated_price: 80,
-                prices: [
+                prices: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-price",
                     currency_code: "usd",
@@ -496,12 +635,12 @@ describe("/store/products", () => {
                     currency_code: "usd",
                     amount: 80,
                   }),
-                ],
+                ]),
               }),
               expect.objectContaining({
                 original_price: 100,
                 calculated_price: 80,
-                prices: [
+                prices: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-price1",
                     currency_code: "usd",
@@ -512,12 +651,12 @@ describe("/store/products", () => {
                     currency_code: "usd",
                     amount: 80,
                   }),
-                ],
+                ]),
               }),
               expect.objectContaining({
                 original_price: 100,
                 calculated_price: 80,
-                prices: [
+                prices: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-price2",
                     currency_code: "usd",
@@ -528,9 +667,9 @@ describe("/store/products", () => {
                     currency_code: "usd",
                     amount: 80,
                   }),
-                ],
+                ]),
               }),
-            ],
+            ]),
           }),
           expect.objectContaining({
             id: testProductFilteringId2,

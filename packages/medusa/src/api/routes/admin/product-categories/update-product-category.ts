@@ -5,6 +5,7 @@ import { EntityManager } from "typeorm"
 import { ProductCategoryService } from "../../../../services"
 import { AdminProductCategoriesReqBase } from "../../../../types/product-category"
 import { FindParams } from "../../../../types/common"
+
 /**
  * @oas [post] /product-categories/{id}
  * operationId: "PostProductCategoriesCategory"
@@ -20,7 +21,22 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductCategoriesCategoryReq"
+ * x-codegen:
+ *   method: update
+ *   queryParams: AdminPostProductCategoriesCategoryParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.productCategories.update(product_category_id, {
+ *         name: "Skinny Jeans"
+ *       })
+ *       .then(({ product_category }) => {
+ *         console.log(product_category.id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -41,10 +57,7 @@ import { FindParams } from "../../../../types/common"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            product_category:
- *              $ref: "#/components/schemas/ProductCategory"
+ *          $ref: "#/components/schemas/AdminProductCategoriesCategoryRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -77,7 +90,7 @@ export default async (req: Request, res: Response) => {
 
   const productCategory = await productCategoryService.retrieve(
     updated.id,
-    req.retrieveConfig,
+    req.retrieveConfig
   )
 
   res.status(200).json({ product_category: productCategory })

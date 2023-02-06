@@ -38,10 +38,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              discount:
-                $ref: ../components/schemas/Discount.yaml
+            $ref: ../components/schemas/AdminDiscountsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

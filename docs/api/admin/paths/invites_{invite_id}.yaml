@@ -1,7 +1,7 @@
 delete:
   operationId: DeleteInvitesInvite
-  summary: Create an Invite
-  description: Creates an Invite and triggers an 'invite' created event
+  summary: Delete an Invite
+  description: Deletes an Invite
   x-authenticated: true
   parameters:
     - in: path
@@ -30,19 +30,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                description: The ID of the deleted Invite.
-              object:
-                type: string
-                description: The type of the object that was deleted.
-                format: invite
-              deleted:
-                type: boolean
-                description: Whether or not the Invite was deleted.
-                default: true
+            $ref: ../components/schemas/AdminInviteDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

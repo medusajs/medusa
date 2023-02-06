@@ -6,6 +6,8 @@
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Batch Job
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

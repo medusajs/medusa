@@ -38,10 +38,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              order:
-                $ref: ../components/schemas/Order.yaml
+            $ref: ../components/schemas/AdminOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

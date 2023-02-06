@@ -4,16 +4,16 @@ import {
   AwilixContainer,
   ClassOrFunctionReturning,
   createContainer,
-  Resolver,
+  Resolver
 } from "awilix"
-import Logger from "../logger"
 import {
   ConfigModule,
   MedusaContainer,
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
+  MODULE_SCOPE
 } from "../../types/global"
+import Logger from "../logger"
 import registerModules from "../module"
 import { trackInstallation } from "../__mocks__/medusa-telemetry"
 
@@ -81,7 +81,7 @@ describe("modules loader", () => {
     container = buildContainer()
   })
 
-  it("registers service as false in container when no resolution path is given", async () => {
+  it("registers service as undefined in container when no resolution path is given", async () => {
     const moduleResolutions: Record<string, ModuleResolution> = {
       testService: {
         resolutionPath: false,
@@ -110,7 +110,7 @@ describe("modules loader", () => {
     const testService = container.resolve(
       moduleResolutions.testService.definition.key
     )
-    expect(testService).toBe(false)
+    expect(testService).toBe(undefined)
   })
 
   it("registers service ", async () => {

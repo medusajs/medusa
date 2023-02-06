@@ -9,6 +9,8 @@ import ReturnReasonService from "../../../../services/return-reason"
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
  * description: "Retrieves a list of Return Reasons."
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

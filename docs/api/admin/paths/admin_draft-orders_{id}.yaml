@@ -35,10 +35,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              draft_order:
-                $ref: ../components/schemas/DraftOrder.yaml
+            $ref: ../components/schemas/AdminDraftOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

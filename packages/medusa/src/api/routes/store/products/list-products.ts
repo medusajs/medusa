@@ -10,6 +10,7 @@ import {
 import {
   CartService,
   ProductService,
+  ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -124,11 +125,27 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ *   - in: query
+ *     name: category_id
+ *     style: form
+ *     explode: false
+ *     description: Category ids to filter by.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) include_category_children {boolean} Include category children when filtering by category_id.
  *   - (query) offset=0 {integer} How many products to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
  *   - (query) order {string} the field used to order the products.
+ *   - (query) cart_id {string} The id of the Cart to set prices based on.
+ *   - (query) region_id {string} The id of the Region to set prices based on.
+ *   - (query) currency_code {string} The currency code to use for price selection.
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -165,6 +182,8 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
@@ -208,13 +227,18 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const products = await pricingService.setProductPrices(rawProducts, {
+  const pricedProducts = await pricingService.setProductPrices(rawProducts, {
     cart_id: cart_id,
     region_id: regionId,
     currency_code: currencyCode,
     customer_id: req.user?.customer_id,
     include_discount_prices: true,
   })
+
+  const products = await productVariantInventoryService.setProductAvailability(
+    pricedProducts,
+    filterableFields.sales_channel_id
+  )
 
   res.json({
     products,
@@ -288,6 +312,15 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
 
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
+
+  @IsArray()
+  @IsOptional()
+  category_id?: string[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  include_category_children?: boolean
 
   @IsOptional()
   @ValidateNested()

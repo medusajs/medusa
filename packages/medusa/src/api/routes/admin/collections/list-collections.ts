@@ -84,6 +84,9 @@ import { Type } from "class-transformer"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetCollectionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

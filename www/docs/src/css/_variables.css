@@ -95,6 +95,9 @@
   --ifm-tooltip-background-color: #fff;
   --ifm-tooltip-border-color: #E5E7EB;
   --ifm-tooltip-box-shadow-color: rgba(17, 24, 39, 0.08);
+  --rt-opacity: 1 !important;
+  --rt-color-dark: var(--ifm-tooltip-background-color) !important;
+  --rt-color-white: var(--ifm-color-content) !important;
 
   /* Buttons */
   --ifm-primary-btn-background-color: #fff;

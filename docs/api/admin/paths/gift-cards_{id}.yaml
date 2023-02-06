@@ -30,19 +30,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                description: The ID of the deleted Gift Card
-              object:
-                type: string
-                description: The type of the object that was deleted.
-                default: gift-card
-              deleted:
-                type: boolean
-                description: Whether the gift card was deleted successfully or not.
-                default: true
+            $ref: ../components/schemas/AdminGiftCardsDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -87,10 +75,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              gift_card:
-                $ref: ../components/schemas/GiftCard.yaml
+            $ref: ../components/schemas/AdminGiftCardsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -142,10 +127,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              gift_card:
-                $ref: ../components/schemas/GiftCard.yaml
+            $ref: ../components/schemas/AdminGiftCardsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

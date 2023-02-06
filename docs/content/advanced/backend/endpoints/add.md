@@ -1,3 +1,8 @@
+---
+description: 'Learn how to create endpoints in the Medusa server. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
+addHowToData: true
+---
+
 # How to Create Endpoints
 
 In this document, you’ll learn how to create endpoints in your Medusa server.
@@ -295,6 +300,7 @@ npm run build
 
 ## See Also
 
+- [Add a Middleware](./add-middleware.md)
 - [Storefront API Reference](/api/store)
 - [Admin API Reference](/api/admin)
 - [Create a Service](./../services/create-service.md).
