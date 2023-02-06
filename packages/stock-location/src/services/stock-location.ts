@@ -199,7 +199,7 @@ export default class StockLocationService extends TransactionBaseService {
         }
       }
 
-      const { metadata, ...fields } = updateData
+      const { metadata, ...fields } = data
 
       const toSave = locationRepo.merge(item, fields)
       if (metadata) {

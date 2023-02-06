@@ -79,20 +79,25 @@ export default async (req: Request, res: Response) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
 
-  await manager.transaction(async (transactionManager) => {
-    await orderEditService
-      .withTransaction(transactionManager)
-      .updateLineItem(id, item_id, validatedBody)
-  })
+  const decoratedEdit = await manager.transaction(
+    async (transactionManager) => {
+      const orderEditTx = orderEditService.withTransaction(transactionManager)
 
-  let orderEdit = await orderEditService.retrieve(id, {
-    select: defaultOrderEditFields,
-    relations: defaultOrderEditRelations,
-  })
-  orderEdit = await orderEditService.decorateTotals(orderEdit)
+      await orderEditTx.updateLineItem(id, item_id, validatedBody)
+
+      const orderEdit = await orderEditTx.retrieve(id, {
+        select: defaultOrderEditFields,
+        relations: defaultOrderEditRelations,
+      })
+
+      await orderEditTx.decorateTotals(orderEdit)
+
+      return orderEdit
+    }
+  )
 
   res.status(200).send({
-    order_edit: orderEdit,
+    order_edit: decoratedEdit,
   })
 }
 
