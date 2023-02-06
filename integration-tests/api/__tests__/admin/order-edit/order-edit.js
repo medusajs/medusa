@@ -1,17 +1,16 @@
 const path = require("path")
+const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
+const { IdMap } = require("medusa-test-utils")
 
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+const { useApi } = require("../../../../helpers/use-api")
+const { useDb, initDb } = require("../../../../helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simpleOrderEditFactory,
-} = require("../../factories/simple-order-edit-factory")
-const { IdMap } = require("medusa-test-utils")
+} = require("../../../factories/simple-order-edit-factory")
 const {
   simpleOrderItemChangeFactory,
-} = require("../../factories/simple-order-item-change-factory")
+} = require("../../../factories/simple-order-item-change-factory")
 const {
   simpleLineItemFactory,
   simpleProductFactory,
@@ -19,9 +18,8 @@ const {
   simpleDiscountFactory,
   simpleCartFactory,
   simpleRegionFactory,
-} = require("../../factories")
-const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
-const setupServer = require("../../../helpers/setup-server")
+} = require("../../../factories")
+const setupServer = require("../../../../helpers/setup-server")
 
 jest.setTimeout(30000)
 
@@ -37,11 +35,9 @@ describe("/admin/order-edits", () => {
   const adminUserId = "admin_user"
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({
-      cwd,
-    })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -1167,6 +1163,7 @@ describe("/admin/order-edits", () => {
         id: orderId1,
         fulfillment_status: "fulfilled",
         payment_status: "captured",
+        tax_rate: null,
         region: {
           id: "test-region",
           name: "Test region",
@@ -2572,13 +2569,15 @@ describe("/admin/order-edits", () => {
               ]),
             }),
           ]),
-          discount_total: 2000,
+          // rounding issue since we are allocating 1/3 of the discount to one item and 2/3 to the other item where both cost 10
+          // resulting in adjustment amounts like: 1333...
+          discount_total: 2001,
+          total: 1099,
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
           subtotal: 3000,
           tax_total: 100,
-          total: 1100,
         })
       )
 
