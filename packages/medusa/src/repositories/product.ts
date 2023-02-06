@@ -6,7 +6,7 @@ import {
   In,
   Repository,
 } from "typeorm"
-import { PriceList, Product, SalesChannel, ProductCategory } from "../models"
+import { PriceList, Product, ProductCategory, SalesChannel } from "../models"
 import {
   ExtendedFindConfig,
   Selector,
@@ -538,6 +538,25 @@ export class ProductRepository extends Repository<Product> {
         )
         .getCount()) > 0
     )
+  }
+
+  /**
+   * Upserts shipping profile for products
+   * @param productIds IDs of products to update
+   * @param shippingProfileId ID of shipping profile to assign to products
+   * @returns updated products
+   */
+  public async upsertShippingProfile(
+    productIds: string[],
+    shippingProfileId: string
+  ): Promise<Product[]> {
+    await this.createQueryBuilder()
+      .update(Product)
+      .set({ profile_id: shippingProfileId })
+      .where({ id: In(productIds) })
+      .execute()
+
+    return await this.findByIds(productIds)
   }
 
   private _cleanOptions(
