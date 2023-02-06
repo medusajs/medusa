@@ -67,7 +67,7 @@ export class inventorySetup1665748086258 implements MigrationInterface {
       );
 
       CREATE UNIQUE INDEX "IDX_inventory_item_sku" ON "inventory_item" ("sku") WHERE deleted_at IS NULL;
-
+      CREATE TYPE "reservation_item_type_enum" AS ENUM('internal', 'external')
 
       CREATE TABLE "reservation_item" (
         "id" character varying NOT NULL,
@@ -78,6 +78,7 @@ export class inventorySetup1665748086258 implements MigrationInterface {
         "inventory_item_id" text NOT NULL,
         "location_id" text NOT NULL,
         "quantity" integer NOT NULL,
+        "type" "reservation_item_type_enum" NOT NULL DEFAULT 'internal',
         "metadata" jsonb,
         CONSTRAINT "PK_reservation_item_id" PRIMARY KEY ("id")
       );

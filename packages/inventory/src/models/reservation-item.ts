@@ -1,5 +1,11 @@
-import { Index, Unique, BeforeInsert, Column, Entity } from "typeorm"
-import { SoftDeletableEntity, generateEntityId } from "@medusajs/medusa"
+import { Index, BeforeInsert, Column, Entity } from "typeorm"
+import { SoftDeletableEntity, generateEntityId, DbAwareColumn } from "@medusajs/medusa"
+
+
+export enum ReservationType {
+  INTERNAL = "internal",
+  EXTERNAL = "external",
+}
 
 @Entity()
 export class ReservationItem extends SoftDeletableEntity {
@@ -17,6 +23,9 @@ export class ReservationItem extends SoftDeletableEntity {
 
   @Column()
   quantity: number
+
+  @DbAwareColumn({ type: "enum", enum: ReservationType, default: ReservationType.INTERNAL })
+  type: ReservationType
 
   @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
