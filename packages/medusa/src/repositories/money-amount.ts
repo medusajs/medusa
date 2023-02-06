@@ -23,10 +23,10 @@ type Price = Partial<
 
 @EntityRepository(MoneyAmount)
 export class MoneyAmountRepository extends Repository<MoneyAmount> {
-  public async findVariantPricesNotIn(
+  public async deleteVariantPricesNotIn(
     variantId: string,
     prices: Price[]
-  ): Promise<MoneyAmount[]> {
+  ): Promise<void> {
     const existingPricesIdsQuery = this.createQueryBuilder()
       .select("id")
       .where({
@@ -48,16 +48,15 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
         })
       )
 
-    const obsoletePrices = await this.createQueryBuilder("ma")
+    await this.createQueryBuilder()
+      .delete()
       .where({
         variant_id: variantId,
         price_list_id: IsNull(),
       })
-      .andWhere(`ma.id NOT IN (${existingPricesIdsQuery.getQuery()})`)
+      .andWhere(`id NOT IN (${existingPricesIdsQuery.getQuery()})`)
       .setParameters(existingPricesIdsQuery.getParameters())
-      .getMany()
-
-    return obsoletePrices
+      .execute()
   }
 
   public async upsertVariantCurrencyPrice(

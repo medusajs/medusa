@@ -447,7 +447,10 @@ describe("/admin/products", () => {
     })
 
     describe("Product Category filtering", () => {
-      let categoryWithProduct, categoryWithoutProduct, nestedCategoryWithProduct, nested2CategoryWithProduct
+      let categoryWithProduct
+      let categoryWithoutProduct
+      let nestedCategoryWithProduct
+      let nested2CategoryWithProduct
       const nestedCategoryWithProductId = "nested-category-with-product-id"
       const nested2CategoryWithProductId = "nested2-category-with-product-id"
       const categoryWithProductId = "category-with-product-id"
@@ -455,14 +458,11 @@ describe("/admin/products", () => {
 
       beforeEach(async () => {
         const manager = dbConnection.manager
-        categoryWithProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: categoryWithProductId,
-            name: "category with Product",
-            products: [{ id: testProductId }],
-          }
-        )
+        categoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
+          id: categoryWithProductId,
+          name: "category with Product",
+          products: [{ id: testProductId }],
+        })
 
         nestedCategoryWithProduct = await simpleProductCategoryFactory(
           dbConnection,
@@ -496,52 +496,45 @@ describe("/admin/products", () => {
       it("returns a list of products in product category without category children", async () => {
         const api = useApi()
         const params = `category_id[]=${categoryWithProductId}`
-        const response = await api
-          .get(
-            `/admin/products?${params}`,
-            adminHeaders
-          )
+        const response = await api.get(
+          `/admin/products?${params}`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual(
-          [
-            expect.objectContaining({
-              id: testProductId,
-            }),
-          ]
-        )
+        expect(response.data.products).toEqual([
+          expect.objectContaining({
+            id: testProductId,
+          }),
+        ])
       })
 
       it("returns a list of products in product category without category children explicitly set to false", async () => {
         const api = useApi()
         const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
-        const response = await api
-          .get(
-            `/admin/products?${params}`,
-            adminHeaders
-          )
+        const response = await api.get(
+          `/admin/products?${params}`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual(
-          [
-            expect.objectContaining({
-              id: testProductId,
-            }),
-          ]
-        )
+        expect(response.data.products).toEqual([
+          expect.objectContaining({
+            id: testProductId,
+          }),
+        ])
       })
 
       it("returns a list of products in product category with category children", async () => {
         const api = useApi()
 
         const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
-        const response = await api
-          .get(
-            `/admin/products?${params}`,
-            adminHeaders
-          )
+        const response = await api.get(
+          `/admin/products?${params}`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(3)
@@ -555,7 +548,7 @@ describe("/admin/products", () => {
             }),
             expect.objectContaining({
               id: testProductFilteringId1,
-            })
+            }),
           ])
         )
       })
@@ -564,11 +557,10 @@ describe("/admin/products", () => {
         const api = useApi()
 
         const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
-        const response = await api
-          .get(
-            `/admin/products?${params}`,
-            adminHeaders
-          )
+        const response = await api.get(
+          `/admin/products?${params}`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(0)
@@ -2172,23 +2164,21 @@ describe("/admin/products", () => {
         ).prices
 
       expect(createRegionPriceResponse.status).toEqual(200)
-      expect(initialPriceArray).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            amount: 8000,
-            currency_code: "usd",
-            region_id: "test-region",
-          }),
-          expect.objectContaining({
-            amount: 900,
-            currency_code: "eur",
-          }),
-          expect.objectContaining({
-            amount: 1000,
-            currency_code: "usd",
-          }),
-        ])
-      )
+      expect(initialPriceArray).toEqual([
+        expect.objectContaining({
+          amount: 8000,
+          currency_code: "usd",
+          region_id: "test-region",
+        }),
+        expect.objectContaining({
+          amount: 1000,
+          currency_code: "usd",
+        }),
+        expect.objectContaining({
+          amount: 900,
+          currency_code: "eur",
+        }),
+      ])
 
       const deleteRegionPricePayload = {
         prices: [
@@ -2216,18 +2206,16 @@ describe("/admin/products", () => {
 
       expect(deleteRegionPriceResponse.status).toEqual(200)
       expect(finalPriceArray.length).toEqual(2)
-      expect(finalPriceArray).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            amount: 900,
-            currency_code: "eur",
-          }),
-          expect.objectContaining({
-            amount: 1000,
-            currency_code: "usd",
-          }),
-        ])
-      )
+      expect(finalPriceArray).toEqual([
+        expect.objectContaining({
+          amount: 1000,
+          currency_code: "usd",
+        }),
+        expect.objectContaining({
+          amount: 900,
+          currency_code: "eur",
+        }),
+      ])
     })
   })
 

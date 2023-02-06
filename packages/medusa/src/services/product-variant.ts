@@ -341,11 +341,8 @@ class ProductVariantService extends TransactionBaseService {
         this.moneyAmountRepository_
       )
 
-      // get prices to be deleted
-      const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
-        variantId,
-        prices
-      )
+      // Delete obsolete prices
+      await moneyAmountRepo.deleteVariantPricesNotIn(variantId, prices)
 
       const regionsServiceTx = this.regionService_.withTransaction(manager)
 
@@ -362,7 +359,6 @@ class ProductVariantService extends TransactionBaseService {
           await this.setCurrencyPrice(variantId, price)
         }
       }
-      await moneyAmountRepo.remove(obsoletePrices)
     })
   }
 
