@@ -373,7 +373,9 @@ export default class OrderEditService extends TransactionBaseService {
         quantity: data.quantity,
       })
 
-      await this.refreshAdjustments(orderEditId)
+      await this.refreshAdjustments(orderEditId, {
+        preserveCustomAdjustments: true,
+      })
     })
   }
 
@@ -434,7 +436,10 @@ export default class OrderEditService extends TransactionBaseService {
     })
   }
 
-  async refreshAdjustments(orderEditId: string) {
+  async refreshAdjustments(
+    orderEditId: string,
+    config = { preserveCustomAdjustments: false }
+  ) {
     const manager = this.transactionManager_ ?? this.manager_
 
     const lineItemAdjustmentServiceTx =
@@ -461,7 +466,13 @@ export default class OrderEditService extends TransactionBaseService {
     orderEdit.items.forEach((item) => {
       if (item.adjustments?.length) {
         item.adjustments.forEach((adjustment) => {
-          clonedItemAdjustmentIds.push(adjustment.id)
+          const preserveAdjustment = config.preserveCustomAdjustments
+            ? !!adjustment.discount_id
+            : true
+
+          if (preserveAdjustment) {
+            clonedItemAdjustmentIds.push(adjustment.id)
+          }
         })
       }
     })
