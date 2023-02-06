@@ -2726,6 +2726,7 @@ describe("/admin/order-edits", () => {
           name: "Test region",
           tax_rate: 12.5,
         },
+        tax_rate: null,
         line_items: [
           {
             adjustments: [
@@ -2817,13 +2818,13 @@ describe("/admin/order-edits", () => {
               original_item_id: lineItemId1,
               order_edit_id: orderEditId,
               quantity: 2,
-              adjustments: expect.arrayContaining([
+              adjustments: [
                 expect.objectContaining({
                   amount: 200,
                   description: "custom adjustment that should be persisted",
                   discount_id: null,
                 }),
-              ]),
+              ],
               tax_lines: expect.arrayContaining([
                 expect.objectContaining({
                   rate: 12.5,
