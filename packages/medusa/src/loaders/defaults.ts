@@ -137,7 +137,7 @@ export default async ({
       registerTaxProvider(context),
       profileServiceTx.createDefault(),
       profileServiceTx.createGiftCardDefault(),
-      async () => {
+      (async () => {
         const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
           SalesChannelFeatureFlag.key
         )
@@ -148,7 +148,7 @@ export default async ({
         }
 
         return
-      },
+      })(),
     ])
   })
 }
