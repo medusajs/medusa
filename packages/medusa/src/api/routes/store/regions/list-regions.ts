@@ -58,6 +58,9 @@ import { validator } from "../../../../utils/validator"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetRegionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -80,12 +83,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             regions:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/StoreRegionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

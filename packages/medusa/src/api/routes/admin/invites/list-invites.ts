@@ -6,6 +6,8 @@ import InviteService from "../../../../services/invite"
  * summary: "Lists Invites"
  * description: "Lists all Invites"
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,12 +35,7 @@ import InviteService from "../../../../services/invite"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             invites:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/invite"
+ *           $ref: "#/components/schemas/AdminListInvitesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -1,3 +1,7 @@
+---
+description: 'Learn what price lists are and how they work in a Medusa server. Price Lists can be used to override product prices based on different conditions.'
+---
+
 # Price Lists
 
 In this document, you’ll learn what price lists are and how they work.
@@ -81,7 +85,7 @@ Since the line item belongs to a cart, there’s no need to pass the `region_id`
 
 ---
 
-## What’s Next
+## See Also
 
-- Learn more about [price selection strategies](../price-selection-strategy/index.md).
-- Learn [how to use the PriceList Admin APIs](./use-api.mdx).
+- [Price Selection Strategy Overview](../price-selection-strategy/index.md).
+- [Use the PriceList Admin APIs](./use-api.mdx).

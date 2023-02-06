@@ -20,17 +20,8 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - fulfillment_id
-          properties:
-            fulfillment_id:
-              description: The ID of the Fulfillment.
-              type: string
-            tracking_numbers:
-              description: The tracking numbers for the shipment.
-              type: array
-              items:
-                type: string
+          $ref: >-
+            ../components/schemas/AdminPostOrdersOrderClaimsClaimShipmentsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -53,9 +44,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              order:
-                $ref: ../components/schemas/order.yaml
+            $ref: ../components/schemas/AdminOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

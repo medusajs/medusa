@@ -15,7 +15,6 @@ export default (app) => {
     transformQuery(AdminGetProductTypesParams, {
       defaultFields: defaultAdminProductTypeFields,
       defaultRelations: defaultAdminProductTypeRelations,
-      allowedFields: allowedAdminProductTypeFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-product-types").default)
@@ -23,13 +22,6 @@ export default (app) => {
 
   return app
 }
-
-export const allowedAdminProductTypeFields = [
-  "id",
-  "value",
-  "created_at",
-  "updated_at",
-]
 
 export const defaultAdminProductTypeFields = [
   "id",
@@ -39,12 +31,26 @@ export const defaultAdminProductTypeFields = [
 ]
 export const defaultAdminProductTypeRelations = []
 
+/**
+ * @schema AdminProductTypesListRes
+ * type: object
+ * properties:
+ *   product_types:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ProductType"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminProductTypesListRes = PaginatedResponse & {
   product_types: ProductType[]
-}
-
-export type AdminProductTypesRes = {
-  product_type: ProductType
 }
 
 export * from "./list-product-types"

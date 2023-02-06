@@ -101,10 +101,9 @@ export class ProductVariant extends SoftDeletableEntity {
 }
 
 /**
- * @schema product_variant
+ * @schema ProductVariant
  * title: "Product Variant"
  * description: "Product Variants represent a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations."
- * x-resourceId: product_variant
  * type: object
  * required:
  *   - title
@@ -130,7 +129,7 @@ export class ProductVariant extends SoftDeletableEntity {
  *     description: The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation `prices` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/money_amount"
+ *       $ref: "#/components/schemas/MoneyAmount"
  *   sku:
  *     description: "The unique stock keeping unit used to identify the Product Variant. This will usually be a unqiue identifer for the item that is to be shipped, and can be referenced across multiple systems."
  *     type: string
@@ -199,7 +198,7 @@ export class ProductVariant extends SoftDeletableEntity {
  *     description: The Product Option Values specified for the Product Variant. Available if the relation `options` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product_option_value"
+ *       $ref: "#/components/schemas/ProductOptionValue"
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."
@@ -216,46 +215,4 @@ export class ProductVariant extends SoftDeletableEntity {
  *     type: object
  *     description: An optional key-value map with additional details
  *     example: {car: "white"}
- */
-
-/**
- * @schema product_variant_prices_fields
- * title: "Product Variant Prices Fields"
- * description: "Product Variants Prices Fields that are only available in some requests."
- * x-resourceId: product_variant_prices_fields
- * type: object
- * properties:
- *   original_price:
- *     type: number
- *     description: The original price of the variant without any discounted prices applied.
- *   calculated_price:
- *     type: number
- *     description: The calculated price of the variant. Can be a discounted price.
- *   original_price_incl_tax: 
- *     type: number
- *     description: The original price of the variant including taxes.
- *   calculated_price_incl_tax:
- *     type: number
- *     description: The calculated price of the variant including taxes.
- *   original_tax:
- *     type: number
- *     description: The taxes applied on the original price.
- *   calculated_tax:
- *     type: number
- *     description: The taxes applied on the calculated price.
- *   tax_rates:
- *     type: array
- *     description: An array of applied tax rates
- *     items:
- *       type: object
- *       properties:
- *         rate:
- *           type: number
- *           description: The tax rate value
- *         name:
- *           type: string
- *           description: The name of the tax rate
- *         code:
- *           type: string
- *           description: The code of the tax rate
  */

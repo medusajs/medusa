@@ -16,13 +16,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           price_ids:
- *             description: The price id's of the Money Amounts to delete.
- *             type: array
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminDeletePriceListPricesPricesReq"
+ * x-codegen:
+ *   method: deletePrices
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -60,21 +56,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             ids:
- *               type: array
- *               items:
- *                 type: string
- *                 description: The IDs of the deleted Money Amounts (Prices).
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: money-amount
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminPriceListDeleteBatchRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -109,6 +91,16 @@ export default async (req, res) => {
   res.json({ ids: validated.price_ids, object: "money-amount", deleted: true })
 }
 
+/**
+ * @schema AdminDeletePriceListPricesPricesReq
+ * type: object
+ * properties:
+ *   price_ids:
+ *     description: The price id's of the Money Amounts to delete.
+ *     type: array
+ *     items:
+ *       type: string
+ */
 export class AdminDeletePriceListPricesPricesReq {
   @ArrayNotEmpty()
   @IsString({ each: true })

@@ -8,6 +8,8 @@ import NoteService from "../../../../services/note"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the note to retrieve.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -35,10 +37,7 @@ import NoteService from "../../../../services/note"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             note:
- *               $ref: "#/components/schemas/note"
+ *           $ref: "#/components/schemas/AdminNotesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

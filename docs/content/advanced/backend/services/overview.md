@@ -1,3 +1,7 @@
+---
+description: 'Learn what Services are in the Medusa server. Services represent bundled helper methods that you want to use across the server.'
+---
+
 # Services
 
 In this document, you'll learn about what Services are in Medusa.
@@ -18,7 +22,9 @@ For example, if the file name is `hello.ts`, the service will be registered as `
 
 The registration name of the service is important, as you’ll be referring to it when you want to get access to the service using dependency injection or in routes.
 
-## What's Next
+---
 
-- Learn [how to create a service](./create-service.md)
-- Check out the [Services Reference](/references/services/classes/AuthService) to see a list of all services in Medusa.
+## See Also
+
+- [Create a Service](./create-service.md)
+- [Services Reference](/references/services/classes/AuthService)

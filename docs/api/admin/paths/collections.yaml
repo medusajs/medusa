@@ -7,22 +7,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - title
-          properties:
-            title:
-              type: string
-              description: The title to identify the Collection by.
-            handle:
-              type: string
-              description: >-
-                An optional handle to be used in slugs, if none is provided we
-                will kebab-case the title.
-            metadata:
-              description: >-
-                An optional set of key-value pairs to hold additional
-                information.
-              type: object
+          $ref: ../components/schemas/AdminPostCollectionsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -43,9 +28,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              collection:
-                $ref: ../components/schemas/product_collection.yaml
+            $ref: ../components/schemas/AdminCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -182,20 +165,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              collections:
-                type: array
-                items:
-                  $ref: ../components/schemas/product_collection.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/AdminCollectionsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

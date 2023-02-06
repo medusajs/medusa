@@ -13,21 +13,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - application_name
- *           - state
- *           - code
- *         properties:
- *           application_name:
- *             type: string
- *             description:  Name of the application for the token to be generated for.
- *           state:
- *             type: string
- *             description: State of the application.
- *           code:
- *             type: string
- *             description: The code for the generated token.
+ *         $ref: "#/components/schemas/AdminPostAppsReq"
+ * x-codegen:
+ *   method: authorize
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -51,10 +39,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            apps:
- *              $ref: "#/components/schemas/OAuth"
+ *          $ref: "#/components/schemas/AdminAppsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -79,6 +64,24 @@ export default async (req, res) => {
   res.status(200).json({ apps: data })
 }
 
+/**
+ * @schema AdminPostAppsReq
+ * type: object
+ * required:
+ *   - application_name
+ *   - state
+ *   - code
+ * properties:
+ *   application_name:
+ *     type: string
+ *     description:  Name of the application for the token to be generated for.
+ *   state:
+ *     type: string
+ *     description: State of the application.
+ *   code:
+ *     type: string
+ *     description: The code for the generated token.
+ */
 export class AdminPostAppsReq {
   @IsString()
   @IsNotEmpty()

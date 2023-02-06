@@ -18,6 +18,9 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   - (query) order {string} order to retrieve products in.
  *   - (query) offset=0 {number} How many products to skip in the result.
  *   - (query) limit=20 {number} Limit the number of products returned.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetCurrenciesParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,21 +45,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             currencies:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/currency"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminCurrenciesListRes"
  */
 export default async (req: ExtendedRequest<Currency>, res) => {
   const currencyService: CurrencyService = req.scope.resolve("currencyService")

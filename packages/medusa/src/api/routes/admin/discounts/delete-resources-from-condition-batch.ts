@@ -11,7 +11,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "DeleteDiscountsDiscountConditionsConditionBatch"
- * summary: "Delete a batch of resources from a discount condition"
+ * summary: "Delete Batch Resources"
  * description: "Delete a batch of resources from a discount condition."
  * x-authenticated: true
  * parameters:
@@ -23,20 +23,9 @@ import { FindParams } from "../../../../types/common"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - resources
- *         properties:
- *           resources:
- *             description: The resources to be deleted from the discount condition
- *             type: array
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The id of the item
- *                   type: string
+ *         $ref: "#/components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq"
+ * x-codegen:
+ *   method: deleteConditionResourceBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -70,10 +59,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -123,8 +109,26 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+// eslint-disable-next-line max-len
 export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends FindParams {}
 
+/**
+ * @schema AdminDeleteDiscountsDiscountConditionsConditionBatchReq
+ * type: object
+ * required:
+ *   - resources
+ * properties:
+ *   resources:
+ *     description: The resources to be deleted from the discount condition
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The id of the item
+ *           type: string
+ */
 export class AdminDeleteDiscountsDiscountConditionsConditionBatchReq {
   @IsArray()
   resources: { id: string }[]

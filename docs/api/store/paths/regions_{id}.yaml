@@ -26,9 +26,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              region:
-                $ref: ../components/schemas/region.yaml
+            $ref: ../components/schemas/StoreRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

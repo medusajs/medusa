@@ -83,6 +83,16 @@ import { FilterableProductProps } from "../../../../types/product"
  *       type: array
  *       items:
  *         type: string
+ *   - in: query
+ *     name: category_id
+ *     style: form
+ *     explode: false
+ *     description: Category IDs to filter products by
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) include_category_children {boolean} Include category children when filtering by category_id
  *   - (query) title {string} title to search for.
  *   - (query) description {string} description to search for.
  *   - (query) handle {string} handle to search for.
@@ -157,6 +167,10 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ *   - (query) order {string} the field used to order the products.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -184,21 +198,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             products:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/product"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminProductsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -258,4 +258,8 @@ export class AdminGetProductsParams extends FilterableProductProps {
   @IsString()
   @IsOptional()
   fields?: string
+
+  @IsString()
+  @IsOptional()
+  order?: string
 }

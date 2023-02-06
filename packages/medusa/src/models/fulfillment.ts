@@ -51,6 +51,9 @@ export class Fulfillment extends BaseEntity {
   @Column()
   provider_id: string
 
+  @Column({ nullable: true, type: "text" })
+  location_id: string | null
+
   @ManyToOne(() => FulfillmentProvider)
   @JoinColumn({ name: "provider_id" })
   provider: FulfillmentProvider
@@ -91,10 +94,9 @@ export class Fulfillment extends BaseEntity {
 }
 
 /**
- * @schema fulfillment
+ * @schema Fulfillment
  * title: "Fulfillment"
  * description: "Fulfillments are created once store operators can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a provider, which is typically an external shipping aggregator, shipping partner og 3PL, most plugins will have asynchronous communications with these providers through webhooks in order to automatically update and synchronize the state of Fulfillments."
- * x-resourceId: fulfillment
  * type: object
  * required:
  *  - provider_id
@@ -128,19 +130,23 @@ export class Fulfillment extends BaseEntity {
  *     description: "The id of the Fulfillment Provider responsible for handling the fulfillment"
  *     type: string
  *     example: manual
+ *   location_id:
+ *     description: "The id of the stock location the fulfillment will be shipped from"
+ *     type: string
+ *     example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   provider:
  *     description: Available if the relation `provider` is expanded.
- *     $ref: "#/components/schemas/fulfillment_provider"
+ *     $ref: "#/components/schemas/FulfillmentProvider"
  *   items:
  *     description: The Fulfillment Items in the Fulfillment - these hold information about how many of each Line Item has been fulfilled. Available if the relation `items` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/fulfillment_item"
+ *       $ref: "#/components/schemas/FulfillmentItem"
  *   tracking_links:
  *     description: The Tracking Links that can be used to track the status of the Fulfillment, these will usually be provided by the Fulfillment Provider. Available if the relation `tracking_links` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/tracking_link"
+ *       $ref: "#/components/schemas/TrackingLink"
  *   tracking_numbers:
  *     deprecated: true
  *     description: The tracking numbers that can be used to track the status of the fulfillment.

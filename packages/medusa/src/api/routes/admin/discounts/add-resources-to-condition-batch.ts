@@ -12,7 +12,7 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "PostDiscountsDiscountConditionsConditionBatch"
- * summary: "Add a batch of resources to a discount condition"
+ * summary: "Add Batch Resources"
  * description: "Add a batch of resources to a discount condition."
  * x-authenticated: true
  * parameters:
@@ -24,20 +24,10 @@ import { FindParams } from "../../../../types/common"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - resources
- *         properties:
- *           resources:
- *             description: The resources to be added to the discount condition
- *             type: array
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The id of the item
- *                   type: string
+ *         $ref: "#/components/schemas/AdminPostDiscountsDiscountConditionsConditionBatchReq"
+ * x-codegen:
+ *   method: addConditionResourceBatch
+ *   queryParams: AdminPostDiscountsDiscountConditionsConditionBatchParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -71,10 +61,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -124,9 +111,27 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+/**
+ * @schema AdminPostDiscountsDiscountConditionsConditionBatchReq
+ * type: object
+ * required:
+ *   - resources
+ * properties:
+ *   resources:
+ *     description: The resources to be added to the discount condition
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The id of the item
+ *           type: string
+ */
 export class AdminPostDiscountsDiscountConditionsConditionBatchReq {
   @IsArray()
   resources: { id: string }[]
 }
 
+// eslint-disable-next-line max-len
 export class AdminPostDiscountsDiscountConditionsConditionBatchParams extends FindParams {}

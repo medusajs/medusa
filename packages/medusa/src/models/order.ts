@@ -21,8 +21,10 @@ import {
   FeatureFlagDecorators,
 } from "../utils/feature-flag-decorators"
 
-import { Address } from "./address"
 import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
+import { manualAutoIncrement } from "../utils/manual-auto-increment"
+import { Address } from "./address"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
 import { Currency } from "./currency"
@@ -33,6 +35,7 @@ import { Fulfillment } from "./fulfillment"
 import { GiftCard } from "./gift-card"
 import { GiftCardTransaction } from "./gift-card-transaction"
 import { LineItem } from "./line-item"
+import { OrderEdit } from "./order-edit"
 import { Payment } from "./payment"
 import { Refund } from "./refund"
 import { Region } from "./region"
@@ -40,10 +43,6 @@ import { Return } from "./return"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
-import { generateEntityId } from "../utils/generate-entity-id"
-import { manualAutoIncrement } from "../utils/manual-auto-increment"
-import { OrderEdit } from "./order-edit"
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -211,12 +210,7 @@ export class Order extends BaseEntity {
   @JoinColumn({ name: "draft_order_id" })
   draft_order: DraftOrder
 
-  @FeatureFlagDecorators(OrderEditingFeatureFlag.key, [
-    OneToMany(
-      () => OrderEdit,
-      (oe) => oe.order
-    ),
-  ])
+  @OneToMany(() => OrderEdit, (oe) => oe.order)
   edits: OrderEdit[]
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
@@ -278,10 +272,9 @@ export class Order extends BaseEntity {
 }
 
 /**
- * @schema order
+ * @schema Order
  * title: "Order"
  * description: "Represents an order"
- * x-resourceId: order
  * type: object
  * required:
  *   - customer_id
@@ -357,14 +350,14 @@ export class Order extends BaseEntity {
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
  *     description: Available if the relation `billing_address` is expanded.
- *     $ref: "#/components/schemas/address"
+ *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
  *     type: string
  *     description: The ID of the shipping address associated with the order
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
  *     description: Available if the relation `shipping_address` is expanded.
- *     $ref: "#/components/schemas/address"
+ *     $ref: "#/components/schemas/Address"
  *   region_id:
  *     type: string
  *     description: The region's ID
@@ -381,7 +374,7 @@ export class Order extends BaseEntity {
  *       description: See a list of codes.
  *   currency:
  *     description: Available if the relation `currency` is expanded.
- *     $ref: "#/components/schemas/currency"
+ *     $ref: "#/components/schemas/Currency"
  *   tax_rate:
  *     description: The order's tax rate
  *     type: number
@@ -402,17 +395,17 @@ export class Order extends BaseEntity {
  *     type: array
  *     description: The shipping methods used in the order. Available if the relation `shipping_methods` is expanded.
  *     items:
- *       $ref: "#/components/schemas/shipping_method"
+ *       $ref: "#/components/schemas/ShippingMethod"
  *   payments:
  *     type: array
  *     description: The payments used in the order. Available if the relation `payments` is expanded.
  *     items:
- *       $ref: "#/components/schemas/payment"
+ *       $ref: "#/components/schemas/Payment"
  *   fulfillments:
  *     type: array
  *     description: The fulfillments used in the order. Available if the relation `fulfillments` is expanded.
  *     items:
- *       $ref: "#/components/schemas/fulfillment"
+ *       $ref: "#/components/schemas/Fulfillment"
  *   returns:
  *     type: array
  *     description: The returns associated with the order. Available if the relation `returns` is expanded.
@@ -448,17 +441,17 @@ export class Order extends BaseEntity {
  *     type: array
  *     description: The line items that belong to the order. Available if the relation `items` is expanded.
  *     items:
- *       $ref: "#/components/schemas/line_item"
+ *       $ref: "#/components/schemas/LineItem"
  *   edits:
  *     type: array
  *     description: "[EXPERIMENTAL] Order edits done on the order. Available if the relation `edits` is expanded."
  *     items:
- *       $ref: "#/components/schemas/order_edit"
+ *       $ref: "#/components/schemas/OrderEdit"
  *   gift_card_transactions:
  *     type: array
  *     description: The gift card transactions used in the order. Available if the relation `gift_card_transactions` is expanded.
  *     items:
- *       $ref: "#/components/schemas/gift_card_transaction"
+ *       $ref: "#/components/schemas/GiftCardTransaction"
  *   canceled_at:
  *     type: string
  *     description: The date the order was canceled on.

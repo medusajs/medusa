@@ -14,24 +14,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - amount
-            - reason
-          properties:
-            amount:
-              description: The amount to refund.
-              type: integer
-            reason:
-              description: The reason for the Refund.
-              type: string
-            note:
-              description: A note with additional details about the Refund.
-              type: string
-            no_notification:
-              description: >-
-                If set to true no notification will be send related to this
-                Refund.
-              type: boolean
+          $ref: ../components/schemas/AdminPostOrdersOrderRefundsReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -52,9 +35,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              order:
-                $ref: ../components/schemas/order.yaml
+            $ref: ../components/schemas/AdminOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

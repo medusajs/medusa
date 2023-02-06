@@ -30,18 +30,7 @@ delete:
       content:
         application/json:
           schema:
-            properties:
-              id:
-                type: string
-                description: The ID of the deleted Collection
-              object:
-                type: string
-                description: The type of the object that was deleted.
-                default: product-collection
-              deleted:
-                type: boolean
-                description: Whether the collection was deleted successfully or not.
-                default: true
+            $ref: ../components/schemas/AdminCollectionsDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -86,9 +75,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              collection:
-                $ref: ../components/schemas/product_collection.yaml
+            $ref: ../components/schemas/AdminCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -117,20 +104,7 @@ post:
     content:
       application/json:
         schema:
-          properties:
-            title:
-              type: string
-              description: The title to identify the Collection by.
-            handle:
-              type: string
-              description: >-
-                An optional handle to be used in slugs, if none is provided we
-                will kebab-case the title.
-            metadata:
-              description: >-
-                An optional set of key-value pairs to hold additional
-                information.
-              type: object
+          $ref: ../components/schemas/AdminPostCollectionsCollectionReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -151,9 +125,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              collection:
-                $ref: ../components/schemas/product_collection.yaml
+            $ref: ../components/schemas/AdminCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

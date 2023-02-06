@@ -18,6 +18,8 @@ import { MedusaError } from "medusa-core-utils"
  *   - (path) id=* {string} The ID of the Order which the Swap relates to.
  *   - (path) swap_id=* {string} The ID of the Swap which the Fulfillment relates to.
  *   - (path) fulfillment_id=* {string} The ID of the Fulfillment.
+ * x-codegen:
+ *   method: cancelSwapFulfillment
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -45,10 +47,7 @@ import { MedusaError } from "medusa-core-utils"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

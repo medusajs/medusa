@@ -21,6 +21,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) offset=0 {number} The number of items to skip before the results.
  *   - (query) limit=50 {number} Limit the number of items returned.
  *   - (query) q {string} a search term to search emails in carts associated with draft orders and display IDs of draft orders
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetDraftOrdersParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -48,21 +51,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             draft_orders:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/draft-order"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminDraftOrdersListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -11,6 +11,8 @@ import { IdempotencyKey } from "../../../../models/idempotency-key"
  *   this may involve making 3rd party API calls to a Tax Provider service."
  * parameters:
  *   - (path) id=* {String} The Cart ID.
+ * x-codegen:
+ *   method: calculateTaxes
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -24,10 +26,7 @@ import { IdempotencyKey } from "../../../../models/idempotency-key"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

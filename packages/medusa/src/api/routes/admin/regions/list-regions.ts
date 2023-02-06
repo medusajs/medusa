@@ -47,6 +47,9 @@ import { validator } from "../../../../utils/validator"
  *      type: object
  *    required: false
  *    description: Date comparison for when resulting region was deleted, i.e. less than, greater than etc.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetRegionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -74,21 +77,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             regions:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/region"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminRegionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

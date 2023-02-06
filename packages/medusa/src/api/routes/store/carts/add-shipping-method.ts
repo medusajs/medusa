@@ -11,8 +11,13 @@ import { EntityManager } from "typeorm"
  * summary: "Add a Shipping Method"
  * parameters:
  *   - (path) id=* {string} The cart ID.
- *   - (body) option_id=* {string} ID of the shipping option to create the method from
- *   - (body) data {Object} Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartShippingMethodReq"
+ * x-codegen:
+ *   method: addShippingMethod
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -41,10 +46,7 @@ import { EntityManager } from "typeorm"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            cart:
- *              $ref: "#/components/schemas/cart"
+ *          $ref: "#/components/schemas/StoreCartsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "404":
@@ -90,6 +92,19 @@ export default async (req, res) => {
   res.status(200).json({ cart: data })
 }
 
+/**
+ * @schema StorePostCartsCartShippingMethodReq
+ * type: object
+ * required:
+ *   - option_id
+ * properties:
+ *   option_id:
+ *     type: string
+ *     description: ID of the shipping option to create the method from
+ *   data:
+ *     type: object
+ *     description: Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
+ */
 export class StorePostCartsCartShippingMethodReq {
   @IsString()
   option_id: string

@@ -1,4 +1,8 @@
-# Local Development
+---
+description: 'Learn how to perform local development in the Medusa monorepo. This includes how to use the dev CLI tool and perform unit, integration, and plugin tests.'
+---
+
+# Local Development of Medusa Server and Monorepo
 
 In this document, you’ll learn how to customize Medusa’s core and run tests.
 
@@ -13,6 +17,8 @@ Whether you want to implement something differently, introduce a new future as p
 [Medusa’s repository on GitHub](https://github.com/medusajs/medusa) includes all packages related to Medusa under the [`packages` directory](https://github.com/medusajs/medusa/tree/master/packages). This includes the [core Medusa server](https://github.com/medusajs/medusa/tree/master/packages/medusa), the [JS Client](https://github.com/medusajs/medusa/tree/master/packages/medusa-js), the CLI tools, and much more.
 
 All the packages are part of a [Yarn workspace](https://classic.yarnpkg.com/lang/en/docs/workspaces/). So, when you run a command in the root of the project, such as `yarn build`, it goes through all registered packages in the workspace under the `packages` directory and runs the `build` command in each of those packages.
+
+---
 
 ## Prerequisites
 
@@ -51,9 +57,21 @@ In the directory of your forked GitHub repository, run the following command to 
 medusa-dev --set-path-to-repo `pwd`
 ```
 
+---
+
 ## Run Tests in the Repository
 
 In this section, you’ll learn how to run tests in the Medusa repository. This is helpful after you customize any of Medusa’s packages and want to make sure everything is still working as expected.
+
+### Set System Environment Variables
+
+Before you can run the tests, make sure you set the following system environment variables:
+
+```bash
+DB_HOST=<YOUR_DB_HOST>
+DB_USERNAME=<YOUR_DB_USERNAME>
+DB_PASSWORD=<YOUR_PASSWORD>
+```
 
 ### Run Unit Tests
 
@@ -76,55 +94,25 @@ yarn test
 
 ### Run API Integration Tests
 
-API integration tests are used to test out Medusa’s core endpoints. To run the API integration tests:
+API integration tests are used to test out Medusa’s core endpoints.
 
-1. Change to the `integrations-tests/api` directory:
-
-```bash
-cd integration-tests/api
-```
-
-2\. Install dependencies using Medusa’s dev CLI tool:
+To run the API integration tests, run the following command in the root directory of the repository:
 
 ```bash
-medusa-dev --force-install --external-registry
+yarn test:integration:api
 ```
-
-3\. Run the test command:
-
-```bash
-yarn test
-```
-
-:::info
-
-The `--force-install` option passed to `medusa-dev` ensures that the packages are installing from the local registry rather than copied as explained in [the next section](#test-in-a-local-server).
-
-:::
 
 ### Run Plugin Integration Tests
 
 Plugin integration tests are used to test out Medusa’s official plugins, which are also stored in the `packages` directory in the repository.
 
-To run the plugin integration tests:
-
-1. Change to the `integrations-tests/plugins` directory:
+To run the plugin integration tests, run the following command in the root directory of the repository:
 
 ```bash
-cd integration-tests/plugins
+yarn test:integration:plugins
 ```
 
-2\. Install dependencies using Medusa’s dev CLI tool:
-
-```bash
-medusa-dev --force-install --external-registry
-```
-
-3\. Run the test command:
-
-```bash
-yarn test
-```
+---
 
 ## Test in a Local Server
 
@@ -154,7 +142,27 @@ cd medusa-server
 medusa-dev
 ```
 
-By default, Medusa’s dev CLI runs in watch mode. So, it copies the files when you first run it, then, whenever you make changes in the packages in the Medusa repository, it copies the changed files again.
+By default, Medusa’s dev CLI runs in watch mode. So, it copies the files when you first run it. Then, whenever you make changes in the `dist` directory of the packages in the Medusa repository, it copies the changed files again.
+
+### Watch and Compile Changes
+
+While the above command is running, it's recommended to run the `watch` command inside the directory of every package you're making changes to.
+
+The combination of these two commands running at the same time will compile the package into the `dist` directory of the package, then copy the compiled changes into your local server.
+
+For example, if you're making changes in the `medusa` package, run the following command inside the directory of the `medusa` package:
+
+```bash title=packages/medusa
+yarn watch
+```
+
+Make sure the `medusa-dev` command is also running to copy the changes automatically.
+
+Alternatively, you can manually run the `build` command every time you want to compile the changes:
+
+```bash title=packages/medusa
+yarn build
+```
 
 ### CLI Options
 
@@ -178,7 +186,9 @@ medusa-dev -q
 medusa-dev --packages @medusajs/medusa-cli medusa-file-minio
 ```
 
-## What’s Next
+---
 
-- Check out our [contribution guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
-- Learn how to [create a plugin](../advanced/backend/plugins/create.md).
+## See Also
+
+- [Create a Plugin](../advanced/backend/plugins/create.md)
+- [Contribution Guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md)

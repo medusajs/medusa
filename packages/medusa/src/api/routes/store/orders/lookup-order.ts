@@ -38,6 +38,9 @@ import { validator } from "../../../../utils/validator"
  *         postal_code:
  *           type: string
  *           description: The postal code of the shipping address
+ * x-codegen:
+ *   method: lookupOrder
+ *   queryParams: StoreGetOrdersParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -63,10 +66,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/StoreOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

@@ -15,6 +15,8 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  * summary: "Get Store details"
  * description: "Retrieves the Store details"
  * x-authenticated: true
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,10 +44,7 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             store:
- *               $ref: "#/components/schemas/store"
+ *           $ref: "#/components/schemas/AdminStoresRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

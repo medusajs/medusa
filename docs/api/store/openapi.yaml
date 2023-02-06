@@ -108,40 +108,28 @@ tags:
       sessions.
   - name: Cart
     description: Cart endpoints that allow handling carts in Medusa.
-    x-resourceId: cart
   - name: Collection
     description: Collection endpoints that allow handling collections in Medusa.
-    x-resourceId: product_collection
   - name: Customer
     description: Customer endpoints that allow handling customers in Medusa.
-    x-resourceId: customer
   - name: Gift Card
     description: Gift Card endpoints that allow handling gift cards in Medusa.
-    x-resourceId: gift_card
   - name: Order
     description: Order endpoints that allow handling orders in Medusa.
-    x-resourceId: order
   - name: Product
     description: Product endpoints that allow handling products in Medusa.
-    x-resourceId: product
   - name: Product Variant
     description: Product Variant endpoints that allow handling product variants in Medusa.
-    x-resourceId: product_variant
   - name: Region
     description: Region endpoints that allow handling regions in Medusa.
-    x-resourceId: region
   - name: Return Reason
     description: Return Reason endpoints that allow handling return reasons in Medusa.
-    x-resourceId: return_reason
   - name: Return
     description: Return endpoints that allow handling returns in Medusa.
-    x-resourceId: return
   - name: Shipping Option
     description: Shipping Option endpoints that allow handling shipping options in Medusa.
-    x-resourceId: shipping_option
   - name: Swap
     description: Swap endpoints that allow handling swaps in Medusa.
-    x-resourceId: swap
 servers:
   - url: https://api.medusa-commerce.com/store
 paths:
@@ -157,8 +145,6 @@ paths:
     $ref: paths/carts_{id}_complete.yaml
   /carts:
     $ref: paths/carts.yaml
-  /carts/{id}/line-items:
-    $ref: paths/carts_{id}_line-items.yaml
   /carts/{id}/payment-sessions:
     $ref: paths/carts_{id}_payment-sessions.yaml
   /carts/{id}/discounts/{code}:
@@ -201,12 +187,34 @@ paths:
     $ref: paths/order-edits_{id}_decline.yaml
   /order-edits/{id}:
     $ref: paths/order-edits_{id}.yaml
+  /orders/customer/confirm:
+    $ref: paths/orders_customer_confirm.yaml
   /orders/cart/{cart_id}:
     $ref: paths/orders_cart_{cart_id}.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
   /orders:
     $ref: paths/orders.yaml
+  /orders/batch/customer/token:
+    $ref: paths/orders_batch_customer_token.yaml
+  /payment-collections/{id}/sessions/batch/authorize:
+    $ref: paths/payment-collections_{id}_sessions_batch_authorize.yaml
+  /payment-collections/{id}/sessions/{session_id}/authorize:
+    $ref: paths/payment-collections_{id}_sessions_{session_id}_authorize.yaml
+  /payment-collections/{id}:
+    $ref: paths/payment-collections_{id}.yaml
+  /payment-collections/{id}/sessions/batch:
+    $ref: paths/payment-collections_{id}_sessions_batch.yaml
+  /payment-collections/{id}/sessions:
+    $ref: paths/payment-collections_{id}_sessions.yaml
+  /payment-collections/{id}/sessions/{session_id}:
+    $ref: paths/payment-collections_{id}_sessions_{session_id}.yaml
+  /product-categories/{id}:
+    $ref: paths/product-categories_{id}.yaml
+  /product-categories:
+    $ref: paths/product-categories.yaml
+  /product-tags:
+    $ref: paths/product-tags.yaml
   /product-types:
     $ref: paths/product-types.yaml
   /products/{id}:
@@ -237,6 +245,8 @@ paths:
     $ref: paths/variants_{variant_id}.yaml
   /variants:
     $ref: paths/variants.yaml
+  /carts/{id}/line-items:
+    $ref: paths/carts_{id}_line-items.yaml
 components:
   securitySchemes:
     cookie_auth:

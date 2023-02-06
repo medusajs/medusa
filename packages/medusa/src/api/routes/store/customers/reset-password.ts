@@ -13,23 +13,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - email
- *           - password
- *           - token
- *         properties:
- *           email:
- *             description: "The email of the customer."
- *             type: string
- *             format: email
- *           password:
- *             description: "The Customer's password."
- *             type: string
- *             format: password
- *           token:
- *             description: "The reset password token"
- *             type: string
+ *         $ref: "#/components/schemas/StorePostCustomersResetPasswordReq"
+ * x-codegen:
+ *   method: resetPassword
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -62,10 +48,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *           $ref: "#/components/schemas/StoreCustomersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -112,6 +95,26 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersResetPasswordReq
+ * type: object
+ * required:
+ *   - email
+ *   - password
+ *   - token
+ * properties:
+ *   email:
+ *     description: "The email of the customer."
+ *     type: string
+ *     format: email
+ *   password:
+ *     description: "The Customer's password."
+ *     type: string
+ *     format: password
+ *   token:
+ *     description: "The reset password token"
+ *     type: string
+ */
 export class StorePostCustomersResetPasswordReq {
   @IsEmail()
   email: string

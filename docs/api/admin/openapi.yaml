@@ -108,97 +108,68 @@ tags:
       sessions.
   - name: App
     description: App endpoints that allow handling apps in Medusa.
-    x-resourceId: OAuth
   - name: Batch Job
     description: Batch Job endpoints that allow handling batch jobs in Medusa.
-    x-resourceId: batch_job
   - name: Claim
     description: Claim endpoints that allow handling claims in Medusa.
-    x-resourceId: claim_order
   - name: Collection
     description: Collection endpoints that allow handling collections in Medusa.
-    x-resourceId: product_collection
   - name: Customer
     description: Customer endpoints that allow handling customers in Medusa.
-    x-resourceId: customer
   - name: Customer Group
     description: Customer Group endpoints that allow handling customer groups in Medusa.
-    x-resourceId: customer_group
   - name: Discount
     description: Discount endpoints that allow handling discounts in Medusa.
-    x-resourceId: discount
   - name: Discount Condition
     description: >-
       Discount Condition endpoints that allow handling discount conditions in
       Medusa.
-    x-resourceId: discount_condition
   - name: Draft Order
     description: Draft Order endpoints that allow handling draft orders in Medusa.
-    x-resourceId: draft-order
   - name: Gift Card
     description: Gift Card endpoints that allow handling gift cards in Medusa.
-    x-resourceId: gift_card
   - name: Invite
     description: Invite endpoints that allow handling invites in Medusa.
-    x-resourceId: invite
   - name: Note
     description: Note endpoints that allow handling notes in Medusa.
-    x-resourceId: note
   - name: Notification
     description: Notification endpoints that allow handling notifications in Medusa.
-    x-resourceId: notification
   - name: Order
     description: Order endpoints that allow handling orders in Medusa.
-    x-resourceId: order
   - name: Price List
     description: Price List endpoints that allow handling price lists in Medusa.
-    x-resourceId: price_list
   - name: Product
     description: Product endpoints that allow handling products in Medusa.
-    x-resourceId: product
   - name: Product Tag
     description: Product Tag endpoints that allow handling product tags in Medusa.
-    x-resourceId: product_tag
   - name: Product Type
     description: Product Types endpoints that allow handling product types in Medusa.
-    x-resourceId: product_type
   - name: Product Variant
     description: Product Variant endpoints that allow handling product variants in Medusa.
-    x-resourceId: product_variant
   - name: Region
     description: Region endpoints that allow handling regions in Medusa.
-    x-resourceId: region
   - name: Return Reason
     description: Return Reason endpoints that allow handling return reasons in Medusa.
-    x-resourceId: return_reason
   - name: Return
     description: Return endpoints that allow handling returns in Medusa.
-    x-resourceId: return
   - name: Sales Channel
     description: Sales Channel endpoints that allow handling sales channels in Medusa.
-    x-resourceId: sales_channel
   - name: Shipping Option
     description: Shipping Option endpoints that allow handling shipping options in Medusa.
-    x-resourceId: shipping_option
   - name: Shipping Profile
     description: >-
       Shipping Profile endpoints that allow handling shipping profiles in
       Medusa.
-    x-resourceId: shipping_profile
   - name: Store
     description: Store endpoints that allow handling stores in Medusa.
-    x-resourceId: store
   - name: Swap
     description: Swap endpoints that allow handling swaps in Medusa.
-    x-resourceId: swap
   - name: Tax Rate
     description: Tax Rate endpoints that allow handling tax rates in Medusa.
-    x-resourceId: tax_rate
   - name: Upload
     description: Upload endpoints that allow handling uploads in Medusa.
   - name: User
     description: User endpoints that allow handling users in Medusa.
-    x-resourceId: user
 servers:
   - url: https://api.medusa-commerce.com/admin
 paths:
@@ -332,6 +303,8 @@ paths:
     $ref: paths/order_{id}_claims.yaml
   /orders/{id}/fulfillment:
     $ref: paths/orders_{id}_fulfillment.yaml
+  /orders/{id}/line-items/{line_item_id}/reserve:
+    $ref: paths/orders_{id}_line-items_{line_item_id}_reserve.yaml
   /orders/{id}/shipment:
     $ref: paths/orders_{id}_shipment.yaml
   /orders/{id}/swaps/{swap_id}/shipments:
@@ -344,6 +317,8 @@ paths:
     $ref: paths/orders_{id}_swaps_{swap_id}_fulfillments.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
+  /orders/{id}/reservations:
+    $ref: paths/orders_{id}_reservations.yaml
   /orders:
     $ref: paths/orders.yaml
   /orders/{id}/swaps/{swap_id}/process-payment:
@@ -354,6 +329,16 @@ paths:
     $ref: paths/orders_{id}_return.yaml
   /order/{id}/claims/{claim_id}:
     $ref: paths/order_{id}_claims_{claim_id}.yaml
+  /payment-collections/{id}:
+    $ref: paths/payment-collections_{id}.yaml
+  /payment-collections/{id}/authorize:
+    $ref: paths/payment-collections_{id}_authorize.yaml
+  /payments/{id}/capture:
+    $ref: paths/payments_{id}_capture.yaml
+  /payments/{id}:
+    $ref: paths/payments_{id}.yaml
+  /payments/{id}/refund:
+    $ref: paths/payments_{id}_refund.yaml
   /price-lists/{id}/prices/batch:
     $ref: paths/price-lists_{id}_prices_batch.yaml
   /price-lists:
@@ -366,6 +351,10 @@ paths:
     $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
   /price-lists/{id}/products:
     $ref: paths/price-lists_{id}_products.yaml
+  /product-categories:
+    $ref: paths/product-categories.yaml
+  /product-categories/{id}:
+    $ref: paths/product-categories_{id}.yaml
   /product-tags:
     $ref: paths/product-tags.yaml
   /product-types:
@@ -388,6 +377,18 @@ paths:
     $ref: paths/products_types.yaml
   /products/{id}/metadata:
     $ref: paths/products_{id}_metadata.yaml
+  /publishable-api-keys/{id}/sales-channels/batch:
+    $ref: paths/publishable-api-keys_{id}_sales-channels_batch.yaml
+  /publishable-api-keys:
+    $ref: paths/publishable-api-keys.yaml
+  /publishable-api-keys/{id}:
+    $ref: paths/publishable-api-keys_{id}.yaml
+  /publishable-api-keys/{id}/sales-channels:
+    $ref: paths/publishable-api-keys_{id}_sales-channels.yaml
+  /publishable-api-keys/{id}/revoke:
+    $ref: paths/publishable-api-keys_{id}_revoke.yaml
+  /publishable-api-key/{id}:
+    $ref: paths/publishable-api-key_{id}.yaml
   /regions/{id}/countries:
     $ref: paths/regions_{id}_countries.yaml
   /regions/{id}/fulfillment-providers:
@@ -406,6 +407,10 @@ paths:
     $ref: paths/regions_{id}_fulfillment-providers_{provider_id}.yaml
   /regions/{id}/payment-providers/{provider_id}:
     $ref: paths/regions_{id}_payment-providers_{provider_id}.yaml
+  /reservations:
+    $ref: paths/reservations.yaml
+  /reservations/{id}:
+    $ref: paths/reservations_{id}.yaml
   /return-reasons:
     $ref: paths/return-reasons.yaml
   /return-reasons/{id}:
@@ -418,6 +423,8 @@ paths:
     $ref: paths/returns_{id}_receive.yaml
   /sales-channels/{id}/products/batch:
     $ref: paths/sales-channels_{id}_products_batch.yaml
+  /sales-channels/{id}/stock-locations:
+    $ref: paths/sales-channels_{id}_stock-locations.yaml
   /sales-channels:
     $ref: paths/sales-channels.yaml
   /sales-channels/{id}:
@@ -430,6 +437,10 @@ paths:
     $ref: paths/shipping-profiles.yaml
   /shipping-profiles/{id}:
     $ref: paths/shipping-profiles_{id}.yaml
+  /stock-locations:
+    $ref: paths/stock-locations.yaml
+  /stock-locations/{id}:
+    $ref: paths/stock-locations_{id}.yaml
   /store/currencies/{code}:
     $ref: paths/store_currencies_{code}.yaml
   /store:
@@ -456,6 +467,8 @@ paths:
     $ref: paths/uploads_protected.yaml
   /uploads:
     $ref: paths/uploads.yaml
+  /uploads/download-url:
+    $ref: paths/uploads_download-url.yaml
   /users:
     $ref: paths/users.yaml
   /users/{id}:
@@ -530,15 +543,28 @@ components:
         of `{api_token}`. This is where you must pass the API token.
 
 
-        If you're alternatively following along with the JS Client request
-        samples, you must provide the `apiKey` option when creating the Medusa
-        client:
+        If you're following along with the JS Client request samples, you must
+        provide the `apiKey` option when creating the Medusa client:
 
 
-        ```js
+        ```ts
 
         const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3,
         apiKey: '{api_token}' })
+
+        ```
+
+
+        If you're using Medusa React, you can pass the `apiKey` prop to
+        `MedusaProvider`:
+
+
+        ```tsx
+
+        <MedusaProvider
+          apiKey='{api_token}'
+          //...
+        >
 
         ```
       scheme: bearer

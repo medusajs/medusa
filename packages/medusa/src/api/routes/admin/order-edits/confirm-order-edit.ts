@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { OrderEditService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { OrderEditService } from "../../../../services"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
@@ -14,6 +14,8 @@ import {
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the order edit.
+ * x-codegen:
+ *   method: confirm
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -41,10 +43,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -68,7 +67,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (transactionManager) => {
     await orderEditService
       .withTransaction(transactionManager)
-      .confirm(id, { loggedInUserId: userId })
+      .confirm(id, { confirmedBy: userId })
   })
 
   let orderEdit = await orderEditService.retrieve(id, {

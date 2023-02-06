@@ -1,7 +1,6 @@
 import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
 import { Request, Response } from "express"
-import { IsNumber } from "class-validator"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
@@ -10,12 +9,14 @@ import {
 /**
  * @oas [delete] /order-edits/{id}/items/{item_id}
  * operationId: "DeleteOrderEditsOrderEditLineItemsLineItem"
- * summary: "Delete line items from an order edit and create change item"
+ * summary: "Delete a Line Item"
  * description: "Delete line items from an order edit and create change item"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete from.
  *   - (path) item_id=* {string} The ID of the order edit item to delete from order.
+ * x-codegen:
+ *   method: removeLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -43,10 +44,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

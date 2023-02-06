@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/list-customer-groups.d.ts:158
+medusa/dist/api/routes/admin/customer-groups/list-customer-groups.d.ts:159
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/list-customer-groups.d.ts:157
+medusa/dist/api/routes/admin/customer-groups/list-customer-groups.d.ts:158
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/list-customer-groups.d.ts:156
+medusa/dist/api/routes/admin/customer-groups/list-customer-groups.d.ts:157
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/list-customer-groups.d.ts:155
+medusa/dist/api/routes/admin/customer-groups/list-customer-groups.d.ts:156
 
 ___
 

@@ -16,22 +16,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - address
- *         properties:
- *           address:
- *             description: "The Address to add to the Customer."
- *             allOf:
- *               - $ref: "#/components/schemas/address_fields"
- *               - type: object
- *                 required:
- *                   - first_name
- *                   - last_name
- *                   - address_1
- *                   - city
- *                   - country_code
- *                   - postal_code
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerAddressesReq"
+ * x-codegen:
+ *   method: addAddress
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -83,10 +70,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            customer:
- *              $ref: "#/components/schemas/customer"
+ *          $ref: "#/components/schemas/StoreCustomersRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -125,6 +109,25 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersCustomerAddressesReq
+ * type: object
+ * required:
+ *   - address
+ * properties:
+ *   address:
+ *     description: "The Address to add to the Customer."
+ *     allOf:
+ *       - $ref: "#/components/schemas/AddressFields"
+ *       - type: object
+ *         required:
+ *           - first_name
+ *           - last_name
+ *           - address_1
+ *           - city
+ *           - country_code
+ *           - postal_code
+ */
 export class StorePostCustomersCustomerAddressesReq {
   @ValidateNested()
   @Type(() => AddressCreatePayload)

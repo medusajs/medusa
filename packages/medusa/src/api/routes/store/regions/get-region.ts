@@ -1,4 +1,5 @@
 import RegionService from "../../../../services/region"
+
 /**
  * @oas [get] /regions/{id}
  * operationId: GetRegionsRegion
@@ -6,6 +7,8 @@ import RegionService from "../../../../services/region"
  * description: "Retrieves a Region."
  * parameters:
  *   - (path) id=* {string} The id of the Region.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -28,10 +31,7 @@ import RegionService from "../../../../services/region"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/StoreRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

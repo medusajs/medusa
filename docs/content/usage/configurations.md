@@ -1,16 +1,24 @@
-# Configure your Server
+---
+description: 'Learn about the different configurations available in a Medusa server. This includes configurations related to the database, CORS, plugins, redis, and more.'
+---
+
+# Configure Medusa Server
 
 In this document, you’ll learn what configurations you can add to your Medusa server and how to add them.
 
 ## Prerequisites
 
-This document assumes you already followed along with the [“Set up your development environment” documentation](../tutorial/0-set-up-your-development-environment.mdx) and have [installed a Medusa server](../quickstart/quick-start.md#create-a-medusa-server).
+This document assumes you already followed along with the [“Set up your development environment” documentation](../tutorial/0-set-up-your-development-environment.mdx) and have [installed a Medusa server](../quickstart/quick-start.mdx#create-a-medusa-server).
+
+---
 
 ## Medusa Configurations File
 
 The configurations for your Medusa server are in `medusa-config.js`. This includes database, Redis, and plugin configurations, among other configurations.
 
 Some of the configurations mentioned in this document are already defined in `medusa-config.js` with default values. It’s important that you know what these configurations are used for and how to set them.
+
+---
 
 ## Environment Variables
 
@@ -20,9 +28,11 @@ By default, Medusa loads environment variables from the system’s environment v
 
 :::info
 
-This change in how environment variables are loaded was introduced in version 1.3.0. You can learn more in the [upgrade guide for version 1.3.0](../advanced/backend/upgrade-guides/1-3-0.md).
+This change in how environment variables are loaded was introduced in version 1.3.0. You can learn more in the [upgrade guide for version 1.3.0](../advanced/backend/upgrade-guides/medusa-core/1-3-0.md).
 
 :::
+
+---
 
 ## Database Configuration
 
@@ -41,11 +51,11 @@ For SQLite you mainly need two configurations:
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     database_type: "sqlite",
     database_database: "./medusa-db.sql",
   },
-};
+}
 ```
 
 Where `database_type` is `sqlite` and `database_database` is the location you want the SQLite database to be created in.
@@ -54,7 +64,7 @@ Where `database_type` is `sqlite` and `database_database` is the location you wa
 
 :::note
 
-Before getting started with configuring PostgreSQL, you should have created a PostgreSQL `database`. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
+Before getting started with configuring PostgreSQL, you should have created a PostgreSQL database. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
 
 :::
 
@@ -63,22 +73,40 @@ For PostgreSQL you mainly need two configurations:
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     database_type: "postgres",
     database_url: DATABASE_URL,
   },
-};
+}
 ```
 
 Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
 
-It is recommended to set the Database URL as an environment variable:
+It's recommended to set the Database URL as an environment variable:
 
 ```bash
 DATABASE_URL=<YOUR_DATABASE_URL>
 ```
 
 Where `<YOUR_DATABASE_URL>` is the URL of your PostgreSQL database.
+
+### Changing PostgreSQL Schema
+
+By default, the `public` schema is used in PostgreSQL. You can change it to use a custom schema by passing the `search_path` option in the database URL. For example:
+
+```bash
+postgres://localhost/store?options=-c search_path=test
+```
+
+Where `test` is the name of the database schema that should be used instead of `public`.
+
+### Changing Database Type
+
+Remember to run migrations after you change your database type to `postgres` from another type:
+
+```bash
+medusa migrations run
+```
 
 ### Common Configuration
 
@@ -92,12 +120,14 @@ These configurations are not required and can be omitted.
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     database_logging: true,
-    database_extra: {}
+    database_extra: {},
   },
-};
+}
 ```
+
+---
 
 ## Redis
 
@@ -106,10 +136,10 @@ Medusa uses Redis to handle the event queue, among other usages. You need to set
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
-    redis_url: REDIS_URL
+    // ...other configurations
+    redis_url: REDIS_URL,
   },
-};
+}
 ```
 
 Where `REDIS_URL` is the URL used to connect to Redis. The format of the connection string is `redis[s]://[[username][:password]@][host][:port][/db-number]`.
@@ -136,6 +166,8 @@ You can learn more about Subscribers and events in the [Subscriber documentation
 
 :::
 
+---
+
 ## JWT Secret
 
 Medusa uses JSON Web Token (JWT) to handle user authentication. To set the JWT secret:
@@ -143,10 +175,10 @@ Medusa uses JSON Web Token (JWT) to handle user authentication. To set the JWT s
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     jwt_secret: "very secure string",
   },
-};
+}
 ```
 
 Where `jwt_secret` is the secret used to create the tokens. The more secure it is the better.
@@ -165,6 +197,8 @@ In a development environment, if this option is not set the default secret is �
 
 :::
 
+---
+
 ## Cookie Secret
 
 This configuration is used to sign the session ID cookie. To set the cookie secret:
@@ -172,10 +206,10 @@ This configuration is used to sign the session ID cookie. To set the cookie secr
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     cookie_secret: "very secure string",
   },
-};
+}
 ```
 
 Where `cookie_secret` is the secret used to create the tokens. The more secure it is the better.
@@ -194,17 +228,32 @@ In a development environment, if this option is not set the default secret is �
 
 :::
 
-## Admin CORS
+---
 
-Medusa uses Cross-Origin Resource Sharing (CORS) to only allow specific origins to access the server. To make sure your Admin dashboard can access the Medusa server’s admin endpoints, set this configuration:
+## CORS Configurations
+
+Medusa uses Cross-Origin Resource Sharing (CORS) to only allow specific origins to access the server.
+
+The Admin and the Storefront have different CORS configurations that must be configured.
+
+### Accepted Patterns
+
+For both of the Admin and the Storefront CORS configurations, the value is expected to be a string. This string can be a comma-separated list of accepted origins. Every origin in that list can be of the following types:
+
+1. The accepted origin as is. For example, `http://localhost:8000`.
+2. A regular expression pattern that can match more than one origin. For example, `*.example.com`. The regex pattern that the server tests for is `^([\/~@;%#'])(.*?)\1([gimsuy]*)$`.
+
+### Admin CORS
+
+To make sure your Admin dashboard can access the Medusa server’s admin endpoints, set this configuration:
 
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     admin_cors: ADMIN_CORS,
   },
-};
+}
 ```
 
 Where `ADMIN_CORS` is the URL of your admin dashboard. By default, it’s `http://localhost:7000,http://localhost:7001`.
@@ -223,17 +272,17 @@ Make sure that the URL is without a backslash at the end. For example, you shoul
 
 :::
 
-## Storefront CORS
+### Storefront CORS
 
-Medusa uses CORS to only allow specific origins to access the server. To make sure your Storefront dashboard can access the Medusa server, set this configuration:
+To make sure your Storefront dashboard can access the Medusa server, set this configuration:
 
 ```jsx
 module.exports = {
   projectConfig: {
-    //...other configurations
+    // ...other configurations
     store_cors: STORE_CORS,
   },
-};
+}
 ```
 
 Where `STORE_CORS` is the URL of your storefront. By default, it’s `http://localhost:8000`.
@@ -252,6 +301,8 @@ Make sure that the URL is without a backslash at the end. For example, you shoul
 
 :::
 
+---
+
 ## Plugins
 
 On your Medusa server, you can use Plugins to add custom features or integrate third-party services. For example, installing a plugin to use Stripe as a payment provider.
@@ -267,10 +318,10 @@ Aside from installing the plugin with NPM, you need to pass the plugin you insta
 ```jsx
 module.exports = {
   projectConfig: {
-    //previous configurations mentioned...
+    // previous configurations mentioned...
   },
   plugins,
-};
+}
 ```
 
 ### Add a Plugin Without Configuration
@@ -279,9 +330,9 @@ To add a plugin that doesn’t need any configurations, you can simply add its n
 
 ```jsx
 const plugins = [
-  //other plugins...
+  // other plugins...
   `medusa-my-plugin`,
-];
+]
 ```
 
 ### Add a Plugin With Configuration
@@ -290,14 +341,14 @@ To add a plugin with configurations, you need to add an object to the `plugins` 
 
 ```jsx
 const plugins = [
-  //other plugins...
+  // other plugins...
   {
     resolve: `medusa-my-plugin`,
     options: {
-      apiKey: `test`
-    }
-  }
-];
+      apiKey: `test`,
+    },
+  },
+]
 ```
 
 :::tip
@@ -306,8 +357,10 @@ It is recommended to use environment variables to store values of options instea
 
 :::
 
-## What’s Next
+---
 
-- Check out the [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) starter storefronts.
-- Install the [Medusa admin](../admin/quickstart.md).
-- Learn about [deploying the Medusa server](../deployments/server/index.mdx).
+## See Also
+
+- Check out the [Next.js](../starters/nextjs-medusa-starter.mdx) and [Gatsby](../starters/gatsby-medusa-starter.mdx) starter storefronts
+- [Install the Medusa admin](../admin/quickstart.mdx)
+- [Deploy the Medusa server](../deployments/server/index.mdx)

@@ -13,6 +13,9 @@ import { FindParams } from "../../../../types/common"
  *   - (path) id=* {string} The ID of the Customer Group.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer group.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the customer group.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: AdminGetCustomerGroupsGroupParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -40,10 +43,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             customer_group:
- *               $ref: "#/components/schemas/customer_group"
+ *           $ref: "#/components/schemas/AdminCustomerGroupsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

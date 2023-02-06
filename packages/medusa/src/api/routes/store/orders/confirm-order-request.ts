@@ -9,18 +9,15 @@ import {
 /**
  * @oas [post] /orders/customer/confirm
  * operationId: "PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept"
- * summary: "Verify a claim to orders"
+ * summary: "Verify an Order Claim"
  * description: "Verifies the claim order token provided to the customer upon request of order ownership"
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - token
- *         properties:
- *           token:
- *             description: "The invite token provided by the admin."
- *             type: string
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerAcceptClaimReq"
+ * x-codegen:
+ *   method: confirmRequest
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -49,7 +46,7 @@ import {
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Invite
+ *   - Order
  * responses:
  *   200:
  *     description: OK
@@ -110,6 +107,16 @@ export default async (req, res) => {
   res.sendStatus(200)
 }
 
+/**
+ * @schema StorePostCustomersCustomerAcceptClaimReq
+ * type: object
+ * required:
+ *   - token
+ * properties:
+ *   token:
+ *     description: "The invite token provided by the admin."
+ *     type: string
+ */
 export class StorePostCustomersCustomerAcceptClaimReq {
   @IsNotEmpty()
   @IsJWT()

@@ -153,6 +153,9 @@ import { pick } from "lodash"
  *   - (query) limit=50 {integer} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetOrdersParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -180,21 +183,7 @@ import { pick } from "lodash"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             orders:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/order"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminOrdersListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

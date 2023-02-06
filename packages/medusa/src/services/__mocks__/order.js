@@ -4,6 +4,10 @@ export const orders = {
   testOrder: {
     id: IdMap.getId("test-order"),
     email: "virgil@vandijk.dk",
+    sales_channel_id: "test-channel",
+    sales_channel: {
+      id: "test-channel",
+    },
     billing_address: {
       first_name: "Virgil",
       last_name: "Van Dijk",
@@ -44,6 +48,7 @@ export const orders = {
     regionid: IdMap.getId("testRegion"),
     currency_code: "USD",
     customerid: IdMap.getId("testCustomer"),
+    fulfillments: [],
     payment_method: {
       providerid: "default_provider",
       data: {},

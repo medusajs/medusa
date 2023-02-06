@@ -17,7 +17,7 @@ import { ProductStatus } from "../../../../models"
 import { Request } from "express"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /price-lists/{id}/products
@@ -133,6 +133,9 @@ import { isDefined } from "../../../../utils"
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ * x-codegen:
+ *   method: listProducts
+ *   queryParams: AdminGetPriceListsPriceListProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -153,28 +156,14 @@ import { isDefined } from "../../../../utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Price List
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             products:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/product"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminPriceListsProductsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

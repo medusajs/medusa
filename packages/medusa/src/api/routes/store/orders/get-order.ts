@@ -9,6 +9,8 @@ import { OrderService } from "../../../../services"
  * description: "Retrieves an Order"
  * parameters:
  *   - (path) id=* {string} The id of the Order.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -31,10 +33,7 @@ import { OrderService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/StoreOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

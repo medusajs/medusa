@@ -11,7 +11,7 @@ import {
 /**
  * @oas [post] /order-edits/{id}/items
  * operationId: "PostOrderEditsEditLineItems"
- * summary: "Add an line item to an order (edit)"
+ * summary: "Add a Line Item"
  * description: "Create an OrderEdit LineItem."
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit.
@@ -19,21 +19,10 @@ import {
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - variant_id
- *           - quantity
- *         properties:
- *           variant_id:
- *             description: The ID of the variant ID to add
- *             type: string
- *           quantity:
- *             description: The quantity to add
- *             type: number
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostOrderEditsEditLineItemsReq"
  * x-authenticated: true
+ * x-codegen:
+ *   method: addLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,8 +31,8 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.addLineItem(order_edit_id, {
- *         variant_id, 
- *         quantity 
+ *         variant_id,
+ *         quantity
  *       })
  *       .then(({ order_edit }) => {
  *          console.log(order_edit.id)
@@ -66,10 +55,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -112,6 +98,23 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * @schema AdminPostOrderEditsEditLineItemsReq
+ * type: object
+ * required:
+ *   - variant_id
+ *   - quantity
+ * properties:
+ *   variant_id:
+ *     description: The ID of the variant ID to add
+ *     type: string
+ *   quantity:
+ *     description: The quantity to add
+ *     type: number
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostOrderEditsEditLineItemsReq {
   @IsString()
   variant_id: string

@@ -24,11 +24,7 @@ get:
       content:
         application/json:
           schema:
-            properties:
-              types:
-                type: array
-                items:
-                  $ref: ../components/schemas/product_type.yaml
+            $ref: ../components/schemas/AdminProductsListTypesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -15,13 +15,9 @@ import { EntityManager } from "typeorm"
  *  content:
  *    application/json:
  *      schema:
- *        type: object
- *        required:
- *          - value
- *        properties:
- *          value:
- *            type: string
- *            description: The updated description of the Note.
+ *        $ref: "#/components/schemas/AdminPostNotesNoteReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -55,10 +51,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             note:
- *               $ref: "#/components/schemas/note"
+ *           $ref: "#/components/schemas/AdminNotesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -88,6 +81,16 @@ export default async (req, res) => {
   res.status(200).json({ note })
 }
 
+/**
+ * @schema AdminPostNotesNoteReq
+ * type: object
+ * required:
+ *   - value
+ * properties:
+ *   value:
+ *     type: string
+ *     description: The updated description of the Note.
+ */
 export class AdminPostNotesNoteReq {
   @IsString()
   value: string

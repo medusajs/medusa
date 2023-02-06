@@ -16,7 +16,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:58
+medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:59
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:59
+medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:60
 
 ___
 
@@ -64,4 +64,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:60
+medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:61

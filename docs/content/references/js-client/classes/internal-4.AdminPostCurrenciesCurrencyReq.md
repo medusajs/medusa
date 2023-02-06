@@ -10,4 +10,4 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/currencies/update-currency.d.ts:56
+medusa/dist/api/routes/admin/currencies/update-currency.d.ts:58

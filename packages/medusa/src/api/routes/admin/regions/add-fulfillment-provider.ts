@@ -18,13 +18,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - provider_id
- *         properties:
- *           provider_id:
- *             description: "The ID of the Fulfillment Provider to add."
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostRegionsRegionFulfillmentProvidersReq"
+ * x-codegen:
+ *   method: addFulfillmentProvider
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -58,10 +54,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -97,6 +90,16 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
+/**
+ * @schema AdminPostRegionsRegionFulfillmentProvidersReq
+ * type: object
+ * required:
+ *   - provider_id
+ * properties:
+ *   provider_id:
+ *     description: "The ID of the Fulfillment Provider to add."
+ *     type: string
+ */
 export class AdminPostRegionsRegionFulfillmentProvidersReq {
   @IsString()
   provider_id: string

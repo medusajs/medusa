@@ -15,6 +15,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) limit=50 {number} The number of notes to get
  *   - (query) offset=0 {number} The offset at which to get notes
  *   - (query) resource_id {string} The ID which the notes belongs to
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetNotesParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,21 +45,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             notes:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/note"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminNotesListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -6,6 +6,8 @@ import { ShippingProfileService } from "../../../../services"
  * summary: "List Shipping Profiles"
  * description: "Retrieves a list of Shipping Profile."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,12 +35,7 @@ import { ShippingProfileService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             shipping_profiles:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/shipping_profile"
+ *           $ref: "#/components/schemas/AdminShippingProfilesListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

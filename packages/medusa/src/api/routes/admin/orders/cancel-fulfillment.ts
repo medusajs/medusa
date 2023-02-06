@@ -1,8 +1,14 @@
-import { FulfillmentService, OrderService } from "../../../../services"
+import {
+  FulfillmentService,
+  OrderService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { Fulfillment } from "../../../../models"
+import { IInventoryService } from "../../../../interfaces"
 
 /**
  * @oas [post] /orders/{id}/fulfillments/{fulfillment_id}/cancel
@@ -13,6 +19,8 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {string} The ID of the Order which the Fulfillment relates to.
  *   - (path) fulfillment_id=* {string} The ID of the Fulfillment
+ * x-codegen:
+ *   method: cancelFulfillment
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -40,10 +48,7 @@ import { MedusaError } from "medusa-core-utils"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -61,6 +66,11 @@ export default async (req, res) => {
   const { id, fulfillment_id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const fulfillmentService: FulfillmentService =
     req.scope.resolve("fulfillmentService")
 
@@ -75,9 +85,20 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await orderService
+    await orderService
       .withTransaction(transactionManager)
       .cancelFulfillment(fulfillment_id)
+
+    const fulfillment = await fulfillmentService
+      .withTransaction(transactionManager)
+      .retrieve(fulfillment_id, { relations: ["items", "items.item"] })
+
+    if (fulfillment.location_id && inventoryService) {
+      await adjustInventoryForCancelledFulfillment(fulfillment, {
+        productVariantInventoryService:
+          productVariantInventoryService.withTransaction(transactionManager),
+      })
+    }
   })
 
   const order = await orderService.retrieve(id, {
@@ -86,4 +107,24 @@ export default async (req, res) => {
   })
 
   res.json({ order })
+}
+
+export const adjustInventoryForCancelledFulfillment = async (
+  fulfillment: Fulfillment,
+  context: {
+    productVariantInventoryService: ProductVariantInventoryService
+  }
+) => {
+  const { productVariantInventoryService } = context
+  await Promise.all(
+    fulfillment.items.map(async ({ item, quantity }) => {
+      if (item.variant_id) {
+        await productVariantInventoryService.adjustInventory(
+          item.variant_id,
+          fulfillment.location_id!,
+          quantity
+        )
+      }
+    })
+  )
 }

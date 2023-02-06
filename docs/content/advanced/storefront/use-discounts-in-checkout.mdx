@@ -1,3 +1,8 @@
+---
+description: 'Learn how to implement discount functionalities in your storefront using the REST APIs. This includes adding a discount to the cart, showing the discount details, and removing the discount from the cart.'
+addHowToData: true
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -17,29 +22,41 @@ Customers can use discounts during checkout to benefit from promotions that the 
 
 In this document, you’ll learn how to add a discount to a cart, how to display details related to the discount, and how to remove a discount from a cart.
 
-## Scenario
+### Scenario
 
 You want to implement discount functionality in your store to allow customers to apply discount codes to their cart and remove them from the cart. You also want to display the discount details for the customer.
+
+---
 
 ## Prerequisites
 
 ### Medusa Components
 
-It's assumed that you already have a Medusa server installed and set up. If not, you can follow our [quickstart guide](../../quickstart/quick-start.md) to get started.
+It's assumed that you already have a Medusa server installed and set up. If not, you can follow the [quickstart guide](../../quickstart/quick-start.mdx) to get started.
 
-It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.md) or [Gatsby](../../starters/gatsby-medusa-starter.md) storefronts.
+It is also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install either the [Next.js](../../starters/nextjs-medusa-starter.mdx) or [Gatsby](../../starters/gatsby-medusa-starter.mdx) storefronts.
 
 ### JS Client
 
-This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client and JavaScript’s Fetch API.
+This guide includes code snippets to send requests to your Medusa server using Medusa’s JS Client, among other methods.
 
 If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client installed](../../js-client/overview.md) and have [created an instance of the client](../../js-client/overview.md#configuration).
+
+### Medusa React
+
+This guide also includes code snippets to send requests to your Medusa server using Medusa React, among other methods.
+
+If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../medusa-react/overview.md#usage).
+
+It's also assumed you already have [used CartProvider higher in your component tree](../../medusa-react/overview.md#cartprovider).
 
 ### Previous Steps
 
 This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
 
 You can learn how to implement the cart flow using [this documentation](../../guides/carts-in-medusa.mdx).
+
+---
 
 ## Add Discount to Cart
 
@@ -50,49 +67,76 @@ You can add a discount to a customer’s cart by sending the [Update Cart reques
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.update(cartId, {
   discounts: [
     {
-      code
-    }
-  ]
+      code,
+    },
+  ],
 })
 .then(({ cart }) => {
   console.log(cart.discounts)
 })
 .catch((e) => {
-  //display an error to the customer
-  alert('Discount is invalid')
-});
+  // display an error to the customer
+  alert("Discount is invalid")
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useCart } from "medusa-react"
+
+const Cart = () => {
+  // ...
+
+  const { updateCart } = useCart()
+
+  const addDiscount = (code: string) => {
+    updateCart.mutate({
+      discounts: [
+        {
+          code,
+        },
+      ],
+    })
+  }
+
+  // ...
+}
+
+export default Cart
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}`, {
-  method: 'POST',
-  credentials: 'include',
+  method: "POST",
+  credentials: "include",
   body: JSON.stringify({
     discounts: [
       {
-        code
-      }
+        code,
+      },
     ],
   }),
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.discounts);
+  console.log(cart.discounts)
 })
 .catch((e) => {
-  //display an error to the customer
-  alert('Discount is invalid')
-});
+  // display an error to the customer
+  alert("Discount is invalid")
+})
 ```
 
 </TabItem>
@@ -109,6 +153,8 @@ Customers can add more than one discount to their cart.
 If the discount is applied successfully, the entire cart object will be returned. You can access the discounts applied on the cart in the `cart.discounts` array.
 
 In case the customer enters an invalid discount or the discount cannot be applied to the cart because it doesn’t meet its conditions, the request will return an error. You can handle the error in the `catch` method.
+
+---
 
 ## Display Discount Details
 
@@ -201,6 +247,8 @@ The returned `cart` object has the following properties that can be used to disp
 - The `shipping_total` property is the total shipping amount. If a Free Shipping discount is applied to the cart, `shipping_total` and `discount_total` will be 0.
 - The `total` property is the total amount of the cart after applying the discount.
 
+---
+
 ## Remove Discount from Cart
 
 The customer can choose to remove a discount from their cart.
@@ -210,25 +258,25 @@ You can remove a discount from a customer’s cart using the [Remove Discount re
 <Tabs groupId="request-type" wrapperClassName="code-tabs">
 <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
+```ts
 medusa.carts.deleteDiscount(cartId, code)
 .then(({ cart }) => {
   console.log(cart.discounts)
-});
+})
 ```
 
 </TabItem>
 <TabItem value="fetch" label="Fetch API">
 
-```jsx
+```ts
 fetch(`<SERVER_URL>/store/carts/${cartId}/discounts/${code}`, {
-  method: 'DELETE',
-  credentials: 'include'
+  method: "DELETE",
+  credentials: "include",
 })
 .then((response) => response.json())
 .then(({ cart }) => {
-  console.log(cart.discounts);
-});
+  console.log(cart.discounts)
+})
 ```
 
 </TabItem>
@@ -238,7 +286,9 @@ This request accepts the cart ID and the code of the discount to remove. If the 
 
 The totals of the cart and its items will be updated as well.
 
-## What’s Next
+---
 
-- Learn [how to implement the checkout flow](./how-to-implement-checkout-flow.mdx).
-- Learn [how to create discounts using the admin APIs](/api/admin/#tag/Discount/operation/PostDiscounts).
+## See Also
+
+- [Implement the checkout flow in a storefront](./how-to-implement-checkout-flow.mdx).
+- [Manage discounts using the admin APIs](../admin/manage-discounts.mdx).

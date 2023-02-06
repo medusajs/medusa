@@ -14,16 +14,7 @@ post:
     content:
       application/json:
         schema:
-          required:
-            - key
-            - value
-          properties:
-            key:
-              description: The metadata key
-              type: string
-            value:
-              description: The metadata value
-              type: string
+          $ref: ../components/schemas/AdminPostProductsProductMetadataReq.yaml
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
@@ -44,9 +35,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              product:
-                $ref: ../components/schemas/product.yaml
+            $ref: ../components/schemas/AdminProductsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

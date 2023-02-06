@@ -9,6 +9,8 @@ import GiftCardService from "../../../../services/gift-card"
  * description: "Retrieves a Gift Card by its associated unqiue code."
  * parameters:
  *   - (path) code=* {string} The unique Gift Card code.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -31,10 +33,7 @@ import GiftCardService from "../../../../services/gift-card"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             gift_card:
- *               $ref: "#/components/schemas/gift_card"
+ *           $ref: "#/components/schemas/StoreGiftCardsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

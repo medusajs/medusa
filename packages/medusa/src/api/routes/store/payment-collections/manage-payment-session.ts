@@ -6,7 +6,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /payment-collections/{id}/sessions
  * operationId: "PostPaymentCollectionsSessions"
- * summary: "Manage Payment Sessions from Payment Collections"
+ * summary: "Manage a Payment Session"
  * description: "Manages Payment Sessions from Payment Collections."
  * x-authenticated: false
  * parameters:
@@ -15,12 +15,9 @@ import { PaymentCollectionService } from "../../../../services"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - provider_id
- *         properties:
- *           provider_id:
- *             type: string
- *             description: The ID of the Payment Provider.
+ *         $ref: "#/components/schemas/StorePaymentCollectionSessionsReq"
+ * x-codegen:
+ *   method: managePaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -45,16 +42,14 @@ import { PaymentCollectionService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Payment
+ *   - PaymentCollection
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             payment_collection:
- *               $ref: "#/components/schemas/payment_collection"
+ *           $ref: "#/components/schemas/StorePaymentCollectionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -91,6 +86,16 @@ export default async (req, res) => {
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
+/**
+ * @schema StorePaymentCollectionSessionsReq
+ * type: object
+ * required:
+ *   - provider_id
+ * properties:
+ *   provider_id:
+ *     type: string
+ *     description: The ID of the Payment Provider.
+ */
 export class StorePaymentCollectionSessionsReq {
   @IsString()
   provider_id: string

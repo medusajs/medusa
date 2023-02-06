@@ -1,5 +1,6 @@
 import { StoreService } from "../../../../services"
 import { EntityManager } from "typeorm"
+
 /**
  * @oas [post] /store/currencies/{code}
  * operationId: "PostStoreCurrenciesCode"
@@ -16,6 +17,8 @@ import { EntityManager } from "typeorm"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codegen:
+ *   method: addCurrency
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -43,10 +46,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             store:
- *               $ref: "#/components/schemas/store"
+ *           $ref: "#/components/schemas/AdminStoresRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

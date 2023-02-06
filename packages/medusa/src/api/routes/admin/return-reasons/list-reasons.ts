@@ -4,7 +4,7 @@ import {
 } from "."
 import { ReturnReason } from "../../../../models"
 import { ReturnReasonService } from "../../../../services"
-import { FindConfig, Selector } from "../../../../types/common"
+import { Selector } from "../../../../types/common"
 
 /**
  * @oas [get] /return-reasons
@@ -12,6 +12,8 @@ import { FindConfig, Selector } from "../../../../types/common"
  * summary: "List Return Reasons"
  * description: "Retrieves a list of Return Reasons."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -39,12 +41,7 @@ import { FindConfig, Selector } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             return_reasons:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/return_reason"
+ *           $ref: "#/components/schemas/AdminReturnReasonsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

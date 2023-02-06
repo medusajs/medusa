@@ -2,6 +2,7 @@ import {
   AfterLoad,
   BeforeInsert,
   Column,
+  Entity,
   Index,
   JoinColumn,
   ManyToOne,
@@ -9,11 +10,9 @@ import {
   OneToOne,
 } from "typeorm"
 
-import OrderEditingFeatureFlag from "../loaders/feature-flags/order-editing"
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
-import { resolveDbType } from "../utils/db-aware-column"
 import { BaseEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
+import { resolveDbType } from "../utils/db-aware-column"
 
 import { LineItem, Order, OrderItemChange, PaymentCollection } from "."
 
@@ -25,7 +24,7 @@ export enum OrderEditStatus {
   CANCELED = "canceled",
 }
 
-@FeatureFlagEntity(OrderEditingFeatureFlag.key)
+@Entity()
 export class OrderEdit extends BaseEntity {
   @Index()
   @Column()
@@ -44,7 +43,7 @@ export class OrderEdit extends BaseEntity {
   internal_note?: string
 
   @Column()
-  created_by: string // customer or user ID
+  created_by: string // customer, user, third party, etc.
 
   @Column({ nullable: true })
   requested_by?: string // customer or user ID
@@ -122,10 +121,9 @@ export class OrderEdit extends BaseEntity {
 }
 
 /**
- * @schema order_edit
+ * @schema OrderEdit
  * title: "Order Edit"
  * description: "Order edit keeps track of order items changes."
- * x-resourceId: order_edit
  * type: object
  * required:
  *   - order_id
@@ -143,12 +141,12 @@ export class OrderEdit extends BaseEntity {
  *     example: order_01G2SG30J8C85S4A5CHM2S1NS2
  *   order:
  *     description: Available if the relation `order` is expanded.
- *     $ref: "#/components/schemas/order"
+ *     $ref: "#/components/schemas/Order"
  *   changes:
  *     type: array
  *     description: Available if the relation `changes` is expanded.
  *     items:
- *       $ref: "#/components/schemas/order_item_change"
+ *       $ref: "#/components/schemas/OrderItemChange"
  *   internal_note:
  *     description: "An optional note with additional details about the order edit."
  *     type: string
@@ -225,14 +223,14 @@ export class OrderEdit extends BaseEntity {
  *     type: array
  *     description: Available if the relation `items` is expanded.
  *     items:
- *       $ref: "#/components/schemas/line_item"
+ *       $ref: "#/components/schemas/LineItem"
  *   payment_collection_id:
  *     type: string
  *     description: The ID of the payment collection
  *     example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   payment_collection:
  *     description: Available if the relation `payment_collection` is expanded.
- *     $ref: "#/components/schemas/payment_collection"
+ *     $ref: "#/components/schemas/PaymentCollection"
  *   created_at:
  *     type: string
  *     description: "The date with timezone at which the resource was created."

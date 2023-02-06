@@ -1,3 +1,7 @@
+---
+description: 'Learn what the dependency container is and how to use it in Medusa. Learn also what dependency injection is, and what the resources regsitered and their names are.'
+---
+
 # Dependency Container
 
 In this document, you’ll learn what the dependency container is and how you can use it in Medusa.
@@ -25,6 +29,8 @@ To manage dependency injections, Medusa uses [Awilix](https://github.com/jeffijo
 When you run the Medusa server, a container of the type `MedusaContainer` is created. This type extends the [AwilixContainer](https://github.com/jeffijoe/awilix#the-awilixcontainer-object) object.
 
 The server then registers all important resources in the container, which makes them accessible in classes and endpoints.
+
+---
 
 ## Registered Resources
 
@@ -550,6 +556,8 @@ Its camel-case name.
 </tbody>
 </table>
 
+---
+
 ## Loading Resources
 
 This section covers how to load resources that the Medusa server registers when it starts running.
@@ -560,8 +568,8 @@ To load resources, such as services, in endpoints, use the `req.scope.resolve` f
 
 For example:
 
-```typescript
-const logger = req.scope.resolve('logger');
+```ts
+const logger = req.scope.resolve("logger")
 ```
 
 Please note that in endpoints some resources, such as repositories, are not available.
@@ -572,19 +580,21 @@ In classes such as services, strategies, or subscribers, you can load resources 
 
 For example:
 
-```typescript
-import { OrderService } from '@medusajs/medusa';
+```ts
+import { OrderService } from "@medusajs/medusa"
 
 class OrderSubscriber {
-  protected orderService: OrderService;
+  protected orderService: OrderService
 
   constructor({ orderService }) {
-    this.orderService = orderService;
+    this.orderService = orderService
   }
 }
 ```
 
-## What’s Next
+---
 
-- Learn [how to create services](../services/create-service.md).
-- Learn [how to create subscribers](../subscribers/create-subscriber.md).
+## See Also
+
+- [Create services](../services/create-service.md).
+- [Create subscribers](../subscribers/create-subscriber.md).

@@ -8,6 +8,28 @@
 
 ## Methods
 
+### addSalesChannelsBatch
+
+▸ **addSalesChannelsBatch**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPublishableApiKeysRes`](../modules/internal-21.md#adminpublishableapikeysres)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
+| `payload` | [`AdminPostPublishableApiKeySalesChannelsBatchReq`](internal-21.AdminPostPublishableApiKeySalesChannelsBatchReq.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPublishableApiKeysRes`](../modules/internal-21.md#adminpublishableapikeysres)\>
+
+#### Defined in
+
+[medusa-js/src/resources/admin/publishable-api-keys.ts:82](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L82)
+
+___
+
 ### create
 
 ▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPublishableApiKeysRes`](../modules/internal-21.md#adminpublishableapikeysres)\>
@@ -25,7 +47,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/publishable-api-keys.ts:45](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L45)
+[medusa-js/src/resources/admin/publishable-api-keys.ts:49](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L49)
 
 ___
 
@@ -46,7 +68,29 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/publishable-api-keys.ts:62](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L62)
+[medusa-js/src/resources/admin/publishable-api-keys.ts:66](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L66)
+
+___
+
+### deleteSalesChannelsBatch
+
+▸ **deleteSalesChannelsBatch**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPublishableApiKeysRes`](../modules/internal-21.md#adminpublishableapikeysres)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
+| `payload` | [`AdminDeletePublishableApiKeySalesChannelsBatchReq`](internal-21.AdminDeletePublishableApiKeySalesChannelsBatchReq.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPublishableApiKeysRes`](../modules/internal-21.md#adminpublishableapikeysres)\>
+
+#### Defined in
+
+[medusa-js/src/resources/admin/publishable-api-keys.ts:91](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L91)
 
 ___
 
@@ -67,7 +111,29 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/publishable-api-keys.ts:31](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L31)
+[medusa-js/src/resources/admin/publishable-api-keys.ts:35](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L35)
+
+___
+
+### listSalesChannels
+
+▸ **listSalesChannels**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-21.md#adminsaleschannelslistres)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
+| `query?` | [`GetPublishableApiKeySalesChannelsParams`](internal-21.GetPublishableApiKeySalesChannelsParams.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-21.md#adminsaleschannelslistres)\>
+
+#### Defined in
+
+[medusa-js/src/resources/admin/publishable-api-keys.ts:100](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L100)
 
 ___
 
@@ -89,7 +155,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/publishable-api-keys.ts:16](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L16)
+[medusa-js/src/resources/admin/publishable-api-keys.ts:20](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L20)
 
 ___
 
@@ -110,7 +176,7 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/publishable-api-keys.ts:70](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L70)
+[medusa-js/src/resources/admin/publishable-api-keys.ts:74](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L74)
 
 ___
 
@@ -132,4 +198,4 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/admin/publishable-api-keys.ts:53](https://github.com/medusajs/medusa/blob/105c68929/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L53)
+[medusa-js/src/resources/admin/publishable-api-keys.ts:57](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L57)

@@ -3,14 +3,25 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
-const { simpleProductFactory } = require("../../factories")
+const {
+  simpleProductFactory,
+  simpleProductCategoryFactory
+} = require("../../factories")
+
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+
 jest.setTimeout(30000)
 
 describe("/store/products", () => {
   let medusaProcess
   let dbConnection
+
+  const giftCardId = "giftcard"
+  const testProductId = "test-product"
+  const testProductId1 = "test-product1"
+  const testProductFilteringId1 = "test-product_filtering_1"
+  const testProductFilteringId2 = "test-product_filtering_2"
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
@@ -35,6 +46,190 @@ describe("/store/products", () => {
       await db.teardown()
     })
 
+    it("returns a list of ordered products by id ASC", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?order=id")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(5)
+      expect(response.data.products[0].id).toEqual(giftCardId)
+      expect(response.data.products[1].id).toEqual(testProductId)
+      expect(response.data.products[2].id).toEqual(testProductId1)
+      expect(response.data.products[3].id).toEqual(testProductFilteringId1)
+      expect(response.data.products[4].id).toEqual(testProductFilteringId2)
+    })
+
+    it("returns a list of ordered products by id DESC", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?order=-id")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(5)
+      expect(response.data.products[0].id).toEqual(testProductFilteringId2)
+      expect(response.data.products[1].id).toEqual(testProductFilteringId1)
+      expect(response.data.products[2].id).toEqual(testProductId1)
+      expect(response.data.products[3].id).toEqual(testProductId)
+      expect(response.data.products[4].id).toEqual(giftCardId)
+    })
+
+    it("returns a list of ordered products by variants title DESC", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?order=-variants.title")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(5)
+
+      const testProductIndex = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === testProductId)
+      )
+      const testProduct1Index = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === testProductId1)
+      )
+
+      expect(testProductIndex).toBe(3)
+      expect(testProduct1Index).toBe(4)
+    })
+
+    it("returns a list of ordered products by variants title ASC", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?order=variants.title")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(5)
+
+      const testProductIndex = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === testProductId)
+      )
+      const testProduct1Index = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === testProductId1)
+      )
+
+      expect(testProductIndex).toBe(0)
+      expect(testProduct1Index).toBe(1)
+    })
+
+    it("returns a list of ordered products by variants prices DESC", async () => {
+      const api = useApi()
+
+      await simpleProductFactory(dbConnection, {
+        id: "test-product2",
+        status: "published",
+        variants: [
+          {
+            id: "test_variant_5",
+            prices: [
+              {
+                currency: "usd",
+                amount: 200,
+              },
+            ],
+          },
+        ],
+      })
+
+      const response = await api.get(
+        "/store/products?order=-variants.prices.amount"
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(6)
+
+      const testProductIndex = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === testProductId)
+      )
+      const testProduct1Index = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === testProductId1)
+      )
+      const testProduct2Index = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === "test-product2")
+      )
+
+      expect(testProduct2Index).toBe(3) // 200
+      expect(testProductIndex).toBe(4) // 100
+      expect(testProduct1Index).toBe(5) // 100
+    })
+
+    it("returns a list of ordered products by variants prices ASC", async () => {
+      const api = useApi()
+
+      await simpleProductFactory(dbConnection, {
+        id: "test-product2",
+        status: "published",
+        variants: [
+          {
+            id: "test_variant_5",
+            prices: [
+              {
+                currency: "usd",
+                amount: 200,
+              },
+            ],
+          },
+        ],
+      })
+
+      const response = await api.get(
+        "/store/products?order=variants.prices.amount"
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(6)
+
+      const testProductIndex = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === testProductId)
+      )
+      const testProduct1Index = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === testProductId1)
+      )
+      const testProduct2Index = response.data.products.indexOf(
+        response.data.products.find((p) => p.id === "test-product2")
+      )
+
+      expect(testProductIndex).toBe(0) // 100
+      expect(testProduct1Index).toBe(1) // 100
+      expect(testProduct2Index).toBe(2) // 200
+    })
+
+    it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?q=filtering&order=id")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(2)
+
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: testProductFilteringId1,
+        }),
+        expect.objectContaining({
+          id: testProductFilteringId2,
+        }),
+      ])
+    })
+
+    it("returns a list of ordered products by id DESC and filtered with free text search", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/products?q=filtering&order=-id")
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(2)
+
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: testProductFilteringId2,
+        }),
+        expect.objectContaining({
+          id: testProductFilteringId1,
+        }),
+      ])
+    })
+
     it("returns a list of products in collection", async () => {
       const api = useApi()
 
@@ -54,7 +249,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product_filtering_2",
+            id: testProductFilteringId2,
             collection_id: "test-collection2",
           }),
         ])
@@ -67,7 +262,7 @@ describe("/store/products", () => {
       }
     })
 
-    it("returns a list of products in with a given tag", async () => {
+    it("returns a list of products with a given tag", async () => {
       const api = useApi()
 
       const notExpected = [expect.objectContaining({ id: "tag4" })]
@@ -83,7 +278,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product_filtering_1",
+            id: testProductFilteringId1,
             collection_id: "test-collection1",
           }),
         ])
@@ -110,7 +305,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "giftcard",
+            id: giftCardId,
             is_giftcard: true,
           }),
         ])
@@ -151,7 +346,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product_filtering_1",
+            id: testProductFilteringId1,
             collection_id: "test-collection1",
           }),
         ])
@@ -168,7 +363,7 @@ describe("/store/products", () => {
       const api = useApi()
 
       const notExpected = [
-        expect.objectContaining({ handle: "test-product_filtering_1" }),
+        expect.objectContaining({ handle: testProductFilteringId1 }),
       ]
 
       const response = await api
@@ -182,8 +377,8 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product_filtering_2",
-            handle: "test-product_filtering_2",
+            id: testProductFilteringId2,
+            handle: testProductFilteringId2,
           }),
         ])
       )
@@ -231,23 +426,23 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product1",
+            id: testProductId1,
             collection_id: "test-collection",
           }),
           expect.objectContaining({
-            id: "test-product",
+            id: testProductId,
             collection_id: "test-collection",
           }),
           expect.objectContaining({
-            id: "test-product_filtering_2",
+            id: testProductFilteringId2,
             collection_id: "test-collection2",
           }),
           expect.objectContaining({
-            id: "test-product_filtering_1",
+            id: testProductFilteringId1,
             collection_id: "test-collection1",
           }),
           expect.objectContaining({
-            id: "giftcard",
+            id: giftCardId,
           }),
         ])
       )
@@ -257,6 +452,131 @@ describe("/store/products", () => {
           expect.not.arrayContaining([notExpect])
         )
       }
+    })
+
+    describe("Product Category filtering", () => {
+      let categoryWithProduct, categoryWithoutProduct, nestedCategoryWithProduct, nested2CategoryWithProduct
+      const nestedCategoryWithProductId = "nested-category-with-product-id"
+      const nested2CategoryWithProductId = "nested2-category-with-product-id"
+      const categoryWithProductId = "category-with-product-id"
+      const categoryWithoutProductId = "category-without-product-id"
+
+      beforeEach(async () => {
+        const manager = dbConnection.manager
+        categoryWithProduct = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: categoryWithProductId,
+            name: "category with Product",
+            products: [{ id: testProductId }],
+          }
+        )
+
+        nestedCategoryWithProduct = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: nestedCategoryWithProductId,
+            name: "nested category with Product1",
+            parent_category: categoryWithProduct,
+            products: [{ id: testProductId1 }],
+          }
+        )
+
+        nested2CategoryWithProduct = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: nested2CategoryWithProductId,
+            name: "nested2 category with Product1",
+            parent_category: nestedCategoryWithProduct,
+            products: [{ id: testProductFilteringId1 }],
+          }
+        )
+
+        categoryWithoutProduct = await simpleProductCategoryFactory(
+          dbConnection,
+          {
+            id: categoryWithoutProductId,
+            name: "category without product",
+          }
+        )
+      })
+
+      it("returns a list of products in product category without category children", async () => {
+        const api = useApi()
+        const params = `category_id[]=${categoryWithProductId}`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(1)
+        expect(response.data.products).toEqual(
+          [
+            expect.objectContaining({
+              id: testProductId,
+            }),
+          ]
+        )
+      })
+
+      it("returns a list of products in product category without category children explicitly set to false", async () => {
+        const api = useApi()
+        const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(1)
+        expect(response.data.products).toEqual(
+          [
+            expect.objectContaining({
+              id: testProductId,
+            }),
+          ]
+        )
+      })
+
+      it("returns a list of products in product category with category children", async () => {
+        const api = useApi()
+
+        const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(3)
+        expect(response.data.products).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: testProductId1,
+            }),
+            expect.objectContaining({
+              id: testProductId,
+            }),
+            expect.objectContaining({
+              id: testProductFilteringId1,
+            })
+          ])
+        )
+      })
+
+      it("returns no products when product category with category children does not have products", async () => {
+        const api = useApi()
+
+        const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
+        const response = await api
+          .get(
+            `/store/products?${params}`,
+          )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toHaveLength(0)
+      })
     })
   })
 
@@ -280,21 +600,31 @@ describe("/store/products", () => {
           console.log(err)
         })
 
-      expect(response.data.products).toHaveLength(5)
-      expect(response.data.products).toEqual(
+      const products = response.data.products
+
+      expect(products).toHaveLength(5)
+
+      const testProduct = products.find((p) => p.id === testProductId)
+      expect(testProduct.variants).toHaveLength(3)
+
+      for (const variant of testProduct.variants) {
+        expect(variant.prices).toHaveLength(2)
+      }
+
+      expect(products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product1",
+            id: testProductId1,
             collection_id: "test-collection",
           }),
           expect.objectContaining({
-            id: "test-product",
+            id: testProductId,
             collection_id: "test-collection",
-            variants: [
+            variants: expect.arrayContaining([
               expect.objectContaining({
                 original_price: 100,
                 calculated_price: 80,
-                prices: [
+                prices: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-price",
                     currency_code: "usd",
@@ -305,28 +635,12 @@ describe("/store/products", () => {
                     currency_code: "usd",
                     amount: 80,
                   }),
-                ],
+                ]),
               }),
               expect.objectContaining({
                 original_price: 100,
                 calculated_price: 80,
-                prices: [
-                  expect.objectContaining({
-                    id: "test-price2",
-                    currency_code: "usd",
-                    amount: 100,
-                  }),
-                  expect.objectContaining({
-                    id: "test-price2-discount",
-                    currency_code: "usd",
-                    amount: 80,
-                  }),
-                ],
-              }),
-              expect.objectContaining({
-                original_price: 100,
-                calculated_price: 80,
-                prices: [
+                prices: expect.arrayContaining([
                   expect.objectContaining({
                     id: "test-price1",
                     currency_code: "usd",
@@ -337,20 +651,36 @@ describe("/store/products", () => {
                     currency_code: "usd",
                     amount: 80,
                   }),
-                ],
+                ]),
               }),
-            ],
+              expect.objectContaining({
+                original_price: 100,
+                calculated_price: 80,
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: "test-price2",
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    id: "test-price2-discount",
+                    currency_code: "usd",
+                    amount: 80,
+                  }),
+                ]),
+              }),
+            ]),
           }),
           expect.objectContaining({
-            id: "test-product_filtering_2",
+            id: testProductFilteringId2,
             collection_id: "test-collection2",
           }),
           expect.objectContaining({
-            id: "test-product_filtering_1",
+            id: testProductFilteringId1,
             collection_id: "test-collection1",
           }),
           expect.objectContaining({
-            id: "giftcard",
+            id: giftCardId,
           }),
         ])
       )
@@ -394,29 +724,31 @@ describe("/store/products", () => {
         "/store/products?expand=variants,variants.prices&fields=id,title&limit=1"
       )
 
-      expect(response.data).toMatchSnapshot({
-        products: [
-          {
-            id: expect.any(String),
-            variants: [
-              {
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                id: expect.any(String),
-                product_id: expect.any(String),
-                prices: [
-                  {
-                    created_at: expect.any(String),
-                    updated_at: expect.any(String),
-                    id: expect.any(String),
-                    variant_id: expect.any(String),
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      })
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          products: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  id: expect.any(String),
+                  product_id: expect.any(String),
+                  prices: expect.arrayContaining([
+                    expect.objectContaining({
+                      created_at: expect.any(String),
+                      updated_at: expect.any(String),
+                      id: expect.any(String),
+                      variant_id: expect.any(String),
+                    }),
+                  ]),
+                }),
+              ]),
+            }),
+          ]),
+        })
+      )
     })
   })
 
@@ -436,284 +768,286 @@ describe("/store/products", () => {
 
       const response = await api.get("/store/products/test-product")
 
-      expect(response.data).toMatchSnapshot({
-        product: {
-          id: "test-product",
-          variants: [
-            {
-              id: "test-variant",
-              inventory_quantity: 10,
-              allow_backorder: false,
-              title: "Test variant",
-              sku: "test-sku",
-              ean: "test-ean",
-              upc: "test-upc",
-              length: null,
-              manage_inventory: true,
-              material: null,
-              metadata: null,
-              mid_code: null,
-              height: null,
-              hs_code: null,
-              origin_country: null,
-              calculated_price: null,
-              original_price: null,
-              barcode: "test-barcode",
-              product_id: "test-product",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              options: [
-                {
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-              prices: [
-                {
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  amount: 100,
-                  currency_code: "usd",
-                  deleted_at: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                  price_list_id: null,
-                  id: "test-price",
-                  region_id: null,
-                  variant_id: "test-variant",
-                },
-                {
-                  id: "test-price-discount",
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  amount: 80,
-                  currency_code: "usd",
-                  price_list_id: "pl",
-                  deleted_at: null,
-                  region_id: null,
-                  variant_id: "test-variant",
-                  price_list: {
-                    id: "pl",
-                    type: "sale",
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product: expect.objectContaining({
+            id: testProductId,
+            variants: expect.arrayContaining([
+              expect.objectContaining({
+                id: "test-variant",
+                inventory_quantity: 10,
+                allow_backorder: false,
+                title: "Test variant",
+                sku: "test-sku",
+                ean: "test-ean",
+                upc: "test-upc",
+                length: null,
+                manage_inventory: true,
+                material: null,
+                metadata: null,
+                mid_code: null,
+                height: null,
+                hs_code: null,
+                origin_country: null,
+                calculated_price: null,
+                original_price: null,
+                barcode: "test-barcode",
+                product_id: testProductId,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                options: expect.arrayContaining([
+                  expect.objectContaining({
                     created_at: expect.any(String),
                     updated_at: expect.any(String),
-                  },
-                },
-              ],
-            },
-            {
-              id: "test-variant_2",
-              inventory_quantity: 10,
-              allow_backorder: false,
-              title: "Test variant rank (2)",
-              sku: "test-sku2",
-              ean: "test-ean2",
-              upc: "test-upc2",
-              length: null,
-              manage_inventory: true,
-              material: null,
-              metadata: null,
-              mid_code: null,
-              height: null,
-              hs_code: null,
-              origin_country: null,
-              barcode: null,
-              calculated_price: null,
-              original_price: null,
-              product_id: "test-product",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              options: [
-                {
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-              prices: [
-                {
-                  id: "test-price2",
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  amount: 100,
-                  currency_code: "usd",
-                  price_list_id: null,
-                  deleted_at: null,
-                  region_id: null,
-                  variant_id: "test-variant_2",
-                },
-                {
-                  id: "test-price2-discount",
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  amount: 80,
-                  currency_code: "usd",
-                  price_list_id: "pl",
-                  deleted_at: null,
-                  region_id: null,
-                  variant_id: "test-variant_2",
-                  price_list: {
-                    id: "pl",
-                    type: "sale",
+                  }),
+                ]),
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
                     created_at: expect.any(String),
                     updated_at: expect.any(String),
-                  },
-                },
-              ],
-            },
-            {
-              id: "test-variant_1",
-              inventory_quantity: 10,
-              allow_backorder: false,
-              title: "Test variant rank (1)",
-              sku: "test-sku1",
-              ean: "test-ean1",
-              upc: "test-upc1",
-              length: null,
-              manage_inventory: true,
-              material: null,
-              metadata: null,
-              mid_code: null,
-              height: null,
-              hs_code: null,
-              origin_country: null,
-              calculated_price: null,
-              original_price: null,
-              barcode: "test-barcode 1",
-              product_id: "test-product",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              options: [
-                {
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-              prices: [
-                {
-                  id: "test-price1",
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  amount: 100,
-                  currency_code: "usd",
-                  min_quantity: null,
-                  max_quantity: null,
-                  price_list_id: null,
-                  deleted_at: null,
-                  region_id: null,
-                  variant_id: "test-variant_1",
-                },
-                {
-                  id: "test-price1-discount",
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  amount: 80,
-                  currency_code: "usd",
-                  price_list_id: "pl",
-                  deleted_at: null,
-                  region_id: null,
-                  variant_id: "test-variant_1",
-                  price_list: {
-                    id: "pl",
-                    type: "sale",
+                    amount: 100,
+                    currency_code: "usd",
+                    deleted_at: null,
+                    min_quantity: null,
+                    max_quantity: null,
+                    price_list_id: null,
+                    id: "test-price",
+                    region_id: null,
+                    variant_id: "test-variant",
+                  }),
+                  expect.objectContaining({
+                    id: "test-price-discount",
                     created_at: expect.any(String),
                     updated_at: expect.any(String),
-                  },
-                },
-              ],
-            },
-          ],
-          images: [
-            {
-              id: "test-image",
+                    amount: 80,
+                    currency_code: "usd",
+                    price_list_id: "pl",
+                    deleted_at: null,
+                    region_id: null,
+                    variant_id: "test-variant",
+                    price_list: expect.objectContaining({
+                      id: "pl",
+                      type: "sale",
+                      created_at: expect.any(String),
+                      updated_at: expect.any(String),
+                    }),
+                  }),
+                ]),
+              }),
+              expect.objectContaining({
+                id: "test-variant_2",
+                inventory_quantity: 10,
+                allow_backorder: false,
+                title: "Test variant rank (2)",
+                sku: "test-sku2",
+                ean: "test-ean2",
+                upc: "test-upc2",
+                length: null,
+                manage_inventory: true,
+                material: null,
+                metadata: null,
+                mid_code: null,
+                height: null,
+                hs_code: null,
+                origin_country: null,
+                barcode: null,
+                calculated_price: null,
+                original_price: null,
+                product_id: testProductId,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                options: expect.arrayContaining([
+                  expect.objectContaining({
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                ]),
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: "test-price2",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                    amount: 100,
+                    currency_code: "usd",
+                    price_list_id: null,
+                    deleted_at: null,
+                    region_id: null,
+                    variant_id: "test-variant_2",
+                  }),
+                  expect.objectContaining({
+                    id: "test-price2-discount",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                    amount: 80,
+                    currency_code: "usd",
+                    price_list_id: "pl",
+                    deleted_at: null,
+                    region_id: null,
+                    variant_id: "test-variant_2",
+                    price_list: expect.objectContaining({
+                      id: "pl",
+                      type: "sale",
+                      created_at: expect.any(String),
+                      updated_at: expect.any(String),
+                    }),
+                  }),
+                ]),
+              }),
+              expect.objectContaining({
+                id: "test-variant_1",
+                inventory_quantity: 10,
+                allow_backorder: false,
+                title: "Test variant rank (1)",
+                sku: "test-sku1",
+                ean: "test-ean1",
+                upc: "test-upc1",
+                length: null,
+                manage_inventory: true,
+                material: null,
+                metadata: null,
+                mid_code: null,
+                height: null,
+                hs_code: null,
+                origin_country: null,
+                calculated_price: null,
+                original_price: null,
+                barcode: "test-barcode 1",
+                product_id: testProductId,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                options: expect.arrayContaining([
+                  expect.objectContaining({
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                ]),
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: "test-price1",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                    amount: 100,
+                    currency_code: "usd",
+                    min_quantity: null,
+                    max_quantity: null,
+                    price_list_id: null,
+                    deleted_at: null,
+                    region_id: null,
+                    variant_id: "test-variant_1",
+                  }),
+                  expect.objectContaining({
+                    id: "test-price1-discount",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                    amount: 80,
+                    currency_code: "usd",
+                    price_list_id: "pl",
+                    deleted_at: null,
+                    region_id: null,
+                    variant_id: "test-variant_1",
+                    price_list: expect.objectContaining({
+                      id: "pl",
+                      type: "sale",
+                      created_at: expect.any(String),
+                      updated_at: expect.any(String),
+                    }),
+                  }),
+                ]),
+              }),
+            ]),
+            images: expect.arrayContaining([
+              expect.objectContaining({
+                id: "test-image",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              }),
+            ]),
+            handle: testProductId,
+            title: "Test product",
+            profile_id: expect.stringMatching(/^sp_*/),
+            description: "test-product-description",
+            collection_id: "test-collection",
+            collection: expect.objectContaining({
+              id: "test-collection",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-            },
-          ],
-          handle: "test-product",
-          title: "Test product",
-          profile_id: expect.stringMatching(/^sp_*/),
-          description: "test-product-description",
-          collection_id: "test-collection",
-          collection: {
-            id: "test-collection",
+            }),
+            type: expect.objectContaining({
+              id: "test-type",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            }),
+            tags: expect.arrayContaining([
+              expect.objectContaining({
+                id: "tag1",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              }),
+            ]),
+            options: expect.arrayContaining([
+              expect.objectContaining({
+                id: "test-option",
+                values: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: "test-variant-option",
+                    value: "Default variant",
+                    option_id: "test-option",
+                    variant_id: "test-variant",
+                    metadata: null,
+                    deleted_at: null,
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                  expect.objectContaining({
+                    id: "test-variant-option-1",
+                    value: "Default variant 1",
+                    option_id: "test-option",
+                    variant_id: "test-variant_1",
+                    metadata: null,
+                    deleted_at: null,
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                  expect.objectContaining({
+                    id: "test-variant-option-2",
+                    value: "Default variant 2",
+                    option_id: "test-option",
+                    variant_id: "test-variant_2",
+                    metadata: null,
+                    deleted_at: null,
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                  expect.objectContaining({
+                    id: "test-variant-option-3",
+                    value: "Default variant 3",
+                    option_id: "test-option",
+                    variant_id: "test-variant_3",
+                    metadata: null,
+                    deleted_at: null,
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                  expect.objectContaining({
+                    id: "test-variant-option-4",
+                    value: "Default variant 4",
+                    option_id: "test-option",
+                    variant_id: "test-variant_4",
+                    metadata: null,
+                    deleted_at: null,
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                ]),
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              }),
+            ]),
             created_at: expect.any(String),
             updated_at: expect.any(String),
-          },
-          type: {
-            id: "test-type",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          tags: [
-            {
-              id: "tag1",
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          options: [
-            {
-              id: "test-option",
-              values: [
-                {
-                  id: "test-variant-option",
-                  value: "Default variant",
-                  option_id: "test-option",
-                  variant_id: "test-variant",
-                  metadata: null,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-                {
-                  id: "test-variant-option-1",
-                  value: "Default variant 1",
-                  option_id: "test-option",
-                  variant_id: "test-variant_1",
-                  metadata: null,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-                {
-                  id: "test-variant-option-2",
-                  value: "Default variant 2",
-                  option_id: "test-option",
-                  variant_id: "test-variant_2",
-                  metadata: null,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-                {
-                  id: "test-variant-option-3",
-                  value: "Default variant 3",
-                  option_id: "test-option",
-                  variant_id: "test-variant_3",
-                  metadata: null,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-                {
-                  id: "test-variant-option-4",
-                  value: "Default variant 4",
-                  option_id: "test-option",
-                  variant_id: "test-variant_4",
-                  metadata: null,
-                  deleted_at: null,
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        },
-      })
+          }),
+        })
+      )
     })
 
     it("lists all published products", async () => {
@@ -742,7 +1076,7 @@ describe("/store/products", () => {
       expect(response.data.products).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-product",
+            id: testProductId,
             status: "published",
           }),
         ])

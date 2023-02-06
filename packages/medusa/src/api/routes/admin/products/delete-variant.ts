@@ -16,6 +16,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  *   - (path) variant_id=* {string} The ID of the Product Variant.
+ * x-codegen:
+ *   method: deleteVariant
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -43,21 +45,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variant_id:
- *               type: string
- *               description: The ID of the deleted Product Variant.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: variant
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
- *             product:
- *               $ref: "#/components/schemas/product"
+ *           $ref: "#/components/schemas/AdminProductsDeleteVariantRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

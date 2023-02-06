@@ -17,13 +17,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - title
- *         properties:
- *           title:
- *             description: "The title the Product Option will be identified by i.e. \"Size\""
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostProductsProductOptionsReq"
+ * x-codegen:
+ *   method: addOption
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -57,10 +53,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             product:
- *               $ref: "#/components/schemas/product"
+ *           $ref: "#/components/schemas/AdminProductsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -102,6 +95,16 @@ export default async (req, res) => {
   res.json({ product })
 }
 
+/**
+ * @schema AdminPostProductsProductOptionsReq
+ * type: object
+ * required:
+ *   - title
+ * properties:
+ *   title:
+ *     description: "The title the Product Option will be identified by i.e. \"Size\""
+ *     type: string
+ */
 export class AdminPostProductsProductOptionsReq {
   @IsString()
   title: string

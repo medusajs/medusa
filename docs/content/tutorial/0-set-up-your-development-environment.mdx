@@ -1,8 +1,12 @@
+---
+description: 'Learn how to set up your development environment while using Medusa. This guide includes how to install Node.js, Git, Medusa CLI tool, PostgreSQL, and Redis.'
+---
+
 import styles from './development.module.css';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Set up your development environment
+# Set up Development Environment
 
 This document will guide you to set up your development environment to efficiently and properly use Medusa.
 
@@ -123,8 +127,14 @@ The final installation required to get started with Medusa is the Medusa CLI. It
 
 You can install Medusa’s CLI with the following command:
 
-```bash npm2yarn noReport
+```bash npm2yarn
 npm install @medusajs/medusa-cli -g
+```
+
+You can check that Medusa was installed by running the following command:
+
+```bash noReport
+medusa -v
 ```
 
 :::note
@@ -132,6 +142,14 @@ npm install @medusajs/medusa-cli -g
 If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../troubleshooting/cli-installation-errors.mdx).
 
 :::
+
+---
+
+## Install Medusa Server
+
+If you're not interested in installing the optional tools and want to get started quickly, check out the [quickstart guide](../quickstart/quick-start.mdx).
+
+---
 
 ## Optional Tools
 
@@ -262,8 +280,11 @@ To install Redis without Homebrew you can check out [Redis’s guide on installi
 </TabItem>
 </Tabs>
 
-## What’s Next
+---
 
-- Learn how to [configure your Medusa server](../usage/configurations.md).
-- Learn how to install a storefront with [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](./../starters/gatsby-medusa-starter.md).
-- Learn how to install the [Medusa Admin](../admin/quickstart.md).
+## See Also
+
+- [Install Medusa server](../quickstart/quick-start.mdx)
+- [Configure your Medusa server](../usage/configurations.md).
+- Install a storefront with [Next.js](../starters/nextjs-medusa-starter.mdx) or [Gatsby](./../starters/gatsby-medusa-starter.mdx).
+- [Install the Medusa Admin](../admin/quickstart.mdx).

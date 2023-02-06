@@ -12,6 +12,8 @@ import { ProductService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  *   - (path) option_id=* {string} The ID of the Product Option.
+ * x-codegen:
+ *   method: deleteOption
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -39,21 +41,7 @@ import { ProductService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             option_id:
- *               type: string
- *               description: The ID of the deleted Product Option
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: option
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
- *             product:
- *               $ref: "#/components/schemas/product"
+ *           $ref: "#/components/schemas/AdminProductsDeleteOptionRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

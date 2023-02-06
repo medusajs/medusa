@@ -15,6 +15,9 @@ import { Swap } from "../../../../models"
  *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
  *   - (query) offset=0 {number} The offset of the list returned.
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetSwapsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,21 +45,7 @@ import { Swap } from "../../../../models"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             swaps:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/swap"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminSwapsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

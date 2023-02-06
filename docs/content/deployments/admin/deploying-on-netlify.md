@@ -1,5 +1,6 @@
 ---
 description: 'Learn step-by-step.'
+addHowToData: true
 ---
 
 # Deploy Medusa Admin on Netlify
@@ -16,7 +17,7 @@ Alternatively, you can use this button to deploy the Medusa Admin to Netlify dir
 
 ### Medusa Components
 
-Before proceeding with this documentation, it is assumed you already have a Medusa Admin installed locally. If not, please go through the [quickstart guide](../../admin/quickstart.md) first.
+Before proceeding with this documentation, it is assumed you already have a Medusa Admin installed locally. If not, please go through the [quickstart guide](../../admin/quickstart.mdx) first.
 
 Additionally, this documentation does not cover how to deploy the Medusa server. If you want to deploy the Medusa server, check out one of the [deployment documentation related to the Medusa server](../server/index.mdx).
 
@@ -34,6 +35,8 @@ If you want to use another Git Provider, it’s possible to follow along with th
 ### Required Tools
 
 - Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+
+---
 
 ## Create GitHub Repository
 
@@ -74,6 +77,8 @@ git push origin master
 
 After pushing the changes, you can find the files in your GitHub repository.
 
+---
+
 ## Deploy to Netlify
 
 This section covers how to deploy Netlify either through the Netlify website or using Netlify’s CLI tool.
@@ -113,7 +118,7 @@ Next, click the “Show advanced” button, which is above the “Deploy site”
 
 Under the “Advanced build settings” section click on the “New variable” button. This will show two inputs for the key and value of the environment variable.
 
-For the first field enter the key `GATSBY_MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
+For the first field enter the key `MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
 
 :::caution
 
@@ -121,7 +126,11 @@ If you haven’t deployed your Medusa server yet, you can leave the value blank 
 
 :::
 
-![Environment Variable](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001898/Medusa%20Docs/Netlify/DnutZfT_rv8iel.png)
+:::note
+
+In previous versions of the admin, the environment variable name was `GATSBY_MEDUSA_BACKEND_URL` or `GATSBY_STORE_URL` instead. The admin remains backwards compatible, so if you've used this an older version you can keep the same environment variables. However, it's highly recommended you change it to `MEDUSA_BACKEND_URL`.
+
+:::
 
 Once you’re done, scroll down and click on Deploy site.
 
@@ -232,7 +241,6 @@ For the rest of the steps, you can keep most of the default values provided by N
 ? Directory to deploy (blank for current dir): public
 ```
 
-
 #### Set Environment Variables
 
 After the previous command has finished running, your Netlify website will be created. The next step is to add an environment variable that points to your Medusa server.
@@ -281,6 +289,8 @@ The Medusa Admin will then open in your browser.
 
 Before you can use Medusa Admin, you must add the URL as an environment variable on your deployed Medusa server.
 
+---
+
 ## Configure CORS Variable on the Medusa Server
 
 To send requests to the Medusa server from the Medusa Admin, you must set the `ADMIN_CORS` environment variable on your server to the Medusa Admin’s URL.
@@ -301,7 +311,9 @@ Where `<ADMIN_URL>` is the URL of your Medusa Admin that you just deployed.
 
 Then, restart your Medusa server. Once the server is running again, you can log in to the Medusa Admin and use it.
 
-## What’s Next
+---
 
-- Learn how to [deploy your storefront](../storefront/index.mdx).
-- Learn more about [how you can configure Medusa](../../usage/configurations.md).
+## See Also
+
+- [Deploy your storefront](../storefront/index.mdx)
+- [Configure your Medusa server](../../usage/configurations.md)

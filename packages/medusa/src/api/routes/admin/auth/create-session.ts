@@ -20,19 +20,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         required:
- *           - email
- *           - password
- *         properties:
- *           email:
- *             type: string
- *             description: The User's email.
- *             format: email
- *           password:
- *             type: string
- *             description: The User's password.
- *             format: password
+ *         $ref: "#/components/schemas/AdminPostAuthReq"
+ * x-codegen:
+ *   method: createSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -62,10 +52,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            user:
- *              $ref: "#/components/schemas/user"
+ *          $ref: "#/components/schemas/AdminAuthRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -113,6 +100,22 @@ export default async (req, res) => {
   }
 }
 
+/**
+ * @schema AdminPostAuthReq
+ * type: object
+ * required:
+ *   - email
+ *   - password
+ * properties:
+ *   email:
+ *     type: string
+ *     description: The User's email.
+ *     format: email
+ *   password:
+ *     type: string
+ *     description: The User's password.
+ *     format: password
+ */
 export class AdminPostAuthReq {
   @IsEmail()
   @IsNotEmpty()

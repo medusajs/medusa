@@ -9,6 +9,9 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Payment.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: GetPaymentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -36,10 +39,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             payment:
- *               $ref: "#/components/schemas/payment"
+ *           $ref: "#/components/schemas/AdminPaymentRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

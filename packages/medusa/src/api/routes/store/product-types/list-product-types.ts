@@ -82,6 +82,9 @@ import ProductTypeService from "../../../../services/product-type"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetProductTypesParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -89,7 +92,7 @@ import ProductTypeService from "../../../../services/product-type"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.store.productTypes.list()
+ *       medusa.productTypes.list()
  *       .then(({ product_types }) => {
  *         console.log(product_types.length);
  *       });
@@ -109,19 +112,7 @@ import ProductTypeService from "../../../../services/product-type"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            product_types:
- *              $ref: "#/components/schemas/product_type"
- *            count:
- *              type: integer
- *              description: The total number of items available
- *            offset:
- *              type: integer
- *              description: The number of items skipped before these items
- *            limit:
- *              type: integer
- *              description: The number of items per page
+ *          $ref: "#/components/schemas/StoreProductTypesListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

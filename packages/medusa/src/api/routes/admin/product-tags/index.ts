@@ -15,7 +15,6 @@ export default (app) => {
     transformQuery(AdminGetProductTagsParams, {
       defaultFields: defaultAdminProductTagsFields,
       defaultRelations: defaultAdminProductTagsRelations,
-      allowedFields: allowedAdminProductTagsFields,
       isList: true,
     }),
     middlewares.wrap(require("./list-product-tags").default)
@@ -23,13 +22,6 @@ export default (app) => {
 
   return app
 }
-
-export const allowedAdminProductTagsFields = [
-  "id",
-  "value",
-  "created_at",
-  "updated_at",
-]
 
 export const defaultAdminProductTagsFields = [
   "id",
@@ -39,12 +31,26 @@ export const defaultAdminProductTagsFields = [
 ]
 export const defaultAdminProductTagsRelations = []
 
+/**
+ * @schema AdminProductTagsListRes
+ * type: object
+ * properties:
+ *   product_tags:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ProductTag"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminProductTagsListRes = PaginatedResponse & {
   product_tags: ProductTag[]
-}
-
-export type AdminProductTagsRes = {
-  product_tag: ProductTag
 }
 
 export * from "./list-product-tags"

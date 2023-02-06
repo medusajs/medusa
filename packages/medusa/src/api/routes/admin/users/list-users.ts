@@ -6,6 +6,8 @@ import UserService from "../../../../services/user"
  * summary: "List Users"
  * description: "Retrieves all users."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,12 +35,7 @@ import UserService from "../../../../services/user"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             users:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/user"
+ *           $ref: "#/components/schemas/AdminUsersListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

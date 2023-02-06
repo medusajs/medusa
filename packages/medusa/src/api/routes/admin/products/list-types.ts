@@ -7,6 +7,8 @@ import { ProductService } from "../../../../services"
  * summary: "List Product Types"
  * description: "Retrieves a list of Product Types."
  * x-authenticated: true
+ * x-codegen:
+ *   method: listTypes
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -34,12 +36,7 @@ import { ProductService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             types:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/product_type"
+ *           $ref: "#/components/schemas/AdminProductsListTypesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

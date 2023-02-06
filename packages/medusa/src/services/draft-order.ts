@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
@@ -80,25 +80,32 @@ class DraftOrderService extends TransactionBaseService {
 
   /**
    * Retrieves a draft order with the given id.
-   * @param id - id of the draft order to retrieve
+   * @param draftOrderId - id of the draft order to retrieve
    * @param config - query object for findOne
    * @return the draft order
    */
   async retrieve(
-    id: string,
+    draftOrderId: string,
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
+    if (!isDefined(draftOrderId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"draftOrderId" must be defined`
+      )
+    }
+
     const manager = this.manager_
     const draftOrderRepo = manager.getCustomRepository(
       this.draftOrderRepository_
     )
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: draftOrderId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
     if (!draftOrder) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Draft order with ${id} was not found`
+        `Draft order with ${draftOrderId} was not found`
       )
     }
 
@@ -252,13 +259,6 @@ class DraftOrderService extends TransactionBaseService {
           )
         }
 
-        if (!data.items || !data.items.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Items are required to create a draft order`
-          )
-        }
-
         const {
           shipping_methods,
           no_notification_order,
@@ -303,7 +303,7 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of items) {
+        for (const item of (items || [])) {
           if (item.variant_id) {
             const line = await lineItemServiceTx.generate(
               item.variant_id,

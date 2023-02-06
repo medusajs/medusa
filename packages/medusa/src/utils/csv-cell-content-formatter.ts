@@ -1,9 +1,13 @@
 export function csvCellContentFormatter(str: string): string {
   const newLineRegexp = new RegExp(/\n/g)
   const doubleQuoteRegexp = new RegExp(/"/g)
+  const comaRegexp = new RegExp(/,/g)
+  const semicolonRegexp = new RegExp(/;/g)
 
   const hasNewLineChar = !!str.match(newLineRegexp)
-  if (!hasNewLineChar) {
+  const hasComaChar = !!str.match(comaRegexp)
+  const hasSemicolonChar = !!str.match(semicolonRegexp)
+  if (!hasNewLineChar && !hasComaChar && !hasSemicolonChar) {
     return str
   }
 

@@ -82,6 +82,9 @@ import ProductTypeService from "../../../../services/product-type"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetProductTypesParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -109,19 +112,7 @@ import ProductTypeService from "../../../../services/product-type"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            product_types:
- *              $ref: "#/components/schemas/product_type"
- *            count:
- *              type: integer
- *              description: The total number of items available
- *            offset:
- *              type: integer
- *              description: The number of items skipped before these items
- *            limit:
- *              type: integer
- *              description: The number of items per page
+ *          $ref: "#/components/schemas/AdminProductTypesListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

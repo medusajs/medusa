@@ -6,7 +6,7 @@ import { PaymentCollectionService } from "../../../../services"
 /**
  * @oas [post] /payment-collections/{id}
  * operationId: "PostPaymentCollectionsPaymentCollection"
- * summary: "Updates a PaymentCollection"
+ * summary: "Update PaymentCollection"
  * description: "Updates a PaymentCollection."
  * x-authenticated: true
  * parameters:
@@ -15,14 +15,9 @@ import { PaymentCollectionService } from "../../../../services"
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         properties:
- *           description:
- *             description: An optional description to create or update the payment collection.
- *             type: string
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminUpdatePaymentCollectionsReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -56,10 +51,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             payment_collection:
- *               $ref: "#/components/schemas/payment_collection"
+ *           $ref: "#/components/schemas/AdminPaymentCollectionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -93,6 +85,17 @@ export default async (req, res) => {
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
+/**
+ * @schema AdminUpdatePaymentCollectionsReq
+ * type: object
+ * properties:
+ *   description:
+ *     description: An optional description to create or update the payment collection.
+ *     type: string
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminUpdatePaymentCollectionsReq {
   @IsString()
   @IsOptional()

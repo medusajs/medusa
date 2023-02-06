@@ -10,10 +10,9 @@ export class FulfillmentProvider {
 }
 
 /**
- * @schema fulfillment_provider
+ * @schema FulfillmentProvider
  * title: "Fulfillment Provider"
  * description: "Represents a fulfillment provider plugin and holds its installation status."
- * x-resourceId: fulfillment_provider
  * type: object
  * properties:
  *   id:

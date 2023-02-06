@@ -108,40 +108,28 @@ tags:
       sessions.
   - name: Cart
     description: Cart endpoints that allow handling carts in Medusa.
-    x-resourceId: cart
   - name: Collection
     description: Collection endpoints that allow handling collections in Medusa.
-    x-resourceId: product_collection
   - name: Customer
     description: Customer endpoints that allow handling customers in Medusa.
-    x-resourceId: customer
   - name: Gift Card
     description: Gift Card endpoints that allow handling gift cards in Medusa.
-    x-resourceId: gift_card
   - name: Order
     description: Order endpoints that allow handling orders in Medusa.
-    x-resourceId: order
   - name: Product
     description: Product endpoints that allow handling products in Medusa.
-    x-resourceId: product
   - name: Product Variant
     description: Product Variant endpoints that allow handling product variants in Medusa.
-    x-resourceId: product_variant
   - name: Region
     description: Region endpoints that allow handling regions in Medusa.
-    x-resourceId: region
   - name: Return Reason
     description: Return Reason endpoints that allow handling return reasons in Medusa.
-    x-resourceId: return_reason
   - name: Return
     description: Return endpoints that allow handling returns in Medusa.
-    x-resourceId: return
   - name: Shipping Option
     description: Shipping Option endpoints that allow handling shipping options in Medusa.
-    x-resourceId: shipping_option
   - name: Swap
     description: Swap endpoints that allow handling swaps in Medusa.
-    x-resourceId: swap
 servers:
   - url: 'https://api.medusa-commerce.com/store'
 paths:
@@ -187,9 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreAuthRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -285,9 +271,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreAuthRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -338,10 +322,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  exists:
-                    type: boolean
-                    description: Whether email exists or not.
+                $ref: '#/components/schemas/StoreGetAuthEmailRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -399,9 +380,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -458,9 +437,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -520,41 +497,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  type:
-                    type: string
-                    description: The type of the data property.
-                    enum:
-                      - order
-                      - cart
-                      - swap
-                  data:
-                    type: object
-                    description: >-
-                      The data of the result object. Its type depends on the
-                      type field.
-                    oneOf:
-                      - type: object
-                        description: >-
-                          Cart was successfully authorized and order was placed
-                          successfully.
-                        properties:
-                          order:
-                            $ref: '#/components/schemas/order'
-                      - type: object
-                        description: >-
-                          Cart was successfully authorized but requires further
-                          actions.
-                        properties:
-                          cart:
-                            $ref: '#/components/schemas/cart'
-                      - type: object
-                        description: >-
-                          When cart is used for a swap and it has been completed
-                          successfully.
-                        properties:
-                          cart:
-                            $ref: '#/components/schemas/swap'
+                $ref: '#/components/schemas/StoreCompleteCartRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -579,49 +522,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                region_id:
-                  type: string
-                  description: The ID of the Region to create the Cart in.
-                sales_channel_id:
-                  type: string
-                  description: >-
-                    [EXPERIMENTAL] The ID of the Sales channel to create the
-                    Cart in.
-                country_code:
-                  type: string
-                  description: The 2 character ISO country code to create the Cart in.
-                  externalDocs:
-                    url: >-
-                      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
-                    description: See a list of codes.
-                items:
-                  description: >-
-                    An optional array of `variant_id`, `quantity` pairs to
-                    generate Line Items from.
-                  type: array
-                  items:
-                    required:
-                      - variant_id
-                      - quantity
-                    properties:
-                      variant_id:
-                        description: >-
-                          The id of the Product Variant to generate a Line Item
-                          from.
-                        type: string
-                      quantity:
-                        description: The quantity of the Product Variant to add
-                        type: integer
-                context:
-                  description: >-
-                    An optional object to provide context to the Cart. The
-                    `context` field is automatically populated with `ip` and
-                    `user_agent`
-                  type: object
-                  example:
-                    ip: '::1'
-                    user_agent: Chrome
+              $ref: '#/components/schemas/StorePostCartReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -648,9 +549,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -661,92 +560,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  '/carts/{id}/line-items':
-    post:
-      operationId: PostCartsCartLineItems
-      summary: Add a Line Item
-      description: >-
-        Generates a Line Item with a given Product Variant and adds it to the
-        Cart
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart to add the Line Item to.
-          schema:
-            type: string
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: >
-            import Medusa from "@medusajs/medusa-js"
-
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
-            3 })
-
-            medusa.carts.lineItems.create(cart_id, {
-              variant_id,
-              quantity: 1
-            })
-
-            .then(({ cart }) => {
-              console.log(cart.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: >
-            curl --location --request POST
-            'https://medusa-url.com/store/carts/{id}/line-items' \
-
-            --header 'Content-Type: application/json' \
-
-            --data-raw '{
-                "variant_id": "{variant_id}",
-                "quantity": 1
-            }'
-      tags:
-        - Cart
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - variant_id
-                - quantity
-              properties:
-                variant_id:
-                  type: string
-                  description: >-
-                    The id of the Product Variant to generate the Line Item
-                    from.
-                quantity:
-                  type: integer
-                  description: The quantity of the Product Variant to add to the Line Item.
-                metadata:
-                  type: object
-                  description: >-
-                    An optional key-value map with additional details about the
-                    Line Item.
   '/carts/{id}/payment-sessions':
     post:
       operationId: PostCartsCartPaymentSessions
@@ -788,9 +601,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -846,9 +657,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -904,9 +713,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -969,9 +776,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1042,9 +847,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1108,9 +911,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1171,9 +972,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1199,67 +998,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                region_id:
-                  type: string
-                  description: The id of the Region to create the Cart in.
-                country_code:
-                  type: string
-                  description: The 2 character ISO country code to create the Cart in.
-                  externalDocs:
-                    url: >-
-                      https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
-                    description: See a list of codes.
-                email:
-                  type: string
-                  description: An email to be used on the Cart.
-                  format: email
-                sales_channel_id:
-                  type: string
-                  description: The ID of the Sales channel to update the Cart with.
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-                      description: A full billing address object.
-                    - type: string
-                      description: The billing address ID
-                shipping_address:
-                  description: The Address to be used for shipping.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-                      description: A full shipping address object.
-                    - type: string
-                      description: The shipping address ID
-                gift_cards:
-                  description: An array of Gift Card codes to add to the Cart.
-                  type: array
-                  items:
-                    required:
-                      - code
-                    properties:
-                      code:
-                        description: The code that a Gift Card is identified by.
-                        type: string
-                discounts:
-                  description: An array of Discount codes to add to the Cart.
-                  type: array
-                  items:
-                    required:
-                      - code
-                    properties:
-                      code:
-                        description: The code that a Discount is identifed by.
-                        type: string
-                customer_id:
-                  description: The ID of the Customer to associate the Cart with.
-                  type: string
-                context:
-                  description: An optional object to provide context to the Cart.
-                  type: object
-                  example:
-                    ip: '::1'
-                    user_agent: Chrome
+              $ref: '#/components/schemas/StorePostCartsCartReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1295,9 +1034,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1357,9 +1094,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1419,9 +1154,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  cart:
-                    $ref: '#/components/schemas/cart'
+                $ref: '#/components/schemas/StoreCartsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1482,9 +1215,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                $ref: '#/components/schemas/StoreCollectionsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1586,20 +1317,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  collections:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_collection'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
+                $ref: '#/components/schemas/StoreCollectionsListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1620,21 +1338,7 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - address
-              properties:
-                address:
-                  description: The Address to add to the Customer.
-                  allOf:
-                    - $ref: '#/components/schemas/address_fields'
-                    - type: object
-                      required:
-                        - first_name
-                        - last_name
-                        - address_1
-                        - city
-                        - country_code
-                        - postal_code
+              $ref: '#/components/schemas/StorePostCustomersCustomerAddressesReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1695,9 +1399,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreCustomersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1719,29 +1421,7 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - first_name
-                - last_name
-                - email
-                - password
-              properties:
-                first_name:
-                  description: The Customer's first name.
-                  type: string
-                last_name:
-                  description: The Customer's last name.
-                  type: string
-                email:
-                  description: The email of the customer.
-                  type: string
-                  format: email
-                password:
-                  description: The Customer's password.
-                  type: string
-                  format: password
-                phone:
-                  description: The Customer's phone number.
-                  type: string
+              $ref: '#/components/schemas/StorePostCustomersReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1783,9 +1463,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreCustomersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1797,6 +1475,7 @@ paths:
           content:
             application/json:
               schema:
+                type: object
                 properties:
                   code:
                     type: string
@@ -1861,9 +1540,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreCustomersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1892,8 +1569,8 @@ paths:
         content:
           application/json:
             schema:
-              anyOf:
-                - $ref: '#/components/schemas/address_fields'
+              $ref: >-
+                #/components/schemas/StorePostCustomersCustomerAddressesAddressReq
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1935,9 +1612,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreCustomersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -1991,9 +1666,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreCustomersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2015,32 +1688,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                first_name:
-                  description: The Customer's first name.
-                  type: string
-                last_name:
-                  description: The Customer's last name.
-                  type: string
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: '#/components/schemas/address_fields'
-                      description: The full billing address object
-                    - type: string
-                      description: The ID of an existing billing address
-                password:
-                  description: The Customer's password.
-                  type: string
-                phone:
-                  description: The Customer's phone number.
-                  type: string
-                email:
-                  description: The email of the customer.
-                  type: string
-                metadata:
-                  description: Metadata about the customer.
-                  type: object
+              $ref: '#/components/schemas/StorePostCustomersCustomerReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2082,9 +1730,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreCustomersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2139,21 +1785,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  payment_methods:
-                    type: array
-                    items:
-                      properties:
-                        provider_id:
-                          type: string
-                          description: >-
-                            The id of the Payment Provider where the payment
-                            method is saved.
-                        data:
-                          type: object
-                          description: >-
-                            The data needed for the Payment Provider to use the
-                            saved payment method.
+                $ref: '#/components/schemas/StoreCustomersListPaymentMethodsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2370,20 +2002,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  orders:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/order'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
+                $ref: '#/components/schemas/StoreCustomersListOrdersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2408,13 +2027,7 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - email
-              properties:
-                email:
-                  description: The email of the customer.
-                  type: string
-                  format: email
+              $ref: '#/components/schemas/StorePostCustomersCustomerPasswordTokenReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2474,22 +2087,7 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - email
-                - password
-                - token
-              properties:
-                email:
-                  description: The email of the customer.
-                  type: string
-                  format: email
-                password:
-                  description: The Customer's password.
-                  type: string
-                  format: password
-                token:
-                  description: The reset password token
-                  type: string
+              $ref: '#/components/schemas/StorePostCustomersResetPasswordReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2529,9 +2127,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                $ref: '#/components/schemas/StoreCustomersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2583,9 +2179,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  gift_card:
-                    $ref: '#/components/schemas/gift_card'
+                $ref: '#/components/schemas/StoreGiftCardsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -2634,9 +2228,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
+                $ref: '#/components/schemas/StoreOrderEditsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2661,10 +2253,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                declined_reason:
-                  type: string
-                  description: The reason for declining the OrderEdit.
+              $ref: '#/components/schemas/StorePostOrderEditsOrderEditDecline'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2691,9 +2280,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
+                $ref: '#/components/schemas/StoreOrderEditsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2741,9 +2328,72 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  order_edit:
-                    $ref: '#/components/schemas/order_edit'
+                $ref: '#/components/schemas/StoreOrderEditsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /orders/customer/confirm:
+    post:
+      operationId: PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept
+      summary: Verify an Order Claim
+      description: >-
+        Verifies the claim order token provided to the customer upon request of
+        order ownership
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorePostCustomersCustomerAcceptClaimReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.orders.confirmRequest(
+              token,
+            )
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // an error occurred
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/orders/customer/confirm' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "token": "{token}",
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -2797,9 +2447,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
+                $ref: '#/components/schemas/StoreOrdersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -2849,9 +2497,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
+                $ref: '#/components/schemas/StoreOrdersRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -2924,11 +2570,784 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
+                $ref: '#/components/schemas/StoreOrdersRes'
         '400':
           $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /orders/batch/customer/token:
+    post:
+      operationId: PostOrdersCustomerOrderClaim
+      summary: Claim an Order
+      description: >-
+        Sends an email to emails registered to orders provided with link to
+        transfer order ownership
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorePostCustomersCustomerOrderClaimReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.orders.claimOrders({
+              display_ids,
+            })
+
+            .then(() => {
+              // successful
+            })
+
+            .catch(() => {
+              // an error occurred
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/batch/customer/token' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "display_ids": ["id"],
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Invite
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions/batch/authorize':
+    post:
+      operationId: PostPaymentCollectionsSessionsBatchAuthorize
+      summary: Authorize PaymentSessions
+      description: Authorizes Payment Sessions of a Payment Collection.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collections.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/StorePostPaymentCollectionsBatchSessionsAuthorizeReq
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.paymentCollections.authorize(payment_id)
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions/batch/authorize'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePaymentCollectionsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions/{session_id}/authorize':
+    post:
+      operationId: PostPaymentCollectionsSessionsSessionAuthorize
+      summary: Authorize Payment Session
+      description: Authorizes a Payment Session of a Payment Collection.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collections.
+          schema:
+            type: string
+        - in: path
+          name: session_id
+          required: true
+          description: The ID of the Payment Session.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.paymentCollections.authorize(payment_id, session_id)
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}/authorize'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePaymentCollectionsSessionRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}':
+    get:
+      operationId: GetPaymentCollectionsPaymentCollection
+      summary: Get a PaymentCollection
+      description: Get a Payment Collection
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the PaymentCollection.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.paymentCollections.retrieve(paymentCollectionId)
+              .then(({ payment_collection }) => {
+                console.log(payment_collection.id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/payment-collections/{id}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePaymentCollectionsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions/batch':
+    post:
+      operationId: PostPaymentCollectionsPaymentCollectionSessionsBatch
+      summary: Manage Payment Sessions
+      description: Manages Multiple Payment Sessions from Payment Collections.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collections.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorePostPaymentCollectionsBatchSessionsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            // Total amount = 10000
+
+            // Adding two new sessions
+
+            medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
+              {
+                provider_id: "stripe",
+                amount: 5000,
+              },
+              {
+                provider_id: "manual",
+                amount: 5000,
+              },
+            ])
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+
+            // Updating one session and removing the other
+
+            medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
+              {
+                provider_id: "stripe",
+                amount: 10000,
+                session_id: "ps_123456"
+              },
+            ])
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePaymentCollectionsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions':
+    post:
+      operationId: PostPaymentCollectionsSessions
+      summary: Manage a Payment Session
+      description: Manages Payment Sessions from Payment Collections.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Payment Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorePaymentCollectionSessionsReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            // Total amount = 10000
+
+            // Adding a payment session
+
+            medusa.paymentCollections.managePaymentSession(payment_id, {
+            provider_id: "stripe" })
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePaymentCollectionsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/payment-collections/{id}/sessions/{session_id}':
+    post:
+      operationId: PostPaymentCollectionsPaymentCollectionPaymentSessionsSession
+      summary: Refresh a Payment Session
+      description: >-
+        Refreshes a Payment Session to ensure that it is in sync with the
+        Payment Collection.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the PaymentCollection.
+          schema:
+            type: string
+        - in: path
+          name: session_id
+          required: true
+          description: The id of the Payment Session to be refreshed.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.paymentCollections.refreshPaymentSession(payment_collection_id,
+            session_id)
+
+            .then(({ payment_session }) => {
+              console.log(payment_session.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}'
+      tags:
+        - PaymentCollection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePaymentCollectionsSessionRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/product-categories/{id}':
+    get:
+      operationId: GetProductCategoriesCategory
+      summary: Get a Product Category
+      description: Retrieves a Product Category.
+      x-authenticated: false
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Product Category
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each product
+            category.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be retrieved in each product
+            category.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.productCategories.retrieve("pcat-id")
+
+            .then(({ productCategory }) => {
+              console.log(productCategory.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/product-categories/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreGetProductCategoryRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /product-categories:
+    get:
+      operationId: GetProductCategories
+      summary: List Product Categories
+      description: Retrieve a list of product categories.
+      x-authenticated: false
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching product category names orhandles.
+          schema:
+            type: string
+        - in: query
+          name: parent_category_id
+          description: Returns categories scoped by parent
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many product categories to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: Limit the number of product categories returned.
+          schema:
+            type: integer
+            default: 100
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/product-categories' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_categories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductCategory'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /product-tags:
+    get:
+      operationId: GetProductTags
+      summary: List Product Tags
+      description: Retrieve a list of Product Tags.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of types to return.
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: offset
+          description: The number of items to skip before the results.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: order
+          description: The field to sort items by.
+          schema:
+            type: string
+        - in: query
+          name: discount_condition_id
+          description: The discount condition id on which to filter the product tags.
+          schema:
+            type: string
+        - in: query
+          name: value
+          style: form
+          explode: false
+          description: The tag values to search for
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: id
+          style: form
+          explode: false
+          description: The tag IDs to search for
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: q
+          description: A query string to search values for
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting product tags were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting product tags were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.productTags.list()
+
+            .then(({ product_tags }) => {
+              console.log(product_tags.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/store/product-tags'
+      tags:
+        - Product Tag
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_tags:
+                    $ref: '#/components/schemas/ProductTag'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
         '404':
           $ref: '#/components/responses/not_found_error'
         '409':
@@ -3044,7 +3463,7 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.store.productTypes.list()
+            medusa.productTypes.list()
 
             .then(({ product_types }) => {
               console.log(product_types.length);
@@ -3067,18 +3486,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  product_types:
-                    $ref: '#/components/schemas/product_type'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
+                $ref: '#/components/schemas/StoreProductTypesListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -3154,19 +3562,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  product:
-                    allOf:
-                      - $ref: '#/components/schemas/product'
-                      - type: object
-                        properties:
-                          variants:
-                            type: array
-                            items:
-                              allOf:
-                                - $ref: '#/components/schemas/product_variant'
-                                - $ref: >-
-                                    #/components/schemas/product_variant_prices_fields
+                $ref: '#/components/schemas/StoreProductsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3327,6 +3723,11 @@ paths:
             the result.
           schema:
             type: string
+        - in: query
+          name: order
+          description: the field used to order the products.
+          schema:
+            type: string
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3354,30 +3755,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  products:
-                    type: array
-                    items:
-                      allOf:
-                        - $ref: '#/components/schemas/product'
-                        - type: object
-                          properties:
-                            variants:
-                              type: array
-                              items:
-                                allOf:
-                                  - $ref: '#/components/schemas/product_variant'
-                                  - $ref: >-
-                                      #/components/schemas/product_variant_prices_fields
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
+                $ref: '#/components/schemas/StoreProductsListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3441,12 +3819,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  hits:
-                    type: array
-                    description: >-
-                      Array of results. The format of the items depends on the
-                      search engine installed on the server.
+                $ref: '#/components/schemas/StorePostSearchRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3496,9 +3869,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  region:
-                    $ref: '#/components/schemas/region'
+                $ref: '#/components/schemas/StoreRegionsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3597,11 +3968,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  regions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/region'
+                $ref: '#/components/schemas/StoreRegionsListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3651,9 +4018,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  return_reason:
-                    $ref: '#/components/schemas/return_reason'
+                $ref: '#/components/schemas/StoreReturnReasonsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3696,11 +4061,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  return_reasons:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/return_reason'
+                $ref: '#/components/schemas/StoreReturnReasonsListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3720,47 +4081,7 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - order_id
-                - items
-              properties:
-                order_id:
-                  type: string
-                  description: The ID of the Order to create the Return from.
-                items:
-                  description: The items to include in the Return.
-                  type: array
-                  items:
-                    required:
-                      - item_id
-                      - quantity
-                    properties:
-                      item_id:
-                        description: The ID of the Line Item from the Order.
-                        type: string
-                      quantity:
-                        description: The quantity to return.
-                        type: integer
-                      reason_id:
-                        description: The ID of the return reason.
-                        type: string
-                      note:
-                        description: A note to add to the item returned.
-                        type: string
-                return_shipping:
-                  description: >-
-                    If the Return is to be handled by the store operator the
-                    Customer can choose a Return Shipping Method. Alternatvely
-                    the Customer can handle the Return themselves.
-                  type: object
-                  required:
-                    - option_id
-                  properties:
-                    option_id:
-                      type: string
-                      description: >-
-                        The ID of the Shipping Option to create the Shipping
-                        Method from.
+              $ref: '#/components/schemas/StorePostReturnsReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3808,9 +4129,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  return:
-                    $ref: '#/components/schemas/return'
+                $ref: '#/components/schemas/StoreReturnsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3871,11 +4190,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  shipping_options:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_option'
+                $ref: '#/components/schemas/StoreShippingOptionsListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3925,11 +4240,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  shipping_options:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/shipping_option'
+                $ref: '#/components/schemas/StoreShippingOptionsListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -3951,53 +4262,7 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - order_id
-                - return_items
-                - additional_items
-              properties:
-                order_id:
-                  type: string
-                  description: The ID of the Order to create the Swap for.
-                return_items:
-                  description: The items to include in the Return.
-                  type: array
-                  items:
-                    required:
-                      - item_id
-                      - quantity
-                    properties:
-                      item_id:
-                        description: The ID of the Line Item from the Order.
-                        type: string
-                      quantity:
-                        description: The quantity to swap.
-                        type: integer
-                      reason_id:
-                        description: The ID of the reason of this return.
-                        type: string
-                      note:
-                        description: The note to add to the item being swapped.
-                        type: string
-                return_shipping_option:
-                  type: string
-                  description: >-
-                    The ID of the Shipping Option to create the Shipping Method
-                    from.
-                additional_items:
-                  description: The items to exchange the returned items to.
-                  type: array
-                  items:
-                    required:
-                      - variant_id
-                      - quantity
-                    properties:
-                      variant_id:
-                        description: The ID of the Product Variant to send.
-                        type: string
-                      quantity:
-                        description: The quantity to send of the variant.
-                        type: integer
+              $ref: '#/components/schemas/StorePostSwapsReq'
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4057,9 +4322,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
+                $ref: '#/components/schemas/StoreSwapsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -4109,9 +4372,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  swap:
-                    $ref: '#/components/schemas/swap'
+                $ref: '#/components/schemas/StoreSwapsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -4168,11 +4429,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  variant:
-                    allOf:
-                      - $ref: '#/components/schemas/product_variant'
-                      - $ref: '#/components/schemas/product_variant_prices_fields'
+                $ref: '#/components/schemas/StoreVariantsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -4264,13 +4521,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  variants:
-                    type: array
-                    items:
-                      allOf:
-                        - $ref: '#/components/schemas/product_variant'
-                        - $ref: '#/components/schemas/product_variant_prices_fields'
+                $ref: '#/components/schemas/StoreVariantsListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -4281,6 +4532,90 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/carts/{id}/line-items':
+    post:
+      operationId: PostCartsCartLineItems
+      summary: Add a Line Item
+      description: >-
+        Generates a Line Item with a given Product Variant and adds it to the
+        Cart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart to add the Line Item to.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.carts.lineItems.create(cart_id, {
+              variant_id,
+              quantity: 1
+            })
+
+            .then(({ cart }) => {
+              console.log(cart.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/store/carts/{id}/line-items' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "variant_id": "{variant_id}",
+                "quantity": 1
+            }'
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCartsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - variant_id
+                - quantity
+              properties:
+                variant_id:
+                  type: string
+                  description: >-
+                    The id of the Product Variant to generate the Line Item
+                    from.
+                quantity:
+                  type: integer
+                  description: The quantity of the Product Variant to add to the Line Item.
+                metadata:
+                  type: object
+                  description: >-
+                    An optional key-value map with additional details about the
+                    Line Item.
 components:
   responses:
     default_error:
@@ -4288,7 +4623,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: '#/components/schemas/Error'
           example:
             code: unknown_error
             message: An unknown error occurred.
@@ -4298,7 +4633,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: '#/components/schemas/Error'
           example:
             code: unknown_error
             message: >-
@@ -4310,7 +4645,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: '#/components/schemas/Error'
           example:
             code: invalid_request_error
             message: Discount with code TEST already exists.
@@ -4320,7 +4655,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: '#/components/schemas/Error'
           example:
             message: Entity with id 1 was not found
             type: not_found
@@ -4330,21 +4665,21 @@ components:
         application/json:
           schema:
             oneOf:
-              - $ref: '#/components/schemas/error'
-              - $ref: '#/components/schemas/multiple_errors'
+              - $ref: '#/components/schemas/Error'
+              - $ref: '#/components/schemas/MultipleErrors'
           examples:
             not_allowed:
               $ref: '#/components/examples/not_allowed_error'
             invalid_data:
               $ref: '#/components/examples/invalid_data_error'
-            multiple_errors:
+            MultipleErrors:
               $ref: '#/components/examples/multiple_errors'
     500_error:
       description: Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: '#/components/schemas/Error'
           examples:
             database:
               $ref: '#/components/examples/database_error'
@@ -4482,10 +4817,10 @@ components:
 
         Where `{sid}` is the value of `connect.sid` that you copied.
   schemas:
-    address_fields:
+    AddressFields:
       title: Address Fields
       description: Address fields used when creating/updating an address.
-      x-resourceId: address
+      type: object
       properties:
         company:
           type: string
@@ -4536,10 +4871,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    address:
+    Address:
       title: Address
       description: An address.
-      x-resourceId: address
+      type: object
       properties:
         id:
           type: string
@@ -4619,10 +4954,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    batch_job:
+    BatchJob:
       title: Batch Job
       description: A Batch Job.
-      x-resourceId: batch_job
+      type: object
       required:
         - type
       properties:
@@ -4761,10 +5096,10 @@ components:
           type: string
           description: The date with timezone at which the resource was deleted.
           format: date-time
-    cart:
+    Cart:
       title: Cart
       description: Represents a user cart
-      x-resourceId: cart
+      type: object
       properties:
         id:
           type: string
@@ -4780,19 +5115,19 @@ components:
           example: addr_01G8ZH853YPY9B94857DY91YGW
         billing_address:
           description: Available if the relation `billing_address` is expanded.
-          $ref: '#/components/schemas/address'
+          $ref: '#/components/schemas/Address'
         shipping_address_id:
           type: string
           description: The shipping address's ID
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
           description: Available if the relation `shipping_address` is expanded.
-          $ref: '#/components/schemas/address'
+          $ref: '#/components/schemas/Address'
         items:
           description: Available if the relation `items` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/line_item'
+            $ref: '#/components/schemas/LineItem'
         region_id:
           type: string
           description: The region's ID
@@ -4821,24 +5156,24 @@ components:
           type: object
         payment_session:
           description: The selected payment session in the cart.
-          $ref: '#/components/schemas/payment_session'
+          $ref: '#/components/schemas/PaymentSession'
         payment_sessions:
           type: array
           description: The payment sessions created on the cart.
           items:
-            $ref: '#/components/schemas/payment_session'
+            $ref: '#/components/schemas/PaymentSession'
         payment_id:
           type: string
           description: The payment's ID if available
           example: pay_01G8ZCC5W42ZNY842124G7P5R9
         payment:
           description: Available if the relation `payment` is expanded.
-          $ref: '#/components/schemas/payment'
+          $ref: '#/components/schemas/Payment'
         shipping_methods:
           type: array
           description: The shipping methods added to the cart.
           items:
-            $ref: '#/components/schemas/shipping_method'
+            $ref: '#/components/schemas/ShippingMethod'
         type:
           type: string
           description: The cart's type.
@@ -4938,10 +5273,10 @@ components:
           type: integer
           description: The total of gift cards with taxes
           example: 0
-    claim_image:
+    ClaimImage:
       title: Claim Image
       description: Represents photo documentation of a claim.
-      x-resourceId: claim_image
+      type: object
       required:
         - claim_item_id
         - url
@@ -4979,12 +5314,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    claim_item:
+    ClaimItem:
       title: Claim Item
       description: >-
         Represents a claimed item along with information about the reasons for
         the claim.
-      x-resourceId: claim_item
+      type: object
       required:
         - claim_order_id
         - item_id
@@ -5000,7 +5335,7 @@ components:
           type: array
           description: Available if the relation `images` is expanded.
           items:
-            $ref: '#/components/schemas/claim_image'
+            $ref: '#/components/schemas/ClaimImage'
         claim_order_id:
           description: The ID of the claim this item is associated with.
           type: string
@@ -5015,7 +5350,7 @@ components:
           example: item_01G8ZM25TN49YV9EQBE2NC27KC
         item:
           description: Available if the relation `item` is expanded.
-          $ref: '#/components/schemas/line_item'
+          $ref: '#/components/schemas/LineItem'
         variant_id:
           description: The ID of the product variant that is claimed.
           type: string
@@ -5047,7 +5382,7 @@ components:
             relation 'tags' is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/claim_tag'
+            $ref: '#/components/schemas/ClaimTag'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5065,13 +5400,13 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    claim_order:
+    ClaimOrder:
       title: Claim Order
       description: >-
         Claim Orders represent a group of faulty or missing items. Each claim
         order consists of a subset of items associated with an original order,
         and can contain additional information about fulfillments and returns.
-      x-resourceId: claim_order
+      type: object
       required:
         - type
         - order_id
@@ -5110,14 +5445,14 @@ components:
           description: The items that have been claimed
           type: array
           items:
-            $ref: '#/components/schemas/claim_item'
+            $ref: '#/components/schemas/ClaimItem'
         additional_items:
           description: >-
             Refers to the new items to be shipped when the claim order has the
             type `replace`
           type: array
           items:
-            $ref: '#/components/schemas/line_item'
+            $ref: '#/components/schemas/LineItem'
         order_id:
           description: The ID of the order that the claim comes from.
           type: string
@@ -5136,17 +5471,17 @@ components:
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
           description: Available if the relation `shipping_address` is expanded.
-          $ref: '#/components/schemas/address'
+          $ref: '#/components/schemas/Address'
         shipping_methods:
           description: The shipping methods that the claim order will be shipped with.
           type: array
           items:
-            $ref: '#/components/schemas/shipping_method'
+            $ref: '#/components/schemas/ShippingMethod'
         fulfillments:
           description: The fulfillments of the new items to be shipped
           type: array
           items:
-            $ref: '#/components/schemas/fulfillment'
+            $ref: '#/components/schemas/Fulfillment'
         refund_amount:
           description: The amount that will be refunded in conjunction with the claim
           type: integer
@@ -5187,12 +5522,12 @@ components:
             url: >-
               https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
             description: Learn more how to use the idempotency key.
-    claim_tag:
+    ClaimTag:
       title: Claim Tag
       description: >-
         Claim Tags are user defined tags that can be assigned to claim items for
         easy filtering and grouping.
-      x-resourceId: claim_tag
+      type: object
       required:
         - value
       properties:
@@ -5221,10 +5556,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    country:
+    Country:
       title: Country
       description: Country details
-      x-resourceId: country
+      type: object
       required:
         - iso_2
         - iso_3
@@ -5275,10 +5610,10 @@ components:
         region:
           description: A region object. Available if the relation `region` is expanded.
           type: object
-    currency:
+    Currency:
       title: Currency
       description: Currency
-      x-resourceId: currency
+      type: object
       required:
         - code
         - symbol
@@ -5307,13 +5642,13 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Does the currency prices include tax'
           type: boolean
-    custom_shipping_option:
+    CustomShippingOption:
       title: Custom Shipping Option
       description: >-
         Custom Shipping Options are 'overriden' Shipping Options. Store managers
         can attach a Custom Shipping Option to a cart in order to set a custom
         price for a particular Shipping Option
-      x-resourceId: custom_shipping_option
+      type: object
       required:
         - price
         - shipping_option_id
@@ -5368,10 +5703,10 @@ components:
             [EXPERIMENTAL] Indicates if the custom shipping option price include
             tax
           type: boolean
-    customer_group:
+    CustomerGroup:
       title: Customer Group
       description: Represents a customer group
-      x-resourceId: customer_group
+      type: object
       required:
         - name
       properties:
@@ -5397,7 +5732,7 @@ components:
             The price lists that are associated with the customer group.
             Available if the relation `price_lists` is expanded.
           items:
-            $ref: '#/components/schemas/price_list'
+            $ref: '#/components/schemas/PriceList'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5415,10 +5750,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    customer:
+    Customer:
       title: Customer
       description: Represents a customer
-      x-resourceId: customer
+      type: object
       required:
         - email
       properties:
@@ -5436,7 +5771,7 @@ components:
           example: Arno
         last_name:
           type: string
-          description: The customer's first name
+          description: The customer's last name
           example: Willms
         billing_address_id:
           type: string
@@ -5444,12 +5779,12 @@ components:
           example: addr_01G8ZH853YPY9B94857DY91YGW
         billing_address:
           description: Available if the relation `billing_address` is expanded.
-          $ref: '#/components/schemas/address'
+          $ref: '#/components/schemas/Address'
         shipping_addresses:
           description: Available if the relation `shipping_addresses` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/address'
+            $ref: '#/components/schemas/Address'
         phone:
           type: string
           description: The customer's phone number
@@ -5470,7 +5805,7 @@ components:
             relation `groups` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/customer_group'
+            $ref: '#/components/schemas/CustomerGroup'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5488,10 +5823,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    discount_condition_customer_group:
+    DiscountConditionCustomerGroup:
       title: Product Tag Discount Condition
       description: Associates a discount condition with a customer group
-      x-resourceId: discount_condition_customer_group
+      type: object
       required:
         - customer_group_id
         - condition_id
@@ -5506,10 +5841,10 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         customer_group:
           description: Available if the relation `customer_group` is expanded.
-          $ref: '#/components/schemas/customer_group'
+          $ref: '#/components/schemas/CustomerGroup'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
-          $ref: '#/components/schemas/discount_condition'
+          $ref: '#/components/schemas/DiscountCondition'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5523,10 +5858,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    discount_condition_product_collection:
+    DiscountConditionProductCollection:
       title: Product Collection Discount Condition
       description: Associates a discount condition with a product collection
-      x-resourceId: discount_condition_product_collection
+      type: object
       required:
         - product_collection_id
         - condition_id
@@ -5541,10 +5876,10 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_collection:
           description: Available if the relation `product_collection` is expanded.
-          $ref: '#/components/schemas/product_collection'
+          $ref: '#/components/schemas/ProductCollection'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
-          $ref: '#/components/schemas/discount_condition'
+          $ref: '#/components/schemas/DiscountCondition'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5558,10 +5893,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    discount_condition_product_tag:
+    DiscountConditionProductTag:
       title: Product Tag Discount Condition
       description: Associates a discount condition with a product tag
-      x-resourceId: discount_condition_product_tag
+      type: object
       required:
         - product_tag_id
         - condition_id
@@ -5576,10 +5911,10 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_tag:
           description: Available if the relation `product_tag` is expanded.
-          $ref: '#/components/schemas/product_tag'
+          $ref: '#/components/schemas/ProductTag'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
-          $ref: '#/components/schemas/discount_condition'
+          $ref: '#/components/schemas/DiscountCondition'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5593,10 +5928,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    discount_condition_product_type:
+    DiscountConditionProductType:
       title: Product Type Discount Condition
       description: Associates a discount condition with a product type
-      x-resourceId: discount_condition_product
+      type: object
       required:
         - product_type_id
         - condition_id
@@ -5611,10 +5946,10 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_type:
           description: Available if the relation `product_type` is expanded.
-          $ref: '#/components/schemas/product_type'
+          $ref: '#/components/schemas/ProductType'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
-          $ref: '#/components/schemas/discount_condition'
+          $ref: '#/components/schemas/DiscountCondition'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5628,10 +5963,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    discount_condition_product:
+    DiscountConditionProduct:
       title: Product Discount Condition
       description: Associates a discount condition with a product
-      x-resourceId: discount_condition_product
+      type: object
       required:
         - product_id
         - condition_id
@@ -5646,10 +5981,10 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product:
           description: Available if the relation `product` is expanded.
-          $ref: '#/components/schemas/product'
+          $ref: '#/components/schemas/Product'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
-          $ref: '#/components/schemas/discount_condition'
+          $ref: '#/components/schemas/DiscountCondition'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -5663,10 +5998,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    discount_condition:
+    DiscountCondition:
       title: Discount Condition
       description: Holds rule conditions for when a discount is applicable
-      x-resourceId: discount_condition
+      type: object
       required:
         - type
         - operator
@@ -5697,7 +6032,7 @@ components:
           example: dru_01F0YESMVK96HVX7N419E3CJ7C
         discount_rule:
           description: Available if the relation `discount_rule` is expanded.
-          $ref: '#/components/schemas/discount_rule'
+          $ref: '#/components/schemas/DiscountRule'
         products:
           description: >-
             products associated with this condition if type = products.
@@ -5758,12 +6093,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    discount_rule:
+    DiscountRule:
       title: Discount Rule
       description: >-
         Holds the rules that governs how a Discount is calculated when applied
         to a Cart.
-      x-resourceId: discount_rule
+      type: object
       required:
         - type
         - value
@@ -5825,12 +6160,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    discount:
+    Discount:
       title: Discount
       description: >-
         Represents a discount that can be applied to a cart for promotional
         purposes.
-      x-resourceId: discount
+      type: object
       required:
         - code
         - is_dynamic
@@ -5857,7 +6192,7 @@ components:
           example: dru_01F0YESMVK96HVX7N419E3CJ7C
         rule:
           description: Available if the relation `rule` is expanded.
-          $ref: '#/components/schemas/discount_rule'
+          $ref: '#/components/schemas/DiscountRule'
         is_disabled:
           description: >-
             Whether the Discount has been disabled. Disabled discounts cannot be
@@ -5872,7 +6207,7 @@ components:
           example: disc_01G8ZH853YPY9B94857DY91YGW
         parent_discount:
           description: Available if the relation `parent_discount` is expanded.
-          $ref: '#/components/schemas/discount'
+          $ref: '#/components/schemas/Discount'
         starts_at:
           description: The time at which the discount can be used.
           type: string
@@ -5919,10 +6254,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    draft-order:
+    DraftOrder:
       title: DraftOrder
       description: Represents a draft order
-      x-resourceId: draft-order
+      type: object
       properties:
         id:
           type: string
@@ -5991,12 +6326,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    fulfillment_item:
+    FulfillmentItem:
       title: Fulfillment Item
       description: >-
         Correlates a Line Item with a Fulfillment, keeping track of the quantity
         of the Line Item.
-      x-resourceId: fulfillment_item
+      type: object
       required:
         - fulfillment_id
         - item_id
@@ -6017,17 +6352,17 @@ components:
           type: object
         item:
           description: Available if the relation `item` is expanded.
-          $ref: '#/components/schemas/line_item'
+          $ref: '#/components/schemas/LineItem'
         quantity:
           description: The quantity of the Line Item that is included in the Fulfillment.
           type: integer
           example: 1
-    fulfillment_provider:
+    FulfillmentProvider:
       title: Fulfillment Provider
       description: >-
         Represents a fulfillment provider plugin and holds its installation
         status.
-      x-resourceId: fulfillment_provider
+      type: object
       properties:
         id:
           description: The id of the fulfillment provider as given by the plugin.
@@ -6040,7 +6375,7 @@ components:
             to `false`.
           type: boolean
           example: true
-    fulfillment:
+    Fulfillment:
       title: Fulfillment
       description: >-
         Fulfillments are created once store operators can prepare the purchased
@@ -6050,7 +6385,7 @@ components:
         partner og 3PL, most plugins will have asynchronous communications with
         these providers through webhooks in order to automatically update and
         synchronize the state of Fulfillments.
-      x-resourceId: fulfillment
+      type: object
       required:
         - provider_id
       properties:
@@ -6087,9 +6422,13 @@ components:
             fulfillment
           type: string
           example: manual
+        location_id:
+          description: The id of the stock location the fulfillment will be shipped from
+          type: string
+          example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
         provider:
           description: Available if the relation `provider` is expanded.
-          $ref: '#/components/schemas/fulfillment_provider'
+          $ref: '#/components/schemas/FulfillmentProvider'
         items:
           description: >-
             The Fulfillment Items in the Fulfillment - these hold information
@@ -6097,7 +6436,7 @@ components:
             the relation `items` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/fulfillment_item'
+            $ref: '#/components/schemas/FulfillmentItem'
         tracking_links:
           description: >-
             The Tracking Links that can be used to track the status of the
@@ -6105,7 +6444,7 @@ components:
             Provider. Available if the relation `tracking_links` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/tracking_link'
+            $ref: '#/components/schemas/TrackingLink'
         tracking_numbers:
           deprecated: true
           description: >-
@@ -6160,12 +6499,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    gift_card_transaction:
+    GiftCardTransaction:
       title: Gift Card Transaction
       description: >-
         Gift Card Transactions are created once a Customer uses a Gift Card to
         pay for their Order
-      x-resourceId: gift_card_transaction
+      type: object
       required:
         - gift_card_id
         - amount
@@ -6206,12 +6545,12 @@ components:
           description: The tax rate of the transaction
           type: number
           example: 0
-    gift_card:
+    GiftCard:
       title: Gift Card
       description: >-
         Gift Cards are redeemable and represent a value that can be used towards
         the payment of an Order.
-      x-resourceId: gift_card
+      type: object
       required:
         - code
         - value
@@ -6260,6 +6599,10 @@ components:
           description: The time at which the Gift Card can no longer be used.
           type: string
           format: date-time
+        tax_rate:
+          description: The gift cards's tax rate that will be applied on calculating totals
+          type: number
+          example: 0
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -6277,12 +6620,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    idempotency_key:
+    IdempotencyKey:
       title: Idempotency Key
       description: >-
         Idempotency Key is used to continue a process in case of any failure
         that might occur.
-      x-resourceId: idempotency_key
+      type: object
       required:
         - idempotency_key
       properties:
@@ -6333,10 +6676,10 @@ components:
           type: string
           description: Where to continue from.
           default: started
-    image:
+    Image:
       title: Image
       description: Images holds a reference to a URL at which the image file can be found.
-      x-resourceId: image
+      type: object
       required:
         - url
       properties:
@@ -6365,10 +6708,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    invite:
+    Invite:
       title: Invite
       description: Represents an invite
-      x-resourceId: invite
+      type: object
       required:
         - user_email
       properties:
@@ -6416,10 +6759,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    line_item_adjustment:
+    LineItemAdjustment:
       title: Line Item Adjustment
-      description: Represents an Line Item Adjustment
-      x-resourceId: line_item_adjustment
+      description: Represents a Line Item Adjustment
+      type: object
       required:
         - item_id
         - description
@@ -6435,7 +6778,7 @@ components:
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         item:
           description: Available if the relation `item` is expanded.
-          $ref: '#/components/schemas/line_item'
+          $ref: '#/components/schemas/LineItem'
         description:
           type: string
           description: The line item's adjustment description
@@ -6446,7 +6789,7 @@ components:
           example: disc_01F0YESMW10MGHWJKZSDDMN0VN
         discount:
           description: Available if the relation `discount` is expanded.
-          $ref: '#/components/schemas/discount'
+          $ref: '#/components/schemas/Discount'
         amount:
           type: number
           description: The adjustment amount
@@ -6456,10 +6799,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    line_item_tax_line:
+    LineItemTaxLine:
       title: Line Item Tax Line
-      description: Represents an Line Item Tax Line
-      x-resourceId: line_item_tax_line
+      description: Represents a Line Item Tax Line
+      type: object
       required:
         - item_id
         - rate
@@ -6475,7 +6818,7 @@ components:
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         item:
           description: Available if the relation `item` is expanded.
-          $ref: '#/components/schemas/line_item'
+          $ref: '#/components/schemas/LineItem'
         code:
           description: A code to identify the tax type by
           type: string
@@ -6501,7 +6844,7 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    line_item:
+    LineItem:
       title: Line Item
       description: >-
         Line Items represent purchasable units that can be added to a Cart for
@@ -6509,7 +6852,7 @@ components:
         resulting order and can eventually be referenced in Fulfillments and
         Returns. Line Items may also be created when processing Swaps and
         Claims.
-      x-resourceId: line_item
+      type: object
       required:
         - title
         - unit_price
@@ -6553,12 +6896,12 @@ components:
           description: Available if the relation `tax_lines` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/line_item_tax_line'
+            $ref: '#/components/schemas/LineItemTaxLine'
         adjustments:
           description: Available if the relation `adjustments` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/line_item_adjustment'
+            $ref: '#/components/schemas/LineItemAdjustment'
         title:
           description: >-
             The title of the Line Item, this should be easily identifiable by
@@ -6694,7 +7037,7 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    money_amount:
+    MoneyAmount:
       title: Money Amount
       description: >-
         Money Amounts represents an amount that a given Product Variant can be
@@ -6703,7 +7046,7 @@ components:
         fully region-based pricing, the given price in a specific Region. If
         region-based pricing is used the amount will be in the currency defined
         for the Reigon.
-      x-resourceId: money_amount
+      type: object
       required:
         - currency_code
         - amount
@@ -6721,7 +7064,7 @@ components:
             description: See a list of codes.
         currency:
           description: Available if the relation `currency` is expanded.
-          $ref: '#/components/schemas/currency'
+          $ref: '#/components/schemas/Currency'
         amount:
           description: >-
             The amount in the smallest currecny unit (e.g. cents 100 cents to
@@ -6746,7 +7089,7 @@ components:
           example: pl_01G8X3CKJXCG5VXVZ87H9KC09W
         price_list:
           description: Available if the relation `price_list` is expanded.
-          $ref: '#/components/schemas/price_list'
+          $ref: '#/components/schemas/PriceList'
         variant_id:
           description: The id of the Product Variant contained in the Line Item.
           type: string
@@ -6780,13 +7123,13 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    note:
+    Note:
       title: Note
       description: >-
         Notes are elements which we can use in association with different
         resources to allow users to describe additional information in relation
         to these.
-      x-resourceId: note
+      type: object
       required:
         - value
         - resource_type
@@ -6814,7 +7157,7 @@ components:
           example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
         author:
           description: Available if the relation `author` is expanded.
-          $ref: '#/components/schemas/user'
+          $ref: '#/components/schemas/User'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -6832,12 +7175,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    notification_provider:
+    NotificationProvider:
       title: Notification Provider
       description: >-
         Represents a notification provider plugin and holds its installation
         status.
-      x-resourceId: notification_provider
+      type: object
       required:
         - id
       properties:
@@ -6852,14 +7195,14 @@ components:
             to `false`.
           type: boolean
           default: true
-    notification:
+    Notification:
       title: Notification
       description: >-
         Notifications a communications sent via Notification Providers as a
         reaction to internal events such as `order.placed`. Notifications can be
         used to show a chronological timeline for communications sent to a
         Customer regarding an Order, and enables resends.
-      x-resourceId: notification
+      type: object
       required:
         - resource_type
         - resource_id
@@ -6907,14 +7250,14 @@ components:
             Notification.
           type: array
           items:
-            $ref: '#/components/schemas/notification_resend'
+            $ref: '#/components/schemas/NotificationResend'
         provider_id:
           description: The id of the Notification Provider that handles the Notification.
           type: string
           example: sengrid
         provider:
           description: Available if the relation `provider` is expanded.
-          $ref: '#/components/schemas/notification_provider'
+          $ref: '#/components/schemas/NotificationProvider'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -6923,10 +7266,10 @@ components:
           type: string
           description: The date with timezone at which the resource was updated.
           format: date-time
-    notification_resend:
+    NotificationResend:
       title: Notification Resend
       description: A resend of a Notification.
-      x-resourceId: notification_resend
+      type: object
       properties:
         id:
           description: The notification resend's ID
@@ -6970,14 +7313,14 @@ components:
           example: noti_01G53V9Y6CKMCGBM1P0X7C28RX
         parent_notification:
           description: Available if the relation `parent_notification` is expanded.
-          $ref: '#/components/schemas/notification'
+          $ref: '#/components/schemas/Notification'
         provider_id:
           description: The ID of the Notification Provider that handles the Notification.
           type: string
           example: sengrid
         provider:
           description: Available if the relation `provider` is expanded.
-          $ref: '#/components/schemas/notification_provider'
+          $ref: '#/components/schemas/NotificationProvider'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -6989,7 +7332,7 @@ components:
     OAuth:
       title: OAuth
       description: Represent an OAuth app
-      x-resourceId: OAuth
+      type: object
       required:
         - id
         - display_name
@@ -7019,10 +7362,10 @@ components:
           type: object
           description: Any data necessary to the app.
           example: {}
-    order_edit:
+    OrderEdit:
       title: Order Edit
       description: Order edit keeps track of order items changes.
-      x-resourceId: order_edit
+      type: object
       required:
         - order_id
         - order
@@ -7039,12 +7382,12 @@ components:
           example: order_01G2SG30J8C85S4A5CHM2S1NS2
         order:
           description: Available if the relation `order` is expanded.
-          $ref: '#/components/schemas/order'
+          $ref: '#/components/schemas/Order'
         changes:
           type: array
           description: Available if the relation `changes` is expanded.
           items:
-            $ref: '#/components/schemas/order_item_change'
+            $ref: '#/components/schemas/OrderItemChange'
         internal_note:
           description: An optional note with additional details about the order edit.
           type: string
@@ -7131,14 +7474,14 @@ components:
           type: array
           description: Available if the relation `items` is expanded.
           items:
-            $ref: '#/components/schemas/line_item'
+            $ref: '#/components/schemas/LineItem'
         payment_collection_id:
           type: string
           description: The ID of the payment collection
           example: paycol_01G8TJSYT9M6AVS5N4EMNFS1EK
         payment_collection:
           description: Available if the relation `payment_collection` is expanded.
-          $ref: '#/components/schemas/payment_collection'
+          $ref: '#/components/schemas/PaymentCollection'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -7147,10 +7490,10 @@ components:
           type: string
           description: The date with timezone at which the resource was updated.
           format: date-time
-    order_item_change:
+    OrderItemChange:
       title: Order Item Change
       description: Represents an order edit item change
-      x-resourceId: order_item_change
+      type: object
       required:
         - type
         - order_edit_id
@@ -7172,21 +7515,21 @@ components:
           example: oe_01G2SG30J8C85S4A5CHM2S1NS2
         order_edit:
           description: Available if the relation `order_edit` is expanded.
-          $ref: '#/components/schemas/order_edit'
+          $ref: '#/components/schemas/OrderEdit'
         original_line_item_id:
           type: string
           description: The ID of the original line item in the order
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         original_line_item:
           description: Available if the relation `original_line_item` is expanded.
-          $ref: '#/components/schemas/line_item'
+          $ref: '#/components/schemas/LineItem'
         line_item_id:
           type: string
           description: The ID of the cloned line item.
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         line_item:
           description: Available if the relation `line_item` is expanded.
-          $ref: '#/components/schemas/line_item'
+          $ref: '#/components/schemas/LineItem'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -7204,10 +7547,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    order:
+    Order:
       title: Order
       description: Represents an order
-      x-resourceId: order
+      type: object
       required:
         - customer_id
         - email
@@ -7282,14 +7625,14 @@ components:
           example: addr_01G8ZH853YPY9B94857DY91YGW
         billing_address:
           description: Available if the relation `billing_address` is expanded.
-          $ref: '#/components/schemas/address'
+          $ref: '#/components/schemas/Address'
         shipping_address_id:
           type: string
           description: The ID of the shipping address associated with the order
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
           description: Available if the relation `shipping_address` is expanded.
-          $ref: '#/components/schemas/address'
+          $ref: '#/components/schemas/Address'
         region_id:
           type: string
           description: The region's ID
@@ -7306,7 +7649,7 @@ components:
             description: See a list of codes.
         currency:
           description: Available if the relation `currency` is expanded.
-          $ref: '#/components/schemas/currency'
+          $ref: '#/components/schemas/Currency'
         tax_rate:
           description: The order's tax rate
           type: number
@@ -7333,21 +7676,21 @@ components:
             The shipping methods used in the order. Available if the relation
             `shipping_methods` is expanded.
           items:
-            $ref: '#/components/schemas/shipping_method'
+            $ref: '#/components/schemas/ShippingMethod'
         payments:
           type: array
           description: >-
             The payments used in the order. Available if the relation `payments`
             is expanded.
           items:
-            $ref: '#/components/schemas/payment'
+            $ref: '#/components/schemas/Payment'
         fulfillments:
           type: array
           description: >-
             The fulfillments used in the order. Available if the relation
             `fulfillments` is expanded.
           items:
-            $ref: '#/components/schemas/fulfillment'
+            $ref: '#/components/schemas/Fulfillment'
         returns:
           type: array
           description: >-
@@ -7395,21 +7738,21 @@ components:
             The line items that belong to the order. Available if the relation
             `items` is expanded.
           items:
-            $ref: '#/components/schemas/line_item'
+            $ref: '#/components/schemas/LineItem'
         edits:
           type: array
           description: >-
             [EXPERIMENTAL] Order edits done on the order. Available if the
             relation `edits` is expanded.
           items:
-            $ref: '#/components/schemas/order_edit'
+            $ref: '#/components/schemas/OrderEdit'
         gift_card_transactions:
           type: array
           description: >-
             The gift card transactions used in the order. Available if the
             relation `gift_card_transactions` is expanded.
           items:
-            $ref: '#/components/schemas/gift_card_transaction'
+            $ref: '#/components/schemas/GiftCardTransaction'
         canceled_at:
           type: string
           description: The date the order was canceled on.
@@ -7482,10 +7825,10 @@ components:
           type: integer
           description: The total of gift cards with taxes
           example: 0
-    payment_collection:
+    PaymentCollection:
       title: Payment Collection
       description: Payment Collection
-      x-resourceId: payment_collection
+      type: object
       required:
         - type
         - status
@@ -7511,12 +7854,7 @@ components:
             - awaiting
             - authorized
             - partially_authorized
-            - captured
-            - partially_captured
-            - refunded
-            - partially_refunded
             - canceled
-            - requires_action
         description:
           type: string
           description: Description of the payment collection
@@ -7526,19 +7864,13 @@ components:
         authorized_amount:
           type: number
           description: Authorized amount of the payment collection.
-        captured_amount:
-          type: number
-          description: Captured amount of the payment collection.
-        refunded_amount:
-          type: number
-          description: Refunded amount of the payment collection.
         region_id:
           type: string
           description: The region's ID
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
           description: Available if the relation `region` is expanded.
-          $ref: '#/components/schemas/region'
+          $ref: '#/components/schemas/Region'
         currency_code:
           description: The 3 character ISO code for the currency.
           type: string
@@ -7548,17 +7880,17 @@ components:
             description: See a list of codes.
         currency:
           description: Available if the relation `currency` is expanded.
-          $ref: '#/components/schemas/currency'
+          $ref: '#/components/schemas/Currency'
         payment_sessions:
           type: array
           description: Available if the relation `payment_sessions` is expanded.
           items:
-            $ref: '#/components/schemas/payment_session'
+            $ref: '#/components/schemas/PaymentSession'
         payments:
           type: array
           description: Available if the relation `payments` is expanded.
           items:
-            $ref: '#/components/schemas/payment'
+            $ref: '#/components/schemas/Payment'
         created_by:
           type: string
           description: The ID of the user that created the payment collection.
@@ -7579,10 +7911,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    payment_provider:
+    PaymentProvider:
       title: Payment Provider
       description: Represents a Payment Provider plugin and holds its installation status.
-      x-resourceId: payment_provider
+      type: object
       required:
         - id
       properties:
@@ -7597,7 +7929,7 @@ components:
             to `false`.
           type: boolean
           default: true
-    payment_session:
+    PaymentSession:
       title: Payment Session
       description: >-
         Payment Sessions are created when a Customer initilizes the checkout
@@ -7606,7 +7938,7 @@ components:
         communication with external payment services. Authorized Payment
         Sessions will eventually get promoted to Payments to indicate that they
         are authorized for capture/refunds/etc.
-      x-resourceId: payment_session
+      type: object
       required:
         - cart_id
         - provider_id
@@ -7635,6 +7967,13 @@ components:
             method that will be used to complete the purchase.
           type: boolean
           example: true
+        is_initiated:
+          description: >-
+            A flag to indicate if a communication with the third party provider
+            has been initiated.
+          type: boolean
+          example: true
+          default: false
         status:
           description: >-
             Indicates the status of the Payment Session. Will default to
@@ -7674,12 +8013,12 @@ components:
           type: string
           description: The date with timezone at which the resource was updated.
           format: date-time
-    payment:
+    Payment:
       title: Payment
       description: >-
         Payments represent an amount authorized with a given payment method,
         Payments can be captured, canceled or refunded.
-      x-resourceId: payment
+      type: object
       required:
         - amount
         - currency_code
@@ -7722,7 +8061,7 @@ components:
             description: See a list of codes.
         currency:
           description: Available if the relation `currency` is expanded.
-          $ref: '#/components/schemas/currency'
+          $ref: '#/components/schemas/Currency'
         amount_refunded:
           description: >-
             The amount of the original Payment amount that has been refunded
@@ -7771,12 +8110,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    price_list:
+    PriceList:
       title: Price List
       description: >-
         Price Lists represents a set of prices that overrides the default price
         for one or more product variants.
-      x-resourceId: price_list
+      type: object
       required:
         - name
         - description
@@ -7832,8 +8171,8 @@ components:
           type: array
           items:
             oneOf:
-              - $ref: '#/components/schemas/money_amount'
-              - $ref: '#/components/schemas/customer_group'
+              - $ref: '#/components/schemas/MoneyAmount'
+              - $ref: '#/components/schemas/CustomerGroup'
         includes_tax:
           description: '[EXPERIMENTAL] Does the price list prices include tax'
           type: boolean
@@ -7849,10 +8188,73 @@ components:
           type: string
           description: The date with timezone at which the resource was deleted.
           format: date-time
-    product_collection:
+    ProductCategory:
+      title: ProductCategory
+      description: Represents a product category
+      x-resourceId: ProductCategory
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          description: The product category's ID
+          example: pcat_01G2SG30J8C85S4A5CHM2S1NS2
+        name:
+          type: string
+          description: The product category's name
+          example: Regular Fit
+        handle:
+          description: >-
+            A unique string that identifies the Category - example: slug
+            structures.
+          type: string
+          example: regular-fit
+        mpath:
+          type: string
+          description: >-
+            A string for Materialized Paths - used for finding ancestors and
+            descendents
+          example: pcat_id1.pcat_id2.pcat_id3
+        is_internal:
+          type: boolean
+          description: A flag to make product category an internal category for admins
+          default: false
+        is_active:
+          type: boolean
+          description: A flag to make product category visible/hidden in the store front
+          default: false
+        category_children:
+          description: Available if the relation `category_children` are expanded.
+          type: array
+          items:
+            type: object
+            description: A product category object.
+        parent_category_id:
+          description: The ID of the parent category.
+          type: string
+          default: null
+        parent_category:
+          description: >-
+            A product category object. Available if the relation
+            `parent_category` is expanded.
+          type: object
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    ProductCollection:
       title: Product Collection
       description: Product Collections represents a group of Products that are related.
-      x-resourceId: product_collection
+      type: object
       required:
         - title
       properties:
@@ -7895,13 +8297,13 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    product_option_value:
+    ProductOptionValue:
       title: Product Option Value
       description: >-
         A value given to a Product Variant's option set. Product Variant have a
         Product Option Value for each of the Product Options defined on the
         Product.
-      x-resourceId: product_option_value
+      type: object
       required:
         - value
         - option_id
@@ -7926,7 +8328,7 @@ components:
           example: opt_01F0YESHQBZVKCEXJ24BS6PCX3
         option:
           description: Available if the relation `option` is expanded.
-          $ref: '#/components/schemas/product_option'
+          $ref: '#/components/schemas/ProductOption'
         variant_id:
           description: >-
             The ID of the Product Variant that the Product Option Value is
@@ -7935,7 +8337,7 @@ components:
           example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
         variant:
           description: Available if the relation `variant` is expanded.
-          $ref: '#/components/schemas/product_variant'
+          $ref: '#/components/schemas/ProductVariant'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -7953,13 +8355,13 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    product_option:
+    ProductOption:
       title: Product Option
       description: >-
         Product Options define properties that may vary between different
         variants of a Product. Common Product Options are "Size" and "Color",
         but Medusa doesn't limit what Product Options that can be defined.
-      x-resourceId: product_option
+      type: object
       required:
         - title
         - product_id
@@ -7978,7 +8380,7 @@ components:
             Available if the relation `values` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_option_value'
+            $ref: '#/components/schemas/ProductOptionValue'
         product_id:
           description: The ID of the Product that the Product Option is defined for.
           type: string
@@ -8003,10 +8405,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    product_tag:
+    ProductTag:
       title: Product Tag
       description: Product Tags can be added to Products for easy filtering and grouping.
-      x-resourceId: product_tag
+      type: object
       required:
         - value
       properties:
@@ -8035,12 +8437,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    product_tax_rate:
+    ProductTaxRate:
       title: Product Tax Rate
       description: >-
         Associates a tax rate with a product to indicate that the product is
         taxed in a certain way
-      x-resourceId: product_tax_rate
+      type: object
       required:
         - product_id
         - rate_id
@@ -8051,14 +8453,14 @@ components:
           example: prod_01G1G5V2MBA328390B5AXJ610F
         product:
           description: Available if the relation `product` is expanded.
-          $ref: '#/components/schemas/product'
+          $ref: '#/components/schemas/Product'
         rate_id:
           description: The ID of the Tax Rate
           type: string
           example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
         tax_rate:
           description: Available if the relation `tax_rate` is expanded.
-          $ref: '#/components/schemas/tax_rate'
+          $ref: '#/components/schemas/TaxRate'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -8072,12 +8474,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    product_type_tax_rate:
+    ProductTypeTaxRate:
       title: Product Type Tax Rate
       description: >-
         Associates a tax rate with a product type to indicate that the product
         type is taxed in a certain way
-      x-resourceId: product_type_tax_rate
+      type: object
       required:
         - product_type_id
         - rate_id
@@ -8088,14 +8490,14 @@ components:
           example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_type:
           description: Available if the relation `product_type` is expanded.
-          $ref: '#/components/schemas/product_type'
+          $ref: '#/components/schemas/ProductType'
         rate_id:
           description: The id of the Tax Rate
           type: string
           example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
         tax_rate:
           description: Available if the relation `tax_rate` is expanded.
-          $ref: '#/components/schemas/tax_rate'
+          $ref: '#/components/schemas/TaxRate'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -8109,12 +8511,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    product_type:
+    ProductType:
       title: Product Type
       description: >-
         Product Type can be added to Products for filtering and reporting
         purposes.
-      x-resourceId: product_type
+      type: object
       required:
         - value
       properties:
@@ -8143,14 +8545,49 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    product_variant:
+    ProductVariantInventoryItem:
+      title: Product Variant Inventory Item
+      description: >-
+        Product Variant Inventory Items link variants with inventory items and
+        denote the number of inventory items constituting a variant.
+      type: object
+      properties:
+        id:
+          type: string
+          description: The product variant inventory item's ID
+          example: pvitem_01G8X9A7ESKAJXG2H0E6F1MW7A
+        inventory_item_id:
+          description: The id of the inventory item
+          type: string
+        variant_id:
+          description: The id of the variant.
+          type: string
+        required_quantity:
+          description: >-
+            The quantity of an inventory item required for one quantity of the
+            variant.
+          type: integer
+          default: 1
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    ProductVariant:
       title: Product Variant
       description: >-
         Product Variants represent a Product with a specific set of Product
         Option configurations. The maximum number of Product Variants that a
         Product can have is given by the number of available Product Option
         combinations.
-      x-resourceId: product_variant
+      type: object
       required:
         - title
         - product_id
@@ -8180,7 +8617,7 @@ components:
             Region. Available if the relation `prices` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/money_amount'
+            $ref: '#/components/schemas/MoneyAmount'
         sku:
           description: >-
             The unique stock keeping unit used to identify the Product Variant.
@@ -8282,7 +8719,7 @@ components:
             Available if the relation `options` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_option_value'
+            $ref: '#/components/schemas/ProductOptionValue'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -8300,53 +8737,13 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    product_variant_prices_fields:
-      title: Product Variant Prices Fields
-      description: Product Variants Prices Fields that are only available in some requests.
-      x-resourceId: product_variant_prices_fields
-      properties:
-        original_price:
-          type: number
-          description: >-
-            The original price of the variant without any discounted prices
-            applied.
-        calculated_price:
-          type: number
-          description: The calculated price of the variant. Can be a discounted price.
-        original_price_incl_tax:
-          type: number
-          description: The original price of the variant including taxes.
-        calculated_price_incl_tax:
-          type: number
-          description: The calculated price of the variant including taxes.
-        original_tax:
-          type: number
-          description: The taxes applied on the original price.
-        calculated_tax:
-          type: number
-          description: The taxes applied on the calculated price.
-        tax_rates:
-          type: array
-          description: An array of applied tax rates
-          items:
-            type: object
-            properties:
-              rate:
-                type: number
-                description: The tax rate value
-              name:
-                type: string
-                description: The name of the tax rate
-              code:
-                type: string
-                description: The code of the tax rate
-    product:
+    Product:
       title: Product
       description: >-
         Products are a grouping of Product Variants that have common properties
         such as images and descriptions. Products can have multiple options
         which define the properties that Product Variants differ by.
-      x-resourceId: product
+      type: object
       required:
         - title
         - profile_id
@@ -8396,7 +8793,7 @@ components:
             expanded.
           type: array
           items:
-            $ref: '#/components/schemas/image'
+            $ref: '#/components/schemas/Image'
         thumbnail:
           description: A URL to an image file that can be used to identify the Product.
           type: string
@@ -8408,7 +8805,7 @@ components:
             Option Values. Available if the relation `options` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_option'
+            $ref: '#/components/schemas/ProductOption'
         variants:
           description: >-
             The Product Variants that belong to the Product. Each will have a
@@ -8416,7 +8813,7 @@ components:
             relation `variants` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_variant'
+            $ref: '#/components/schemas/ProductVariant'
         profile_id:
           description: >-
             The ID of the Shipping Profile that the Product belongs to. Shipping
@@ -8426,7 +8823,7 @@ components:
           example: sp_01G1G5V239ENSZ5MV4JAR737BM
         profile:
           description: Available if the relation `profile` is expanded.
-          $ref: '#/components/schemas/shipping_profile'
+          $ref: '#/components/schemas/ShippingProfile'
         weight:
           description: >-
             The weight of the Product Variant. May be used in shipping rate
@@ -8494,14 +8891,14 @@ components:
           example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
         type:
           description: Available if the relation `type` is expanded.
-          $ref: '#/components/schemas/product_type'
+          $ref: '#/components/schemas/ProductType'
         tags:
           description: >-
             The Product Tags assigned to the Product. Available if the relation
             `tags` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/product_tag'
+            $ref: '#/components/schemas/ProductTag'
         discountable:
           description: >-
             Whether the Product can be discounted. Discounts will not apply to
@@ -8537,13 +8934,67 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    refund:
+    PublishableApiKeySalesChannel:
+      title: Publishable API key sales channel
+      description: Holds mapping between Publishable API keys and Sales Channels
+      type: object
+      properties:
+        sales_channel_id:
+          type: string
+          description: The sales channel's ID
+          example: sc_01G1G5V21KADXNGH29BJMAJ4B4
+        publishable_key_id:
+          type: string
+          description: The publishable API key's ID
+          example: pak_01G1G5V21KADXNGH29BJMAJ4B4
+    PublishableApiKey:
+      title: Publishable API key
+      description: >-
+        Publishable API key defines scopes (i.e. resources) that are available
+        within a request.
+      type: object
+      properties:
+        id:
+          type: string
+          description: The key's ID
+          example: pk_01G1G5V27GYX4QXNARRQCW1N8T
+        created_by:
+          type: string
+          description: The unique identifier of the user that created the key.
+          example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
+        created_by_user:
+          description: >-
+            A user object. Available if the relation `created_by_user` is
+            expanded.
+          type: object
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        revoked_by:
+          type: string
+          description: The unique identifier of the user that revoked the key.
+          example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
+        revoked_by_user:
+          description: >-
+            A user object. Available if the relation `revoked_by_user` is
+            expanded.
+          type: object
+        revoked_at:
+          type: string
+          description: The date with timezone at which the key was revoked.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+    Refund:
       title: Refund
       description: >-
         Refund represent an amount of money transfered back to the Customer for
         a given reason. Refunds may occur in relation to Returns, Swaps and
         Claims, but can also be initiated by a store operator.
-      x-resourceId: refund
+      type: object
       required:
         - order_id
         - amount
@@ -8602,14 +9053,14 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    region:
+    Region:
       title: Region
       description: >-
         Regions hold settings for how Customers in a given geographical location
         shop. The is, for example, where currencies and tax rates are defined. A
         Region can consist of multiple countries to accomodate common shopping
         settings across countries.
-      x-resourceId: region
+      type: object
       required:
         - name
         - currency_code
@@ -8634,7 +9085,7 @@ components:
             description: See a list of codes.
         currency:
           description: Available if the relation `currency` is expanded.
-          $ref: '#/components/schemas/currency'
+          $ref: '#/components/schemas/Currency'
         tax_rate:
           description: The tax rate that should be charged on purchases in the Region.
           type: number
@@ -8645,7 +9096,7 @@ components:
             relation `tax_rates` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/tax_rate'
+            $ref: '#/components/schemas/TaxRate'
         tax_code:
           description: >-
             The tax code used on purchases in the Region. This may be used by
@@ -8666,28 +9117,28 @@ components:
             relation `countries` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/country'
+            $ref: '#/components/schemas/Country'
         tax_provider_id:
           type: string
           description: The ID of the tax provider used in this region
           example: null
         tax_provider:
           description: Available if the relation `tax_provider` is expanded.
-          $ref: '#/components/schemas/tax_provider'
+          $ref: '#/components/schemas/TaxProvider'
         payment_providers:
           description: >-
             The Payment Providers that can be used to process Payments in the
             Region. Available if the relation `payment_providers` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/payment_provider'
+            $ref: '#/components/schemas/PaymentProvider'
         fulfillment_providers:
           description: >-
             The Fulfillment Providers that can be used to fulfill orders in the
             Region. Available if the relation `payment_providers` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/fulfillment_provider'
+            $ref: '#/components/schemas/FulfillmentProvider'
         includes_tax:
           description: '[EXPERIMENTAL] Does the prices for the region include tax'
           type: boolean
@@ -8708,12 +9159,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    return_item:
+    ReturnItem:
       title: Return Item
       description: >-
         Correlates a Line Item with a Return, keeping track of the quantity of
         the Line Item that will be returned.
-      x-resourceId: return_item
+      type: object
       required:
         - return_id
         - item_id
@@ -8724,14 +9175,14 @@ components:
           example: ret_01F0YET7XPCMF8RZ0Y151NZV2V
         return_order:
           description: Available if the relation `return_order` is expanded.
-          $ref: '#/components/schemas/return'
+          $ref: '#/components/schemas/Return'
         item_id:
           description: The id of the Line Item that the Return Item references.
           type: string
           example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
         item:
           description: Available if the relation `item` is expanded.
-          $ref: '#/components/schemas/line_item'
+          $ref: '#/components/schemas/LineItem'
         quantity:
           description: The quantity of the Line Item that is included in the Return.
           type: integer
@@ -8756,7 +9207,7 @@ components:
           example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
         reason:
           description: Available if the relation `reason` is expanded.
-          $ref: '#/components/schemas/return_reason'
+          $ref: '#/components/schemas/ReturnReason'
         note:
           description: An optional note with additional details about the Return.
           type: string
@@ -8766,12 +9217,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    return_reason:
+    ReturnReason:
       title: Return Reason
       description: >-
         A Reason for why a given product is returned. A Return Reason can be
         used on Return Items in order to indicate why a Line Item was returned.
-      x-resourceId: return_reason
+      type: object
       required:
         - value
         - label
@@ -8798,10 +9249,10 @@ components:
           example: null
         parent_return_reason:
           description: Available if the relation `parent_return_reason` is expanded.
-          $ref: '#/components/schemas/return_reason'
+          $ref: '#/components/schemas/ReturnReason'
         return_reason_children:
           description: Available if the relation `return_reason_children` is expanded.
-          $ref: '#/components/schemas/return_reason'
+          $ref: '#/components/schemas/ReturnReason'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -8819,13 +9270,13 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    return:
+    Return:
       title: Return
       description: >-
         Return orders hold information about Line Items that a Customer wishes
         to send back, along with how the items will be returned. Returns can be
         used as part of a Swap.
-      x-resourceId: return
+      type: object
       required:
         - refund_amount
       properties:
@@ -8848,7 +9299,7 @@ components:
             Available if the relation `items` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/return_item'
+            $ref: '#/components/schemas/ReturnItem'
         swap_id:
           description: The ID of the Swap that the Return is a part of.
           type: string
@@ -8879,7 +9330,7 @@ components:
             Available if the relation `shipping_method` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/shipping_method'
+            $ref: '#/components/schemas/ShippingMethod'
         shipping_data:
           description: >-
             Data about the return shipment as provided by the Fulfilment
@@ -8922,10 +9373,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    sales_channel:
+    SalesChannel:
       title: Sales Channel
       description: A Sales Channel
-      x-resourceId: sales_channel
+      type: object
       required:
         - name
       properties:
@@ -8957,10 +9408,10 @@ components:
           type: string
           description: The date with timezone at which the resource was deleted.
           format: date-time
-    shipping_method_tax_line:
+    ShippingMethodTaxLine:
       title: Shipping Method Tax Line
       description: Shipping Method Tax Line
-      x-resourceId: shipping_method_tax_line
+      type: object
       required:
         - shipping_method_id
         - rate
@@ -8976,7 +9427,7 @@ components:
           example: sm_01F0YET7DR2E7CYVSDHM593QG2
         shipping_method:
           description: Available if the relation `shipping_method` is expanded.
-          $ref: '#/components/schemas/shipping_method'
+          $ref: '#/components/schemas/ShippingMethod'
         code:
           description: A code to identify the tax type by
           type: string
@@ -9002,14 +9453,14 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    shipping_method:
+    ShippingMethod:
       title: Shipping Method
       description: >-
         Shipping Methods represent a way in which an Order or Return can be
         shipped. Shipping Methods are built from a Shipping Option, but may
         contain additional details, that can be necessary for the Fulfillment
         Provider to handle the shipment.
-      x-resourceId: shipping_method
+      type: object
       required:
         - shipping_option_id
         - price
@@ -9026,7 +9477,7 @@ components:
           example: so_01G1G5V27GYX4QXNARRQCW1N8T
         shipping_option:
           description: Available if the relation `shipping_option` is expanded.
-          $ref: '#/components/schemas/shipping_option'
+          $ref: '#/components/schemas/ShippingOption'
         order_id:
           description: The id of the Order that the Shipping Method is used on.
           type: string
@@ -9070,7 +9521,7 @@ components:
           type: array
           description: Available if the relation `tax_lines` is expanded.
           items:
-            $ref: '#/components/schemas/shipping_method_tax_line'
+            $ref: '#/components/schemas/ShippingMethodTaxLine'
         price:
           description: >-
             The amount to charge for the Shipping Method. The currency of the
@@ -9088,12 +9539,12 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Indicates if the shipping method price include tax'
           type: boolean
-    shipping_option_requirement:
+    ShippingOptionRequirement:
       title: Shipping Option Requirement
       description: >-
         A requirement that a Cart must satisfy for the Shipping Option to be
         available to the Cart.
-      x-resourceId: shipping_option_requirement
+      type: object
       required:
         - shipping_option_id
         - type
@@ -9111,7 +9562,7 @@ components:
           example: so_01G1G5V27GYX4QXNARRQCW1N8T
         shipping_option:
           description: Available if the relation `shipping_option` is expanded.
-          $ref: '#/components/schemas/shipping_option'
+          $ref: '#/components/schemas/ShippingOption'
         type:
           description: >-
             The type of the requirement, this defines how the value will be
@@ -9132,7 +9583,7 @@ components:
           type: string
           description: The date with timezone at which the resource was deleted.
           format: date-time
-    shipping_option:
+    ShippingOption:
       title: Shipping Option
       description: >-
         Shipping Options represent a way in which an Order or Return can be
@@ -9141,7 +9592,7 @@ components:
         Options themselves cannot be added to Carts, but serve as a template for
         Shipping Methods. This distinction makes it possible to customize
         individual Shipping Methods with additional information.
-      x-resourceId: shipping_option
+      type: object
       required:
         - name
         - region_id
@@ -9175,7 +9626,7 @@ components:
           example: sp_01G1G5V239ENSZ5MV4JAR737BM
         profile:
           description: Available if the relation `profile` is expanded.
-          $ref: '#/components/schemas/shipping_profile'
+          $ref: '#/components/schemas/ShippingProfile'
         provider_id:
           description: >-
             The id of the Fulfillment Provider, that will be used to process
@@ -9184,7 +9635,7 @@ components:
           example: manual
         provider:
           description: Available if the relation `provider` is expanded.
-          $ref: '#/components/schemas/fulfillment_provider'
+          $ref: '#/components/schemas/FulfillmentProvider'
         price_type:
           description: >-
             The type of pricing calculation that is used when creatin Shipping
@@ -9215,7 +9666,7 @@ components:
             expanded.
           type: array
           items:
-            $ref: '#/components/schemas/shipping_option_requirement'
+            $ref: '#/components/schemas/ShippingOptionRequirement'
         data:
           description: >-
             The data needed for the Fulfillment Provider to identify the
@@ -9242,12 +9693,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    shipping_profile:
+    ShippingProfile:
       title: Shipping Profile
       description: >-
         Shipping Profiles have a set of defined Shipping Options that can be
         used to fulfill a given set of Products.
-      x-resourceId: shipping_profile
+      type: object
       required:
         - name
         - type
@@ -9287,7 +9738,7 @@ components:
             expanded.
           type: array
           items:
-            $ref: '#/components/schemas/shipping_option'
+            $ref: '#/components/schemas/ShippingOption'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -9305,12 +9756,12 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    shipping_tax_rate:
+    ShippingTaxRate:
       title: Shipping Tax Rate
       description: >-
         Associates a tax rate with a shipping option to indicate that the
         shipping option is taxed in a certain way
-      x-resourceId: shipping_tax_rate
+      type: object
       required:
         - shipping_option_id
         - rate_id
@@ -9321,14 +9772,14 @@ components:
           example: so_01G1G5V27GYX4QXNARRQCW1N8T
         shipping_option:
           description: Available if the relation `shipping_option` is expanded.
-          $ref: '#/components/schemas/shipping_option'
+          $ref: '#/components/schemas/ShippingOption'
         rate_id:
           description: The ID of the Tax Rate
           type: string
           example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
         tax_rate:
           description: Available if the relation `tax_rate` is expanded.
-          $ref: '#/components/schemas/tax_rate'
+          $ref: '#/components/schemas/TaxRate'
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -9342,10 +9793,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    staged_job:
+    StagedJob:
       title: Staged Job
       description: A staged job resource
-      x-resourceId: staged_job
+      type: object
       required:
         - event_name
       properties:
@@ -9361,10 +9812,10 @@ components:
           description: Data necessary for the job
           type: object
           example: {}
-    store:
+    Store:
       title: Store
       description: 'Holds settings for the Store, such as name, currencies, etc.'
-      x-resourceId: store
+      type: object
       properties:
         id:
           type: string
@@ -9383,14 +9834,14 @@ components:
             description: See a list of codes.
         default_currency:
           description: Available if the relation `default_currency` is expanded.
-          $ref: '#/components/schemas/currency'
+          $ref: '#/components/schemas/Currency'
         currencies:
           description: >-
             The currencies that are enabled for the Store. Available if the
             relation `currencies` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/currency'
+            $ref: '#/components/schemas/Currency'
         swap_link_template:
           description: >-
             A template to generate Swap links from. Use {{cart_id}} to include
@@ -9421,7 +9872,7 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    swap:
+    Swap:
       title: Swap
       description: >-
         Swaps can be created when a Customer wishes to exchange Products that
@@ -9431,7 +9882,7 @@ components:
         for the new Products. In the case where the amount paid for the the
         Products being returned exceed the amount to be paid for the new
         Products, a Refund will be issued for the difference.
-      x-resourceId: swap
+      type: object
       required:
         - fulfillment_status
         - payment_status
@@ -9482,7 +9933,7 @@ components:
             relation `additional_items` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/line_item'
+            $ref: '#/components/schemas/LineItem'
         return_order:
           description: >-
             A return order object. The Return that is issued for the return part
@@ -9494,13 +9945,13 @@ components:
             relation `fulfillments` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/fulfillment'
+            $ref: '#/components/schemas/Fulfillment'
         payment:
           description: >-
             The Payment authorized when the Swap requires an additional amount
             to be charged from the Customer. Available if the relation `payment`
             is expanded.
-          $ref: '#/components/schemas/payment'
+          $ref: '#/components/schemas/Payment'
         difference_due:
           description: >-
             The difference that is paid or refunded as a result of the Swap. May
@@ -9516,14 +9967,14 @@ components:
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
           description: Available if the relation `shipping_address` is expanded.
-          $ref: '#/components/schemas/address'
+          $ref: '#/components/schemas/Address'
         shipping_methods:
           description: >-
             The Shipping Methods used to fulfill the additional items purchased.
             Available if the relation `shipping_methods` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/shipping_method'
+            $ref: '#/components/schemas/ShippingMethod'
         cart_id:
           description: The id of the Cart that the Customer will use to confirm the Swap.
           type: string
@@ -9575,10 +10026,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    tax_line:
+    TaxLine:
       title: Tax Line
       description: Line item that specifies an amount of tax to add to a line item.
-      x-resourceId: tax_line
+      type: object
       required:
         - rate
         - name
@@ -9612,10 +10063,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    tax_provider:
+    TaxProvider:
       title: Tax Provider
       description: The tax service used to calculate taxes
-      x-resourceId: tax_provider
+      type: object
       properties:
         id:
           description: The id of the tax provider as given by the plugin.
@@ -9628,12 +10079,12 @@ components:
             to `false`.
           type: boolean
           default: true
-    tax_rate:
+    TaxRate:
       title: Tax Rate
       description: >-
         A Tax Rate can be used to associate a certain rate to charge on products
         within a given Region
-      x-resourceId: line_item
+      type: object
       required:
         - name
         - region_id
@@ -9710,13 +10161,13 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    tracking_link:
+    TrackingLink:
       title: Tracking Link
       description: >-
         Tracking Link holds information about tracking numbers for a
         Fulfillment. Tracking Links can optionally contain a URL that can be
         visited to see the status of the shipment.
-      x-resourceId: tracking_link
+      type: object
       required:
         - tracking_number
         - fulfillment_id
@@ -9739,7 +10190,7 @@ components:
           example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
         fulfillment:
           description: Available if the relation `fulfillment` is expanded.
-          $ref: '#/components/schemas/fulfillment'
+          $ref: '#/components/schemas/Fulfillment'
         idempotency_key:
           type: string
           description: >-
@@ -9766,10 +10217,10 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    user:
+    User:
       title: User
       description: Represents a User who can manage store settings.
-      x-resourceId: user
+      type: object
       required:
         - email
       properties:
@@ -9810,23 +10261,304 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
-    multiple_errors:
+    ReservationItemDTO:
+      title: Reservation item
+      description: Represents a reservation of an inventory item at a stock location
+      type: object
+      required:
+        - id
+        - location_id
+        - inventory_item_id
+        - quantity
+      properties:
+        id:
+          description: The id of the reservation item
+          type: string
+        location_id:
+          description: The id of the location of the reservation
+          type: string
+        inventory_item_id:
+          description: The id of the inventory item the reservation relates to
+          type: string
+        quantity:
+          description: The id of the reservation item
+          type: number
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    PricedVariant:
+      title: Priced Product Variant
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ProductVariant'
+        - type: object
+          properties:
+            original_price:
+              type: number
+              description: >-
+                The original price of the variant without any discounted prices
+                applied.
+            calculated_price:
+              type: number
+              description: The calculated price of the variant. Can be a discounted price.
+            original_price_incl_tax:
+              type: number
+              description: The original price of the variant including taxes.
+            calculated_price_incl_tax:
+              type: number
+              description: The calculated price of the variant including taxes.
+            original_tax:
+              type: number
+              description: The taxes applied on the original price.
+            calculated_tax:
+              type: number
+              description: The taxes applied on the calculated price.
+            tax_rates:
+              type: array
+              description: An array of applied tax rates
+              items:
+                type: object
+                properties:
+                  rate:
+                    type: number
+                    description: The tax rate value
+                  name:
+                    type: string
+                    description: The name of the tax rate
+                  code:
+                    type: string
+                    description: The code of the tax rate
+    PricedProduct:
+      title: Priced Product
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Product'
+        - type: object
+          properties:
+            variants:
+              type: array
+              items:
+                $ref: '#/components/schemas/PricedVariant'
+    StockLocationAddressDTO:
+      title: Stock Location Address
+      description: Represents a Stock Location Address
+      type: object
+      required:
+        - address_1
+        - country_code
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: The stock location address' ID
+          example: laddr_51G4ZW853Y6TFXWPG5ENJ81X42
+        address_1:
+          type: string
+          description: Stock location address
+          example: '35, Jhon Doe Ave'
+        address_2:
+          type: string
+          description: Stock location address' complement
+          example: apartment 4432
+        city:
+          type: string
+          description: Stock location address' city
+          example: Mexico city
+        country_code:
+          type: string
+          description: Stock location address' country
+          example: MX
+        phone:
+          type: string
+          description: Stock location address' phone number
+          example: +1 555 61646
+        postal_code:
+          type: string
+          description: Stock location address' postal code
+          example: HD3-1G8
+        province:
+          type: string
+          description: Stock location address' province
+          example: Sinaloa
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    StockLocationDTO:
+      title: Stock Location
+      description: Represents a Stock Location
+      type: object
+      required:
+        - id
+        - name
+        - address_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: The stock location's ID
+          example: sloc_51G4ZW853Y6TFXWPG5ENJ81X42
+        address_id:
+          type: string
+          description: Stock location address' ID
+          example: laddr_05B2ZE853Y6FTXWPW85NJ81A44
+        name:
+          type: string
+          description: The name of the stock location
+          example: Main Warehouse
+        address:
+          description: The Address of the Stock Location
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressDTO'
+            - type: object
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    StockLocationAddressInput:
+      title: Stock Location Address Input
+      description: Represents a Stock Location Address Input
+      type: object
+      required:
+        - address_1
+        - country_code
+      properties:
+        address_1:
+          type: string
+          description: Stock location address
+          example: '35, Jhon Doe Ave'
+        address_2:
+          type: string
+          description: Stock location address' complement
+          example: apartment 4432
+        city:
+          type: string
+          description: Stock location address' city
+          example: Mexico city
+        country_code:
+          type: string
+          description: Stock location address' country
+          example: MX
+        phone:
+          type: string
+          description: Stock location address' phone number
+          example: +1 555 61646
+        postal_code:
+          type: string
+          description: Stock location address' postal code
+          example: HD3-1G8
+        province:
+          type: string
+          description: Stock location address' province
+          example: Sinaloa
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    CreateStockLocationInput:
+      title: Create Stock Location Input
+      description: Represents the Input to create a Stock Location
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The stock location name
+        address_id:
+          type: string
+          description: The Stock location address ID
+        address:
+          description: Stock location address object
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressInput'
+            - type: object
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    UpdateStockLocationInput:
+      title: Update Stock Location Input
+      description: Represents the Input to update a Stock Location
+      type: object
+      properties:
+        name:
+          type: string
+          description: The stock location name
+        address_id:
+          type: string
+          description: The Stock location address ID
+        address:
+          description: Stock location address object
+          allOf:
+            - $ref: '#/components/schemas/StockLocationAddressInput'
+            - type: object
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+    MultipleErrors:
       title: Multiple Errors
-      x-resourceId: multiple_errors
+      type: object
       properties:
         errors:
           type: array
           description: Array of errors
           items:
-            $ref: '#/components/schemas/error'
+            $ref: '#/components/schemas/Error'
         message:
           type: string
           default: >-
             Provided request body contains errors. Please check the data and
             retry the request
-    error:
+    Error:
       title: Response Error
-      x-resourceId: error
+      type: object
       properties:
         code:
           type: string
@@ -9837,3 +10569,599 @@ components:
         type:
           type: string
           description: A slug indicating the type of the error.
+    StoreAuthRes:
+      type: object
+      properties:
+        customer:
+          $ref: '#/components/schemas/Customer'
+    StoreGetAuthEmailRes:
+      type: object
+      properties:
+        exists:
+          type: boolean
+          description: Whether email exists or not.
+    StorePostCartReq:
+      type: object
+      properties:
+        region_id:
+          type: string
+          description: The ID of the Region to create the Cart in.
+        sales_channel_id:
+          type: string
+          description: '[EXPERIMENTAL] The ID of the Sales channel to create the Cart in.'
+        country_code:
+          type: string
+          description: The 2 character ISO country code to create the Cart in.
+          externalDocs:
+            url: >-
+              https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+            description: See a list of codes.
+        items:
+          description: >-
+            An optional array of `variant_id`, `quantity` pairs to generate Line
+            Items from.
+          type: array
+          items:
+            required:
+              - variant_id
+              - quantity
+            properties:
+              variant_id:
+                description: The id of the Product Variant to generate a Line Item from.
+                type: string
+              quantity:
+                description: The quantity of the Product Variant to add
+                type: integer
+        context:
+          description: >-
+            An optional object to provide context to the Cart. The `context`
+            field is automatically populated with `ip` and `user_agent`
+          type: object
+          example:
+            ip: '::1'
+            user_agent: Chrome
+    StoreCartsRes:
+      type: object
+      properties:
+        cart:
+          $ref: '#/components/schemas/Cart'
+    StoreCompleteCartRes:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the data property.
+          enum:
+            - order
+            - cart
+            - swap
+        data:
+          type: object
+          description: The data of the result object. Its type depends on the type field.
+          oneOf:
+            - type: object
+              allOf:
+                - description: >-
+                    Cart was successfully authorized and order was placed
+                    successfully.
+                - $ref: '#/components/schemas/Order'
+            - type: object
+              allOf:
+                - description: >-
+                    Cart was successfully authorized but requires further
+                    actions.
+                - $ref: '#/components/schemas/Cart'
+            - type: object
+              allOf:
+                - description: >-
+                    When cart is used for a swap and it has been completed
+                    successfully.
+                - $ref: '#/components/schemas/Swap'
+    StorePostCartsCartReq:
+      type: object
+      properties:
+        region_id:
+          type: string
+          description: The id of the Region to create the Cart in.
+        country_code:
+          type: string
+          description: The 2 character ISO country code to create the Cart in.
+          externalDocs:
+            url: >-
+              https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+            description: See a list of codes.
+        email:
+          type: string
+          description: An email to be used on the Cart.
+          format: email
+        sales_channel_id:
+          type: string
+          description: The ID of the Sales channel to update the Cart with.
+        billing_address:
+          description: The Address to be used for billing purposes.
+          anyOf:
+            - $ref: '#/components/schemas/Address'
+              description: A full billing address object.
+            - type: string
+              description: The billing address ID
+        shipping_address:
+          description: The Address to be used for shipping.
+          anyOf:
+            - $ref: '#/components/schemas/Address'
+              description: A full shipping address object.
+            - type: string
+              description: The shipping address ID
+        gift_cards:
+          description: An array of Gift Card codes to add to the Cart.
+          type: array
+          items:
+            required:
+              - code
+            properties:
+              code:
+                description: The code that a Gift Card is identified by.
+                type: string
+        discounts:
+          description: An array of Discount codes to add to the Cart.
+          type: array
+          items:
+            required:
+              - code
+            properties:
+              code:
+                description: The code that a Discount is identifed by.
+                type: string
+        customer_id:
+          description: The ID of the Customer to associate the Cart with.
+          type: string
+        context:
+          description: An optional object to provide context to the Cart.
+          type: object
+          example:
+            ip: '::1'
+            user_agent: Chrome
+    StoreCollectionsListRes:
+      type: object
+      properties:
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCollection'
+        count:
+          type: integer
+          description: The total number of items available
+        offset:
+          type: integer
+          description: The number of items skipped before these items
+        limit:
+          type: integer
+          description: The number of items per page
+    StoreCollectionsRes:
+      type: object
+      properties:
+        collection:
+          $ref: '#/components/schemas/ProductCollection'
+    StorePostCustomersCustomerAddressesReq:
+      type: object
+      required:
+        - address
+      properties:
+        address:
+          description: The Address to add to the Customer.
+          allOf:
+            - $ref: '#/components/schemas/AddressFields'
+            - type: object
+              required:
+                - first_name
+                - last_name
+                - address_1
+                - city
+                - country_code
+                - postal_code
+    StorePostCustomersReq:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+        - password
+      properties:
+        first_name:
+          description: The Customer's first name.
+          type: string
+        last_name:
+          description: The Customer's last name.
+          type: string
+        email:
+          description: The email of the customer.
+          type: string
+          format: email
+        password:
+          description: The Customer's password.
+          type: string
+          format: password
+        phone:
+          description: The Customer's phone number.
+          type: string
+    StoreCustomersRes:
+      type: object
+      properties:
+        customer:
+          $ref: '#/components/schemas/Customer'
+    StoreCustomersListOrdersRes:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        count:
+          type: integer
+          description: The total number of items available
+        offset:
+          type: integer
+          description: The number of items skipped before these items
+        limit:
+          type: integer
+          description: The number of items per page
+    StoreCustomersListPaymentMethodsRes:
+      type: object
+      properties:
+        payment_methods:
+          type: array
+          items:
+            type: object
+            properties:
+              provider_id:
+                type: string
+                description: >-
+                  The id of the Payment Provider where the payment method is
+                  saved.
+              data:
+                type: object
+                description: >-
+                  The data needed for the Payment Provider to use the saved
+                  payment method.
+    StorePostCustomersCustomerPasswordTokenReq:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          description: The email of the customer.
+          type: string
+          format: email
+    StorePostCustomersResetPasswordReq:
+      type: object
+      required:
+        - email
+        - password
+        - token
+      properties:
+        email:
+          description: The email of the customer.
+          type: string
+          format: email
+        password:
+          description: The Customer's password.
+          type: string
+          format: password
+        token:
+          description: The reset password token
+          type: string
+    StorePostCustomersCustomerAddressesAddressReq:
+      anyOf:
+        - $ref: '#/components/schemas/AddressFields'
+    StorePostCustomersCustomerReq:
+      type: object
+      properties:
+        first_name:
+          description: The Customer's first name.
+          type: string
+        last_name:
+          description: The Customer's last name.
+          type: string
+        billing_address:
+          description: The Address to be used for billing purposes.
+          anyOf:
+            - $ref: '#/components/schemas/AddressFields'
+              description: The full billing address object
+            - type: string
+              description: The ID of an existing billing address
+        password:
+          description: The Customer's password.
+          type: string
+        phone:
+          description: The Customer's phone number.
+          type: string
+        email:
+          description: The email of the customer.
+          type: string
+        metadata:
+          description: Metadata about the customer.
+          type: object
+    StoreGiftCardsRes:
+      type: object
+      properties:
+        gift_card:
+          $ref: '#/components/schemas/GiftCard'
+    StorePostOrderEditsOrderEditDecline:
+      type: object
+      properties:
+        declined_reason:
+          type: string
+          description: The reason for declining the OrderEdit.
+    StoreOrderEditsRes:
+      type: object
+      properties:
+        order_edit:
+          $ref: '#/components/schemas/OrderEdit'
+    StorePostCustomersCustomerAcceptClaimReq:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          description: The invite token provided by the admin.
+          type: string
+    StoreOrdersRes:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+    StorePostCustomersCustomerOrderClaimReq:
+      type: object
+      required:
+        - order_ids
+      properties:
+        order_ids:
+          description: The ids of the orders to claim
+          type: array
+          items:
+            type: string
+    StorePostPaymentCollectionsBatchSessionsAuthorizeReq:
+      type: object
+      required:
+        - session_ids
+      properties:
+        session_ids:
+          description: List of Payment Session IDs to authorize.
+          type: array
+          items:
+            type: string
+    StorePaymentCollectionsRes:
+      type: object
+      properties:
+        payment_collection:
+          $ref: '#/components/schemas/PaymentCollection'
+    StorePaymentCollectionsSessionRes:
+      type: object
+      properties:
+        payment_session:
+          $ref: '#/components/schemas/PaymentSession'
+    StorePostPaymentCollectionsBatchSessionsReq:
+      type: object
+      required:
+        - sessions
+      properties:
+        sessions:
+          description: >-
+            An array of payment sessions related to the Payment Collection. If
+            the session_id is not provided, existing sessions not present will
+            be deleted and the provided ones will be created.
+          type: array
+          items:
+            required:
+              - provider_id
+              - amount
+            properties:
+              provider_id:
+                type: string
+                description: The ID of the Payment Provider.
+              amount:
+                type: integer
+                description: The amount .
+              session_id:
+                type: string
+                description: The ID of the Payment Session to be updated.
+    StorePaymentCollectionSessionsReq:
+      type: object
+      required:
+        - provider_id
+      properties:
+        provider_id:
+          type: string
+          description: The ID of the Payment Provider.
+    StoreGetProductCategoryRes:
+      type: object
+      properties:
+        product_category:
+          $ref: '#/components/schemas/ProductCategory'
+    StoreProductTypesListRes:
+      type: object
+      properties:
+        product_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductType'
+        count:
+          type: integer
+          description: The total number of items available
+        offset:
+          type: integer
+          description: The number of items skipped before these items
+        limit:
+          type: integer
+          description: The number of items per page
+    StoreProductsRes:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/PricedProduct'
+    StorePostSearchRes:
+      type: object
+      properties:
+        hits:
+          type: array
+          description: >-
+            Array of results. The format of the items depends on the search
+            engine installed on the server.
+    StoreProductsListRes:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricedProduct'
+        count:
+          type: integer
+          description: The total number of items available
+        offset:
+          type: integer
+          description: The number of items skipped before these items
+        limit:
+          type: integer
+          description: The number of items per page
+    StoreRegionsListRes:
+      type: object
+      properties:
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Region'
+    StoreRegionsRes:
+      type: object
+      properties:
+        region:
+          $ref: '#/components/schemas/Region'
+    StoreReturnReasonsListRes:
+      type: object
+      properties:
+        return_reasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReturnReason'
+    StoreReturnReasonsRes:
+      type: object
+      properties:
+        return_reason:
+          $ref: '#/components/schemas/ReturnReason'
+    StorePostReturnsReq:
+      type: object
+      required:
+        - order_id
+        - items
+      properties:
+        order_id:
+          type: string
+          description: The ID of the Order to create the Return from.
+        items:
+          description: The items to include in the Return.
+          type: array
+          items:
+            required:
+              - item_id
+              - quantity
+            properties:
+              item_id:
+                description: The ID of the Line Item from the Order.
+                type: string
+              quantity:
+                description: The quantity to return.
+                type: integer
+              reason_id:
+                description: The ID of the return reason.
+                type: string
+              note:
+                description: A note to add to the item returned.
+                type: string
+        return_shipping:
+          description: >-
+            If the Return is to be handled by the store operator the Customer
+            can choose a Return Shipping Method. Alternatvely the Customer can
+            handle the Return themselves.
+          type: object
+          required:
+            - option_id
+          properties:
+            option_id:
+              type: string
+              description: >-
+                The ID of the Shipping Option to create the Shipping Method
+                from.
+    StoreReturnsRes:
+      type: object
+      properties:
+        return:
+          $ref: '#/components/schemas/Return'
+    StoreShippingOptionsListRes:
+      type: object
+      properties:
+        shipping_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShippingOption'
+    StorePostSwapsReq:
+      type: object
+      required:
+        - order_id
+        - return_items
+        - additional_items
+      properties:
+        order_id:
+          type: string
+          description: The ID of the Order to create the Swap for.
+        return_items:
+          description: The items to include in the Return.
+          type: array
+          items:
+            required:
+              - item_id
+              - quantity
+            properties:
+              item_id:
+                description: The ID of the Line Item from the Order.
+                type: string
+              quantity:
+                description: The quantity to swap.
+                type: integer
+              reason_id:
+                description: The ID of the reason of this return.
+                type: string
+              note:
+                description: The note to add to the item being swapped.
+                type: string
+        return_shipping_option:
+          type: string
+          description: The ID of the Shipping Option to create the Shipping Method from.
+        additional_items:
+          description: The items to exchange the returned items to.
+          type: array
+          items:
+            required:
+              - variant_id
+              - quantity
+            properties:
+              variant_id:
+                description: The ID of the Product Variant to send.
+                type: string
+              quantity:
+                description: The quantity to send of the variant.
+                type: integer
+    StoreSwapsRes:
+      type: object
+      properties:
+        swap:
+          $ref: '#/components/schemas/Swap'
+    StoreVariantsRes:
+      type: object
+      properties:
+        variant:
+          $ref: '#/components/schemas/PricedVariant'
+    StoreVariantsListRes:
+      type: object
+      properties:
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/PricedVariant'

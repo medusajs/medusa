@@ -7,6 +7,8 @@ import _ from "lodash"
  * summary: "Get Current User"
  * x-authenticated: true
  * description: "Gets the currently logged in User."
+ * x-codegen:
+ *   method: getSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -34,10 +36,7 @@ import _ from "lodash"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            user:
- *              $ref: "#/components/schemas/user"
+ *          $ref: "#/components/schemas/AdminAuthRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

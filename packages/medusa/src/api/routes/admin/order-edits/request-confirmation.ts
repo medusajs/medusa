@@ -1,5 +1,6 @@
+import { IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
-import { IsOptional, IsString, IsObject } from "class-validator"
+import { PaymentCollectionType } from "../../../../models"
 import {
   OrderEditService,
   OrderService,
@@ -9,16 +10,17 @@ import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
 } from "../../../../types/order-edit"
-import { PaymentCollectionType } from "../../../../models"
 
 /**
  * @oas [post] /order-edits/{id}/request
  * operationId: "PostOrderEditsOrderEditRequest"
- * summary: "Request order edit confirmation"
+ * summary: "Request Confirmation"
  * description: "Request customer confirmation of an Order Edit"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to request confirmation from.
+ * x-codegen:
+ *   method: requestConfirmation
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -46,10 +48,7 @@ import { PaymentCollectionType } from "../../../../models"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/order_edit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -82,7 +81,7 @@ export default async (req, res) => {
       orderEditService.withTransaction(transactionManager)
 
     const orderEdit = await orderEditServiceTx.requestConfirmation(id, {
-      loggedInUserId: loggedInUser,
+      requestedBy: loggedInUser,
     })
 
     const total = await orderEditServiceTx.getTotals(orderEdit.id)

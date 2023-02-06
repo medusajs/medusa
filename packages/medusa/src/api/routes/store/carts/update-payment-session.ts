@@ -11,7 +11,13 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the payment provider.
- *   - (body) data=* {object} The data to update the payment session with.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartPaymentSessionUpdateReq"
+ * x-codegen:
+ *   method: updatePaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,10 +48,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -82,6 +85,16 @@ export default async (req, res) => {
   res.status(200).json({ cart: data })
 }
 
+/**
+ * @schema StorePostCartsCartPaymentSessionUpdateReq
+ * type: object
+ * required:
+ *   - data
+ * properties:
+ *   data:
+ *     type: object
+ *     description: The data to update the payment session with.
+ */
 export class StorePostCartsCartPaymentSessionUpdateReq {
   @IsObject()
   data: Record<string, unknown>
