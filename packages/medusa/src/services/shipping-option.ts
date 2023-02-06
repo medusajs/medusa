@@ -157,12 +157,12 @@ class ShippingOptionService extends TransactionBaseService {
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {object} config - config object
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - config object
+   * @return the result of the find operation
    */
   async listAndCount(
-    selector: Selector<ShippingMethod>,
+    selector: Selector<ShippingOption>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<[ShippingOption[], number]> {
     const manager = this.manager_
