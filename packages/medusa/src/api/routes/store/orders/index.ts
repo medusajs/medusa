@@ -120,6 +120,7 @@ export const allowedStoreOrdersFields = [
   "refundable_amount",
   "gift_card_total",
   "gift_card_tax_total",
+  "billing_address",
 ]
 
 export const allowedStoreOrdersRelations = [...defaultStoreOrdersRelations]
