@@ -6,7 +6,7 @@ import {
   In,
   Repository,
 } from "typeorm"
-import { PriceList, Product, SalesChannel, ProductCategory } from "../models"
+import { PriceList, Product, ProductCategory, SalesChannel } from "../models"
 import {
   ExtendedFindConfig,
   Selector,
@@ -384,19 +384,6 @@ export class ProductRepository extends Repository<Product> {
     return result[0]
   }
 
-  public async bulkSetShippingProfile(
-    productIds: string[],
-    shippingProfileId: string
-  ): Promise<Product[]> {
-    await this.createQueryBuilder()
-      .update(Product)
-      .set({ profile_id: shippingProfileId })
-      .where({ id: In(productIds) })
-      .execute()
-
-    return this.findByIds(productIds)
-  }
-
   public async bulkAddToCollection(
     productIds: string[],
     collectionId: string
@@ -555,21 +542,21 @@ export class ProductRepository extends Repository<Product> {
 
   /**
    * Upserts shipping profile for products
-   * @param ids IDs of products to update
+   * @param productIds IDs of products to update
    * @param shippingProfileId ID of shipping profile to assign to products
    * @returns updated products
    */
   public async upsertShippingProfile(
-    ids: string[],
+    productIds: string[],
     shippingProfileId: string
   ): Promise<Product[]> {
     await this.createQueryBuilder()
       .update(Product)
       .set({ profile_id: shippingProfileId })
-      .where({ id: In(ids) })
+      .where({ id: In(productIds) })
       .execute()
 
-    return await this.findByIds(ids)
+    return await this.findByIds(productIds)
   }
 
   private _cleanOptions(

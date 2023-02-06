@@ -4,15 +4,15 @@ import { ShippingOption } from "../models/shipping-option"
 @EntityRepository(ShippingOption)
 export class ShippingOptionRepository extends Repository<ShippingOption> {
   public async upsertShippingProfile(
-    ids: string[],
+    shippingOptionIds: string[],
     shippingProfileId: string
   ): Promise<ShippingOption[]> {
     await this.createQueryBuilder()
       .update(ShippingOption)
       .set({ profile_id: shippingProfileId })
-      .where({ id: In(ids) })
+      .where({ id: In(shippingOptionIds) })
       .execute()
 
-    return this.findByIds(ids)
+    return this.findByIds(shippingOptionIds)
   }
 }
