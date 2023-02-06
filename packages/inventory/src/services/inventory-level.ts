@@ -223,8 +223,12 @@ export default class InventoryLevelService extends TransactionBaseService {
    */
   async getStockedQuantity(
     inventoryItemId: string,
-    locationIds: string[]
+    locationIds: string[] | string
   ): Promise<number> {
+    if (!Array.isArray(locationIds)) {
+      locationIds = [locationIds]
+    }
+
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -235,7 +239,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return result.quantity
+    return parseFloat(result.quantity)
   }
 
   /**
@@ -246,8 +250,12 @@ export default class InventoryLevelService extends TransactionBaseService {
    */
   async getAvailableQuantity(
     inventoryItemId: string,
-    locationIds: string[]
+    locationIds: string[] | string
   ): Promise<number> {
+    if (!Array.isArray(locationIds)) {
+      locationIds = [locationIds]
+    }
+
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -258,7 +266,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return result.quantity
+    return parseFloat(result.quantity)
   }
 
   /**
@@ -269,8 +277,12 @@ export default class InventoryLevelService extends TransactionBaseService {
    */
   async getReservedQuantity(
     inventoryItemId: string,
-    locationIds: string[]
+    locationIds: string[] | string
   ): Promise<number> {
+    if (!Array.isArray(locationIds)) {
+      locationIds = [locationIds]
+    }
+
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -281,6 +293,6 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return result.quantity
+    return parseFloat(result.quantity)
   }
 }

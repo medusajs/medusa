@@ -82,12 +82,7 @@ export const createVariantTransaction = async (
   const productVariantServiceTx = productVariantService.withTransaction(manager)
 
   async function createVariant(variantInput: CreateProductVariantInput) {
-    const variant = await productVariantServiceTx.create(
-      productId,
-      variantInput
-    )
-
-    return { variant }
+    return await productVariantServiceTx.create(productId, variantInput)
   }
 
   async function removeVariant(variant: ProductVariant) {
@@ -101,7 +96,7 @@ export const createVariantTransaction = async (
       return
     }
 
-    const inventoryItem = await inventoryServiceTx!.createInventoryItem({
+    return await inventoryServiceTx!.createInventoryItem({
       sku: variant.sku,
       origin_country: variant.origin_country,
       hs_code: variant.hs_code,
@@ -112,8 +107,6 @@ export const createVariantTransaction = async (
       height: variant.height,
       width: variant.width,
     })
-
-    return { inventoryItem }
   }
 
   async function removeInventoryItem(inventoryItem: InventoryItemDTO) {
