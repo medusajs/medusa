@@ -155,6 +155,58 @@ describe("/store/carts", () => {
       )
     })
 
+    it("lookup order response contains only fields defined with `fields` param", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(
+          "/store/orders?display_id=111&email=test@email.com&fields=status,object"
+        )
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(Object.keys(response.data.order)).toEqual([
+        // fields
+        "status",
+        "object",
+        // relations
+        "shipping_address",
+        "fulfillments",
+        "items",
+        "shipping_methods",
+        "discounts",
+        "customer",
+        "payments",
+        "region",
+      ])
+    })
+
+    it("get order response contains only fields defined with `fields` param", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/orders/order_test?fields=status,object")
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(Object.keys(response.data.order)).toEqual([
+        // fields
+        "status",
+        "object",
+        // relations
+        "shipping_address",
+        "fulfillments",
+        "items",
+        "shipping_methods",
+        "discounts",
+        "customer",
+        "payments",
+        "region",
+      ])
+    })
+
     it("looks up order", async () => {
       const api = useApi()
 
