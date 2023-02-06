@@ -125,6 +125,16 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ *   - in: query
+ *     name: category_id
+ *     style: form
+ *     explode: false
+ *     description: Category ids to filter by.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) include_category_children {boolean} Include category children when filtering by category_id.
  *   - (query) offset=0 {integer} How many products to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
@@ -302,6 +312,15 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
 
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
   sales_channel_id?: string[]
+
+  @IsArray()
+  @IsOptional()
+  category_id?: string[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  include_category_children?: boolean
 
   @IsOptional()
   @ValidateNested()
