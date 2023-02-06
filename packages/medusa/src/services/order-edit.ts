@@ -466,9 +466,11 @@ export default class OrderEditService extends TransactionBaseService {
     orderEdit.items.forEach((item) => {
       if (item.adjustments?.length) {
         item.adjustments.forEach((adjustment) => {
-          if (
-            config.preserveCustomAdjustments ? !!adjustment.discount_id : true
-          ) {
+          const preserveAdjustment = config.preserveCustomAdjustments
+            ? !!adjustment.discount_id
+            : true
+
+          if (preserveAdjustment) {
             clonedItemAdjustmentIds.push(adjustment.id)
           }
         })
