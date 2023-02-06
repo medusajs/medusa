@@ -6,13 +6,13 @@ import {
   IsNull,
   Not,
   Repository,
-  WhereExpressionBuilder,
+  WhereExpressionBuilder
 } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { MoneyAmount } from "../models/money-amount"
 import {
   PriceListPriceCreateInput,
-  PriceListPriceUpdateInput,
+  PriceListPriceUpdateInput
 } from "../types/price-list"
 
 type Price = Partial<
