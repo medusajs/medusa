@@ -24,9 +24,7 @@ describe("RedisCacheService", () => {
         manager: MockManager,
         logger: loggerMock,
       },
-      {
-        redisUrl: "test-url",
-      },
+      {},
       {
         resources: "shared",
       }
@@ -40,9 +38,7 @@ describe("RedisCacheService", () => {
           manager: MockManager,
           logger: loggerMock,
         },
-        {
-          redisUrl: "test-url",
-        },
+        {},
         {
           resources: "isolated",
         }
