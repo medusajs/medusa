@@ -31,7 +31,7 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.productCategories.create({
- *         name: 'App',
+ *         name: "Skinny Jeans",
  *       })
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
@@ -43,7 +43,7 @@ import { FindParams } from "../../../../types/common"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "name": "Jeans",
+ *           "name": "Skinny Jeans",
  *       }'
  * security:
  *   - api_token: []
