@@ -504,7 +504,7 @@ class ProductService extends TransactionBaseService {
       )
       const imageRepo = manager.getCustomRepository(this.imageRepository_)
 
-      const relations = ["variants", "tags", "images"]
+      const relations = ["tags", "images"]
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
@@ -526,7 +526,6 @@ class ProductService extends TransactionBaseService {
       })
 
       const {
-        variants,
         metadata,
         images,
         tags,
@@ -579,57 +578,6 @@ class ProductService extends TransactionBaseService {
             )
           }
         }
-      }
-
-      if (variants) {
-        // Iterate product variants and update their properties accordingly
-        for (const variant of product.variants) {
-          const exists = variants.find((v) => v.id && variant.id === v.id)
-          if (!exists) {
-            await productVariantRepo.remove(variant)
-          }
-        }
-
-        const newVariants: ProductVariant[] = []
-        for (const [i, newVariant] of variants.entries()) {
-          const variant_rank = i
-
-          if (newVariant.id) {
-            const variant = product.variants.find((v) => v.id === newVariant.id)
-
-            if (!variant) {
-              throw new MedusaError(
-                MedusaError.Types.NOT_FOUND,
-                `Variant with id: ${newVariant.id} is not associated with this product`
-              )
-            }
-
-            const saved = await this.productVariantService_
-              .withTransaction(manager)
-              .update(variant, {
-                ...newVariant,
-                variant_rank,
-                product_id: variant.product_id,
-              })
-
-            newVariants.push(saved)
-          } else {
-            // If the provided variant does not have an id, we assume that it
-            // should be created
-            const created = await this.productVariantService_
-              .withTransaction(manager)
-              .create(product.id, {
-                ...newVariant,
-                variant_rank,
-                options: newVariant.options || [],
-                prices: newVariant.prices || [],
-              })
-
-            newVariants.push(created)
-          }
-        }
-
-        product.variants = newVariants
       }
 
       for (const [key, value] of Object.entries(rest)) {

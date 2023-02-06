@@ -1,5 +1,5 @@
-import { isEmpty } from "lodash"
-import { RegionInfo, ProductVariantInfo } from "../types"
+import { ProductVariantInfo, RegionInfo } from "../types"
+import { isEmpty } from "../utils"
 
 type FormatVariantPriceParams = {
   variant: ProductVariantInfo
@@ -65,7 +65,8 @@ export const getVariantPrice = (
   region: RegionInfo
 ) => {
   let price = variant?.prices?.find(
-    p => p.currency_code.toLowerCase() === region?.currency_code?.toLowerCase()
+    (p) =>
+      p.currency_code.toLowerCase() === region?.currency_code?.toLowerCase()
   )
 
   return price?.amount || 0
