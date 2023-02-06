@@ -131,12 +131,12 @@ export default async ({
     const context = { container, manager, logger }
 
     await Promise.all([
-      await registerPaymentProvider(context),
-      await registerNotificationProvider(context),
-      await registerFulfillmentProvider(context),
-      await registerTaxProvider(context),
-      await profileServiceTx.createDefault(),
-      await profileServiceTx.createGiftCardDefault(),
+      registerPaymentProvider(context),
+      registerNotificationProvider(context),
+      registerFulfillmentProvider(context),
+      registerTaxProvider(context),
+      profileServiceTx.createDefault(),
+      profileServiceTx.createGiftCardDefault(),
       async () => {
         const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(
           SalesChannelFeatureFlag.key
