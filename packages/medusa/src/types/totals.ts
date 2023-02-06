@@ -62,4 +62,5 @@ export type LineDiscount = {
 export type LineDiscountAmount = {
   item: LineItem
   amount: number
+  customAdjustmentsAmount: number
 }
