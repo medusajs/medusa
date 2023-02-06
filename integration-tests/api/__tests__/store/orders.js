@@ -166,23 +166,20 @@ describe("/store/carts", () => {
           return err.response
         })
 
-      expect(Object.keys(response.data.order)).toEqual(
-        expect.arrayContaining([
-          // fields
-          "status",
-          "object",
-          // relations
-          "shipping_address",
-          "fulfillments",
-          "items",
-          "shipping_methods",
-          "discounts",
-          "customer",
-          "payments",
-          "region",
-        ])
-      )
-      expect(Object.keys(response.data.order).length).toEqual(10)
+      expect(Object.keys(response.data.order)).toEqual([
+        // fields
+        "status",
+        "object",
+        // relations
+        "shipping_address",
+        "fulfillments",
+        "items",
+        "shipping_methods",
+        "discounts",
+        "customer",
+        "payments",
+        "region",
+      ])
     })
 
     it("get order response contains only fields defined with `fields` param", async () => {
@@ -194,23 +191,20 @@ describe("/store/carts", () => {
           return err.response
         })
 
-      expect(Object.keys(response.data.order)).toEqual(
-        expect.arrayContaining([
-          // fields
-          "status",
-          "object",
-          // relations
-          "shipping_address",
-          "fulfillments",
-          "items",
-          "shipping_methods",
-          "discounts",
-          "customer",
-          "payments",
-          "region",
-        ])
-      )
-      expect(Object.keys(response.data.order).length).toEqual(10)
+      expect(Object.keys(response.data.order)).toEqual([
+        // fields
+        "status",
+        "object",
+        // relations
+        "shipping_address",
+        "fulfillments",
+        "items",
+        "shipping_methods",
+        "discounts",
+        "customer",
+        "payments",
+        "region",
+      ])
     })
 
     it("looks up order", async () => {

@@ -5,7 +5,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const {
   simpleProductFactory,
-  simpleProductCategoryFactory
+  simpleProductCategoryFactory,
 } = require("../../factories")
 
 const productSeeder = require("../../helpers/store-product-seeder")
@@ -201,20 +201,17 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.products[0])).toEqual(
-        expect.arrayContaining([
-          // fields
-          "handle",
-          // relations
-          "variants",
-          "options",
-          "images",
-          "tags",
-          "collection",
-          "type",
-        ])
-      )
-      expect(Object.keys(response.data.products[0]).length).toEqual(7)
+      expect(Object.keys(response.data.products[0])).toEqual([
+        // fields
+        "handle",
+        // relations
+        "variants",
+        "options",
+        "images",
+        "tags",
+        "collection",
+        "type",
+      ])
     })
 
     it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
@@ -478,7 +475,10 @@ describe("/store/products", () => {
     })
 
     describe("Product Category filtering", () => {
-      let categoryWithProduct, categoryWithoutProduct, nestedCategoryWithProduct, nested2CategoryWithProduct
+      let categoryWithProduct,
+        categoryWithoutProduct,
+        nestedCategoryWithProduct,
+        nested2CategoryWithProduct
       const nestedCategoryWithProductId = "nested-category-with-product-id"
       const nested2CategoryWithProductId = "nested2-category-with-product-id"
       const categoryWithProductId = "category-with-product-id"
@@ -486,14 +486,11 @@ describe("/store/products", () => {
 
       beforeEach(async () => {
         const manager = dbConnection.manager
-        categoryWithProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: categoryWithProductId,
-            name: "category with Product",
-            products: [{ id: testProductId }],
-          }
-        )
+        categoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
+          id: categoryWithProductId,
+          name: "category with Product",
+          products: [{ id: testProductId }],
+        })
 
         nestedCategoryWithProduct = await simpleProductCategoryFactory(
           dbConnection,
@@ -527,49 +524,36 @@ describe("/store/products", () => {
       it("returns a list of products in product category without category children", async () => {
         const api = useApi()
         const params = `category_id[]=${categoryWithProductId}`
-        const response = await api
-          .get(
-            `/store/products?${params}`,
-          )
+        const response = await api.get(`/store/products?${params}`)
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual(
-          [
-            expect.objectContaining({
-              id: testProductId,
-            }),
-          ]
-        )
+        expect(response.data.products).toEqual([
+          expect.objectContaining({
+            id: testProductId,
+          }),
+        ])
       })
 
       it("returns a list of products in product category without category children explicitly set to false", async () => {
         const api = useApi()
         const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
-        const response = await api
-          .get(
-            `/store/products?${params}`,
-          )
+        const response = await api.get(`/store/products?${params}`)
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual(
-          [
-            expect.objectContaining({
-              id: testProductId,
-            }),
-          ]
-        )
+        expect(response.data.products).toEqual([
+          expect.objectContaining({
+            id: testProductId,
+          }),
+        ])
       })
 
       it("returns a list of products in product category with category children", async () => {
         const api = useApi()
 
         const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
-        const response = await api
-          .get(
-            `/store/products?${params}`,
-          )
+        const response = await api.get(`/store/products?${params}`)
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(3)
@@ -583,7 +567,7 @@ describe("/store/products", () => {
             }),
             expect.objectContaining({
               id: testProductFilteringId1,
-            })
+            }),
           ])
         )
       })
@@ -592,10 +576,7 @@ describe("/store/products", () => {
         const api = useApi()
 
         const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
-        const response = await api
-          .get(
-            `/store/products?${params}`,
-          )
+        const response = await api.get(`/store/products?${params}`)
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(0)
@@ -1115,20 +1096,17 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.product)).toEqual(
-        expect.arrayContaining([
-          // fields
-          "handle",
-          // relations
-          "variants",
-          "options",
-          "images",
-          "tags",
-          "collection",
-          "type",
-        ])
-      )
-      expect(Object.keys(response.data.product).length).toEqual(7)
+      expect(Object.keys(response.data.product)).toEqual([
+        // fields
+        "handle",
+        // relations
+        "variants",
+        "options",
+        "images",
+        "tags",
+        "collection",
+        "type",
+      ])
     })
   })
 })
