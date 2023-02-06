@@ -55,8 +55,8 @@ export class SalesChannel extends SoftDeletableEntity {
  *    description: "Specify if the sales channel is enabled or disabled."
  *    type: boolean
  *    default: false
- *  sales_channel_locations:
- *    description: The Stock Locations related to the sales channel. Available if the relation `sales_channel_locations` is expanded.
+ *  locations:
+ *    description: The Stock Locations related to the sales channel. Available if the relation `locations` is expanded.
  *    type: array
  *    items:
  *      $ref: "#/components/schemas/SalesChannelLocation"
