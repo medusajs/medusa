@@ -1,12 +1,24 @@
 import { Cart } from "@medusajs/medusa"
 import faker from "faker"
 import { DataSource } from "typeorm"
-import { AddressFactoryData, simpleAddressFactory, } from "./simple-address-factory"
+import {
+  AddressFactoryData,
+  simpleAddressFactory,
+} from "./simple-address-factory"
 import { simpleCustomerFactory } from "./simple-customer-factory"
-import { LineItemFactoryData, simpleLineItemFactory, } from "./simple-line-item-factory"
+import {
+  LineItemFactoryData,
+  simpleLineItemFactory,
+} from "./simple-line-item-factory"
 import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
-import { SalesChannelFactoryData, simpleSalesChannelFactory, } from "./simple-sales-channel-factory"
-import { ShippingMethodFactoryData, simpleShippingMethodFactory, } from "./simple-shipping-method-factory"
+import {
+  SalesChannelFactoryData,
+  simpleSalesChannelFactory,
+} from "./simple-sales-channel-factory"
+import {
+  ShippingMethodFactoryData,
+  simpleShippingMethodFactory,
+} from "./simple-shipping-method-factory"
 
 export type CartFactoryData = {
   id?: string

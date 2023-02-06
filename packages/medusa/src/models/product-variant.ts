@@ -1,11 +1,17 @@
-import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, } from "typeorm"
-
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, generateEntityId } from "../utils"
 import { MoneyAmount } from "./money-amount"
 import { Product } from "./product"
 import { ProductOptionValue } from "./product-option-value"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
+import { SoftDeletableEntity } from "../interfaces"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany
+} from "typeorm"
 
 @Entity()
 export class ProductVariant extends SoftDeletableEntity {
