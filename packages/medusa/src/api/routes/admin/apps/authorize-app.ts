@@ -14,6 +14,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostAppsReq"
+ * x-codegen:
+ *   method: authorize
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

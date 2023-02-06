@@ -28,10 +28,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              shipping_option:
-                $ref: ../components/schemas/ShippingOption.yaml
+            $ref: ../components/schemas/AdminShippingOptionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -85,15 +82,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              shipping_options:
-                type: array
-                items:
-                  $ref: ../components/schemas/ShippingOption.yaml
-              count:
-                type: integer
-                description: The total number of items available
+            $ref: ../components/schemas/AdminShippingOptionsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

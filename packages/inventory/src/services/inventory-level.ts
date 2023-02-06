@@ -139,7 +139,6 @@ export default class InventoryLevelService extends TransactionBaseService {
    * Updates an existing inventory level.
    * @param inventoryLevelId - The ID of the inventory level to update.
    * @param data - An object containing the properties to update on the inventory level.
-   * @param autoSave - A flag indicating whether to save the changes automatically.
    * @return The updated inventory level.
    * @throws If the inventory level ID is not defined or the given ID was not found.
    */
@@ -224,8 +223,12 @@ export default class InventoryLevelService extends TransactionBaseService {
    */
   async getStockedQuantity(
     inventoryItemId: string,
-    locationIds: string[]
+    locationIds: string[] | string
   ): Promise<number> {
+    if (!Array.isArray(locationIds)) {
+      locationIds = [locationIds]
+    }
+
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -236,7 +239,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return result.quantity
+    return parseFloat(result.quantity)
   }
 
   /**
@@ -247,8 +250,12 @@ export default class InventoryLevelService extends TransactionBaseService {
    */
   async getAvailableQuantity(
     inventoryItemId: string,
-    locationIds: string[]
+    locationIds: string[] | string
   ): Promise<number> {
+    if (!Array.isArray(locationIds)) {
+      locationIds = [locationIds]
+    }
+
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -259,7 +266,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return result.quantity
+    return parseFloat(result.quantity)
   }
 
   /**
@@ -270,8 +277,12 @@ export default class InventoryLevelService extends TransactionBaseService {
    */
   async getReservedQuantity(
     inventoryItemId: string,
-    locationIds: string[]
+    locationIds: string[] | string
   ): Promise<number> {
+    if (!Array.isArray(locationIds)) {
+      locationIds = [locationIds]
+    }
+
     const manager = this.getManager()
     const levelRepository = manager.getRepository(InventoryLevel)
 
@@ -282,6 +293,6 @@ export default class InventoryLevelService extends TransactionBaseService {
       .andWhere("location_id IN (:...locationIds)", { locationIds })
       .getRawOne()
 
-    return result.quantity
+    return parseFloat(result.quantity)
   }
 }

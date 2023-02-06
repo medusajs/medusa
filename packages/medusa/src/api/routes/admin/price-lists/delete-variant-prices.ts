@@ -10,6 +10,8 @@ import PriceListService from "../../../../services/price-list"
  * parameters:
  *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
  *   - (path) variant_id=* {string} The ID of the variant from which the money amount will be deleted.
+ * x-codegen:
+ *   method: deleteVariantPrices
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

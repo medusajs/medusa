@@ -8,6 +8,8 @@ import { PaymentService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Payment.
+ * x-codegen:
+ *   method: capturePayment
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

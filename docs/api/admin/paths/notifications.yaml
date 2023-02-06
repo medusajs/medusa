@@ -77,12 +77,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              notifications:
-                type: array
-                items:
-                  $ref: ../components/schemas/Notification.yaml
+            $ref: ../components/schemas/AdminNotificationsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

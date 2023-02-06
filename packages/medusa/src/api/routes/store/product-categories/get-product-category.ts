@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import ProductCategoryService from "../../../../services/product-category"
 import { FindParams } from "../../../../types/common"
 import { transformTreeNodesWithConfig } from "../../../../utils/transformers/tree"
-import { defaultStoreProductCategoryRelations, defaultStoreScope } from "."
+import { defaultStoreScope } from "."
 
 /**
  * @oas [get] /product-categories/{id}
@@ -15,6 +15,9 @@ import { defaultStoreProductCategoryRelations, defaultStoreScope } from "."
  *   - (path) id=* {string} The ID of the Product Category
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.
  *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each product category.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: StoreGetProductCategoryParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -22,10 +25,10 @@ import { defaultStoreProductCategoryRelations, defaultStoreScope } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.productCategories.retrieve("pcat-id")
- *       .then(({ productCategory }) => {
- *         console.log(productCategory.id);
- *       });
+ *       medusa.productCategories.retrieve(product_category_id)
+ *         .then(({ product_category }) => {
+ *           console.log(product_category.id);
+ *         });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -42,10 +45,7 @@ import { defaultStoreProductCategoryRelations, defaultStoreScope } from "."
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            productCategory:
- *              $ref: "#/components/schemas/ProductCategory"
+ *          $ref: "#/components/schemas/StoreGetProductCategoriesCategoryRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

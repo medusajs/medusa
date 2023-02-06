@@ -1,26 +1,30 @@
 import { NextFunction, Request, Response } from "express"
-import { ProductService } from "../../../services"
-import { ProductBatchSalesChannel } from "../../../types/sales-channels"
 
-export function validateProductsExist(
-  getProducts: (req) => ProductBatchSalesChannel[] | undefined
+type GetProductsRequiredParams = {
+  id: string
+}
+
+export function validateProductsExist<T extends GetProductsRequiredParams = GetProductsRequiredParams>(
+  getProducts: (req) => T[]
 ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const products = getProducts(req)
+    const requestedProducts = getProducts(req)
 
-    if (!products?.length) {
+    if (!requestedProducts?.length) {
       return next()
     }
 
-    const productService: ProductService = req.scope.resolve("productService")
-
-    const productIds = products.map((product) => product.id)
-    const [existingProducts] = await productService.listAndCount({
-      id: productIds,
+    const productService = req.scope.resolve("productService")
+    const requestedProductIds = requestedProducts.map((product) => product.id)
+    const [productRecords] = await productService.listAndCount({
+      id: requestedProductIds,
     })
 
-    const nonExistingProducts = productIds.filter(
-      (scId) => existingProducts.findIndex((sc) => sc.id === scId) === -1
+    const nonExistingProducts = requestedProductIds.filter(
+      (requestedProductId) =>
+        productRecords.findIndex(
+          (productRecord) => productRecord.id === requestedProductId
+        ) === -1
     )
 
     if (nonExistingProducts.length) {

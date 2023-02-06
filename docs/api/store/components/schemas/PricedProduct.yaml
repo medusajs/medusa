@@ -1,0 +1,10 @@
+title: Priced Product
+type: object
+allOf:
+  - $ref: ./Product.yaml
+  - type: object
+    properties:
+      variants:
+        type: array
+        items:
+          $ref: ./PricedVariant.yaml

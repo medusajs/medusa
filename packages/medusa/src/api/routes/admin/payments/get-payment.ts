@@ -9,6 +9,9 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Payment.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: GetPaymentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

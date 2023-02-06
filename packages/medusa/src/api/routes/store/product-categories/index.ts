@@ -1,12 +1,15 @@
 import { Router } from "express"
 import middlewares, { transformQuery } from "../../../middlewares"
-import getProductCategory, {
-  StoreGetProductCategoryParams,
-} from "./get-product-category"
+import { ProductCategory } from "../../../../models"
+import { PaginatedResponse } from "../../../../types/common"
 
 import listProductCategories, {
   StoreGetProductCategoriesParams,
 } from "./list-product-categories"
+
+import getProductCategory, {
+  StoreGetProductCategoryParams,
+} from "./get-product-category"
 
 const route = Router()
 
@@ -65,6 +68,39 @@ export const allowedStoreProductCategoryFields = [
   "created_at",
   "updated_at",
 ]
+
+/**
+ * @schema StoreGetProductCategoriesCategoryRes
+ * type: object
+ * properties:
+ *   product_category:
+ *     $ref: "#/components/schemas/ProductCategory"
+ */
+export type StoreGetProductCategoriesCategoryRes = {
+  product_category: ProductCategory
+}
+
+/**
+ * @schema StoreProductCategoriesListRes
+ * type: object
+ * properties:
+ *   product_categories:
+ *      type: array
+ *      items:
+ *        $ref: "#/components/schemas/ProductCategory"
+ *   count:
+ *      type: integer
+ *      description: The total number of items available
+ *   offset:
+ *      type: integer
+ *      description: The number of items skipped before these items
+ *   limit:
+ *      type: integer
+ *      description: The number of items per page
+ */
+export type StoreProductCategoriesListRes = PaginatedResponse & {
+  product_categories: ProductCategory[]
+}
 
 export * from "./get-product-category"
 export * from "./list-product-categories"

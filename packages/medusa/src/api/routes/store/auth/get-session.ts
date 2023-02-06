@@ -6,6 +6,8 @@ import CustomerService from "../../../../services/customer"
  * summary: "Get Current Customer"
  * description: "Gets the currently logged in Customer."
  * x-authenticated: true
+ * x-codegen:
+ *   method: getSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

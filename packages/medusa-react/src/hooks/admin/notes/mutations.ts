@@ -10,9 +10,9 @@ import {
   UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query"
-import { adminNoteKeys } from "."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminNoteKeys } from "./queries"
 
 export const useAdminCreateNote = (
   options?: UseMutationOptions<

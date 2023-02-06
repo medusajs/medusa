@@ -7,6 +7,8 @@ import CustomerService from "../../../../services/customer"
  * summary: Get a Customer
  * description: "Retrieves a Customer - the Customer must be logged in to retrieve their details."
  * x-authenticated: true
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

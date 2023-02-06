@@ -75,14 +75,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              variants:
-                type: array
-                items:
-                  allOf:
-                    - $ref: ../components/schemas/ProductVariant.yaml
-                    - $ref: ../components/schemas/ProductVariantPricesFields.yaml
+            $ref: ../components/schemas/StoreVariantsListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

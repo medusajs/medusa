@@ -12,7 +12,13 @@ import { validator } from "../../../../utils/validator"
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
  * parameters:
  *   - (path) id=* {string} The ID of the Cart.
- *   - (body) provider_id=* {string} The ID of the Payment Provider.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartPaymentSessionReq"
+ * x-codegen:
+ *   method: setPaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -78,6 +84,16 @@ export default async (req, res) => {
   res.status(200).json({ cart: data })
 }
 
+/**
+ * @schema StorePostCartsCartPaymentSessionReq
+ * type: object
+ * required:
+ *   - provider_id
+ * properties:
+ *   provider_id:
+ *     type: string
+ *     description: The ID of the Payment Provider.
+ */
 export class StorePostCartsCartPaymentSessionReq {
   @IsString()
   provider_id: string

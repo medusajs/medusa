@@ -12,11 +12,13 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
+  ProductVariantInventoryService,
   ProductVariantService,
   ShippingProfileService,
 } from "../../../../services"
 import {
   ProductSalesChannelReq,
+  ProductProductCategoryReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
@@ -31,6 +33,14 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import { ProductStatus } from "../../../../models"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
+import { IInventoryService } from "../../../../interfaces"
+
+import {
+  createVariantTransaction,
+  revertVariantTransaction,
+} from "./transaction/create-product-variant"
+import { DistributedTransaction } from "../../../../utils/transaction"
+import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /products
@@ -43,6 +53,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductsReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -95,6 +107,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
 
+  const logger: Logger = req.scope.resolve("logger")
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const productVariantService: ProductVariantService = req.scope.resolve(
@@ -103,6 +116,10 @@ export default async (req, res) => {
   const shippingProfileService: ShippingProfileService = req.scope.resolve(
     "shippingProfileService"
   )
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
 
   const entityManager: EntityManager = req.scope.resolve("manager")
 
@@ -131,8 +148,8 @@ export default async (req, res) => {
       .create({ ...validated, profile_id: shippingProfile.id })
 
     if (variants) {
-      for (const [i, variant] of variants.entries()) {
-        variant["variant_rank"] = i
+      for (const [index, variant] of variants.entries()) {
+        variant["variant_rank"] = index
       }
 
       const optionIds =
@@ -140,22 +157,48 @@ export default async (req, res) => {
           (o) => newProduct.options.find((newO) => newO.title === o.title)?.id
         ) || []
 
-      await Promise.all(
-        variants.map(async (v) => {
-          const variant = {
-            ...v,
-            options:
-              v?.options?.map((o, index) => ({
-                ...o,
-                option_id: optionIds[index],
-              })) || [],
-          }
+      const allVariantTransactions: DistributedTransaction[] = []
+      const transactionDependencies = {
+        manager,
+        inventoryService,
+        productVariantInventoryService,
+        productVariantService,
+      }
 
-          await productVariantService
-            .withTransaction(manager)
-            .create(newProduct.id, variant as CreateProductVariantInput)
-        })
-      )
+      try {
+        await Promise.all(
+          variants.map(async (variant) => {
+            const options =
+              variant?.options?.map((option, index) => ({
+                ...option,
+                option_id: optionIds[index],
+              })) || []
+
+            const input = {
+              ...variant,
+              options,
+            }
+
+            const varTransation = await createVariantTransaction(
+              transactionDependencies,
+              newProduct.id,
+              input as CreateProductVariantInput
+            )
+            allVariantTransactions.push(varTransation)
+          })
+        )
+      } catch (e) {
+        await Promise.all(
+          allVariantTransactions.map(async (transaction) => {
+            await revertVariantTransaction(
+              transactionDependencies,
+              transaction
+            ).catch(() => logger.warn("Transaction couldn't be reverted."))
+          })
+        )
+
+        throw e
+      }
     }
 
     return newProduct
@@ -337,6 +380,16 @@ class ProductVariantReq {
  *       properties:
  *         id:
  *           description: The ID of an existing Sales channel.
+ *           type: string
+ *   categories:
+ *     description: "Categories to add the Product to."
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a Product Category.
  *           type: string
  *   options:
  *     description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
@@ -524,6 +577,12 @@ export class AdminPostProductsReq {
     IsArray(),
   ])
   sales_channels?: ProductSalesChannelReq[]
+
+  @IsOptional()
+  @Type(() => ProductProductCategoryReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  categories?: ProductProductCategoryReq[]
 
   @IsOptional()
   @Type(() => ProductOptionReq)

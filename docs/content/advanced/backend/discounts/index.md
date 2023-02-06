@@ -1,3 +1,7 @@
+---
+description: 'Learn about the discount architecture in the Medusa server. Discounts are used to offer promotions to the user for marketing purposes.'
+---
+
 # Discounts Architecture
 
 In this document, you’ll learn about Discounts architecture and how it works.

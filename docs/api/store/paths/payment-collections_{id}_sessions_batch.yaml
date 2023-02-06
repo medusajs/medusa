@@ -38,9 +38,7 @@ post:
       content:
         application/json:
           schema:
-            properties:
-              payment_collection:
-                $ref: ../components/schemas/PaymentCollection.yaml
+            $ref: ../components/schemas/StorePaymentCollectionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

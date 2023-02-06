@@ -40,10 +40,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              customer:
-                $ref: ../components/schemas/Customer.yaml
+            $ref: ../components/schemas/AdminCustomersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -103,10 +100,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              customer:
-                $ref: ../components/schemas/Customer.yaml
+            $ref: ../components/schemas/AdminCustomersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

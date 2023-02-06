@@ -20,9 +20,13 @@ import {
  *   to the Cart"
  * parameters:
  *   - (path) id=* {string} The id of the Cart to add the Line Item to.
- *   - (body) variant_id=* {string} The id of the Product Variant to generate the Line Item from.
- *   - (body) quantity=* {integer} The quantity of the Product Variant to add to the Line Item.
- *   - (body) metadata {object} An optional key-value map with additional details about the Line Item.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartLineItemsReq"
+ * x-codegen:
+ *   method: createLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -129,6 +133,23 @@ export default async (req, res) => {
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
+/**
+ * @schema StorePostCartsCartLineItemsReq
+ * type: object
+ * required:
+ *   - variant_id
+ *   - quantity
+ * properties:
+ *   variant_id:
+ *     type: string
+ *     description: The id of the Product Variant to generate the Line Item from.
+ *   quantity:
+ *     type: number
+ *     description: The quantity of the Product Variant to add to the Line Item.
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details about the Line Item.
+ */
 export class StorePostCartsCartLineItemsReq {
   @IsString()
   variant_id: string

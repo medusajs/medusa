@@ -7,6 +7,8 @@ import ProductCollectionService from "../../../../services/product-collection"
  * description: "Retrieves a Product Collection."
  * parameters:
  *   - (path) id=* {string} The id of the Product Collection
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
