@@ -102,6 +102,7 @@ export type ModuleExports = {
 
 type SessionOptions = {
   resave?: boolean
+  rolling?: boolean
   saveUninitialized?: boolean
   secret?: string
   ttl?: number
