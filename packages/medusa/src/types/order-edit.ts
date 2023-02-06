@@ -27,7 +27,6 @@ export const defaultOrderEditRelations: string[] = [
   "changes.original_line_item.variant",
   "items",
   "items.variant",
-  // "items.variant.product",
   "items.adjustments",
   "items.tax_lines",
   "payment_collection",

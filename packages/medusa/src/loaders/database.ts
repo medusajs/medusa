@@ -43,7 +43,6 @@ export default async ({
     schema: configModule.projectConfig.database_schema,
     entities,
     migrations: customOptions?.migrations,
-    // namingStrategy: new DefaultNamingStrategy(), Since we are monkey patching, no need to set this option
     logging:
       customOptions?.logging ??
       (configModule.projectConfig.database_logging || false),

@@ -128,9 +128,6 @@ export class DiscountCondition extends SoftDeletableEntity {
   })
   customer_groups: CustomerGroup[]
 
-  @OneToMany(() => Discount, (discount) => discount.rule_id)
-  discounts: Discount[]
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 

@@ -113,7 +113,7 @@ class DatabaseFactory {
     const dataSource = await this.getMasterDataSource()
 
     await dataSource.query(`DROP DATABASE IF EXISTS "${this.templateDbName}";`)
-    await dataSource.close()
+    await dataSource.destroy()
   }
 }
 

@@ -129,7 +129,7 @@ export const defaultAdminProductFields: (keyof Product)[] = [
   "updated_at",
   "deleted_at",
   "metadata",
-] as unknown as (keyof Product)[]
+]
 
 export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 

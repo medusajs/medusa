@@ -72,7 +72,7 @@ const DbTestUtil = {
   },
 
   shutdown: async function () {
-    await this.db_.close()
+    await this.db_.destroy()
     return await dropDatabase({ DB_NAME }, pgGodCredentials)
   },
 }

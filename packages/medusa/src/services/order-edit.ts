@@ -505,7 +505,6 @@ export default class OrderEditService extends TransactionBaseService {
       relations: [
         "items",
         "items.variant",
-        // "items.variant.product",
         "items.adjustments",
         "items.tax_lines",
         "order",
