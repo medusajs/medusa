@@ -10,8 +10,9 @@ export default function (_rootDirectory: string, options: PluginOptions) {
   const { serve = true, path = "/app" } = options
 
   if (serve) {
-    const dashboardPath = resolve(__dirname, "../build")
-    const htmlPath = resolve(dashboardPath, "index.html")
+    const dashboardPath = require.resolve("@medusajs/admin-ui")
+    const buildPath = resolve(dashboardPath, "..", "..", "build")
+    const htmlPath = resolve(buildPath, "index.html")
     const html = fse.readFileSync(htmlPath, "utf-8")
 
     const sendHtml = (_req: Request, res: Response) => {
@@ -25,16 +26,16 @@ export default function (_rootDirectory: string, options: PluginOptions) {
       res.setHeader("Vary", "Origin, Cache-Control")
     }
 
-    app.get(path, sendHtml)
+    app.get(`/${path}`, sendHtml)
     app.use(
-      path,
-      express.static(dashboardPath, {
+      `/${path}`,
+      express.static(buildPath, {
         setHeaders: setStaticHeaders,
       })
     )
-    app.get(`${path}/*`, sendHtml)
+    app.get(`/${path}/*`, sendHtml)
   } else {
-    app.get(path, (_req, res) => {
+    app.get(`/${path}`, (_req, res) => {
       res.send("Admin not enabled")
     })
   }

@@ -15,8 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "jsx": "react-jsx",
-    "outDir": "../../build",
-    "baseUrl": "."
+    "outDir": "../../build"
   },
   "include": ["./**/*"]
 }

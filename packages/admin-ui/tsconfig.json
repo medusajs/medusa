@@ -9,11 +9,10 @@
     "noEmit": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "outDir": ".",
-    "rootDir": "src",
-    "jsx": "react",
+    "outDir": "dist",
+    "rootDir": "lib",
     "skipLibCheck": true
   },
-  "include": ["src"],
-  "exclude": ["**/node_modules", "dashboard"]
+  "include": ["lib"],
+  "exclude": ["**/node_modules", "ui"]
 }

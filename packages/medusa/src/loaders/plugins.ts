@@ -67,6 +67,12 @@ export default async ({
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
 
   await Promise.all(
+    resolved.map(
+      async (pluginDetails) => await runPreloadFunctions(pluginDetails)
+    )
+  )
+
+  await Promise.all(
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
@@ -561,6 +567,33 @@ function registerModels(
       }
     )
   })
+}
+
+/**
+ * Runs all preload functions in a plugin. Preload functions are run before anything from the plugin is
+ * registered to the container. This is useful for running custom build logic, fetching remote
+ * configurations, etc.
+ * @param pluginDetails The plugin details including plugin options, version, id, resolved path, etc.
+ */
+async function runPreloadFunctions(
+  pluginDetails: PluginDetails
+): Promise<void> {
+  const files = glob.sync(`${pluginDetails.resolve}/preload/*.js`, {})
+  await Promise.all(
+    files.map(async (fn) => {
+      const loaded = require(fn).default
+      try {
+        await loaded()
+      } catch (err) {
+        throw new Error(
+          `A preload function from ${pluginDetails.name} failed`,
+          {
+            cause: err,
+          }
+        )
+      }
+    })
+  )
 }
 
 // TODO: Create unique id for each plugin

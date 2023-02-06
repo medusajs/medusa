@@ -1,6 +1,5 @@
 import { getConfigFile } from "medusa-core-utils"
 import { ConfigModule, PluginOptions } from "../types"
-import { reporter } from "./reporter"
 
 export const loadConfig = () => {
   const { configModule } = getConfigFile<ConfigModule>(
@@ -14,16 +13,9 @@ export const loadConfig = () => {
       (typeof p === "object" && p.resolve === "@medusajs/admin")
   )
 
-  if (!plugin) {
-    reporter.error(
-      'Could not find "@medusajs/admin" in `medusa-config.js` file. Make sure to add it to the plugins array.'
-    )
-    process.exit(1)
-  }
-
   let defaultConfig: PluginOptions = {
     serve: true,
-    path: "/app",
+    path: "dashboard",
     dev: {
       autoOpen: true,
     },
@@ -31,10 +23,15 @@ export const loadConfig = () => {
 
   if (typeof plugin !== "string") {
     const { options } = plugin as { options: PluginOptions }
-    defaultConfig.path = options.path || defaultConfig.path
-    defaultConfig.serve = options.serve || defaultConfig.serve
-    defaultConfig.dev = options.dev || defaultConfig.dev
-    defaultConfig.build = options.build || defaultConfig.build
+    defaultConfig = {
+      serve: options.serve ?? defaultConfig.serve,
+      path: options.path ?? defaultConfig.path,
+      backend: options.backend ?? defaultConfig.backend,
+      outDir: options.outDir ?? defaultConfig.outDir,
+      dev: {
+        autoOpen: options.dev?.autoOpen ?? defaultConfig.dev.autoOpen,
+      },
+    }
   }
 
   return defaultConfig

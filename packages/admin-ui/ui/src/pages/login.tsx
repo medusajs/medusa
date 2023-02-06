@@ -1,8 +1,10 @@
 import { useAdminLogin } from "medusa-react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import PublicLayout from "../components/layouts/public-layout"
 
 const Login = () => {
+  const [resetPassword, setResetPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const { mutate } = useAdminLogin()
@@ -30,7 +32,7 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <PublicLayout>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>
         <input type="email" name="email" />
@@ -39,7 +41,7 @@ const Login = () => {
         <button type="submit">Login</button>
       </form>
       {error && <p className="text-red-500">{error}</p>}
-    </div>
+    </PublicLayout>
   )
 }
 

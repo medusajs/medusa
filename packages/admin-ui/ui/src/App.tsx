@@ -39,7 +39,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: __BASENAME__,
+    basename: __BASE__,
   }
 )
 

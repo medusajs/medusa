@@ -18,7 +18,7 @@ export const MedusaProvider = ({ children }: PropsWithChildren) => {
       queryClientProviderProps={{
         client: queryClient,
       }}
-      baseUrl={__BACKEND__}
+      baseUrl={"http://localhost:9000"}
     >
       {children}
     </Provider>
