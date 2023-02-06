@@ -173,8 +173,31 @@ export default class ReservationItemService extends TransactionBaseService {
       const shouldUpdateQuantity =
         isDefined(data.quantity) && data.quantity !== item.quantity
 
+      const shouldUpdateLocation =
+        isDefined(data.location_id) &&
+        isDefined(data.quantity) &&
+        data.location_id !== item.location_id
+
       const ops: Promise<unknown>[] = []
-      if (shouldUpdateQuantity) {
+
+      if (shouldUpdateLocation) {
+        ops.push(
+          this.inventoryLevelService_
+            .withTransaction(manager)
+            .adjustReservedQuantity(
+              item.inventory_item_id,
+              item.location_id,
+              item.quantity * -1
+            ),
+          this.inventoryLevelService_
+            .withTransaction(manager)
+            .adjustReservedQuantity(
+              item.inventory_item_id,
+              data.location_id!,
+              data.quantity!
+            )
+        )
+      } else if (shouldUpdateQuantity) {
         const quantityDiff = data.quantity! - item.quantity
         ops.push(
           this.inventoryLevelService_
