@@ -129,7 +129,7 @@ class TotalsService extends TransactionBaseService {
   }
 
   /**
-   * Calculates subtotal of a given cart or order.
+   * Calculates total of a given cart or order.
    * @param cartOrOrder - object to calculate total for
    * @param options - options to calculate by
    * @return the calculated subtotal
