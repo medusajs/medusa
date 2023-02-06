@@ -84,6 +84,11 @@ export const defaultStoreOrdersRelations = [
   "region",
 ]
 
+export const allowedStoreOrdersRelations = [
+  ...defaultStoreOrdersRelations,
+  "billing_address",
+]
+
 export const defaultStoreOrdersFields = [
   "id",
   "status",
@@ -120,11 +125,6 @@ export const allowedStoreOrdersFields = [
   "refundable_amount",
   "gift_card_total",
   "gift_card_tax_total",
-]
-
-export const allowedStoreOrdersRelations = [
-  ...defaultStoreOrdersRelations,
-  "billing_address",
 ]
 
 /**
