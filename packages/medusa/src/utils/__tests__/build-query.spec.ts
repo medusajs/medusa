@@ -274,7 +274,7 @@ describe("buildLegacyFieldsListFrom", () => {
       const order: FindOptionsOrder<any> = {
         item: {
           variant: {
-            rank: true
+            rank: "ASC"
           }
         }
       }
