@@ -2,7 +2,7 @@ import { Index, BeforeInsert, Column, Entity } from "typeorm"
 import { SoftDeletableEntity, generateEntityId, DbAwareColumn } from "@medusajs/medusa"
 
 
-export enum ReservationType {
+enum ReservationType {
   INTERNAL = "internal",
   EXTERNAL = "external",
 }

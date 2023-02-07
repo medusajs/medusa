@@ -7,6 +7,7 @@ import {
 } from "typeorm"
 
 import { CONNECTION_NAME } from "../../config"
+import { addReservationType1675761451145 } from "./1675761451145-add_reservation_type"
 
 export const up = async ({ configModule }: { configModule: ConfigModule }) => {
   const connection = await createConnection({
@@ -15,7 +16,7 @@ export const up = async ({ configModule }: { configModule: ConfigModule }) => {
     url: configModule.projectConfig.database_url,
     extra: configModule.projectConfig.database_extra || {},
     schema: configModule.projectConfig.database_schema,
-    migrations: [inventorySetup1665748086258],
+    migrations: [inventorySetup1665748086258, addReservationType1675761451145],
     logging: true,
   } as ConnectionOptions)
 
@@ -34,7 +35,7 @@ export const down = async ({
     url: configModule.projectConfig.database_url,
     extra: configModule.projectConfig.database_extra || {},
     schema: configModule.projectConfig.database_schema,
-    migrations: [inventorySetup1665748086258],
+    migrations: [inventorySetup1665748086258, addReservationType1675761451145],
     logging: true,
   } as ConnectionOptions)
 
