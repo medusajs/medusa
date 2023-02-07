@@ -23,7 +23,7 @@
     "@types/commander": "^2.12.2",
     "@types/configstore": "^4.0.0",
     "@types/fs-extra": "^9.0.13",
-    "@types/node": "^14.17.14",
+    "@types/node": "^14.18.36",
     "ansi-wordwrap": "^1.0.2",
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
