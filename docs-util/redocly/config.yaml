@@ -1,0 +1,97 @@
+plugins:
+  - "./plugins/plugin.js"
+
+# Allows to replace a $ref with `type: object` in order to avoid infinite loops
+# when Redocly attempts to render circular references.
+decorators:
+  plugin/circular-patch:
+    verbose: true
+    schemas:
+      Address:
+        - Customer
+      Cart:
+        - Customer
+        - Order
+        - Payment
+      ClaimItem:
+        - ClaimOrder
+      ClaimOrder:
+        - Fulfillment
+        - Order
+        - Return
+      Customer:
+        - Order
+      DraftOrder:
+        - Cart
+        - Order
+      Fulfillment:
+        - ClaimOrder
+        - Order
+        - Swap
+      GiftCard:
+        - Order
+      GiftCardTransaction:
+        - GiftCard
+        - Order
+      LineItem:
+        - Cart
+        - ClaimOrder
+        - Order
+        - OrderEdit
+        - Swap
+      Order:
+        - Cart
+        - ClaimOrder
+        - Customer
+        - DraftOrder
+        - Fulfillment
+        - OrderEdit
+        - Payment
+        - Refund
+        - Return
+        - Swap
+      OrderEdit:
+        - Order
+      Payment:
+        - Cart
+        - Order
+        - Swap
+      Refund:
+        - Order
+        - Payment
+      Return:
+        - ClaimOrder
+        - Order
+        - Swap
+      ShippingMethod:
+        - Cart
+        - ClaimOrder
+        - Order
+        - Payment
+        - Return
+        - Swap
+      Swap:
+        - Cart
+        - Fulfillment
+        - Order
+        - Payment
+        - Return
+
+# Similar config to /www/docs/docusaurus.config.js > redocusaurus
+# Allows to emulate rendering of API public documentation when using `yarn redocly preview-docs openapi.yaml`
+theme.openapi:
+  theme:
+    colors:
+      primary:
+        dart: "#242526"
+    sidebar:
+      width: "250px"
+  disableSearch: true
+  expandResponses: "200,204"
+  generatedPayloadSamplesMaxDepth: 4
+  hideDownloadButton: true
+  hideRequestPayloadSample: true
+  nativeScrollbars: true
+  requiredPropsFirst: true
+  showObjectSchemaExamples: true
+  sortTagsAlphabetically: true
