@@ -1,7 +1,13 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
+import {
+  Cart,
+  CartType,
+  DraftOrder,
+  DraftOrderStatus,
+  LineItem,
+} from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
@@ -14,6 +20,7 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
+import { LineItemAdjustmentService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -26,6 +33,7 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   shippingOptionService: ShippingOptionService
   customShippingOptionService: CustomShippingOptionService
+  lineItemAdjustmentService: LineItemAdjustmentService
 }
 
 /**
@@ -50,6 +58,7 @@ class DraftOrderService extends TransactionBaseService {
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly customShippingOptionService_: CustomShippingOptionService
+  protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
 
   constructor({
     manager,
@@ -62,6 +71,7 @@ class DraftOrderService extends TransactionBaseService {
     productVariantService,
     shippingOptionService,
     customShippingOptionService,
+    lineItemAdjustmentService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -75,6 +85,7 @@ class DraftOrderService extends TransactionBaseService {
     this.productVariantService_ = productVariantService
     this.shippingOptionService_ = shippingOptionService
     this.customShippingOptionService_ = customShippingOptionService
+    this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.eventBus_ = eventBusService
   }
 
@@ -303,7 +314,8 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of (items || [])) {
+        const generatedLineItems: LineItem[] = []
+        for (const item of items || []) {
           if (item.variant_id) {
             const line = await lineItemServiceTx.generate(
               item.variant_id,
@@ -312,14 +324,15 @@ class DraftOrderService extends TransactionBaseService {
               {
                 metadata: item?.metadata || {},
                 unit_price: item.unit_price,
-                cart: createdCart,
               }
             )
 
-            await lineItemServiceTx.create({
+            const createdItem = await lineItemServiceTx.create({
               ...line,
               cart_id: createdCart.id,
             })
+
+            generatedLineItems.push(createdItem)
           } else {
             let price
             if (typeof item.unit_price === `undefined` || item.unit_price < 0) {
@@ -339,6 +352,19 @@ class DraftOrderService extends TransactionBaseService {
             })
           }
         }
+
+        const generateItemsCartData = {
+          ...createdCart,
+          items: generatedLineItems,
+        } as unknown as Cart
+
+        await Promise.all(
+          generatedLineItems.map(async (item) => {
+            return await this.lineItemAdjustmentService_
+              .withTransaction(transactionManager)
+              .createAdjustmentForLineItem(generateItemsCartData, item)
+          })
+        )
 
         for (const method of shipping_methods) {
           if (typeof method.price !== "undefined") {
