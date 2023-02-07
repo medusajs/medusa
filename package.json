@@ -68,7 +68,7 @@
     "jest": "jest",
     "test": "turbo run test --no-daemon --filter=!integration-tests-api --filter=!integration-tests-plugins --filter=!integration-tests-repositories",
     "test:integration": "turbo run test --no-daemon --filter=integration-tests-api --filter=integration-tests-plugins --filter=integration-tests-repositories",
-    "test:integration:api": "turbo run test --no-daemon --filter=integration-tests-api -- integration-tests/api/__tests__/admin/order/order.js",
+    "test:integration:api": "turbo run test --no-daemon --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test --no-daemon --filter=integration-tests-plugins",
     "test:integration:repositories": "turbo run test --no-daemon --filter=integration-tests-repositories",
     "openapi:generate": "node ./scripts/build-openapi.js",

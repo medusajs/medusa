@@ -38,7 +38,7 @@ const adminReqConfig = {
   },
 }
 
-jest.setTimeout(3000000)
+jest.setTimeout(30000)
 
 describe("/admin/orders", () => {
   let medusaProcess
@@ -1918,7 +1918,7 @@ describe("/admin/orders", () => {
 
     describe("Given an existing discount order", () => {
       describe("When a store operator attemps to create a swap form the discount order", () => {
-        it.only("Then should successfully create the swap", async () => {
+        it("Then should successfully create the swap", async () => {
           const api = useApi()
 
           const response = await api.post(
