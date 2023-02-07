@@ -19,6 +19,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeletePublishableApiKeySalesChannelsBatchReq"
+ * x-codegen:
+ *   method: deleteSalesChannelsBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,7 +28,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.publishableApiKeys.removeSalesChannels(publishableApiKeyId, {
+ *       medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId, {
  *         sales_channel_ids: [
  *           {
  *             id: channel_id
@@ -39,7 +41,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-keys/afasf/batch' \
+ *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/batch' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
@@ -60,9 +62,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             publishable_api_key:
- *               $ref: "#/components/schemas/PublishableApiKey"
+ *           $ref: "#/components/schemas/AdminPublishableApiKeysRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

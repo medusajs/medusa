@@ -34,6 +34,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductsProductVariantsVariantReq"
+ * x-codegen:
+ *   method: updateVariant
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -86,10 +88,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             product:
- *               $ref: "#/components/schemas/Product"
+ *           $ref: "#/components/schemas/AdminProductsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -13,6 +13,9 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  * parameters:
  *   - (path) id=* {string} The ID of the Publishable Api Key.
  *   - (query) q {string} Query used for searching sales channels' names and descriptions.
+ * x-codegen:
+ *   method: listSalesChannels
+ *   queryParams: GetPublishableApiKeySalesChannelsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -21,13 +24,13 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.listSalesChannels()
- *         .then(({ sales_channels, limit, offset, count }) => {
- *           console.log(sales_channels)
+ *         .then(({ sales_channels }) => {
+ *           console.log(sales_channels.length)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/pk_123/sales-channels' \
+ *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/sales-channels' \
  *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
@@ -40,11 +43,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *          properties:
- *             sales_channels:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/SalesChannel"
+ *           $ref: "#/components/schemas/AdminPublishableApiKeysListSalesChannelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

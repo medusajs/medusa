@@ -28,10 +28,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              user:
-                $ref: ../components/schemas/User.yaml
+            $ref: ../components/schemas/AdminUserRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -69,12 +66,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              users:
-                type: array
-                items:
-                  $ref: ../components/schemas/User.yaml
+            $ref: ../components/schemas/AdminUsersListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

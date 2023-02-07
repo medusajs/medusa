@@ -33,6 +33,8 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostDraftOrdersDraftOrderReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -66,10 +68,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             draft_order:
- *               $ref: "#/components/schemas/DraftOrder"
+ *           $ref: "#/components/schemas/AdminDraftOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

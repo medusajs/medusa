@@ -1,3 +1,7 @@
+---
+description: 'Learn what subscribers are in the Medusa server. Subscribers are used to listen to triggered events to perform an action.'
+---
+
 # Subscribers
 
 In this document, you'll learn what Subscribers are in Medusa.
@@ -22,9 +26,18 @@ Custom subscribers are TypeScript or JavaScript files in your project's `src/sub
 
 Whenever an event is emitted, the subscriber’s registered handler method is executed. The handler method receives as a parameter an object that holds data related to the event. For example, if an order is placed the `order.placed` event will be emitted and all the handlers will receive the order id in the parameter object.
 
+### Example Use Cases
+
+Subscribers are useful in many use cases, including:
+
+- Send a confirmation email to the customer when they place an order by subscribing to the `order.placed` event.
+- Automatically assign new customers to a customer group by subscribing to the `customer.created`.
+- Handle custom events that you emit
+
 ---
 
 ## See Also
 
 - [Create a Subscriber](create-subscriber.md).
+- [Events architecture overview](../events/architecture.md)
 - [Events reference](events-list.md).

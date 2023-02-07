@@ -4,17 +4,18 @@ import {
   ProductTag,
   ProductType,
   ShippingProfile,
-  ShippingProfileType
+  ShippingProfileType,
+  Store,
 } from "@medusajs/medusa"
 import faker from "faker"
 import { Connection } from "typeorm"
 import {
   ProductVariantFactoryData,
-  simpleProductVariantFactory
+  simpleProductVariantFactory,
 } from "./simple-product-variant-factory"
 import {
   SalesChannelFactoryData,
-  simpleSalesChannelFactory
+  simpleSalesChannelFactory,
 } from "./simple-sales-channel-factory"
 
 export type ProductFactoryData = {
@@ -27,6 +28,7 @@ export type ProductFactoryData = {
   options?: { id: string; title: string }[]
   variants?: ProductVariantFactoryData[]
   sales_channels?: SalesChannelFactoryData[]
+  metadata?: Record<string, unknown>
 }
 
 export const simpleProductFactory = async (
@@ -56,6 +58,21 @@ export const simpleProductFactory = async (
           await simpleSalesChannelFactory(connection, salesChannel)
       )
     )
+  } else {
+    const store = await manager.findOne(Store, {
+      relations: ["default_sales_channel"],
+    })
+
+    if (store?.default_sales_channel) {
+      sales_channels = [store.default_sales_channel]
+    } else {
+      const salesChannel = await simpleSalesChannelFactory(connection, {
+        id: `default-${Math.random() * 1000}`,
+        is_default: true,
+      })
+
+      sales_channels = [salesChannel]
+    }
   }
 
   const prodId = data.id || `simple-product-${Math.random() * 1000}`
@@ -67,6 +84,7 @@ export const simpleProductFactory = async (
     discountable: !data.is_giftcard,
     tags: [] as ProductTag[],
     profile_id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id,
+    metadata: data.metadata || null,
   } as Product
 
   if (typeof data.tags !== "undefined") {

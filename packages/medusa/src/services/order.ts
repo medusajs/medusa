@@ -17,35 +17,39 @@ import {
   PaymentStatus,
   Return,
   Swap,
-  TrackingLink,
+  TrackingLink
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
-  FulFillmentItemType,
+  FulFillmentItemType
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
-import CartService from "./cart"
-import CustomerService from "./customer"
-import DiscountService from "./discount"
-import DraftOrderService from "./draft-order"
-import EventBusService from "./event-bus"
-import FulfillmentService from "./fulfillment"
-import FulfillmentProviderService from "./fulfillment-provider"
-import GiftCardService from "./gift-card"
-import LineItemService from "./line-item"
-import PaymentProviderService from "./payment-provider"
-import RegionService from "./region"
-import ShippingOptionService from "./shipping-option"
-import ShippingProfileService from "./shipping-profile"
-import TotalsService from "./totals"
-import ProductVariantInventoryService from "./product-variant-inventory"
-import { NewTotalsService, TaxProviderService } from "./index"
+
+import {
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  EventBusService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService
+} from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
@@ -899,8 +903,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      order.billing_address = addrRepo.create({ ...address })
     }
   }
 
@@ -937,8 +940,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      order.shipping_address = addrRepo.create({ ...address })
     }
   }
 
@@ -1098,6 +1100,7 @@ class OrderService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         relations: [
+          "refunds",
           "fulfillments",
           "payments",
           "returns",
@@ -1140,10 +1143,11 @@ class OrderService extends TransactionBaseService {
 
       const inventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
+
       await Promise.all(
         order.items.map(async (item) => {
           if (item.variant_id) {
-            return await inventoryServiceTx.releaseReservationsByLineItem(
+            return await inventoryServiceTx.deleteReservationsByLineItem(
               item.id,
               item.variant_id,
               item.quantity
@@ -1264,7 +1268,7 @@ class OrderService extends TransactionBaseService {
       return null
     }
 
-    if (quantity > item.quantity - item.fulfilled_quantity) {
+    if (quantity > item.quantity - item.fulfilled_quantity!) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Cannot fulfill more items than have been purchased"
@@ -1291,13 +1295,11 @@ class OrderService extends TransactionBaseService {
     itemsToFulfill: FulFillmentItemType[],
     config: {
       no_notification?: boolean
+      location_id?: string
       metadata?: Record<string, unknown>
-    } = {
-      no_notification: undefined,
-      metadata: {},
-    }
+    } = {}
   ): Promise<Order> {
-    const { metadata, no_notification } = config
+    const { metadata, no_notification, location_id } = config
 
     return await this.atomicPhase_(async (manager) => {
       // NOTE: we are telling the service to calculate all totals for us which
@@ -1350,9 +1352,12 @@ class OrderService extends TransactionBaseService {
           order as unknown as CreateFulfillmentOrder,
           itemsToFulfill,
           {
-            metadata,
+            metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
+          },
+          {
+            locationId: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []

@@ -1,5 +1,20 @@
 # Change Log
 
+## 1.0.20
+
+### Patch Changes
+
+- [#3025](https://github.com/medusajs/medusa/pull/3025) [`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): test, build and watch scripts
+
+- Updated dependencies [[`93d0dc1bd`](https://github.com/medusajs/medusa/commit/93d0dc1bdcb54cf6e87428a7bb9b0dac196b4de2)]:
+  - medusa-interfaces@1.3.4
+
+## 1.0.19
+
+### Patch Changes
+
+- [#2979](https://github.com/medusajs/medusa/pull/2979) [`a2df11fc1`](https://github.com/medusajs/medusa/commit/a2df11fc10c5f91d492233fe094a65022d2590aa) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-payment-manual): Correct wrongly used input data
+
 ## 1.0.18
 
 ### Patch Changes

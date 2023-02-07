@@ -3,6 +3,7 @@
 exports[`/admin/products GET /admin/products returns a list of products with only giftcard in list 1`] = `
 Array [
   Object {
+    "categories": Array [],
     "collection": null,
     "collection_id": null,
     "created_at": Any<String>,
@@ -33,6 +34,7 @@ Array [
     ],
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
+    "sales_channels": Array [],
     "status": "draft",
     "subtitle": null,
     "tags": Array [],
@@ -110,6 +112,7 @@ Array [
 
 exports[`/admin/products POST /admin/products creates a product 1`] = `
 Object {
+  "categories": Array [],
   "collection": Object {
     "created_at": Any<String>,
     "deleted_at": null,
@@ -174,6 +177,7 @@ Object {
   ],
   "origin_country": null,
   "profile_id": StringMatching /\\^sp_\\*/,
+  "sales_channels": Array [],
   "status": "draft",
   "subtitle": null,
   "tags": Array [
@@ -312,6 +316,7 @@ Object {
 
 exports[`/admin/products POST /admin/products updates a product (update prices, tags, update status, delete collection, delete type, replaces images) 1`] = `
 Object {
+  "categories": Array [],
   "collection": null,
   "collection_id": null,
   "created_at": Any<String>,
@@ -351,6 +356,7 @@ Object {
   ],
   "origin_country": null,
   "profile_id": StringMatching /\\^sp_\\*/,
+  "sales_channels": Array [],
   "status": "published",
   "subtitle": null,
   "tags": Array [

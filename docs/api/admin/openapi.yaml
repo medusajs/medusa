@@ -193,6 +193,10 @@ paths:
     $ref: paths/collections.yaml
   /collections/{id}:
     $ref: paths/collections_{id}.yaml
+  /currencies:
+    $ref: paths/currencies.yaml
+  /currencies/{code}:
+    $ref: paths/currencies_{code}.yaml
   /customer-groups/{id}/customers/batch:
     $ref: paths/customer-groups_{id}_customers_batch.yaml
   /customer-groups:
@@ -201,10 +205,6 @@ paths:
     $ref: paths/customer-groups_{id}.yaml
   /customer-groups/{id}/customers:
     $ref: paths/customer-groups_{id}_customers.yaml
-  /currencies:
-    $ref: paths/currencies.yaml
-  /currencies/{code}:
-    $ref: paths/currencies_{code}.yaml
   /customers:
     $ref: paths/customers.yaml
   /customers/{id}:
@@ -227,10 +227,6 @@ paths:
     $ref: paths/discounts_{id}_dynamic-codes_{code}.yaml
   /discounts/code/{code}:
     $ref: paths/discounts_code_{code}.yaml
-  /gift-cards:
-    $ref: paths/gift-cards.yaml
-  /gift-cards/{id}:
-    $ref: paths/gift-cards_{id}.yaml
   /draft-orders:
     $ref: paths/draft-orders.yaml
   /draft-orders/{id}/line-items:
@@ -243,6 +239,10 @@ paths:
     $ref: paths/draft-orders_{id}_pay.yaml
   /admin/draft-orders/{id}:
     $ref: paths/admin_draft-orders_{id}.yaml
+  /gift-cards:
+    $ref: paths/gift-cards.yaml
+  /gift-cards/{id}:
+    $ref: paths/gift-cards_{id}.yaml
   /invites/accept:
     $ref: paths/invites_accept.yaml
   /invites:
@@ -303,6 +303,8 @@ paths:
     $ref: paths/order_{id}_claims.yaml
   /orders/{id}/fulfillment:
     $ref: paths/orders_{id}_fulfillment.yaml
+  /orders/{id}/line-items/{line_item_id}/reserve:
+    $ref: paths/orders_{id}_line-items_{line_item_id}_reserve.yaml
   /orders/{id}/shipment:
     $ref: paths/orders_{id}_shipment.yaml
   /orders/{id}/swaps/{swap_id}/shipments:
@@ -315,6 +317,8 @@ paths:
     $ref: paths/orders_{id}_swaps_{swap_id}_fulfillments.yaml
   /orders/{id}:
     $ref: paths/orders_{id}.yaml
+  /orders/{id}/reservations:
+    $ref: paths/orders_{id}_reservations.yaml
   /orders:
     $ref: paths/orders.yaml
   /orders/{id}/swaps/{swap_id}/process-payment:
@@ -329,6 +333,12 @@ paths:
     $ref: paths/payment-collections_{id}.yaml
   /payment-collections/{id}/authorize:
     $ref: paths/payment-collections_{id}_authorize.yaml
+  /payments/{id}/capture:
+    $ref: paths/payments_{id}_capture.yaml
+  /payments/{id}:
+    $ref: paths/payments_{id}.yaml
+  /payments/{id}/refund:
+    $ref: paths/payments_{id}_refund.yaml
   /price-lists/{id}/prices/batch:
     $ref: paths/price-lists_{id}_prices_batch.yaml
   /price-lists:
@@ -341,10 +351,14 @@ paths:
     $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
   /price-lists/{id}/products:
     $ref: paths/price-lists_{id}_products.yaml
-  /product-types:
-    $ref: paths/product-types.yaml
+  /product-categories:
+    $ref: paths/product-categories.yaml
+  /product-categories/{id}:
+    $ref: paths/product-categories_{id}.yaml
   /product-tags:
     $ref: paths/product-tags.yaml
+  /product-types:
+    $ref: paths/product-types.yaml
   /products/{id}/options:
     $ref: paths/products_{id}_options.yaml
   /products:
@@ -363,12 +377,6 @@ paths:
     $ref: paths/products_types.yaml
   /products/{id}/metadata:
     $ref: paths/products_{id}_metadata.yaml
-  /payments/{id}/capture:
-    $ref: paths/payments_{id}_capture.yaml
-  /payments/{id}:
-    $ref: paths/payments_{id}.yaml
-  /payments/{id}/refund:
-    $ref: paths/payments_{id}_refund.yaml
   /publishable-api-keys/{id}/sales-channels/batch:
     $ref: paths/publishable-api-keys_{id}_sales-channels_batch.yaml
   /publishable-api-keys:
@@ -399,26 +407,40 @@ paths:
     $ref: paths/regions_{id}_fulfillment-providers_{provider_id}.yaml
   /regions/{id}/payment-providers/{provider_id}:
     $ref: paths/regions_{id}_payment-providers_{provider_id}.yaml
+  /reservations:
+    $ref: paths/reservations.yaml
+  /reservations/{id}:
+    $ref: paths/reservations_{id}.yaml
   /return-reasons:
     $ref: paths/return-reasons.yaml
   /return-reasons/{id}:
     $ref: paths/return-reasons_{id}.yaml
-  /sales-channels/{id}/products/batch:
-    $ref: paths/sales-channels_{id}_products_batch.yaml
-  /sales-channels:
-    $ref: paths/sales-channels.yaml
-  /sales-channels/{id}:
-    $ref: paths/sales-channels_{id}.yaml
   /returns/{id}/cancel:
     $ref: paths/returns_{id}_cancel.yaml
   /returns:
     $ref: paths/returns.yaml
   /returns/{id}/receive:
     $ref: paths/returns_{id}_receive.yaml
+  /sales-channels/{id}/products/batch:
+    $ref: paths/sales-channels_{id}_products_batch.yaml
+  /sales-channels/{id}/stock-locations:
+    $ref: paths/sales-channels_{id}_stock-locations.yaml
+  /sales-channels:
+    $ref: paths/sales-channels.yaml
+  /sales-channels/{id}:
+    $ref: paths/sales-channels_{id}.yaml
   /shipping-options:
     $ref: paths/shipping-options.yaml
   /shipping-options/{id}:
     $ref: paths/shipping-options_{id}.yaml
+  /shipping-profiles:
+    $ref: paths/shipping-profiles.yaml
+  /shipping-profiles/{id}:
+    $ref: paths/shipping-profiles_{id}.yaml
+  /stock-locations:
+    $ref: paths/stock-locations.yaml
+  /stock-locations/{id}:
+    $ref: paths/stock-locations_{id}.yaml
   /store/currencies/{code}:
     $ref: paths/store_currencies_{code}.yaml
   /store:
@@ -441,14 +463,12 @@ paths:
     $ref: paths/tax-rates.yaml
   /tax-rates/{id}:
     $ref: paths/tax-rates_{id}.yaml
-  /shipping-profiles:
-    $ref: paths/shipping-profiles.yaml
-  /shipping-profiles/{id}:
-    $ref: paths/shipping-profiles_{id}.yaml
   /uploads/protected:
     $ref: paths/uploads_protected.yaml
   /uploads:
     $ref: paths/uploads.yaml
+  /uploads/download-url:
+    $ref: paths/uploads_download-url.yaml
   /users:
     $ref: paths/users.yaml
   /users/{id}:
@@ -523,15 +543,28 @@ components:
         of `{api_token}`. This is where you must pass the API token.
 
 
-        If you're alternatively following along with the JS Client request
-        samples, you must provide the `apiKey` option when creating the Medusa
-        client:
+        If you're following along with the JS Client request samples, you must
+        provide the `apiKey` option when creating the Medusa client:
 
 
-        ```js
+        ```ts
 
         const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3,
         apiKey: '{api_token}' })
+
+        ```
+
+
+        If you're using Medusa React, you can pass the `apiKey` prop to
+        `MedusaProvider`:
+
+
+        ```tsx
+
+        <MedusaProvider
+          apiKey='{api_token}'
+          //...
+        >
 
         ```
       scheme: bearer

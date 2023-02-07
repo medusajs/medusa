@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import { FindConfig } from "../../types/common"
 
 import {
@@ -8,6 +9,7 @@ import {
 } from "../../types/stock-location"
 
 export interface IStockLocationService {
+  withTransaction(transactionManager?: EntityManager): this
   list(
     selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>
@@ -18,9 +20,14 @@ export interface IStockLocationService {
     config?: FindConfig<StockLocationDTO>
   ): Promise<[StockLocationDTO[], number]>
 
-  retrieve(id: string): Promise<StockLocationDTO>
+  retrieve(
+    id: string,
+    config?: FindConfig<StockLocationDTO>
+  ): Promise<StockLocationDTO>
 
   create(input: CreateStockLocationInput): Promise<StockLocationDTO>
 
   update(id: string, input: UpdateStockLocationInput): Promise<StockLocationDTO>
+
+  delete(id: string): Promise<void>
 }

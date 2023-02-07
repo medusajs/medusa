@@ -30,19 +30,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                description: The ID of the deleted Region.
-              object:
-                type: string
-                description: The type of the object that was deleted.
-                default: region
-              deleted:
-                type: boolean
-                description: Whether or not the items were deleted.
-                default: true
+            $ref: ../components/schemas/AdminRegionsDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -87,10 +75,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              region:
-                $ref: ../components/schemas/Region.yaml
+            $ref: ../components/schemas/AdminRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -140,10 +125,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              region:
-                $ref: ../components/schemas/Region.yaml
+            $ref: ../components/schemas/AdminRegionsRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -1,17 +1,10 @@
+---
+description: 'Learn what Sales Channels are and how they can be used in Medusa. Sales Channels allow merchants to separate between the different channels products are sold in.'
+---
+
 # Sales Channels
 
 In this document, you’ll learn about Sales Channels and how they can be used in Medusa.
-
-:::note
-
-The Sales Channels feature is currently in beta mode and guarded by a feature flag. To use Sales Channels either:
-
-1. Enable the `MEDUSA_FF_SALES_CHANNELS` environment variable;
-2. Or enable the `sales_channels` key in the Medusa server's settings.
-
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
-
-:::
 
 ## Introduction
 

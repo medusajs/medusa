@@ -34,6 +34,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostPriceListsPriceListPriceListReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -67,10 +69,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             price_list:
- *               $ref: "#/components/schemas/PriceList"
+ *           $ref: "#/components/schemas/AdminPriceListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

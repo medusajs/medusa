@@ -23,12 +23,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              payment_providers:
-                type: array
-                items:
-                  $ref: ../components/schemas/PaymentProvider.yaml
+            $ref: ../components/schemas/AdminPaymentProvidersList.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

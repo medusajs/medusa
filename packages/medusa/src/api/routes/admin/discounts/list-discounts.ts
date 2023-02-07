@@ -39,6 +39,9 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - (query) limit=20 {number} The number of items in the response
  *   - (query) offset=0 {number} The offset of items in response
  *   - (query) expand {string} Comma separated list of relations to include in the results.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetDiscountsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -66,21 +69,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             discounts:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Discount"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminDiscountsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

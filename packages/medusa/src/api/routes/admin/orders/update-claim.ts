@@ -29,6 +29,8 @@ import { EntityManager } from "typeorm"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimReq"
+ * x-codegen:
+ *   method: updateClaim
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -62,10 +64,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/Order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

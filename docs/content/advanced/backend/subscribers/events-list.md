@@ -1,3 +1,7 @@
+---
+description: 'Learn about the available events and their data payloads in Medusa. Events can be used to perform an action when the events are triggered.'
+---
+
 # Events Reference
 
 This document details all events in Medusa, when they are triggered, and what data your handler method will receive when the event is triggered.
@@ -1492,17 +1496,6 @@ Object of the following format:
 
 This section holds all events related to order edits.
 
-:::note
-
-As of Medusa v1.3.9, Order Edits are available but guarded by a feature flag. To use Order Edits either:
-
-1. Enable the `MEDUSA_FF_ORDER_EDITING` environment variable;
-2. Or enable the `order_editing` key in the Medusa server's settings.
-
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
-
-:::
-
 <table class="reference-table">
 <thead>
 <tr>
@@ -1670,17 +1663,6 @@ Object of the following format:
 ## Order Edit Item Changes Events
 
 This section holds all events related to order edit item changes.
-
-:::note
-
-As of Medusa v1.3.9, Order Edits are available but guarded by a feature flag. To use Order Edits either:
-
-1. Enable the `MEDUSA_FF_ORDER_EDITING` environment variable;
-2. Or enable the `order_editing` key in the Medusa server's settings.
-
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
-
-:::
 
 <table class="reference-table">
 <thead>
@@ -2079,6 +2061,102 @@ Object of the following format:
 ```js noReport noCopy
 {
   id // string ID of product
+}
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+---
+
+## Product Category Events
+
+This section holds all events related to product categories.
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Event Name
+</th>
+<th>
+Description
+</th>
+<th>
+Event Data Payload
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+`product-category.created`
+
+</td>
+<td>
+
+Triggered when a product category is created.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, // string ID of category
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`product-category.updated`
+
+</td>
+<td>
+
+Triggered when a product category is updated.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, // string ID of category
+}
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`product-category.deleted`
+
+</td>
+<td>
+
+Triggered when a product category is deleted.
+
+</td>
+<td>
+
+Object of the following format:
+
+```js noReport noCopy
+{
+  id, // string ID of category
 }
 ```
 
@@ -2902,5 +2980,6 @@ Object of the following format:
 
 ## See Also
 
+- [Events architecture overview](../events/architecture.md)
 - [Use services in subscribers](create-subscriber.md#using-services-in-subscribers)
 - [Create a notification provider](../notification/overview.md)

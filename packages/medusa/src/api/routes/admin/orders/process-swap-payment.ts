@@ -12,6 +12,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) swap_id=* {string} The ID of the Swap.
+ * x-codegen:
+ *   method: processSwapPayment
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -39,10 +41,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/Order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

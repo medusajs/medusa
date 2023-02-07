@@ -2,7 +2,7 @@ import { AbstractFileService } from "../../../../interfaces"
 import { IsString } from "class-validator"
 
 /**
- * [post] /uploads/download-url
+ * @oas [post] /uploads/download-url
  * operationId: "PostUploadsDownloadUrl"
  * summary: "Get a File's Download URL"
  * description: "Creates a presigned download url for a file"
@@ -45,11 +45,7 @@ import { IsString } from "class-validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             download_url:
- *               type: string
- *               description: The Download URL of the file
+ *           $ref: "#/components/schemas/AdminUploadsDownloadUrlRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

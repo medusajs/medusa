@@ -41,7 +41,6 @@ describe("medusa-plugin-sendgrid", () => {
     const db = useDb()
     await db.shutdown()
     express.close()
-    // medusaProcess.kill()
   })
 
   afterEach(async () => {
@@ -72,6 +71,7 @@ describe("medusa-plugin-sendgrid", () => {
       date: expect.any(String),
       id: expect.any(String),
       display_id: expect.any(Number),
+      sales_channel_id: null,
       created_at: expect.any(Date),
       canceled_at: expect.any(Date),
       updated_at: expect.any(Date),
@@ -104,6 +104,8 @@ describe("medusa-plugin-sendgrid", () => {
         {
           adjustments: [],
           created_at: expect.any(Date),
+          order_edit_id: null,
+          original_item_id: null,
           updated_at: expect.any(Date),
           order_id: expect.any(String),
           tax_lines: [
@@ -225,6 +227,8 @@ describe("medusa-plugin-sendgrid", () => {
             adjustments: [],
             created_at: expect.any(Date),
             updated_at: expect.any(Date),
+            order_edit_id: null,
+            original_item_id: null,
             order_id: expect.any(String),
             tax_lines: [
               {
@@ -285,6 +289,8 @@ describe("medusa-plugin-sendgrid", () => {
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           order_id: expect.any(String),
+          order_edit_id: null,
+          original_item_id: null,
           tax_lines: [
             {
               id: expect.any(String),
@@ -473,6 +479,8 @@ describe("medusa-plugin-sendgrid", () => {
         {
           id: expect.any(String),
           order_id: expect.any(String),
+          order_edit_id: null,
+          original_item_id: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           variant: {
@@ -577,6 +585,8 @@ describe("medusa-plugin-sendgrid", () => {
       id: expect.any(String),
       created_at: expect.any(Date),
       updated_at: expect.any(Date),
+      order_edit_id: null,
+      original_item_id: null,
       variant: {
         created_at: expect.any(Date),
         updated_at: expect.any(Date),
@@ -678,6 +688,7 @@ describe("medusa-plugin-sendgrid", () => {
         items: [{ order_id: expect.any(String), ...itemSnap }],
         customer_id: expect.any(String),
         shipping_address_id: expect.any(String),
+        sales_channel_id: null,
         swaps: [swapSnap],
         region: {
           id: expect.any(String),
@@ -725,6 +736,7 @@ describe("medusa-plugin-sendgrid", () => {
   })
 
   test("swap created data", async () => {
+    await simpleStoreFactory(dbConnection)
     await adminSeeder(dbConnection)
 
     const order = await createReturnableOrder(dbConnection)
@@ -760,6 +772,8 @@ const getReturnSnap = (received = false) => {
   const itemSnap = {
     id: expect.any(String),
     order_id: expect.any(String),
+    order_edit_id: null,
+    original_item_id: null,
     created_at: expect.any(Date),
     updated_at: expect.any(Date),
     variant: {

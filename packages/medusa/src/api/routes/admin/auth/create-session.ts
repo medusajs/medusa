@@ -21,6 +21,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostAuthReq"
+ * x-codegen:
+ *   method: createSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -50,10 +52,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
- *          type: object
- *          properties:
- *            user:
- *              $ref: "#/components/schemas/User"
+ *          $ref: "#/components/schemas/AdminAuthRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

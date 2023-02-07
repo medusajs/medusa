@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm"
 import { FindConfig } from "../../types/common"
 
 import {
@@ -11,9 +12,12 @@ import {
   FilterableReservationItemProps,
   CreateInventoryLevelInput,
   UpdateInventoryLevelInput,
+  UpdateReservationItemInput,
 } from "../../types/inventory"
 
 export interface IInventoryService {
+  withTransaction(transactionManager?: EntityManager): this
+
   listInventoryItems(
     selector: FilterableInventoryItemProps,
     config?: FindConfig<InventoryItemDTO>
@@ -30,12 +34,12 @@ export interface IInventoryService {
   ): Promise<[InventoryLevelDTO[], number]>
 
   retrieveInventoryItem(
-    itemId: string,
+    inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>
   ): Promise<InventoryItemDTO>
 
   retrieveInventoryLevel(
-    itemId: string,
+    inventoryItemId: string,
     locationId: string
   ): Promise<InventoryLevelDTO>
 
@@ -52,43 +56,56 @@ export interface IInventoryService {
   ): Promise<InventoryLevelDTO>
 
   updateInventoryLevel(
-    itemId: string,
+    inventoryItemId: string,
     locationId: string,
     update: UpdateInventoryLevelInput
   ): Promise<InventoryLevelDTO>
 
   updateInventoryItem(
-    itemId: string,
+    inventoryItemId: string,
     input: CreateInventoryItemInput
   ): Promise<InventoryItemDTO>
 
+  updateReservationItem(
+    reservationItemId: string,
+    input: UpdateReservationItemInput
+  ): Promise<ReservationItemDTO>
+
   deleteReservationItemsByLineItem(lineItemId: string): Promise<void>
 
-  deleteReservationItem(id: string): Promise<void>
+  deleteReservationItem(reservationItemId: string): Promise<void>
 
-  deleteInventoryItem(itemId: string): Promise<void>
+  deleteInventoryItem(inventoryItemId: string): Promise<void>
 
-  deleteInventoryLevel(itemId: string, locationId: string): Promise<void>
+  deleteInventoryLevel(
+    inventoryLevelId: string,
+    locationId: string
+  ): Promise<void>
 
   adjustInventory(
-    itemId: string,
+    inventoryItemId: string,
     locationId: string,
     adjustment: number
   ): Promise<InventoryLevelDTO>
 
   confirmInventory(
-    itemId: string,
+    inventoryItemId: string,
     locationIds: string[],
     quantity: number
   ): Promise<boolean>
 
   retrieveAvailableQuantity(
-    itemId: string,
+    inventoryItemId: string,
     locationIds: string[]
   ): Promise<number>
 
   retrieveStockedQuantity(
-    itemId: string,
+    inventoryItemId: string,
+    locationIds: string[]
+  ): Promise<number>
+
+  retrieveReservedQuantity(
+    inventoryItemId: string,
     locationIds: string[]
   ): Promise<number>
 }

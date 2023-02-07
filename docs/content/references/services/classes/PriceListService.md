@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:57](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L57)
+[packages/medusa/src/services/price-list.ts:57](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L57)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:48](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L48)
+[packages/medusa/src/services/price-list.ts:48](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L48)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:55](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L55)
+[packages/medusa/src/services/price-list.ts:55](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L55)
 
 ___
 
@@ -88,7 +88,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:45](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L45)
+[packages/medusa/src/services/price-list.ts:45](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L45)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:53](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L53)
+[packages/medusa/src/services/price-list.ts:53](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L53)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:52](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L52)
+[packages/medusa/src/services/price-list.ts:52](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L52)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:50](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L50)
+[packages/medusa/src/services/price-list.ts:50](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L50)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:54](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L54)
+[packages/medusa/src/services/price-list.ts:54](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L54)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:49](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L49)
+[packages/medusa/src/services/price-list.ts:49](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L49)
 
 ___
 
@@ -152,7 +152,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:46](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L46)
+[packages/medusa/src/services/price-list.ts:46](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L46)
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:51](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L51)
+[packages/medusa/src/services/price-list.ts:51](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L51)
 
 ## Methods
 
@@ -192,7 +192,7 @@ updated `prices` list
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:519](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L519)
+[packages/medusa/src/services/price-list.ts:519](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L519)
 
 ___
 
@@ -218,7 +218,7 @@ updated Price List
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:218](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L218)
+[packages/medusa/src/services/price-list.ts:218](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L218)
 
 ___
 
@@ -257,7 +257,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
 
 ___
 
@@ -281,7 +281,7 @@ updated Price List
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:258](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L258)
+[packages/medusa/src/services/price-list.ts:258](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L258)
 
 ___
 
@@ -305,7 +305,7 @@ created Price List
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:119](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L119)
+[packages/medusa/src/services/price-list.ts:119](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L119)
 
 ___
 
@@ -330,7 +330,7 @@ empty promise
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:272](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L272)
+[packages/medusa/src/services/price-list.ts:272](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L272)
 
 ___
 
@@ -355,7 +355,7 @@ updated Price List
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:243](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L243)
+[packages/medusa/src/services/price-list.ts:243](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L243)
 
 ___
 
@@ -376,7 +376,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:446](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L446)
+[packages/medusa/src/services/price-list.ts:446](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L446)
 
 ___
 
@@ -397,7 +397,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:483](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L483)
+[packages/medusa/src/services/price-list.ts:483](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L483)
 
 ___
 
@@ -422,7 +422,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:292](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L292)
+[packages/medusa/src/services/price-list.ts:292](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L292)
 
 ___
 
@@ -447,7 +447,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:316](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L316)
+[packages/medusa/src/services/price-list.ts:316](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L316)
 
 ___
 
@@ -470,7 +470,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:364](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L364)
+[packages/medusa/src/services/price-list.ts:364](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L364)
 
 ___
 
@@ -493,7 +493,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:412](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L412)
+[packages/medusa/src/services/price-list.ts:412](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L412)
 
 ___
 
@@ -518,7 +518,7 @@ the collection.
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:88](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L88)
+[packages/medusa/src/services/price-list.ts:88](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L88)
 
 ___
 
@@ -542,7 +542,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
 
 ___
 
@@ -567,7 +567,7 @@ updated Price List
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:167](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L167)
+[packages/medusa/src/services/price-list.ts:167](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L167)
 
 ___
 
@@ -588,7 +588,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:345](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/services/price-list.ts#L345)
+[packages/medusa/src/services/price-list.ts:345](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/price-list.ts#L345)
 
 ___
 
@@ -612,4 +612,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d843bc102/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L13)

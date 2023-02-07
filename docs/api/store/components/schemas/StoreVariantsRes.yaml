@@ -1,0 +1,4 @@
+type: object
+properties:
+  variant:
+    $ref: ./PricedVariant.yaml

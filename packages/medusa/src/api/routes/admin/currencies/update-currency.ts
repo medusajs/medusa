@@ -18,6 +18,8 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostCurrenciesCurrencyReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -48,10 +50,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             currency:
- *                 $ref: "#/components/schemas/Currency"
+ *           $ref: "#/components/schemas/AdminCurrenciesRes"
  */
 export default async (req: ExtendedRequest<Currency>, res) => {
   const code = req.params.code as string

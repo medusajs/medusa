@@ -24,6 +24,8 @@ import { isDefined } from "medusa-core-utils"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostReturnsReturnReceiveReq"
+ * x-codegen:
+ *   method: receive
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -67,10 +69,7 @@ import { isDefined } from "medusa-core-utils"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             return:
- *               $ref: "#/components/schemas/Return"
+ *           $ref: "#/components/schemas/AdminReturnsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -98,13 +97,15 @@ export default async (req, res) => {
   await entityManager.transaction(async (manager) => {
     let refundAmount = validated.refund
 
-    if (isDefined(validated.refund) && validated.refund < 0) {
+    if (isDefined(validated.refund) && validated.refund! < 0) {
       refundAmount = 0
     }
 
     receivedReturn = await returnService
       .withTransaction(manager)
-      .receive(id, validated.items, refundAmount, true)
+      .receive(id, validated.items, refundAmount, true, {
+        locationId: validated.location_id,
+      })
 
     if (receivedReturn.order_id) {
       await orderService
@@ -169,4 +170,8 @@ export class AdminPostReturnsReturnReceiveReq {
   @IsOptional()
   @IsNumber()
   refund?: number
+
+  @IsOptional()
+  @IsString()
+  location_id?: string
 }

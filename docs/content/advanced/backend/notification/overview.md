@@ -1,4 +1,8 @@
-# Architecture Overview
+---
+description: 'Learn about the Notificaiton architecture in Medusa and the automation flow. The Notification Architecture is made up of the Notification Provider and Notification.'
+---
+
+# Notification Architecture Overview
 
 This document gives an overview of the notification architecture and how it works.
 
@@ -93,4 +97,3 @@ An example of a flow that can be implemented using Medusa's Notification API is 
 - [SendGrid Plugin](../../../add-plugins/sendgrid.mdx)
 - [Subscribers Overview](../subscribers/create-subscriber.md)
 - [Services Overview](../services/create-service.md)
-

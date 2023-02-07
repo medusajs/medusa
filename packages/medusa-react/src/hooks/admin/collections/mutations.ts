@@ -7,10 +7,14 @@ import {
   AdminPostProductsToCollectionReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { adminCollectionKeys } from "."
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminCollectionKeys } from "./queries"
 
 export const useAdminCreateCollection = (
   options?: UseMutationOptions<
@@ -64,7 +68,6 @@ export const useAdminDeleteCollection = (
     )
   )
 }
-
 
 /**
  * Hook returns function for adding multiple products to a collection.

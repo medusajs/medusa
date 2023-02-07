@@ -15,6 +15,8 @@ import {
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete from.
  *   - (path) item_id=* {string} The ID of the order edit item to delete from order.
+ * x-codegen:
+ *   method: removeLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -42,10 +44,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/OrderEdit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

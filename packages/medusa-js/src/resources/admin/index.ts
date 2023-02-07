@@ -24,6 +24,7 @@ import AdminReturnsResource from "./returns"
 import AdminSalesChannelsResource from "./sales-channels"
 import AdminShippingOptionsResource from "./shipping-options"
 import AdminShippingProfilesResource from "./shipping-profiles"
+import AdminStockLocationsResource from "./stock-locations"
 import AdminStoresResource from "./store"
 import AdminSwapsResource from "./swaps"
 import AdminTaxRatesResource from "./tax-rates"
@@ -32,6 +33,7 @@ import AdminUsersResource from "./users"
 import AdminVariantsResource from "./variants"
 import AdminPaymentCollectionsResource from "./payment-collections"
 import AdminPaymentsResource from "./payments"
+import AdminProductCategoriesResource from "./product-categories"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -59,6 +61,7 @@ class Admin extends BaseResource {
   public salesChannels = new AdminSalesChannelsResource(this.client)
   public swaps = new AdminSwapsResource(this.client)
   public shippingProfiles = new AdminShippingProfilesResource(this.client)
+  public stockLocations = new AdminStockLocationsResource(this.client)
   public store = new AdminStoresResource(this.client)
   public shippingOptions = new AdminShippingOptionsResource(this.client)
   public regions = new AdminRegionsResource(this.client)
@@ -67,6 +70,7 @@ class Admin extends BaseResource {
   public uploads = new AdminUploadsResource(this.client)
   public paymentCollections = new AdminPaymentCollectionsResource(this.client)
   public payments = new AdminPaymentsResource(this.client)
+  public productCategories = new AdminProductCategoriesResource(this.client)
 }
 
 export default Admin

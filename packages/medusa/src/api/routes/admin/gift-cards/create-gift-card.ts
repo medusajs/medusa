@@ -16,6 +16,8 @@ import { EntityManager } from "typeorm"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostGiftCardsReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -49,10 +51,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             gift_card:
- *               $ref: "#/components/schemas/GiftCard"
+ *           $ref: "#/components/schemas/AdminGiftCardsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -67,13 +66,16 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validatedBody: AdminPostGiftCardsReq & { balance?: number } = req.validatedBody
+  const validatedBody: AdminPostGiftCardsReq & { balance?: number } =
+    req.validatedBody
   validatedBody.balance = validatedBody.value
 
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
   const manager: EntityManager = req.scope.resolve("manager")
   const newly = await manager.transaction(async (transactionManager) => {
-    return await giftCardService.withTransaction(transactionManager).create(validatedBody)
+    return await giftCardService
+      .withTransaction(transactionManager)
+      .create(validatedBody)
   })
 
   const giftCard = await giftCardService.retrieve(newly.id, {

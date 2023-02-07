@@ -11,6 +11,9 @@ import { FindParams } from "../../../../types/common"
  *   - (path) id=* {string} The ID of the PaymentCollection.
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: GetPaymentCollectionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -38,10 +41,7 @@ import { FindParams } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             payment_collection:
- *               $ref: "#/components/schemas/PaymentCollection"
+ *           $ref: "#/components/schemas/AdminPaymentCollectionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

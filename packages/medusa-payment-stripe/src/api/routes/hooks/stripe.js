@@ -27,10 +27,21 @@ export default async (req, res) => {
     // handle payment intent events
     switch (event.type) {
       case "payment_intent.succeeded":
-        if (order && order.payment_status !== "captured") {
-          await manager.transaction(async (manager) => {
-            await orderService.withTransaction(manager).capturePayment(order.id)
-          })
+        if (order) {
+          // If order is created but not captured, we attempt to do so
+          if (order.payment_status !== "captured") {
+            await manager.transaction(async (manager) => {
+              await orderService
+                .withTransaction(manager)
+                .capturePayment(order.id)
+            })
+          } else {
+            // Otherwise, respond with 200 preventing Stripe from retrying
+            return res.sendStatus(200)
+          }
+        } else {
+          // If order is not created, we respond with 404 to trigger Stripe retry mechanism
+          return res.sendStatus(404)
         }
         break
       case "payment_intent.amount_capturable_updated":

@@ -1,3 +1,7 @@
+---
+description: 'Learn about the payment architecture in the Medusa server. The payment architecture refers to all operations in the ecommerce store related to processing payments.'
+---
+
 # Payment Architecture Overview
 
 In this document, you’ll learn about the payment architecture in Medusa, specifically its 3 main components and the idempotency key.

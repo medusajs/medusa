@@ -8,6 +8,8 @@ import { PaymentCollectionService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collection to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -35,19 +37,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Payment Collection.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               format: payment_collection
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Payment Collection was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminPaymentCollectionDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

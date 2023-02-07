@@ -10,6 +10,8 @@ import { OrderEditService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to delete.
  *   - (path) change_id=* {string} The ID of the Order Edit Item Change to delete.
+ * x-codegen:
+ *   method: deleteItemChange
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -37,19 +39,7 @@ import { OrderEditService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Order Edit Item Change.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               format: item_change
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Order Edit Item Change was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminOrderEditItemChangeDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  */

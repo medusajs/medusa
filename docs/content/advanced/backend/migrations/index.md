@@ -1,3 +1,8 @@
+---
+description: 'Learn how to create a migration in the Medusa server. This guide explains how to write and run migrations.'
+addHowToData: true
+---
+
 # How to Create Migrations
 
 In this document, you’ll learn how to create a [Migration](overview.md) using [Typeorm](https://typeorm.io) on your Medusa server.

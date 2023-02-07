@@ -64,6 +64,9 @@ import { IsType } from "../../../../utils/validators/is-type"
  *             gte:
  *               type: number
  *               description: filter by inventory quantity greater than or equal to this number
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetVariantsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -91,21 +94,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variants:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/ProductVariant"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminVariantsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

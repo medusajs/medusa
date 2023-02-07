@@ -10,6 +10,8 @@ import { PaymentCollectionService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The id of the PaymentCollection.
  *   - (path) session_id=* {string} The id of the Payment Session to be refreshed.
+ * x-codegen:
+ *   method: refreshPaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -32,10 +34,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             payment_session:
- *               $ref: "#/components/schemas/PaymentSession"
+ *           $ref: "#/components/schemas/StorePaymentCollectionsSessionRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

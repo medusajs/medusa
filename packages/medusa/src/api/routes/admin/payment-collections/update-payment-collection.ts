@@ -16,6 +16,8 @@ import { PaymentCollectionService } from "../../../../services"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminUpdatePaymentCollectionsReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -49,10 +51,7 @@ import { PaymentCollectionService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             payment_collection:
- *               $ref: "#/components/schemas/PaymentCollection"
+ *           $ref: "#/components/schemas/AdminPaymentCollectionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

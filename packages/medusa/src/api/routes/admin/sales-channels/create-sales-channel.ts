@@ -16,6 +16,8 @@ import SalesChannelService from "../../../../services/sales-channel"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostSalesChannelsReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -50,10 +52,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             sales_channel:
- *               $ref: "#/components/schemas/SalesChannel"
+ *           $ref: "#/components/schemas/AdminSalesChannelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

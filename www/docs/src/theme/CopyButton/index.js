@@ -18,10 +18,16 @@ export default function CopyButton ({ children, buttonClassName, text, tooltipCl
   useEffect(() => () => window.clearTimeout(copyTimeout.current), []);
 
   return (
-    <Tooltip text={isCopied ? `Copied!` : `Copy to Clipboard`} tooltipClassName={tooltipClassName}>
-      <button className={`copy-action ${buttonClassName}`} onClick={handleCopy}>
+    <Tooltip
+      text={isCopied ? `Copied!` : `Copy to Clipboard`}
+      tooltipClassName={tooltipClassName}
+    >
+      <span
+        className={`copy-action ${buttonClassName}`}
+        onClick={handleCopy}
+      >
         {children}
-      </button>
+      </span>
     </Tooltip>
   )
 }

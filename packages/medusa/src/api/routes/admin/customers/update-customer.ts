@@ -30,6 +30,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostCustomersCustomerReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -63,10 +65,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/Customer"
+ *           $ref: "#/components/schemas/AdminCustomersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
