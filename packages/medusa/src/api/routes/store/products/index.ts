@@ -10,6 +10,7 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 import { StoreGetProductsParams } from "./list-products"
+import { StoreGetProductsProductParams } from "./get-product"
 
 const route = Router()
 
@@ -29,11 +30,25 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/",
     transformQuery(StoreGetProductsParams, {
       defaultRelations: defaultStoreProductsRelations,
+      defaultFields: defaultStoreProductsFields,
+      allowedFields: allowedStoreProductsFields,
+      allowedRelations: allowedStoreProductsRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-products").default)
   )
-  route.get("/:id", middlewares.wrap(require("./get-product").default))
+
+  route.get(
+    "/:id",
+    transformQuery(StoreGetProductsProductParams, {
+      defaultRelations: defaultStoreProductsRelations,
+      defaultFields: defaultStoreProductsFields,
+      allowedFields: allowedStoreProductsFields,
+      allowedRelations: allowedStoreProductsRelations,
+    }),
+    middlewares.wrap(require("./get-product").default)
+  )
+
   route.post("/search", middlewares.wrap(require("./search").default))
 
   return app
@@ -49,6 +64,47 @@ export const defaultStoreProductsRelations = [
   "tags",
   "collection",
   "type",
+]
+
+export const defaultStoreProductsFields: (keyof Product)[] = [
+  "id",
+  "title",
+  "subtitle",
+  "status",
+  "external_id",
+  "description",
+  "handle",
+  "is_giftcard",
+  "discountable",
+  "thumbnail",
+  "profile_id",
+  "collection_id",
+  "type_id",
+  "weight",
+  "length",
+  "height",
+  "width",
+  "hs_code",
+  "origin_country",
+  "mid_code",
+  "material",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+export const allowedStoreProductsFields = [
+  ...defaultStoreProductsFields,
+  // TODO: order prop validation
+  "variants.title",
+  "variants.prices.amount",
+]
+
+export const allowedStoreProductsRelations = [
+  ...defaultStoreProductsRelations,
+  "variants.title",
+  "variants.prices.amount",
 ]
 
 export * from "./list-products"
