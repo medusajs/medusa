@@ -21,6 +21,7 @@ class BrightpearlService extends BaseService {
       logger,
       lineItemService,
       eventBusService,
+      productVariantInventoryService,
     },
     options
   ) {
@@ -29,6 +30,7 @@ class BrightpearlService extends BaseService {
     this.manager_ = manager
     this.options = options
     this.productVariantService_ = productVariantService
+    this.productVariantInventoryService_ = productVariantInventoryService
     this.regionService_ = regionService
     this.orderService_ = orderService
     this.totalsService_ = totalsService
@@ -115,7 +117,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -124,7 +126,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -224,7 +226,6 @@ class BrightpearlService extends BaseService {
   }
 
   async updateInventory(productId) {
-    // TODO
     this.logger_.info("updating inventory")
     const client = await this.getClient()
     const availability = await client.products
@@ -254,6 +255,7 @@ class BrightpearlService extends BaseService {
       const variant = await this.productVariantService_
         .retrieveBySKU(sku)
         .catch((_) => undefined)
+
       if (variant && variant.manage_inventory) {
         await this.manager_.transaction((m) => {
           return this.productVariantService_
@@ -265,9 +267,86 @@ class BrightpearlService extends BaseService {
 
         if (this.inventoryService_) {
           this.logger_.info("we have an inventoryservice")
-          // GET location id from bp
-          // Get medusa location
-          // update external reservation in sales channel for variant
+
+          const pvInventoryItems =
+            await this.productVariantInventoryService_.listByVariant(variant.id)
+
+          // get inventory levels for this product
+          const inventoryLevels =
+            await this.inventoryService_.listInventoryLevels({
+              inventory_item_id: pvInventoryItems.map(
+                (pvi) => pvi.inventory_item_id
+              ),
+            })
+
+          const inventoryMap = inventoryLevels.reduce((acc, item) => {
+            acc[item.location_id] = acc[item.location_id]
+              ? [...acc[item.location_id], item]
+              : [item]
+            return acc
+          }, {})
+
+          const locations = await this.stockLocationService_.list({
+            id: inventoryLevels.map((ri) => ri.location_id),
+          })
+
+          const adjustments = await Promise.all(
+            locations.map(async (location) => {
+              if (
+                !location.metadata?.bp_id ||
+                !prodAvail.warehouses[`${location.metadata.bp_id}`]
+              ) {
+                return undefined
+              }
+              // TODO: Assuming we have a 1 to 1 mapping of inventory items
+              const inventoryLevel = inventoryMap[location.id][0]
+              const warehouseData = prodAvail.warehouses[`${location.bp_id}`]
+              const quantity =
+                warehouseData.inStock -
+                warehouseData.onHand -
+                inventoryLevel.reserved_quantity
+
+              return {
+                location_id: location.id,
+                inventory_item_id: inventoryLevel.inventory_item_id,
+                available_delta: quantity,
+              }
+            })
+          )
+
+          await Promise.all(
+            adjustments.map(async (adjustment) => {
+              if (!adjustment) {
+                return
+              }
+
+              const reservations =
+                await this.inventoryService_.listReservations({
+                  inventory_item_id: adjustment.inventory_item_id,
+                  location_id: adjustment.location_id,
+                })
+
+              if (reservations.length > 0) {
+                const externalReservation = reservations.find(
+                  (r) => r.reservation_type === "external"
+                )
+                if (externalReservation) {
+                  this.inventoryService_.updateReservation(
+                    externalReservation.id,
+                    {
+                      quantity: adjustment.available_delta,
+                    }
+                  )
+                } else {
+                  this.inventoryService_.createReservation({
+                    ...adjustment,
+                    reservation_type: "external",
+                    quantity: adjustment.available_delta,
+                  })
+                }
+              }
+            })
+          )
         }
       }
     }
