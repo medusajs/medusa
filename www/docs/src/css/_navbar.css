@@ -5,14 +5,12 @@ html[data-theme="dark"] .navbar-github-link:before {
 
 .navbar {
   z-index: calc(var(--ifm-z-index-overlay) - 1);
-  padding-top: var(--ifm-navbar-padding-top);
-  padding-bottom: var(--ifm-navbar-padding-bottom);
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) { 
   .navbar:not(.navbar-sidebar--show) {
     background: none;
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(12px);
   }
 }
 
@@ -64,7 +62,34 @@ html[data-theme="dark"] .navbar-github-link:before {
   font-weight: 600;
 }
 
+[class*=colorModeToggle],
+.navbar-link-icon {
+  background-color: var(--medusa-button-secondary);
+  border: 1px solid var(--medusa-border-base);
+  border-radius: var(--ifm-global-radius);
+  width: 32px !important;
+  height: 32px !important;
+}
 
+[class*=toggleButton]:hover,
+.navbar-link-icon:hover {
+  background-color: var(--medusa-button-secondary-hover) !important;
+}
+
+.navbar-link-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+[class*=colorModeToggle] {
+  margin-left: var(--ifm-navbar-item-padding-horizontal);
+  margin-right: 12px;
+}
+
+[class*=toggleButton] {
+  border-radius: var(--ifm-global-radius) !important;
+}
 
 @media screen and (min-width: 992px) {
   .navbar {
@@ -72,23 +97,20 @@ html[data-theme="dark"] .navbar-github-link:before {
     margin-right: 0;
     margin-left: auto;
   }
-  .navbar .right-divider {
-    height: 100%;
-  }
-  .navbar .right-divider:after {
-    content: '';
+  
+  .navbar .divider {
     height: 20px;
     width: 1px;
-    margin-left: 12px;
+    margin-left: var(--ifm-navbar-item-padding-horizontal);
+    margin-right: var(--ifm-navbar-item-padding-horizontal);
     display: inline-block;
     vertical-align: middle;
+    background-color: var(--ifm-navbar-divider-color);
   }
+}
 
-  html:not([data-theme="dark"]) .navbar .right-divider:after {
-    background-color: #D1D5DB;
-  }
-
-  [data-theme="dark"] .navbar .right-divider:after {
-    background-color: #393939;
+@media screen and (max-width: 991px) {
+  .navbar-actions {
+    display: none;
   }
 }

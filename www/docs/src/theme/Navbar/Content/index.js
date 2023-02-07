@@ -12,6 +12,7 @@ import NavbarLogo from '@theme/Navbar/Logo';
 import NavbarSearch from '@theme/Navbar/Search';
 import styles from './styles.module.css';
 import {useWindowSize} from '@docusaurus/theme-common';
+import NavbarActions from '../Actions';
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -39,6 +40,11 @@ export default function NavbarContent() {
   const items = useNavbarItems();
   const [leftItems, rightItems] = splitNavbarItems(items);
   const windowSize = useWindowSize();
+  const { navbarActions } = useThemeConfig()
+
+  const searchBarItem = items.find((item) => item.type === 'search');
+  
+  console.log(leftItems)
 
   return (
     <NavbarContentLayout
@@ -49,6 +55,11 @@ export default function NavbarContent() {
           {windowSize === 'mobile' && (
             <NavbarLogo />
           )}
+          {/* {!searchBarItem && (
+            <NavbarSearch>
+              <SearchBar />
+            </NavbarSearch>
+          )} */}
           <NavbarItems items={leftItems} />
         </>
       }
@@ -57,12 +68,15 @@ export default function NavbarContent() {
         // Ask the user to add the respective navbar items => more flexible
         <>
           <NavbarItems items={rightItems} />
+          <span className='divider'></span>
           <NavbarColorModeToggle className={styles.colorModeToggle} />
-          {windowSize === 'mobile' && (
+          <NavbarActions items={navbarActions} />
+          {/* {windowSize === 'mobile' && (
             <NavbarSearch>
               <SearchBar />
             </NavbarSearch>
-          )}
+          )} */}
+          
         </>
       }
     />

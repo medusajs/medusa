@@ -224,3 +224,73 @@
 .menu__list-item-collapsible .menu__link--sublist:hover {
   background-color: var(--ifm-menu-color-background-hover) !important;
 }
+
+/** Redocly sidebar **/
+.redocusaurus .menu-content label {
+  font-weight: 500 !important;
+  font-size: 12px;
+  line-height: 1.7em;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.redocusaurus .menu-content label.-depth1 {
+  padding-left: 24px;
+}
+
+.redocusaurus .menu-content label {
+  color: var(--ifm-menu-color)
+}
+
+.redocusaurus .menu-content label:hover,
+.redocusaurus .menu-content label.active {
+  background-color: transparent !important;
+  color: var(--ifm-menu-active);
+}
+
+.redocusaurus .menu-content label.active {
+  font-weight: 600 !important;
+}
+
+.redocusaurus .menu-content label svg {
+  display: none;
+}
+
+.redocusaurus .menu-content label[type=tag].-depth1::before {
+  content: "";
+  height: 16px;
+  width: 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 6.8px;
+  transition: transform var(--ifm-transition-fast) linear;
+  position: absolute;
+}
+
+html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1::before {
+  background-image: url('/img/triangle-right.png');
+}
+
+[data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1::before {
+  background-image: url('/img/triangle-right-dark.png');
+}
+
+html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1:hover::before,
+html:not([data-theme="dark"]) .redocusaurus .menu-content label[type=tag].-depth1.active::before {
+  background-image: url('/img/triangle-right-hover.png');
+}
+
+[data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1:hover::before,
+[data-theme="dark"] .redocusaurus .menu-content label[type=tag].-depth1.active::before {
+  background-image: url('/img/triangle-right-dark-hover.png');
+}
+
+.redocusaurus .menu-content label[type=tag].-depth1::before {
+  left: 0;
+}
+
+.redocusaurus .menu-content label::before {
+  top: 35%;
+}
