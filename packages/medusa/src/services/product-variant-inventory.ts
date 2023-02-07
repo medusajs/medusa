@@ -1,11 +1,11 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import {
-  IEventBusService,
   IInventoryService,
   IStockLocationService,
   TransactionBaseService,
 } from "../interfaces"
+import logger from "../loaders/logger"
 import { LineItem, Product, ProductVariant } from "../models"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import {
@@ -411,7 +411,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
           .withTransaction(manager)
           .createReservationItem({
             ...toReserve,
-            location_id: locationId as string,
+            location_id: location.id,
             inventory_item_id: inventoryPart.inventory_item_id,
             quantity: itemQuantity,
           })
@@ -419,15 +419,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
 
     // emit event
-    await this.eventBusService_.emit(
-      ProductVariantInventoryService.Events.RESERVATION_CREATED,
-      {
+    await this.eventBusService_
+      .withTransaction(manager)
+      .emit(ProductVariantInventoryService.Events.RESERVATION_CREATED, {
         variant_id: variantId,
         quantity,
         locationId,
         reservationItems: reservationItems.map((i) => i.id),
-      }
-    )
+      })
 
     return reservationItems
   }
@@ -665,17 +664,18 @@ class ProductVariantInventoryService extends TransactionBaseService {
         variant.inventory_quantity = Math.min(
           ...(await Promise.all(
             variantInventory.map(async (variantInventory) => {
+              const availableItemQuantity =
+                // eslint-disable-next-jjjline max-len
+                await this.salesChannelInventoryService_.retrieveAvailableItemQuantity(
+                  salesChannelId,
+                  variantInventory.inventory_item_id
+                )
+
               // get the total available quantity for the given sales channel
               // divided by the required quantity to account for how many of the
               // variant we can fulfill at the current time. Take the minimum we
               // can fulfill and set that as quantity
-              return (
-                // eslint-disable-next-line max-len
-                (await this.salesChannelInventoryService_.retrieveAvailableItemQuantity(
-                  salesChannelId,
-                  variantInventory.inventory_item_id
-                )) / variantInventory.required_quantity
-              )
+              return availableItemQuantity / variantInventory.required_quantity
             })
           ))
         )
@@ -694,6 +694,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
         if (!product.variants || product.variants.length === 0) {
           return product
         }
+
+        logger.info("product has variants")
 
         product.variants = await this.setVariantAvailability(
           product.variants,

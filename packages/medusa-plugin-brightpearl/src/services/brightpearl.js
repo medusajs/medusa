@@ -19,6 +19,8 @@ class BrightpearlService extends BaseService {
       inventoryService,
       salesChannelLocationService,
       logger,
+      lineItemService,
+      eventBusService,
     },
     options
   ) {
@@ -37,6 +39,8 @@ class BrightpearlService extends BaseService {
     this.stockLocationService_ = stockLocationService
     this.inventoryService_ = inventoryService
     this.salesChannelLocationService_ = salesChannelLocationService
+    this.lineItemService_ = lineItemService
+    this.eventBusService_ = eventBusService
     this.logger_ = logger
   }
 
@@ -94,6 +98,17 @@ class BrightpearlService extends BaseService {
 
   async verifyWebhooks() {
     const brightpearl = await this.getClient()
+
+    const previouslyInstalledHooks = await brightpearl.webhooks
+      .list()
+      .catch(() => [])
+
+    await Promise.all(
+      previouslyInstalledHooks.map((hook) => {
+        return brightpearl.webhooks.delete(hook.id)
+      })
+    )
+
     const hooks = [
       {
         subscribeTo: "goods-out-note.created",
@@ -109,7 +124,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -127,7 +142,10 @@ class BrightpearlService extends BaseService {
           i.idSetAccepted === hook.idSetAccepted
       )
 
+      this.logger_.info("hook: " + hook.subscribeTo)
+      this.logger_.info("isInstalled: " + !!isInstalled)
       if (!isInstalled) {
+        this.logger_.info("Creating hook: " + hook.subscribeTo)
         await brightpearl.webhooks.create(hook)
       }
     }
@@ -214,6 +232,8 @@ class BrightpearlService extends BaseService {
     const availability = await client.products
       .retrieveAvailability(productId)
       .catch(() => null)
+
+    this.logger_.info("availability: " + JSON.stringify(availability))
 
     if (availability) {
       const brightpearlProduct = await client.products.retrieve(productId)
@@ -383,61 +403,159 @@ class BrightpearlService extends BaseService {
   }
 
   async createReservation(eventData) {
-    // TODO cut this down to size
-    const { variant_id, quantity, reservationItems, locationId } = eventData
-    const client = await this.getClient()
+    try {
+      // TODO cut this down to size
+      const { variant_id, quantity, reservationItems, locationId } = eventData
 
-    let warehouse = this.options.warehouse
-
-    if (locationId && this.stockLocationService_) {
-      const location = await this.stockLocationService_.retrieve(locationId)
-      if (
-        location &&
-        location.metadata &&
-        location.metadata.brightpearl_warehouse_id
-      ) {
-        warehouse = location.metadata.brightpearl_warehouse_id
+      if (!reservationItems.length) {
+        return []
       }
-    }
-    const variant = await this.productVariantService_.retrieve(variant_id)
 
-    // fetch order
-    // TODO this doesn't work with reservations that don't have a line item
-    // suggestion: create a reservations as we have done with
-    const order = { id: "test" }
+      const client = await this.getClient()
 
-    let reservation = await client.warehouses.retrieveReservation(order.id)
+      let warehouse = this.options.warehouse
 
-    if (!reservation) {
-      order.lineItems = {}
-      reservation = await client.warehouses.createReservation(order, warehouse)
-
-      // race conditions
-      if (reservation.errors) {
-        reservation = await client.warehouses.retrieveReservation(order.id)
+      if (locationId && this.stockLocationService_) {
+        const location = await this.stockLocationService_.retrieve(locationId)
+        if (
+          location &&
+          location.metadata &&
+          location.metadata.brightpearl_warehouse_id
+        ) {
+          warehouse = location.metadata.brightpearl_warehouse_id
+        }
       }
+
+      const variant = await this.productVariantService_.retrieve(variant_id)
+
+      const getOrderFromReservationIds = async (reservationIds) => {
+        const [reservationItems] =
+          await this.inventoryService_.listReservationItems({
+            id: reservationIds,
+          })
+
+        const reservationItemsWithLineItemIds = reservationItems.filter(
+          (item) => item.line_item_id
+        )
+
+        if (!reservationItemsWithLineItemIds.length) {
+          return
+        }
+
+        const lineItems = await this.lineItemService_.list({
+          id: reservationItemsWithLineItemIds.map((item) => item.line_item_id),
+        })
+
+        const orderId = lineItems.find((item) => item.order_id)?.order_id
+
+        if (orderId) {
+          return [await this.orderService_.retrieve(orderId), lineItems[0]]
+        }
+      }
+
+      const [order, lineItem] = await getOrderFromReservationIds(
+        reservationItems
+      )
+
+      if (!order.metadata.brightpearl_sales_order_id) {
+        this.attemptRetryEvent(
+          "product_variant_inventory.reservation_created",
+          eventData,
+          "Cannot create a brightpearl resrvation without a brightpearl order"
+        )
+
+        return
+      }
+
+      const bpProduct = await this.retrieveProductBySKU(variant.sku)
+      const bpOrder = await client.orders.retrieve(
+        order.metadata.brightpearl_sales_order_id
+      )
+
+      const bpOrderRow = bpOrder.rows.find(
+        (row) => row.externalRef === lineItem.id
+      )
+
+      const updatePayload = {
+        products: [
+          {
+            productId: bpProduct.productId,
+            salesOrderRowId: bpOrderRow.id,
+            quantity,
+          },
+        ],
+      }
+
+      let reservation = await client.warehouses.retrieveReservation(
+        order.metadata.brightpearl_sales_order_id
+      )
+
+      if (!reservation) {
+        order.rows = updatePayload.products.map((p) => {
+          return {
+            productId: p.productId,
+            id: p.salesOrderRowId,
+            quantity: p.quantity,
+          }
+        })
+
+        reservation = await client.warehouses.createReservation(
+          { ...order, id: order.metadata.brightpearl_sales_order_id },
+          warehouse
+        )
+
+        if (!reservation?.errors) {
+          return reservation
+        }
+
+        reservation = await client.warehouses.retrieveReservation(
+          order.metadata.brightpearl_sales_order_id
+        )
+
+        if (!reservation) {
+          this.attemptRetryEvent(
+            "product_variant_inventory.reservation_created",
+            eventData,
+            "Could not create reservation for order with id: " +
+              order.metadata.brightpearl_sales_order_id
+          )
+
+          return
+        }
+      }
+
+      updatePayload.products.push(
+        ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
+          productId: value.productId,
+          quantity: value.quantity,
+          salesOrderRowId: key,
+        }))
+      )
+
+      return await client.warehouses.updateReservation(
+        order.metadata.brightpearl_sales_order_id,
+        updatePayload
+      )
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  }
+
+  attemptRetryEvent(eventName, eventData, errorMessage) {
+    if ((eventData.retries || 0) > 3) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, errorMessage)
     }
 
-    const bpProduct = await this.retrieveProductBySKU(variant.sku)
-
-    const payload = {
-      products: [
-        {
-          productId: bpProduct.id,
-          quantity,
-        },
-      ],
+    const event = {
+      ...eventData,
+      retries: 1 + (eventData.retries || 0),
     }
 
-    return client.warehouses.updateReservation(order.id, payload)
-
-    // .then(async (salesOrderId) => {
-    //   const order = await client.orders.retrieve(salesOrderId)
-    // await client.warehouses.createReservation(order, warehouse).catch((err) => {
-    // console.log("Failed to allocate for order:", salesOrderId)
-    // })
-    //   return salesOrderId
-    // })
+    this.eventBusService_.emit(
+      "product_variant_inventory.reservation_created",
+      event
+    )
   }
 
   async createSalesCredit(fromOrder, fromReturn) {
@@ -555,91 +673,88 @@ class BrightpearlService extends BaseService {
   }
 
   async createSalesOrder(fromOrderId) {
-    const fromOrder = await this.orderService_.retrieve(fromOrderId, {
-      select: [
-        "total",
-        "subtotal",
-        "shipping_total",
-        "gift_card_total",
-        "discount_total",
-      ],
-      relations: [
-        "region",
-        "shipping_address",
-        "billing_address",
-        "shipping_methods",
-        "payments",
-        "sales_channel",
-      ],
-    })
-
-    const client = await this.getClient()
-    let customer = await this.retrieveCustomerByEmail(fromOrder.email)
-
-    // All sales orders must have a customer
-    if (!customer) {
-      customer = await this.createCustomer(fromOrder)
-    }
-
-    const authData = await this.getAuthData()
-
-    const { shipping_address } = fromOrder
-    const order = {
-      currency: {
-        code: fromOrder.currency_code.toUpperCase(),
-      },
-      ref: fromOrder.display_id,
-      externalRef: fromOrder.id,
-      channelId:
-        fromOrder.sales_channel?.metadata?.bp_id ||
-        this.options.channel_id ||
-        `1`,
-      installedIntegrationInstanceId: authData.installation_instance_id,
-      statusId: this.options.default_status_id || `3`,
-      customer: {
-        id: customer.contactId,
-        address: {
-          addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
-          addressLine1: shipping_address.address_1,
-          addressLine2: shipping_address.address_2,
-          postalCode: shipping_address.postal_code,
-          countryIsoCode: shipping_address.country_code,
-          telephone: shipping_address.phone,
-          email: fromOrder.email,
-        },
-      },
-      delivery: {
-        shippingMethodId: 0,
-        address: {
-          addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
-          addressLine1: shipping_address.address_1,
-          addressLine2: shipping_address.address_2,
-          postalCode: shipping_address.postal_code,
-          countryIsoCode: shipping_address.country_code,
-          telephone: shipping_address.phone,
-          email: fromOrder.email,
-        },
-      },
-      rows: await this.getBrightpearlRows(fromOrder),
-    }
-
-    // .then(async (salesOrderId) => {
-    //   const order = await client.orders.retrieve(salesOrderId)
-    //   await client.warehouses
-    //     .createReservation(order, this.options.warehouse)
-    //     .catch((err) => {
-    //       console.log("Failed to allocate for order:", salesOrderId)
-    //     })
-    //   return salesOrderId
-    // })
-
-    return client.orders.create(order).then(async (salesOrderId) => {
-      return await this.orderService_.update(fromOrder.id, {
-        metadata: {
-          brightpearl_sales_order_id: salesOrderId,
-        },
+    try {
+      const fromOrder = await this.orderService_.retrieve(fromOrderId, {
+        select: [
+          "total",
+          "subtotal",
+          "shipping_total",
+          "gift_card_total",
+          "discount_total",
+        ],
+        relations: [
+          "region",
+          "shipping_address",
+          "billing_address",
+          "shipping_methods",
+          "payments",
+          "sales_channel",
+        ],
       })
-    })
+
+      const client = await this.getClient()
+
+      let customer = await this.retrieveCustomerByEmail(fromOrder.email)
+
+      // All sales orders must have a customer
+      if (!customer) {
+        customer = await this.createCustomer(fromOrder)
+      }
+
+      const authData = await this.getAuthData()
+
+      const { shipping_address } = fromOrder
+
+      const order = {
+        currency: {
+          code: fromOrder.currency_code.toUpperCase(),
+        },
+        ref: fromOrder.display_id,
+        externalRef: fromOrder.id,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
+        installedIntegrationInstanceId: authData.installation_instance_id,
+        statusId: this.options.default_status_id || `3`,
+        customer: {
+          id: customer.contactId,
+          address: {
+            addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
+            addressLine1: shipping_address.address_1,
+            addressLine2: shipping_address.address_2,
+            postalCode: shipping_address.postal_code,
+            countryIsoCode: shipping_address.country_code,
+            telephone: shipping_address.phone,
+            email: fromOrder.email,
+          },
+        },
+        delivery: {
+          shippingMethodId: 0,
+          address: {
+            addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
+            addressLine1: shipping_address.address_1,
+            addressLine2: shipping_address.address_2,
+            postalCode: shipping_address.postal_code,
+            countryIsoCode: shipping_address.country_code,
+            telephone: shipping_address.phone,
+            email: fromOrder.email,
+          },
+        },
+        rows: await this.getBrightpearlRows(fromOrder),
+      }
+
+      return client.orders.create(order).then(async (salesOrderId) => {
+        return await this.orderService_.update(fromOrder.id, {
+          metadata: {
+            brightpearl_sales_order_id: salesOrderId,
+          },
+        })
+      })
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
   }
 
   async createSwapPayment(fromSwapId) {

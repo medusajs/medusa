@@ -49,7 +49,7 @@ class OrderSubscriber {
     eventBusService.subscribe("swap.received", this.registerSwap)
 
     eventBusService.subscribe(
-      ProductVariantInventoryService.Events.RESERVATION_CREATED,
+      "product_variant_inventory.reservation_created",
       this.registerMedusaReservation
     )
   }
