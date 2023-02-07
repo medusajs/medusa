@@ -70,6 +70,8 @@
 
   /** Shadow **/
   --medusa-shadow-overlay: 0px 2px 16px rgba(0, 0, 0, 0.08);
+  --medusa-shadow-field-focused: 0px 0px 0px 4px #EDE9FE;
+  --medusa-shadow-button-focused: 0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF;
 
   /** Typography **/
   --medusa-body-regular-size: 14px;
@@ -140,4 +142,6 @@ html[data-theme="dark"] {
 
   /** Shadow **/
   --medusa-shadow-overlay: 0px 2px 16px rgba(0, 0, 0, 0.32);
+  --medusa-shadow-field-focused: 0px 0px 0px 4px #2C2250;
+  --medusa-shadow-button-focused: 0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF;
 }

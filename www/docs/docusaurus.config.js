@@ -62,35 +62,45 @@ const config = {
       },
       items: [
         {
+          type: 'search',
+          position: 'left',
+        },
+        {
           type: "docSidebar",
           sidebarId: "docsSidebar",
-          label: "Docs"
+          label: "Docs",
+          position: "right"
         },
         {
           type: "docSidebar",
           sidebarId: "userGuideSidebar",
-          label: "User Guide"
+          label: "User Guide",
+          position: "right"
         },
         {
           href: "/api/store",
           label: "Store API",
           prependBaseUrlToHref: true,
-          target: '_blank'
+          target: '_blank',
+          position: "right"
         },
         {
           href: "/api/admin",
           label: "Admin API",
           prependBaseUrlToHref: true,
-          target: '_blank'
-        },
-        {
-          href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
-          position: "right",
-          label: "Report an Issue",
-          className: "right-divider"
-        },
+          target: '_blank',
+          position: "right"
+        }
       ],
     },
+    navbarActions: [
+      {
+        type: "link",
+        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
+        title: "Report an Issue",
+        icon: "report"
+      }
+    ],
     footer: {
       logo: {
         alt: "Medusa",
