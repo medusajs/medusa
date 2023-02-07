@@ -1,6 +1,6 @@
 import { isEmpty, isEqual } from "lodash"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager, In } from "typeorm"
+import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
@@ -2604,6 +2604,7 @@ class CartService extends TransactionBaseService {
       .withTransaction(transactionManager)
       .delete({
         item_id: nonReturnLineIDs,
+        discount_id: Not(IsNull()),
       })
 
     // potentially create/update line item adjustments
