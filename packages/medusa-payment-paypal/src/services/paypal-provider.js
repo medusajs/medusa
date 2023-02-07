@@ -199,7 +199,6 @@ class PayPalProviderService extends PaymentService {
         currency_code = region.currency_code
       }
 
-      console.log(cart)
       const request = new PayPal.orders.OrdersPatchRequest(sessionData.id)
       request.requestBody([
         {
