@@ -88,7 +88,7 @@ class PayPalProviderService extends PaymentService {
    * @returns {object} the data to be stored with the payment session.
    */
   async createPayment(cart) {
-    let { region_id, resource_id, currency_code } = cart
+    let { id, region_id, resource_id, currency_code, total } = cart
 
     if (!currency_code) {
       const region = await this.regionService_.retrieve(region_id)
