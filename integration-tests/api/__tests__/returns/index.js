@@ -165,7 +165,9 @@ describe("/admin/orders", () => {
      * shipping method will have 12.5 rate 1000 * 1.125 = 1125
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(75)
-    expect(response.data.order.returns[0].shipping_method.tax_lines).toHaveLength(1)
+    expect(
+      response.data.order.returns[0].shipping_method.tax_lines
+    ).toHaveLength(1)
     expect(response.data.order.returns[0].shipping_method.tax_lines).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -358,14 +360,16 @@ const createReturnableOrder = async (dbConnection, options) => {
         fulfilled_quantity: options.shipped ? 2 : undefined,
         shipped_quantity: options.shipped ? 2 : undefined,
         unit_price: 1000,
-        adjustments: [
-          {
-            amount: 200,
-            discount_code: "TESTCODE",
-            description: "discount",
-            item_id: "test-item",
-          },
-        ],
+        adjustments: options.discount
+          ? [
+              {
+                amount: 200,
+                discount_code: "TESTCODE",
+                description: "discount",
+                item_id: "test-item",
+              },
+            ]
+          : [],
         tax_lines: [
           {
             name: "default",

@@ -20,7 +20,7 @@ export default (app, container) => {
     "/:id",
     transformQuery(GetPaymentCollectionsParams, {
       defaultFields: defaultPaymentCollectionFields,
-      defaultRelations: defaulPaymentCollectionRelations,
+      defaultRelations: defaultPaymentCollectionRelations,
       isList: false,
     }),
     middlewares.wrap(require("./get-payment-collection").default)
@@ -69,7 +69,7 @@ export const defaultPaymentCollectionFields = [
   "metadata",
 ]
 
-export const defaulPaymentCollectionRelations = ["region", "payment_sessions"]
+export const defaultPaymentCollectionRelations = ["region", "payment_sessions"]
 
 /**
  * @schema StorePaymentCollectionsRes
