@@ -441,7 +441,7 @@ export class Order extends BaseEntity {
  *     description: The claims associated with the order. Available if the relation `claims` is expanded.
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/Return"
+ *       $ref: "#/components/schemas/ClaimOrder"
  *   refunds:
  *     description: The refunds associated with the order. Available if the relation `refunds` is expanded.
  *     type: array
