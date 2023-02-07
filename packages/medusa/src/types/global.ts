@@ -16,6 +16,7 @@ declare global {
       listConfig: FindConfig<unknown>
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
+      allowedProperties: string[]
       errors: string[]
     }
   }
@@ -100,9 +101,20 @@ export type ModuleExports = {
   models?: Constructor<any>[]
 }
 
+type SessionOptions = {
+  name?: string
+  resave?: boolean
+  rolling?: boolean
+  saveUninitialized?: boolean
+  secret?: string
+  ttl?: number
+}
+
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string
+
+    session_options?: SessionOptions
 
     jwt_secret?: string
     cookie_secret?: string
