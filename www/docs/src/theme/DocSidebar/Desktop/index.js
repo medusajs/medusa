@@ -5,11 +5,8 @@ import Logo from '@theme/Logo';
 import CollapseButton from '@theme/DocSidebar/Desktop/CollapseButton';
 import Content from '@theme/DocSidebar/Desktop/Content';
 import styles from './styles.module.css';
-import DocSidebarItem from '@theme/DocSidebarItem';
-import SearchBar from '../../SearchBar';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import AnnouncementBar from '@theme/AnnouncementBar';
-import {useWindowSize} from '@docusaurus/theme-common';
 
 function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
   const {
@@ -17,11 +14,9 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
     docs: {
       sidebar: {hideable},
     },
-    sidebarFooter = [],
   } = useThemeConfig();
   const isBrowser = useIsBrowser()
   const sidebarRef = useRef(null)
-  const windowSize = useWindowSize();
 
   useEffect(() => {
     if (isBrowser && sidebarRef.current) {
@@ -54,24 +49,10 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
         hideOnScroll && styles.sidebarWithHideableNavbar,
         isHidden && styles.sidebarHidden,
       )}
-      ref={sidebarRef}>
-      {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo} />}
-      <div className={styles.sidebarSearchContainer}>
-        {windowSize !== 'mobile' && <SearchBar />}
-      </div>
+      ref={sidebarRef}>  
+      <Logo tabIndex={-1} className={styles.sidebarLogo} />
       <AnnouncementBar />
-      <Content path={path} sidebar={sidebar} />
-      {sidebarFooter.length > 0 && (
-        <ul className={
-          clsx(
-            styles.sidebarFooterList
-          )
-        }>
-          {sidebarFooter.map((item, index) => (
-            <DocSidebarItem key={index} item={item} index={index} level={1} />
-          ))}
-        </ul>
-      )}
+      <Content path={path} sidebar={sidebar} className="main-sidebar" />
       {hideable && <CollapseButton onClick={onCollapse} />}
     </div>
   );

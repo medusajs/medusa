@@ -67,6 +67,11 @@ html[data-theme="dark"] .navbar-github-link:before {
 
 
 @media screen and (min-width: 992px) {
+  .navbar {
+    width: calc(100% - var(--doc-sidebar-width));
+    margin-right: 0;
+    margin-left: auto;
+  }
   .navbar .right-divider {
     height: 100%;
   }
