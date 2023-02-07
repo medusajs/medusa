@@ -43,28 +43,33 @@ function applyPatch(node, schemaName) {
 function CircularPatch({ schemas = {}, verbose = false }) {
   const logs = []
   const patches = preparePatches(schemas)
-
+  const refPathPrefix = "#/components/schemas/"
+  const refPathPrefixLength = refPathPrefix.length
+  const refPathPrefixRegex = /#\/components\/schemas\/\w+/
   return {
     ref(ref, ctx, resolved) {
-      if (ctx.type.name.toLowerCase() === "schema") {
-        if (resolved?.location?.pointer) {
-          for (const patch of patches) {
-            if (resolved.location.pointer === patch.schemaPointer) {
-              const ctxSchemaPointer = ctx.location.pointer.match(
-                /#\/components\/schemas\/\w+/
-              )[0]
-              if (patch.schemaToPatchPointers.includes(ctxSchemaPointer)) {
-                applyPatch(ref)
-                if (verbose) {
-                  logs.push(
-                    `${ctxSchemaPointer.substring(
-                      "#/components/schemas/".length
-                    )} patch $ref to ${patch.schemaName}`
-                  )
-                }
-              }
-            }
-          }
+      if (
+        ctx.type.name.toLowerCase() !== "schema" ||
+        !resolved?.location?.pointer
+      ) {
+        return
+      }
+      for (const patch of patches) {
+        if (resolved.location.pointer !== patch.schemaPointer) {
+          continue
+        }
+        const ctxSchemaPointer =
+          ctx.location.pointer.match(refPathPrefixRegex)[0]
+        if (!patch.schemaToPatchPointers.includes(ctxSchemaPointer)) {
+          continue
+        }
+        applyPatch(ref)
+        if (verbose) {
+          logs.push(
+            `${ctxSchemaPointer.substring(refPathPrefixLength)} patch $ref to ${
+              patch.schemaName
+            }`
+          )
         }
       }
     },
