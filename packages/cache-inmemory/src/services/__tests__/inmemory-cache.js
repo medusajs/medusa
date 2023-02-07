@@ -8,22 +8,22 @@ const loggerMock = {
   error: jest.fn().mockReturnValue(console.log),
 }
 
+jest.setTimeout(40000)
+
 describe("InMemoryCacheService", () => {
   let inMemoryCache
   beforeAll(() => {
     jest.resetAllMocks()
   })
 
-  it("Creates a InMemoryCacheService", () => {
+  it("Creates an `InMemoryCacheService`", () => {
     inMemoryCache = new InMemoryCacheService(
       {
         manager: MockManager,
         logger: loggerMock,
       },
       {},
-      {
-        resources: "shared",
-      }
+      { resources: "shared" }
     )
   })
 
@@ -35,9 +35,7 @@ describe("InMemoryCacheService", () => {
           logger: loggerMock,
         },
         {},
-        {
-          resources: "isolated",
-        }
+        { resources: "isolated" }
       )
     } catch (error) {
       expect(error.message).toEqual(
@@ -53,9 +51,7 @@ describe("InMemoryCacheService", () => {
         logger: loggerMock,
       },
       {},
-      {
-        resources: "shared",
-      }
+      { resources: "shared" }
     )
 
     await inMemoryCache.set("cache-key", { data: "value" })
@@ -70,9 +66,7 @@ describe("InMemoryCacheService", () => {
         logger: loggerMock,
       },
       {},
-      {
-        resources: "shared",
-      }
+      { resources: "shared" }
     )
 
     await inMemoryCache.set("cache-key", { data: "value" })
@@ -89,15 +83,31 @@ describe("InMemoryCacheService", () => {
         logger: loggerMock,
       },
       {},
-      {
-        resources: "shared",
-      }
+      { resources: "shared" }
     )
 
     await inMemoryCache.set("cache-key", { data: "value" }, 1000)
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
 
     await new Promise((res) => setTimeout(res, 1000))
+
+    expect(await inMemoryCache.get("cache-key")).toEqual(null)
+  })
+
+  it("Removes data after default TTL if TTL params isn't passed", async () => {
+    inMemoryCache = new InMemoryCacheService(
+      {
+        manager: MockManager,
+        logger: loggerMock,
+      },
+      {},
+      { resources: "shared" }
+    )
+
+    await inMemoryCache.set("cache-key", { data: "value" })
+    expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
+
+    await new Promise((res) => setTimeout(res, 32000))
 
     expect(await inMemoryCache.get("cache-key")).toEqual(null)
   })

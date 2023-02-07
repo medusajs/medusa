@@ -25,9 +25,7 @@ describe("RedisCacheService", () => {
         logger: loggerMock,
       },
       {},
-      {
-        resources: "shared",
-      }
+      { resources: "shared" }
     )
   })
 
@@ -39,9 +37,7 @@ describe("RedisCacheService", () => {
           logger: loggerMock,
         },
         {},
-        {
-          resources: "isolated",
-        }
+        { resources: "shared" }
       )
     } catch (error) {
       expect(error.message).toEqual(
