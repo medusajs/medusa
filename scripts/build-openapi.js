@@ -56,7 +56,11 @@ swaggerInline(
     if (!isDryRun) {
       fs.writeFileSync("./docs/api/store-spec3.yaml", gen)
       exec(
-        "rm -rf docs/api/store/ && yarn run -- redocly split docs/api/store-spec3.yaml --outDir=docs/api/store/",
+        [
+          "rm -rf docs/api/store/",
+          "yarn run -- redocly bundle docs/api/store-spec3.yaml -o docs/api/store-spec3.yaml --config=docs-util/redocly/config.yaml",
+          "yarn run -- redocly split docs/api/store-spec3.yaml --outDir=docs/api/store/",
+        ].join(" && "),
         (error, stdout, stderr) => {
           if (error) {
             throw new Error(`error: ${error.message}`)
@@ -123,7 +127,11 @@ swaggerInline(
     if (!isDryRun) {
       fs.writeFileSync("./docs/api/admin-spec3.yaml", gen)
       exec(
-        "rm -rf docs/api/admin/ && yarn run -- redocly split docs/api/admin-spec3.yaml --outDir=docs/api/admin/",
+        [
+          "rm -rf docs/api/admin/",
+          "yarn run -- redocly bundle docs/api/admin-spec3.yaml -o docs/api/admin-spec3.yaml --config=docs-util/redocly/config.yaml",
+          "yarn run -- redocly split docs/api/admin-spec3.yaml --outDir=docs/api/admin/",
+        ].join(" && "),
         (error, stdout, stderr) => {
           if (error) {
             throw new Error(`error: ${error.message}`)
