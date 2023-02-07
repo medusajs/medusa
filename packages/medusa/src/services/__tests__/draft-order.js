@@ -1,6 +1,7 @@
 import { MockManager, MockRepository } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import DraftOrderService from "../draft-order"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -62,7 +63,7 @@ describe("DraftOrderService", () => {
           variant_id: "test-variant",
         })
       ),
-      create: jest.fn(),
+      create: jest.fn().mockImplementation((data) => data),
       withTransaction: function () {
         return this
       },
@@ -86,7 +87,9 @@ describe("DraftOrderService", () => {
       shipping_address_id: "test-shipping",
       billing_address_id: "test-billing",
       customer_id: "test-customer",
-      items: [{ variant_id: "test-variant", quantity: 2, metadata: {} }],
+      items: [
+        { id: "test", variant_id: "test-variant", quantity: 2, metadata: {} },
+      ],
       shipping_methods: [
         {
           option_id: "test-option",
@@ -136,6 +139,7 @@ describe("DraftOrderService", () => {
       cartService,
       shippingOptionService,
       lineItemService,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       productVariantService,
       draftOrderRepository,
       addressRepository,
@@ -147,11 +151,14 @@ describe("DraftOrderService", () => {
     })
 
     it("creates a draft order", async () => {
+      const cartId = "test-cart"
+      const title = "test-item"
+
       await draftOrderService.create(testOrder)
 
       expect(draftOrderRepository.create).toHaveBeenCalledTimes(1)
       expect(draftOrderRepository.create).toHaveBeenCalledWith({
-        cart_id: "test-cart",
+        cart_id: cartId,
       })
 
       expect(cartService.create).toHaveBeenCalledTimes(1)
@@ -183,18 +190,38 @@ describe("DraftOrderService", () => {
         {
           metadata: {},
           unit_price: undefined,
-          cart: expect.objectContaining({
-            id: "test-cart",
-          }),
         }
       )
 
       expect(lineItemService.create).toHaveBeenCalledTimes(1)
       expect(lineItemService.create).toHaveBeenCalledWith({
-        cart_id: "test-cart",
-        title: "test-item",
+        cart_id: cartId,
+        title,
         variant_id: "test-variant",
       })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustmentForLineItem
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustmentForLineItem
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: cartId,
+          items: [
+            expect.objectContaining({
+              title,
+              variant_id: testOrder.items[0].variant_id,
+              cart_id: cartId,
+            }),
+          ],
+        }),
+        expect.objectContaining({
+          title,
+          variant_id: testOrder.items[0].variant_id,
+          cart_id: cartId,
+        })
+      )
     })
 
     it("fails on missing region", async () => {
@@ -213,7 +240,7 @@ describe("DraftOrderService", () => {
       await draftOrderService.create({
         region_id: "test-region",
         items: [],
-        shipping_methods: []
+        shipping_methods: [],
       })
     })
   })
@@ -262,6 +289,7 @@ describe("DraftOrderService", () => {
       cartService: undefined,
       shippingOptionService: undefined,
       lineItemService: undefined,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       productVariantService: undefined,
       draftOrderRepository,
       addressRepository: undefined,
