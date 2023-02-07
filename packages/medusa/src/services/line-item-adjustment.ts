@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { EntityManager, FindOperator, In } from "typeorm"
 
 import { Cart, DiscountRuleType, LineItem, LineItemAdjustment } from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
@@ -153,7 +153,12 @@ class LineItemAdjustmentService extends TransactionBaseService {
    * @return the result of the delete operation
    */
   async delete(
-    selectorOrIds: string | string[] | FilterableLineItemAdjustmentProps
+    selectorOrIds:
+      | string
+      | string[]
+      | (FilterableLineItemAdjustmentProps & {
+          discount_id?: FindOperator<string | null>
+        })
   ): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
