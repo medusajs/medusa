@@ -48,7 +48,12 @@
 
   /* Sidebar */
   --doc-sidebar-width: 320px !important;
+  --doc-sidebar-padding: 24px;
   --ifm-menu-active: #111827;
+  --ifm-menu-link-padding-vertical: 6px;
+  --ifm-menu-link-padding-horizontal: 16px;
+  --ifm-menu-color-background-hover: var(--medusa-bg-subtle-hover);
+  --ifm-menu-color-background-active: var(--medusa-bg-subtle-pressed);
 
   /* Docs Page */
   --ifm-docs-page-max-width: var(--ifm-container-width-xl);
@@ -178,7 +183,7 @@ html[data-theme="dark"] {
   --ifm-background-surface-color: var(--medusa-bg-base);
 
   /* Sidebar */
-  --ifm-menu-color: rgba(255, 255, 255, 0.5);
+  --ifm-menu-color: var(--medusa-text-secondary);
   --ifm-menu-active: #fff;
 
   /* Color Mode toggler */

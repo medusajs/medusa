@@ -9,7 +9,6 @@ import {
 import {useKeyboardNavigation} from '@docusaurus/theme-common/internal';
 import SkipToContent from '@theme/SkipToContent';
 import Navbar from '@theme/Navbar';
-import Footer from '@theme/Footer';
 import LayoutProvider from '@theme/Layout/Provider';
 import ErrorPageContent from '@theme/ErrorPageContent';
 import styles from './styles.module.css';
@@ -20,7 +19,7 @@ import StructuredDataSearchbox from '../StructuredData/Searchbox';
 export default function Layout(props) {
   const {
     children,
-    noFooter,
+    // noFooter,
     wrapperClassName,
     // Not really layout-related, but kept for convenience/retro-compatibility
     title,
@@ -70,8 +69,6 @@ export default function Layout(props) {
           {children}
         </ErrorBoundary>
       </div>
-
-      {!noFooter && <Footer />}
     </LayoutProvider>
   );
 }

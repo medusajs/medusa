@@ -189,6 +189,11 @@ const config = {
     reportCodeLinkPrefix: 'https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml',
     footerFeedback: {
       event: 'survey'
+    },
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true
+      }
     }
   },
   presets: [
