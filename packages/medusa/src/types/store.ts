@@ -29,7 +29,7 @@ export type UpdateStoreInput = {
  *       fulfillment_providers:
  *         $ref: "#/components/schemas/FulfillmentProvider"
  *       feature_flags:
- *         $ref: "#/components/schemas/AdminFeatureFlagsResponse"
+ *         $ref: "#/components/schemas/FeatureFlagsResponse"
  *       modules:
  *         type: array
  *         items:
