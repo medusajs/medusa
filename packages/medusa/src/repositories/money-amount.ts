@@ -5,6 +5,7 @@ import {
   In,
   IsNull,
   Not,
+  ObjectLiteral,
   Repository,
   WhereExpressionBuilder,
 } from "typeorm"
@@ -48,30 +49,74 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return pricesNotInPricesPayload
   }
 
+  /*
+  const existingPricesIdsQuery = this.createQueryBuilder()
+      .select("id")
+      .where({
+        variant_id: variantId,
+        price_list_id: IsNull(),
+      })
+      .andWhere(
+        new Brackets((qb) => {
+          prices.forEach((price) => {
+            qb.orWhere(
+              new Brackets((qb) => {
+                qb.where({
+                  currency_code: price.currency_code,
+                  region_id: IsNull(),
+                }).orWhere({ region_id: price.region_id })
+              })
+            )
+          })
+        })
+      )
+
+    await this.createQueryBuilder()
+      .delete()
+      .where({
+        variant_id: variantId,
+        price_list_id: IsNull(),
+      })
+      .andWhere(`id NOT IN (${existingPricesIdsQuery.getQuery()})`)
+      .setParameters(existingPricesIdsQuery.getParameters())
+      .execute()
+   */
+
   public async deleteVariantPricesNotIn(
     variantId: string,
     prices: Price[]
   ): Promise<void> {
-    const currencyCodes = prices.map((p) => p.currency_code).filter((v) => v)
-    const regionIds = prices.map((p) => p.region_id).filter((v) => v)
-
-    const constraints = {
+    const where = {
       variant_id: variantId,
       price_list_id: IsNull(),
     }
 
+    const orWhere: ObjectLiteral[] = []
+
+    for (const price of prices) {
+      if (price.currency_code) {
+        orWhere.push(
+          {
+            currency_code: Not(price.currency_code),
+          },
+          {
+            region_id: Not(IsNull()),
+            currency_code: price.currency_code,
+          }
+        )
+      }
+
+      if (price.region_id) {
+        orWhere.push({
+          region_id: Not(price.region_id),
+        })
+      }
+    }
+
     await this.createQueryBuilder()
       .delete()
-      .where([
-        {
-          ...constraints,
-          currency_code: Not(In(currencyCodes)),
-        },
-        {
-          ...constraints,
-          region_id: Not(In(regionIds)),
-        },
-      ])
+      .where(where)
+      .andWhere(orWhere)
       .execute()
   }
 
