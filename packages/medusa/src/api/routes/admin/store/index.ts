@@ -1,7 +1,7 @@
 import { Router } from "express"
 import { PaymentProvider, TaxProvider } from "./../../../../"
 import middlewares from "../../../middlewares"
-import { ExtendedStore } from "../../../../types/store"
+import { ExtendedStoreDTO } from "../../../../types/store"
 
 const route = Router()
 
@@ -38,7 +38,7 @@ export default (app) => {
  *     $ref: "#/components/schemas/ExtendedStoreDTO"
  */
 export type AdminStoresRes = {
-  store: ExtendedStore
+  store: ExtendedStoreDTO
 }
 
 /**

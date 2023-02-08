@@ -1,12 +1,9 @@
-import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
 import {
   FulfillmentProviderService,
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
-import { FeatureFlagsResponse } from "../../../../types/feature-flags"
-import { ModulesResponse } from "../../../../types/modules"
-import { ExtendedStore } from "../../../../types/store"
+import { ExtendedStoreDTO } from "../../../../types/store"
 import { FlagRouter } from "../../../../utils/flag-router"
 import { ModulesHelper } from "../../../../utils/module-helper"
 
@@ -78,7 +75,7 @@ export default async (req, res) => {
 
   const data = (await storeService.retrieve({
     relations,
-  })) as ExtendedStore
+  })) as ExtendedStoreDTO
 
   data.feature_flags = featureFlagRouter.listFlags()
   data.modules = modulesHelper.modules
