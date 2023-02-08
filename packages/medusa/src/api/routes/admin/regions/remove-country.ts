@@ -20,6 +20,8 @@ import RegionService from "../../../../services/region"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codegen:
+ *   method: deleteCountry
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -47,10 +49,7 @@ import RegionService from "../../../../services/region"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/Region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

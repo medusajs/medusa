@@ -7,16 +7,24 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService, ProductVariantService } from "../../../../services"
-
 import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
+import {
+  ProductService,
+  ProductVariantService,
+  ProductVariantInventoryService,
+} from "../../../../services"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { IInventoryService } from "../../../../interfaces"
 import {
   CreateProductVariantInput,
   ProductVariantPricesCreateReq,
 } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
+
+import { EntityManager } from "typeorm"
+
+import { createVariantTransaction } from "./transaction/create-product-variant"
 
 /**
  * @oas [post] /products/{id}/variants
@@ -31,6 +39,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductsProductVariantsReq"
+ * x-codegen:
+ *   method: createVariant
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -89,10 +99,7 @@ import { validator } from "../../../../utils/validator"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             product:
- *               $ref: "#/components/schemas/Product"
+ *           $ref: "#/components/schemas/AdminProductsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -106,6 +113,7 @@ import { validator } from "../../../../utils/validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
+
 export default async (req, res) => {
   const { id } = req.params
 
@@ -114,18 +122,30 @@ export default async (req, res) => {
     req.body
   )
 
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-  const productService: ProductService = req.scope.resolve("productService")
 
   const manager: EntityManager = req.scope.resolve("manager")
+
   await manager.transaction(async (transactionManager) => {
-    return await productVariantService
-      .withTransaction(transactionManager)
-      .create(id, validated as CreateProductVariantInput)
+    await createVariantTransaction(
+      {
+        manager: transactionManager,
+        inventoryService,
+        productVariantInventoryService,
+        productVariantService,
+      },
+      id,
+      validated as CreateProductVariantInput
+    )
   })
 
+  const productService: ProductService = req.scope.resolve("productService")
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
@@ -178,6 +198,7 @@ class ProductVariantOptionReq {
  *   manage_inventory:
  *     description: Whether Medusa should keep track of the inventory for this Product Variant.
  *     type: boolean
+ *     default: true
  *   weight:
  *     description: The wieght of the Product Variant.
  *     type: number
@@ -277,7 +298,7 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsBoolean()
   @IsOptional()
-  manage_inventory?: boolean
+  manage_inventory?: boolean = true
 
   @IsNumber()
   @IsOptional()

@@ -156,10 +156,42 @@ export const defaultStoreCartRelations = [
   "discounts.rule",
 ]
 
+/**
+ * @schema StoreCartsRes
+ * type: object
+ * properties:
+ *   cart:
+ *     $ref: "#/components/schemas/Cart"
+ */
 export type StoreCartsRes = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
 }
 
+/**
+ * @schema StoreCompleteCartRes
+ * type: object
+ * properties:
+ *   type:
+ *     type: string
+ *     description: The type of the data property.
+ *     enum: [order, cart, swap]
+ *   data:
+ *     type: object
+ *     description: The data of the result object. Its type depends on the type field.
+ *     oneOf:
+ *       - type: object
+ *         allOf:
+ *           - description: Cart was successfully authorized and order was placed successfully.
+ *           - $ref: "#/components/schemas/Order"
+ *       - type: object
+ *         allOf:
+ *           - description: Cart was successfully authorized but requires further actions.
+ *           - $ref: "#/components/schemas/Cart"
+ *       - type: object
+ *         allOf:
+ *           - description: When cart is used for a swap and it has been completed successfully.
+ *           - $ref: "#/components/schemas/Swap"
+ */
 export type StoreCompleteCartRes =
   | {
       type: "cart"

@@ -52,10 +52,24 @@ export const defaultPaymentFields = [
   "metadata",
 ]
 
+/**
+ * @schema AdminPaymentRes
+ * type: object
+ * properties:
+ *   payment:
+ *     $ref: "#/components/schemas/Payment"
+ */
 export type AdminPaymentRes = {
   payment: Payment
 }
 
+/**
+ * @schema AdminRefundRes
+ * type: object
+ * properties:
+ *   refund:
+ *     $ref: "#/components/schemas/Refund"
+ */
 export type AdminRefundRes = {
   refund: Refund
 }

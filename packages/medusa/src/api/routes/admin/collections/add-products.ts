@@ -17,6 +17,8 @@ import ProductCollectionService from "../../../../services/product-collection"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostProductsToCollectionReq"
+ * x-codegen:
+ *   method: addProducts
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

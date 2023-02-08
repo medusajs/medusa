@@ -9,6 +9,8 @@ import { ProductService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -36,19 +38,7 @@ import { ProductService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Product.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: product
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminProductsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

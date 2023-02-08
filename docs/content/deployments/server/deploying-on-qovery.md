@@ -1,5 +1,6 @@
 ---
 description: 'Learn step-by-step.'
+addHowToData: true
 ---
 
 # Deploy Your Medusa Server on Qovery

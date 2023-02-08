@@ -10,6 +10,9 @@ export class StockLocationAddress extends SoftDeletableEntity {
   address_2: string | null
 
   @Column({ type: "text", nullable: true })
+  company: string | null
+
+  @Column({ type: "text", nullable: true })
   city: string | null
 
   @Index()

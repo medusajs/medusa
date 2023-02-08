@@ -9,6 +9,8 @@ import NoteService from "../../../../services/note"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Note to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -36,19 +38,7 @@ import NoteService from "../../../../services/note"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Note.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: note
- *             deleted:
- *               type: boolean
- *               description: Whether or not the Note was deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminNotesDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

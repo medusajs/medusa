@@ -17,6 +17,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostPublishableApiKeysPublishableApiKeyReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -50,10 +52,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             publishable_api_key:
- *               $ref: "#/components/schemas/PublishableApiKey"
+ *           $ref: "#/components/schemas/AdminPublishableApiKeysRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

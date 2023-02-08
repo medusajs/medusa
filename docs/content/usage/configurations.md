@@ -1,4 +1,8 @@
-# Configure your Server
+---
+description: 'Learn about the different configurations available in a Medusa server. This includes configurations related to the database, CORS, plugins, redis, and more.'
+---
+
+# Configure Medusa Server
 
 In this document, you’ll learn what configurations you can add to your Medusa server and how to add them.
 
@@ -24,7 +28,7 @@ By default, Medusa loads environment variables from the system’s environment v
 
 :::info
 
-This change in how environment variables are loaded was introduced in version 1.3.0. You can learn more in the [upgrade guide for version 1.3.0](../advanced/backend/upgrade-guides/1-3-0.md).
+This change in how environment variables are loaded was introduced in version 1.3.0. You can learn more in the [upgrade guide for version 1.3.0](../advanced/backend/upgrade-guides/medusa-core/1-3-0.md).
 
 :::
 
@@ -72,14 +76,11 @@ module.exports = {
     // ...other configurations
     database_type: "postgres",
     database_url: DATABASE_URL,
-    database_schema: process.env.DATABASE_SCHEMA, // optional
   },
 }
 ```
 
 Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
-
-You can optionally set the `database_schema` option. By default, its value is `public`.
 
 It's recommended to set the Database URL as an environment variable:
 
@@ -88,6 +89,16 @@ DATABASE_URL=<YOUR_DATABASE_URL>
 ```
 
 Where `<YOUR_DATABASE_URL>` is the URL of your PostgreSQL database.
+
+### Changing PostgreSQL Schema
+
+By default, the `public` schema is used in PostgreSQL. You can change it to use a custom schema by passing the `search_path` option in the database URL. For example:
+
+```bash
+postgres://localhost/store?options=-c search_path=test
+```
+
+Where `test` is the name of the database schema that should be used instead of `public`.
 
 ### Changing Database Type
 

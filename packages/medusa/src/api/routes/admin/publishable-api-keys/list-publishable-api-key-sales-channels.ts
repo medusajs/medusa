@@ -13,6 +13,9 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  * parameters:
  *   - (path) id=* {string} The ID of the Publishable Api Key.
  *   - (query) q {string} Query used for searching sales channels' names and descriptions.
+ * x-codegen:
+ *   method: listSalesChannels
+ *   queryParams: GetPublishableApiKeySalesChannelsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -40,11 +43,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *          properties:
- *             sales_channels:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/SalesChannel"
+ *           $ref: "#/components/schemas/AdminPublishableApiKeysListSalesChannelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

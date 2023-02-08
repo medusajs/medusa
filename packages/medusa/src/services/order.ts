@@ -17,14 +17,14 @@ import {
   PaymentStatus,
   Return,
   Swap,
-  TrackingLink,
+  TrackingLink
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
-  FulFillmentItemType,
+  FulFillmentItemType
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
@@ -48,7 +48,7 @@ import {
   ShippingOptionService,
   ShippingProfileService,
   TaxProviderService,
-  TotalsService,
+  TotalsService
 } from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -903,8 +903,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      order.billing_address = addrRepo.create({ ...address })
     }
   }
 
@@ -941,8 +940,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      order.shipping_address = addrRepo.create({ ...address })
     }
   }
 
@@ -1146,23 +1144,13 @@ class OrderService extends TransactionBaseService {
       const inventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
 
-      const previouslyFulfilledQuantities = order.fulfillments.reduce(
-        (acc, f) => {
-          return f.items.reduce((acc, item) => {
-            acc[item.item_id] = (acc[item.item_id] || 0) + item.quantity
-            return acc
-          }, acc)
-        },
-        {}
-      )
-
       await Promise.all(
         order.items.map(async (item) => {
           if (item.variant_id) {
             return await inventoryServiceTx.deleteReservationsByLineItem(
               item.id,
               item.variant_id,
-              item.quantity - (previouslyFulfilledQuantities[item.id] || 0)
+              item.quantity
             )
           }
         })

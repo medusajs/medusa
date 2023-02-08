@@ -46,10 +46,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              order:
-                $ref: ../components/schemas/Order.yaml
+            $ref: ../components/schemas/StoreOrdersRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '404':

@@ -12,6 +12,8 @@ import RegionService from "../../../../services/region"
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
  *   - (path) provider_id=* {string} The ID of the Payment Provider.
+ * x-codegen:
+ *   method: deletePaymentProvider
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -39,10 +41,7 @@ import RegionService from "../../../../services/region"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/Region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

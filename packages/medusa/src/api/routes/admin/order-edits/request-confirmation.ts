@@ -4,11 +4,11 @@ import { PaymentCollectionType } from "../../../../models"
 import {
   OrderEditService,
   OrderService,
-  PaymentCollectionService
+  PaymentCollectionService,
 } from "../../../../services"
 import {
   defaultOrderEditFields,
-  defaultOrderEditRelations
+  defaultOrderEditRelations,
 } from "../../../../types/order-edit"
 
 /**
@@ -19,6 +19,8 @@ import {
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to request confirmation from.
+ * x-codegen:
+ *   method: requestConfirmation
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -46,10 +48,7 @@ import {
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             order_edit:
- *               $ref: "#/components/schemas/OrderEdit"
+ *           $ref: "#/components/schemas/AdminOrderEditsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -85,7 +84,7 @@ export default async (req, res) => {
       requestedBy: loggedInUser,
     })
 
-    const total = await orderEditServiceTx.getTotals(orderEdit.id)
+    const total = await orderEditServiceTx.decorateTotals(orderEdit)
 
     if (total.difference_due > 0) {
       const order = await orderService

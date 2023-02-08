@@ -6,6 +6,8 @@ import { TaxProviderService } from "../../../../services"
  * summary: "List Tax Providers"
  * description: "Retrieves the configured Tax Providers"
  * x-authenticated: true
+ * x-codegen:
+ *   method: listTaxProviders
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,12 +35,7 @@ import { TaxProviderService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             tax_providers:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/TaxProvider"
+ *           $ref: "#/components/schemas/AdminTaxProvidersList"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

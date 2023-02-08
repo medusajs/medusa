@@ -58,7 +58,8 @@ class ProductCategoryService extends TransactionBaseService {
       skip: 0,
       take: 100,
       order: { created_at: "DESC" },
-    }
+    },
+    treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
     const manager = this.transactionManager_ ?? this.manager_
     const productCategoryRepo = manager.getCustomRepository(
@@ -75,7 +76,11 @@ class ProductCategoryService extends TransactionBaseService {
 
     const query = buildQuery(selector_, config)
 
-    return await productCategoryRepo.getFreeTextSearchResultsAndCount(query, q)
+    return await productCategoryRepo.getFreeTextSearchResultsAndCount(
+      query,
+      q,
+      treeSelector
+    )
   }
 
   /**
@@ -210,6 +215,45 @@ class ProductCategoryService extends TransactionBaseService {
         .emit(ProductCategoryService.Events.DELETED, {
           id: productCategory.id,
         })
+    })
+  }
+
+  /**
+   * Add a batch of product to a product category
+   * @param productCategoryId - The id of the product category on which to add the products
+   * @param productIds - The products ids to attach to the product category
+   * @return the product category on which the products have been added
+   */
+  async addProducts(
+    productCategoryId: string,
+    productIds: string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository: ProductCategoryRepository =
+        manager.getCustomRepository(this.productCategoryRepo_)
+
+      await productCategoryRepository.addProducts(productCategoryId, productIds)
+    })
+  }
+
+  /**
+   * Remove a batch of product from a product category
+   * @param productCategoryId - The id of the product category on which to remove the products
+   * @param productIds - The products ids to remove from the product category
+   * @return the product category on which the products have been removed
+   */
+  async removeProducts(
+    productCategoryId: string,
+    productIds: string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productCategoryRepository: ProductCategoryRepository =
+        manager.getCustomRepository(this.productCategoryRepo_)
+
+      await productCategoryRepository.removeProducts(
+        productCategoryId,
+        productIds
+      )
     })
   }
 }

@@ -16,6 +16,9 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - (query) offset=0 {number} The offset of items in response
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: list
+ *   queryParams: GetPublishableApiKeysParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -43,11 +46,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             publishable_api_keys:
- *               type: array
- *               $ref: "#/components/schemas/PublishableApiKey"
+ *           $ref: "#/components/schemas/AdminPublishableApiKeysListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -98,13 +98,73 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema AdminOrderEditsRes
+ * type: object
+ * properties:
+ *   order_edit:
+ *     $ref: "#/components/schemas/OrderEdit"
+ */
 export type AdminOrderEditsRes = {
   order_edit: OrderEdit
 }
+
+/**
+ * @schema AdminOrderEditsListRes
+ * type: object
+ * properties:
+ *   order_edits:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/OrderEdit"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminOrderEditsListRes = PaginatedResponse & {
   order_edits: OrderEdit[]
 }
+
+/**
+ * @schema AdminOrderEditDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Order Edit.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: order_edit
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the Order Edit was deleted.
+ *     default: true
+ */
 export type AdminOrderEditDeleteRes = DeleteResponse
+
+/**
+ * @schema AdminOrderEditItemChangeDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Order Edit Item Change.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: item_change
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the Order Edit Item Change was deleted.
+ *     default: true
+ */
 export type AdminOrderEditItemChangeDeleteRes = {
   id: string
   object: "item_change"
