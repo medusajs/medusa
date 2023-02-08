@@ -2062,126 +2062,141 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
-      retrieveByCode: jest.fn().mockImplementation((code) => {
-        if (code === "US10") {
-          return Promise.resolve({
-            regions: [{ id: IdMap.getId("bad") }],
-          })
+      listByCodes: jest.fn().mockImplementation((code) => {
+        const codes = Array.isArray(code) ? code : [code]
+
+        const data = []
+
+        for (const code of codes) {
+          if (code === "US10") {
+            data.push({
+              regions: [{ id: IdMap.getId("bad") }],
+            })
+          }
+          if (code === "limit-reached") {
+            data.push({
+              id: IdMap.getId("limit-reached"),
+              code: "limit-reached",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {},
+              usage_count: 2,
+              usage_limit: 2,
+            })
+          }
+          if (code === "null-count") {
+            data.push({
+              id: IdMap.getId("null-count"),
+              code: "null-count",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {},
+              usage_count: null,
+              usage_limit: 2,
+            })
+          }
+          if (code === "FREESHIPPING") {
+            data.push({
+              id: IdMap.getId("freeship"),
+              code: "FREESHIPPING",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "free_shipping",
+              },
+            })
+          }
+          if (code === "EarlyDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(1),
+              ends_at: getOffsetDate(10),
+            })
+          }
+          if (code === "ExpiredDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              ends_at: getOffsetDate(-1),
+              starts_at: getOffsetDate(-10),
+            })
+          }
+          if (code === "ExpiredDynamicDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              is_dynamic: true,
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(-1),
+            })
+          }
+          if (code === "ExpiredDynamicDiscountEndDate") {
+            data.push({
+              id: IdMap.getId("10off"),
+              is_dynamic: true,
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(-3),
+              valid_duration: "P0Y0M1D",
+            })
+          }
+          if (code === "ValidDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(10),
+            })
+          }
+          if (code === "ApplicableForCustomer") {
+            data.push({
+              id: "ApplicableForCustomer",
+              code: "ApplicableForCustomer",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                id: "test-rule",
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(10),
+            })
+          }
+
+          if (!data.length) {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+            })
+          }
         }
-        if (code === "limit-reached") {
-          return Promise.resolve({
-            id: IdMap.getId("limit-reached"),
-            code: "limit-reached",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {},
-            usage_count: 2,
-            usage_limit: 2,
-          })
+
+        if (Array.isArray(code)) {
+          return Promise.resolve(data)
         }
-        if (code === "null-count") {
-          return Promise.resolve({
-            id: IdMap.getId("null-count"),
-            code: "null-count",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {},
-            usage_count: null,
-            usage_limit: 2,
-          })
-        }
-        if (code === "FREESHIPPING") {
-          return Promise.resolve({
-            id: IdMap.getId("freeship"),
-            code: "FREESHIPPING",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "free_shipping",
-            },
-          })
-        }
-        if (code === "EarlyDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(1),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        if (code === "ExpiredDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            ends_at: getOffsetDate(-1),
-            starts_at: getOffsetDate(-10),
-          })
-        }
-        if (code === "ExpiredDynamicDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            is_dynamic: true,
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(-1),
-          })
-        }
-        if (code === "ExpiredDynamicDiscountEndDate") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            is_dynamic: true,
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(-3),
-            valid_duration: "P0Y0M1D",
-          })
-        }
-        if (code === "ValidDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        if (code === "ApplicableForCustomer") {
-          return Promise.resolve({
-            id: "ApplicableForCustomer",
-            code: "ApplicableForCustomer",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              id: "test-rule",
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        return Promise.resolve({
-          id: IdMap.getId("10off"),
-          code: "10%OFF",
-          regions: [{ id: IdMap.getId("good") }],
-          rule: {
-            type: "percentage",
-          },
-        })
+
+        return Promise.resolve(data[0])
       }),
       canApplyForCustomer: jest
         .fn()
@@ -2333,7 +2348,7 @@ describe("CartService", () => {
         discounts: [{ code: "10%OFF" }, { code: "FREESHIPPING" }],
       })
 
-      expect(discountService.retrieveByCode).toHaveBeenCalledTimes(2)
+      expect(discountService.listByCodes).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({

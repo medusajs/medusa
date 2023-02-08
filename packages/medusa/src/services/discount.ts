@@ -6,6 +6,7 @@ import {
   DeepPartial,
   EntityManager,
   ILike,
+  In,
   SelectQueryBuilder,
 } from "typeorm"
 import {
@@ -277,10 +278,10 @@ class DiscountService extends TransactionBaseService {
   }
 
   /**
-   * Gets a discount by discount code.
-   * @param {string} discountCode - discount code of discount to retrieve
-   * @param {Object} config - the config object containing query settings
-   * @return {Promise<Discount>} the discount document
+   * Gets the discount by discount code.
+   * @param discountCode - discount code of discount to retrieve
+   * @param config - the config object containing query settings
+   * @return the discount
    */
   async retrieveByCode(
     discountCode: string,
@@ -291,22 +292,47 @@ class DiscountService extends TransactionBaseService {
 
     const normalizedCode = discountCode.toUpperCase().trim()
 
-    let query = buildQuery({ code: normalizedCode, is_dynamic: false }, config)
-    let discount = await discountRepo.findOne(query)
+    const query = buildQuery({ code: normalizedCode }, config)
+    const discount = await discountRepo.findOne(query)
 
     if (!discount) {
-      query = buildQuery({ code: normalizedCode, is_dynamic: true }, config)
-      discount = await discountRepo.findOne(query)
-
-      if (!discount) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Discount with code ${discountCode} was not found`
-        )
-      }
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Discounts with code ${discountCode} was not found`
+      )
     }
 
     return discount
+  }
+
+  /**
+   * List all the discounts corresponding to the given codes
+   * @param discountCodes - discount codes of discounts to retrieve
+   * @param config - the config object containing query settings
+   * @return the discounts
+   */
+  async listByCodes(
+    discountCodes: string[],
+    config: FindConfig<Discount> = {}
+  ): Promise<Discount[]> {
+    const manager = this.manager_
+    const discountRepo = manager.getCustomRepository(this.discountRepository_)
+
+    const normalizedCodes = discountCodes.map((code) =>
+      code.toUpperCase().trim()
+    )
+
+    const query = buildQuery({ code: In(normalizedCodes) }, config)
+    const discounts = await discountRepo.find(query)
+
+    if (discounts?.length !== discountCodes.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Discounts with code [${normalizedCodes.join(", ")}] was not found`
+      )
+    }
+
+    return discounts
   }
 
   /**
@@ -660,61 +686,66 @@ class DiscountService extends TransactionBaseService {
 
   async validateDiscountForCartOrThrow(
     cart: Cart,
-    discount: Discount
+    discount: Discount | Discount[]
   ): Promise<void> {
+    const discounts = Array.isArray(discount) ? discount : [discount]
     return await this.atomicPhase_(async () => {
-      if (this.hasReachedLimit(discount)) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount has been used maximum allowed times"
-        )
-      }
+      await Promise.all(
+        discounts.map(async (disc) => {
+          if (this.hasReachedLimit(disc)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Discount ${disc.code} has been used maximum allowed times`
+            )
+          }
 
-      if (this.hasNotStarted(discount)) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount is not valid yet"
-        )
-      }
+          if (this.hasNotStarted(disc)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Discount ${disc.code} is not valid yet`
+            )
+          }
 
-      if (this.hasExpired(discount)) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount is expired"
-        )
-      }
+          if (this.hasExpired(disc)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Discount ${disc.code} is expired`
+            )
+          }
 
-      if (this.isDisabled(discount)) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "The discount code is disabled"
-        )
-      }
+          if (this.isDisabled(disc)) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `The discount code ${disc.code} is disabled`
+            )
+          }
 
-      const isValidForRegion = await this.isValidForRegion(
-        discount,
-        cart.region_id
-      )
-      if (!isValidForRegion) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "The discount is not available in current region"
-        )
-      }
-
-      if (cart.customer_id) {
-        const canApplyForCustomer = await this.canApplyForCustomer(
-          discount.rule.id,
-          cart.customer_id
-        )
-
-        if (!canApplyForCustomer) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Discount is not valid for customer"
+          const isValidForRegion = await this.isValidForRegion(
+            disc,
+            cart.region_id
           )
-        }
-      }
+          if (!isValidForRegion) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              "The discount is not available in current region"
+            )
+          }
+
+          if (cart.customer_id) {
+            const canApplyForCustomer = await this.canApplyForCustomer(
+              disc.rule.id,
+              cart.customer_id
+            )
+
+            if (!canApplyForCustomer) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_ALLOWED,
+                `Discount ${disc.code} is not valid for customer`
+              )
+            }
+          }
+        })
+      )
     })
   }
 
