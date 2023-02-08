@@ -1,5 +1,5 @@
 {
-  "version": "4.0.3",
+  "version": "4.0.4",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -22,7 +22,7 @@
     "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.7.4",
+    "@medusajs/medusa": "^1.7.6",
     "@tanstack/react-query": ">=4.22.0",
     "react": ">=16",
     "react-dom": ">=16"
@@ -31,7 +31,7 @@
   "author": "Zakaria S. El Asri",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@medusajs/medusa": "^1.7.4",
+    "@medusajs/medusa": "^1.7.6",
     "@storybook/addon-contexts": "^5.3.21",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-info": "^5.3.21",
@@ -60,7 +60,7 @@
     "tsup": "^6.5.0"
   },
   "dependencies": {
-    "@medusajs/medusa-js": "^1.3.7"
+    "@medusajs/medusa-js": "^1.3.8"
   },
   "msw": {
     "workerDirectory": "public"

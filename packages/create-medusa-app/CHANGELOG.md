@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.8
+
+### Patch Changes
+
+- [#3185](https://github.com/medusajs/medusa/pull/3185) [`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Patches all dependencies + minor bumps `winston` to include a [fix for a significant memory leak](https://github.com/winstonjs/winston/pull/2057)
+
 ## 0.0.7
 
 ### Patch Changes
