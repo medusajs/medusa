@@ -111,6 +111,7 @@ describe("DraftOrderService", () => {
           ...testOrder,
         })
       ),
+      applyDiscount: jest.fn(),
       addShippingMethod: jest.fn(),
       withTransaction: function () {
         return this
@@ -200,14 +201,64 @@ describe("DraftOrderService", () => {
         variant_id: "test-variant",
       })
 
-      expect(
-        LineItemAdjustmentServiceMock.createAdjustmentForLineItem
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        LineItemAdjustmentServiceMock.createAdjustmentForLineItem
-      ).toHaveBeenCalledWith(
+      expect(cartService.applyDiscount).toHaveBeenCalledTimes(0)
+    })
+
+    it("creates a draft order with a discount", async () => {
+      const cartId = "test-cart"
+      const title = "test-item"
+
+      testOrder["discounts"] = [{ code: "TEST" }]
+      await draftOrderService.create(testOrder)
+
+      expect(draftOrderRepository.create).toHaveBeenCalledTimes(1)
+      expect(draftOrderRepository.create).toHaveBeenCalledWith({
+        cart_id: cartId,
+      })
+
+      expect(cartService.create).toHaveBeenCalledTimes(1)
+      expect(cartService.create).toHaveBeenCalledWith({
+        region_id: "test-region",
+        shipping_address_id: "test-shipping",
+        billing_address_id: "test-billing",
+        customer_id: "test-customer",
+        type: "draft_order",
+        discounts: testOrder.discounts,
+      })
+
+      expect(cartService.retrieve).toHaveBeenCalledTimes(1)
+      expect(cartService.retrieve).toHaveBeenCalledWith("test-cart", {
+        relations: ["discounts", "discounts.rule", "items", "region"],
+      })
+
+      expect(cartService.addShippingMethod).toHaveBeenCalledTimes(1)
+      expect(cartService.addShippingMethod).toHaveBeenCalledWith(
+        "test-cart",
+        "test-option",
+        {}
+      )
+
+      expect(lineItemService.generate).toHaveBeenCalledTimes(1)
+      expect(lineItemService.generate).toHaveBeenCalledWith(
+        "test-variant",
+        "test-region",
+        2,
+        {
+          metadata: {},
+          unit_price: undefined,
+        }
+      )
+
+      expect(lineItemService.create).toHaveBeenCalledTimes(1)
+      expect(lineItemService.create).toHaveBeenCalledWith({
+        cart_id: cartId,
+        title,
+        variant_id: "test-variant",
+      })
+
+      expect(cartService.applyDiscount).toHaveBeenCalledTimes(1)
+      expect(cartService.applyDiscount).toHaveBeenCalledWith(
         expect.objectContaining({
-          id: cartId,
           items: [
             expect.objectContaining({
               title,
@@ -215,12 +266,9 @@ describe("DraftOrderService", () => {
               cart_id: cartId,
             }),
           ],
+          discounts: testOrder.discounts,
         }),
-        expect.objectContaining({
-          title,
-          variant_id: testOrder.items[0].variant_id,
-          cart_id: cartId,
-        })
+        testOrder.discounts[0].code
       )
     })
 

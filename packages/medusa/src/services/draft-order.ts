@@ -20,7 +20,6 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { LineItemAdjustmentService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -33,7 +32,6 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   shippingOptionService: ShippingOptionService
   customShippingOptionService: CustomShippingOptionService
-  lineItemAdjustmentService: LineItemAdjustmentService
 }
 
 /**
@@ -58,7 +56,6 @@ class DraftOrderService extends TransactionBaseService {
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly customShippingOptionService_: CustomShippingOptionService
-  protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
 
   constructor({
     manager,
@@ -71,7 +68,6 @@ class DraftOrderService extends TransactionBaseService {
     productVariantService,
     shippingOptionService,
     customShippingOptionService,
-    lineItemAdjustmentService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -85,7 +81,6 @@ class DraftOrderService extends TransactionBaseService {
     this.productVariantService_ = productVariantService
     this.shippingOptionService_ = shippingOptionService
     this.customShippingOptionService_ = customShippingOptionService
-    this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.eventBus_ = eventBusService
   }
 
@@ -281,19 +276,11 @@ class DraftOrderService extends TransactionBaseService {
         const cartServiceTx =
           this.cartService_.withTransaction(transactionManager)
 
-        if (rawCart.discounts) {
-          const { discounts } = rawCart
-          rawCart.discounts = []
-
-          for (const { code } of discounts) {
-            await cartServiceTx.applyDiscount(rawCart as Cart, code)
-          }
-        }
-
         let createdCart = await cartServiceTx.create({
           type: CartType.DRAFT_ORDER,
           ...rawCart,
         })
+
         createdCart = await cartServiceTx.retrieve(createdCart.id, {
           relations: ["discounts", "discounts.rule", "items", "region"],
         })
@@ -303,6 +290,7 @@ class DraftOrderService extends TransactionBaseService {
           no_notification_order,
           idempotency_key,
         })
+
         const result = await draftOrderRepo.save(draftOrder)
 
         await this.eventBus_
@@ -353,18 +341,19 @@ class DraftOrderService extends TransactionBaseService {
           }
         }
 
-        const generateItemsCartData = {
-          ...createdCart,
-          items: generatedLineItems,
-        } as unknown as Cart
+        if (rawCart.discounts) {
+          const generateItemsCartData = {
+            ...rawCart,
+            items: generatedLineItems,
+          } as unknown as Cart
 
-        await Promise.all(
-          generatedLineItems.map(async (item) => {
-            return await this.lineItemAdjustmentService_
-              .withTransaction(transactionManager)
-              .createAdjustmentForLineItem(generateItemsCartData, item)
-          })
-        )
+          const { discounts } = rawCart
+          rawCart.discounts = []
+
+          for (const { code } of discounts) {
+            await cartServiceTx.applyDiscount(generateItemsCartData, code)
+          }
+        }
 
         for (const method of shipping_methods) {
           if (typeof method.price !== "undefined") {
