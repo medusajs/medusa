@@ -141,13 +141,18 @@ export class DiscountCondition extends SoftDeletableEntity {
  * description: "Holds rule conditions for when a discount is applicable"
  * type: object
  * required:
- *   - type
- *   - operator
+ *   - created_at
+ *   - deleted_at
  *   - discount_rule_id
+ *   - id
+ *   - metadata
+ *   - operator
+ *   - type
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The discount condition's ID
+ *     type: string
  *     example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   type:
  *     description: "The type of the Condition"
@@ -165,56 +170,54 @@ export class DiscountCondition extends SoftDeletableEntity {
  *       - in
  *       - not_in
  *   discount_rule_id:
- *     type: string
  *     description: The ID of the discount rule associated with the condition
+ *     type: string
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   discount_rule:
  *     description: Available if the relation `discount_rule` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/DiscountRule"
  *   products:
  *     description: products associated with this condition if type = products. Available if the relation `products` is expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A product object.
+ *       $ref: "#/components/schemas/Product"
  *   product_types:
- *     description: product types associated with this condition if type = product_types. Available if the relation `product_types` is expanded.
+ *     description: Product types associated with this condition if type = product_types. Available if the relation `product_types` is expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A product type object.
+ *       $ref: "#/components/schemas/ProductType"
  *   product_tags:
- *     description: product tags associated with this condition if type = product_tags. Available if the relation `product_tags` is expanded.
+ *     description: Product tags associated with this condition if type = product_tags. Available if the relation `product_tags` is expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A product tag object.
+ *       $ref: "#/components/schemas/ProductTag"
  *   product_collections:
- *     description: product collections associated with this condition if type = product_collections. Available if the relation `product_collections` is expanded.
+ *     description: Product collections associated with this condition if type = product_collections. Available if the relation `product_collections` is expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A product collection object.
+ *       $ref: "#/components/schemas/ProductCollection"
  *   customer_groups:
- *     description: customer groups associated with this condition if type = customer_groups. Available if the relation `customer_groups` is expanded.
+ *     description: Customer groups associated with this condition if type = customer_groups. Available if the relation `customer_groups` is expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A customer group object.
+ *       $ref: "#/components/schemas/CustomerGroup"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */
