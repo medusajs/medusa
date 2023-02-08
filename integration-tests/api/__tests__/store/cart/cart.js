@@ -980,16 +980,18 @@ describe("/store/carts", () => {
     it("fails on apply discount if limit has been reached", async () => {
       const api = useApi()
 
+      const code = "SPENT"
+
       const err = await api
         .post("/store/carts/test-cart", {
-          discounts: [{ code: "SPENT" }],
+          discounts: [{ code }],
         })
         .catch((err) => err)
 
       expect(err).toBeTruthy()
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
-        "Discount has been used maximum allowed times"
+        `Discount ${code} has been used maximum allowed times`
       )
     })
 
@@ -1415,41 +1417,49 @@ describe("/store/carts", () => {
       expect.assertions(2)
       const api = useApi()
 
-      try {
-        await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "EXP_DISC" }],
+      const code = "EXP_DISC"
+
+      const err = await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code }],
         })
-      } catch (error) {
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual("Discount is expired")
-      }
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(`Discount ${code} is expired`)
     })
 
     it("fails on discount before start day", async () => {
       expect.assertions(2)
       const api = useApi()
 
-      try {
-        await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "PREM_DISC" }],
+      const code = "PREM_DISC"
+
+      const err = await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code }],
         })
-      } catch (error) {
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual("Discount is not valid yet")
-      }
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `Discount ${code} is not valid yet`
+      )
     })
 
     it("fails on apply invalid dynamic discount", async () => {
       const api = useApi()
 
-      try {
-        await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "INV_DYN_DISC" }],
+      const code = "INV_DYN_DISC"
+
+      const err = await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code }],
         })
-      } catch (error) {
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual("Discount is expired")
-      }
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual("Discount is expired")
     })
 
     it("Applies dynamic discount to cart correctly", async () => {

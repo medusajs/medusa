@@ -11,30 +11,7 @@ const eventBusService = {
 }
 
 describe("DraftOrderService", () => {
-  const totalsService = {
-    getTotal: (o) => {
-      return o.total || 0
-    },
-    getSubtotal: (o) => {
-      return o.subtotal || 0
-    },
-    getTaxTotal: (o) => {
-      return o.tax_total || 0
-    },
-    getDiscountTotal: (o) => {
-      return o.discount_total || 0
-    },
-    getShippingTotal: (o) => {
-      return o.shipping_total || 0
-    },
-    getGiftCardTotal: (o) => {
-      return o.gift_card_total || 0
-    },
-  }
-
   describe("create", () => {
-    let result
-
     const regionService = {
       retrieve: () =>
         Promise.resolve({ id: "test-region", countries: [{ iso_2: "dk" }] }),
@@ -111,6 +88,7 @@ describe("DraftOrderService", () => {
           ...testOrder,
         })
       ),
+      update: jest.fn(),
       applyDiscount: jest.fn(),
       addShippingMethod: jest.fn(),
       withTransaction: function () {
@@ -171,11 +149,6 @@ describe("DraftOrderService", () => {
         type: "draft_order",
       })
 
-      expect(cartService.retrieve).toHaveBeenCalledTimes(1)
-      expect(cartService.retrieve).toHaveBeenCalledWith("test-cart", {
-        relations: ["discounts", "discounts.rule", "items", "region"],
-      })
-
       expect(cartService.addShippingMethod).toHaveBeenCalledTimes(1)
       expect(cartService.addShippingMethod).toHaveBeenCalledWith(
         "test-cart",
@@ -223,12 +196,6 @@ describe("DraftOrderService", () => {
         billing_address_id: "test-billing",
         customer_id: "test-customer",
         type: "draft_order",
-        discounts: testOrder.discounts,
-      })
-
-      expect(cartService.retrieve).toHaveBeenCalledTimes(1)
-      expect(cartService.retrieve).toHaveBeenCalledWith("test-cart", {
-        relations: ["discounts", "discounts.rule", "items", "region"],
       })
 
       expect(cartService.addShippingMethod).toHaveBeenCalledTimes(1)
@@ -256,20 +223,10 @@ describe("DraftOrderService", () => {
         variant_id: "test-variant",
       })
 
-      expect(cartService.applyDiscount).toHaveBeenCalledTimes(1)
-      expect(cartService.applyDiscount).toHaveBeenCalledWith(
-        expect.objectContaining({
-          items: [
-            expect.objectContaining({
-              title,
-              variant_id: testOrder.items[0].variant_id,
-              cart_id: cartId,
-            }),
-          ],
-          discounts: testOrder.discounts,
-        }),
-        testOrder.discounts[0].code
-      )
+      expect(cartService.update).toHaveBeenCalledTimes(1)
+      expect(cartService.update).toHaveBeenCalledWith(cartId, {
+        discounts: testOrder.discounts,
+      })
     })
 
     it("fails on missing region", async () => {
