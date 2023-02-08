@@ -519,6 +519,7 @@ describe("/admin/draft-orders", () => {
 
       const testVariantId = "test-variant"
       const testVariant2Id = "test-variant-2"
+      const discountAmount = 1000
 
       const discount = await simpleDiscountFactory(dbConnection, {
         code: "test-fixed",
@@ -526,7 +527,7 @@ describe("/admin/draft-orders", () => {
         rule: {
           type: "fixed",
           allocation: "total",
-          value: 1000,
+          value: discountAmount,
         },
       })
 
@@ -571,9 +572,8 @@ describe("/admin/draft-orders", () => {
         (item) => item.variant_id === testVariant2Id
       )
 
-      const lineItem1WeightInTotal = 0.444
-      const lineItem2WeightInTotal = 0.556
-      const discountAmount = 1000
+      const lineItem1WeightInTotal = 0.444 // line item amount / amount
+      const lineItem2WeightInTotal = 0.556 // line item amount / amount
 
       expect(draftOrder.cart.items).toHaveLength(2)
 
@@ -585,8 +585,7 @@ describe("/admin/draft-orders", () => {
           adjustments: expect.arrayContaining([
             expect.objectContaining({
               item_id: lineItem1.id,
-              amount:
-                lineItem1.unit_price * lineItem1WeightInTotal * discountAmount,
+              amount: discountAmount * lineItem1WeightInTotal,
               description: "discount",
               discount_id: discount.id,
             }),
@@ -602,8 +601,7 @@ describe("/admin/draft-orders", () => {
           adjustments: expect.arrayContaining([
             expect.objectContaining({
               item_id: lineItem2.id,
-              amount:
-                lineItem2.unit_price * lineItem2WeightInTotal * discountAmount,
+              amount: discountAmount * lineItem2WeightInTotal,
               description: "discount",
               discount_id: discount.id,
             }),
