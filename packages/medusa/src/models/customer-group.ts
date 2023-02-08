@@ -37,41 +37,47 @@ export class CustomerGroup extends SoftDeletableEntity {
  * description: "Represents a customer group"
  * type: object
  * required:
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - metadata
  *   - name
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The customer group's ID
+ *     type: string
  *     example: cgrp_01G8ZH853Y6TFXWPG5EYE81X63
  *   name:
- *     type: string
  *     description: The name of the customer group
+ *     type: string
  *     example: VIP
  *   customers:
- *     type: array
  *     description: The customers that belong to the customer group. Available if the relation `customers` is expanded.
- *     items:
- *       type: object
- *       description: A customer object.
- *   price_lists:
  *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Customer"
+ *   price_lists:
  *     description: The price lists that are associated with the customer group. Available if the relation `price_lists` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/PriceList"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */
