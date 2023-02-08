@@ -79,7 +79,7 @@ class InMemoryCacheService
     if (record.expire) {
       setTimeout(() => {
         this.invalidate(key)
-      }, record.expire)
+      }, ttl * 1000)
     }
 
     this.store.set(key, record)
