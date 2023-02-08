@@ -333,14 +333,14 @@ class DiscountService extends TransactionBaseService {
     )
     let discounts = await discountRepo.find(query)
 
-    if (!discounts?.length) {
+    if (discounts?.length !== discountCodes.length) {
       query = buildQuery(
         { code: In(normalizedCodes), is_dynamic: true },
         config
       )
       discounts = await discountRepo.find(query)
 
-      if (!discounts?.length) {
+      if (discounts?.length !== discountCodes.length) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `Discounts with code [${discountCodes.join(", ")}] was not found`
