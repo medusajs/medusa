@@ -20,6 +20,7 @@ const {
   simpleProductFactory,
   simpleDiscountFactory,
   simpleProductCategoryFactory,
+  simpleRegionFactory,
 } = require("../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
@@ -2219,6 +2220,102 @@ describe("/admin/products", () => {
           currency_code: "eur",
         }),
       ])
+    })
+
+    it("successfully updates a variants prices by deleting both a currency and region price", async () => {
+      const api = useApi()
+
+      await Promise.all(
+        ["reg_1", "reg_2", "reg_3"].map(async (regionId) => {
+          return await simpleRegionFactory(dbConnection, {
+            id: regionId,
+            currency_code: regionId === "reg_1" ? "eur" : "usd",
+          })
+        })
+      )
+
+      const createPrices = {
+        prices: [
+          {
+            region_id: "reg_1",
+            amount: 1,
+          },
+          {
+            region_id: "reg_2",
+            amount: 2,
+          },
+          {
+            currency_code: "usd",
+            amount: 3,
+          },
+          {
+            region_id: "reg_3",
+            amount: 4,
+          },
+          {
+            currency_code: "eur",
+            amount: 5,
+          },
+        ],
+      }
+
+      const variantId = "test-variant_3"
+
+      await api
+        .post(
+          `/admin/products/test-product1/variants/${variantId}`,
+          createPrices,
+          adminHeaders
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const updatePrices = {
+        prices: [
+          {
+            region_id: "reg_1",
+            amount: 100,
+          },
+          {
+            region_id: "reg_2",
+            amount: 200,
+          },
+          {
+            currency_code: "usd",
+            amount: 300,
+          },
+        ],
+      }
+
+      const response = await api.post(
+        `/admin/products/test-product1/variants/${variantId}`,
+        updatePrices,
+        adminHeaders
+      )
+
+      const finalPriceArray = response.data.product.variants.find(
+        (v) => v.id === variantId
+      ).prices
+
+      expect(response.status).toEqual(200)
+      expect(finalPriceArray).toHaveLength(3)
+      expect(finalPriceArray).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 100,
+            region_id: "reg_1",
+          }),
+          expect.objectContaining({
+            amount: 200,
+            region_id: "reg_2",
+          }),
+          expect.objectContaining({
+            amount: 300,
+            currency_code: "usd",
+          }),
+        ])
+      )
     })
   })
 
