@@ -17,8 +17,7 @@ import {
   TotalsService,
 } from "."
 import { TransactionBaseService } from "../interfaces"
-import TaxInclusivePricingFeatureFlag
-  from "../loaders/feature-flags/tax-inclusive-pricing"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Cart, Discount, LineItem, Region } from "../models"
 import {
   AllocationType as DiscountAllocation,
@@ -303,7 +302,7 @@ class DiscountService extends TransactionBaseService {
       if (!discount) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Discounts with code ${normalizedCode} was not found`
+          `Discounts with code ${discountCode} was not found`
         )
       }
     }
