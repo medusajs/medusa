@@ -86,10 +86,10 @@ describe("InMemoryCacheService", () => {
       { resources: "shared" }
     )
 
-    await inMemoryCache.set("cache-key", { data: "value" }, 1000)
+    await inMemoryCache.set("cache-key", { data: "value" }, 2)
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
 
-    await new Promise((res) => setTimeout(res, 1000))
+    await new Promise((res) => setTimeout(res, 3000))
 
     expect(await inMemoryCache.get("cache-key")).toEqual(null)
   })
