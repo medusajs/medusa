@@ -67,7 +67,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
             currency_code: Not(price.currency_code),
           },
           {
-            region_id: Not(IsNull()),
+            region_id: price.region_id ? Not(price.region_id) : Not(IsNull()),
             currency_code: price.currency_code,
           }
         )
