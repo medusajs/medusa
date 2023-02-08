@@ -326,33 +326,15 @@ class KlarnaProviderService extends PaymentService {
   /**
    * Creates Klarna PaymentIntent.
    * @param {string} cart - the cart to create a payment for
-   * @param {number} amount - the amount to create a payment for
    * @returns {string} id of payment intent
    */
   async createPayment(cart) {
     try {
       const order = await this.cartToKlarnaOrder(cart)
 
-      const klarnaPayment = await this.klarna_
+      return await this.klarna_
         .post(this.klarnaOrderUrl_, order)
         .then(({ data }) => data)
-
-      return klarnaPayment
-    } catch (error) {
-      this.logger_.error(error)
-      throw error
-    }
-  }
-
-  async createPaymentNew(paymentInput) {
-    try {
-      const order = await this.paymentInputToKlarnaOrder(paymentInput)
-
-      const klarnaPayment = await this.klarna_
-        .post(this.klarnaOrderUrl_, order)
-        .then(({ data }) => data)
-
-      return klarnaPayment
     } catch (error) {
       this.logger_.error(error)
       throw error
@@ -478,29 +460,13 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Updates Klarna order.
-   * @param {string} order - the order to update
-   * @param {Object} data - the update object
+   * @param {string} paymentData
+   * @param {Object} cart
    * @returns {Object} updated order
    */
   async updatePayment(paymentData, cart) {
     if (cart.total !== paymentData.order_amount) {
       const order = await this.cartToKlarnaOrder(cart)
-      return this.klarna_
-        .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
-        .then(({ data }) => data)
-        .catch(async (_) => {
-          return this.klarna_
-            .post(this.klarnaOrderUrl_, order)
-            .then(({ data }) => data)
-        })
-    }
-
-    return paymentData
-  }
-
-  async updatePaymentNew(paymentData, paymentInput) {
-    if (paymentInput.amount !== paymentData.order_amount) {
-      const order = await this.paymentInputToKlarnaOrder(paymentInput)
       return this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)

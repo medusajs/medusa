@@ -386,6 +386,9 @@ export default async (req, res) => {
  *           price:
  *             description: The price to charge for the Shipping Method
  *             type: integer
+ *           data:
+ *             description: An optional set of key-value pairs to hold additional information.
+ *             type: object
  *   shipping_address:
  *      type: object
  *      description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
@@ -469,6 +472,10 @@ class ShippingMethod {
   @IsInt()
   @IsOptional()
   price?: number
+
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown>
 }
 
 class Item {
