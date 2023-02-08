@@ -1412,7 +1412,7 @@ class CartService extends TransactionBaseService {
    * @param discountCode - the discount code
    */
   async applyDiscount(cart: Cart, discountCode: string): Promise<void> {
-    return await this.applyDiscounts(cart, discountCode)
+    return await this.applyDiscounts(cart, [discountCode])
   }
 
   /**
@@ -1423,17 +1423,12 @@ class CartService extends TransactionBaseService {
    * @param cart - the cart to update
    * @param discountCodes - the discount code(s) to apply
    */
-  async applyDiscounts(
-    cart: Cart,
-    discountCodes: string | string[]
-  ): Promise<void> {
-    const codes = Array.isArray(discountCodes) ? discountCodes : [discountCodes]
-
+  async applyDiscounts(cart: Cart, discountCodes: string[]): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const discounts = await this.discountService_
           .withTransaction(transactionManager)
-          .listByCodes(codes, { relations: ["rule", "regions"] })
+          .listByCodes(discountCodes, { relations: ["rule", "regions"] })
 
         await this.discountService_
           .withTransaction(transactionManager)
