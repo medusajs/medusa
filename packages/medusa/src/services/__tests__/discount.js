@@ -240,7 +240,6 @@ describe("DiscountService", () => {
       expect(discountRepository.findOne).toHaveBeenCalledWith({
         where: {
           code: "10%OFF",
-          is_dynamic: false,
         },
       })
     })
@@ -251,7 +250,6 @@ describe("DiscountService", () => {
       expect(discountRepository.findOne).toHaveBeenCalledWith({
         where: {
           code: "10%OFF",
-          is_dynamic: false,
         },
       })
     })
@@ -290,7 +288,6 @@ describe("DiscountService", () => {
       expect(discountRepository.find).toHaveBeenCalledWith({
         where: {
           code: In(["10%OFF"]),
-          is_dynamic: false,
         },
       })
     })
@@ -301,7 +298,6 @@ describe("DiscountService", () => {
       expect(discountRepository.find).toHaveBeenCalledWith({
         where: {
           code: In(["10%OFF"]),
-          is_dynamic: false,
         },
       })
     })
