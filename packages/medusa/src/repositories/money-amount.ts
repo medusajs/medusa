@@ -52,35 +52,26 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     variantId: string,
     prices: Price[]
   ): Promise<void> {
-    const existingPricesIdsQuery = this.createQueryBuilder()
-      .select("id")
-      .where({
-        variant_id: variantId,
-        price_list_id: IsNull(),
-      })
-      .andWhere(
-        new Brackets((qb) => {
-          prices.forEach((price) => {
-            qb.orWhere(
-              new Brackets((qb) => {
-                qb.where({
-                  currency_code: price.currency_code,
-                  region_id: IsNull(),
-                }).orWhere({ region_id: price.region_id })
-              })
-            )
-          })
-        })
-      )
+    const currencyCodes = prices.map((p) => p.currency_code).filter((v) => v)
+    const regionIds = prices.map((p) => p.region_id).filter((v) => v)
+
+    const constraints = {
+      variant_id: variantId,
+      price_list_id: IsNull(),
+    }
 
     await this.createQueryBuilder()
       .delete()
-      .where({
-        variant_id: variantId,
-        price_list_id: IsNull(),
-      })
-      .andWhere(`id NOT IN (${existingPricesIdsQuery.getQuery()})`)
-      .setParameters(existingPricesIdsQuery.getParameters())
+      .where([
+        {
+          ...constraints,
+          currency_code: Not(In(currencyCodes)),
+        },
+        {
+          ...constraints,
+          region_id: Not(In(regionIds)),
+        },
+      ])
       .execute()
   }
 

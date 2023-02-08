@@ -6,7 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
-const { Product, ProductCategory } = require("@medusajs/medusa")
+const { ProductCategory } = require("@medusajs/medusa")
 
 const {
   ProductVariant,
@@ -2164,21 +2164,24 @@ describe("/admin/products", () => {
         ).prices
 
       expect(createRegionPriceResponse.status).toEqual(200)
-      expect(initialPriceArray).toEqual([
-        expect.objectContaining({
-          amount: 1000,
-          currency_code: "usd",
-        }),
-        expect.objectContaining({
-          amount: 8000,
-          currency_code: "usd",
-          region_id: "test-region",
-        }),
-        expect.objectContaining({
-          amount: 900,
-          currency_code: "eur",
-        }),
-      ])
+      expect(initialPriceArray).toHaveLength(3)
+      expect(initialPriceArray).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 1000,
+            currency_code: "usd",
+          }),
+          expect.objectContaining({
+            amount: 8000,
+            currency_code: "usd",
+            region_id: "test-region",
+          }),
+          expect.objectContaining({
+            amount: 900,
+            currency_code: "eur",
+          }),
+        ])
+      )
 
       const deleteRegionPricePayload = {
         prices: [
@@ -2205,7 +2208,7 @@ describe("/admin/products", () => {
         ).prices
 
       expect(deleteRegionPriceResponse.status).toEqual(200)
-      expect(finalPriceArray.length).toEqual(2)
+      expect(finalPriceArray).toHaveLength(2)
       expect(finalPriceArray).toEqual([
         expect.objectContaining({
           amount: 1000,
