@@ -3,11 +3,12 @@ import { OrderEditItemChangeType, OrderEditStatus } from "../../models"
 import {
   EventBusService,
   LineItemService,
+  NewTotalsService,
   OrderEditItemChangeService,
   OrderEditService,
   OrderService,
   TaxProviderService,
-  TotalsService
+  TotalsService,
 } from "../index"
 import LineItemAdjustmentService from "../line-item-adjustment"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
@@ -17,6 +18,7 @@ import { OrderServiceMock } from "../__mocks__/order"
 import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-change"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import { TotalsServiceMock } from "../__mocks__/totals"
+import NewTotalsServiceMock from "../__mocks__/new-totals"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -188,6 +190,7 @@ describe("OrderEditService", () => {
     orderService: OrderServiceMock as unknown as OrderService,
     eventBusService: EventBusServiceMock as unknown as EventBusService,
     totalsService: TotalsServiceMock as unknown as TotalsService,
+    newTotalsService: NewTotalsServiceMock as unknown as NewTotalsService,
     lineItemService: lineItemServiceMock as unknown as LineItemService,
     orderEditItemChangeService:
       orderEditItemChangeServiceMock as unknown as OrderEditItemChangeService,
@@ -330,7 +333,7 @@ describe("OrderEditService", () => {
       let result
 
       beforeEach(async () => {
-        jest.spyOn(orderEditService, "getTotals").mockResolvedValue({
+        jest.spyOn(orderEditService, "decorateTotals").mockResolvedValue({
           difference_due: 1500,
         } as any)
 

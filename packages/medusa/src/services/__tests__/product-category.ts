@@ -1,91 +1,63 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import {
+  IdMap,
+  MockRepository,
+  MockManager as manager
+} from "medusa-test-utils"
 import ProductCategoryService from "../product-category"
 import { EventBusService } from "../"
+import {
+  productCategoryRepositoryMock as productCategoryRepository,
+  validProdCategoryId,
+  invalidProdCategoryId,
+  validProdCategoryIdWithChildren,
+} from "../../repositories/__mocks__/product-category"
+import { EventBusServiceMock as eventBusService } from "../__mocks__/event-bus"
 
-const eventBusService = {
-  emit: jest.fn(),
-  withTransaction: function () {
-    return this
-  },
-} as unknown as EventBusService
+const productCategoryService = new ProductCategoryService({
+  manager,
+  productCategoryRepository,
+  eventBusService: eventBusService as unknown as EventBusService
+})
 
 describe("ProductCategoryService", () => {
-  const validProdCategoryId = "skinny-jeans"
-  const invalidProdCategoryId = "not-found"
+  beforeEach(async () => { jest.clearAllMocks() })
 
   describe("retrieve", () => {
-    const productCategoryRepository = MockRepository({
-      findOne: query => {
-        if (query.where.id === invalidProdCategoryId) {
-          return Promise.resolve(undefined)
-        }
-
-        return Promise.resolve({ id: IdMap.getId(validProdCategoryId) })
-      },
-      findDescendantsTree: productCategory => {
-        return Promise.resolve(productCategory)
-      }
-    })
-
-    const productCategoryService = new ProductCategoryService({
-      manager: MockManager,
-      productCategoryRepository,
-      eventBusService,
-    })
-
-    beforeEach(async () => { jest.clearAllMocks() })
-
     it("successfully retrieves a product category", async () => {
+      const validID = IdMap.getId(validProdCategoryId)
       const result = await productCategoryService.retrieve(
-        IdMap.getId(validProdCategoryId)
+        validID
       )
 
-      expect(result.id).toEqual(IdMap.getId(validProdCategoryId))
+      expect(result.id).toEqual(validID)
       expect(productCategoryRepository.findOne).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.findDescendantsTree).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.findOne).toHaveBeenCalledWith({
-        where: { id: IdMap.getId(validProdCategoryId) },
+        where: { id: validID },
       })
     })
 
     it("fails on not-found product category id", async () => {
+      const invalidID = IdMap.getId(invalidProdCategoryId)
       const categoryResponse = await productCategoryService
-        .retrieve(invalidProdCategoryId)
+        .retrieve(invalidID)
         .catch((e) => e)
 
       expect(categoryResponse.message).toBe(
-        `ProductCategory with id: not-found was not found`
+        `ProductCategory with id: ${invalidID} was not found`
       )
     })
   })
 
   describe("listAndCount", () => {
-    const productCategoryRepository = {
-      ...MockRepository({}),
-      getFreeTextSearchResultsAndCount: jest.fn().mockImplementation((query, q, treeSelector = {}) => {
-        if (q == "not-found") {
-          return Promise.resolve([[], 0])
-        }
-
-        return Promise.resolve([[{ id: IdMap.getId(validProdCategoryId) }], 1])
-      })
-    }
-
-    const productCategoryService = new ProductCategoryService({
-      manager: MockManager,
-      productCategoryRepository,
-      eventBusService,
-    })
-
-    beforeEach(async () => { jest.clearAllMocks() })
-
     it("successfully retrieves an array of product category", async () => {
+      const validID = IdMap.getId(validProdCategoryId)
       const [result, count] = await productCategoryService
-        .listAndCount({ q: validProdCategoryId })
+        .listAndCount({ q: validID })
 
       expect(count).toEqual(1)
       expect(result.length).toEqual(1)
-      expect(result[0].id).toEqual(IdMap.getId(validProdCategoryId))
+      expect(result[0].id).toEqual(validID)
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledWith(
         {
@@ -96,14 +68,14 @@ describe("ProductCategoryService", () => {
           take: 100,
           where: {},
         },
-        validProdCategoryId,
+        validID,
         {}
       )
     })
 
     it("returns empty array if query doesn't match database results", async () => {
       const [result, count] = await productCategoryService
-        .listAndCount({ q: "not-found" })
+        .listAndCount({ q: IdMap.getId(invalidProdCategoryId) })
 
       expect(productCategoryRepository.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
       expect(result).toEqual([])
@@ -112,22 +84,6 @@ describe("ProductCategoryService", () => {
   })
 
   describe("create", () => {
-    const productCategoryRepository = MockRepository({
-      findOne: (query) => Promise.resolve({ id: IdMap.getId(validProdCategoryId) }),
-      create: () => Promise.resolve({ id: IdMap.getId(validProdCategoryId) }),
-      save: (record) => Promise.resolve(record),
-    })
-
-    const productCategoryService = new ProductCategoryService({
-      manager: MockManager,
-      productCategoryRepository,
-      eventBusService,
-    })
-
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-
     it("successfully creates a product category", async () => {
       await productCategoryService.create({ name: validProdCategoryId })
 
@@ -150,39 +106,6 @@ describe("ProductCategoryService", () => {
   })
 
   describe("delete", () => {
-    const productCategoryRepository = MockRepository({
-      findOne: query => {
-        if (query.where.id === "not-found") {
-          return Promise.resolve(undefined)
-        }
-
-        if (query.where.id === "with-children") {
-          return Promise.resolve({
-            id: IdMap.getId("with-children"),
-            category_children: [{
-              id: IdMap.getId("skinny-jeans"),
-            }]
-          })
-        }
-
-        return Promise.resolve({
-          id: IdMap.getId(validProdCategoryId),
-          category_children: []
-        })
-      },
-      findDescendantsTree: (productCategory) => {
-        return Promise.resolve(productCategory)
-      },
-    })
-
-    const productCategoryService = new ProductCategoryService({
-      manager: MockManager,
-      productCategoryRepository,
-      eventBusService,
-    })
-
-    beforeEach(async () => { jest.clearAllMocks() })
-
     it("successfully deletes a product category", async () => {
       const result = await productCategoryService.delete(
         IdMap.getId(validProdCategoryId)
@@ -194,18 +117,18 @@ describe("ProductCategoryService", () => {
 
     it("returns without failure on not-found product category id", async () => {
       const categoryResponse = await productCategoryService
-        .delete("not-found")
+        .delete(IdMap.getId(invalidProdCategoryId))
 
       expect(categoryResponse).toBe(undefined)
     })
 
     it("fails on product category with children", async () => {
       const categoryResponse = await productCategoryService
-        .delete("with-children")
+        .delete(IdMap.getId(validProdCategoryIdWithChildren))
         .catch((e) => e)
 
       expect(categoryResponse.message).toBe(
-        `Deleting ProductCategory (with-children) with category children is not allowed`
+        `Deleting ProductCategory (${IdMap.getId(validProdCategoryIdWithChildren)}) with category children is not allowed`
       )
     })
 
@@ -224,29 +147,6 @@ describe("ProductCategoryService", () => {
   })
 
   describe("update", () => {
-    const productCategoryRepository = MockRepository({
-      findOne: query => {
-        if (query.where.id === IdMap.getId(invalidProdCategoryId)) {
-          return null
-        }
-
-        return Promise.resolve({ id: IdMap.getId(validProdCategoryId) })
-      },
-      findDescendantsTree: (productCategory) => {
-        return Promise.resolve(productCategory)
-      },
-    })
-
-    const productCategoryService = new ProductCategoryService({
-      manager: MockManager,
-      productCategoryRepository,
-      eventBusService,
-    })
-
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-
     it("successfully updates a product category", async () => {
       await productCategoryService.update(
         IdMap.getId(validProdCategoryId), {
@@ -255,10 +155,12 @@ describe("ProductCategoryService", () => {
       )
 
       expect(productCategoryRepository.save).toHaveBeenCalledTimes(1)
-      expect(productCategoryRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId(validProdCategoryId),
-        name: "bathrobes",
-      })
+      expect(productCategoryRepository.save).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: IdMap.getId(validProdCategoryId),
+          name: "bathrobes",
+        })
+      )
     })
 
     it("fails on not-found Id product category", async () => {
@@ -290,23 +192,6 @@ describe("ProductCategoryService", () => {
   })
 
   describe("addProducts", () => {
-    const productCategoryRepository = {
-      ...MockRepository(),
-      addProducts: jest.fn().mockImplementation((id, productIds) => {
-        return Promise.resolve()
-      }),
-    }
-
-    const productCategoryService = new ProductCategoryService({
-      manager: MockManager,
-      productCategoryRepository,
-      eventBusService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
     it("should add a list of product to a category", async () => {
       const result = await productCategoryService.addProducts(
         IdMap.getId("product-category-id"),
@@ -323,23 +208,6 @@ describe("ProductCategoryService", () => {
   })
 
   describe("removeProducts", () => {
-    const productCategoryRepository = {
-      ...MockRepository(),
-      removeProducts: jest.fn().mockImplementation((id, productIds) => {
-        return Promise.resolve()
-      }),
-    }
-
-    const productCategoryService = new ProductCategoryService({
-      manager: MockManager,
-      productCategoryRepository,
-      eventBusService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
     it("should remove a list of product from a category", async () => {
       const result = await productCategoryService.removeProducts(
         IdMap.getId("product-category-id"),

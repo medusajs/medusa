@@ -27,7 +27,7 @@
     "@babel/preset-typescript": "^7.13.0",
     "@babel/runtime": "^7.9.6",
     "cross-env": "^5.2.1",
-    "jest": "^25.5.2",
+    "jest": "^25.5.4",
     "medusa-core-utils": "^1.1.31",
     "medusa-test-utils": "^1.1.37",
     "typeorm": "^0.2.29",

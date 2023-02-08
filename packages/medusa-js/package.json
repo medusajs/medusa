@@ -46,7 +46,7 @@
     "jest": "^27.4.7",
     "ts-jest": "^27.1.5",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.5"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",
   "homepage": "https://docs.medusajs.com/js-client/overview"
