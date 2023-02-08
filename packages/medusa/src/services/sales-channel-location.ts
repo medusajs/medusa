@@ -45,8 +45,8 @@ class SalesChannelLocationService extends TransactionBaseService {
    * @returns A promise that resolves when the association has been removed.
    */
   async removeLocation(
-    salesChannelId: string | undefined,
-    locationId: string
+    locationId: string,
+    salesChannelId?: string
   ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
 

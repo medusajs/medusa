@@ -55,7 +55,7 @@ export default async (req: Request, res: Response) => {
   await manager.transaction(async (transactionManager) => {
     await productVariantInventoryService
       .withTransaction(transactionManager)
-      .detachInventoryItem(undefined, id)
+      .detachInventoryItem(id)
 
     await inventoryService
       .withTransaction(transactionManager)

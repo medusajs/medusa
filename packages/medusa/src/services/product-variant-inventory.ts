@@ -315,8 +315,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param inventoryItemId inventory item id
    */
   async detachInventoryItem(
-    variantId: string | undefined,
-    inventoryItemId: string
+    inventoryItemId: string,
+    variantId?: string
   ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
 

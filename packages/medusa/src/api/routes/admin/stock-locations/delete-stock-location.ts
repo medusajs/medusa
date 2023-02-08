@@ -67,7 +67,7 @@ export default async (req, res) => {
   await manager.transaction(async (transactionManager) => {
     await salesChannelLocationService
       .withTransaction(transactionManager)
-      .removeLocation(undefined, id)
+      .removeLocation(id)
 
     await stockLocationService.withTransaction(transactionManager).delete(id)
   })
