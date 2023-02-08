@@ -122,6 +122,7 @@ export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends 
  *     description: The resources to be deleted from the discount condition
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

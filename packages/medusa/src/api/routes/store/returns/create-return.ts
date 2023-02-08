@@ -264,6 +264,7 @@ class Item {
  *     description: "The items to include in the Return."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
