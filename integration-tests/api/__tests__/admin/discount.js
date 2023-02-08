@@ -2224,7 +2224,7 @@ describe("/admin/discounts", () => {
 
       expect(err.response.status).toEqual(404)
       expect(err.response.data.message).toBe(
-        `Discounts with code [${code}] was not found`
+        `Discounts with code ${code} was not found`
       )
     })
 

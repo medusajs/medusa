@@ -278,20 +278,54 @@ class DiscountService extends TransactionBaseService {
   }
 
   /**
-   * Gets one or multiple discounts by discount code(s).
-   * @param discountCode - discount code(s) of discount(s) to retrieve
+   * Gets the discount by discount code.
+   * @param discountCode - discount code of discount to retrieve
    * @param config - the config object containing query settings
-   * @return the discount(s) document
+   * @return the discount
    */
-  async retrieveByCode<
-    T extends string | string[] = string | string[],
-    TResult = T extends string[] ? Discount[] : Discount
-  >(discountCode: T, config: FindConfig<Discount> = {}): Promise<TResult> {
+  async retrieveByCode(
+    discountCode: string,
+    config: FindConfig<Discount> = {}
+  ): Promise<Discount> {
     const manager = this.manager_
     const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-    const codes = Array.isArray(discountCode) ? discountCode : [discountCode]
-    const normalizedCodes = codes.map((code) => code.toUpperCase().trim())
+    const normalizedCode = discountCode.toUpperCase().trim()
+
+    let query = buildQuery({ code: normalizedCode, is_dynamic: false }, config)
+    let discount = await discountRepo.findOne(query)
+
+    if (!discount) {
+      query = buildQuery({ code: normalizedCode, is_dynamic: true }, config)
+      discount = await discountRepo.findOne(query)
+
+      if (!discount) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Discounts with code ${normalizedCode} was not found`
+        )
+      }
+    }
+
+    return discount
+  }
+
+  /**
+   * List all the discounts corresponding to the given codes
+   * @param discountCodes - discount codes of discounts to retrieve
+   * @param config - the config object containing query settings
+   * @return the discounts
+   */
+  async listByCodes(
+    discountCodes: string[],
+    config: FindConfig<Discount> = {}
+  ): Promise<Discount[]> {
+    const manager = this.manager_
+    const discountRepo = manager.getCustomRepository(this.discountRepository_)
+
+    const normalizedCodes = discountCodes.map((code) =>
+      code.toUpperCase().trim()
+    )
 
     let query = buildQuery(
       { code: In(normalizedCodes), is_dynamic: false },
@@ -309,14 +343,12 @@ class DiscountService extends TransactionBaseService {
       if (!discounts?.length) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Discounts with code [${codes.join(", ")}] was not found`
+          `Discounts with code [${discountCodes.join(", ")}] was not found`
         )
       }
     }
 
-    return (Array.isArray(discountCode)
-      ? discounts
-      : discounts[0]) as unknown as TResult
+    return discounts
   }
 
   /**

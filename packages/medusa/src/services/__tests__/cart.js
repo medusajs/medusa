@@ -2062,7 +2062,7 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
-      retrieveByCode: jest.fn().mockImplementation((code) => {
+      listByCodes: jest.fn().mockImplementation((code) => {
         const codes = Array.isArray(code) ? code : [code]
 
         const data = []
@@ -2348,7 +2348,7 @@ describe("CartService", () => {
         discounts: [{ code: "10%OFF" }, { code: "FREESHIPPING" }],
       })
 
-      expect(discountService.retrieveByCode).toHaveBeenCalledTimes(1)
+      expect(discountService.listByCodes).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({

@@ -213,6 +213,52 @@ describe("DiscountService", () => {
 
   describe("retrieveByCode", () => {
     const discountRepository = MockRepository({
+      findOne: (query) => {
+        if (query.where.code === "10%OFF") {
+          return Promise.resolve({ id: IdMap.getId("total10"), code: "10%OFF" })
+        }
+        if (query.where.code === "DYNAMIC") {
+          return Promise.resolve({ id: IdMap.getId("total10"), code: "10%OFF" })
+        }
+        return Promise.resolve(undefined)
+      },
+    })
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+      featureFlagRouter,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully finds discount by code", async () => {
+      await discountService.retrieveByCode("10%OFF")
+      expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(discountRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          code: "10%OFF",
+          is_dynamic: false,
+        },
+      })
+    })
+
+    it("successfully trims, uppdercases, and finds discount by code", async () => {
+      await discountService.retrieveByCode(" 10%Off ")
+      expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
+      expect(discountRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          code: "10%OFF",
+          is_dynamic: false,
+        },
+      })
+    })
+  })
+
+  describe("listByCodes", () => {
+    const discountRepository = MockRepository({
       find: (query) => {
         if (query.where.code.value.includes("10%OFF")) {
           return Promise.resolve([
@@ -239,7 +285,7 @@ describe("DiscountService", () => {
     })
 
     it("successfully finds discount by code", async () => {
-      await discountService.retrieveByCode("10%OFF")
+      await discountService.listByCodes(["10%OFF"])
       expect(discountRepository.find).toHaveBeenCalledTimes(1)
       expect(discountRepository.find).toHaveBeenCalledWith({
         where: {
@@ -250,7 +296,7 @@ describe("DiscountService", () => {
     })
 
     it("successfully trims, uppdercases, and finds discount by code", async () => {
-      await discountService.retrieveByCode(" 10%Off ")
+      await discountService.listByCodes([" 10%Off "])
       expect(discountRepository.find).toHaveBeenCalledTimes(1)
       expect(discountRepository.find).toHaveBeenCalledWith({
         where: {
