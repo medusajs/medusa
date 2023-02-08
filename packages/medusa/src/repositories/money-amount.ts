@@ -49,39 +49,6 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return pricesNotInPricesPayload
   }
 
-  /*
-  const existingPricesIdsQuery = this.createQueryBuilder()
-      .select("id")
-      .where({
-        variant_id: variantId,
-        price_list_id: IsNull(),
-      })
-      .andWhere(
-        new Brackets((qb) => {
-          prices.forEach((price) => {
-            qb.orWhere(
-              new Brackets((qb) => {
-                qb.where({
-                  currency_code: price.currency_code,
-                  region_id: IsNull(),
-                }).orWhere({ region_id: price.region_id })
-              })
-            )
-          })
-        })
-      )
-
-    await this.createQueryBuilder()
-      .delete()
-      .where({
-        variant_id: variantId,
-        price_list_id: IsNull(),
-      })
-      .andWhere(`id NOT IN (${existingPricesIdsQuery.getQuery()})`)
-      .setParameters(existingPricesIdsQuery.getParameters())
-      .execute()
-   */
-
   public async deleteVariantPricesNotIn(
     variantId: string,
     prices: Price[]
