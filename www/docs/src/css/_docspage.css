@@ -149,16 +149,12 @@ details > div {
   --docusaurus-details-decoration-color: transparent !important;
 }
 
+.row--justify-end {
+  justify-content: flex-end;
+}
+
 @media (min-width: 1440px) {
   .markdown-doc-wrapper {
     max-width: var(--ifm-container-width-xl) !important;
   }
 }
-
-/* @media screen and (min-width: 966px) {
-  [class*=docItemContainer] > article {
-    margin-left: 50px;
-    margin-right: 50px;
-    max-width: none
-  }
-} */
