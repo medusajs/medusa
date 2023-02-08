@@ -173,6 +173,14 @@
  *     description: The total of discount
  *     type: integer
  *     example: 800
+ *   item_tax_total:
+ *     description: The total of items with taxes
+ *     type: integer
+ *     example: 8000
+ *   shipping_tax_total:
+ *     description: The total of shipping with taxes
+ *     type: integer
+ *     example: 1000
  *   tax_total:
  *     description: The total of tax
  *     type: integer
