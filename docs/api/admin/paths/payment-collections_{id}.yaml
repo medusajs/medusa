@@ -10,15 +10,17 @@ delete:
       description: The ID of the Payment Collection to delete.
       schema:
         type: string
+  x-codegen:
+    method: delete
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/payment-collections_{id}/deleteundefined
+        $ref: ../code_samples/JavaScript/payment-collections_{id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/payment-collections_{id}/deleteundefined
+        $ref: ../code_samples/Shell/payment-collections_{id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -57,15 +59,18 @@ get:
       description: Comma separated list of fields to include in the results.
       schema:
         type: string
+  x-codegen:
+    method: retrieve
+    queryParams: GetPaymentCollectionsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/payment-collections_{id}/getundefined
+        $ref: ../code_samples/JavaScript/payment-collections_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/payment-collections_{id}/getundefined
+        $ref: ../code_samples/Shell/payment-collections_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -107,15 +112,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminUpdatePaymentCollectionsReq.yaml
+  x-codegen:
+    method: update
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/payment-collections_{id}/postundefined
+        $ref: ../code_samples/JavaScript/payment-collections_{id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/payment-collections_{id}/postundefined
+        $ref: ../code_samples/Shell/payment-collections_{id}/post.sh
   security:
     - api_token: []
     - cookie_auth: []

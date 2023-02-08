@@ -20,15 +20,18 @@ get:
       description: Comma separated list of fields to include in the results.
       schema:
         type: string
+  x-codegen:
+    method: retrieveByCode
+    queryParams: AdminGetDiscountsDiscountCodeParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/discounts_code_{code}/getundefined
+        $ref: ../code_samples/JavaScript/discounts_code_{code}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/discounts_code_{code}/getundefined
+        $ref: ../code_samples/Shell/discounts_code_{code}/get.sh
   security:
     - api_token: []
     - cookie_auth: []

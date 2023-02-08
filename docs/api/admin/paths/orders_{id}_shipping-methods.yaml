@@ -4,7 +4,6 @@ post:
   description: >-
     Adds a Shipping Method to an Order. If another Shipping Method exists with
     the same Shipping Profile, the previous Shipping Method will be replaced.
-  x-authenticated: true
   parameters:
     - in: path
       name: id
@@ -12,15 +11,23 @@ post:
       description: The ID of the Order.
       schema:
         type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostOrdersOrderShippingMethodsReq.yaml
+  x-authenticated: true
+  x-codegen:
+    method: addShippingMethod
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/orders_{id}_shipping-methods/postundefined
+        $ref: ../code_samples/JavaScript/orders_{id}_shipping-methods/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/orders_{id}_shipping-methods/postundefined
+        $ref: ../code_samples/Shell/orders_{id}_shipping-methods/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -45,27 +52,3 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - price
-            - option_id
-          properties:
-            price:
-              type: integer
-              description: >-
-                The price (excluding VAT) that should be charged for the
-                Shipping Method
-            option_id:
-              type: string
-              description: >-
-                The ID of the Shipping Option to create the Shipping Method
-                from.
-            data:
-              type: object
-              description: >-
-                The data required for the Shipping Option to create a Shipping
-                Method. This will depend on the Fulfillment Provider.

@@ -18,17 +18,19 @@ delete:
       description: The ID of the product from which the money amount will be deleted.
       schema:
         type: string
+  x-codegen:
+    method: deleteProductPrices
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/price-lists_{id}_products_{product_id}_prices/deleteundefined
+          ../code_samples/JavaScript/price-lists_{id}_products_{product_id}_prices/delete.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/price-lists_{id}_products_{product_id}_prices/deleteundefined
+          ../code_samples/Shell/price-lists_{id}_products_{product_id}_prices/delete.sh
   security:
     - api_token: []
     - cookie_auth: []

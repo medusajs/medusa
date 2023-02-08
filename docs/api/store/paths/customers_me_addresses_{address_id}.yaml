@@ -10,17 +10,18 @@ delete:
       description: The id of the Address to remove.
       schema:
         type: string
+  x-codegen:
+    method: deleteAddress
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/customers_me_addresses_{address_id}/deleteundefined
+          ../code_samples/JavaScript/customers_me_addresses_{address_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/customers_me_addresses_{address_id}/deleteundefined
+        $ref: ../code_samples/Shell/customers_me_addresses_{address_id}/delete.sh
   security:
     - cookie_auth: []
   tags:
@@ -62,17 +63,17 @@ post:
         schema:
           $ref: >-
             ../components/schemas/StorePostCustomersCustomerAddressesAddressReq.yaml
+  x-codegen:
+    method: updateAddress
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/customers_me_addresses_{address_id}/postundefined
+        $ref: ../code_samples/JavaScript/customers_me_addresses_{address_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/customers_me_addresses_{address_id}/postundefined
+        $ref: ../code_samples/Shell/customers_me_addresses_{address_id}/post.sh
   security:
     - cookie_auth: []
   tags:

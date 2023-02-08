@@ -1,0 +1,47 @@
+type: object
+properties:
+  hs_code:
+    description: >-
+      The Harmonized System code of the Inventory Item. May be used by
+      Fulfillment Providers to pass customs information to shipping carriers.
+    type: string
+  origin_country:
+    description: >-
+      The country in which the Inventory Item was produced. May be used by
+      Fulfillment Providers to pass customs information to shipping carriers.
+    type: string
+  mid_code:
+    description: >-
+      The Manufacturers Identification code that identifies the manufacturer of
+      the Inventory Item. May be used by Fulfillment Providers to pass customs
+      information to shipping carriers.
+    type: string
+  material:
+    description: >-
+      The material and composition that the Inventory Item is made of, May be
+      used by Fulfillment Providers to pass customs information to shipping
+      carriers.
+    type: string
+  weight:
+    description: >-
+      The weight of the Inventory Item. May be used in shipping rate
+      calculations.
+    type: number
+  height:
+    description: >-
+      The height of the Inventory Item. May be used in shipping rate
+      calculations.
+    type: number
+  width:
+    description: >-
+      The width of the Inventory Item. May be used in shipping rate
+      calculations.
+    type: number
+  length:
+    description: >-
+      The length of the Inventory Item. May be used in shipping rate
+      calculations.
+    type: number
+  requires_shipping:
+    description: Whether the item requires shipping.
+    type: boolean

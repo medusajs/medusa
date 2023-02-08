@@ -9,15 +9,22 @@ post:
       description: The cart ID.
       schema:
         type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCartsCartShippingMethodReq.yaml
+  x-codegen:
+    method: addShippingMethod
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/carts_{id}_shipping-methods/postundefined
+        $ref: ../code_samples/JavaScript/carts_{id}_shipping-methods/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}_shipping-methods/postundefined
+        $ref: ../code_samples/Shell/carts_{id}_shipping-methods/post.sh
   tags:
     - Cart
   responses:
@@ -37,21 +44,3 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - option_id
-          properties:
-            option_id:
-              type: string
-              description: ID of the shipping option to create the method from
-            data:
-              type: object
-              description: >-
-                Used to hold any data that the shipping method may need to
-                process the fulfillment of the order. Look at the documentation
-                for your installed fulfillment providers to find out what to
-                send.

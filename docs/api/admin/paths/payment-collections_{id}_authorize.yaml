@@ -10,16 +10,17 @@ post:
       description: The ID of the PaymentCollection.
       schema:
         type: string
+  x-codegen:
+    method: markAsAuthorized
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/payment-collections_{id}_authorize/postundefined
+        $ref: ../code_samples/JavaScript/payment-collections_{id}_authorize/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/payment-collections_{id}_authorize/postundefined
+        $ref: ../code_samples/Shell/payment-collections_{id}_authorize/post.sh
   security:
     - api_token: []
     - cookie_auth: []
