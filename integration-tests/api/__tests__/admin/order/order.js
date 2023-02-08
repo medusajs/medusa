@@ -1346,6 +1346,7 @@ describe("/admin/orders", () => {
 
     it("creates a claim on a swap", async () => {
       const api = useApi()
+      const shippingOption = await simpleShippingOptionFactory(dbConnection)
 
       const claimOnClaim = await api
         .post(
@@ -1365,6 +1366,15 @@ describe("/admin/orders", () => {
               {
                 variant_id: "test-variant",
                 quantity: 1,
+              },
+            ],
+            shipping_methods: [
+              {
+                option_id: shippingOption.id,
+                price: 1000,
+                data: {
+                  test: "test",
+                },
               },
             ],
           },

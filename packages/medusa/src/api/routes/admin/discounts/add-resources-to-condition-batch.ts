@@ -121,6 +121,7 @@ export default async (req: Request, res: Response) => {
  *     description: The resources to be added to the discount condition
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

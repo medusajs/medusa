@@ -19,7 +19,7 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/register": "^7.11.5",
     "@babel/runtime": "^7.11.2",
-    "@redocly/cli": "latest",
+    "@redocly/cli": "1.0.0-beta.123",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "axios": "^0.21.4",

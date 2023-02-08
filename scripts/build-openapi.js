@@ -26,6 +26,7 @@ const run = async () => {
 
     await fs.copyFile(inputJsonFile, outputJsonFile)
     await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
+    await sanitizeOAS(apiType)
     await generateReference(apiType)
   }
 }
@@ -43,6 +44,16 @@ const jsonFileToYamlFile = async (inputJsonFile, outputYamlFile) => {
   const jsonObject = JSON.parse(jsonString)
   const yamlString = yaml.dump(jsonObject)
   await fs.writeFile(outputYamlFile, yamlString, "utf8")
+}
+
+const sanitizeOAS = async(apiType) => {
+  const srcFile = path.resolve(basePath, `docs/api/${apiType}-spec3.yaml`)
+  const { all: logs } = await execa(
+    "redocly",
+    ["bundle", srcFile, `-o ${srcFile}`, "--config=docs-util/redocly/config.yaml"],
+    { cwd: basePath, all: true }
+  )
+  console.log(logs)
 }
 
 const generateReference = async (apiType) => {
