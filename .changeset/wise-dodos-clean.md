@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-fix(medusa): Removes non-existing param `method.data` and instead pass an empty object in ClaimService
+fix(medusa): Allows passing data object on shipping methods during claim creation and updates
