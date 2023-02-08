@@ -292,19 +292,14 @@ class DiscountService extends TransactionBaseService {
 
     const normalizedCode = discountCode.toUpperCase().trim()
 
-    let query = buildQuery({ code: normalizedCode, is_dynamic: false }, config)
-    let discount = await discountRepo.findOne(query)
+    const query = buildQuery({ code: normalizedCode }, config)
+    const discount = await discountRepo.findOne(query)
 
     if (!discount) {
-      query = buildQuery({ code: normalizedCode, is_dynamic: true }, config)
-      discount = await discountRepo.findOne(query)
-
-      if (!discount) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Discounts with code ${discountCode} was not found`
-        )
-      }
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Discounts with code ${discountCode} was not found`
+      )
     }
 
     return discount
@@ -327,25 +322,14 @@ class DiscountService extends TransactionBaseService {
       code.toUpperCase().trim()
     )
 
-    let query = buildQuery(
-      { code: In(normalizedCodes), is_dynamic: false },
-      config
-    )
-    let discounts = await discountRepo.find(query)
+    const query = buildQuery({ code: In(normalizedCodes) }, config)
+    const discounts = await discountRepo.find(query)
 
     if (discounts?.length !== discountCodes.length) {
-      query = buildQuery(
-        { code: In(normalizedCodes), is_dynamic: true },
-        config
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Discounts with code [${normalizedCodes.join(", ")}] was not found`
       )
-      discounts = await discountRepo.find(query)
-
-      if (discounts?.length !== discountCodes.length) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Discounts with code [${normalizedCodes.join(", ")}] was not found`
-        )
-      }
     }
 
     return discounts
