@@ -2166,13 +2166,13 @@ describe("/admin/products", () => {
       expect(createRegionPriceResponse.status).toEqual(200)
       expect(initialPriceArray).toEqual([
         expect.objectContaining({
+          amount: 1000,
+          currency_code: "usd",
+        }),
+        expect.objectContaining({
           amount: 8000,
           currency_code: "usd",
           region_id: "test-region",
-        }),
-        expect.objectContaining({
-          amount: 1000,
-          currency_code: "usd",
         }),
         expect.objectContaining({
           amount: 900,

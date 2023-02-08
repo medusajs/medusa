@@ -6,13 +6,13 @@ import {
   IsNull,
   Not,
   Repository,
-  WhereExpressionBuilder
+  WhereExpressionBuilder,
 } from "typeorm"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { MoneyAmount } from "../models/money-amount"
 import {
   PriceListPriceCreateInput,
-  PriceListPriceUpdateInput
+  PriceListPriceUpdateInput,
 } from "../types/price-list"
 
 type Price = Partial<
@@ -23,6 +23,31 @@ type Price = Partial<
 
 @EntityRepository(MoneyAmount)
 export class MoneyAmountRepository extends Repository<MoneyAmount> {
+  /**
+   * Will be removed in a future release.
+   * Use `deleteVariantPricesNotIn` instead.
+   * @deprecated
+   */
+  public async findVariantPricesNotIn(
+    variantId: string,
+    prices: Price[]
+  ): Promise<MoneyAmount[]> {
+    const pricesNotInPricesPayload = await this.createQueryBuilder()
+      .where({
+        variant_id: variantId,
+        price_list_id: IsNull(),
+      })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where({
+            currency_code: Not(In(prices.map((p) => p.currency_code))),
+          }).orWhere({ region_id: Not(In(prices.map((p) => p.region_id))) })
+        })
+      )
+      .getMany()
+    return pricesNotInPricesPayload
+  }
+
   public async deleteVariantPricesNotIn(
     variantId: string,
     prices: Price[]
