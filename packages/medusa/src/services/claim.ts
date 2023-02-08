@@ -166,7 +166,7 @@ export default class ClaimService extends TransactionBaseService {
             } else {
               await shippingOptionServiceTx.createShippingMethod(
                 method.option_id as string,
-                (method as any).data,
+                method.data ?? {},
                 {
                   claim_order_id: claim.id,
                   price: method.price,
@@ -403,7 +403,7 @@ export default class ClaimService extends TransactionBaseService {
             } else {
               await shippingOptionServiceTx.createShippingMethod(
                 method.option_id as string,
-                (method as any).data,
+                method.data ?? {},
                 {
                   claim_order_id: result.id,
                   price: method.price,
