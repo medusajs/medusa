@@ -3,6 +3,7 @@ import { FlagRouter } from "../../utils/flag-router"
 import DiscountService from "../discount"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { newTotalsServiceMock } from "../__mocks__/new-totals"
+import { In } from "typeorm"
 
 const featureFlagRouter = new FlagRouter({})
 
@@ -54,14 +55,16 @@ describe("DiscountService", () => {
     })
 
     it("fails to create a discount without regions", async () => {
-      const err = await discountService.create({
-        code: "test",
-        rule: {
-          type: "fixed",
-          allocation: "total",
-          value: 20,
-        },
-      }).catch(e => e)
+      const err = await discountService
+        .create({
+          code: "test",
+          rule: {
+            type: "fixed",
+            allocation: "total",
+            value: 20,
+          },
+        })
+        .catch((e) => e)
 
       expect(err.type).toEqual("invalid_data")
       expect(err.message).toEqual("Discount must have atleast 1 region")
@@ -210,14 +213,18 @@ describe("DiscountService", () => {
 
   describe("retrieveByCode", () => {
     const discountRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.code === "10%OFF") {
-          return Promise.resolve({ id: IdMap.getId("total10"), code: "10%OFF" })
+      find: (query) => {
+        if (query.where.code.value.includes("10%OFF")) {
+          return Promise.resolve([
+            { id: IdMap.getId("total10"), code: "10%OFF" },
+          ])
         }
-        if (query.where.code === "DYNAMIC") {
-          return Promise.resolve({ id: IdMap.getId("total10"), code: "10%OFF" })
+        if (query.where.code.value.includes("DYNAMIC")) {
+          return Promise.resolve([
+            { id: IdMap.getId("total10"), code: "10%OFF" },
+          ])
         }
-        return Promise.resolve(undefined)
+        return Promise.resolve([])
       },
     })
 
@@ -233,10 +240,10 @@ describe("DiscountService", () => {
 
     it("successfully finds discount by code", async () => {
       await discountService.retrieveByCode("10%OFF")
-      expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(discountRepository.findOne).toHaveBeenCalledWith({
+      expect(discountRepository.find).toHaveBeenCalledTimes(1)
+      expect(discountRepository.find).toHaveBeenCalledWith({
         where: {
-          code: "10%OFF",
+          code: In(["10%OFF"]),
           is_dynamic: false,
         },
       })
@@ -244,10 +251,10 @@ describe("DiscountService", () => {
 
     it("successfully trims, uppdercases, and finds discount by code", async () => {
       await discountService.retrieveByCode(" 10%Off ")
-      expect(discountRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(discountRepository.findOne).toHaveBeenCalledWith({
+      expect(discountRepository.find).toHaveBeenCalledTimes(1)
+      expect(discountRepository.find).toHaveBeenCalledWith({
         where: {
-          code: "10%OFF",
+          code: In(["10%OFF"]),
           is_dynamic: false,
         },
       })
@@ -746,6 +753,7 @@ describe("DiscountService", () => {
   })
 
   describe("validateDiscountForCartOrThrow", () => {
+    const discount = { code: "TEST" }
     const getCart = (id) => {
       if (id === "with-d") {
         return {
@@ -878,50 +886,46 @@ describe("DiscountService", () => {
     })
 
     it("throws when hasReachedLimit returns true", async () => {
-      const discount = {}
       const cart = getCart("with-d-and-customer")
       discountService.hasReachedLimit = jest.fn().mockImplementation(() => true)
 
       expect(
         discountService.validateDiscountForCartOrThrow(cart, discount)
       ).rejects.toThrow({
-        message: "Discount has been used maximum allowed times",
+        message: `Discount ${discount.code} has been used maximum allowed times`,
       })
     })
 
     it("throws when hasNotStarted returns true", async () => {
-      const discount = {}
       const cart = getCart("with-d-and-customer")
       discountService.hasNotStarted = jest.fn().mockImplementation(() => true)
 
       expect(
         discountService.validateDiscountForCartOrThrow(cart, discount)
       ).rejects.toThrow({
-        message: "Discount is not valid yet",
+        message: `Discount ${discount.code} is not valid yet`,
       })
     })
 
     it("throws when hasExpired returns true", async () => {
-      const discount = {}
       const cart = getCart("with-d-and-customer")
       discountService.hasExpired = jest.fn().mockImplementation(() => true)
 
       expect(
         discountService.validateDiscountForCartOrThrow(cart, discount)
       ).rejects.toThrow({
-        message: "Discount is expired",
+        message: `Discount ${discount.code} is expired`,
       })
     })
 
     it("throws when isDisabled returns true", async () => {
-      const discount = {}
       const cart = getCart("with-d-and-customer")
       discountService.isDisabled = jest.fn().mockImplementation(() => true)
 
       expect(
         discountService.validateDiscountForCartOrThrow(cart, discount)
       ).rejects.toThrow({
-        message: "The discount code is disabled",
+        message: `The discount code ${discount.code} is disabled`,
       })
     })
 
@@ -940,16 +944,16 @@ describe("DiscountService", () => {
     })
 
     it("throws when canApplyForCustomer returns false", async () => {
-      const discount = { rule: { id: "" } }
+      const discount_ = { code: discount.code, rule: { id: "" } }
       const cart = getCart("with-d-and-customer")
       discountService.canApplyForCustomer = jest
         .fn()
         .mockImplementation(() => Promise.resolve(false))
 
       expect(
-        discountService.validateDiscountForCartOrThrow(cart, discount)
+        discountService.validateDiscountForCartOrThrow(cart, discount_)
       ).rejects.toThrow({
-        message: "Discount is not valid for customer",
+        message: `Discount ${discount.code} is not valid for customer`,
       })
     })
   })

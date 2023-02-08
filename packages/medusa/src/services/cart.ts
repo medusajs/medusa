@@ -1487,12 +1487,11 @@ class CartService extends TransactionBaseService {
           }
         )
 
-        if (
-          [...rules.values()].some(
-            (rule) => rule.type !== DiscountRuleType.FREE_SHIPPING
-          ) &&
-          cart?.items
-        ) {
+        const hadNonFreeShippingDiscounts = [...rules.values()].some(
+          (rule) => rule.type !== DiscountRuleType.FREE_SHIPPING
+        )
+
+        if (hadNonFreeShippingDiscounts && cart?.items) {
           await this.refreshAdjustments_(cart)
         }
       }

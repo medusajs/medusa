@@ -306,7 +306,7 @@ class DiscountService extends TransactionBaseService {
       )
       discounts = await discountRepo.find(query)
 
-      if (!discounts.length) {
+      if (!discounts?.length) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `Discounts with code [${codes.join(", ")}] was not found`
@@ -700,7 +700,7 @@ class DiscountService extends TransactionBaseService {
           if (this.isDisabled(disc)) {
             throw new MedusaError(
               MedusaError.Types.NOT_ALLOWED,
-              "The discount code is disabled"
+              `The discount code ${disc.code} is disabled`
             )
           }
 
@@ -724,7 +724,7 @@ class DiscountService extends TransactionBaseService {
             if (!canApplyForCustomer) {
               throw new MedusaError(
                 MedusaError.Types.NOT_ALLOWED,
-                "Discount is not valid for customer"
+                `Discount ${disc.code} is not valid for customer`
               )
             }
           }
