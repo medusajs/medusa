@@ -1,4 +1,3 @@
-import { ClaimService, OrderService } from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -10,10 +9,11 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { ClaimService, OrderService } from "../../../../services"
 
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/claims/{claim_id}
@@ -178,6 +178,9 @@ export default async (req, res) => {
  *          price:
  *            description: The price to charge for the Shipping Method
  *            type: integer
+ *          data:
+ *            description: An optional set of key-value pairs to hold additional information.
+ *            type: object
  *   no_notification:
  *     description: If set to true no notification will be send related to this Swap.
  *     type: boolean
@@ -219,6 +222,10 @@ class ShippingMethod {
   @IsInt()
   @IsOptional()
   price?: number
+
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown>
 }
 
 class Item {
