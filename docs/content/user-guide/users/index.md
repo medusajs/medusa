@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: 'Medusa admin can be accessed more than one user. Merchants can have users added into their team to use the Medusa admin.'
 ---
 
 # Users Overview

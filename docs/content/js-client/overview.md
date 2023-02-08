@@ -1,6 +1,10 @@
+---
+description: 'Learn how to install the Medusa JS Client in a storefront. Medusa JS Client provides easy access to the Medusa API from a client written in TypeScript.'
+---
+
 # Medusa JS Client
 
-The [Medusa JS Client](https://www.npmjs.com/package/@medusajs/medusa-js) provides easy access to the Medusa API from a client written in Typescript. This reference guides you to learn what methods the client has and how you can use them.
+The [Medusa JS Client](https://www.npmjs.com/package/@medusajs/medusa-js) provides easy access to the Medusa API from a client written in TypeScript. This reference guides you to learn what methods the client has and how you can use them.
 
 This client can be use as an alternative to directly interacting with the [REST APIs](https://docs.medusajs.com/api/store).
 
@@ -84,5 +88,5 @@ const medusa = new Medusa({
 | ------------------- | ------------------------- | --------------------------------------------------------- |
 | `maxRetries`        | `0`                       | The amount of times a request is retried.                 |
 | `baseUrl`           | `'http://localhost:9000'` | The url to which requests are made to.                    |
-| `apiKey`            | `''`                      | Optional api key used for authenticating admin requests . |
+| `apiKey`            | `''`                      | Optional API key used for authenticating admin requests.  |
 | `publishableApiKey` | `''`                      | Optional publishable API key used for storefront requests.|

@@ -1,3 +1,7 @@
+---
+description: 'Learn what price lists are and how they work in a Medusa server. Price Lists can be used to override product prices based on different conditions.'
+---
+
 # Price Lists
 
 In this document, you’ll learn what price lists are and how they work.

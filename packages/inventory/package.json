@@ -16,7 +16,7 @@
   "devDependencies": {
     "@medusajs/medusa": "*",
     "cross-env": "^5.2.1",
-    "jest": "^25.5.2",
+    "jest": "^25.5.4",
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },

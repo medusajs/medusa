@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from "react"
+import { Tooltip as ReactTooltip } from "react-tooltip"
+import uuid from "react-uuid"
+import "react-tooltip/dist/react-tooltip.css"
 
-export default function Tooltip ({ children, text, tooltipClassName, ...rest }) {
-  const [show, setShow] = React.useState(false);
+export default function Tooltip({ children, text, tooltipClassName }) {
+  const [elementId, setElementId] = useState(null)
+
+  useEffect(() => {
+    if (!elementId) {
+      setElementId(uuid())
+    }
+  }, [elementId])
 
   return (
-    <span className={`tooltip-container ${tooltipClassName || ''}`}>
-      <span className={show ? 'tooltip-box visible' : 'tooltip-box'}>
-        {text}
-      </span>
-      <span
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-        {...rest}
-      >
+    <>
+      <span id={elementId} data-tooltip-content={text}>
         {children}
       </span>
-    </span>
-  );
-};
+      <ReactTooltip
+        anchorId={elementId}
+        className={tooltipClassName}
+        wrapper="span"
+      />
+    </>
+  )
+}

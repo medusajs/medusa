@@ -1,3 +1,8 @@
+---
+description: 'Learn how to create a fulfillment provider in the Medusa server. This guide explains the different methods in the fulfillment provider.'
+addHowToData: true
+---
+
 # How to Add a Fulfillment Provider
 
 In this document, you’ll learn how to add a fulfillment provider to a Medusa server. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](overview.md).

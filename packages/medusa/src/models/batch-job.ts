@@ -108,21 +108,36 @@ export class BatchJob extends SoftDeletableEntity {
  * description: "A Batch Job."
  * type: object
  * required:
+ *   - canceled_at
+ *   - completed_at
+ *   - confirmed_at
+ *   - context
+ *   - created_at
+ *   - created_by
+ *   - deleted_at
+ *   - dry_run
+ *   - failed_at
+ *   - id
+ *   - pre_processed_at
+ *   - processing_at
+ *   - result
+ *   - status
  *   - type
+ *   - updated_at
  * properties:
  *  id:
+ *    description: The unique identifier for the batch job.
  *    type: string
- *    description: "The unique identifier for the batch job."
  *    example: batch_01G8T782965PYFG0751G0Z38B4
  *  type:
+ *    description: The type of batch job.
  *    type: string
- *    description: "The type of batch job."
  *    enum:
  *      - product-import
  *      - product-export
  *  status:
+ *    description: The status of the batch job.
  *    type: string
- *    description: "The status of the batch job."
  *    enum:
  *      - created
  *      - pre_processed
@@ -133,15 +148,18 @@ export class BatchJob extends SoftDeletableEntity {
  *      - failed
  *    default: created
  *  created_by:
+ *    description: The unique identifier of the user that created the batch job.
+ *    nullable: true
  *    type: string
- *    description: "The unique identifier of the user that created the batch job."
  *    example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
  *  created_by_user:
  *    description: A user object. Available if the relation `created_by_user` is expanded.
- *    type: object
+ *    nullable: true
+ *    $ref: "#/components/schemas/User"
  *  context:
+ *    description: The context of the batch job, the type of the batch job determines what the context should contain.
+ *    nullable: true
  *    type: object
- *    description: "The context of the batch job, the type of the batch job determines what the context should contain."
  *    example:
  *      shape:
  *        prices:
@@ -159,43 +177,47 @@ export class BatchJob extends SoftDeletableEntity {
  *          - variant.prices
  *          - images
  *  dry_run:
+ *    description: Specify if the job must apply the modifications or not.
  *    type: boolean
- *    description: "Specify if the job must apply the modifications or not."
  *    default: false
  *  result:
- *    type: object
- *    description: "The result of the batch job."
- *    properties:
- *      count:
- *        type: number
- *      advancement_count:
- *        type: number
- *      progress:
- *        type: number
- *      errors:
- *        type: object
- *        properties:
- *          message:
- *            type: string
- *          code:
- *            oneOf:
- *              - type: string
- *              - type: number
- *          err:
- *            type: array
- *      stat_descriptors:
- *        type: object
- *        properties:
- *          key:
- *            type: string
- *          name:
- *            type: string
- *          message:
- *            type: string
- *      file_key:
- *        type: string
- *      file_size:
- *        type: number
+ *    description: The result of the batch job.
+ *    nullable: true
+ *    allOf:
+ *    - type: object
+ *      example: {}
+ *    - type: object
+ *      properties:
+ *        count:
+ *          type: number
+ *        advancement_count:
+ *          type: number
+ *        progress:
+ *          type: number
+ *        errors:
+ *          type: object
+ *          properties:
+ *            message:
+ *              type: string
+ *            code:
+ *              oneOf:
+ *                - type: string
+ *                - type: number
+ *            err:
+ *              type: array
+ *        stat_descriptors:
+ *          type: object
+ *          properties:
+ *            key:
+ *              type: string
+ *            name:
+ *              type: string
+ *            message:
+ *              type: string
+ *        file_key:
+ *          type: string
+ *        file_size:
+ *          type: number
  *    example:
  *      errors:
  *        - err: []
@@ -206,39 +228,46 @@ export class BatchJob extends SoftDeletableEntity {
  *          name: "Product count to export"
  *          message: "There will be 8 products exported by this action"
  *  pre_processed_at:
+ *    description: The date from which the job has been pre-processed.
+ *    nullable: true
  *    type: string
- *    description: "The date from which the job has been pre processed."
  *    format: date-time
  *  processing_at:
+ *    description: The date the job is processing at.
+ *    nullable: true
  *    type: string
- *    description: "The date the job is processing at."
  *    format: date-time
  *  confirmed_at:
+ *    description: The date when the confirmation has been done.
+ *    nullable: true
  *    type: string
- *    description: "The date when the confirmation has been done."
  *    format: date-time
  *  completed_at:
+ *    description: The date of the completion.
+ *    nullable: true
  *    type: string
- *    description: "The date of the completion."
  *    format: date-time
  *  canceled_at:
+ *    description: The date of the concellation.
+ *    nullable: true
  *    type: string
- *    description: "The date of the concellation."
  *    format: date-time
  *  failed_at:
+ *    description: The date when the job failed.
+ *    nullable: true
  *    type: string
- *    description: "The date when the job failed."
  *    format: date-time
  *  created_at:
+ *    description: The date with timezone at which the resource was created.
  *    type: string
- *    description: "The date with timezone at which the resource was created."
  *    format: date-time
  *  updated_at:
+ *    description: The date with timezone at which the resource was last updated.
  *    type: string
- *    description: "The date with timezone at which the resource was last updated."
  *    format: date-time
  *  deleted_at:
+ *    description: The date with timezone at which the resource was deleted.
+ *    nullable: true
  *    type: string
- *    description: "The date with timezone at which the resource was deleted."
  *    format: date-time
  */

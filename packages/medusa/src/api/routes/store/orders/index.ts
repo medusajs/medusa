@@ -1,10 +1,15 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import middlewares, { transformBody } from "../../../middlewares"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 import requireCustomerAuthentication from "../../../middlewares/require-customer-authentication"
 import { StorePostCustomersCustomerOrderClaimReq } from "./request-order"
 import { StorePostCustomersCustomerAcceptClaimReq } from "./confirm-order-request"
+import { StoreGetOrderParams } from "./get-order"
+import { StoreGetOrdersParams } from "./lookup-order"
 
 const route = Router()
 
@@ -14,12 +19,31 @@ export default (app) => {
   /**
    * Lookup
    */
-  route.get("/", middlewares.wrap(require("./lookup-order").default))
+  route.get(
+    "/",
+    transformQuery(StoreGetOrdersParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
+      allowedRelations: allowedStoreOrdersRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./lookup-order").default)
+  )
 
   /**
    * Retrieve Order
    */
-  route.get("/:id", middlewares.wrap(require("./get-order").default))
+  route.get(
+    "/:id",
+    transformQuery(StoreGetOrderParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      allowedFields: allowedStoreOrdersFields,
+      allowedRelations: allowedStoreOrdersRelations,
+    }),
+    middlewares.wrap(require("./get-order").default)
+  )
 
   /**
    * Retrieve by Cart Id
@@ -60,6 +84,11 @@ export const defaultStoreOrdersRelations = [
   "region",
 ]
 
+export const allowedStoreOrdersRelations = [
+  ...defaultStoreOrdersRelations,
+  "billing_address",
+]
+
 export const defaultStoreOrdersFields = [
   "id",
   "status",
@@ -82,6 +111,21 @@ export const defaultStoreOrdersFields = [
   "subtotal",
   "total",
 ] as (keyof Order)[]
+
+export const allowedStoreOrdersFields = [
+  ...defaultStoreOrdersFields,
+  "object",
+  "shipping_total",
+  "discount_total",
+  "tax_total",
+  "refunded_total",
+  "total",
+  "subtotal",
+  "paid_total",
+  "refundable_amount",
+  "gift_card_total",
+  "gift_card_tax_total",
+]
 
 /**
  * @schema StoreOrdersRes
