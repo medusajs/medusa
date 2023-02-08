@@ -31,10 +31,12 @@ export type UpdateStoreInput = {
  *       feature_flags:
  *         $ref: "#/components/schemas/AdminFeatureFlagsResponse"
  *       modules:
- *         description: The Stock Keeping Unit (SKU) code of the Inventory Item.
- *         type: string
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/ModulesResponse"
+ *
  */
-export type ExtendedStore = Store & {
+export type ExtendedStoreDTO = Store & {
   payment_providers: PaymentProvider[]
   fulfillment_providers: FulfillmentProvider[]
   feature_flags: FeatureFlagsResponse

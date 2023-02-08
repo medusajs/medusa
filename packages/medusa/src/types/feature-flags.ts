@@ -4,7 +4,7 @@ export interface IFlagRouter {
 }
 
 /**
- * @schema AdminFeatureFlagsResponse
+ * @schema FeatureFlagsResponse
  * type: array
  * items:
  *   type: object

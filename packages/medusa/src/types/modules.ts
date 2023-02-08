@@ -1,5 +1,5 @@
 /**
- * @schema AdminModulesResponse
+ * @schema ModulesResponse
  * type: array
  * items:
  *   type: object
