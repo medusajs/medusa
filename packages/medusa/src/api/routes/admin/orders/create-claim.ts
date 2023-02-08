@@ -315,6 +315,7 @@ export default async (req, res) => {
  *     description: The Claim Items that the Claim will consist of.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
@@ -359,6 +360,7 @@ export default async (req, res) => {
  *      description: The new items to send to the Customer when the Claim type is Replace.
  *      type: array
  *      items:
+ *        type: object
  *        required:
  *          - variant_id
  *          - quantity
@@ -373,6 +375,7 @@ export default async (req, res) => {
  *      description: The Shipping Methods to send the additional Line Items with.
  *      type: array
  *      items:
+ *         type: object
  *         properties:
  *           id:
  *             description: The ID of an existing Shipping Method

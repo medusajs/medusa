@@ -147,6 +147,7 @@ class Item {
  *     description: The Line Items that have been received.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
