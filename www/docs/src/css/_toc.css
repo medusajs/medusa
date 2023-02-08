@@ -99,14 +99,6 @@ html:not([data-theme="dark"]) .theme-doc-toc-desktop .table-of-contents::before 
   padding-left: calc(var(--ifm-toc-padding-horizontal) + var(--ifm-toc-link-padding-left)) !important;
 }
 
-@media screen and (min-width: 1441px) {
-  .col.toc-wrapper {
-    --ifm-col-width: calc(2 / 12 * 100%)
-  }
-}
-
-@media screen and (max-width: 1440px) {
-  .col.toc-wrapper {
-    --ifm-col-width: calc(3 / 12 * 100%)
-  }
+.col.toc-wrapper {
+  --ifm-col-width: var(--ifm-toc-width);
 }
