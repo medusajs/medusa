@@ -271,6 +271,7 @@ export type AdminProductsListTypesRes = {
  *   tags:
  *     type: array
  *     items:
+ *       type: object
  *       properties:
  *         id:
  *           description: The ID of the tag.
