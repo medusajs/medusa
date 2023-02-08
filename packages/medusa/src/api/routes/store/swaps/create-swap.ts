@@ -296,6 +296,7 @@ class AdditionalItem {
  *     description: "The items to include in the Return."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
@@ -319,6 +320,7 @@ class AdditionalItem {
  *     description: "The items to exchange the returned items to."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity

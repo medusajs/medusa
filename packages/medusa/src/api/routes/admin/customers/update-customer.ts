@@ -148,6 +148,7 @@ class Group {
  *   groups:
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:
