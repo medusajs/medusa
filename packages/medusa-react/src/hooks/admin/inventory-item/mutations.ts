@@ -65,22 +65,28 @@ export const useAdminDeleteInventoryItem = (
 // location level
 export const useAdminUpdateLocationLevel = (
   inventoryItemId: string,
-  stockLocationId: string,
   options?: UseMutationOptions<
     Response<AdminInventoryItemsRes>,
     Error,
-    AdminPostInventoryItemsItemLocationLevelsLevelReq
+    AdminPostInventoryItemsItemLocationLevelsLevelReq & {
+      stockLocationId: string,
+    }
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminPostInventoryItemsItemLocationLevelsLevelReq) =>
+    (payload: AdminPostInventoryItemsItemLocationLevelsLevelReq & {
+      stockLocationId: string,
+    }) =>
       client.admin.inventoryItems.updateLocationLevel(
         inventoryItemId,
-        stockLocationId,
-        payload
+        payload.stockLocationId,
+        {
+          incoming_quantity: payload.incoming_quantity, 
+          stocked_quantity: payload.stocked_quantity
+        }
       ),
     buildOptions(
       queryClient,
@@ -95,14 +101,13 @@ export const useAdminUpdateLocationLevel = (
 
 export const useAdminDeleteLocationLevel = (
   inventoryItemId: string,
-  stockLocationId: string,
-  options?: UseMutationOptions<Response<AdminInventoryItemsRes>, Error, void>
+  options?: UseMutationOptions<Response<AdminInventoryItemsRes>, Error, string>
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    () =>
+    (stockLocationId: string) =>
       client.admin.inventoryItems.deleteLocationLevel(
         inventoryItemId,
         stockLocationId

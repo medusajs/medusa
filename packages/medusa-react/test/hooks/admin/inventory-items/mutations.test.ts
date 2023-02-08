@@ -65,13 +65,13 @@ describe("useAdminUpdateLocationLevel hook", () => {
     }
 
     const { result, waitFor } = renderHook(
-      () => useAdminUpdateLocationLevel("inventory-item-id", "location_id"),
+      () => useAdminUpdateLocationLevel("inventory-item-id"),
       {
         wrapper: createWrapper(),
       }
     )
 
-    result.current.mutate(payload)
+    result.current.mutate({ ...payload, stockLocationId: "location_id"})
 
     await waitFor(() => result.current.isSuccess)
 
@@ -92,13 +92,13 @@ describe("useAdminUpdateLocationLevel hook", () => {
 describe("useAdminDeleteLocationLevel hook", () => {
   test("removes a location level", async () => {
     const { result, waitFor } = renderHook(
-      () => useAdminDeleteLocationLevel("inventory-item-id", "location_id"),
+      () => useAdminDeleteLocationLevel("inventory-item-id"),
       {
         wrapper: createWrapper(),
       }
     )
 
-    result.current.mutate()
+    result.current.mutate("location_id")
 
     await waitFor(() => result.current.isSuccess)
 
