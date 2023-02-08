@@ -425,7 +425,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         variant_id: variantId,
         quantity,
         locationId,
-        reservationItems: reservationItems.map((i) => i.id),
+        reservationItem: reservationItems.map((i) => i.id),
       })
 
     return reservationItems
