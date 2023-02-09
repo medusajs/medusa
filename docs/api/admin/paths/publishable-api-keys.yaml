@@ -8,15 +8,17 @@ post:
         schema:
           $ref: ../components/schemas/AdminPostPublishableApiKeysReq.yaml
   x-authenticated: true
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/publishable-api-keys/postundefined
+        $ref: ../code_samples/JavaScript/publishable-api-keys/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/publishable-api-keys/postundefined
+        $ref: ../code_samples/Shell/publishable-api-keys/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -74,15 +76,18 @@ get:
       description: Comma separated list of fields to include in the results.
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: GetPublishableApiKeysParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/publishable-api-keys/getundefined
+        $ref: ../code_samples/JavaScript/publishable-api-keys/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/publishable-api-keys/getundefined
+        $ref: ../code_samples/Shell/publishable-api-keys/get.sh
   security:
     - api_token: []
     - cookie_auth: []

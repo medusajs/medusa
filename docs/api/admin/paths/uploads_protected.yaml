@@ -18,11 +18,11 @@ post:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/uploads_protected/postundefined
+        $ref: ../code_samples/JavaScript/uploads_protected/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/uploads_protected/postundefined
+        $ref: ../code_samples/Shell/uploads_protected/post.sh
   security:
     - api_token: []
     - cookie_auth: []

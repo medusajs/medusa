@@ -184,6 +184,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostAppsReq'
+      x-codegen:
+        method: authorize
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -230,6 +232,8 @@ paths:
       summary: List Applications
       description: Retrieve a list of applications.
       x-authenticated: true
+      x-codegen:
+        method: list
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -282,6 +286,8 @@ paths:
                 password:
                   type: string
                   description: The User's password.
+      x-codegen:
+        method: createSession
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -332,6 +338,8 @@ paths:
       summary: User Logout
       x-authenticated: true
       description: Deletes the current session for the logged in user.
+      x-codegen:
+        method: deleteSession
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -376,6 +384,8 @@ paths:
       summary: Get Current User
       x-authenticated: true
       description: Gets the currently logged in User.
+      x-codegen:
+        method: getSession
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -434,6 +444,8 @@ paths:
           description: The ID of the batch job.
           schema:
             type: string
+      x-codegen:
+        method: cancel
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -494,6 +506,8 @@ paths:
           description: The ID of the batch job.
           schema:
             type: string
+      x-codegen:
+        method: confirm
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -552,6 +566,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostBatchesReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -849,6 +865,9 @@ paths:
                 type: string
                 description: filter by dates greater than or equal to this date
                 format: date
+      x-codegen:
+        method: list
+        queryParams: AdminGetBatchParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -909,6 +928,8 @@ paths:
           description: The ID of the Batch Job
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -974,6 +995,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductsToCollectionReq'
+      x-codegen:
+        method: addProducts
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1031,6 +1054,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminDeleteProductsFromCollectionReq'
+      x-codegen:
+        method: removeProducts
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1082,6 +1107,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostCollectionsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1243,6 +1270,9 @@ paths:
                 type: string
                 description: filter by dates greater than or equal to this date
                 format: date
+      x-codegen:
+        method: list
+        queryParams: AdminGetCollectionsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1303,6 +1333,8 @@ paths:
           description: The ID of the Collection.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1362,6 +1394,8 @@ paths:
           description: The ID of the Product Collection
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1426,6 +1460,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostCollectionsCollectionReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1515,6 +1551,9 @@ paths:
           schema:
             type: number
             default: '20'
+      x-codegen:
+        method: list
+        queryParams: AdminGetCurrenciesParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1565,6 +1604,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostCurrenciesCurrencyReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1624,6 +1665,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostCustomerGroupsGroupCustomersBatchReq
+      x-codegen:
+        method: addCustomers
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1706,6 +1749,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminDeleteCustomerGroupsGroupCustomerBatchReq
+      x-codegen:
+        method: removeCustomers
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1776,7 +1821,13 @@ paths:
       summary: Create a Customer Group
       description: Creates a CustomerGroup.
       x-authenticated: true
-      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostCustomerGroupsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -1832,20 +1883,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: Name of the customer group
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
     get:
       operationId: GetCustomerGroups
       summary: List Customer Groups
@@ -1968,6 +2005,9 @@ paths:
             groups of the result.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetCustomerGroupsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2028,6 +2068,8 @@ paths:
           description: The ID of the Customer Group
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2101,6 +2143,9 @@ paths:
             group.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
+        queryParams: AdminGetCustomerGroupsGroupParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2165,6 +2210,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostCustomerGroupsGroupReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2233,6 +2280,31 @@ paths:
           description: The ID of the customer group.
           schema:
             type: string
+        - in: query
+          name: limit
+          description: The number of items to return.
+          schema:
+            type: integer
+            default: 50
+        - in: query
+          name: offset
+          description: The items to skip before result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'a search term to search email, first_name, and last_name.'
+          schema:
+            type: string
+      x-codegen:
+        method: listCustomers
+        queryParams: AdminGetGroupsGroupCustomersParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2291,8 +2363,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostCustomersReq'
-      tags:
-        - Customer
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2333,6 +2405,8 @@ paths:
       security:
         - api_token: []
         - cookie_auth: []
+      tags:
+        - Customer
       responses:
         '201':
           description: OK
@@ -2380,6 +2454,9 @@ paths:
           description: 'a search term to search email, first_name, and last_name.'
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetCustomersParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2450,6 +2527,8 @@ paths:
           description: (Comma separated) Which fields should be included in the customer.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2524,6 +2603,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostCustomersCustomerReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2598,6 +2679,8 @@ paths:
           description: The ID of the Region.
           schema:
             type: string
+      x-codegen:
+        method: addRegion
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2665,6 +2748,8 @@ paths:
           description: The ID of the Region.
           schema:
             type: string
+      x-codegen:
+        method: removeRegion
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2751,6 +2836,9 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostDiscountsDiscountConditionsConditionBatchReq
+      x-codegen:
+        method: addConditionResourceBatch
+        queryParams: AdminPostDiscountsDiscountConditionsConditionBatchParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2846,6 +2934,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq
+      x-codegen:
+        method: deleteConditionResourceBatch
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -2938,6 +3028,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostDiscountsDiscountConditions'
+      x-codegen:
+        method: createCondition
+        queryParams: AdminPostDiscountsDiscountConditionsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3006,12 +3099,12 @@ paths:
       parameters:
         - in: query
           name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
+          description: (Comma separated) Which fields should be expanded in the results.
           schema:
             type: string
         - in: query
           name: fields
-          description: (Comma separated) Which fields should be retrieved in each customer.
+          description: (Comma separated) Which fields should be retrieved in the results.
           schema:
             type: string
       requestBody:
@@ -3019,6 +3112,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostDiscountsReq'
+      x-codegen:
+        method: create
+        queryParams: AdminPostDiscountsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3153,6 +3249,9 @@ paths:
           description: Comma separated list of relations to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetDiscountsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3216,6 +3315,13 @@ paths:
           description: The ID of the Discount to create the dynamic code from."
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostDiscountsDiscountDynamicCodesReq'
+      x-codegen:
+        method: createDynamicCode
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3272,26 +3378,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - code
-              properties:
-                code:
-                  type: string
-                  description: The unique code that will be used to redeem the Discount.
-                usage_limit:
-                  type: number
-                  default: '1'
-                  description: amount of times the discount can be applied.
-                metadata:
-                  type: object
-                  description: >-
-                    An optional set of key-value paris to hold additional
-                    information.
   '/discounts/{discount_id}/conditions/{condition_id}':
     delete:
       operationId: DeleteDiscountsDiscountConditionsCondition
@@ -3321,6 +3407,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: deleteCondition
+        queryParams: AdminDeleteDiscountsDiscountConditionsConditionParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3397,6 +3486,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: getCondition
+        queryParams: AdminGetDiscountsDiscountConditionsConditionParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3486,6 +3578,9 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostDiscountsDiscountConditionsCondition
+      x-codegen:
+        method: updateCondition
+        queryParams: AdminPostDiscountsDiscountConditionsConditionParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3559,6 +3654,8 @@ paths:
           description: The ID of the Discount
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3628,6 +3725,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
+        queryParams: AdminGetDiscountParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3708,6 +3808,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostDiscountsDiscountReq'
+      x-codegen:
+        method: update
+        queryParams: AdminPostDiscountsDiscountParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3782,6 +3885,8 @@ paths:
           description: The ID of the Discount
           schema:
             type: string
+      x-codegen:
+        method: deleteDynamicCode
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3852,6 +3957,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: retrieveByCode
+        queryParams: AdminGetDiscountsDiscountCodeParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -3910,6 +4018,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostDraftOrdersReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4012,6 +4122,9 @@ paths:
             and display IDs of draft orders
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetDraftOrdersParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4077,6 +4190,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostDraftOrdersDraftOrderLineItemsReq'
+      x-codegen:
+        method: addLineItem
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4145,6 +4260,8 @@ paths:
           description: The ID of the Draft Order.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4204,6 +4321,8 @@ paths:
           description: The ID of the Draft Order.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4270,6 +4389,8 @@ paths:
           description: The ID of the Draft Order.
           schema:
             type: string
+      x-codegen:
+        method: removeLineItem
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4342,6 +4463,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostDraftOrdersDraftOrderLineItemsItemReq
+      x-codegen:
+        method: updateLineItem
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4411,6 +4534,8 @@ paths:
           description: The Draft Order id.
           schema:
             type: string
+      x-codegen:
+        method: markPaid
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4477,6 +4602,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostDraftOrdersDraftOrderReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4545,6 +4672,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostGiftCardsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4623,6 +4752,9 @@ paths:
           description: a search term to search by code or display ID
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetGiftCardsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4683,6 +4815,8 @@ paths:
           description: The ID of the Gift Card to delete.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4742,6 +4876,8 @@ paths:
           description: The ID of the Gift Card.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4808,6 +4944,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostGiftCardsGiftCardReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4863,6 +5001,700 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  '/inventory-items/{id}/location-levels':
+    post:
+      operationId: PostInventoryItemsInventoryItemLocationLevels
+      summary: Create an Inventory Location Level for a given Inventory Item.
+      description: Creates an Inventory Location Level for a given Inventory Item.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Inventory Item.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/AdminPostInventoryItemsItemLocationLevelsReq
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {
+              location_id: 'sloc',
+              stocked_quantity: 10,
+            })
+
+            .then(({ inventory_item }) => {
+              console.log(inventory_item.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/inventory-items/{id}/location-levels'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "location_id": "sloc",
+                "stocked_quantity": 10
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Inventory Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminInventoryItemsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    get:
+      operationId: GetInventoryItemsInventoryItemLocationLevels
+      summary: List stock levels of a given location.
+      description: Lists stock levels of a given location.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Inventory Item.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many stock locations levels to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: Limit the number of stock locations levels returned.
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.inventoryItems.listLocationLevels(inventoryItemId)
+
+            .then(({ inventory_item }) => {
+              console.log(inventory_item.location_levels);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/inventory-items/{id}/location-levels'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Inventory Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminInventoryItemsLocationLevelsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/inventory-items/{id}':
+    delete:
+      operationId: DeleteInventoryItemsInventoryItem
+      summary: Delete an Inventory Item
+      description: Delete an Inventory Item
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Inventory Item to delete.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.inventoryItems.delete(inventoryItemId)
+              .then(({ id, object, deleted }) => {
+                console.log(id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/inventory-items/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - InventoryItem
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminInventoryItemsDeleteRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+    get:
+      operationId: GetInventoryItemsInventoryItem
+      summary: Retrive an Inventory Item.
+      description: Retrives an Inventory Item.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Inventory Item.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.inventoryItems.retrieve(inventoryItemId)
+
+            .then(({ inventory_item }) => {
+              console.log(inventory_item.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/inventory-items/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Inventory Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminInventoryItemsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostInventoryItemsInventoryItem
+      summary: Update an Inventory Item.
+      description: Updates an Inventory Item.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Inventory Item.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostInventoryItemsInventoryItemReq'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.inventoryItems.update(inventoryItemId, {
+              origin_country: "US",
+            })
+
+            .then(({ inventory_item }) => {
+              console.log(inventory_item.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/inventory-items/{id}' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "origin_country": "US"
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Inventory Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminInventoryItemsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/inventory-items/{id}/location-levels/{location_id}':
+    delete:
+      operationId: DeleteInventoryItemsInventoryIteLocationLevelsLocation
+      summary: Delete a location level of an Inventory Item.
+      description: Delete a location level of an Inventory Item.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Inventory Item.
+          schema:
+            type: string
+        - in: path
+          name: location_id
+          required: true
+          description: The ID of the location.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.inventoryItems.deleteLocationLevel(inventoryItemId,
+            locationId)
+
+            .then(({ inventory_item }) => {
+              console.log(inventory_item.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Inventory Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminInventoryItemsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    post:
+      operationId: PostInventoryItemsInventoryItemLocationLevelsLocationLevel
+      summary: Update an Inventory Location Level for a given Inventory Item.
+      description: Updates an Inventory Location Level for a given Inventory Item.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Inventory Item.
+          schema:
+            type: string
+        - in: path
+          name: location_id
+          required: true
+          description: The ID of the Location.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/AdminPostInventoryItemsItemLocationLevelsLevelReq
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.inventoryItems.updateLocationLevel(inventoryItemId,
+            locationId, {
+              stocked_quantity: 15,
+            })
+
+            .then(({ inventory_item }) => {
+              console.log(inventory_item.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "stocked_quantity": 15
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Inventory Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminInventoryItemsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /inventory-items:
+    get:
+      operationId: GetInventoryItems
+      summary: List inventory items.
+      description: Lists inventory items.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: offset
+          description: How many inventory items to skip in the result.
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: Limit the number of inventory items returned.
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: >-
+            Query used for searching product inventory items and their
+            properties.
+          schema:
+            type: string
+        - in: query
+          name: location_id
+          style: form
+          explode: false
+          description: Locations ids to search for.
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: id
+          description: id to search for.
+          schema:
+            type: string
+        - in: query
+          name: sku
+          description: sku to search for.
+          schema:
+            type: string
+        - in: query
+          name: origin_country
+          description: origin_country to search for.
+          schema:
+            type: string
+        - in: query
+          name: mid_code
+          description: mid_code to search for.
+          schema:
+            type: string
+        - in: query
+          name: material
+          description: material to search for.
+          schema:
+            type: string
+        - in: query
+          name: hs_code
+          description: hs_code to search for.
+          schema:
+            type: string
+        - in: query
+          name: weight
+          description: weight to search for.
+          schema:
+            type: string
+        - in: query
+          name: length
+          description: length to search for.
+          schema:
+            type: string
+        - in: query
+          name: height
+          description: height to search for.
+          schema:
+            type: string
+        - in: query
+          name: width
+          description: width to search for.
+          schema:
+            type: string
+        - in: query
+          name: requires_shipping
+          description: requires_shipping to search for.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.inventoryItems.list()
+
+            .then(({ inventory_items }) => {
+              console.log(inventory_items.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/inventory-items' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Inventory Items
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/AdminInventoryItemsListWithVariantsAndLocationLevelsRes
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /invites/accept:
     post:
       operationId: PostInvitesInviteAccept
@@ -4873,6 +5705,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostInvitesInviteAcceptReq'
+      x-codegen:
+        method: accept
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -4949,6 +5783,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostInvitesReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5011,6 +5847,8 @@ paths:
       summary: Lists Invites
       description: Lists all Invites
       x-authenticated: true
+      x-codegen:
+        method: list
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5071,6 +5909,8 @@ paths:
           description: The ID of the Invite
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5131,6 +5971,8 @@ paths:
           description: The ID of the Invite
           schema:
             type: string
+      x-codegen:
+        method: resend
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5189,6 +6031,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostNotesReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5271,6 +6115,9 @@ paths:
           description: The ID which the notes belongs to
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetNotesParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5329,6 +6176,8 @@ paths:
           description: The ID of the Note to delete.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5388,6 +6237,8 @@ paths:
           description: The ID of the note to retrieve.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5452,6 +6303,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostNotesNoteReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5568,6 +6421,9 @@ paths:
             notifications or not
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetNotificationsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5635,6 +6491,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostNotificationsNotificationResendReq'
+      x-codegen:
+        method: resend
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5700,6 +6558,8 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminPostOrderEditsEditLineItemsReq'
       x-authenticated: true
+      x-codegen:
+        method: addLineItem
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5768,6 +6628,8 @@ paths:
           description: The ID of the OrderEdit.
           schema:
             type: string
+      x-codegen:
+        method: cancel
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5823,6 +6685,8 @@ paths:
           description: The ID of the order edit.
           schema:
             type: string
+      x-codegen:
+        method: confirm
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5876,6 +6740,8 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminPostOrderEditsReq'
       x-authenticated: true
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -5965,6 +6831,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: GetOrderEditsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6030,6 +6899,8 @@ paths:
           description: The ID of the order edit item to delete from order.
           schema:
             type: string
+      x-codegen:
+        method: removeLineItem
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6099,6 +6970,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrderEditsEditLineItemsLineItemReq'
+      x-codegen:
+        method: updateLineItem
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6171,6 +7044,8 @@ paths:
           description: The ID of the Order Edit Item Change to delete.
           schema:
             type: string
+      x-codegen:
+        method: deleteItemChange
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6222,6 +7097,8 @@ paths:
           description: The ID of the Order Edit to delete.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6280,6 +7157,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
+        queryParams: GetOrderEditsOrderEditParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6343,6 +7223,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrderEditsOrderEditReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6410,6 +7292,8 @@ paths:
           description: The ID of the Order Edit to request confirmation from.
           schema:
             type: string
+      x-codegen:
+        method: requestConfirmation
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6460,7 +7344,6 @@ paths:
         Adds a Shipping Method to an Order. If another Shipping Method exists
         with the same Shipping Profile, the previous Shipping Method will be
         replaced.
-      x-authenticated: true
       parameters:
         - in: path
           name: id
@@ -6468,6 +7351,14 @@ paths:
           description: The ID of the Order.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostOrdersOrderShippingMethodsReq'
+      x-authenticated: true
+      x-codegen:
+        method: addShippingMethod
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6525,31 +7416,6 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - price
-                - option_id
-              properties:
-                price:
-                  type: integer
-                  description: >-
-                    The price (excluding VAT) that should be charged for the
-                    Shipping Method
-                option_id:
-                  type: string
-                  description: >-
-                    The ID of the Shipping Option to create the Shipping Method
-                    from.
-                data:
-                  type: object
-                  description: >-
-                    The data required for the Shipping Option to create a
-                    Shipping Method. This will depend on the Fulfillment
-                    Provider.
   '/orders/{id}/archive':
     post:
       operationId: PostOrdersOrderArchive
@@ -6563,6 +7429,8 @@ paths:
           description: The ID of the Order.
           schema:
             type: string
+      x-codegen:
+        method: archive
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6629,6 +7497,8 @@ paths:
           description: The ID of the Claim.
           schema:
             type: string
+      x-codegen:
+        method: cancelClaim
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6702,6 +7572,8 @@ paths:
           description: The ID of the Fulfillment.
           schema:
             type: string
+      x-codegen:
+        method: cancelClaimFulfillment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6776,6 +7648,8 @@ paths:
           description: The ID of the Fulfillment.
           schema:
             type: string
+      x-codegen:
+        method: cancelSwapFulfillment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6844,6 +7718,8 @@ paths:
           description: The ID of the Fulfillment
           schema:
             type: string
+      x-codegen:
+        method: cancelFulfillment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6908,6 +7784,8 @@ paths:
           description: The ID of the Order.
           schema:
             type: string
+      x-codegen:
+        method: cancel
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -6974,6 +7852,8 @@ paths:
           description: The ID of the Swap.
           schema:
             type: string
+      x-codegen:
+        method: cancelSwap
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7035,6 +7915,8 @@ paths:
           description: The ID of the Order.
           schema:
             type: string
+      x-codegen:
+        method: capturePayment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7095,6 +7977,8 @@ paths:
           description: The ID of the Order.
           schema:
             type: string
+      x-codegen:
+        method: complete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7166,6 +8050,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderClaimsClaimShipmentsReq'
+      x-codegen:
+        method: createClaimShipment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7240,6 +8126,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderClaimsReq'
+      x-codegen:
+        method: createClaim
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7327,6 +8215,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderFulfillmentsReq'
+      x-codegen:
+        method: createFulfillment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7492,6 +8382,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderShipmentReq'
+      x-codegen:
+        method: createShipment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7571,6 +8463,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderSwapsSwapShipmentsReq'
+      x-codegen:
+        method: createSwapShipment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7647,6 +8541,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderSwapsReq'
+      x-codegen:
+        method: createSwap
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7737,6 +8633,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostOrdersOrderClaimsClaimFulfillmentsReq
+      x-codegen:
+        method: fulfillClaim
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7810,6 +8708,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostOrdersOrderSwapsSwapFulfillmentsReq
+      x-codegen:
+        method: fulfillSwap
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7871,6 +8771,19 @@ paths:
           description: The ID of the Order.
           schema:
             type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      x-codegen:
+        method: retrieve
+        queryParams: AdminGetOrdersOrderParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -7935,6 +8848,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8282,6 +9197,9 @@ paths:
             the result.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetOrdersParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8351,6 +9269,8 @@ paths:
           description: The ID of the Swap.
           schema:
             type: string
+      x-codegen:
+        method: processSwapPayment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8417,6 +9337,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderRefundsReq'
+      x-codegen:
+        method: refundPayment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8494,6 +9416,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderReturnsReq'
+      x-codegen:
+        method: requestReturn
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8584,6 +9508,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostOrdersOrderClaimsClaimReq'
+      x-codegen:
+        method: updateClaim
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8652,6 +9578,8 @@ paths:
           description: The ID of the Payment Collection to delete.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8712,6 +9640,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
+        queryParams: GetPaymentCollectionsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8775,6 +9706,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminUpdatePaymentCollectionsReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8842,6 +9775,8 @@ paths:
           description: The ID of the PaymentCollection.
           schema:
             type: string
+      x-codegen:
+        method: markAsAuthorized
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8901,6 +9836,8 @@ paths:
           description: The ID of the Payment.
           schema:
             type: string
+      x-codegen:
+        method: capturePayment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -8961,6 +9898,9 @@ paths:
           description: The ID of the Payment.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
+        queryParams: GetPaymentsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9026,6 +9966,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostPaymentRefundsReq'
+      x-codegen:
+        method: refundPayment
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9103,6 +10045,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostPriceListPricesPricesReq'
+      x-codegen:
+        method: addPrices
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9189,6 +10133,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminDeletePriceListPricesPricesReq'
+      x-codegen:
+        method: deletePrices
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9259,6 +10205,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostPriceListsPriceListReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9480,6 +10428,9 @@ paths:
                 type: string
                 description: filter by dates greater than or equal to this date
                 format: date
+      x-codegen:
+        method: list
+        queryParams: AdminGetPriceListPaginationParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9540,6 +10491,8 @@ paths:
           description: The ID of the Price List to delete.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9599,6 +10552,8 @@ paths:
           description: The ID of the Price List.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9663,6 +10618,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostPriceListsPriceListPriceListReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9739,6 +10696,8 @@ paths:
           description: The ID of the product from which the money amount will be deleted.
           schema:
             type: string
+      x-codegen:
+        method: deleteProductPrices
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -9809,6 +10768,8 @@ paths:
           description: The ID of the variant from which the money amount will be deleted.
           schema:
             type: string
+      x-codegen:
+        method: deleteVariantPrices
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -10037,6 +10998,9 @@ paths:
             the result.
           schema:
             type: string
+      x-codegen:
+        method: listProducts
+        queryParams: AdminGetPriceListsPriceListProductsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -10084,45 +11048,79 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /product-categories:
+  '/product-categories/{id}/products/batch':
     post:
-      operationId: PostProductCategories
-      summary: Create a Product Category
-      description: Creates a Product Category.
+      operationId: PostProductCategoriesCategoryProductsBatch
+      summary: Add Products to a category
+      description: Assign a batch of products to a product category.
       x-authenticated: true
       parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Product Category.
+          schema:
+            type: string
         - in: query
           name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each product
-            category.
+          description: (Comma separated) Category fields to be expanded in the response.
           schema:
             type: string
         - in: query
           name: fields
-          description: >-
-            (Comma separated) Which fields should be retrieved in each product
-            category.
+          description: (Comma separated) Category fields to be retrieved in the response.
           schema:
             type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdminPostProductCategoriesReq'
+              $ref: >-
+                #/components/schemas/AdminPostProductCategoriesCategoryProductsBatchReq
+      x-codegen:
+        method: addProducts
+        queryParams: AdminPostProductCategoriesCategoryProductsBatchParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.addProducts(product_category_id, {
+              product_ids: [
+                {
+                  id: product_id
+                }
+              ]
+            })
+
+            .then(({ product_category }) => {
+              console.log(product_category.id);
+            });
         - lang: Shell
           label: cURL
           source: >
-            curl --location --request POST
-            'https://medusa-url.com/admin/product-categories' \
+            curl --location \
+
+            --request POST
+            'https://medusa-url.com/admin/product-categories/{product_category_id}/products/batch'
+            \
 
             --header 'Authorization: Bearer {api_token}' \
 
             --header 'Content-Type: application/json' \
 
             --data-raw '{
-                "name": "Jeans",
+                "product_ids": [
+                  {
+                    "id": "{product_id}"
+                  }
+                ]
             }'
       security:
         - api_token: []
@@ -10135,10 +11133,182 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  product_category:
-                    $ref: '#/components/schemas/ProductCategory'
+                $ref: '#/components/schemas/AdminProductCategoriesCategoryRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+    delete:
+      operationId: DeleteProductCategoriesCategoryProductsBatch
+      summary: Delete Products
+      description: Remove a list of products from a product category.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Product Category.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Category fields to be expanded in the response.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Category fields to be retrieved in the response.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/AdminDeleteProductCategoriesCategoryProductsBatchReq
+      x-codegen:
+        method: removeProducts
+        queryParams: AdminDeleteProductCategoriesCategoryProductsBatchParams
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.removeProducts(product_category_id, {
+              product_ids: [
+                {
+                  id: product_id
+                }
+              ]
+            })
+
+            .then(({ product_category }) => {
+              console.log(product_category.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/product-categories/{id}/products/batch'
+            \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "product_ids": [
+                  {
+                    "id": "{product_id}"
+                  }
+                ]
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProductCategoriesCategoryRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /product-categories:
+    post:
+      operationId: PostProductCategories
+      summary: Create a Product Category
+      description: Creates a Product Category.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be retrieved in the results.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPostProductCategoriesReq'
+      x-codegen:
+        method: create
+        queryParams: AdminPostProductCategoriesParams
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.create({
+              name: "Skinny Jeans",
+            })
+
+            .then(({ product_category }) => {
+              console.log(product_category.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request POST
+            'https://medusa-url.com/admin/product-categories' \
+
+            --header 'Authorization: Bearer {api_token}' \
+
+            --header 'Content-Type: application/json' \
+
+            --data-raw '{
+                "name": "Skinny Jeans",
+            }'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Category
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProductCategoriesCategoryRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -10203,7 +11373,25 @@ paths:
             category.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetProductCategoriesParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.list()
+
+            .then(({ product_categories, limit, offset, count }) => {
+              console.log(product_categories.length);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10222,21 +11410,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  product_categories:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ProductCategory'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
+                $ref: '#/components/schemas/AdminProductCategoriesListRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -10262,7 +11436,24 @@ paths:
           description: The ID of the Product Category
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.delete(product_category_id)
+
+            .then(({ id, object, deleted }) => {
+              console.log(id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10281,21 +11472,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the deleted product category.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                    default: product_category
-                  deleted:
-                    type: boolean
-                    description: >-
-                      Whether the product category was deleted successfully or
-                      not.
-                    default: true
+                $ref: '#/components/schemas/AdminProductCategoriesCategoryDeleteRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -10320,7 +11497,35 @@ paths:
           description: The ID of the Product Category
           schema:
             type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: (Comma separated) Which fields should be included in the results.
+          schema:
+            type: string
+      x-codegen:
+        method: retrieve
+        queryParams: AdminGetProductCategoryParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.retrieve(product_category_id)
+
+            .then(({ product_category }) => {
+              console.log(product_category.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10339,10 +11544,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  product_category:
-                    $ref: '#/components/schemas/ProductCategory'
+                $ref: '#/components/schemas/AdminProductCategoriesCategoryRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -10386,7 +11588,27 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductCategoriesCategoryReq'
+      x-codegen:
+        method: update
+        queryParams: AdminPostProductCategoriesCategoryParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.productCategories.update(product_category_id, {
+              name: "Skinny Jeans"
+            })
+
+            .then(({ product_category }) => {
+              console.log(product_category.id);
+            });
         - lang: Shell
           label: cURL
           source: >
@@ -10411,10 +11633,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  product_category:
-                    $ref: '#/components/schemas/ProductCategory'
+                $ref: '#/components/schemas/AdminProductCategoriesCategoryRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -10523,6 +11742,9 @@ paths:
                 type: string
                 description: filter by dates greater than or equal to this date
                 format: date
+      x-codegen:
+        method: list
+        queryParams: AdminGetProductTagsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -10666,6 +11888,9 @@ paths:
                 type: string
                 description: filter by dates greater than or equal to this date
                 format: date
+      x-codegen:
+        method: list
+        queryParams: AdminGetProductTypesParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -10731,6 +11956,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductsProductOptionsReq'
+      x-codegen:
+        method: addOption
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -10797,6 +12024,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -10945,6 +12174,20 @@ paths:
             items:
               type: string
         - in: query
+          name: category_id
+          style: form
+          explode: false
+          description: Category IDs to filter products by
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: include_category_children
+          description: Include category children when filtering by category_id
+          schema:
+            type: boolean
+        - in: query
           name: title
           description: title to search for.
           schema:
@@ -11061,6 +12304,9 @@ paths:
           description: the field used to order the products.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetProductsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11128,6 +12374,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductsProductVariantsReq'
+      x-codegen:
+        method: createVariant
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11242,6 +12490,9 @@ paths:
           schema:
             type: integer
             default: 100
+      x-codegen:
+        method: listVariants
+        queryParams: AdminGetProductsVariantsParams
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -11297,6 +12548,8 @@ paths:
           description: The ID of the Product Option.
           schema:
             type: string
+      x-codegen:
+        method: deleteOption
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11367,6 +12620,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductsProductOptionsOption'
+      x-codegen:
+        method: updateOption
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11435,6 +12690,8 @@ paths:
           description: The ID of the Product.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11494,6 +12751,8 @@ paths:
           description: The ID of the Product.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11558,6 +12817,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductsProductReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11633,6 +12894,8 @@ paths:
           description: The ID of the Product Variant.
           schema:
             type: string
+      x-codegen:
+        method: deleteVariant
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11703,6 +12966,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductsProductVariantsVariantReq'
+      x-codegen:
+        method: updateVariant
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11783,6 +13048,8 @@ paths:
       summary: List Tags Usage Number
       description: Retrieves a list of Product Tags with how many times each is used.
       x-authenticated: true
+      x-codegen:
+        method: listTags
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11837,6 +13104,8 @@ paths:
       summary: List Product Types
       description: Retrieves a list of Product Types.
       x-authenticated: true
+      x-codegen:
+        method: listTypes
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11902,6 +13171,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostProductsProductMetadataReq'
+      x-codegen:
+        method: setMetadata
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -11979,6 +13250,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostPublishableApiKeySalesChannelsBatchReq
+      x-codegen:
+        method: addSalesChannelsBatch
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12061,6 +13334,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminDeletePublishableApiKeySalesChannelsBatchReq
+      x-codegen:
+        method: deleteSalesChannelsBatch
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12136,6 +13411,8 @@ paths:
             schema:
               $ref: '#/components/schemas/AdminPostPublishableApiKeysReq'
       x-authenticated: true
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12224,6 +13501,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: GetPublishableApiKeysParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12283,6 +13563,8 @@ paths:
           description: The ID of the PublishableApiKeys to delete.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12332,6 +13614,8 @@ paths:
           schema:
             type: string
       x-authenticated: true
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12397,6 +13681,9 @@ paths:
           description: Query used for searching sales channels' names and descriptions.
           schema:
             type: string
+      x-codegen:
+        method: listSalesChannels
+        queryParams: GetPublishableApiKeySalesChannelsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12458,6 +13745,8 @@ paths:
           schema:
             type: string
       x-authenticated: true
+      x-codegen:
+        method: revoke
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12524,6 +13813,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostPublishableApiKeysPublishableApiKeyReq
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12597,6 +13888,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostRegionsRegionCountriesReq'
+      x-codegen:
+        method: addCountry
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12671,6 +13964,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostRegionsRegionFulfillmentProvidersReq
+      x-codegen:
+        method: addFulfillmentProvider
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12744,6 +14039,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostRegionsRegionPaymentProvidersReq'
+      x-codegen:
+        method: addPaymentProvider
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12810,6 +14107,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostRegionsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12931,6 +14230,9 @@ paths:
           description: >-
             Date comparison for when resulting region was deleted, i.e. less
             than, greater than etc.
+      x-codegen:
+        method: list
+        queryParams: AdminGetRegionsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -12991,6 +14293,8 @@ paths:
           description: The ID of the Region.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13050,6 +14354,8 @@ paths:
           description: The ID of the Region.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13114,6 +14420,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostRegionsRegionReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13182,6 +14490,8 @@ paths:
           description: The ID of the Region.
           schema:
             type: string
+      x-codegen:
+        method: retrieveFulfillmentOptions
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13252,6 +14562,8 @@ paths:
             externalDocs:
               url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
               description: See a list of codes.
+      x-codegen:
+        method: deleteCountry
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13318,6 +14630,8 @@ paths:
           description: The ID of the Fulfillment Provider.
           schema:
             type: string
+      x-codegen:
+        method: deleteFulfillmentProvider
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13385,6 +14699,8 @@ paths:
           description: The ID of the Payment Provider.
           schema:
             type: string
+      x-codegen:
+        method: deletePaymentProvider
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13832,6 +15148,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostReturnReasonsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13894,6 +15212,8 @@ paths:
       summary: List Return Reasons
       description: Retrieves a list of Return Reasons.
       x-authenticated: true
+      x-codegen:
+        method: list
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -13954,6 +15274,8 @@ paths:
           description: The ID of the return reason
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14013,6 +15335,8 @@ paths:
           description: The ID of the Return Reason.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14077,6 +15401,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostReturnReasonsReasonReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14144,6 +15470,8 @@ paths:
           description: The ID of the Return.
           schema:
             type: string
+      x-codegen:
+        method: cancel
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14209,6 +15537,9 @@ paths:
           schema:
             type: number
             default: '0'
+      x-codegen:
+        method: list
+        queryParams: AdminGetReturnsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14275,6 +15606,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostReturnsReturnReceiveReq'
+      x-codegen:
+        method: receive
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14359,6 +15692,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostSalesChannelsChannelProductsBatchReq
+      x-codegen:
+        method: addProducts
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14440,6 +15775,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq
+      x-codegen:
+        method: removeProducts
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14522,6 +15859,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminPostSalesChannelsChannelStockLocationsReq
+      x-codegen:
+        method: addLocation
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14595,6 +15934,8 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminDeleteSalesChannelsChannelStockLocationsReq
+      x-codegen:
+        method: removeLocation
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14661,6 +16002,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostSalesChannelsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14840,6 +16183,9 @@ paths:
             channel of the result.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetSalesChannelsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14900,6 +16246,8 @@ paths:
           description: The ID of the Sales channel.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -14959,6 +16307,8 @@ paths:
           description: The ID of the Sales channel.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15023,6 +16373,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostSalesChannelsSalesChannelReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15089,6 +16441,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostShippingOptionsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15174,6 +16528,9 @@ paths:
           schema:
             type: boolean
           description: Flag for fetching admin specific options
+      x-codegen:
+        method: list
+        queryParams: AdminGetShippingOptionsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15234,6 +16591,8 @@ paths:
           description: The ID of the Shipping Option.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15293,6 +16652,8 @@ paths:
           description: The ID of the Shipping Option.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15357,6 +16718,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostShippingOptionsOptionReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15435,6 +16798,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostShippingProfilesReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15495,6 +16860,8 @@ paths:
       summary: List Shipping Profiles
       description: Retrieves a list of Shipping Profile.
       x-authenticated: true
+      x-codegen:
+        method: list
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15555,6 +16922,8 @@ paths:
           description: The ID of the Shipping Profile.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15614,6 +16983,8 @@ paths:
           description: The ID of the Shipping Profile.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15677,6 +17048,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostShippingProfilesProfileReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15754,6 +17127,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostStockLocationsReq'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15923,6 +17298,9 @@ paths:
             location of the result.
           schema:
             type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetStockLocationsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -15971,6 +17349,66 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
   '/stock-locations/{id}':
+    delete:
+      operationId: DeleteStockLocationsStockLocation
+      summary: Delete a Stock Location
+      description: Delete a Stock Location
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the Stock Location to delete.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.stockLocations.delete(stock_location_id)
+              .then(({ id, object, deleted }) => {
+                console.log(id)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request DELETE
+            'https://medusa-url.com/admin/stock-locations/{id}' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - StockLocation
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the deleted Stock Location.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                    format: stock_location
+                  deleted:
+                    type: boolean
+                    description: Whether or not the Stock Location was deleted.
+                    default: true
+        '400':
+          $ref: '#/components/responses/400_error'
     get:
       operationId: GetStockLocationsStockLocation
       summary: Get a Stock Location
@@ -15993,6 +17431,9 @@ paths:
           description: Comma separated list of fields to include in the results.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
+        queryParams: AdminGetStockLocationsLocationParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16055,6 +17496,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostStockLocationsLocationReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16126,6 +17569,8 @@ paths:
             externalDocs:
               url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
               description: See a list of codes.
+      x-codegen:
+        method: addCurrency
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16188,6 +17633,8 @@ paths:
             externalDocs:
               url: 'https://en.wikipedia.org/wiki/ISO_4217#Active_codes'
               description: See a list of codes.
+      x-codegen:
+        method: deleteCurrency
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16241,6 +17688,8 @@ paths:
       summary: Get Store details
       description: Retrieves the Store details
       x-authenticated: true
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16296,6 +17745,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostStoreReq'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16357,6 +17808,8 @@ paths:
       summary: List Payment Providers
       description: Retrieves the configured Payment Providers
       x-authenticated: true
+      x-codegen:
+        method: listPaymentProviders
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16410,6 +17863,8 @@ paths:
       summary: List Tax Providers
       description: Retrieves the configured Tax Providers
       x-authenticated: true
+      x-codegen:
+        method: listTaxProviders
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16470,6 +17925,8 @@ paths:
           description: The ID of the Swap.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16536,6 +17993,9 @@ paths:
             type: number
             default: '0'
       x-authenticated: true
+      x-codegen:
+        method: list
+        queryParams: AdminGetSwapsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16617,6 +18077,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostTaxRatesTaxRateProductTypesReq'
+      x-codegen:
+        method: addProductTypes
+        queryParams: AdminPostTaxRatesTaxRateProductTypesParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16711,6 +18174,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminDeleteTaxRatesTaxRateProductTypesReq'
+      x-codegen:
+        method: removeProductTypes
+        queryParams: AdminDeleteTaxRatesTaxRateProductTypesParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16806,6 +18272,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostTaxRatesTaxRateProductsReq'
+      x-codegen:
+        method: addProducts
+        queryParams: AdminPostTaxRatesTaxRateProductsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16900,6 +18369,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminDeleteTaxRatesTaxRateProductsReq'
+      x-codegen:
+        method: removeProducts
+        queryParams: AdminDeleteTaxRatesTaxRateProductsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -16995,6 +18467,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostTaxRatesTaxRateShippingOptionsReq'
+      x-codegen:
+        method: addShippingOptions
+        queryParams: AdminPostTaxRatesTaxRateShippingOptionsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17091,6 +18566,9 @@ paths:
             schema:
               $ref: >-
                 #/components/schemas/AdminDeleteTaxRatesTaxRateShippingOptionsReq
+      x-codegen:
+        method: removeShippingOptions
+        queryParams: AdminDeleteTaxRatesTaxRateShippingOptionsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17181,6 +18659,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostTaxRatesReq'
+      x-codegen:
+        method: create
+        queryParams: AdminPostTaxRatesParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17319,6 +18800,9 @@ paths:
             type: array
             items:
               type: string
+      x-codegen:
+        method: list
+        queryParams: AdminGetTaxRatesParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17379,6 +18863,8 @@ paths:
           description: The ID of the Shipping Option.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17456,6 +18942,9 @@ paths:
             items:
               type: string
       x-authenticated: true
+      x-codegen:
+        method: retrieve
+        queryParams: AdminGetTaxRatesTaxRateParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17538,6 +19027,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminPostTaxRatesTaxRateReq'
+      x-codegen:
+        method: update
+        queryParams: AdminPostTaxRatesTaxRateParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17875,6 +19367,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminCreateUserRequest'
+      x-codegen:
+        method: create
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17937,6 +19431,8 @@ paths:
       summary: List Users
       description: Retrieves all users.
       x-authenticated: true
+      x-codegen:
+        method: list
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -17995,6 +19491,8 @@ paths:
           description: The ID of the User.
           schema:
             type: string
+      x-codegen:
+        method: delete
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -18054,6 +19552,8 @@ paths:
           description: The ID of the User.
           schema:
             type: string
+      x-codegen:
+        method: retrieve
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -18118,6 +19618,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminUpdateUserRequest'
+      x-codegen:
+        method: update
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -18184,6 +19686,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminResetPasswordTokenRequest'
+      x-codegen:
+        method: sendResetPasswordToken
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -18250,6 +19754,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AdminResetPasswordRequest'
+      x-codegen:
+        method: resetPassword
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -18295,6 +19801,71 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdminUserRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  '/variants/{id}/inventory':
+    get:
+      operationId: GetVariantsVariantInventory
+      summary: Get inventory of Variant.
+      description: Returns the available inventory of a Variant.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Product Variant id to get inventory for.
+          schema:
+            type: string
+      x-codegen:
+        method: getInventory
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.admin.variants.list()
+              .then(({ variants, limit, offset, count }) => {
+                console.log(variants.length)
+              })
+        - lang: Shell
+          label: cURL
+          source: >
+            curl --location --request GET
+            'https://medusa-url.com/admin/variants' \
+
+            --header 'Authorization: Bearer {api_token}'
+      security:
+        - api_token: []
+        - cookie_auth: []
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  variant:
+                    type: object
+                    $ref: '#/components/schemas/AdminGetVariantsVariantInventoryRes'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -18405,6 +19976,9 @@ paths:
                     description: >-
                       filter by inventory quantity greater than or equal to this
                       number
+      x-codegen:
+        method: list
+        queryParams: AdminGetVariantsParams
       x-codeSamples:
         - lang: JavaScript
           label: JS Client
@@ -18667,7 +20241,7 @@ components:
         ```tsx
 
         <MedusaProvider
-          apiKey='{api_token}'
+          apiKey='api_token}'
           //...
         >
 
@@ -18797,48 +20371,71 @@ components:
       title: Address
       description: An address.
       type: object
+      required:
+        - address_1
+        - address_2
+        - city
+        - company
+        - country_code
+        - created_at
+        - customer_id
+        - deleted_at
+        - first_name
+        - id
+        - last_name
+        - metadata
+        - phone
+        - postal_code
+        - province
+        - updated_at
       properties:
         id:
           type: string
           description: ID of the address
           example: addr_01G8ZC9VS1XVE149MGH2J7QSSH
         customer_id:
-          type: string
           description: ID of the customer this address belongs to
+          nullable: true
+          type: string
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
           description: Available if the relation `customer` is expanded.
-          type: array
-          items:
-            type: object
-            description: A customer object.
+          nullable: true
+          $ref: '#/components/schemas/Customer'
         company:
-          type: string
           description: Company name
+          nullable: true
+          type: string
           example: Acme
         first_name:
-          type: string
           description: First name
+          nullable: true
+          type: string
           example: Arno
         last_name:
-          type: string
           description: Last name
+          nullable: true
+          type: string
           example: Willms
         address_1:
-          type: string
           description: Address line 1
+          nullable: true
+          type: string
           example: 14433 Kemmer Court
         address_2:
-          type: string
           description: Address line 2
+          nullable: true
+          type: string
           example: Suite 369
         city:
-          type: string
           description: City
+          nullable: true
+          type: string
           example: South Geoffreyview
         country_code:
-          type: string
           description: The 2 character ISO code of the country in lower case
+          nullable: true
+          type: string
           externalDocs:
             url: >-
               https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
@@ -18846,18 +20443,22 @@ components:
           example: st
         country:
           description: A country object. Available if the relation `country` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Country'
         province:
-          type: string
           description: Province
+          nullable: true
+          type: string
           example: Kentucky
         postal_code:
-          type: string
           description: Postal Code
+          nullable: true
+          type: string
           example: 72093
         phone:
-          type: string
           description: Phone Number
+          nullable: true
+          type: string
           example: 16128234334802
         created_at:
           type: string
@@ -18868,12 +20469,14 @@ components:
           description: The date with timezone at which the resource was updated.
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     BatchJob:
@@ -18881,21 +20484,36 @@ components:
       description: A Batch Job.
       type: object
       required:
+        - canceled_at
+        - completed_at
+        - confirmed_at
+        - context
+        - created_at
+        - created_by
+        - deleted_at
+        - dry_run
+        - failed_at
+        - id
+        - pre_processed_at
+        - processing_at
+        - result
+        - status
         - type
+        - updated_at
       properties:
         id:
-          type: string
           description: The unique identifier for the batch job.
+          type: string
           example: batch_01G8T782965PYFG0751G0Z38B4
         type:
-          type: string
           description: The type of batch job.
+          type: string
           enum:
             - product-import
             - product-export
         status:
-          type: string
           description: The status of the batch job.
+          type: string
           enum:
             - created
             - pre_processed
@@ -18906,19 +20524,22 @@ components:
             - failed
           default: created
         created_by:
-          type: string
           description: The unique identifier of the user that created the batch job.
+          nullable: true
+          type: string
           example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
         created_by_user:
           description: >-
             A user object. Available if the relation `created_by_user` is
             expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/User'
         context:
-          type: object
           description: >-
             The context of the batch job, the type of the batch job determines
             what the context should contain.
+          nullable: true
+          type: object
           example:
             shape:
               prices:
@@ -18936,43 +20557,47 @@ components:
                 - variant.prices
                 - images
         dry_run:
-          type: boolean
           description: Specify if the job must apply the modifications or not.
+          type: boolean
           default: false
         result:
-          type: object
           description: The result of the batch job.
-          properties:
-            count:
-              type: number
-            advancement_count:
-              type: number
-            progress:
-              type: number
-            errors:
-              type: object
+          nullable: true
+          allOf:
+            - type: object
+              example: {}
+            - type: object
               properties:
-                message:
+                count:
+                  type: number
+                advancement_count:
+                  type: number
+                progress:
+                  type: number
+                errors:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                    code:
+                      oneOf:
+                        - type: string
+                        - type: number
+                    err:
+                      type: array
+                stat_descriptors:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                    name:
+                      type: string
+                    message:
+                      type: string
+                file_key:
                   type: string
-                code:
-                  oneOf:
-                    - type: string
-                    - type: number
-                err:
-                  type: array
-            stat_descriptors:
-              type: object
-              properties:
-                key:
-                  type: string
-                name:
-                  type: string
-                message:
-                  type: string
-            file_key:
-              type: string
-            file_size:
-              type: number
+                file_size:
+                  type: number
           example:
             errors:
               - err: []
@@ -18983,67 +20608,97 @@ components:
                 name: Product count to export
                 message: There will be 8 products exported by this action
         pre_processed_at:
+          description: The date from which the job has been pre-processed.
+          nullable: true
           type: string
-          description: The date from which the job has been pre processed.
           format: date-time
         processing_at:
-          type: string
           description: The date the job is processing at.
+          nullable: true
+          type: string
           format: date-time
         confirmed_at:
-          type: string
           description: The date when the confirmation has been done.
+          nullable: true
+          type: string
           format: date-time
         completed_at:
-          type: string
           description: The date of the completion.
+          nullable: true
+          type: string
           format: date-time
         canceled_at:
-          type: string
           description: The date of the concellation.
+          nullable: true
+          type: string
           format: date-time
         failed_at:
-          type: string
           description: The date when the job failed.
+          nullable: true
+          type: string
           format: date-time
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was last updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
     Cart:
       title: Cart
       description: Represents a user cart
       type: object
+      required:
+        - billing_address_id
+        - completed_at
+        - context
+        - created_at
+        - customer_id
+        - deleted_at
+        - email
+        - id
+        - idempotency_key
+        - metadata
+        - payment_authorized_at
+        - payment_id
+        - payment_session
+        - region_id
+        - shipping_address_id
+        - type
+        - updated_at
       properties:
         id:
-          type: string
           description: The cart's ID
+          type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         email:
-          type: string
           description: The email associated with the cart
+          nullable: true
+          type: string
           format: email
         billing_address_id:
-          type: string
           description: The billing address's ID
+          nullable: true
+          type: string
           example: addr_01G8ZH853YPY9B94857DY91YGW
         billing_address:
           description: Available if the relation `billing_address` is expanded.
+          nullable: true
           $ref: '#/components/schemas/Address'
         shipping_address_id:
-          type: string
           description: The shipping address's ID
+          nullable: true
+          type: string
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
           description: Available if the relation `shipping_address` is expanded.
+          nullable: true
           $ref: '#/components/schemas/Address'
         items:
           description: Available if the relation `items` is expanded.
@@ -19051,54 +20706,58 @@ components:
           items:
             $ref: '#/components/schemas/LineItem'
         region_id:
-          type: string
           description: The region's ID
+          type: string
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
           description: A region object. Available if the relation `region` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Region'
         discounts:
-          type: array
           description: Available if the relation `discounts` is expanded.
-          items:
-            type: object
-            description: A discount object.
-        gift_cards:
           type: array
-          description: Available if the relation `gift_cards` is expanded.
           items:
-            type: object
-            description: A gift card object.
+            $ref: '#/components/schemas/Discount'
+        gift_cards:
+          description: Available if the relation `gift_cards` is expanded.
+          type: array
+          items:
+            $ref: '#/components/schemas/GiftCard'
         customer_id:
-          type: string
           description: The customer's ID
+          nullable: true
+          type: string
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         customer:
           description: A customer object. Available if the relation `customer` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Customer'
         payment_session:
           description: The selected payment session in the cart.
+          nullable: true
           $ref: '#/components/schemas/PaymentSession'
         payment_sessions:
-          type: array
           description: The payment sessions created on the cart.
+          type: array
           items:
             $ref: '#/components/schemas/PaymentSession'
         payment_id:
-          type: string
           description: The payment's ID if available
+          nullable: true
+          type: string
           example: pay_01G8ZCC5W42ZNY842124G7P5R9
         payment:
           description: Available if the relation `payment` is expanded.
+          nullable: true
           $ref: '#/components/schemas/Payment'
         shipping_methods:
-          type: array
           description: The shipping methods added to the cart.
+          type: array
           items:
             $ref: '#/components/schemas/ShippingMethod'
         type:
-          type: string
           description: The cart's type.
+          type: string
           enum:
             - default
             - swap
@@ -19107,93 +20766,109 @@ components:
             - claim
           default: default
         completed_at:
-          type: string
           description: The date with timezone at which the cart was completed.
+          nullable: true
+          type: string
           format: date-time
         payment_authorized_at:
-          type: string
           description: The date with timezone at which the payment was authorized.
+          nullable: true
+          type: string
           format: date-time
         idempotency_key:
-          type: string
           description: >-
             Randomly generated key used to continue the completion of a cart in
             case of failure.
+          nullable: true
+          type: string
           externalDocs:
             url: >-
               https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
             description: Learn more how to use the idempotency key.
         context:
-          type: object
           description: >-
             The context of the cart which can include info like IP or user
             agent.
+          nullable: true
+          type: object
           example:
             ip: '::1'
             user_agent: PostmanRuntime/7.29.2
         sales_channel_id:
-          type: string
           description: The sales channel ID the cart is associated with.
+          nullable: true
+          type: string
           example: null
         sales_channel:
           description: >-
             A sales channel object. Available if the relation `sales_channel` is
             expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/SalesChannel'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
         shipping_total:
-          type: integer
           description: The total of shipping
+          type: integer
           example: 1000
         discount_total:
-          type: integer
           description: The total of discount
-          example: 800
-        tax_total:
           type: integer
+          example: 800
+        item_tax_total:
+          description: The total of items with taxes
+          type: integer
+          example: 8000
+        shipping_tax_total:
+          description: The total of shipping with taxes
+          type: integer
+          example: 1000
+        tax_total:
           description: The total of tax
+          type: integer
           example: 0
         refunded_total:
-          type: integer
           description: >-
             The total amount refunded if the order associated with this cart is
             returned.
+          type: integer
           example: 0
         total:
-          type: integer
           description: The total amount of the cart
+          type: integer
           example: 8200
         subtotal:
-          type: integer
           description: The subtotal of the cart
+          type: integer
           example: 8000
         refundable_amount:
-          type: integer
           description: The amount that can be refunded
+          type: integer
           example: 8200
         gift_card_total:
-          type: integer
           description: The total of gift cards
+          type: integer
           example: 0
         gift_card_tax_total:
-          type: integer
           description: The total of gift cards with taxes
+          type: integer
           example: 0
     ClaimImage:
       title: Claim Image
@@ -19201,39 +20876,47 @@ components:
       type: object
       required:
         - claim_item_id
+        - created_at
+        - deleted_at
+        - id
+        - metadata
+        - updated_at
         - url
       properties:
         id:
-          type: string
           description: The claim image's ID
+          type: string
           example: cimg_01G8ZH853Y6TFXWPG5EYE81X63
         claim_item_id:
-          type: string
           description: The ID of the claim item associated with the image
+          type: string
         claim_item:
           description: >-
             A claim item object. Available if the relation `claim_item` is
             expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/ClaimItem'
         url:
-          type: string
           description: The URL of the image
+          type: string
           format: uri
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     ClaimItem:
@@ -19244,18 +20927,24 @@ components:
       type: object
       required:
         - claim_order_id
+        - created_at
+        - deleted_at
+        - id
         - item_id
-        - variant_id
-        - reason
+        - metadata
+        - note
         - quantity
+        - reason
+        - updated_at
+        - variant_id
       properties:
         id:
-          type: string
           description: The claim item's ID
+          type: string
           example: citm_01G8ZH853Y6TFXWPG5EYE81X63
         images:
-          type: array
           description: Available if the relation `images` is expanded.
+          type: array
           items:
             $ref: '#/components/schemas/ClaimImage'
         claim_order_id:
@@ -19265,13 +20954,15 @@ components:
           description: >-
             A claim order object. Available if the relation `claim_order` is
             expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/ClaimOrder'
         item_id:
           description: The ID of the line item that the claim item refers to.
           type: string
           example: item_01G8ZM25TN49YV9EQBE2NC27KC
         item:
           description: Available if the relation `item` is expanded.
+          nullable: true
           $ref: '#/components/schemas/LineItem'
         variant_id:
           description: The ID of the product variant that is claimed.
@@ -19279,7 +20970,8 @@ components:
           example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
         variant:
           description: A variant object. Available if the relation `variant` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/ProductVariant'
         reason:
           description: The reason for the claim
           type: string
@@ -19290,6 +20982,7 @@ components:
             - other
         note:
           description: 'An optional note about the claim, for additional information'
+          nullable: true
           type: string
           example: I don't like it.
         quantity:
@@ -19306,20 +20999,22 @@ components:
           items:
             $ref: '#/components/schemas/ClaimTag'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     ClaimOrder:
@@ -19330,27 +21025,41 @@ components:
         and can contain additional information about fulfillments and returns.
       type: object
       required:
-        - type
+        - canceled_at
+        - created_at
+        - deleted_at
+        - fulfillment_status
+        - id
+        - idempotency_key
+        - metadata
+        - no_notification
         - order_id
+        - payment_status
+        - refund_amount
+        - shipping_address_id
+        - type
+        - updated_at
       properties:
         id:
-          type: string
           description: The claim's ID
+          type: string
           example: claim_01G8ZH853Y6TFXWPG5EYE81X63
         type:
+          description: The claim's type
           type: string
           enum:
             - refund
             - replace
         payment_status:
-          type: string
           description: The status of the claim's payment
+          type: string
           enum:
             - na
             - not_refunded
             - refunded
           default: na
         fulfillment_status:
+          description: The claim's fulfillment status
           type: string
           enum:
             - not_fulfilled
@@ -19381,18 +21090,22 @@ components:
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
           description: An order object. Available if the relation `order` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Order'
         return_order:
           description: >-
             A return object. Holds information about the return if the claim is
             to be returned. Available if the relation 'return_order' is expanded
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Return'
         shipping_address_id:
           description: The ID of the address that the new items should be shipped to
+          nullable: true
           type: string
           example: addr_01G8ZH853YPY9B94857DY91YGW
         shipping_address:
           description: Available if the relation `shipping_address` is expanded.
+          nullable: true
           $ref: '#/components/schemas/Address'
         shipping_methods:
           description: The shipping methods that the claim order will be shipped with.
@@ -19406,40 +21119,46 @@ components:
             $ref: '#/components/schemas/Fulfillment'
         refund_amount:
           description: The amount that will be refunded in conjunction with the claim
+          nullable: true
           type: integer
           example: 1000
         canceled_at:
           description: The date with timezone at which the claim was canceled.
+          nullable: true
           type: string
           format: date-time
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
         no_notification:
           description: >-
             Flag for describing whether or not notifications related to this
             should be send.
+          nullable: true
           type: boolean
           example: false
         idempotency_key:
-          type: string
           description: >-
             Randomly generated key used to continue the completion of the cart
             associated with the claim in case of failure.
+          nullable: true
+          type: string
           externalDocs:
             url: >-
               https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
@@ -19451,31 +21170,38 @@ components:
         easy filtering and grouping.
       type: object
       required:
+        - created_at
+        - deleted_at
+        - id
+        - metadata
+        - updated_at
         - value
       properties:
         id:
-          type: string
           description: The claim tag's ID
+          type: string
           example: ctag_01G8ZCC5Y63B95V6B5SHBZ91S4
         value:
           description: The value that the claim tag holds
           type: string
           example: Damaged
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     Country:
@@ -19483,27 +21209,29 @@ components:
       description: Country details
       type: object
       required:
+        - display_name
+        - id
         - iso_2
         - iso_3
-        - num_code
         - name
-        - display_name
+        - num_code
+        - region_id
       properties:
         id:
-          type: string
           description: The country's ID
+          type: string
           example: 109
         iso_2:
-          type: string
           description: The 2 character ISO code of the country in lower case
+          type: string
           example: it
           externalDocs:
             url: >-
               https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
             description: See a list of codes.
         iso_3:
-          type: string
           description: The 2 character ISO code of the country in lower case
+          type: string
           example: ita
           externalDocs:
             url: >-
@@ -19526,21 +21254,23 @@ components:
           type: string
           example: Italy
         region_id:
-          type: string
           description: The region ID this country is associated with.
+          nullable: true
+          type: string
           example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
         region:
           description: A region object. Available if the relation `region` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Region'
     Currency:
       title: Currency
       description: Currency
       type: object
       required:
         - code
+        - name
         - symbol
         - symbol_native
-        - name
       properties:
         code:
           description: The 3 character ISO code for the currency.
@@ -19564,6 +21294,7 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Does the currency prices include tax'
           type: boolean
+          default: false
     CustomShippingOption:
       title: Custom Shipping Option
       description: >-
@@ -19572,12 +21303,18 @@ components:
         price for a particular Shipping Option
       type: object
       required:
+        - cart_id
+        - created_at
+        - deleted_at
+        - id
+        - metadata
         - price
         - shipping_option_id
+        - updated_at
       properties:
         id:
-          type: string
           description: The custom shipping option's ID
+          type: string
           example: cso_01G8X99XNB77DMFBJFWX6DN9V9
         price:
           description: >-
@@ -19595,81 +21332,87 @@ components:
           description: >-
             A shipping option object. Available if the relation
             `shipping_option` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/ShippingOption'
         cart_id:
           description: The ID of the Cart that the custom shipping option is attached to
+          nullable: true
           type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
           description: A cart object. Available if the relation `cart` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Cart'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
-        includes_tax:
-          description: >-
-            [EXPERIMENTAL] Indicates if the custom shipping option price include
-            tax
-          type: boolean
     CustomerGroup:
       title: Customer Group
       description: Represents a customer group
       type: object
       required:
+        - created_at
+        - deleted_at
+        - id
+        - metadata
         - name
+        - updated_at
       properties:
         id:
-          type: string
           description: The customer group's ID
+          type: string
           example: cgrp_01G8ZH853Y6TFXWPG5EYE81X63
         name:
-          type: string
           description: The name of the customer group
+          type: string
           example: VIP
         customers:
-          type: array
           description: >-
             The customers that belong to the customer group. Available if the
             relation `customers` is expanded.
-          items:
-            type: object
-            description: A customer object.
-        price_lists:
           type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+        price_lists:
           description: >-
             The price lists that are associated with the customer group.
             Available if the relation `price_lists` is expanded.
+          type: array
           items:
             $ref: '#/components/schemas/PriceList'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     Customer:
@@ -19677,30 +21420,44 @@ components:
       description: Represents a customer
       type: object
       required:
+        - billing_address_id
+        - created_at
+        - deleted_at
         - email
+        - first_name
+        - has_account
+        - id
+        - last_name
+        - metadata
+        - phone
+        - updated_at
       properties:
         id:
-          type: string
           description: The customer's ID
+          type: string
           example: cus_01G2SG30J8C85S4A5CHM2S1NS2
         email:
-          type: string
           description: The customer's email
+          type: string
           format: email
         first_name:
-          type: string
           description: The customer's first name
+          nullable: true
+          type: string
           example: Arno
         last_name:
-          type: string
           description: The customer's last name
+          nullable: true
+          type: string
           example: Willms
         billing_address_id:
-          type: string
           description: The customer's billing address ID
+          nullable: true
+          type: string
           example: addr_01G8ZH853YPY9B94857DY91YGW
         billing_address:
           description: Available if the relation `billing_address` is expanded.
+          nullable: true
           $ref: '#/components/schemas/Address'
         shipping_addresses:
           description: Available if the relation `shipping_addresses` is expanded.
@@ -19708,19 +21465,19 @@ components:
           items:
             $ref: '#/components/schemas/Address'
         phone:
-          type: string
           description: The customer's phone number
+          nullable: true
+          type: string
           example: 16128234334802
         has_account:
-          type: boolean
           description: Whether the customer has an account or not
+          type: boolean
           default: false
         orders:
           description: Available if the relation `orders` is expanded.
           type: array
           items:
-            type: object
-            description: An order object.
+            $ref: '#/components/schemas/Order'
         groups:
           description: >-
             The customer groups the customer belongs to. Available if the
@@ -19729,20 +21486,22 @@ components:
           items:
             $ref: '#/components/schemas/CustomerGroup'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     DiscountConditionCustomerGroup:
@@ -19750,8 +21509,11 @@ components:
       description: Associates a discount condition with a customer group
       type: object
       required:
-        - customer_group_id
         - condition_id
+        - created_at
+        - customer_group_id
+        - metadata
+        - updated_at
       properties:
         customer_group_id:
           description: The ID of the Product Tag
@@ -19763,21 +21525,24 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         customer_group:
           description: Available if the relation `customer_group` is expanded.
+          nullable: true
           $ref: '#/components/schemas/CustomerGroup'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
+          nullable: true
           $ref: '#/components/schemas/DiscountCondition'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     DiscountConditionProductCollection:
@@ -19785,8 +21550,11 @@ components:
       description: Associates a discount condition with a product collection
       type: object
       required:
-        - product_collection_id
         - condition_id
+        - created_at
+        - metadata
+        - product_collection_id
+        - updated_at
       properties:
         product_collection_id:
           description: The ID of the Product Collection
@@ -19798,21 +21566,24 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_collection:
           description: Available if the relation `product_collection` is expanded.
+          nullable: true
           $ref: '#/components/schemas/ProductCollection'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
+          nullable: true
           $ref: '#/components/schemas/DiscountCondition'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     DiscountConditionProductTag:
@@ -19820,8 +21591,11 @@ components:
       description: Associates a discount condition with a product tag
       type: object
       required:
-        - product_tag_id
         - condition_id
+        - created_at
+        - metadata
+        - product_tag_id
+        - updated_at
       properties:
         product_tag_id:
           description: The ID of the Product Tag
@@ -19833,21 +21607,24 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_tag:
           description: Available if the relation `product_tag` is expanded.
+          nullable: true
           $ref: '#/components/schemas/ProductTag'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
+          nullable: true
           $ref: '#/components/schemas/DiscountCondition'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     DiscountConditionProductType:
@@ -19855,8 +21632,11 @@ components:
       description: Associates a discount condition with a product type
       type: object
       required:
-        - product_type_id
         - condition_id
+        - created_at
+        - metadata
+        - product_type_id
+        - updated_at
       properties:
         product_type_id:
           description: The ID of the Product Tag
@@ -19868,21 +21648,24 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product_type:
           description: Available if the relation `product_type` is expanded.
+          nullable: true
           $ref: '#/components/schemas/ProductType'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
+          nullable: true
           $ref: '#/components/schemas/DiscountCondition'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     DiscountConditionProduct:
@@ -19890,8 +21673,11 @@ components:
       description: Associates a discount condition with a product
       type: object
       required:
-        - product_id
         - condition_id
+        - created_at
+        - metadata
+        - product_id
+        - updated_at
       properties:
         product_id:
           description: The ID of the Product Tag
@@ -19903,21 +21689,24 @@ components:
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         product:
           description: Available if the relation `product` is expanded.
+          nullable: true
           $ref: '#/components/schemas/Product'
         discount_condition:
           description: Available if the relation `discount_condition` is expanded.
+          nullable: true
           $ref: '#/components/schemas/DiscountCondition'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     DiscountCondition:
@@ -19925,13 +21714,18 @@ components:
       description: Holds rule conditions for when a discount is applicable
       type: object
       required:
-        - type
-        - operator
+        - created_at
+        - deleted_at
         - discount_rule_id
+        - id
+        - metadata
+        - operator
+        - type
+        - updated_at
       properties:
         id:
-          type: string
           description: The discount condition's ID
+          type: string
           example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
         type:
           description: The type of the Condition
@@ -19949,11 +21743,12 @@ components:
             - in
             - not_in
         discount_rule_id:
-          type: string
           description: The ID of the discount rule associated with the condition
+          type: string
           example: dru_01F0YESMVK96HVX7N419E3CJ7C
         discount_rule:
           description: Available if the relation `discount_rule` is expanded.
+          nullable: true
           $ref: '#/components/schemas/DiscountRule'
         products:
           description: >-
@@ -19961,58 +21756,55 @@ components:
             Available if the relation `products` is expanded.
           type: array
           items:
-            type: object
-            description: A product object.
+            $ref: '#/components/schemas/Product'
         product_types:
           description: >-
-            product types associated with this condition if type =
+            Product types associated with this condition if type =
             product_types. Available if the relation `product_types` is
             expanded.
           type: array
           items:
-            type: object
-            description: A product type object.
+            $ref: '#/components/schemas/ProductType'
         product_tags:
           description: >-
-            product tags associated with this condition if type = product_tags.
+            Product tags associated with this condition if type = product_tags.
             Available if the relation `product_tags` is expanded.
           type: array
           items:
-            type: object
-            description: A product tag object.
+            $ref: '#/components/schemas/ProductTag'
         product_collections:
           description: >-
-            product collections associated with this condition if type =
+            Product collections associated with this condition if type =
             product_collections. Available if the relation `product_collections`
             is expanded.
           type: array
           items:
-            type: object
-            description: A product collection object.
+            $ref: '#/components/schemas/ProductCollection'
         customer_groups:
           description: >-
-            customer groups associated with this condition if type =
+            Customer groups associated with this condition if type =
             customer_groups. Available if the relation `customer_groups` is
             expanded.
           type: array
           items:
-            type: object
-            description: A customer group object.
+            $ref: '#/components/schemas/CustomerGroup'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     DiscountRule:
@@ -20022,12 +21814,19 @@ components:
         to a Cart.
       type: object
       required:
+        - allocation
+        - created_at
+        - deleted_at
+        - description
+        - id
+        - metadata
         - type
+        - updated_at
         - value
       properties:
         id:
-          type: string
           description: The discount rule's ID
+          type: string
           example: dru_01F0YESMVK96HVX7N419E3CJ7C
         type:
           description: >-
@@ -20042,6 +21841,7 @@ components:
           example: percentage
         description:
           description: A short description of the discount
+          nullable: true
           type: string
           example: 10 Percent
         value:
@@ -20052,6 +21852,7 @@ components:
           example: 10
         allocation:
           description: The scope that the discount should apply to.
+          nullable: true
           type: string
           enum:
             - total
@@ -20063,23 +21864,24 @@ components:
             be used. Available if the relation `conditions` is expanded.
           type: array
           items:
-            type: object
-            description: A discount condition object.
+            $ref: '#/components/schemas/DiscountCondition'
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     Discount:
@@ -20090,11 +21892,24 @@ components:
       type: object
       required:
         - code
+        - created_at
+        - deleted_at
+        - ends_at
+        - id
+        - is_disabled
         - is_dynamic
+        - metadata
+        - parent_discount_id
+        - rule_id
+        - starts_at
+        - updated_at
+        - usage_count
+        - usage_limit
+        - valid_duration
       properties:
         id:
-          type: string
           description: The discount's ID
+          type: string
           example: disc_01F0YESMW10MGHWJKZSDDMN0VN
         code:
           description: >-
@@ -20109,11 +21924,13 @@ components:
           type: boolean
           example: false
         rule_id:
-          type: string
           description: The Discount Rule that governs the behaviour of the Discount
+          nullable: true
+          type: string
           example: dru_01F0YESMVK96HVX7N419E3CJ7C
         rule:
           description: Available if the relation `rule` is expanded.
+          nullable: true
           $ref: '#/components/schemas/DiscountRule'
         is_disabled:
           description: >-
@@ -20122,13 +21939,15 @@ components:
           type: boolean
           example: false
         parent_discount_id:
-          type: string
           description: >-
             The Discount that the discount was created from. This will always be
             a dynamic discount
+          nullable: true
+          type: string
           example: disc_01G8ZH853YPY9B94857DY91YGW
         parent_discount:
           description: Available if the relation `parent_discount` is expanded.
+          nullable: true
           $ref: '#/components/schemas/Discount'
         starts_at:
           description: The time at which the discount can be used.
@@ -20136,11 +21955,13 @@ components:
           format: date-time
         ends_at:
           description: The time at which the discount can no longer be used.
+          nullable: true
           type: string
           format: date-time
         valid_duration:
-          type: string
           description: Duration the discount runs between
+          nullable: true
+          type: string
           example: P3Y6M4DT12H30M5S
         regions:
           description: >-
@@ -20148,10 +21969,10 @@ components:
             relation `regions` is expanded.
           type: array
           items:
-            type: object
-            description: A region object.
+            $ref: '#/components/schemas/Region'
         usage_limit:
           description: The maximum number of times that a discount can be used.
+          nullable: true
           type: integer
           example: 100
         usage_count:
@@ -20160,92 +21981,112 @@ components:
           example: 50
           default: 0
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
+          type: string
           format: date-time
         deleted_at:
-          type: string
           description: The date with timezone at which the resource was deleted.
+          nullable: true
+          type: string
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     DraftOrder:
       title: DraftOrder
       description: Represents a draft order
       type: object
+      required:
+        - canceled_at
+        - cart_id
+        - completed_at
+        - created_at
+        - display_id
+        - id
+        - idempotency_key
+        - metadata
+        - no_notification_order
+        - order_id
+        - status
+        - updated_at
       properties:
         id:
-          type: string
           description: The draft order's ID
+          type: string
           example: dorder_01G8TJFKBG38YYFQ035MSVG03C
         status:
-          type: string
           description: The status of the draft order
+          type: string
           enum:
             - open
             - completed
           default: open
         display_id:
-          type: string
           description: The draft order's display ID
+          type: string
           example: 2
         cart_id:
-          type: string
           description: The ID of the cart associated with the draft order.
+          nullable: true
+          type: string
           example: cart_01G8ZH853Y6TFXWPG5EYE81X63
         cart:
           description: A cart object. Available if the relation `cart` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Cart'
         order_id:
-          type: string
           description: The ID of the order associated with the draft order.
+          nullable: true
+          type: string
           example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
         order:
           description: An order object. Available if the relation `order` is expanded.
-          type: object
+          nullable: true
+          $ref: '#/components/schemas/Order'
         canceled_at:
-          type: string
           description: The date the draft order was canceled at.
+          nullable: true
+          type: string
           format: date-time
         completed_at:
-          type: string
           description: The date the draft order was completed at.
+          nullable: true
+          type: string
           format: date-time
         no_notification_order:
-          type: boolean
           description: Whether to send the customer notifications regarding order updates.
+          nullable: true
+          type: boolean
           example: false
         idempotency_key:
-          type: string
           description: >-
             Randomly generated key used to continue the completion of the cart
             associated with the draft order in case of failure.
+          nullable: true
+          type: string
           externalDocs:
             url: >-
               https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
             description: Learn more how to use the idempotency key.
         created_at:
-          type: string
           description: The date with timezone at which the resource was created.
+          type: string
           format: date-time
         updated_at:
-          type: string
           description: The date with timezone at which the resource was updated.
-          format: date-time
-        deleted_at:
           type: string
-          description: The date with timezone at which the resource was deleted.
           format: date-time
         metadata:
-          type: object
           description: An optional key-value map with additional details
+          nullable: true
+          type: object
           example:
             car: white
     FulfillmentItem:
@@ -22161,6 +24002,14 @@ components:
             A product category object. Available if the relation
             `parent_category` is expanded.
           type: object
+        products:
+          description: >-
+            products associated with category. Available if the relation
+            `products` is expanded.
+          type: array
+          items:
+            type: object
+            description: A product object.
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -22839,6 +24688,14 @@ components:
           items:
             type: object
             description: A sales channel object.
+        categories:
+          description: >-
+            The product's associated categories. Available if the relation
+            `categories` is expanded.
+          type: array
+          items:
+            type: object
+            description: A category object.
         created_at:
           type: string
           description: The date with timezone at which the resource was created.
@@ -24183,6 +26040,78 @@ components:
           description: An optional key-value map with additional details
           example:
             car: white
+    InventoryItemDTO:
+      type: object
+      required:
+        - sku
+      properties:
+        sku:
+          description: The Stock Keeping Unit (SKU) code of the Inventory Item.
+          type: string
+        hs_code:
+          description: >-
+            The Harmonized System code of the Inventory Item. May be used by
+            Fulfillment Providers to pass customs information to shipping
+            carriers.
+          type: string
+        origin_country:
+          description: >-
+            The country in which the Inventory Item was produced. May be used by
+            Fulfillment Providers to pass customs information to shipping
+            carriers.
+          type: string
+        mid_code:
+          description: >-
+            The Manufacturers Identification code that identifies the
+            manufacturer of the Inventory Item. May be used by Fulfillment
+            Providers to pass customs information to shipping carriers.
+          type: string
+        material:
+          description: >-
+            The material and composition that the Inventory Item is made of, May
+            be used by Fulfillment Providers to pass customs information to
+            shipping carriers.
+          type: string
+        weight:
+          description: >-
+            The weight of the Inventory Item. May be used in shipping rate
+            calculations.
+          type: number
+        height:
+          description: >-
+            The height of the Inventory Item. May be used in shipping rate
+            calculations.
+          type: number
+        width:
+          description: >-
+            The width of the Inventory Item. May be used in shipping rate
+            calculations.
+          type: number
+        length:
+          description: >-
+            The length of the Inventory Item. May be used in shipping rate
+            calculations.
+          type: number
+        requires_shipping:
+          description: Whether the item requires shipping.
+          type: boolean
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
     ReservationItemDTO:
       title: Reservation item
       description: Represents a reservation of an inventory item at a stock location
@@ -24204,6 +26133,50 @@ components:
           type: string
         quantity:
           description: The id of the reservation item
+          type: number
+        metadata:
+          type: object
+          description: An optional key-value map with additional details
+          example:
+            car: white
+        created_at:
+          type: string
+          description: The date with timezone at which the resource was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The date with timezone at which the resource was updated.
+          format: date-time
+        deleted_at:
+          type: string
+          description: The date with timezone at which the resource was deleted.
+          format: date-time
+    InventoryLevelDTO:
+      type: object
+      required:
+        - inventory_item_id
+        - location_id
+        - stocked_quantity
+        - reserved_quantity
+        - incoming_quantity
+      properties:
+        location_id:
+          description: the item location ID
+          type: string
+        stocked_quantity:
+          description: >-
+            the total stock quantity of an inventory item at the given location
+            ID
+          type: number
+        reserved_quantity:
+          description: >-
+            the reserved stock quantity of an inventory item at the given
+            location ID
+          type: number
+        incoming_quantity:
+          description: >-
+            the incoming stock quantity of an inventory item at the given
+            location ID
           type: number
         metadata:
           type: object
@@ -24297,6 +26270,10 @@ components:
           type: string
           description: Stock location address' complement
           example: apartment 4432
+        company:
+          type: string
+          description: Stock location company' name
+          example: Medusa
         city:
           type: string
           description: Stock location address' city
@@ -24735,12 +26712,24 @@ components:
           description: The ids of the customers to add
           type: array
           items:
+            type: object
             required:
               - id
             properties:
               id:
                 description: ID of the customer
                 type: string
+    AdminPostCustomerGroupsReq:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the customer group
+        metadata:
+          type: object
+          description: Metadata for the customer.
     AdminDeleteCustomerGroupsGroupCustomerBatchReq:
       type: object
       required:
@@ -24750,6 +26739,7 @@ components:
           description: The ids of the customers to remove
           type: array
           items:
+            type: object
             required:
               - id
             properties:
@@ -24872,6 +26862,7 @@ components:
         groups:
           type: array
           items:
+            type: object
             required:
               - id
             properties:
@@ -24891,6 +26882,7 @@ components:
           description: The resources to be added to the discount condition
           type: array
           items:
+            type: object
             required:
               - id
             properties:
@@ -25072,6 +27064,21 @@ components:
         metadata:
           description: An optional set of key-value pairs to hold additional information.
           type: object
+    AdminPostDiscountsDiscountDynamicCodesReq:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          description: A unique code that will be used to redeem the Discount
+        usage_limit:
+          type: number
+          description: Maximum times the discount can be used
+          default: 1
+        metadata:
+          type: object
+          description: An optional set of key-value pairs to hold additional information.
     AdminDeleteDiscountsDiscountConditionsConditionBatchReq:
       type: object
       required:
@@ -25081,6 +27088,7 @@ components:
           description: The resources to be deleted from the discount condition
           type: array
           items:
+            type: object
             required:
               - id
             properties:
@@ -25594,6 +27602,160 @@ components:
         metadata:
           description: An optional set of key-value pairs to hold additional information.
           type: object
+    AdminPostInventoryItemsItemLocationLevelsReq:
+      type: object
+      required:
+        - location_id
+        - stocked_quantity
+      properties:
+        location_id:
+          description: the item location ID
+          type: string
+        stocked_quantity:
+          description: the stock quantity of an inventory item at the given location ID
+          type: number
+        incoming_quantity:
+          description: >-
+            the incoming stock quantity of an inventory item at the given
+            location ID
+          type: number
+    AdminInventoryItemsRes:
+      type: object
+      properties:
+        inventory_item:
+          $ref: '#/components/schemas/InventoryItemDTO'
+    AdminInventoryItemsDeleteRes:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the deleted Inventory Item.
+        object:
+          type: string
+          description: The type of the object that was deleted.
+          format: inventory_item
+        deleted:
+          type: boolean
+          description: Whether or not the Inventory Item was deleted.
+          default: true
+    AdminInventoryItemsListRes:
+      type: object
+      properties:
+        inventory_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryItemDTO'
+        count:
+          type: integer
+          description: The total number of items available
+        offset:
+          type: integer
+          description: The number of items skipped before these items
+        limit:
+          type: integer
+          description: The number of items per page
+    AdminInventoryItemsListWithVariantsAndLocationLevelsRes:
+      type: object
+      properties:
+        inventory_items:
+          type: array
+          items:
+            allOf:
+              - $ref: '#/components/schemas/InventoryItemDTO'
+              - type: object
+                properties:
+                  location_levels:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/InventoryLevelDTO'
+                  variants:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/ProductVariant'
+        count:
+          type: integer
+          description: The total number of items available
+        offset:
+          type: integer
+          description: The number of items skipped before these items
+        limit:
+          type: integer
+          description: The number of items per page
+    AdminInventoryItemsLocationLevelsRes:
+      type: object
+      properties:
+        id:
+          description: The id of the location
+        location_levels:
+          description: List of stock levels at a given location
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryLevelDTO'
+    AdminPostInventoryItemsInventoryItemReq:
+      type: object
+      properties:
+        hs_code:
+          description: >-
+            The Harmonized System code of the Inventory Item. May be used by
+            Fulfillment Providers to pass customs information to shipping
+            carriers.
+          type: string
+        origin_country:
+          description: >-
+            The country in which the Inventory Item was produced. May be used by
+            Fulfillment Providers to pass customs information to shipping
+            carriers.
+          type: string
+        mid_code:
+          description: >-
+            The Manufacturers Identification code that identifies the
+            manufacturer of the Inventory Item. May be used by Fulfillment
+            Providers to pass customs information to shipping carriers.
+          type: string
+        material:
+          description: >-
+            The material and composition that the Inventory Item is made of, May
+            be used by Fulfillment Providers to pass customs information to
+            shipping carriers.
+          type: string
+        weight:
+          description: >-
+            The weight of the Inventory Item. May be used in shipping rate
+            calculations.
+          type: number
+        height:
+          description: >-
+            The height of the Inventory Item. May be used in shipping rate
+            calculations.
+          type: number
+        width:
+          description: >-
+            The width of the Inventory Item. May be used in shipping rate
+            calculations.
+          type: number
+        length:
+          description: >-
+            The length of the Inventory Item. May be used in shipping rate
+            calculations.
+          type: number
+        requires_shipping:
+          description: Whether the item requires shipping.
+          type: boolean
+    AdminPostInventoryItemsItemLocationLevelsLevelReq:
+      type: object
+      properties:
+        stocked_quantity:
+          description: >-
+            the total stock quantity of an inventory item at the given location
+            ID
+          type: number
+        incoming_quantity:
+          description: >-
+            the incoming stock quantity of an inventory item at the given
+            location ID
+          type: number
     AdminPostInvitesInviteAcceptReq:
       type: object
       required:
@@ -25827,6 +27989,25 @@ components:
         internal_note:
           description: An optional note to create or update for the order edit.
           type: string
+    AdminPostOrdersOrderShippingMethodsReq:
+      type: object
+      required:
+        - price
+        - option_id
+      properties:
+        price:
+          type: number
+          description: >-
+            The price (excluding VAT) that should be charged for the Shipping
+            Method
+        option_id:
+          type: string
+          description: The ID of the Shipping Option to create the Shipping Method from.
+        date:
+          type: object
+          description: >-
+            The data required for the Shipping Option to create a Shipping
+            Method. This will depend on the Fulfillment Provider.
     AdminPostOrdersOrderClaimsClaimShipmentsReq:
       type: object
       required:
@@ -25860,6 +28041,7 @@ components:
           description: The Claim Items that the Claim will consist of.
           type: array
           items:
+            type: object
             required:
               - item_id
               - quantity
@@ -25910,6 +28092,7 @@ components:
             Replace.
           type: array
           items:
+            type: object
             required:
               - variant_id
               - quantity
@@ -25924,6 +28107,7 @@ components:
           description: The Shipping Methods to send the additional Line Items with.
           type: array
           items:
+            type: object
             properties:
               id:
                 description: The ID of an existing Shipping Method
@@ -25934,6 +28118,11 @@ components:
               price:
                 description: The price to charge for the Shipping Method
                 type: integer
+              data:
+                description: >-
+                  An optional set of key-value pairs to hold additional
+                  information.
+                type: object
         shipping_address:
           type: object
           description: >-
@@ -25958,6 +28147,7 @@ components:
           description: The Line Items to include in the Fulfillment.
           type: array
           items:
+            type: object
             required:
               - item_id
               - quantity
@@ -26028,6 +28218,7 @@ components:
           description: The Line Items to return as part of the Swap.
           type: array
           items:
+            type: object
             required:
               - item_id
               - quantity
@@ -26062,6 +28253,7 @@ components:
           description: The new items to send to the Customer.
           type: array
           items:
+            type: object
             required:
               - variant_id
               - quantity
@@ -26078,6 +28270,7 @@ components:
             from.
           type: array
           items:
+            type: object
             required:
               - option_id
               - price
@@ -26161,6 +28354,7 @@ components:
           description: The Line Items that will be returned.
           type: array
           items:
+            type: object
             required:
               - item_id
               - quantity
@@ -26213,6 +28407,7 @@ components:
           description: The Claim Items that the Claim will consist of.
           type: array
           items:
+            type: object
             required:
               - id
               - images
@@ -26271,6 +28466,7 @@ components:
           description: The Shipping Methods to send the additional Line Items with.
           type: array
           items:
+            type: object
             properties:
               id:
                 description: The ID of an existing Shipping Method
@@ -26281,6 +28477,11 @@ components:
               price:
                 description: The price to charge for the Shipping Method
                 type: integer
+              data:
+                description: >-
+                  An optional set of key-value pairs to hold additional
+                  information.
+                type: object
         no_notification:
           description: If set to true no notification will be send related to this Swap.
           type: boolean
@@ -26413,6 +28614,7 @@ components:
           description: The prices to update or add.
           type: array
           items:
+            type: object
             required:
               - amount
               - variant_id
@@ -26488,6 +28690,7 @@ components:
           description: The prices of the Price List.
           type: array
           items:
+            type: object
             required:
               - amount
               - variant_id
@@ -26521,6 +28724,7 @@ components:
           type: array
           description: A list of customer groups that the Price List applies to.
           items:
+            type: object
             required:
               - id
             properties:
@@ -26670,6 +28874,7 @@ components:
           description: The prices of the Price List.
           type: array
           items:
+            type: object
             required:
               - amount
               - variant_id
@@ -26706,6 +28911,7 @@ components:
           type: array
           description: A list of customer groups that the Price List applies to.
           items:
+            type: object
             required:
               - id
             properties:
@@ -26715,6 +28921,22 @@ components:
         includes_tax:
           description: '[EXPERIMENTAL] Tax included in prices of price list'
           type: boolean
+    AdminPostProductCategoriesCategoryProductsBatchReq:
+      type: object
+      required:
+        - product_ids
+      properties:
+        product_ids:
+          description: The IDs of the products to add to the Product Category
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                description: The ID of the product
     AdminPostProductCategoriesReq:
       type: object
       required:
@@ -26737,6 +28959,57 @@ components:
         parent_category_id:
           type: string
           description: The ID of the parent product category
+    AdminDeleteProductCategoriesCategoryProductsBatchReq:
+      type: object
+      required:
+        - product_ids
+      properties:
+        product_ids:
+          description: The IDs of the products to delete from the Product Category.
+          type: array
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                description: The ID of a product
+                type: string
+    AdminProductCategoriesCategoryRes:
+      type: object
+      properties:
+        product_category:
+          $ref: '#/components/schemas/ProductCategory'
+    AdminProductCategoriesCategoryDeleteRes:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the deleted product category
+        object:
+          type: string
+          description: The type of the object that was deleted.
+          default: product-category
+        deleted:
+          type: boolean
+          description: Whether or not the items were deleted.
+          default: true
+    AdminProductCategoriesListRes:
+      type: object
+      properties:
+        product_categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCategory'
+        count:
+          type: integer
+          description: The total number of items available
+        offset:
+          type: integer
+          description: The number of items skipped before these items
+        limit:
+          type: integer
+          description: The number of items per page
     AdminPostProductCategoriesCategoryReq:
       type: object
       properties:
@@ -26861,6 +29134,7 @@ components:
           description: Tags to associate the Product with.
           type: array
           items:
+            type: object
             required:
               - value
             properties:
@@ -26874,11 +29148,22 @@ components:
           description: '[EXPERIMENTAL] Sales channels to associate the Product with.'
           type: array
           items:
+            type: object
             required:
               - id
             properties:
               id:
                 description: The ID of an existing Sales channel.
+                type: string
+        categories:
+          description: Categories to add the Product to.
+          type: array
+          items:
+            required:
+              - id
+            properties:
+              id:
+                description: The ID of a Product Category.
                 type: string
         options:
           description: >-
@@ -26886,6 +29171,7 @@ components:
             properties the Product's Product Variants will differ.
           type: array
           items:
+            type: object
             required:
               - title
             properties:
@@ -26896,6 +29182,7 @@ components:
           description: A list of Product Variants to create with the Product.
           type: array
           items:
+            type: object
             required:
               - title
             properties:
@@ -26960,6 +29247,7 @@ components:
               prices:
                 type: array
                 items:
+                  type: object
                   required:
                     - amount
                   properties:
@@ -26989,6 +29277,7 @@ components:
               options:
                 type: array
                 items:
+                  type: object
                   required:
                     - value
                   properties:
@@ -27089,6 +29378,7 @@ components:
         prices:
           type: array
           items:
+            type: object
             required:
               - amount
             properties:
@@ -27120,6 +29410,7 @@ components:
         options:
           type: array
           items:
+            type: object
             required:
               - option_id
               - value
@@ -27223,6 +29514,7 @@ components:
         tags:
           type: array
           items:
+            type: object
             properties:
               id:
                 description: The ID of the tag.
@@ -27313,6 +29605,7 @@ components:
           description: Tags to associate the Product with.
           type: array
           items:
+            type: object
             required:
               - value
             properties:
@@ -27326,16 +29619,28 @@ components:
           description: '[EXPERIMENTAL] Sales channels to associate the Product with.'
           type: array
           items:
+            type: object
             required:
               - id
             properties:
               id:
                 description: The ID of an existing Sales channel.
                 type: string
+        categories:
+          description: Categories to add the Product to.
+          type: array
+          items:
+            required:
+              - id
+            properties:
+              id:
+                description: The ID of a Product Category.
+                type: string
         variants:
           description: A list of Product Variants to create with the Product.
           type: array
           items:
+            type: object
             properties:
               id:
                 description: The ID of the Product Variant.
@@ -27400,6 +29705,7 @@ components:
               prices:
                 type: array
                 items:
+                  type: object
                   required:
                     - amount
                   properties:
@@ -27432,6 +29738,7 @@ components:
               options:
                 type: array
                 items:
+                  type: object
                   required:
                     - option_id
                     - value
@@ -27529,6 +29836,7 @@ components:
         prices:
           type: array
           items:
+            type: object
             required:
               - amount
             properties:
@@ -27560,6 +29868,7 @@ components:
         options:
           type: array
           items:
+            type: object
             required:
               - option_id
               - value
@@ -27979,6 +30288,7 @@ components:
           description: The Line Items that have been received.
           type: array
           items:
+            type: object
             required:
               - item_id
               - quantity
@@ -28156,6 +30466,7 @@ components:
             be available.
           type: array
           items:
+            type: object
             required:
               - type
               - amount
@@ -28235,6 +30546,7 @@ components:
             be available.
           type: array
           items:
+            type: object
             required:
               - type
               - amount
@@ -28258,10 +30570,18 @@ components:
       type: object
       required:
         - name
+        - type
       properties:
         name:
           description: The name of the Shipping Profile
           type: string
+        type:
+          description: The type of the Shipping Profile
+          type: string
+          enum:
+            - default
+            - gift_card
+            - custom
     AdminDeleteShippingProfileRes:
       type: object
       properties:
@@ -28294,6 +30614,26 @@ components:
         name:
           description: The name of the Shipping Profile
           type: string
+        metadata:
+          description: An optional set of key-value pairs with additional information.
+          type: object
+        type:
+          description: The type of the Shipping Profile
+          type: string
+          enum:
+            - default
+            - gift_card
+            - custom
+        products:
+          description: >-
+            An optional array of product ids to associate with the Shipping
+            Profile
+          type: array
+        shipping_options:
+          description: >-
+            An optional array of shipping option ids to associate with the
+            Shipping Profile
+          type: array
     AdminPostStockLocationsReq:
       type: object
       required:
@@ -28312,6 +30652,20 @@ components:
             car: white
         address:
           $ref: '#/components/schemas/StockLocationAddressInput'
+    AdminStockLocationsDeleteRes:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the deleted Stock Location.
+        object:
+          type: string
+          description: The type of the object that was deleted.
+          default: stock_location
+        deleted:
+          type: boolean
+          description: Whether or not the items were deleted.
+          default: true
     AdminStockLocationsRes:
       type: object
       properties:
@@ -28736,6 +31090,28 @@ components:
         metadata:
           description: An optional set of key-value pairs with additional information.
           type: object
+    AdminGetVariantsVariantInventoryRes:
+      type: object
+      properties:
+        id:
+          description: the id of the variant
+          type: string
+        inventory:
+          description: the stock location address ID
+          type: string
+        sales_channel_availability:
+          type: object
+          description: An optional key-value map with additional details
+          properties:
+            channel_name:
+              description: Sales channel name
+              type: string
+            channel_id:
+              description: Sales channel id
+              type: string
+            available_quantity:
+              description: Available quantity in sales channel
+              type: number
     AdminVariantsListRes:
       type: object
       properties:

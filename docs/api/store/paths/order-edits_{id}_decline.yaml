@@ -14,15 +14,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/StorePostOrderEditsOrderEditDecline.yaml
+  x-codegen:
+    method: decline
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/order-edits_{id}_decline/postundefined
+        $ref: ../code_samples/JavaScript/order-edits_{id}_decline/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/order-edits_{id}_decline/postundefined
+        $ref: ../code_samples/Shell/order-edits_{id}_decline/post.sh
   tags:
     - OrderEdit
   responses:

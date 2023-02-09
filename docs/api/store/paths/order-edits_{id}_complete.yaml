@@ -9,15 +9,17 @@ post:
       description: The ID of the Order Edit.
       schema:
         type: string
+  x-codegen:
+    method: complete
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/order-edits_{id}_complete/postundefined
+        $ref: ../code_samples/JavaScript/order-edits_{id}_complete/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/order-edits_{id}_complete/postundefined
+        $ref: ../code_samples/Shell/order-edits_{id}_complete/post.sh
   tags:
     - OrderEdit
   responses:
