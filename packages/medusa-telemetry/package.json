@@ -11,6 +11,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": ["dist"],
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
