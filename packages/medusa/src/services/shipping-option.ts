@@ -757,7 +757,7 @@ class ShippingOptionService extends TransactionBaseService {
     profileId: string
   ): Promise<ShippingOption[]> {
     return await this.atomicPhase_(async (manager) => {
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
 
       const ids = isString(optionIds) ? [optionIds] : optionIds
 

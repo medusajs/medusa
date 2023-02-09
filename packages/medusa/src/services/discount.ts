@@ -1,7 +1,13 @@
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager, FindOptionsWhere, ILike } from "typeorm"
+import {
+  DeepPartial,
+  EntityManager,
+  FindOptionsWhere,
+  ILike,
+  In,
+} from "typeorm"
 import {
   EventBusService,
   NewTotalsService,
@@ -298,7 +304,7 @@ class DiscountService extends TransactionBaseService {
     config: FindConfig<Discount> = {}
   ): Promise<Discount[]> {
     const manager = this.manager_
-    const discountRepo = manager.getCustomRepository(this.discountRepository_)
+    const discountRepo = manager.withRepository(this.discountRepository_)
 
     const normalizedCodes = discountCodes.map((code) =>
       code.toUpperCase().trim()
