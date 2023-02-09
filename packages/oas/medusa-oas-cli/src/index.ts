@@ -33,7 +33,7 @@ const execBuildOAS = async (options) => {
     params.push(`--${key}=${options[key]}`)
   }
   const { all: logs } = await execa.command(
-    ["node", "build-oas.js", ...params].join(" "),
+    ["node", "command-oas.js", ...params].join(" "),
     {
       cwd: basePath,
       all: true,
