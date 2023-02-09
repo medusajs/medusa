@@ -31,9 +31,7 @@ export type UpdateStoreInput = {
  *       feature_flags:
  *         $ref: "#/components/schemas/FeatureFlagsResponse"
  *       modules:
- *         type: array
- *         items:
- *           $ref: "#/components/schemas/ModulesResponse"
+ *         $ref: "#/components/schemas/ModulesResponse"
  *
  */
 export type ExtendedStoreDTO = Store & {
