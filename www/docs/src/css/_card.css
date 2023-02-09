@@ -1,3 +1,17 @@
+.card {
+  background-color: var(--ifm-card-bg);
+  border: 1px solid var(--ifm-card-bg-hover) !important;
+  border-radius: 8px;
+}
+
+.card-icon-wrapper {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
+}
+
+.card:hover {
+  background-color: var(--ifm-card-bg-hover);
+}
+
 .markdown p + .cards-grid {
   margin-top: var(--ifm-base-margin-vertical);
 }
@@ -17,28 +31,40 @@
   color: #0a3149;
 }
 
-.card-highlight {
+.card-highlighted {
   position: relative;
-  overflow: visible;
 }
 
-.card-highlight:after {
+html[data-theme="dark"] .card-highlighted, html[data-theme="dark"] .card-highlighted:hover {
+  background-color: transparent;
+}
+
+html[data-theme="dark"] .card-highlighted::before,
+html[data-theme="dark"] .card-highlighted::after {
   content: '';
-  width: 100%;
-  height: 2px;
-  position:absolute;
-  bottom: -1px;
+  position: absolute;
+  top: 0;
   left: 0;
-  background: var(--ifm-primary-gradient);
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-html:not([data-theme=dark]) .card {
-  border: 1px solid #cbcbcb;
-  border-radius: 8px;
+html[data-theme="dark"] .card-highlighted::before {
+  z-index: -2;
+  background-color: var(--ifm-card-bg);
+  background-image: url('/img/stardust.png');
+  transition: all var(--ifm-transition-fast) ease;
 }
 
-html[data-theme="dark"] .card {
-  border: 1px solid var(--ifm-color-primary);
+html[data-theme="dark"] .card-highlighted::after {
+  z-index: -1;
+  background-image: url('/img/light-beam.png');
+}
+
+html[data-theme="dark"] .card-highlighted:hover::before {
+  background-color: var(--ifm-card-bg-hover);
 }
 
 .card + p {

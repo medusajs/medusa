@@ -168,6 +168,11 @@
   --ifm-announcement-bar-text-color: var(--ifm-color-content);
   --ifm-announcement-bar-close-icon-color: var(--medusa-icon-disabled);
 
+  /* Cards */
+  --ifm-card-bg: var(--ifm-background-surface-color);
+  --ifm-card-bg-hover: var(--medusa-bg-subtle-hover);
+  --ifm-card-border-color: var(--ifm-background-surface-color);
+
   /* Large Card */
   --large-card-bg: var(--ifm-background-surface-color);
   --large-card-border-color: var(--ifm-base-border-color);
@@ -208,6 +213,9 @@ html[data-theme="dark"] {
 
   /* Tabs */
   --ifm-tabs-color-active: #F3F3F3;
+
+  /** Cards **/
+  --ifm-card-bg-hover: var(--medusa-bg-base-hover);
 }
 
 @media screen and (min-width: 1441px) {

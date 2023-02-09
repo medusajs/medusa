@@ -10,6 +10,7 @@ import isInternalUrl from '@docusaurus/isInternalUrl';
 import styles from './styles.module.css';
 import {translate} from '@docusaurus/Translate';
 import ThemedImage from '@theme/ThemedImage';
+import BorderedIcon from '../../components/BorderedIcon';
 
 function CardContainer({href, children, className}) {
   return (
@@ -20,20 +21,28 @@ function CardContainer({href, children, className}) {
     </Link>
   );
 }
-function CardLayout({href, icon, title, description, containerClassName}) {
+function CardLayout({href, icon, title, description, html, containerClassName}) {
   return (
     <CardContainer href={href} className={containerClassName}>
       {icon}
       <div className={clsx(styles.contentContainer)}>
-        <h2 className={clsx(styles.cardTitle)} title={title}>
+        <span className={clsx(styles.cardTitle)} title={title}>
           {title}
-        </h2>
+        </span>
         {description && (
           <p
             className={clsx(styles.cardDescription)}
             title={description}>
             {description}
           </p>
+        )}
+        {html && (
+          <p
+            className={clsx(styles.cardDescription)}
+            dangerouslySetInnerHTML={{
+              __html: html
+            }}
+          ></p>
         )}
       </div>
     </CardContainer>
@@ -67,24 +76,22 @@ function CardLink({item}) {
   let icon;
   if (item.customProps && item.customProps.themedImage) {
     icon = (
-      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
-        <ThemedImage alt={item.label} sources={{
-          light: item.customProps.themedImage.light,
-          dark: item.customProps.themedImage.dark
-        }} />
-      </div>
+      <BorderedIcon icon={{
+        light: item.customProps.themedImage.light,
+        dark: item.customProps.themedImage.dark
+      }} wrapperClassName='card-icon-wrapper' />
     )
   } else if (item.customProps && item.customProps.image) {
     icon = (
-      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
-        <img src={item.customProps.image} alt={item.label} />
-      </div>
+      <BorderedIcon icon={{
+        light: item.customProps.image
+      }} wrapperClassName='card-icon-wrapper' />
     );
   } else if (item.customProps && item.customProps.icon) {
     icon = item.customProps.icon;
   } else {
     icon = (
-      <div className={clsx(styles.imageContainer, 'no-zoom-img')}>
+      <div className={clsx('card-icon-wrapper', 'no-zoom-img')}>
         {isInternalUrl(item.href) ? '📄️' : '🔗'}
       </div>
     );
@@ -97,6 +104,7 @@ function CardLink({item}) {
       icon={icon}
       title={item.label}
       description={item.customProps?.description || doc?.description}
+      html={item.customProps?.html}
       containerClassName={item.customProps?.className}
     />
   );
