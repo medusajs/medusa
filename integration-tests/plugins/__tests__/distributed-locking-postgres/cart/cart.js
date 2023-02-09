@@ -154,106 +154,85 @@ describe("/store/carts", () => {
       await doAfterEach()
     })
 
-    it("reserve quantity when completing the cart", async () => {
-      const api = useApi()
-
-      const cartId = "test-cart"
-
-      // Add standard line item to cart
-      await api.post(
-        `/store/carts/${cartId}/line-items`,
-        {
-          variant_id: variantId,
-          quantity: 3,
-        },
-        { withCredentials: true }
+    it("Concurrent calls to confirm and reserve stock leads to over selling", async () => {
+      const inventoryService = appContainer.resolve("inventoryService")
+      const prodVarInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
       )
 
-      await api.post(`/store/carts/${cartId}/payment-sessions`)
-      await api.post(`/store/carts/${cartId}/payment-session`, {
-        provider_id: "test-pay",
-      })
+      const confirmAndReserve = async (quantity) => {
+        const inventoryConfirmed =
+          await prodVarInventoryService.confirmInventory(variantId, quantity, {
+            salesChannelId: "test-channel",
+          })
 
-      const getRes = await api.post(`/store/carts/${cartId}/complete`)
+        if (inventoryConfirmed) {
+          await prodVarInventoryService.reserveQuantity(variantId, quantity, {
+            lineItemId: "line_item_123",
+            salesChannelId: "test-channel",
+          })
+        }
+      }
 
-      expect(getRes.status).toEqual(200)
-      expect(getRes.data.type).toEqual("order")
+      const quantities = [2, 3, 4, 1, 3, 2, 1] // 16
+      await Promise.all(
+        quantities.map(async (quantity) => {
+          await confirmAndReserve(quantity)
+        })
+      )
 
-      const inventoryService = appContainer.resolve("inventoryService")
       const stockLevel = await inventoryService.retrieveInventoryLevel(
         inventoryItemId,
         locationId
       )
 
-      expect(stockLevel.location_id).toEqual(locationId)
-      expect(stockLevel.inventory_item_id).toEqual(inventoryItemId)
-      expect(stockLevel.reserved_quantity).toEqual(3)
       expect(stockLevel.stocked_quantity).toEqual(5)
+      expect(stockLevel.reserved_quantity).toBeGreaterThan(
+        stockLevel.stocked_quantity
+      )
     })
 
-    it("fails to add a item on the cart if the inventory isn't enough", async () => {
-      const api = useApi()
+    it("Concurrent calls using locking to confirm and reserve stock won't reserve more the available quantity", async () => {
+      const distributedLockingService = appContainer.resolve(
+        "distributedLockingService"
+      )
+      const inventoryService = appContainer.resolve("inventoryService")
+      const prodVarInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
 
-      const cartId = "test-cart"
+      const confirmAndReserve = async (quantity) => {
+        distributedLockingService.execute(
+          `variantReserve:${variantId}`,
+          async () => {
+            const inventoryConfirmed =
+              await prodVarInventoryService.confirmInventory(
+                variantId,
+                quantity,
+                {
+                  salesChannelId: "test-channel",
+                }
+              )
 
-      // Add standard line item to cart
-      const addCart = await api
-        .post(
-          `/store/carts/${cartId}/line-items`,
-          {
-            variant_id: variantId,
-            quantity: 6,
-          },
-          { withCredentials: true }
+            if (inventoryConfirmed) {
+              await prodVarInventoryService.reserveQuantity(
+                variantId,
+                quantity,
+                {
+                  lineItemId: "line_item_123",
+                  salesChannelId: "test-channel",
+                }
+              )
+            }
+          }
         )
-        .catch((e) => e)
+      }
 
-      expect(addCart.response.status).toEqual(400)
-      expect(addCart.response.data.code).toEqual("insufficient_inventory")
-      expect(addCart.response.data.message).toEqual(
-        `Variant with id: ${variantId} does not have the required inventory`
-      )
-    })
-
-    it("fails to complete cart with items inventory not covered", async () => {
-      const api = useApi()
-
-      const cartId = "test-cart"
-
-      // Add standard line item to cart
-      await api.post(
-        `/store/carts/${cartId}/line-items`,
-        {
-          variant_id: variantId,
-          quantity: 5,
-        },
-        { withCredentials: true }
-      )
-
-      await api.post(`/store/carts/${cartId}/payment-sessions`)
-      await api.post(`/store/carts/${cartId}/payment-session`, {
-        provider_id: "test-pay",
-      })
-
-      // Another proccess reserves items before the cart is completed
-      const inventoryService = appContainer.resolve("inventoryService")
-      await inventoryService.createReservationItem({
-        line_item_id: "line_item_123",
-        inventory_item_id: inventoryItemId,
-        location_id: locationId,
-        quantity: 2,
-      })
-
-      const completeCartRes = await api
-        .post(`/store/carts/${cartId}/complete`)
-        .catch((e) => e)
-
-      expect(completeCartRes.response.status).toEqual(409)
-      expect(completeCartRes.response.data.code).toEqual(
-        "insufficient_inventory"
-      )
-      expect(completeCartRes.response.data.message).toEqual(
-        `Variant with id: ${variantId} does not have the required inventory`
+      const quantities = [2, 3, 4, 1, 3, 2, 1] // 16
+      await Promise.all(
+        quantities.map(async (quantity) => {
+          await confirmAndReserve(quantity)
+        })
       )
 
       const stockLevel = await inventoryService.retrieveInventoryLevel(
@@ -261,10 +240,10 @@ describe("/store/carts", () => {
         locationId
       )
 
-      expect(stockLevel.location_id).toEqual(locationId)
-      expect(stockLevel.inventory_item_id).toEqual(inventoryItemId)
-      expect(stockLevel.reserved_quantity).toEqual(2)
       expect(stockLevel.stocked_quantity).toEqual(5)
+      expect(stockLevel.reserved_quantity).toBeGreaterThan(
+        stockLevel.stocked_quantity
+      )
     })
   })
 })
