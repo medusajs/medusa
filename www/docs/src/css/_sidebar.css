@@ -194,24 +194,6 @@
   margin-right: calc(var(--ifm-base-margin-vertical) / 2);
 }
 
-.sidebar-title .sidebar-item-icon {
-  background-color: var(--medusa-bg-component);
-  height: 24px;
-  width: 24px;
-  padding: 2px;
-  border-radius: var(--ifm-global-radius);
-}
-
-.sidebar-title-icon-wrapper {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;
-  border: 1px solid var(--medusa-border-strong);
-  border-radius: var(--ifm-global-radius);
-  margin-right: 16px;
-}
-
 /** Back Link **/
 .sidebar-back-link .menu__link {
   padding: 0 !important;

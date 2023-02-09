@@ -86,6 +86,9 @@
   --medusa-h3-size: 18px;
   --medusa-h3-line-height: 28px;
   --medusa-h3-weight: 500;
+  --medusa-label-regular-size: 14px;
+  --medusa-label-regular-line-height: 20px;
+  --medusa-label-regular-font-weight: 400;
 }
 
 /** Dark theme **/
