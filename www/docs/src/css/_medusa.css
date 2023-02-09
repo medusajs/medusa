@@ -50,6 +50,12 @@
   --medusa-icon-interactive-hover: #644FC1;
   --medusa-icon-error: #E5484D;
 
+  /** Support Info **/
+  --medusa-support-error: #E5484D;
+  --medusa-support-warning: #FFB224;
+  --medusa-support-success: #30A46C;
+  --medusa-support-info: #0091FF;
+
   /** Code Block **/
   --medusa-code-block: #1C1C1F;
 
