@@ -230,9 +230,9 @@ class SalesChannelService extends TransactionBaseService {
         this.salesChannelRepository_
       )
 
-      const salesChannel = await this.retrieve(salesChannelId).catch(
-        () => void 0
-      )
+      const salesChannel = await this.retrieve(salesChannelId, {
+        relations: ["locations"],
+      }).catch(() => void 0)
 
       if (!salesChannel) {
         return

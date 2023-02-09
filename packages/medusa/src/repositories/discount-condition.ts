@@ -1,15 +1,15 @@
 import { DeleteResult, EntityTarget, In, Not } from "typeorm"
-import { Discount } from "../models"
 import {
+  Discount,
   DiscountCondition,
+  DiscountConditionCustomerGroup,
   DiscountConditionOperator,
+  DiscountConditionProduct,
+  DiscountConditionProductCollection,
+  DiscountConditionProductTag,
+  DiscountConditionProductType,
   DiscountConditionType,
-} from "../models/discount-condition"
-import { DiscountConditionCustomerGroup } from "../models/discount-condition-customer-group"
-import { DiscountConditionProduct } from "../models/discount-condition-product"
-import { DiscountConditionProductCollection } from "../models/discount-condition-product-collection"
-import { DiscountConditionProductTag } from "../models/discount-condition-product-tag"
-import { DiscountConditionProductType } from "../models/discount-condition-product-type"
+} from "../models"
 import { isString } from "../utils"
 import { dataSource } from "../loaders/database"
 
@@ -252,6 +252,10 @@ export const DiscountConditionRepository = dataSource
       //    if condition operation is `in` and the query for conditions defined for the given type is empty, the discount is invalid
       //    if condition operation is `not_in` and the query for conditions defined for the given type is not empty, the discount is invalid
       for (const condition of discountConditions) {
+        if (condition.type === DiscountConditionType.CUSTOMER_GROUPS) {
+          continue
+        }
+
         const numConditions = await this.queryConditionTable({
           type: condition.type,
           condId: condition.id,

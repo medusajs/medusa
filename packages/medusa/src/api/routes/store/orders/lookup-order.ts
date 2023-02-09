@@ -5,11 +5,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+import { Type } from "class-transformer"
 
 import { OrderService } from "../../../../services"
-import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+
+import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [get] /orders
@@ -18,6 +20,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Look up an order using filters."
  * parameters:
  *   - (query) display_id=* {number} The display id given to the Order.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in the result.
  *   - in: query
  *     name: email
  *     style: form
@@ -79,7 +83,7 @@ import { validator } from "../../../../utils/validator"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetOrdersParams, req.query)
+  const validated = req.validatedQuery as StoreGetOrdersParams
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
@@ -101,7 +105,7 @@ export default async (req, res) => {
 
   const order = orders[0]
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, req.allowedProperties || []) })
 }
 
 export class ShippingAddressPayload {
@@ -110,7 +114,7 @@ export class ShippingAddressPayload {
   postal_code?: string
 }
 
-export class StoreGetOrdersParams {
+export class StoreGetOrdersParams extends FindParams {
   @IsNumber()
   @Type(() => Number)
   display_id: number

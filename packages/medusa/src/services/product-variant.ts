@@ -29,8 +29,6 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import EventBusService from "./event-bus"
-import RegionService from "./region"
 import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,
@@ -40,6 +38,8 @@ import {
   UpdateProductVariantInput,
 } from "../types/product-variant"
 import { buildQuery, buildRelations, setMetadata } from "../utils"
+import EventBusService from "./event-bus"
+import RegionService from "./region"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -351,11 +351,8 @@ class ProductVariantService extends TransactionBaseService {
         this.moneyAmountRepository_
       )
 
-      // get prices to be deleted
-      const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
-        variantId,
-        prices
-      )
+      // Delete obsolete prices
+      await moneyAmountRepo.deleteVariantPricesNotIn(variantId, prices)
 
       const regionsServiceTx = this.regionService_.withTransaction(manager)
 
@@ -372,8 +369,6 @@ class ProductVariantService extends TransactionBaseService {
           await this.setCurrencyPrice(variantId, price)
         }
       }
-
-      await moneyAmountRepo.remove(obsoletePrices)
     })
   }
 
@@ -685,7 +680,7 @@ class ProductVariantService extends TransactionBaseService {
 
       const variant = await variantRepo.findOne({
         where: { id: variantId },
-        relations: ["prices", "options"],
+        relations: ["prices", "options", "inventory_items"],
       })
 
       if (!variant) {

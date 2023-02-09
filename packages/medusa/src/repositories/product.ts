@@ -5,13 +5,11 @@ import {
   In,
   SelectQueryBuilder,
 } from "typeorm"
-import { PriceList, Product, SalesChannel, ProductCategory } from "../models"
+import { Product, ProductCategory } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { isObject } from "../utils"
-import {
-  ProductFilterOptions,
-} from "../types/product"
+import { ProductFilterOptions } from "../types/product"
 
 export const ProductRepository = dataSource.getRepository(Product).extend({
   async bulkAddToCollection(
@@ -57,9 +55,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
   },
 
   async findAndCount(
-    options: ExtendedFindConfig<
-      Product & ProductFilterOptions
-    >,
+    options: ExtendedFindConfig<Product & ProductFilterOptions>,
     q?: string
   ): Promise<[Product[], number]> {
     const queryBuilder = await this.prepareQueryBuilder_(options, q)
@@ -67,18 +63,14 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
   },
 
   async findOne(
-    options: ExtendedFindConfig<
-      Product & ProductFilterOptions
-    >
+    options: ExtendedFindConfig<Product & ProductFilterOptions>
   ): Promise<Product | null> {
     const queryBuilder = await this.prepareQueryBuilder_(options)
     return await queryBuilder.getOne()
   },
 
   async prepareQueryBuilder_(
-    options: ExtendedFindConfig<
-      Product & ProductFilterOptions
-    >,
+    options: ExtendedFindConfig<Product & ProductFilterOptions>,
     q?: string
   ): Promise<SelectQueryBuilder<Product>> {
     const options_ = { ...options }
@@ -201,7 +193,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (options_.where.category_id) {
-      const includeCategoryChildren = options_.where.include_category_children || false
+      const includeCategoryChildren =
+        options_.where.include_category_children || false
       const joinMethod = options_.relations.category_id
         ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
         : queryBuilder.innerJoin.bind(queryBuilder)
@@ -307,6 +300,25 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     queryBuilder.setFindOptions(options_)
     return queryBuilder
+  },
+
+  /**
+   * Upserts shipping profile for products
+   * @param productIds IDs of products to update
+   * @param shippingProfileId ID of shipping profile to assign to products
+   * @returns updated products
+   */
+  async upsertShippingProfile(
+    productIds: string[],
+    shippingProfileId: string
+  ): Promise<Product[]> {
+    await this.createQueryBuilder()
+      .update(Product)
+      .set({ profile_id: shippingProfileId })
+      .where({ id: In(productIds) })
+      .execute()
+
+    return await this.findByIds(productIds)
   },
 })
 

@@ -364,8 +364,8 @@ class LineItemService extends TransactionBaseService {
    * @return the created line item
    */
   async create<
-    T = DeepPartial<LineItem> | DeepPartial<LineItem>[],
-    TResult = T extends LineItem ? LineItem : LineItem[]
+    T = LineItem | LineItem[],
+    TResult = T extends LineItem[] ? LineItem[] : LineItem
   >(data: T): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {

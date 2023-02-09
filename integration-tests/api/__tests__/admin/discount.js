@@ -2215,13 +2215,16 @@ describe("/admin/discounts", () => {
 
     it("should respond with 404 on non-existing code", async () => {
       const api = useApi()
+
+      const code = "non-existing"
+
       const err = await api
-        .get("/admin/discounts/code/non-existing", adminReqConfig)
+        .get(`/admin/discounts/code/${code}`, adminReqConfig)
         .catch((e) => e)
 
       expect(err.response.status).toEqual(404)
       expect(err.response.data.message).toBe(
-        "Discount with code non-existing was not found"
+        `Discounts with code ${code} was not found`
       )
     })
 

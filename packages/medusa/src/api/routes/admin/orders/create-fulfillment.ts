@@ -192,6 +192,7 @@ const updateInventoryAndReservations = async (
  *     description: The Line Items to include in the Fulfillment.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity

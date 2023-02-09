@@ -1,6 +1,13 @@
 import partition from "lodash/partition"
-import { Brackets, In, IsNull, Not, WhereExpressionBuilder } from "typeorm"
-import { MoneyAmount } from "../models/money-amount"
+import {
+  Brackets,
+  In,
+  IsNull,
+  Not,
+  ObjectLiteral,
+  WhereExpressionBuilder,
+} from "typeorm"
+import { MoneyAmount } from "../models"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
@@ -61,6 +68,44 @@ export const MoneyAmountRepository = dataSource
       }
 
       return await this.save(moneyAmount)
+    },
+
+    async deleteVariantPricesNotIn(
+      variantId: string,
+      prices: Price[]
+    ): Promise<void> {
+      const where = {
+        variant_id: variantId,
+        price_list_id: IsNull(),
+      }
+
+      const orWhere: ObjectLiteral[] = []
+
+      for (const price of prices) {
+        if (price.currency_code) {
+          orWhere.push(
+            {
+              currency_code: Not(price.currency_code),
+            },
+            {
+              region_id: price.region_id ? Not(price.region_id) : Not(IsNull()),
+              currency_code: price.currency_code,
+            }
+          )
+        }
+
+        if (price.region_id) {
+          orWhere.push({
+            region_id: Not(price.region_id),
+          })
+        }
+      }
+
+      await this.createQueryBuilder()
+        .delete()
+        .where(where)
+        .andWhere(orWhere)
+        .execute()
     },
 
     async addPriceListPrices(
