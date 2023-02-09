@@ -4,12 +4,19 @@ description: >-
   Cart.
 type: object
 required:
+  - allocation
+  - created_at
+  - deleted_at
+  - description
+  - id
+  - metadata
   - type
+  - updated_at
   - value
 properties:
   id:
-    type: string
     description: The discount rule's ID
+    type: string
     example: dru_01F0YESMVK96HVX7N419E3CJ7C
   type:
     description: >-
@@ -24,6 +31,7 @@ properties:
     example: percentage
   description:
     description: A short description of the discount
+    nullable: true
     type: string
     example: 10 Percent
   value:
@@ -34,6 +42,7 @@ properties:
     example: 10
   allocation:
     description: The scope that the discount should apply to.
+    nullable: true
     type: string
     enum:
       - total
@@ -45,22 +54,23 @@ properties:
       used. Available if the relation `conditions` is expanded.
     type: array
     items:
-      type: object
-      description: A discount condition object.
+      $ref: ./DiscountCondition.yaml
   created_at:
-    type: string
     description: The date with timezone at which the resource was created.
+    type: string
     format: date-time
   updated_at:
-    type: string
     description: The date with timezone at which the resource was updated.
+    type: string
     format: date-time
   deleted_at:
-    type: string
     description: The date with timezone at which the resource was deleted.
+    nullable: true
+    type: string
     format: date-time
   metadata:
-    type: object
     description: An optional key-value map with additional details
+    nullable: true
+    type: object
     example:
       car: white

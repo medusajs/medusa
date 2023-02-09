@@ -31,15 +31,18 @@ get:
       schema:
         type: number
         default: '20'
+  x-codegen:
+    method: list
+    queryParams: AdminGetCurrenciesParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/currencies/getundefined
+        $ref: ../code_samples/JavaScript/currencies/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/currencies/getundefined
+        $ref: ../code_samples/Shell/currencies/get.sh
   tags:
     - Currency
   responses:

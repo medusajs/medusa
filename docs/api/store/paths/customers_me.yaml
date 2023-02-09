@@ -5,15 +5,17 @@ get:
     Retrieves a Customer - the Customer must be logged in to retrieve their
     details.
   x-authenticated: true
+  x-codegen:
+    method: retrieve
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customers_me/getundefined
+        $ref: ../code_samples/JavaScript/customers_me/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customers_me/getundefined
+        $ref: ../code_samples/Shell/customers_me/get.sh
   security:
     - cookie_auth: []
   tags:
@@ -47,15 +49,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/StorePostCustomersCustomerReq.yaml
+  x-codegen:
+    method: update
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customers_me/postundefined
+        $ref: ../code_samples/JavaScript/customers_me/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customers_me/postundefined
+        $ref: ../code_samples/Shell/customers_me/post.sh
   security:
     - cookie_auth: []
   tags:

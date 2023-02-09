@@ -15,15 +15,17 @@ post:
       description: The Cart id.
       schema:
         type: string
+  x-codegen:
+    method: complete
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/carts_{id}_complete/postundefined
+        $ref: ../code_samples/JavaScript/carts_{id}_complete/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}_complete/postundefined
+        $ref: ../code_samples/Shell/carts_{id}_complete/post.sh
   tags:
     - Cart
   responses:

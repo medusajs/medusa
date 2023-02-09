@@ -11,6 +11,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": ["dist"],
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {

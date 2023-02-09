@@ -1,9 +1,8 @@
-/lib
-node_modules
 .DS_store
-.env*
-/*.js
-!index.js
+src
+dist
 yarn.lock
+.babelrc
 
-
+.turbo
+.yarn

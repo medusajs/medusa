@@ -11,15 +11,17 @@ post:
       description: The id of the Cart.
       schema:
         type: string
+  x-codegen:
+    method: createPaymentSessions
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/carts_{id}_payment-sessions/postundefined
+        $ref: ../code_samples/JavaScript/carts_{id}_payment-sessions/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}_payment-sessions/postundefined
+        $ref: ../code_samples/Shell/carts_{id}_payment-sessions/post.sh
   tags:
     - Cart
   responses:
