@@ -84,9 +84,7 @@ export default async (req, res) => {
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
-  const rawProduct = await productService.retrieve(id, {
-    relations: defaultStoreProductsRelations,
-  })
+  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
 
   let sales_channel_id = validated.sales_channel_id
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
