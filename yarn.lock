@@ -4742,6 +4742,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/distributed-locking-postgres@workspace:packages/distributed-locking-postgres":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/distributed-locking-postgres@workspace:packages/distributed-locking-postgres"
+  dependencies:
+    "@medusajs/medusa": "*"
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typeorm: ^0.2.31
+    typescript: ^4.4.4
+  peerDependencies:
+    "@medusajs/medusa": 1.7.6
+    medusa-interfaces: 1.3.5
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/medusa-cli@^1.3.7, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
