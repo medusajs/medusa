@@ -362,5 +362,83 @@ describe("Inventory Items endpoints", () => {
         }),
       ])
     })
+
+    it("When deleting an inventory item it removes the product variants associated to it", async () => {
+      const api = useApi()
+
+      await simpleProductFactory(
+        dbConnection,
+        {
+          id: "test-product-new",
+          variants: [],
+        },
+        5
+      )
+
+      const response = await api.post(
+        `/admin/products/test-product-new/variants`,
+        {
+          title: "Test2",
+          sku: "MY_SKU2",
+          manage_inventory: true,
+          options: [
+            {
+              option_id: "test-product-new-option",
+              value: "Blue",
+            },
+          ],
+          prices: [{ currency_code: "usd", amount: 100 }],
+        },
+        { headers: { Authorization: "Bearer test_token" } }
+      )
+
+      const secondVariantId = response.data.product.variants.find(
+        (v) => v.sku === "MY_SKU2"
+      ).id
+
+      const inventoryService = appContainer.resolve("inventoryService")
+      const variantInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
+
+      const invItem2 = await inventoryService.createInventoryItem({
+        sku: "123456",
+      })
+
+      await variantInventoryService.attachInventoryItem(
+        variantId,
+        invItem2.id,
+        2
+      )
+      await variantInventoryService.attachInventoryItem(
+        secondVariantId,
+        invItem2.id,
+        2
+      )
+
+      expect(
+        await variantInventoryService.listInventoryItemsByVariant(variantId)
+      ).toHaveLength(2)
+
+      expect(
+        await variantInventoryService.listInventoryItemsByVariant(
+          secondVariantId
+        )
+      ).toHaveLength(2)
+
+      await api.delete(`/admin/inventory-items/${invItem2.id}`, {
+        headers: { Authorization: "Bearer test_token" },
+      })
+
+      expect(
+        await variantInventoryService.listInventoryItemsByVariant(variantId)
+      ).toHaveLength(1)
+
+      expect(
+        await variantInventoryService.listInventoryItemsByVariant(
+          secondVariantId
+        )
+      ).toHaveLength(1)
+    })
   })
 })
