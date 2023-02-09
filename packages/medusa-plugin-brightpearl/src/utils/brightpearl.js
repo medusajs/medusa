@@ -229,6 +229,9 @@ class BrightpearlClient {
             },
           })
           .then(({ data }) => data.response)
+          .catch(
+            (err) => console.log(err) || console.log(err.response.data.errors)
+          )
       },
     }
   }
