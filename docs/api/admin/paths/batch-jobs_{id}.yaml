@@ -10,15 +10,17 @@ get:
       description: The ID of the Batch Job
       schema:
         type: string
+  x-codegen:
+    method: retrieve
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/batch-jobs_{id}/getundefined
+        $ref: ../code_samples/JavaScript/batch-jobs_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/batch-jobs_{id}/getundefined
+        $ref: ../code_samples/Shell/batch-jobs_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []

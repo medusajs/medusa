@@ -61,15 +61,18 @@ get:
             type: string
             description: filter by dates greater than or equal to this date
             format: date
+  x-codegen:
+    method: list
+    queryParams: StoreGetCollectionsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/collections/getundefined
+        $ref: ../code_samples/JavaScript/collections/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/collections/getundefined
+        $ref: ../code_samples/Shell/collections/get.sh
   tags:
     - Collection
   responses:
