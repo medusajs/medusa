@@ -45,7 +45,7 @@ class SalesChannelInventoryService {
     )
 
     return await this.inventoryService_.retrieveAvailableQuantity(
-      itemId,
+      inventoryItemId,
       locationIds
     )
   }

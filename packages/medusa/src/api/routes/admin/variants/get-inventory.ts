@@ -72,7 +72,9 @@ export default async (req, res) => {
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
-
+  const channelLocationService: SalesChannelLocationService = req.scope.resolve(
+    "salesChannelLocationService"
+  )
   const channelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
@@ -122,7 +124,7 @@ export default async (req, res) => {
 
         const quantity = await inventoryService.retrieveAvailableQuantity(
           inventory[0].id,
-          channel.locations.map((loc) => loc.id)
+          channel.locations
         )
 
         return {
@@ -137,6 +139,10 @@ export default async (req, res) => {
   res.json({
     variant: responseVariant,
   })
+}
+
+type SalesChannelDTO = Omit<SalesChannel, "beforeInsert" | "locations"> & {
+  locations: string[]
 }
 
 type ResponseInventoryItem = Partial<InventoryItemDTO> & {
