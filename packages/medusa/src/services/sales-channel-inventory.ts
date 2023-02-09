@@ -33,12 +33,12 @@ class SalesChannelInventoryService {
   /**
    * Retrieves the available quantity of an item across all sales channel locations
    * @param salesChannelId Sales channel id
-   * @param itemId Item id
+   * @param inventoryItemId Item id
    * @returns available quantity of item across all sales channel locations
    */
   async retrieveAvailableItemQuantity(
     salesChannelId: string,
-    itemId: string
+    inventoryItemId: string
   ): Promise<number> {
     const locationIds = await this.salesChannelLocationService_.listLocationIds(
       salesChannelId

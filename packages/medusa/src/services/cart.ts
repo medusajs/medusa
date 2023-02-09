@@ -9,6 +9,7 @@ import {
   Customer,
   CustomShippingOption,
   Discount,
+  DiscountRule,
   DiscountRuleType,
   LineItem,
   PaymentSession,
@@ -1122,10 +1123,9 @@ class CartService extends TransactionBaseService {
           const previousDiscounts = [...cart.discounts]
           cart.discounts.length = 0
 
-          await Promise.all(
-            data.discounts.map(async ({ code }) => {
-              return this.applyDiscount(cart, code)
-            })
+          await this.applyDiscounts(
+            cart,
+            data.discounts.map((d) => d.code)
           )
 
           const hasFreeShipping = cart.discounts.some(
@@ -1410,41 +1410,65 @@ class CartService extends TransactionBaseService {
    * Throws if discount regions does not include the cart region
    * @param cart - the cart to update
    * @param discountCode - the discount code
-   * @return the result of the update operation
    */
   async applyDiscount(cart: Cart, discountCode: string): Promise<void> {
+    return await this.applyDiscounts(cart, [discountCode])
+  }
+
+  /**
+   * Updates the cart's discounts.
+   * If discount besides free shipping is already applied, this
+   * will be overwritten
+   * Throws if discount regions does not include the cart region
+   * @param cart - the cart to update
+   * @param discountCodes - the discount code(s) to apply
+   */
+  async applyDiscounts(cart: Cart, discountCodes: string[]): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const discount = await this.discountService_
+        const discounts = await this.discountService_
           .withTransaction(transactionManager)
-          .retrieveByCode(discountCode, { relations: ["rule", "regions"] })
+          .listByCodes(discountCodes, { relations: ["rule", "regions"] })
 
         await this.discountService_
           .withTransaction(transactionManager)
-          .validateDiscountForCartOrThrow(cart, discount)
+          .validateDiscountForCartOrThrow(cart, discounts)
 
-        const rule = discount.rule
+        const rules: Map<string, DiscountRule> = new Map()
+        const discountsMap = new Map(
+          discounts.map((d) => {
+            rules.set(d.id, d.rule)
+            return [d.id, d]
+          })
+        )
 
-        // if discount is already there, we simply resolve
-        if (cart.discounts.find(({ id }) => id === discount.id)) {
-          return
-        }
+        cart.discounts.forEach((discount) => {
+          if (discountsMap.has(discount.id)) {
+            discountsMap.delete(discount.id)
+          }
+        })
 
-        const toParse = [...cart.discounts, discount]
+        const toParse = [...cart.discounts, ...discountsMap.values()]
 
         let sawNotShipping = false
         const newDiscounts = toParse.map((discountToParse) => {
           switch (discountToParse.rule?.type) {
             case DiscountRuleType.FREE_SHIPPING:
-              if (discountToParse.rule.type === rule.type) {
-                return discount
+              if (
+                discountToParse.rule.type ===
+                rules.get(discountToParse.id)!.type
+              ) {
+                return discountsMap.get(discountToParse.id)
               }
               return discountToParse
             default:
               if (!sawNotShipping) {
                 sawNotShipping = true
-                if (rule?.type !== DiscountRuleType.FREE_SHIPPING) {
-                  return discount
+                if (
+                  rules.get(discountToParse.id)!.type !==
+                  DiscountRuleType.FREE_SHIPPING
+                ) {
+                  return discountsMap.get(discountToParse.id)
                 }
                 return discountToParse
               }
@@ -1458,8 +1482,11 @@ class CartService extends TransactionBaseService {
           }
         )
 
-        // ignore if free shipping
-        if (rule?.type !== DiscountRuleType.FREE_SHIPPING && cart?.items) {
+        const hadNonFreeShippingDiscounts = [...rules.values()].some(
+          (rule) => rule.type !== DiscountRuleType.FREE_SHIPPING
+        )
+
+        if (hadNonFreeShippingDiscounts && cart?.items) {
           await this.refreshAdjustments_(cart)
         }
       }
