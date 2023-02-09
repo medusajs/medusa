@@ -1,10 +1,10 @@
 {
-  "name": "@medusajs/oas-cli",
-  "version": "1.0.0",
+  "name": "@medusajs/medusa-oas-cli",
+  "version": "0.1.0",
   "description": "OAS CLI",
   "main": "dist/index.js",
   "bin": {
-    "medusa-oas-cli": "./dist/index.js"
+    "medusa-oas": "./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "build:oas": "ts-node src/build-oas.ts",
+    "command:oas": "ts-node src/command-oas.ts",
     "test": "jest --passWithNoTests",
     "test:unit": "jest --passWithNoTests"
   },

@@ -6,7 +6,7 @@ import { Command } from "commander"
 import {
   commandDescription as OASCommandDescription,
   commandOptions as OASCommandOptions,
-} from "./build-oas"
+} from "./command-oas"
 
 const basePath = path.resolve(__dirname, `./`)
 

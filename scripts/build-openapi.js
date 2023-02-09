@@ -30,7 +30,7 @@ const generateOASSource = async () => {
   if (isDryRun) {
     params.push("--dryRun")
   }
-  const { all: logs } = await execa("medusa-oas-cli", params, {
+  const { all: logs } = await execa("medusa-oas", params, {
     cwd: basePath,
     all: true,
   })

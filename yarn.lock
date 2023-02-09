@@ -4807,6 +4807,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/medusa-oas-cli@*, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli"
+  dependencies:
+    "@medusajs/medusa": "*"
+    "@medusajs/medusa-cli": "*"
+    "@readme/openapi-parser": ^2.4.0
+    "@types/lodash": ^4.14.168
+    commander: ^10.0.0
+    execa: ^5.1.1
+    lodash: ^4.17.21
+    openapi3-ts: ^3.1.2
+    swagger-inline: ^6.1.0
+    ts-node: ^10.9.1
+    typescript: 4.9.5
+  bin:
+    medusa-oas: ./dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
@@ -4875,26 +4895,6 @@ __metadata:
     typeorm: 0.2.x
   bin:
     medusa: ./cli.js
-  languageName: unknown
-  linkType: soft
-
-"@medusajs/oas-cli@*, @medusajs/oas-cli@workspace:packages/oas/oas-cli":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/oas-cli@workspace:packages/oas/oas-cli"
-  dependencies:
-    "@medusajs/medusa": "*"
-    "@medusajs/medusa-cli": "*"
-    "@readme/openapi-parser": ^2.4.0
-    "@types/lodash": ^4.14.168
-    commander: ^10.0.0
-    execa: ^5.1.1
-    lodash: ^4.17.21
-    openapi3-ts: ^3.1.2
-    swagger-inline: ^6.1.0
-    ts-node: ^10.9.1
-    typescript: 4.9.5
-  bin:
-    medusa-oas-cli: ./dist/index.js
   languageName: unknown
   linkType: soft
 
@@ -31213,7 +31213,7 @@ __metadata:
     "@changesets/changelog-github": ^0.4.8
     "@changesets/cli": ^2.26.0
     "@linear/sdk": ^1.22.0
-    "@medusajs/oas-cli": "*"
+    "@medusajs/medusa-oas-cli": "*"
     "@octokit/core": ^4.0.5
     "@redocly/cli": 1.0.0-beta.123
     "@typescript-eslint/eslint-plugin": ^5.36.2
