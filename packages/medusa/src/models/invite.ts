@@ -64,6 +64,7 @@ export class Invite extends SoftDeletableEntity {
  *     format: email
  *   role:
  *     description: The user's role.
+ *     nullable: true
  *     type: string
  *     enum:
  *       - admin

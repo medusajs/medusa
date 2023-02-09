@@ -278,7 +278,7 @@ export class LineItem extends BaseEntity {
  *   allow_discounts:
  *     description: Flag to indicate if the Line Item should be included when doing discount calculations.
  *     type: boolean
- *     default: false
+ *     default: true
  *   has_shipping:
  *     description: Flag to indicate if the Line Item has fulfillment associated with it.
  *     nullable: true
