@@ -9,3 +9,6 @@ src
 
 
 
+.yarn
+__mocks__
+.turbo

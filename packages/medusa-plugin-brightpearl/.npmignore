@@ -8,3 +8,6 @@ src
 yarn.lock
 
 
+.yarn
+__mocks__
+.turbo

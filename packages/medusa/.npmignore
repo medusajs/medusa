@@ -7,3 +7,6 @@ src
 ormconfig.json
 tsconfig.json
 jest.config.md
+.yarn
+__mocks__
+.turbo

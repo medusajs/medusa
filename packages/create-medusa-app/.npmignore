@@ -35,3 +35,6 @@ examples
 
 # tests
 __tests__
+__mocks__
+.yarn
+.turbo

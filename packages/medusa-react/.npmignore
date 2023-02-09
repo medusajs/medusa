@@ -9,4 +9,6 @@ public/
 .storybook/
 mocks/
 stories/
-yarn.lock
+yarn.lock.yarn
+__mocks__
+.turbo

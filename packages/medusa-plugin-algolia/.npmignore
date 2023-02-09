@@ -11,3 +11,6 @@ src
 .babelrc
 .prettierrc
 
+.yarn
+__mocks__
+.turbo

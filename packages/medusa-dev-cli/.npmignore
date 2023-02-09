@@ -1,3 +1,6 @@
 src
 flow-typed
 verdaccio
+.yarn
+__mocks__
+.turbo

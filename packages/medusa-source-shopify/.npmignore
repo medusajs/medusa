@@ -4,4 +4,6 @@ node_modules
 .env*
 /*.js
 !index.js
-yarn.lock
+yarn.lock.yarn
+__mocks__
+.turbo
