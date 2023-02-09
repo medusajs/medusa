@@ -144,7 +144,7 @@ export function prepareRetrieveQuery<
 >(validated: T, queryConfig?: QueryConfig<TEntity>) {
   const { fields, expand } = validated
 
-  let expandRelations: string[] = []
+  let expandRelations: string[] | undefined = undefined
   if (isDefined(expand)) {
     expandRelations = expand.split(",").filter((v) => v)
   }
