@@ -17,14 +17,14 @@ import {
   PaymentStatus,
   Return,
   Swap,
-  TrackingLink
+  TrackingLink,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateFulfillmentOrder,
-  FulFillmentItemType
+  FulFillmentItemType,
 } from "../types/fulfillment"
 import { UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
@@ -48,7 +48,7 @@ import {
   ShippingOptionService,
   ShippingProfileService,
   TaxProviderService,
-  TotalsService
+  TotalsService,
 } from "."
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -322,7 +322,7 @@ class OrderService extends TransactionBaseService {
       select = select.filter((v) => !totalFields.includes(v))
     }
 
-    const toSelect = select
+    const toSelect = [...select]
     if (toSelect.length > 0 && toSelect.indexOf("tax_rate") === -1) {
       toSelect.push("tax_rate")
     }
