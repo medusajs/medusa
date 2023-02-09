@@ -24,6 +24,8 @@ export default (app, featureFlagRouter: FlagRouter) => {
   if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
     relations.push("sales_channel")
     defaultFields.push("sales_channel_id")
+    allowedAdminOrdersRelations.push("sales_channel")
+    allowedAdminOrdersFields.push("sales_channel_id")
   }
 
   /**
@@ -34,6 +36,8 @@ export default (app, featureFlagRouter: FlagRouter) => {
     transformQuery(AdminGetOrdersParams, {
       defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
+      allowedFields: allowedAdminOrdersFields,
+      allowedRelations: allowedAdminOrdersRelations,
       isList: true,
     }),
     middlewares.wrap(require("./list-orders").default)
@@ -59,6 +63,20 @@ export default (app, featureFlagRouter: FlagRouter) => {
           "gift_card_tax_total",
         ].includes(field)
       }),
+      allowedFields: allowedAdminOrdersFields.filter((field) => {
+        return ![
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+        ].includes(field)
+      }),
+      allowedRelations: allowedAdminOrdersRelations,
       isList: false,
     }),
     middlewares.wrap(require("./get-order").default)
@@ -296,6 +314,13 @@ export type AdminOrdersListRes = PaginatedResponse & {
 
 export const defaultAdminOrdersRelations = [
   "customer",
+  "items",
+  "items.variant",
+  "items.variant.product",
+  "cart",
+  "currency",
+  "region",
+  "edits",
   "billing_address",
   "shipping_address",
   "discounts",
@@ -324,7 +349,6 @@ export const defaultAdminOrdersRelations = [
   "claims.claim_items",
   "claims.claim_items.item",
   "claims.claim_items.images",
-  // "claims.claim_items.tags",
   "swaps",
   "swaps.return_order",
   "swaps.return_order.shipping_method",
@@ -385,6 +409,15 @@ export const filterableAdminOrdersFields = [
   "canceled_at",
   "created_at",
   "updated_at",
+]
+
+const allowedAdminOrdersRelations = [...defaultAdminOrdersRelations]
+const allowedAdminOrdersFields = [
+  ...defaultAdminOrdersFields,
+  "billing_address_id",
+  "shipping_address_id",
+  "external_id",
+  "sales_channel_id",
 ]
 
 export * from "./add-shipping-method"

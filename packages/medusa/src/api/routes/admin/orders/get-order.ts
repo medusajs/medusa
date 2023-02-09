@@ -1,5 +1,6 @@
 import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [get] /orders/{id}
@@ -62,7 +63,7 @@ export default async (req, res) => {
 
   const order = await orderService.retrieveWithTotals(id, req.retrieveConfig)
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, req.allowedProperties) })
 }
 
 export class AdminGetOrdersOrderParams extends FindParams {}
