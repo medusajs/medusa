@@ -98,6 +98,7 @@ class SalesChannelLocationService extends TransactionBaseService {
 
     const locations = await manager.find(SalesChannelLocation, {
       where: { sales_channel_id: salesChannel.id },
+      select: ["location_id"],
     })
 
     return locations.map((l) => l.location_id)
@@ -114,6 +115,7 @@ class SalesChannelLocationService extends TransactionBaseService {
 
     const salesChannelLocations = await manager.find(SalesChannelLocation, {
       where: { location_id: location.id },
+      select: ["sales_channel_id"],
     })
 
     return salesChannelLocations.map((l) => l.sales_channel_id)

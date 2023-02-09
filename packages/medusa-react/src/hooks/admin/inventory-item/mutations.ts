@@ -69,7 +69,7 @@ export const useAdminUpdateLocationLevel = (
     Response<AdminInventoryItemsRes>,
     Error,
     AdminPostInventoryItemsItemLocationLevelsLevelReq & {
-      stockLocationId: string,
+      stockLocationId: string
     }
   >
 ) => {
@@ -77,15 +77,17 @@ export const useAdminUpdateLocationLevel = (
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminPostInventoryItemsItemLocationLevelsLevelReq & {
-      stockLocationId: string,
-    }) =>
+    (
+      payload: AdminPostInventoryItemsItemLocationLevelsLevelReq & {
+        stockLocationId: string
+      }
+    ) =>
       client.admin.inventoryItems.updateLocationLevel(
         inventoryItemId,
         payload.stockLocationId,
         {
-          incoming_quantity: payload.incoming_quantity, 
-          stocked_quantity: payload.stocked_quantity
+          incoming_quantity: payload.incoming_quantity,
+          stocked_quantity: payload.stocked_quantity,
         }
       ),
     buildOptions(

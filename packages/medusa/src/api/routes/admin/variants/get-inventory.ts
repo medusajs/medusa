@@ -96,10 +96,12 @@ export default async (req, res) => {
   const [rawChannels] = await channelService.listAndCount({})
   const channels: SalesChannelDTO[] = await Promise.all(
     rawChannels.map(async (channel) => {
-      const locations = await channelLocationService.listLocationIds(channel.id)
+      const locationIds = await channelLocationService.listLocationIds(
+        channel.id
+      )
       return {
         ...channel,
-        locations,
+        locations: locationIds,
       }
     })
   )

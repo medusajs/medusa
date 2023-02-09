@@ -148,11 +148,11 @@ export default async (req: Request, res: Response) => {
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
-  let includeSalesChannels = false
+  const includeSalesChannels =
+    !!listConfig.relations?.includes("sales_channels")
 
-  if (listConfig.relations?.includes("sales_channels")) {
-    includeSalesChannels = true
-    listConfig.relations = listConfig.relations.filter(
+  if (includeSalesChannels) {
+    listConfig.relations = listConfig.relations?.filter(
       (r) => r !== "sales_channels"
     )
   }
