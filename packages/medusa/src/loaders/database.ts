@@ -1,4 +1,9 @@
-import { DataSource, DataSourceOptions } from "typeorm"
+import {
+  DataSource,
+  DataSourceOptions,
+  Repository,
+  TreeRepository,
+} from "typeorm"
 import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
 import "../utils/naming-strategy"
@@ -13,6 +18,19 @@ type Options = {
 }
 
 export let dataSource: DataSource
+
+// TODO: With the latest version of typeorm, the datasource is expected to be
+// available globally. During the integration test, the medusa
+// files are imported from @medusajs/medusa, therefore, the repositories are
+// evaluated at the same time, unfortunately, the integration tests have their
+// own way to load and at the moment, the datasource does not exists. This is
+// why we are mocking them here
+if (process.env.NODE_ENV === "test") {
+  dataSource = {
+    getRepository: (target) => new Repository(target, {} as any) as any,
+    getTreeRepository: (target) => new TreeRepository(target, {} as any) as any,
+  } as unknown as DataSource
+}
 
 export default async ({
   container,
