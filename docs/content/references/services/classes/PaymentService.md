@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:40](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L40)
+[packages/medusa/src/services/payment.ts:40](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L40)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -52,7 +52,21 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### \_\_moduleDeclaration\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_moduleDeclaration\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
 
 ___
 
@@ -62,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:28](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L28)
+[packages/medusa/src/services/payment.ts:28](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L28)
 
 ___
 
@@ -76,7 +90,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:26](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L26)
+[packages/medusa/src/services/payment.ts:26](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L26)
 
 ___
 
@@ -86,7 +100,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L29)
+[packages/medusa/src/services/payment.ts:29](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L29)
 
 ___
 
@@ -96,7 +110,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:30](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L30)
+[packages/medusa/src/services/payment.ts:30](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L30)
 
 ___
 
@@ -110,7 +124,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:27](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L27)
+[packages/medusa/src/services/payment.ts:27](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L27)
 
 ___
 
@@ -131,7 +145,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:31](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L31)
+[packages/medusa/src/services/payment.ts:31](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L31)
 
 ## Methods
 
@@ -170,7 +184,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -194,7 +208,7 @@ the payment captured.
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:161](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L161)
+[packages/medusa/src/services/payment.ts:161](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L161)
 
 ___
 
@@ -218,7 +232,7 @@ the payment created.
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:96](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L96)
+[packages/medusa/src/services/payment.ts:96](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L96)
 
 ___
 
@@ -245,7 +259,7 @@ the refund created.
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:210](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L210)
+[packages/medusa/src/services/payment.ts:210](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L210)
 
 ___
 
@@ -270,7 +284,7 @@ the payment.
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:61](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L61)
+[packages/medusa/src/services/payment.ts:61](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L61)
 
 ___
 
@@ -294,7 +308,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -321,7 +335,7 @@ the payment updated.
 
 #### Defined in
 
-[packages/medusa/src/services/payment.ts:127](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/payment.ts#L127)
+[packages/medusa/src/services/payment.ts:127](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/payment.ts#L127)
 
 ___
 
@@ -345,4 +359,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
