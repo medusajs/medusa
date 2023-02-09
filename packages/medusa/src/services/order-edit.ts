@@ -494,7 +494,12 @@ export default class OrderEditService extends TransactionBaseService {
     const manager = this.transactionManager_ ?? this.manager_
     const { order_id, items } = await this.retrieve(orderEdit.id, {
       select: ["id", "order_id", "items"],
-      relations: ["items", "items.tax_lines", "items.adjustments"],
+      relations: [
+        "items",
+        "items.tax_lines",
+        "items.adjustments",
+        "items.variant"
+      ],
     })
 
     const orderServiceTx = this.orderService_.withTransaction(manager)
@@ -508,6 +513,7 @@ export default class OrderEditService extends TransactionBaseService {
         "items",
         "items.tax_lines",
         "items.adjustments",
+        "items.variant",
         "region.tax_rates",
         "shipping_methods",
         "shipping_methods.tax_lines",
