@@ -1,8 +1,9 @@
-import { BeforeInsert, Column } from "typeorm"
+import { BeforeInsert, Column, OneToMany } from "typeorm"
 
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
+import { SalesChannelLocation } from "./sales-channel-location"
 
 @FeatureFlagEntity("sales_channels")
 export class SalesChannel extends SoftDeletableEntity {
@@ -14,6 +15,15 @@ export class SalesChannel extends SoftDeletableEntity {
 
   @Column({ default: false })
   is_disabled: boolean
+
+  @OneToMany(
+    () => SalesChannelLocation,
+    (scLocation) => scLocation.sales_channel,
+    {
+      cascade: ["soft-remove", "remove"],
+    }
+  )
+  locations?: SalesChannelLocation[]
 
   @BeforeInsert()
   private beforeInsert(): void {
