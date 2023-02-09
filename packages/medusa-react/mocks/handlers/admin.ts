@@ -130,6 +130,24 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/product-categories/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        product_categories: fixtures.list("product_category"),
+      })
+    )
+  }),
+
+  rest.get("/admin/product-categories/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        product_category: fixtures.get("product_category"),
+      })
+    )
+  }),
+
   rest.post("/admin/gift-cards/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(
