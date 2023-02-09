@@ -40,7 +40,7 @@ class SalesChannelInventoryService {
     salesChannelId: string,
     itemId: string
   ): Promise<number> {
-    const locations = await this.salesChannelLocationService_.listLocations(
+    const locations = await this.salesChannelLocationService_.listLocationIds(
       salesChannelId
     )
 

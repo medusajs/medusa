@@ -107,7 +107,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     let locations: string[] = []
     if (context.salesChannelId) {
-      locations = await this.salesChannelLocationService_.listLocations(
+      locations = await this.salesChannelLocationService_.listLocationIds(
         context.salesChannelId
       )
     } else {
@@ -378,7 +378,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     if (!isDefined(locationId) && context.salesChannelId) {
       const locations = await this.salesChannelLocationService_
         .withTransaction(manager)
-        .listLocations(context.salesChannelId)
+        .listLocationIds(context.salesChannelId)
 
       if (!locations.length) {
         throw new MedusaError(
