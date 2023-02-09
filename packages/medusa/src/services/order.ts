@@ -323,7 +323,7 @@ class OrderService extends TransactionBaseService {
     }
 
     const toSelect = [...select]
-    if (totalsToSelect.length > 0 && toSelect.indexOf("tax_rate") === -1) {
+    if (toSelect.length > 0 && toSelect.indexOf("tax_rate") === -1) {
       toSelect.push("tax_rate")
     }
 
