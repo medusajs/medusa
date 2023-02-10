@@ -13,7 +13,7 @@ jest.setTimeout(30000)
 
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
-describe("/store/carts", () => {
+describe("Distributed Locking", () => {
   let express
   let appContainer
   let dbConnection
@@ -21,6 +21,7 @@ describe("/store/carts", () => {
   let variantId
   let inventoryItemId
   let locationId
+  const salesChannelId = "sales-channel-test"
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -51,21 +52,21 @@ describe("/store/carts", () => {
     return await db.teardown()
   })
 
-  describe("POST /store/carts/:id", () => {
+  describe("Check inventory and reserve items", () => {
     beforeEach(async () => {
       await simpleSalesChannelFactory(dbConnection, {
-        id: "test-channel",
+        id: salesChannelId,
         is_default: true,
       })
 
       await adminSeeder(dbConnection)
-      await cartSeeder(dbConnection, { sales_channel_id: "test-channel" })
+      await cartSeeder(dbConnection, { sales_channel_id: salesChannelId })
 
       await simpleProductFactory(
         dbConnection,
         {
-          id: "product1",
-          sales_channels: [{ id: "test-channel" }],
+          id: "product123",
+          sales_channels: [{ id: salesChannelId }],
           variants: [],
         },
         100
@@ -87,21 +88,13 @@ describe("/store/carts", () => {
       )
 
       const response = await api.post(
-        `/admin/products/product1/variants`,
+        `/admin/products/product123/variants`,
         {
           title: "Test Variant w. inventory",
-          sku: "MY_SKU",
-          material: "material",
-          origin_country: "UK",
-          hs_code: "hs001",
-          mid_code: "mids",
-          weight: 300,
-          length: 100,
-          height: 200,
-          width: 150,
+          sku: "MY_SKU123",
           options: [
             {
-              option_id: "product1-option",
+              option_id: "product123-option",
               value: "SS",
             },
           ],
@@ -142,7 +135,7 @@ describe("/store/carts", () => {
 
       // Associate Stock Location with sales channel
       await api.post(
-        `/admin/sales-channels/test-channel/stock-locations`,
+        `/admin/sales-channels/sales-channel-test/stock-locations`,
         {
           location_id: locationId,
         },
@@ -163,13 +156,13 @@ describe("/store/carts", () => {
       const confirmAndReserve = async (quantity) => {
         const inventoryConfirmed =
           await prodVarInventoryService.confirmInventory(variantId, quantity, {
-            salesChannelId: "test-channel",
+            salesChannelId,
           })
 
         if (inventoryConfirmed) {
           await prodVarInventoryService.reserveQuantity(variantId, quantity, {
             lineItemId: "line_item_123",
-            salesChannelId: "test-channel",
+            salesChannelId,
           })
         }
       }
@@ -202,7 +195,7 @@ describe("/store/carts", () => {
       )
 
       const confirmAndReserve = async (quantity) => {
-        distributedLockingService.execute(
+        await distributedLockingService.execute(
           `variantReserve:${variantId}`,
           async () => {
             const inventoryConfirmed =
@@ -210,7 +203,7 @@ describe("/store/carts", () => {
                 variantId,
                 quantity,
                 {
-                  salesChannelId: "test-channel",
+                  salesChannelId,
                 }
               )
 
@@ -220,7 +213,7 @@ describe("/store/carts", () => {
                 quantity,
                 {
                   lineItemId: "line_item_123",
-                  salesChannelId: "test-channel",
+                  salesChannelId,
                 }
               )
             }
