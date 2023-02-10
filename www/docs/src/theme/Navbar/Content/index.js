@@ -55,11 +55,6 @@ export default function NavbarContent() {
           {windowSize === 'mobile' && (
             <NavbarLogo />
           )}
-          {/* {!searchBarItem && (
-            <NavbarSearch>
-              <SearchBar />
-            </NavbarSearch>
-          )} */}
           <NavbarItems items={leftItems} />
         </>
       }
@@ -71,12 +66,6 @@ export default function NavbarContent() {
           <span className='divider'></span>
           <NavbarColorModeToggle className={styles.colorModeToggle} />
           <NavbarActions items={navbarActions} />
-          {/* {windowSize === 'mobile' && (
-            <NavbarSearch>
-              <SearchBar />
-            </NavbarSearch>
-          )} */}
-          
         </>
       }
     />

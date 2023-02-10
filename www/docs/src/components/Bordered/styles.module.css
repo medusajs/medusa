@@ -1,0 +1,10 @@
+.elementWrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--bordered-padding);
+  border: 1px solid var(--bordered-border-color);
+  border-radius: var(--ifm-global-radius);
+  margin-right: var(--bordered-margin-right);
+  width: fit-content;
+}
