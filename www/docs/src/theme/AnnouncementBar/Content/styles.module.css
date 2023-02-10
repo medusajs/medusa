@@ -4,7 +4,13 @@
   color: var(--ifm-announcement-bar-text-color);
 }
 
+.contentTitle,
+.moreText {
+  font-size: var(--medusa-label-small-plus-size);
+  line-height: var(--medusa-label-small-plus-line-height);
+  font-weight: var(--medusa-label-small-plus-font-weight);
+}
+
 .contentTitle {
-  font-weight: 600;
-  color: var( --ifm-announcement-bar-title-color);
+  color: var(--ifm-announcement-bar-title-color);
 }

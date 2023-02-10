@@ -1,14 +1,3 @@
-.iconWrapper {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;
-  border: 1px solid var(--medusa-border-strong);
-  border-radius: var(--ifm-global-radius);
-  margin-right: 16px;
-  width: fit-content;
-}
-
 .icon {
   background-color: var(--medusa-bg-component);
   height: 24px;
