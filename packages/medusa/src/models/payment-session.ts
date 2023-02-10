@@ -105,6 +105,7 @@ export class PaymentSession extends BaseEntity {
  *     example: manual
  *   is_selected:
  *     description: A flag to indicate if the Payment Session has been selected as the method that will be used to complete the purchase.
+ *     nullable: true
  *     type: boolean
  *     example: true
  *   is_initiated:

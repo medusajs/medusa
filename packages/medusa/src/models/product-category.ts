@@ -134,16 +134,10 @@ export class ProductCategory extends SoftDeletableEntity {
  *     nullable: true
  *     $ref: "#/components/schemas/ProductCategory"
  *   products:
- *     description: Available if the relation `products` is expanded.
+ *     description: Products associated with category. Available if the relation `products` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/Product"
- *   products:
- *     description: products associated with category. Available if the relation `products` is expanded.
- *     type: array
- *     items:
- *       type: object
- *       description: A product object.
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string

@@ -276,7 +276,7 @@ export class Product extends SoftDeletableEntity {
  *     items:
  *       $ref: "#/components/schemas/ProductVariant"
  *   categories:
- *     description: Available if the relation `category_children` are expanded.
+ *     description: The product's associated categories. Available if the relation `categories` are expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/ProductCategory"
@@ -365,12 +365,6 @@ export class Product extends SoftDeletableEntity {
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/SalesChannel"
- *   categories:
- *     description: The product's associated categories. Available if the relation `categories` is expanded.
- *     type: array
- *     items:
- *       type: object
- *       description: A category object.
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string

@@ -1,10 +1,10 @@
 import {
-  Index,
   BeforeInsert,
   Column,
   Entity,
-  ManyToOne,
+  Index,
   JoinColumn,
+  ManyToOne,
 } from "typeorm"
 import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
@@ -75,6 +75,7 @@ export class ProductVariantInventoryItem extends SoftDeletableEntity {
  *     format: date-time
  *   deleted_at:
  *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
  *     format: date-time
  */
