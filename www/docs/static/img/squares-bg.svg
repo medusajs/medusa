@@ -1,0 +1,32 @@
+<svg width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6091_3041)">
+<path d="M15.5 1024V0M79.5 1024V0M143.5 1024V0M207.5 1024V0M271.5 1024V0M335.5 1024V0M399.5 1024V0M463.5 1024V0M527.5 1024V0M591.5 1024V0M655.5 1024V0M719.5 1024V0M783.5 1024V0M847.5 1024V0M911.5 1024V0M975.5 1024V0M1039.5 1024V0M1103.5 1024V0M1167.5 1024V0M1231.5 1024V0M1295.5 1024V0M1359.5 1024V0M1423.5 1024V0M0 31.5H1440M0 95.5H1440M0 159.5H1440M0 223.5H1440M0 287.5H1440M0 351.5H1440M0 415.5H1440M0 479.5H1440M0 543.5H1440M0 607.5H1440M0 671.5H1440M0 735.5H1440M0 799.5H1440M0 863.5H1440M0 927.5H1440M0 991.5H1440" stroke="white" stroke-opacity="0.04"/>
+<path d="M272 160H335V223H272V160Z" fill="white" fill-opacity="0.02"/>
+<path d="M1168 800H1231V863H1168V800Z" fill="white" fill-opacity="0.02"/>
+<path d="M528 96H591V159H528V96Z" fill="white" fill-opacity="0.02"/>
+<path d="M1104 160H1167V223H1104V160Z" fill="white" fill-opacity="0.02"/>
+<path d="M1232 352H1295V415H1232V352Z" fill="white" fill-opacity="0.02"/>
+<path d="M1040 672H1103V735H1040V672Z" fill="white" fill-opacity="0.02"/>
+<path d="M784 800H847V863H784V800Z" fill="white" fill-opacity="0.02"/>
+<path d="M336 480H399V543H336V480Z" fill="white" fill-opacity="0.02"/>
+<path d="M208 800H271V863H208V800Z" fill="white" fill-opacity="0.02"/>
+<path d="M464 736H527V799H464V736Z" fill="white" fill-opacity="0.02"/>
+<path d="M336 224H399V287H336V224Z" fill="white" fill-opacity="0.02"/>
+<path d="M976 287H1039V350H976V287Z" fill="white" fill-opacity="0.02"/>
+<path d="M720 864H783V927H720V864Z" fill="white" fill-opacity="0.02"/>
+<path d="M1232 480H1295V543H1232V480Z" fill="white" fill-opacity="0.02"/>
+<path d="M1168 544H1231V607H1168V544Z" fill="white" fill-opacity="0.02"/>
+<path d="M784 224H847V287H784V224Z" fill="white" fill-opacity="0.02"/>
+<path d="M208 352H271V415H208V352Z" fill="white" fill-opacity="0.02"/>
+<path d="M272 608H335V671H272V608Z" fill="white" fill-opacity="0.02"/>
+<path d="M144 480H207V543H144V480Z" fill="white" fill-opacity="0.02"/>
+<path d="M848 32H911V95H848V32Z" fill="white" fill-opacity="0.02"/>
+<path d="M528 352H591V415H528V352Z" fill="white" fill-opacity="0.02"/>
+<path d="M912 480H975V543H912V480Z" fill="white" fill-opacity="0.02"/>
+</g>
+<defs>
+<clipPath id="clip0_6091_3041">
+<rect width="1440" height="1024" fill="white"/>
+</clipPath>
+</defs>
+</svg>

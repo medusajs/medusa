@@ -41,7 +41,7 @@ p {
   font-weight: var(--ifm-link-weight);
 }
 
-.markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-action):after {
+.markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-link):after {
   display: inline-block;
   width: 16px;
   height: 16px;
@@ -49,11 +49,11 @@ p {
   vertical-align: middle;
 }
 
-html:not([data-theme="dark"]) .markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-action):after {
+html:not([data-theme="dark"]) .markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-link):after {
   background-image: url('/img/link-icon.svg');
 }
 
-[data-theme="dark"] .markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-action):after {
+[data-theme="dark"] .markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-link):after {
   background-image: url('/img/link-icon-dark.svg');
 }
 
