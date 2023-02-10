@@ -74,7 +74,7 @@ export default class DistributedLockingService
     )
 
     if (!row) {
-      const expireSql = expire && ", NOW() + INTERVAL '${+expire} SECONDS'"
+      const expireSql = expire ? ", NOW() + INTERVAL '${+expire} SECONDS'" : ""
       await this.getManager().query(
         `INSERT INTO distributed_locking (id, owner_id, expire) VALUES ($1, $2 ${expireSql})`,
         [key, ownerId ?? null]
@@ -82,20 +82,28 @@ export default class DistributedLockingService
       return
     }
 
-    if (!row.expire || row.expire > row.now) {
+    if (!row.expire && row.owner_id == ownerId) {
       return
     }
 
-    if (row.owner_id == ownerId) {
-      if (expire) {
-        await this.getManager().query(
-          `UPDATE distributed_locking SET expire = NOW() + INTERVAL '${+expire} SECONDS' WHERE id = $1`,
-          [key]
-        )
-      }
-
-      throw new Error(`"${key}" is already locked.`)
+    let refresh = false
+    if ((row.owner_id == ownerId && expire) || row.expire <= row.now) {
+      refresh = true
     }
+
+    if (refresh) {
+      const expireSql = expire
+        ? ", expire = NOW() + INTERVAL '${+expire} SECONDS'"
+        : ""
+
+      await this.getManager().query(
+        `UPDATE distributed_locking SET owner_id = $2 ${expireSql} WHERE id = $1`,
+        [key, ownerId ?? null]
+      )
+      return
+    }
+
+    throw new Error(`"${key}" is already locked.`)
   }
 
   async release(key: string, ownerId: string): Promise<boolean> {
