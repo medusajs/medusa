@@ -71,16 +71,14 @@ class InMemoryCacheService
 
     const oldRecord = this.store.get(key)
 
-    if (oldRecord?.expire) {
+    if (oldRecord) {
       clearTimeout(this.timoutRefs[key])
       delete this.timoutRefs[key]
     }
 
-    if (record.expire) {
-      setTimeout(() => {
-        this.invalidate(key)
-      }, ttl * 1000)
-    }
+    setTimeout(() => {
+      this.invalidate(key)
+    }, ttl * 1000)
 
     this.store.set(key, record)
   }
