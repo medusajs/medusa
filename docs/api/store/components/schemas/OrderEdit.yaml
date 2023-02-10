@@ -17,7 +17,7 @@ properties:
     example: order_01G2SG30J8C85S4A5CHM2S1NS2
   order:
     description: Available if the relation `order` is expanded.
-    $ref: ./Order.yaml
+    type: object
   changes:
     type: array
     description: Available if the relation `changes` is expanded.

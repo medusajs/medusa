@@ -20,15 +20,18 @@ get:
       description: Comma separated list of fields to include in the results.
       schema:
         type: string
+  x-codegen:
+    method: retrieve
+    queryParams: GetPaymentCollectionsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/payment-collections_{id}/getundefined
+        $ref: ../code_samples/JavaScript/payment-collections_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/payment-collections_{id}/getundefined
+        $ref: ../code_samples/Shell/payment-collections_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []

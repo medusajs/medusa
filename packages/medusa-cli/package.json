@@ -14,6 +14,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": ["dist", "cli.js"],
   "scripts": {
     "test": "jest --passWithNoTests src",
     "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",

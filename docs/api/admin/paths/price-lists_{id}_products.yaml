@@ -176,15 +176,18 @@ get:
         result.
       schema:
         type: string
+  x-codegen:
+    method: listProducts
+    queryParams: AdminGetPriceListsPriceListProductsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/price-lists_{id}_products/getundefined
+        $ref: ../code_samples/JavaScript/price-lists_{id}_products/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/price-lists_{id}_products/getundefined
+        $ref: ../code_samples/Shell/price-lists_{id}_products/get.sh
   security:
     - api_token: []
     - cookie_auth: []
