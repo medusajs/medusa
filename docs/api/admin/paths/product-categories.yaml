@@ -6,16 +6,12 @@ post:
   parameters:
     - in: query
       name: expand
-      description: >-
-        (Comma separated) Which fields should be expanded in each product
-        category.
+      description: (Comma separated) Which fields should be expanded in the results.
       schema:
         type: string
     - in: query
       name: fields
-      description: >-
-        (Comma separated) Which fields should be retrieved in each product
-        category.
+      description: (Comma separated) Which fields should be retrieved in the results.
       schema:
         type: string
   requestBody:
@@ -23,11 +19,18 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostProductCategoriesReq.yaml
+  x-codegen:
+    method: create
+    queryParams: AdminPostProductCategoriesParams
   x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/product-categories/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/product-categories/postundefined
+        $ref: ../code_samples/Shell/product-categories/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -39,10 +42,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              product_category:
-                $ref: ../components/schemas/ProductCategory.yaml
+            $ref: ../components/schemas/AdminProductCategoriesCategoryRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -107,11 +107,18 @@ get:
         category.
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetProductCategoriesParams
   x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/product-categories/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/product-categories/getundefined
+        $ref: ../code_samples/Shell/product-categories/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -123,21 +130,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              product_categories:
-                type: array
-                items:
-                  $ref: ../components/schemas/ProductCategory.yaml
-              count:
-                type: integer
-                description: The total number of items available
-              offset:
-                type: integer
-                description: The number of items skipped before these items
-              limit:
-                type: integer
-                description: The number of items per page
+            $ref: ../components/schemas/AdminProductCategoriesListRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

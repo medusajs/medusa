@@ -14,11 +14,11 @@ delete:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/reservations_{id}/deleteundefined
+        $ref: ../code_samples/JavaScript/reservations_{id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/reservations_{id}/deleteundefined
+        $ref: ../code_samples/Shell/reservations_{id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -71,11 +71,11 @@ get:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/reservations_{id}/getundefined
+        $ref: ../code_samples/JavaScript/reservations_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/reservations_{id}/getundefined
+        $ref: ../code_samples/Shell/reservations_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -121,11 +121,11 @@ post:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/reservations_{id}/postundefined
+        $ref: ../code_samples/JavaScript/reservations_{id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/reservations_{id}/postundefined
+        $ref: ../code_samples/Shell/reservations_{id}/post.sh
   security:
     - api_token: []
     - cookie_auth: []

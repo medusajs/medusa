@@ -3,7 +3,7 @@ const path = require("path")
 const fs = require("fs")
 const docsPath = path.join(__dirname, "../../docs/content")
 const apisPath = path.join(__dirname, "../../docs/api")
-const reverseSidebar = require('./src/utils/reverseSidebar')
+// const reverseSidebar = require('./src/utils/reverseSidebar')
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
@@ -205,10 +205,11 @@ const config = {
           ],
           showLastUpdateTime: true,
           // breadcrumbs: false,
-          async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
-            const sidebarItems = await defaultSidebarItemsGenerator(args);
-            return reverseSidebar(sidebarItems);
-          },
+          // async sidebarItemsGenerator({defaultSidebarItemsGenerator, ...args}) {
+          //   const sidebarItems = await defaultSidebarItemsGenerator(args);
+          //   console.log("here", sidebarItems, args.isCategoryIndex());
+          //   return reverseSidebar(sidebarItems);
+          // },
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css")

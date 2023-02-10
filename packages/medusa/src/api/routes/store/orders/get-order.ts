@@ -53,10 +53,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
-  const order = await orderService.retrieveWithTotals(id, {
-    select: defaultStoreOrdersFields,
-    relations: defaultStoreOrdersRelations,
-  })
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig)
 
   res.json({
     order: cleanResponseData(order, req.allowedProperties || []),

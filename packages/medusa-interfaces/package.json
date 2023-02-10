@@ -14,6 +14,7 @@
     "build": "babel src --out-dir dist --ignore '**/__tests__','**/__mocks__'",
     "watch": "babel -w src --out-dir dist --ignore '**/__tests__','**/__mocks__'"
   },
+  "files": ["dist"],
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {

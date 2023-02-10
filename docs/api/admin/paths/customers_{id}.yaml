@@ -20,15 +20,17 @@ get:
       description: (Comma separated) Which fields should be included in the customer.
       schema:
         type: string
+  x-codegen:
+    method: retrieve
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customers_{id}/getundefined
+        $ref: ../code_samples/JavaScript/customers_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customers_{id}/getundefined
+        $ref: ../code_samples/Shell/customers_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -80,15 +82,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostCustomersCustomerReq.yaml
+  x-codegen:
+    method: update
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customers_{id}/postundefined
+        $ref: ../code_samples/JavaScript/customers_{id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customers_{id}/postundefined
+        $ref: ../code_samples/Shell/customers_{id}/post.sh
   security:
     - api_token: []
     - cookie_auth: []
