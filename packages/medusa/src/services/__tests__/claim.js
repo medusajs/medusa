@@ -1,4 +1,4 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ClaimService from "../claim"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 
@@ -134,6 +134,7 @@ describe("ClaimService", () => {
       expect(returnService.create).toHaveBeenCalledWith({
         order_id: "1234",
         claim_order_id: "claim_134",
+        refund_amount: 1000,
         shipping_method: {
           option_id: "opt_13",
           price: 0,
