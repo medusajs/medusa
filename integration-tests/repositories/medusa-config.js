@@ -12,9 +12,4 @@ module.exports = {
     jwt_secret: "test",
     cookie_secret: "test",
   },
-  modules: {
-    distributedLockingService: {
-      resolve: "@medusajs/distributed-locking-postgres",
-    },
-  },
 }

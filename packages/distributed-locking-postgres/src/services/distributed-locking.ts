@@ -1,8 +1,15 @@
 import { EntityManager } from "typeorm"
 import {
+  ConfigurableModuleDeclaration,
   IDistributedLockingService,
+  MODULE_RESOURCE_TYPE,
   TransactionBaseService,
 } from "@medusajs/medusa"
+import { MedusaError } from "medusa-core-utils"
+
+type InjectedDependencies = {
+  manager: EntityManager
+}
 
 export default class DistributedLockingService
   extends TransactionBaseService
@@ -10,9 +17,22 @@ export default class DistributedLockingService
 {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
-  constructor() {
+  constructor(
+    { manager }: InjectedDependencies,
+    options?: unknown,
+    moduleDeclaration?: ConfigurableModuleDeclaration
+  ) {
     // @ts-ignore
     super(...arguments)
+
+    if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "At the moment this module can only be used with shared resources"
+      )
+    }
+
+    this.manager_ = manager
   }
 
   private getManager(): EntityManager {

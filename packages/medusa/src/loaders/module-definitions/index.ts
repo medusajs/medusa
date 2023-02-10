@@ -12,11 +12,11 @@ export default ({ modules }: ConfigModule) => {
 
     const moduleConfiguration = projectModules[definition.key]
 
-    if (!moduleConfiguration && definition.isRequired) {
-      throw new Error(`Module: ${definition.label} is required`)
-    }
-
     if (typeof moduleConfiguration === "boolean") {
+      if (!moduleConfiguration && definition.isRequired) {
+        throw new Error(`Module: ${definition.label} is required`)
+      }
+
       if (!moduleConfiguration) {
         moduleResolutions[definition.key] = {
           resolutionPath: false,
