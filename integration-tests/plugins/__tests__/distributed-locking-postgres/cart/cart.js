@@ -234,9 +234,7 @@ describe("Distributed Locking", () => {
       )
 
       expect(stockLevel.stocked_quantity).toEqual(5)
-      expect(stockLevel.reserved_quantity).toBeGreaterThan(
-        stockLevel.stocked_quantity
-      )
+      expect(stockLevel.reserved_quantity).toEqual(stockLevel.stocked_quantity)
     })
   })
 })
