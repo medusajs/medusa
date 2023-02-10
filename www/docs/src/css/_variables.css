@@ -89,6 +89,9 @@
   --ifm-note-background: var(--ifm-background-surface-color);
   --ifm-note-border-color: var(--medusa-border-base);
   --ifm-note-text-color: var(--medusa-text-secondary);
+  --ifm-note-info-color: var(--medusa-support-info);
+  --ifm-note-warning-color: var(--medusa-support-error);
+  --ifm-note-tip-color: var(--medusa-support-warning);
 
   /* Inline Code */
   --ifm-code-border-radius: 8px;

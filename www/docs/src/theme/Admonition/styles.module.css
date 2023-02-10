@@ -9,15 +9,13 @@
 .admonitionIcon svg,
 .admonitionIcon img {
   display: inline-block;
-  vertical-align: middle;
+  margin-top: 2px;
 }
 
 .admonitionIcon {
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
   margin-right: 16px;
-  flex: 1;
-  max-width: 20px;
 }
 
 .admonitionIcon img {
