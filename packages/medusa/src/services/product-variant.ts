@@ -19,8 +19,6 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import EventBusService from "./event-bus"
-import RegionService from "./region"
 import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,
@@ -30,6 +28,8 @@ import {
   UpdateProductVariantInput,
 } from "../types/product-variant"
 import { buildQuery, setMetadata } from "../utils"
+import EventBusService from "./event-bus"
+import RegionService from "./region"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -47,6 +47,7 @@ class ProductVariantService extends TransactionBaseService {
   protected readonly regionService_: RegionService
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly moneyAmountRepository_: typeof MoneyAmountRepository
+  // eslint-disable-next-line max-len
   protected readonly productOptionValueRepository_: typeof ProductOptionValueRepository
   protected readonly cartRepository_: typeof CartRepository
 
@@ -61,6 +62,7 @@ class ProductVariantService extends TransactionBaseService {
     cartRepository,
     priceSelectionStrategy,
   }) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.manager_ = manager
@@ -339,15 +341,14 @@ class ProductVariantService extends TransactionBaseService {
         this.moneyAmountRepository_
       )
 
-      // get prices to be deleted
-      const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
-        variantId,
-        prices
-      )
+      // Delete obsolete prices
+      await moneyAmountRepo.deleteVariantPricesNotIn(variantId, prices)
+
+      const regionsServiceTx = this.regionService_.withTransaction(manager)
 
       for (const price of prices) {
         if (price.region_id) {
-          const region = await this.regionService_.retrieve(price.region_id)
+          const region = await regionsServiceTx.retrieve(price.region_id)
 
           await this.setRegionPrice(variantId, {
             currency_code: region.currency_code,
@@ -358,8 +359,6 @@ class ProductVariantService extends TransactionBaseService {
           await this.setCurrencyPrice(variantId, price)
         }
       }
-
-      await moneyAmountRepo.remove(obsoletePrices)
     })
   }
 
@@ -673,6 +672,28 @@ class ProductVariantService extends TransactionBaseService {
           metadata: variant.metadata,
         })
     })
+  }
+
+  /**
+   * Check if the variant is assigned to at least one of the provided sales channels.
+   *
+   * @param id - product variant id
+   * @param salesChannelIds - an array of sales channel ids
+   */
+  async isVariantInSalesChannels(
+    id: string,
+    salesChannelIds: string[]
+  ): Promise<boolean> {
+    const variant = await this.retrieve(id, {
+      relations: ["product", "product.sales_channels"],
+    })
+
+    // TODO: reimplement this to use db level check
+    const productsSalesChannels = variant.product.sales_channels.map(
+      (channel) => channel.id
+    )
+
+    return productsSalesChannels.some((id) => salesChannelIds.includes(id))
   }
 
   /**

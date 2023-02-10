@@ -1,6 +1,6 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
-import { Type, Transform } from "class-transformer"
+import { Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
@@ -20,7 +20,20 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetProductCategoriesParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.productCategories.list()
+ *       .then(({ product_categories, limit, offset, count }) => {
+ *         console.log(product_categories.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -37,21 +50,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             product_categories:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/ProductCategory"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminProductCategoriesListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

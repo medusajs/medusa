@@ -26,10 +26,6 @@ class ManualPaymentService extends PaymentService {
     return { status: "pending" }
   }
 
-  async createPaymentNew() {
-    return { status: "pending" }
-  }
-
   /**
    * Retrieves payment
    * @param {object} data - the data of the payment to retrieve
@@ -56,12 +52,7 @@ class ManualPaymentService extends PaymentService {
     return sessionData
   }
 
-  async updatePaymentNew(sessionData) {
-    return sessionData
-  }
-
   /**
-   .
    * @param {object} sessionData - payment session data.
    * @param {object} update - payment session update data.
    * @returns {object} existing data merged with update data

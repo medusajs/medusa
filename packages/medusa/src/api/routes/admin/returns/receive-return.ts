@@ -24,6 +24,8 @@ import { isDefined } from "medusa-core-utils"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostReturnsReturnReceiveReq"
+ * x-codegen:
+ *   method: receive
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -145,6 +147,7 @@ class Item {
  *     description: The Line Items that have been received.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity

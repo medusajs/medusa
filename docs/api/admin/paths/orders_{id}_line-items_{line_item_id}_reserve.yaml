@@ -28,12 +28,12 @@ post:
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/orders_{id}_line-items_{line_item_id}_reserve/postundefined
+          ../code_samples/JavaScript/orders_{id}_line-items_{line_item_id}_reserve/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/orders_{id}_line-items_{line_item_id}_reserve/postundefined
+          ../code_samples/Shell/orders_{id}_line-items_{line_item_id}_reserve/post.sh
   security:
     - api_token: []
     - cookie_auth: []

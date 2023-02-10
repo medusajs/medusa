@@ -33,6 +33,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrdersOrderReturnsReq"
+ * x-codegen:
+ *   method: requestReturn
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -294,6 +296,7 @@ type ReturnObj = {
  *     description: The Line Items that will be returned.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity

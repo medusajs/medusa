@@ -8,15 +8,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostSalesChannelsReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/sales-channels/postundefined
+        $ref: ../code_samples/JavaScript/sales-channels/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/sales-channels/postundefined
+        $ref: ../code_samples/Shell/sales-channels/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -164,15 +166,18 @@ get:
         of the result.
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetSalesChannelsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/sales-channels/getundefined
+        $ref: ../code_samples/JavaScript/sales-channels/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/sales-channels/getundefined
+        $ref: ../code_samples/Shell/sales-channels/get.sh
   security:
     - api_token: []
     - cookie_auth: []

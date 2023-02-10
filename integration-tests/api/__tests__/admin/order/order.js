@@ -127,6 +127,84 @@ describe("/admin/orders", () => {
         updated_at: expect.any(String),
       })
     })
+
+    it("creates a billing address", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `update "order" set billing_address_id = null where id = 'test-order'`
+      )
+
+      const response = await api
+        .post(
+          "/admin/orders/test-order",
+          {
+            billing_address: {
+              first_name: "asafas",
+              last_name: "safas",
+              address_1: "asfsa",
+              city: "safas",
+              country_code: "us",
+              postal_code: "3243",
+            },
+          },
+          adminReqConfig
+        )
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order.billing_address).toEqual(
+        expect.objectContaining({
+          first_name: "asafas",
+          last_name: "safas",
+          address_1: "asfsa",
+          city: "safas",
+          country_code: "us",
+          postal_code: "3243",
+        })
+      )
+    })
+
+    it("creates a shipping address", async () => {
+      const api = useApi()
+
+      await dbConnection.manager.query(
+        `update "order" set shipping_address_id = null where id = 'test-order'`
+      )
+
+      const response = await api
+        .post(
+          "/admin/orders/test-order",
+          {
+            shipping_address: {
+              first_name: "asafas",
+              last_name: "safas",
+              address_1: "asfsa",
+              city: "safas",
+              country_code: "us",
+              postal_code: "3243",
+            },
+          },
+          adminReqConfig
+        )
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order.shipping_address).toEqual(
+        expect.objectContaining({
+          first_name: "asafas",
+          last_name: "safas",
+          address_1: "asfsa",
+          city: "safas",
+          country_code: "us",
+          postal_code: "3243",
+        })
+      )
+    })
   })
 
   describe("GET /admin/orders", () => {
@@ -1268,6 +1346,7 @@ describe("/admin/orders", () => {
 
     it("creates a claim on a swap", async () => {
       const api = useApi()
+      const shippingOption = await simpleShippingOptionFactory(dbConnection)
 
       const claimOnClaim = await api
         .post(
@@ -1287,6 +1366,15 @@ describe("/admin/orders", () => {
               {
                 variant_id: "test-variant",
                 quantity: 1,
+              },
+            ],
+            shipping_methods: [
+              {
+                option_id: shippingOption.id,
+                price: 1000,
+                data: {
+                  test: "test",
+                },
               },
             ],
           },
@@ -1453,6 +1541,30 @@ describe("/admin/orders", () => {
           expect.objectContaining({
             id: "discount-order",
           }),
+        ])
+      )
+    })
+
+    it("lists orders with specific fields and relations", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/orders?fields=id,created_at&expand=billing_address",
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(6)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          {
+            id: "test-order",
+            created_at: expect.any(String),
+            billing_address: expect.objectContaining({
+              id: "test-billing-address",
+              first_name: "lebron",
+            }),
+          },
         ])
       )
     })

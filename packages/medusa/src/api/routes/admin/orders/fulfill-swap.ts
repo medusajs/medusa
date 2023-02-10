@@ -19,6 +19,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrdersOrderSwapsSwapFulfillmentsReq"
+ * x-codegen:
+ *   method: fulfillSwap
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

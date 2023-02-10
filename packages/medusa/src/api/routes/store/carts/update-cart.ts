@@ -27,6 +27,8 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostCartsCartReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -149,6 +151,7 @@ class Discount {
  *     description: "An array of Gift Card codes to add to the Cart."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - code
  *       properties:
@@ -159,6 +162,7 @@ class Discount {
  *     description: "An array of Discount codes to add to the Cart."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - code
  *       properties:

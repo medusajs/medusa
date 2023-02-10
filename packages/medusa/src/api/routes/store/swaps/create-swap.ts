@@ -28,6 +28,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostSwapsReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -294,6 +296,7 @@ class AdditionalItem {
  *     description: "The items to include in the Return."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
@@ -317,6 +320,7 @@ class AdditionalItem {
  *     description: "The items to exchange the returned items to."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity

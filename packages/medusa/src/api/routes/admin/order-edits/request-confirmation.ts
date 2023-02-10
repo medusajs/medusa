@@ -19,6 +19,8 @@ import {
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order Edit to request confirmation from.
+ * x-codegen:
+ *   method: requestConfirmation
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -82,7 +84,7 @@ export default async (req, res) => {
       requestedBy: loggedInUser,
     })
 
-    const total = await orderEditServiceTx.getTotals(orderEdit.id)
+    const total = await orderEditServiceTx.decorateTotals(orderEdit)
 
     if (total.difference_due > 0) {
       const order = await orderService

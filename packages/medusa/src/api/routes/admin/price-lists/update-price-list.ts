@@ -34,6 +34,8 @@ import { validator } from "../../../../utils/validator"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostPriceListsPriceListPriceListReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -146,6 +148,7 @@ class CustomerGroup {
  *     description: The prices of the Price List.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - amount
  *         - variant_id
@@ -178,6 +181,7 @@ class CustomerGroup {
  *     type: array
  *     description: A list of customer groups that the Price List applies to.
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

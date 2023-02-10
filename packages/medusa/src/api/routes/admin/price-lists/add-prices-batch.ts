@@ -21,6 +21,8 @@ import { EntityManager } from "typeorm"
  *    application/json:
  *      schema:
  *        $ref: "#/components/schemas/AdminPostPriceListPricesPricesReq"
+ * x-codegen:
+ *   method: addPrices
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -111,6 +113,7 @@ export default async (req, res) => {
  *     description: The prices to update or add.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - amount
  *         - variant_id

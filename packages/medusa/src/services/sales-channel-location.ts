@@ -69,11 +69,17 @@ class SalesChannelLocationService extends TransactionBaseService {
     const salesChannel = await this.salesChannelService_
       .withTransaction(manager)
       .retrieve(salesChannelId)
-    const stockLocation = await this.stockLocationService.retrieve(locationId)
+
+    const stockLocationId = locationId
+
+    if (this.stockLocationService) {
+      const stockLocation = await this.stockLocationService.retrieve(locationId)
+      locationId = stockLocation.id
+    }
 
     const salesChannelLocation = manager.create(SalesChannelLocation, {
       sales_channel_id: salesChannel.id,
-      location_id: stockLocation.id,
+      location_id: stockLocationId,
     })
 
     await manager.save(salesChannelLocation)

@@ -1,6 +1,6 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import { StockLocationDTO } from "../../../../types/stock-location"
 import middlewares, {
   transformBody,
@@ -71,6 +71,11 @@ export default (app) => {
     middlewares.wrap(require("./update-stock-location").default)
   )
 
+  route.delete(
+    "/:id",
+    middlewares.wrap(require("./delete-stock-location").default)
+  )
+
   return app
 }
 
@@ -84,6 +89,24 @@ export const defaultAdminStockLocationFields: (keyof StockLocationDTO)[] = [
 ]
 
 export const defaultAdminStockLocationRelations = []
+
+/**
+ * @schema AdminStockLocationsDeleteRes
+ * type: object
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Stock Location.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: stock_location
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
+export type AdminStockLocationsDeleteRes = DeleteResponse
 
 /**
  * @schema AdminStockLocationsRes

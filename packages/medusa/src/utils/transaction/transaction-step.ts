@@ -2,7 +2,15 @@ import {
   TransactionStepsDefinition,
   TransactionStepStatus,
   TransactionState,
+  TransactionHandlerType,
+  TransactionPayload,
 } from "."
+
+export type TransactionStepHandler = (
+  actionId: string,
+  handlerType: TransactionHandlerType,
+  payload: TransactionPayload
+) => Promise<unknown>
 
 /**
  * @class TransactionStep
@@ -19,8 +27,7 @@ export class TransactionStep {
    * @member failures - The number of failures encountered while executing the step
    * @member lastAttempt - The timestamp of the last attempt made to execute the step
    * @member next - The ids of the next steps in the flow
-   * @member response - The response from the last successful execution of the step
-   * @member forwardResponse - A flag indicating if the response from the previous step should be passed to this step as payload
+   * @member saveResponse - A flag indicating if the response of a step should be shared in the transaction context and available to subsequent steps - default is false
    */
   private stepFailed = false
   id: string
@@ -38,8 +45,7 @@ export class TransactionStep {
   failures: number
   lastAttempt: number | null
   next: string[]
-  response: unknown
-  forwardResponse: boolean
+  saveResponse: boolean
 
   public getStates() {
     return this.isCompensating() ? this.compensate : this.invoke
@@ -121,14 +127,6 @@ export class TransactionStep {
     throw new Error(
       `Updating Status from "${curState.status}" to "${toStatus}" is not allowed.`
     )
-  }
-
-  public saveResponse(response) {
-    this.response = response
-  }
-
-  public getResponse(): unknown {
-    return this.response
   }
 
   canRetry(): boolean {

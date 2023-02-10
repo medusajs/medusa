@@ -10,15 +10,17 @@ post:
       description: The ID of the batch job.
       schema:
         type: string
+  x-codegen:
+    method: confirm
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/batch-jobs_{id}_confirm/postundefined
+        $ref: ../code_samples/JavaScript/batch-jobs_{id}_confirm/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/batch-jobs_{id}_confirm/postundefined
+        $ref: ../code_samples/Shell/batch-jobs_{id}_confirm/post.sh
   security:
     - api_token: []
     - cookie_auth: []
