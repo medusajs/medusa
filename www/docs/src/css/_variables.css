@@ -179,7 +179,11 @@
 
   /* Large Card */
   --large-card-bg: var(--ifm-background-surface-color);
+  --large-card-bg-hover: var(--medusa-bg-subtle-hover);
   --large-card-border-color: var(--ifm-base-border-color);
+  --large-card-bg-image: url('/img/squares-bg-light.svg');
+  --large-card-fade-effect: linear-gradient(transparent, var(--large-card-bg));
+  --large-card-fade-effect-hover: linear-gradient(transparent, var(--large-card-bg-hover));
   --large-card-icon-size: 32px;
   --large-card-icon-wrapper-size: 40px;
   --large-card-icon-wrapper-border-color: var(--ifm-strong-border-color);
@@ -228,6 +232,10 @@ html[data-theme="dark"] {
 
   /* Announcement Bar */
   --ifm-announcement-bar-hover-bg: var(--medusa-bg-base-hover);
+
+  /* Large Card */
+  --large-card-bg-hover: var(--medusa-bg-base-hover);
+  --large-card-bg-image: url('/img/squares-bg.svg');
 }
 
 @media screen and (min-width: 1441px) {
