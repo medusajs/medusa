@@ -1,14 +1,8 @@
-import { MockManager } from "medusa-test-utils"
-
 import { RedisCacheService } from "../index"
 
-jest.genMockFromModule("ioredis")
-jest.mock("ioredis")
-
-const loggerMock = {
-  info: jest.fn().mockReturnValue(console.log),
-  warn: jest.fn().mockReturnValue(console.log),
-  error: jest.fn().mockReturnValue(console.log),
+const redisClientMock = {
+  set: jest.fn(),
+  get: jest.fn(),
 }
 
 describe("RedisCacheService", () => {
@@ -21,8 +15,7 @@ describe("RedisCacheService", () => {
   it("Creates a RedisCacheService", () => {
     cacheService = new RedisCacheService(
       {
-        manager: MockManager,
-        logger: loggerMock,
+        redisClient: redisClientMock,
       },
       {},
       { resources: "shared" }
@@ -33,8 +26,7 @@ describe("RedisCacheService", () => {
     try {
       cacheService = new RedisCacheService(
         {
-          manager: MockManager,
-          logger: loggerMock,
+          redisClient: redisClientMock,
         },
         {},
         { resources: "shared" }
@@ -44,5 +36,21 @@ describe("RedisCacheService", () => {
         "At the moment this module can only be used with shared resources"
       )
     }
+  })
+
+  it("Underlying client methods are called", async () => {
+    cacheService = new RedisCacheService(
+      {
+        redisClient: redisClientMock,
+      },
+      {},
+      { resources: "shared" }
+    )
+
+    await cacheService.set("test-key", "value")
+    expect(redisClientMock.set).toBeCalled()
+
+    await cacheService.get("test-key")
+    expect(redisClientMock.get).toBeCalled()
   })
 })

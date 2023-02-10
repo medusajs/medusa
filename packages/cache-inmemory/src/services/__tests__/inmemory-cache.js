@@ -1,12 +1,4 @@
-import { MockManager } from "medusa-test-utils"
-
 import { InMemoryCacheService } from "../index"
-
-const loggerMock = {
-  info: jest.fn().mockReturnValue(console.log),
-  warn: jest.fn().mockReturnValue(console.log),
-  error: jest.fn().mockReturnValue(console.log),
-}
 
 jest.setTimeout(40000)
 
@@ -18,10 +10,7 @@ describe("InMemoryCacheService", () => {
 
   it("Creates an `InMemoryCacheService`", () => {
     inMemoryCache = new InMemoryCacheService(
-      {
-        manager: MockManager,
-        logger: loggerMock,
-      },
+      {},
       { defaultTTL: 10 },
       { resources: "shared" }
     )
@@ -30,10 +19,7 @@ describe("InMemoryCacheService", () => {
   it("Throws on isolated module declaration", () => {
     try {
       inMemoryCache = new InMemoryCacheService(
-        {
-          manager: MockManager,
-          logger: loggerMock,
-        },
+        {},
         {},
         { resources: "isolated" }
       )
@@ -45,14 +31,7 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Stores and retrieves data", async () => {
-    inMemoryCache = new InMemoryCacheService(
-      {
-        manager: MockManager,
-        logger: loggerMock,
-      },
-      {},
-      { resources: "shared" }
-    )
+    inMemoryCache = new InMemoryCacheService({}, {}, { resources: "shared" })
 
     await inMemoryCache.set("cache-key", { data: "value" })
 
@@ -60,14 +39,7 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Invalidates data", async () => {
-    inMemoryCache = new InMemoryCacheService(
-      {
-        manager: MockManager,
-        logger: loggerMock,
-      },
-      {},
-      { resources: "shared" }
-    )
+    inMemoryCache = new InMemoryCacheService({}, {}, { resources: "shared" })
 
     await inMemoryCache.set("cache-key", { data: "value" })
 
@@ -77,14 +49,7 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Removes data after TTL", async () => {
-    inMemoryCache = new InMemoryCacheService(
-      {
-        manager: MockManager,
-        logger: loggerMock,
-      },
-      {},
-      { resources: "shared" }
-    )
+    inMemoryCache = new InMemoryCacheService({}, {}, { resources: "shared" })
 
     await inMemoryCache.set("cache-key", { data: "value" }, 2)
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
@@ -95,14 +60,7 @@ describe("InMemoryCacheService", () => {
   })
 
   it("Removes data after default TTL if TTL params isn't passed", async () => {
-    inMemoryCache = new InMemoryCacheService(
-      {
-        manager: MockManager,
-        logger: loggerMock,
-      },
-      {},
-      { resources: "shared" }
-    )
+    inMemoryCache = new InMemoryCacheService({}, {}, { resources: "shared" })
 
     await inMemoryCache.set("cache-key", { data: "value" })
     expect(await inMemoryCache.get("cache-key")).toEqual({ data: "value" })
@@ -114,10 +72,7 @@ describe("InMemoryCacheService", () => {
 
   it("Removes data after TTL from the config if TTL params isn't passed", async () => {
     inMemoryCache = new InMemoryCacheService(
-      {
-        manager: MockManager,
-        logger: loggerMock,
-      },
+      {},
       { defaultTTL: 10 },
       { resources: "shared" }
     )

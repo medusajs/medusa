@@ -90,7 +90,7 @@ class RedisCacheService
   async invalidate(key: string): Promise<void> {
     const keys = await this.redis_.keys(key)
     const pipeline = this.redis_.pipeline()
-
+    console.log({ keys: this.redis_.keys("asd") })
     keys.forEach(function (key) {
       pipeline.del(key)
     })
