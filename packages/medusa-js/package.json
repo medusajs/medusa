@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -25,6 +27,7 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
+    "jest-fetch-mock": "^3.0.3",
     "qs": "^6.10.3",
     "retry-axios": "^2.6.0",
     "uuid": "^9.0.0"

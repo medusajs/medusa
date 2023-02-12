@@ -10,12 +10,14 @@ const unAuthenticatedAdminEndpoints = {
   "/admin/users/reset-password": "POST",
   "/admin/invites/accept": "POST",
 }
+type RequiredAuthEndpoints = Array<string>
 
 export interface Config {
   baseUrl: string
   maxRetries: number
   apiKey?: string
   publishableApiKey?: string
+  extraAuthedEndpoints?: RequiredAuthEndpoints
 }
 
 export interface RequestOptions {
@@ -29,11 +31,9 @@ const defaultConfig = {
   maxRetries: 0,
   baseUrl: "http://localhost:9000",
 }
-type RequiredAuthEndpoints = Array<string>
 class Client {
   private axiosClient: AxiosInstance
   public config: Config
-  private requiredAuthEndpoints: RequiredAuthEndpoints
 
   constructor(config: Config) {
     /** @private @constant {AxiosInstance} */
@@ -94,10 +94,7 @@ class Client {
       )
       .join("-")
   }
-  // Set any extra endpoints to attach api key header to
-  setRequiresAuthEndpoints(paths: Array<string>) {
-    this.requiredAuthEndpoints = paths
-  }
+
   requiresAuthentication(path, method): boolean {
     if (
       path.startsWith("/admin") &&
@@ -105,7 +102,10 @@ class Client {
     ) {
       return true
     }
-    if (path in this.requiredAuthEndpoints) {
+    if (
+      this.config.extraAuthedEndpoints &&
+      path in this.config.extraAuthedEndpoints
+    ) {
       return true
     }
     return false

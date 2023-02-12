@@ -22,7 +22,7 @@ import SwapsResource from "./resources/swaps"
 import ProductCategoriesResource from "./resources/product-categories"
 
 class Medusa {
-  private client: Client
+  public client: Client
   public admin: Admin
 
   public auth: AuthResource
@@ -45,12 +45,8 @@ class Medusa {
   public productTags: ProductTagsResource
   public productCategories: ProductCategoriesResource
 
-  constructor(config: Config, client?: Client) {
-    if (client) {
-      this.client = client
-    } else {
-      this.client = new Client(config)
-    }
+  constructor(config: Config) {
+    this.client = new Client(config)
 
     this.admin = new Admin(this.client)
 
@@ -90,3 +86,5 @@ export default Medusa
 export { default as KeyManager } from "./key-manager"
 export * from "./typings"
 export { default as Client } from "./request"
+export { Config }
+export { default as BaseResource } from "./resources/base"
