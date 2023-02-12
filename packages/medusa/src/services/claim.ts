@@ -271,12 +271,10 @@ export default class ClaimService extends TransactionBaseService {
   ) {
     return claimItems
       .map((ci) => {
-        const allOrderItems = order.items.filter(
-          (item) => item.id === ci.item_id
-        )
+        const claimLine = order.items.find((item) => item.id === ci.item_id)
 
-        if (allOrderItems.length) {
-          return { ...allOrderItems[0], quantity: ci.quantity }
+        if (claimLine) {
+          return { ...claimLine, quantity: ci.quantity }
         }
 
         if (order.swaps?.length) {
