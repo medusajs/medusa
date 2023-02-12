@@ -2049,6 +2049,70 @@ describe("/store/carts", () => {
       expect(cartWithShippingMethod.status).toEqual(200)
     })
 
+    it.only("adds a shipping method with requirements to cart with discount", async () => {
+      const api = useApi()
+
+      await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: "testing",
+          },
+        ],
+      })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        region: {
+          countries: ["DK"],
+          currency_code: "dkk",
+          tax_rate: 25,
+          id: "test-dk-region",
+        },
+        line_items: [
+          {
+            variant_id: "testing",
+            unit_price: 162500,
+          },
+        ],
+      })
+
+      const discount = await simpleDiscountFactory(dbConnection, {
+        code: "TESTSHIPPING",
+        rule: {
+          type: "percentage",
+          value: 50,
+          allocation: "total",
+        },
+        regions: ["test-dk-region"],
+      })
+
+      await simpleShippingOptionFactory(dbConnection, {
+        id: "test-opts",
+        price: 5000,
+        region_id: "test-dk-region",
+        requirements: [
+          {
+            type: "max_subtotal",
+            amount: 120000,
+          },
+        ],
+      })
+
+      // 50% discount on cart
+      await api.post(`/store/carts/${cart.id}`, {
+        discounts: [{ code: discount.code }],
+      })
+
+      const cartWithShippingMethod = await api.post(
+        `/store/carts/${cart.id}/shipping-methods`,
+        {
+          option_id: "test-opts",
+        },
+        { withCredentials: true }
+      )
+
+      expect(cartWithShippingMethod.status).toEqual(200)
+    })
+
     it("given a cart with custom options and a shipping option already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
       const shippingOptionId = "test-option"
 
