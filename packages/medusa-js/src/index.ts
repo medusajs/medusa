@@ -45,8 +45,12 @@ class Medusa {
   public productTags: ProductTagsResource
   public productCategories: ProductCategoriesResource
 
-  constructor(config: Config) {
-    this.client = new Client(config)
+  constructor(config: Config, client?: Client) {
+    if (client) {
+      this.client = client
+    } else {
+      this.client = new Client(config)
+    }
 
     this.admin = new Admin(this.client)
 
@@ -85,3 +89,4 @@ class Medusa {
 export default Medusa
 export { default as KeyManager } from "./key-manager"
 export * from "./typings"
+export { default as Client } from "./request"

@@ -29,10 +29,11 @@ const defaultConfig = {
   maxRetries: 0,
   baseUrl: "http://localhost:9000",
 }
-
+type RequiredAuthEndpoints = Array<string>
 class Client {
   private axiosClient: AxiosInstance
-  private config: Config
+  public config: Config
+  private requiredAuthEndpoints: RequiredAuthEndpoints
 
   constructor(config: Config) {
     /** @private @constant {AxiosInstance} */
@@ -93,12 +94,21 @@ class Client {
       )
       .join("-")
   }
-
+  // Set any extra endpoints to attach api key header to
+  setRequiresAuthEndpoints(paths: Array<string>) {
+    this.requiredAuthEndpoints = paths
+  }
   requiresAuthentication(path, method): boolean {
-    return (
+    if (
       path.startsWith("/admin") &&
       unAuthenticatedAdminEndpoints[path] !== method
-    )
+    ) {
+      return true
+    }
+    if (path in this.requiredAuthEndpoints) {
+      return true
+    }
+    return false
   }
 
   /**
