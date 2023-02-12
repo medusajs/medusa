@@ -28,6 +28,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_TAX_INCLUSIVE_PRICING: true },
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -139,6 +140,72 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
           }),
         ])
       )
+    })
+
+    it("adds a shipping method with requirements to cart with discount", async () => {
+      const api = useApi()
+
+      await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: "testing",
+          },
+        ],
+      })
+
+      const cart = await simpleCartFactory(dbConnection, {
+        region: {
+          countries: ["DK"],
+          currency_code: "dkk",
+          includes_tax: true,
+          tax_rate: 25,
+          id: "test-dk-region",
+        },
+        line_items: [
+          {
+            variant_id: "testing",
+            unit_price: 162500,
+          },
+        ],
+      })
+
+      const discount = await simpleDiscountFactory(dbConnection, {
+        code: "TESTSHIPPING",
+        rule: {
+          type: "percentage",
+          value: 50,
+          allocation: "total",
+        },
+        regions: ["test-dk-region"],
+      })
+
+      await simpleShippingOptionFactory(dbConnection, {
+        id: "test-opts",
+        price: 5000,
+        region_id: "test-dk-region",
+        includes_tax: true,
+        requirements: [
+          {
+            type: "max_subtotal",
+            amount: 120000,
+          },
+        ],
+      })
+
+      // 50% discount on cart
+      await api.post(`/store/carts/${cart.id}`, {
+        discounts: [{ code: discount.code }],
+      })
+
+      const cartWithShippingMethod = await api.post(
+        `/store/carts/${cart.id}/shipping-methods`,
+        {
+          option_id: "test-opts",
+        },
+        { withCredentials: true }
+      )
+
+      expect(cartWithShippingMethod.status).toEqual(200)
     })
   })
 
