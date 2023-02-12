@@ -269,41 +269,49 @@ export default class ClaimService extends TransactionBaseService {
     order: Order,
     claimItems: CreateClaimItemInput[]
   ) {
-    return claimItems.map((ci) => {
-      const allOrderItems = order.items
+    return claimItems
+      .map((ci) => {
+        const allOrderItems = order.items.filter(
+          (item) => item.id === ci.item_id
+        )
 
-      if (order.swaps?.length) {
-        for (const swap of order.swaps) {
-          swap.additional_items.forEach((it) => {
-            if (
-              it.shipped_quantity ||
-              it.shipped_quantity === it.fulfilled_quantity
-            ) {
-              allOrderItems.push(it)
-            }
-          })
+        if (allOrderItems.length) {
+          return { ...allOrderItems[0], quantity: ci.quantity }
         }
-      }
 
-      if (order.claims?.length) {
-        for (const claim of order.claims) {
-          claim.additional_items.forEach((it) => {
-            if (
-              it.shipped_quantity ||
-              it.shipped_quantity === it.fulfilled_quantity
-            ) {
-              allOrderItems.push(it)
+        if (order.swaps?.length) {
+          for (const swap of order.swaps) {
+            const claimLine = swap.additional_items.find(
+              (it) =>
+                (it.shipped_quantity ||
+                  it.shipped_quantity === it.fulfilled_quantity) &&
+                it.id === ci.item_id
+            )
+
+            if (claimLine) {
+              return { ...claimLine, quantity: ci.quantity }
             }
-          })
+          }
         }
-      }
 
-      const orderItem = allOrderItems.find((oi) => oi.id === ci.item_id)
-      return {
-        ...orderItem,
-        quantity: ci.quantity,
-      }
-    })
+        if (order.claims?.length) {
+          for (const claim of order.claims) {
+            const claimLine = claim.additional_items.find(
+              (it) =>
+                (it.shipped_quantity ||
+                  it.shipped_quantity === it.fulfilled_quantity) &&
+                it.id === ci.item_id
+            )
+
+            if (claimLine) {
+              return { ...claimLine, quantity: ci.quantity }
+            }
+          }
+        }
+
+        return null
+      })
+      .filter(Boolean)
   }
 
   /**
