@@ -278,7 +278,7 @@ export default class ClaimService extends TransactionBaseService {
         }
 
         const predicate = (it: LineItem) =>
-          (it.shipped_quantity ||
+          (it.shipped_quantity !== null ||
             it.shipped_quantity === it.fulfilled_quantity) &&
           it.id === ci.item_id
 
