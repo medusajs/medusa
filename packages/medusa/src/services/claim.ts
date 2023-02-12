@@ -218,23 +218,6 @@ export default class ClaimService extends TransactionBaseService {
 
     const { type, claim_items, additional_items, refund_amount } = data
 
-    for (const item of claim_items) {
-      const line = await lineItemServiceTx.retrieve(item.item_id, {
-        relations: ["order", "swap", "claim_order", "tax_lines"],
-      })
-
-      if (
-        line.order?.canceled_at ||
-        line.swap?.canceled_at ||
-        line.claim_order?.canceled_at
-      ) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Cannot create a claim on a canceled item.`
-        )
-      }
-    }
-
     if (type !== ClaimType.REFUND && type !== ClaimType.REPLACE) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -261,6 +244,24 @@ export default class ClaimService extends TransactionBaseService {
         MedusaError.Types.INVALID_DATA,
         `Claim has type "${type}" but must be type "refund" to have a refund_amount.`
       )
+    }
+
+    const claimLineItems = await lineItemServiceTx.list(
+      { id: claim_items.map((c) => c.item_id) },
+      { relations: ["order", "swap", "claim_order", "tax_lines"] }
+    )
+
+    for (const line of claimLineItems) {
+      if (
+        line.order?.canceled_at ||
+        line.swap?.canceled_at ||
+        line.claim_order?.canceled_at
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot create a claim on a canceled item.`
+        )
+      }
     }
   }
 
