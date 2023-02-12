@@ -277,14 +277,14 @@ export default class ClaimService extends TransactionBaseService {
           return { ...claimLine, quantity: ci.quantity }
         }
 
+        const predicate = (it: LineItem) =>
+          (it.shipped_quantity ||
+            it.shipped_quantity === it.fulfilled_quantity) &&
+          it.id === ci.item_id
+
         if (order.swaps?.length) {
           for (const swap of order.swaps) {
-            const claimLine = swap.additional_items.find(
-              (it) =>
-                (it.shipped_quantity ||
-                  it.shipped_quantity === it.fulfilled_quantity) &&
-                it.id === ci.item_id
-            )
+            const claimLine = swap.additional_items.find(predicate)
 
             if (claimLine) {
               return { ...claimLine, quantity: ci.quantity }
@@ -294,12 +294,7 @@ export default class ClaimService extends TransactionBaseService {
 
         if (order.claims?.length) {
           for (const claim of order.claims) {
-            const claimLine = claim.additional_items.find(
-              (it) =>
-                (it.shipped_quantity ||
-                  it.shipped_quantity === it.fulfilled_quantity) &&
-                it.id === ci.item_id
-            )
+            const claimLine = claim.additional_items.find(predicate)
 
             if (claimLine) {
               return { ...claimLine, quantity: ci.quantity }
