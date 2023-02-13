@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.3.6
+
+### Patch Changes
+
+- [#2941](https://github.com/medusajs/medusa/pull/2941) [`2551fe0b9`](https://github.com/medusajs/medusa/commit/2551fe0b935c19476828a05c47f4cf3e0d9e6d79) Thanks [@RegisHubelia](https://github.com/RegisHubelia)! - fix(medusa-plugin-sendgrid): Inject GiftCardService to eliminate undefined error
+
+- Updated dependencies [[`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4)]:
+  - medusa-core-utils@1.1.38
+  - medusa-interfaces@1.3.5
+
 ## 1.3.5
 
 ### Patch Changes

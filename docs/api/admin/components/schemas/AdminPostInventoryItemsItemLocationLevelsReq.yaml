@@ -1,0 +1,14 @@
+type: object
+required:
+  - location_id
+  - stocked_quantity
+properties:
+  location_id:
+    description: the item location ID
+    type: string
+  stocked_quantity:
+    description: the stock quantity of an inventory item at the given location ID
+    type: number
+  incoming_quantity:
+    description: the incoming stock quantity of an inventory item at the given location ID
+    type: number

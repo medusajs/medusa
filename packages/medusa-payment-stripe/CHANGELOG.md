@@ -1,5 +1,21 @@
 # Change Log
 
+## 1.1.52
+
+### Patch Changes
+
+- [#3046](https://github.com/medusajs/medusa/pull/3046) [`82da3605f`](https://github.com/medusajs/medusa/commit/82da3605fb50cef182699900552109ad654f0df2) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa-payment-stripe): Avoid unnecessary customer update if the stripe id already exists
+
+- [#3100](https://github.com/medusajs/medusa/pull/3100) [`0009da026`](https://github.com/medusajs/medusa/commit/0009da02619e794537d88fa9494e35594ed1bb0c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-payment-stripe): Resend capture event to ensure auto-capture
+
+- [#3185](https://github.com/medusajs/medusa/pull/3185) [`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Patches all dependencies + minor bumps `winston` to include a [fix for a significant memory leak](https://github.com/winstonjs/winston/pull/2057)
+
+- [#3160](https://github.com/medusajs/medusa/pull/3160) [`71fdd2819`](https://github.com/medusajs/medusa/commit/71fdd281986781a96f5c50205a4a3628ae8e6282) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-payment-stripe): Prevent Stripe events from retrying
+
+- Updated dependencies [[`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4)]:
+  - medusa-core-utils@1.1.38
+  - medusa-interfaces@1.3.5
+
 ## 1.1.51
 
 ### Patch Changes

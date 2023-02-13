@@ -1,8 +1,10 @@
-import { BeforeInsert, Column } from "typeorm"
+import { BeforeInsert, Column, OneToMany } from "typeorm"
 
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { DbAwareColumn, generateEntityId } from "../utils"
+import { generateEntityId } from "../utils"
+import { SalesChannelLocation } from "./sales-channel-location"
 
 @FeatureFlagEntity("sales_channels")
 export class SalesChannel extends SoftDeletableEntity {
@@ -17,6 +19,15 @@ export class SalesChannel extends SoftDeletableEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
+  
+  @OneToMany(
+    () => SalesChannelLocation,
+    (scLocation) => scLocation.sales_channel,
+    {
+      cascade: ["soft-remove", "remove"],
+    }
+  )
+  locations: SalesChannelLocation[]
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -48,6 +59,11 @@ export class SalesChannel extends SoftDeletableEntity {
  *    description: "Specify if the sales channel is enabled or disabled."
  *    type: boolean
  *    default: false
+ *  locations:
+ *    description: The Stock Locations related to the sales channel. Available if the relation `locations` is expanded.
+ *    type: array
+ *    items:
+ *      $ref: "#/components/schemas/SalesChannelLocation"
  *  created_at:
  *    type: string
  *    description: "The date with timezone at which the resource was created."

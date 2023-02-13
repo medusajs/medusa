@@ -158,18 +158,14 @@ describe("/store/carts", () => {
     it("lookup order response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
-      const response = await api
-        .get(
-          "/store/orders?display_id=111&email=test@email.com&fields=status,object"
-        )
-        .catch((err) => {
-          return err.response
-        })
+      const response = await api.get(
+        "/store/orders?display_id=111&email=test@email.com&fields=status,email"
+      )
 
       expect(Object.keys(response.data.order)).toEqual([
         // fields
         "status",
-        "object",
+        "email",
         // relations
         "shipping_address",
         "fulfillments",
@@ -185,17 +181,12 @@ describe("/store/carts", () => {
     it("get order response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
-      const response = await api
-        .get("/store/orders/order_test?fields=status,object")
-        .catch((err) => {
-          return err.response
-        })
+      const response = await api.get("/store/orders/order_test?fields=status")
 
       expect(Object.keys(response.data.order)).toEqual([
         // fields
         "status",
-        "object",
-        // relations
+        // default relations
         "shipping_address",
         "fulfillments",
         "items",
@@ -204,6 +195,21 @@ describe("/store/carts", () => {
         "customer",
         "payments",
         "region",
+      ])
+    })
+
+    it("get order response contains only fields defined with `fields` and `expand` param", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/store/orders/order_test?fields=status&expand=billing_address"
+      )
+
+      expect(Object.keys(response.data.order)).toEqual([
+        // fields
+        "status",
+        // selected relations
+        "billing_address",
       ])
     })
 
