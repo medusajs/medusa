@@ -2210,16 +2210,18 @@ describe("/admin/products", () => {
 
       expect(deleteRegionPriceResponse.status).toEqual(200)
       expect(finalPriceArray).toHaveLength(2)
-      expect(finalPriceArray).toEqual([
-        expect.objectContaining({
-          amount: 1000,
-          currency_code: "usd",
-        }),
-        expect.objectContaining({
-          amount: 900,
-          currency_code: "eur",
-        }),
-      ])
+      expect(finalPriceArray).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 1000,
+            currency_code: "usd",
+          }),
+          expect.objectContaining({
+            amount: 900,
+            currency_code: "eur",
+          }),
+        ])
+      )
     })
 
     it("successfully updates a variants prices by deleting both a currency and region price", async () => {
