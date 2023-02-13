@@ -1,11 +1,13 @@
 import * as path from "path"
-import { mkdir, writeFile } from "fs/promises"
+import { lstat, mkdir, writeFile } from "fs/promises"
 import swaggerInline from "swagger-inline"
 import OpenAPIParser from "@readme/openapi-parser"
-import logger from "@medusajs/medusa-cli/dist/reporter"
 import { OpenAPIObject } from "openapi3-ts"
-import { Command, Option } from "commander"
+import { Command, Option, OptionValues } from "commander"
 
+/**
+ * Constants
+ */
 // Medusa core package directory
 const medusaPackagePath = path.dirname(
   require.resolve("@medusajs/medusa/package.json")
@@ -13,6 +15,10 @@ const medusaPackagePath = path.dirname(
 
 type ApiType = "store" | "admin"
 
+/**
+ * CLI Command declaration
+ */
+export const commandName = "oas"
 export const commandDescription =
   "Compile full OAS from swagger-inline compliant JSDoc."
 
@@ -20,67 +26,79 @@ export const commandOptions: Option[] = [
   new Option("-t, --type <type>", "API type to compile []")
     .choices(["all", "admin", "store"])
     .default("all"),
-  new Option("-V, --verbose", "Output debug logs to stdout."),
-  new Option("-D, --dryRun", "Do not output files."),
-  new Option(
-    "-p, --additionalPaths <paths...>",
-    "Additional paths to crawl for OAS JSDoc."
-  ),
   new Option(
     "-o, --outDir <outDir>",
     "Destination directory to output generated OAS files."
   ).default(process.cwd()),
+  new Option("-D, --dryRun", "Do not output files."),
+  new Option(
+    "-p, --paths <paths...>",
+    "Additional paths to crawl for OAS JSDoc."
+  ),
+  new Option("-F, --force", "Ignore OAS validation and output OAS files."),
 ]
 
-const program = new Command()
-program.description(commandDescription)
-for (const opt of commandOptions) {
-  program.addOption(opt)
+export function getCommand() {
+  const command = new Command(commandName)
+  command.description(commandDescription)
+  for (const opt of commandOptions) {
+    command.addOption(opt)
+  }
+  command.action(async (options) => await execute(options))
+  return command
 }
-program.parse(process.argv)
 
 /**
- * Process CLI options
+ * Main
  */
-const cliParams = program.opts()
+export async function execute(cliParams: OptionValues) {
+  /**
+   * Process CLI options
+   */
+  const dryRun = !!cliParams.dryRun
+  const force = !!cliParams.force
 
-const dryRun = !!cliParams.dryRun
-const isVerbose = !!cliParams.verbose
-const outDir = path.resolve(cliParams.outDir)
+  const apiTypesToExport =
+    cliParams.type === "all" ? ["store", "admin"] : [cliParams.type]
 
-const additionalPaths = (cliParams.additionalPaths ?? []).map(
-  (additionalPath) => path.dirname(path.resolve(additionalPath))
-)
-
-const apiTypesToExport =
-  cliParams.type === "all" ? ["store", "admin"] : [cliParams.type]
-
-const debug = (...args) => {
-  if (isVerbose) {
-    logger.debug(...args)
+  const outDir = path.resolve(cliParams.outDir)
+  if (!(await lstat(outDir)).isDirectory()) {
+    throw new Error(`--outDir must be a directory - ${outDir}`)
   }
-}
 
-const run = async () => {
-  debug("🔵 Generating OAS from codebase.")
+  const additionalPaths = (cliParams.paths ?? []).map((additionalPath) =>
+    path.resolve(additionalPath)
+  )
+  for (const additionalPath of additionalPaths) {
+    if (!(await lstat(additionalPath)).isDirectory()) {
+      throw new Error(`--path must be a directory - ${additionalPath}`)
+    }
+  }
+
+  /**
+   * Command execution
+   */
   if (!dryRun) {
     await mkdir(outDir, { recursive: true })
   }
 
   for (const apiType of apiTypesToExport) {
-    debug(`🟣 Building OAS for ${apiType} api.`)
-    const oas = await getOASFromCodebase(apiType as ApiType)
-    await validateOAS(oas, apiType as ApiType, dryRun)
+    console.log(`🟣 Generating OAS - ${apiType}`)
+    const oas = await getOASFromCodebase(apiType as ApiType, additionalPaths)
+    await validateOAS(oas, apiType as ApiType, force)
     if (!dryRun) {
       await exportOASToJSON(oas, apiType as ApiType, outDir)
     }
   }
-
-  debug(`🟢 OAS successfully generated.`)
 }
 
-const getOASFromCodebase = async (apiType: ApiType): Promise<OpenAPIObject> => {
-  debug("Parse JSDoc from path and schema definitions.")
+/**
+ * Methods
+ */
+const getOASFromCodebase = async (
+  apiType: ApiType,
+  additionalPaths: string[] = []
+): Promise<OpenAPIObject> => {
   const gen = await swaggerInline(
     [
       path.resolve(medusaPackagePath, "dist", "models"),
@@ -99,25 +117,21 @@ const getOASFromCodebase = async (apiType: ApiType): Promise<OpenAPIObject> => {
     }
   )
 
-  debug("Get OAS JSON object from OAS JSON string.")
   return await OpenAPIParser.parse(JSON.parse(gen))
 }
 
 const validateOAS = async (
   oas: OpenAPIObject,
   apiType: ApiType,
-  shouldThrow = false
+  force = false
 ): Promise<void> => {
-  debug("Validate generated OAS.")
   try {
     await OpenAPIParser.validate(JSON.parse(JSON.stringify(oas)))
+    console.log(`🟢 Valid OAS - ${apiType}`)
   } catch (err) {
-    if (shouldThrow) {
-      logger.error(`Error in OAS ${apiType}`, err)
+    console.error(`🔴 Invalid OAS - ${apiType}`, err)
+    if (!force) {
       process.exit(1)
-    } else {
-      debug("OAS validation failed.")
-      logger.warn(err)
     }
   }
 }
@@ -127,11 +141,7 @@ const exportOASToJSON = async (
   apiType: ApiType,
   targetDir: string
 ): Promise<void> => {
-  debug("Exporting OAS to JSON.")
   const json = JSON.stringify(oas, null, 2)
   await writeFile(path.resolve(targetDir, `${apiType}.oas.json`), json)
+  console.log(`🔵 Exported OAS - ${apiType}`)
 }
-
-void (async () => {
-  await run()
-})()

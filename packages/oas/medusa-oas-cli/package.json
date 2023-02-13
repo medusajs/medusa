@@ -23,7 +23,7 @@
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "command:oas": "ts-node src/command-oas.ts",
+    "cli": "ts-node src/index.ts",
     "test": "jest --passWithNoTests",
     "test:unit": "jest --passWithNoTests"
   },
@@ -31,10 +31,7 @@
     "@medusajs/medusa": "*",
     "@medusajs/medusa-cli": "*",
     "@readme/openapi-parser": "^2.4.0",
-    "@types/lodash": "^4.14.168",
     "commander": "^10.0.0",
-    "execa": "^5.1.1",
-    "lodash": "^4.17.21",
     "openapi3-ts": "^3.1.2",
     "swagger-inline": "^6.1.0"
   }

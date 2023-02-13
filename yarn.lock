@@ -4814,10 +4814,7 @@ __metadata:
     "@medusajs/medusa": "*"
     "@medusajs/medusa-cli": "*"
     "@readme/openapi-parser": ^2.4.0
-    "@types/lodash": ^4.14.168
     commander: ^10.0.0
-    execa: ^5.1.1
-    lodash: ^4.17.21
     openapi3-ts: ^3.1.2
     swagger-inline: ^6.1.0
     ts-node: ^10.9.1
@@ -8186,7 +8183,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.168, @types/lodash@npm:^4.14.191":
+"@types/lodash@npm:^4.14.191":
   version: 4.14.191
   resolution: "@types/lodash@npm:4.14.191"
   checksum: cca0bc3b5f1193a50a39a9c6e14892e7cf57ab81ca05985e1ccee0d732dd3b22a8d669fa87560757051c6d73f4f63a2e2248ce9a7d9c159d0d5e3f331baf6a62
