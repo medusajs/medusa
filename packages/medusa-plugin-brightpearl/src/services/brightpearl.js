@@ -319,7 +319,6 @@ class BrightpearlService extends BaseService {
     const pvInventoryItems =
       await this.productVariantInventoryService_.listByVariant(variant.id)
 
-    // get inventory levels for this product
     const [inventoryLevels] = await this.inventoryService_.listInventoryLevels({
       inventory_item_id: pvInventoryItems.map((pvi) => pvi.inventory_item_id),
     })
@@ -1537,7 +1536,6 @@ class BrightpearlService extends BaseService {
     sales_channel_id,
     context
   ) {
-    // list locations
     const locationIds = await this.salesChannelLocationService_
       .withTransaction(context.transactionManager)
       .listLocations(sales_channel_id)
