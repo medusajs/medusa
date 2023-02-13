@@ -13,6 +13,7 @@ import {
 import { ReservationItem } from "../models"
 import { CONNECTION_NAME } from "../config"
 import { InventoryLevelService } from "."
+import { ReservationType } from "../models/reservation-item"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -124,18 +125,19 @@ export default class ReservationItemService extends TransactionBaseService {
    */
   async create(data: CreateReservationItemInput): Promise<ReservationItem> {
     return await this.atomicPhase_(async (manager) => {
-      const itemRepository = manager.getRepository(ReservationItem)
+      const reservationItemRepository = manager.getRepository(ReservationItem)
 
-      const inventoryItem = itemRepository.create({
+      const reservationItem = reservationItemRepository.create({
         inventory_item_id: data.inventory_item_id,
         line_item_id: data.line_item_id,
         location_id: data.location_id,
         quantity: data.quantity,
         metadata: data.metadata,
+        type: data.type as unknown as ReservationType,
       })
 
       const [newInventoryItem] = await Promise.all([
-        itemRepository.save(inventoryItem),
+        reservationItemRepository.save(reservationItem),
         this.inventoryLevelService_
           .withTransaction(manager)
           .adjustReservedQuantity(

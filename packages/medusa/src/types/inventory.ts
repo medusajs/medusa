@@ -208,12 +208,18 @@ export type CreateInventoryItemInput = {
   requires_shipping?: boolean
 }
 
+export enum ReservationType {
+  internal = "internal",
+  external = "external",
+}
+
 export type CreateReservationItemInput = {
   line_item_id?: string
   inventory_item_id: string
   location_id: string
   quantity: number
   metadata?: Record<string, unknown> | null
+  type?: ReservationType
 }
 
 export type FilterableInventoryLevelProps = {
