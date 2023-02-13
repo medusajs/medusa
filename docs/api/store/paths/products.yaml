@@ -122,6 +122,20 @@ get:
             description: filter by dates greater than or equal to this date
             format: date
     - in: query
+      name: category_id
+      style: form
+      explode: false
+      description: Category ids to filter by.
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: include_category_children
+      description: Include category children when filtering by category_id.
+      schema:
+        type: boolean
+    - in: query
       name: offset
       description: How many products to skip in the result.
       schema:
@@ -136,14 +150,14 @@ get:
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each order of the
+        (Comma separated) Which fields should be expanded in each product of the
         result.
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        (Comma separated) Which fields should be included in each order of the
+        (Comma separated) Which fields should be included in each product of the
         result.
       schema:
         type: string
@@ -152,15 +166,33 @@ get:
       description: the field used to order the products.
       schema:
         type: string
+    - in: query
+      name: cart_id
+      description: The id of the Cart to set prices based on.
+      schema:
+        type: string
+    - in: query
+      name: region_id
+      description: The id of the Region to set prices based on.
+      schema:
+        type: string
+    - in: query
+      name: currency_code
+      description: The currency code to use for price selection.
+      schema:
+        type: string
+  x-codegen:
+    method: list
+    queryParams: StoreGetProductsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/products/getundefined
+        $ref: ../code_samples/JavaScript/products/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/products/getundefined
+        $ref: ../code_samples/Shell/products/get.sh
   tags:
     - Product
   responses:

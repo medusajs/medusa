@@ -2072,16 +2072,12 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieve(cartId, {
-          select: ["subtotal", "total"],
+        const cart = await this.retrieveWithTotals(cartId, {
           relations: [
             "shipping_methods",
-            "discounts",
-            "discounts.rule",
             "shipping_methods.shipping_option",
             "items",
             "items.variant",
-            "payment_sessions",
             "items.variant.product",
           ],
         })

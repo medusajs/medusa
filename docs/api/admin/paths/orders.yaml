@@ -217,15 +217,18 @@ get:
         result.
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetOrdersParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/orders/getundefined
+        $ref: ../code_samples/JavaScript/orders/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/orders/getundefined
+        $ref: ../code_samples/Shell/orders/get.sh
   security:
     - api_token: []
     - cookie_auth: []

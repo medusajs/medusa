@@ -133,14 +133,14 @@ properties:
       The payments used in the order. Available if the relation `payments` is
       expanded.
     items:
-      $ref: ./Payment.yaml
+      type: object
   fulfillments:
     type: array
     description: >-
       The fulfillments used in the order. Available if the relation
       `fulfillments` is expanded.
     items:
-      $ref: ./Fulfillment.yaml
+      type: object
   returns:
     type: array
     description: >-
@@ -193,7 +193,7 @@ properties:
       [EXPERIMENTAL] Order edits done on the order. Available if the relation
       `edits` is expanded.
     items:
-      $ref: ./OrderEdit.yaml
+      type: object
   gift_card_transactions:
     type: array
     description: >-

@@ -22,17 +22,18 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostOrdersOrderSwapsSwapFulfillmentsReq.yaml
+  x-codegen:
+    method: fulfillSwap
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/orders_{id}_swaps_{swap_id}_fulfillments/postundefined
+          ../code_samples/JavaScript/orders_{id}_swaps_{swap_id}_fulfillments/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/orders_{id}_swaps_{swap_id}_fulfillments/postundefined
+        $ref: ../code_samples/Shell/orders_{id}_swaps_{swap_id}_fulfillments/post.sh
   security:
     - api_token: []
     - cookie_auth: []

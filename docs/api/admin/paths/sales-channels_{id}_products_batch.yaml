@@ -16,16 +16,17 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostSalesChannelsChannelProductsBatchReq.yaml
+  x-codegen:
+    method: addProducts
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/sales-channels_{id}_products_batch/postundefined
+        $ref: ../code_samples/JavaScript/sales-channels_{id}_products_batch/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/sales-channels_{id}_products_batch/postundefined
+        $ref: ../code_samples/Shell/sales-channels_{id}_products_batch/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -68,17 +69,18 @@ delete:
         schema:
           $ref: >-
             ../components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq.yaml
+  x-codegen:
+    method: removeProducts
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/sales-channels_{id}_products_batch/deleteundefined
+          ../code_samples/JavaScript/sales-channels_{id}_products_batch/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/sales-channels_{id}_products_batch/deleteundefined
+        $ref: ../code_samples/Shell/sales-channels_{id}_products_batch/delete.sh
   security:
     - api_token: []
     - cookie_auth: []

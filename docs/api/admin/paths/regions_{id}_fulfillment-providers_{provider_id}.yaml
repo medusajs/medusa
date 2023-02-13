@@ -16,17 +16,19 @@ delete:
       description: The ID of the Fulfillment Provider.
       schema:
         type: string
+  x-codegen:
+    method: deleteFulfillmentProvider
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/regions_{id}_fulfillment-providers_{provider_id}/deleteundefined
+          ../code_samples/JavaScript/regions_{id}_fulfillment-providers_{provider_id}/delete.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/regions_{id}_fulfillment-providers_{provider_id}/deleteundefined
+          ../code_samples/Shell/regions_{id}_fulfillment-providers_{provider_id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
