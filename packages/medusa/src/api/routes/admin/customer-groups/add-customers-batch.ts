@@ -114,6 +114,7 @@ export default async (req: Request, res: Response) => {
  *     description: "The ids of the customers to add"
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

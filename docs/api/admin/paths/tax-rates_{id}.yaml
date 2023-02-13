@@ -10,15 +10,17 @@ delete:
       description: The ID of the Shipping Option.
       schema:
         type: string
+  x-codegen:
+    method: delete
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/tax-rates_{id}/deleteundefined
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/tax-rates_{id}/deleteundefined
+        $ref: ../code_samples/Shell/tax-rates_{id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -73,15 +75,18 @@ get:
         items:
           type: string
   x-authenticated: true
+  x-codegen:
+    method: retrieve
+    queryParams: AdminGetTaxRatesTaxRateParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/tax-rates_{id}/getundefined
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/tax-rates_{id}/getundefined
+        $ref: ../code_samples/Shell/tax-rates_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -141,15 +146,18 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostTaxRatesTaxRateReq.yaml
+  x-codegen:
+    method: update
+    queryParams: AdminPostTaxRatesTaxRateParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/tax-rates_{id}/postundefined
+        $ref: ../code_samples/JavaScript/tax-rates_{id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/tax-rates_{id}/postundefined
+        $ref: ../code_samples/Shell/tax-rates_{id}/post.sh
   security:
     - api_token: []
     - cookie_auth: []

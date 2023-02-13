@@ -262,6 +262,7 @@ export default async (req, res) => {
  *     description: The Line Items to return as part of the Swap.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
@@ -294,6 +295,7 @@ export default async (req, res) => {
  *     description: The new items to send to the Customer.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity
@@ -308,6 +310,7 @@ export default async (req, res) => {
  *     description: The custom shipping options to potentially create a Shipping Method from.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - option_id
  *         - price

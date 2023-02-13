@@ -1,7 +1,7 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
+import { CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
@@ -264,27 +264,16 @@ class DraftOrderService extends TransactionBaseService {
           no_notification_order,
           items,
           idempotency_key,
+          discounts,
           ...rawCart
         } = data
 
         const cartServiceTx =
           this.cartService_.withTransaction(transactionManager)
 
-        if (rawCart.discounts) {
-          const { discounts } = rawCart
-          rawCart.discounts = []
-
-          for (const { code } of discounts) {
-            await cartServiceTx.applyDiscount(rawCart as Cart, code)
-          }
-        }
-
-        let createdCart = await cartServiceTx.create({
+        const createdCart = await cartServiceTx.create({
           type: CartType.DRAFT_ORDER,
           ...rawCart,
-        })
-        createdCart = await cartServiceTx.retrieve(createdCart.id, {
-          relations: ["discounts", "discounts.rule", "items", "region"],
         })
 
         const draftOrder = draftOrderRepo.create({
@@ -292,6 +281,7 @@ class DraftOrderService extends TransactionBaseService {
           no_notification_order,
           idempotency_key,
         })
+
         const result = await draftOrderRepo.save(draftOrder)
 
         await this.eventBus_
@@ -303,7 +293,7 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of (items || [])) {
+        for (const item of items || []) {
           if (item.variant_id) {
             const line = await lineItemServiceTx.generate(
               item.variant_id,
@@ -312,7 +302,6 @@ class DraftOrderService extends TransactionBaseService {
               {
                 metadata: item?.metadata || {},
                 unit_price: item.unit_price,
-                cart: createdCart,
               }
             )
 
@@ -338,6 +327,10 @@ class DraftOrderService extends TransactionBaseService {
               quantity: item.quantity,
             })
           }
+        }
+
+        if (discounts?.length) {
+          await cartServiceTx.update(createdCart.id, { discounts })
         }
 
         for (const method of shipping_methods) {

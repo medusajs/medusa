@@ -8,15 +8,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostBatchesReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/batch-jobs/postundefined
+        $ref: ../code_samples/JavaScript/batch-jobs/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/batch-jobs/postundefined
+        $ref: ../code_samples/Shell/batch-jobs/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -282,15 +284,18 @@ get:
             type: string
             description: filter by dates greater than or equal to this date
             format: date
+  x-codegen:
+    method: list
+    queryParams: AdminGetBatchParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/batch-jobs/getundefined
+        $ref: ../code_samples/JavaScript/batch-jobs/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/batch-jobs/getundefined
+        $ref: ../code_samples/Shell/batch-jobs/get.sh
   security:
     - api_token: []
     - cookie_auth: []

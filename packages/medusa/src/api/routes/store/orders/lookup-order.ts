@@ -92,10 +92,7 @@ export default async (req, res) => {
       display_id: validated.display_id,
       email: validated.email,
     },
-    {
-      select: defaultStoreOrdersFields,
-      relations: defaultStoreOrdersRelations,
-    }
+    req.listConfig
   )
 
   if (orders.length !== 1) {

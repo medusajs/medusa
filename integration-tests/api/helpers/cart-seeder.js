@@ -327,7 +327,7 @@ module.exports = async (connection, data = {}) => {
     is_dynamic: true,
     is_disabled: false,
     starts_at: tenDaysAgo,
-    ends_at: tenDaysFromToday,
+    ends_at: yesterday,
     valid_duration: "P1D", // one day
   })
 
