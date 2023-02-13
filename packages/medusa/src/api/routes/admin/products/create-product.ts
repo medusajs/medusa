@@ -148,17 +148,17 @@ export default async (req, res) => {
         .retrieveDefault()
     }
 
-    const newProduct = await productService
-      .withTransaction(manager)
-      .create({ ...validated, profile_id: shippingProfile.id })
-
     // If no sales channel available, set the default one
-    if (validated.sales_channels?.length) {
+    if (!validated?.sales_channels?.length) {
       const defaultSalesChannel = await salesChannelService
         .withTransaction(manager)
         .retrieveDefault()
       validated.sales_channels = [defaultSalesChannel]
     }
+
+    const newProduct = await productService
+      .withTransaction(manager)
+      .create({ ...validated, profile_id: shippingProfile.id })
 
     if (variants) {
       for (const [index, variant] of variants.entries()) {
