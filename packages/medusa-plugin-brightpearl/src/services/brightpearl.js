@@ -479,7 +479,7 @@ class BrightpearlService extends BaseService {
     }
   }
 
-  async getLocation(locationId) {
+  async getBrightPearlWarehouseFromMedusaLocation_(locationId) {
     let warehouse = this.options.warehouse
 
     if (locationId && this.stockLocationService_) {
@@ -555,7 +555,9 @@ class BrightpearlService extends BaseService {
 
     const client = await this.getClient()
 
-    const warehouse = await this.getLocation(reservationItem.locationId)
+    const warehouse = await this.getBrightPearlWarehouseFromMedusaLocation_(
+      reservationItem.locationId
+    )
 
     const { order, lineItem } = await this.getOrderFromReservation_(
       reservationItem
