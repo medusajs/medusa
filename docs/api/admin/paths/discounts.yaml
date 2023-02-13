@@ -8,12 +8,12 @@ post:
   parameters:
     - in: query
       name: expand
-      description: (Comma separated) Which fields should be expanded in each customer.
+      description: (Comma separated) Which fields should be expanded in the results.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Which fields should be retrieved in each customer.
+      description: (Comma separated) Which fields should be retrieved in the results.
       schema:
         type: string
   requestBody:
@@ -21,15 +21,18 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostDiscountsReq.yaml
+  x-codegen:
+    method: create
+    queryParams: AdminPostDiscountsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/discounts/postundefined
+        $ref: ../code_samples/JavaScript/discounts/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/discounts/postundefined
+        $ref: ../code_samples/Shell/discounts/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -116,15 +119,18 @@ get:
       description: Comma separated list of relations to include in the results.
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetDiscountsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/discounts/getundefined
+        $ref: ../code_samples/JavaScript/discounts/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/discounts/getundefined
+        $ref: ../code_samples/Shell/discounts/get.sh
   security:
     - api_token: []
     - cookie_auth: []

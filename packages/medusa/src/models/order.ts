@@ -277,18 +277,36 @@ export class Order extends BaseEntity {
  * description: "Represents an order"
  * type: object
  * required:
- *   - customer_id
- *   - email
- *   - region_id
+ *   - billing_address_id
+ *   - canceled_at
+ *   - cart_id
+ *   - created_at
  *   - currency_code
+ *   - customer_id
+ *   - draft_order_id
+ *   - display_id
+ *   - email
+ *   - external_id
+ *   - fulfillment_status
+ *   - id
+ *   - idempotency_key
+ *   - metadata
+ *   - no_notification
+ *   - object
+ *   - payment_status
+ *   - region_id
+ *   - shipping_address_id
+ *   - status
+ *   - tax_rate
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The order's ID
+ *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   status:
- *     type: string
  *     description: The order's status
+ *     type: string
  *     enum:
  *       - pending
  *       - completed
@@ -297,8 +315,8 @@ export class Order extends BaseEntity {
  *       - requires_action
  *     default: pending
  *   fulfillment_status:
- *     type: string
  *     description: The order's fulfillment status
+ *     type: string
  *     enum:
  *       - not_fulfilled
  *       - partially_fulfilled
@@ -311,62 +329,70 @@ export class Order extends BaseEntity {
  *       - requires_action
  *     default: not_fulfilled
  *   payment_status:
- *     type: string
  *     description: The order's payment status
+ *     type: string
  *     enum:
  *       - not_paid
  *       - awaiting
  *       - captured
  *       - partially_refunded
- *       - refuneded
+ *       - refunded
  *       - canceled
  *       - requires_action
  *     default: not_paid
  *   display_id:
- *     type: integer
  *     description: The order's display ID
+ *     type: integer
  *     example: 2
  *   cart_id:
- *     type: string
  *     description: The ID of the cart associated with the order
+ *     nullable: true
+ *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
  *     description: A cart object. Available if the relation `cart` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/Cart"
  *   customer_id:
- *     type: string
  *     description: The ID of the customer associated with the order
+ *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
  *     description: A customer object. Available if the relation `customer` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/Customer"
  *   email:
  *     description: The email associated with the order
  *     type: string
  *     format: email
  *   billing_address_id:
- *     type: string
  *     description: The ID of the billing address associated with the order
+ *     nullable: true
+ *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
  *     description: Available if the relation `billing_address` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
- *     type: string
  *     description: The ID of the shipping address associated with the order
+ *     nullable: true
+ *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
  *     description: Available if the relation `shipping_address` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   region_id:
- *     type: string
  *     description: The region's ID
+ *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
  *     description: A region object. Available if the relation `region` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/Region"
  *   currency_code:
- *     description: "The 3 character currency code that is used in the order"
+ *     description: The 3 character currency code that is used in the order
  *     type: string
  *     example: usd
  *     externalDocs:
@@ -374,147 +400,164 @@ export class Order extends BaseEntity {
  *       description: See a list of codes.
  *   currency:
  *     description: Available if the relation `currency` is expanded.
+ *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   tax_rate:
  *     description: The order's tax rate
+ *     nullable: true
  *     type: number
  *     example: 0
  *   discounts:
- *     type: array
  *     description: The discounts used in the order. Available if the relation `discounts` is expanded.
+ *     type: array
  *     items:
- *       type: object
- *       description: A discount object.
+ *       $ref: "#/components/schemas/Discount"
  *   gift_cards:
- *     type: array
  *     description: The gift cards used in the order. Available if the relation `gift_cards` is expanded.
- *     items:
- *       type: object
- *       description: A gift card object.
- *   shipping_methods:
  *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/GiftCard"
+ *   shipping_methods:
  *     description: The shipping methods used in the order. Available if the relation `shipping_methods` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/ShippingMethod"
  *   payments:
- *     type: array
  *     description: The payments used in the order. Available if the relation `payments` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/Payment"
  *   fulfillments:
- *     type: array
  *     description: The fulfillments used in the order. Available if the relation `fulfillments` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/Fulfillment"
  *   returns:
- *     type: array
  *     description: The returns associated with the order. Available if the relation `returns` is expanded.
+ *     type: array
  *     items:
- *       type: object
- *       description: A return object.
+ *       $ref: "#/components/schemas/Return"
  *   claims:
- *     type: array
  *     description: The claims associated with the order. Available if the relation `claims` is expanded.
+ *     type: array
  *     items:
- *       type: object
- *       description: A claim order object.
+ *       $ref: "#/components/schemas/ClaimOrder"
  *   refunds:
- *     type: array
  *     description: The refunds associated with the order. Available if the relation `refunds` is expanded.
- *     items:
- *       type: object
- *       description: A refund object.
- *   swaps:
  *     type: array
- *     description: The swaps associated with the order. Available if the relation `swaps` is expanded.
  *     items:
- *       type: object
- *       description: A swap object.
+ *       $ref: "#/components/schemas/Refund"
+ *   swaps:
+ *     description: The swaps associated with the order. Available if the relation `swaps` is expanded.
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Swap"
  *   draft_order_id:
- *     type: string
  *     description: The ID of the draft order this order is associated with.
+ *     nullable: true
+ *     type: string
  *     example: null
  *   draft_order:
  *     description: A draft order object. Available if the relation `draft_order` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/DraftOrder"
  *   items:
- *     type: array
  *     description: The line items that belong to the order. Available if the relation `items` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   edits:
+ *     description: Order edits done on the order. Available if the relation `edits` is expanded.
  *     type: array
- *     description: "[EXPERIMENTAL] Order edits done on the order. Available if the relation `edits` is expanded."
  *     items:
  *       $ref: "#/components/schemas/OrderEdit"
  *   gift_card_transactions:
- *     type: array
  *     description: The gift card transactions used in the order. Available if the relation `gift_card_transactions` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/GiftCardTransaction"
  *   canceled_at:
- *     type: string
  *     description: The date the order was canceled on.
+ *     nullable: true
+ *     type: string
  *     format: date-time
  *   no_notification:
- *     description: "Flag for describing whether or not notifications related to this should be send."
+ *     description: Flag for describing whether or not notifications related to this should be send.
+ *     nullable: true
  *     type: boolean
  *     example: false
  *   idempotency_key:
- *     type: string
  *     description: Randomly generated key used to continue the processing of the order in case of failure.
+ *     nullable: true
+ *     type: string
  *     externalDocs:
  *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
  *       description: Learn more how to use the idempotency key.
  *   external_id:
  *     description: The ID of an external order.
+ *     nullable: true
  *     type: string
  *     example: null
  *   sales_channel_id:
- *     type: string
  *     description: The ID of the sales channel this order is associated with.
+ *     nullable: true
+ *     type: string
  *     example: null
  *   sales_channel:
  *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/SalesChannel"
  *   shipping_total:
  *     type: integer
  *     description: The total of shipping
  *     example: 1000
  *   discount_total:
- *     type: integer
  *     description: The total of discount
+ *     type: integer
  *     example: 800
  *   tax_total:
- *     type: integer
  *     description: The total of tax
+ *     type: integer
  *     example: 0
  *   refunded_total:
- *     type: integer
  *     description: The total amount refunded if the order is returned.
+ *     type: integer
  *     example: 0
  *   total:
- *     type: integer
  *     description: The total amount of the order
+ *     type: integer
  *     example: 8200
  *   subtotal:
- *     type: integer
  *     description: The subtotal of the order
+ *     type: integer
  *     example: 8000
  *   paid_total:
- *     type: integer
  *     description: The total amount paid
+ *     type: integer
  *     example: 8000
  *   refundable_amount:
- *     type: integer
  *     description: The amount that can be refunded
+ *     type: integer
  *     example: 8200
  *   gift_card_total:
- *     type: integer
  *     description: The total of gift cards
+ *     type: integer
  *     example: 0
  *   gift_card_tax_total:
- *     type: integer
  *     description: The total of gift cards with taxes
+ *     type: integer
  *     example: 0
+ *   created_at:
+ *     description: The date with timezone at which the resource was created.
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
+ *     example: {car: "white"}
  */

@@ -52,6 +52,7 @@ properties:
     description: Tags to associate the Product with.
     type: array
     items:
+      type: object
       required:
         - value
       properties:
@@ -65,16 +66,28 @@ properties:
     description: '[EXPERIMENTAL] Sales channels to associate the Product with.'
     type: array
     items:
+      type: object
       required:
         - id
       properties:
         id:
           description: The ID of an existing Sales channel.
           type: string
+  categories:
+    description: Categories to add the Product to.
+    type: array
+    items:
+      required:
+        - id
+      properties:
+        id:
+          description: The ID of a Product Category.
+          type: string
   variants:
     description: A list of Product Variants to create with the Product.
     type: array
     items:
+      type: object
       properties:
         id:
           description: The ID of the Product Variant.
@@ -135,6 +148,7 @@ properties:
         prices:
           type: array
           items:
+            type: object
             required:
               - amount
             properties:
@@ -166,6 +180,7 @@ properties:
         options:
           type: array
           items:
+            type: object
             required:
               - option_id
               - value

@@ -907,7 +907,8 @@ describe("/admin/discounts", () => {
             is_dynamic: false,
           },
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1026,7 +1027,8 @@ describe("/admin/discounts", () => {
             regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1060,7 +1062,8 @@ describe("/admin/discounts", () => {
             regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1092,7 +1095,8 @@ describe("/admin/discounts", () => {
           `/admin/discounts/${response.data.discount.id}/regions/test-region-2`,
           {},
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1246,7 +1250,8 @@ describe("/admin/discounts", () => {
             ends_at: new Date("09/14/2021 17:50"),
           },
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data).toEqual(
@@ -1259,20 +1264,22 @@ describe("/admin/discounts", () => {
     it("fails to create a discount if the regions contains an invalid regionId ", async () => {
       const api = useApi()
 
-      const err = await api.post(
-        "/admin/discounts",
-        {
-          code: "HELLOWORLD",
-          rule: {
-            description: "test",
-            type: "percentage",
-            value: 10,
-            allocation: "total",
+      const err = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            regions: [validRegionId, invalidRegionId],
           },
-          regions: [validRegionId, invalidRegionId],
-        },
-        adminReqConfig
-      ).catch(e => e)
+          adminReqConfig
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(404)
       expect(err.response.data.message).toEqual(
@@ -1283,20 +1290,22 @@ describe("/admin/discounts", () => {
     it("fails to create a discount if the regions contains only invalid regionIds ", async () => {
       const api = useApi()
 
-      const err = await api.post(
-        "/admin/discounts",
-        {
-          code: "HELLOWORLD",
-          rule: {
-            description: "test",
-            type: "percentage",
-            value: 10,
-            allocation: "total",
+      const err = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            regions: [invalidRegionId],
           },
-          regions: [invalidRegionId],
-        },
-        adminReqConfig
-      ).catch(e => e)
+          adminReqConfig
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(404)
       expect(err.response.data.message).toEqual(
@@ -1307,19 +1316,21 @@ describe("/admin/discounts", () => {
     it("fails to create a discount if regions are not present ", async () => {
       const api = useApi()
 
-      const err = await api.post(
-        "/admin/discounts",
-        {
-          code: "HELLOWORLD",
-          rule: {
-            description: "test",
-            type: "percentage",
-            value: 10,
-            allocation: "total",
+      const err = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
           },
-        },
-        adminReqConfig
-      ).catch((e) => e)
+          adminReqConfig
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -2204,11 +2215,16 @@ describe("/admin/discounts", () => {
 
     it("should respond with 404 on non-existing code", async () => {
       const api = useApi()
-      const err = await api.get("/admin/discounts/code/non-existing", adminReqConfig).catch(e => e)
+
+      const code = "non-existing"
+
+      const err = await api
+        .get(`/admin/discounts/code/${code}`, adminReqConfig)
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(404)
       expect(err.response.data.message).toBe(
-        "Discount with code non-existing was not found"
+        `Discounts with code ${code} was not found`
       )
     })
 

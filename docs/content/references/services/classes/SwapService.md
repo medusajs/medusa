@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:94](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L94)
+[packages/medusa/src/services/swap.ts:94](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L94)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
 
 ___
 
@@ -54,7 +54,21 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+
+___
+
+### \_\_moduleDeclaration\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_moduleDeclaration\_\_
+
+#### Defined in
+
+[packages/medusa/src/interfaces/transaction-base-service.ts:11](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L11)
 
 ___
 
@@ -64,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:80](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L80)
+[packages/medusa/src/services/swap.ts:80](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L80)
 
 ___
 
@@ -74,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:90](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L90)
+[packages/medusa/src/services/swap.ts:90](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L90)
 
 ___
 
@@ -84,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:81](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L81)
+[packages/medusa/src/services/swap.ts:81](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L81)
 
 ___
 
@@ -94,7 +108,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:86](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L86)
+[packages/medusa/src/services/swap.ts:86](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L86)
 
 ___
 
@@ -104,7 +118,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:89](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L89)
+[packages/medusa/src/services/swap.ts:89](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L89)
 
 ___
 
@@ -114,7 +128,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:85](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L85)
+[packages/medusa/src/services/swap.ts:85](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L85)
 
 ___
 
@@ -128,7 +142,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:75](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L75)
+[packages/medusa/src/services/swap.ts:75](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L75)
 
 ___
 
@@ -138,7 +152,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:82](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L82)
+[packages/medusa/src/services/swap.ts:82](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L82)
 
 ___
 
@@ -148,7 +162,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:88](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L88)
+[packages/medusa/src/services/swap.ts:88](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L88)
 
 ___
 
@@ -158,7 +172,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:92](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L92)
+[packages/medusa/src/services/swap.ts:92](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L92)
 
 ___
 
@@ -168,7 +182,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:83](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L83)
+[packages/medusa/src/services/swap.ts:83](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L83)
 
 ___
 
@@ -178,7 +192,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:87](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L87)
+[packages/medusa/src/services/swap.ts:87](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L87)
 
 ___
 
@@ -188,7 +202,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:78](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L78)
+[packages/medusa/src/services/swap.ts:78](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L78)
 
 ___
 
@@ -198,7 +212,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:84](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L84)
+[packages/medusa/src/services/swap.ts:84](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L84)
 
 ___
 
@@ -212,7 +226,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:76](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L76)
+[packages/medusa/src/services/swap.ts:76](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L76)
 
 ___
 
@@ -236,7 +250,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:63](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L63)
+[packages/medusa/src/services/swap.ts:63](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L63)
 
 ## Methods
 
@@ -275,7 +289,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
 
 ___
 
@@ -301,7 +315,7 @@ the canceled swap.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:841](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L841)
+[packages/medusa/src/services/swap.ts:841](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L841)
 
 ___
 
@@ -325,7 +339,7 @@ updated swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:1042](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L1042)
+[packages/medusa/src/services/swap.ts:1042](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L1042)
 
 ___
 
@@ -359,7 +373,7 @@ the newly created swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:315](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L315)
+[packages/medusa/src/services/swap.ts:315](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L315)
 
 ___
 
@@ -387,7 +401,7 @@ the swap with its cart_id prop set to the id of the new cart.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:570](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L570)
+[packages/medusa/src/services/swap.ts:570](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L570)
 
 ___
 
@@ -413,7 +427,7 @@ the updated swap with new status and fulfillments.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:903](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L903)
+[packages/medusa/src/services/swap.ts:903](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L903)
 
 ___
 
@@ -440,7 +454,7 @@ the updated swap with new fulfillments and status.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:1073](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L1073)
+[packages/medusa/src/services/swap.ts:1073](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L1073)
 
 ___
 
@@ -465,7 +479,7 @@ resolves to the updated result.
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:1151](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L1151)
+[packages/medusa/src/services/swap.ts:1151](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L1151)
 
 ___
 
@@ -490,7 +504,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:285](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L285)
+[packages/medusa/src/services/swap.ts:285](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L285)
 
 ___
 
@@ -514,7 +528,7 @@ processed swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:414](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L414)
+[packages/medusa/src/services/swap.ts:414](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L414)
 
 ___
 
@@ -538,7 +552,7 @@ swap related to the cart
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:708](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L708)
+[packages/medusa/src/services/swap.ts:708](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L708)
 
 ___
 
@@ -563,7 +577,7 @@ the resulting order
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:1191](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L1191)
+[packages/medusa/src/services/swap.ts:1191](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L1191)
 
 ___
 
@@ -588,7 +602,7 @@ the swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:209](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L209)
+[packages/medusa/src/services/swap.ts:209](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L209)
 
 ___
 
@@ -613,7 +627,7 @@ the swap
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:258](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L258)
+[packages/medusa/src/services/swap.ts:258](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L258)
 
 ___
 
@@ -637,7 +651,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
 
 ___
 
@@ -661,7 +675,7 @@ transformed find swap config
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:136](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L136)
+[packages/medusa/src/services/swap.ts:136](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L136)
 
 ___
 
@@ -686,7 +700,7 @@ updated swap record
 
 #### Defined in
 
-[packages/medusa/src/services/swap.ts:537](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/swap.ts#L537)
+[packages/medusa/src/services/swap.ts:537](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/swap.ts#L537)
 
 ___
 
@@ -710,4 +724,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/interfaces/transaction-base-service.ts#L14)

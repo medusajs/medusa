@@ -375,6 +375,7 @@ class ProductVariantReq {
  *     description: Tags to associate the Product with.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - value
  *       properties:
@@ -388,6 +389,7 @@ class ProductVariantReq {
  *     description: "[EXPERIMENTAL] Sales channels to associate the Product with."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:
@@ -408,6 +410,7 @@ class ProductVariantReq {
  *     description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - title
  *       properties:
@@ -418,6 +421,7 @@ class ProductVariantReq {
  *     description: A list of Product Variants to create with the Product.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - title
  *       properties:
@@ -476,6 +480,7 @@ class ProductVariantReq {
  *         prices:
  *           type: array
  *           items:
+ *             type: object
  *             required:
  *               - amount
  *             properties:
@@ -500,6 +505,7 @@ class ProductVariantReq {
  *         options:
  *           type: array
  *           items:
+ *             type: object
  *             required:
  *               - value
  *             properties:

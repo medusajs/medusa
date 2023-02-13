@@ -15,16 +15,17 @@ delete:
       description: The id of the Line Item.
       schema:
         type: string
+  x-codegen:
+    method: deleteLineItem
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/carts_{id}_line-items_{line_id}/deleteundefined
+        $ref: ../code_samples/JavaScript/carts_{id}_line-items_{line_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}_line-items_{line_id}/deleteundefined
+        $ref: ../code_samples/Shell/carts_{id}_line-items_{line_id}/delete.sh
   tags:
     - Cart
   responses:
@@ -61,16 +62,22 @@ post:
       description: The id of the Line Item.
       schema:
         type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCartsCartLineItemsItemReq.yaml
+  x-codegen:
+    method: updateLineItem
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/carts_{id}_line-items_{line_id}/postundefined
+        $ref: ../code_samples/JavaScript/carts_{id}_line-items_{line_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}_line-items_{line_id}/postundefined
+        $ref: ../code_samples/Shell/carts_{id}_line-items_{line_id}/post.sh
   tags:
     - Cart
   responses:
@@ -90,14 +97,3 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - quantity
-          properties:
-            quantity:
-              type: integer
-              description: The quantity to set the Line Item to.

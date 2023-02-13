@@ -9,6 +9,11 @@ get:
       schema:
         type: string
     - in: query
+      name: sales_channel_id
+      description: A sales channel id for result configuration.
+      schema:
+        type: string
+    - in: query
       name: expand
       description: A comma separated list of Product Variant relations to load.
       schema:
@@ -25,6 +30,21 @@ get:
       schema:
         type: number
         default: '100'
+    - in: query
+      name: cart_id
+      description: The id of the Cart to set prices based on.
+      schema:
+        type: string
+    - in: query
+      name: region_id
+      description: The id of the Region to set prices based on.
+      schema:
+        type: string
+    - in: query
+      name: currency_code
+      description: The currency code to use for price selection.
+      schema:
+        type: string
     - in: query
       name: title
       style: form
@@ -62,11 +82,14 @@ get:
                 description: >-
                   filter by inventory quantity greater than or equal to this
                   number
+  x-codegen:
+    method: list
+    queryParams: StoreGetVariantsParams
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/variants/getundefined
+        $ref: ../code_samples/Shell/variants/get.sh
   tags:
     - Product Variant
   responses:

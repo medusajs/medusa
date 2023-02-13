@@ -6,7 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
-const { Product, ProductCategory } = require("@medusajs/medusa")
+const { ProductCategory } = require("@medusajs/medusa")
 
 const {
   ProductVariant,
@@ -21,6 +21,7 @@ const {
   simpleDiscountFactory,
   simpleProductCategoryFactory,
   simpleSalesChannelFactory,
+  simpleRegionFactory,
 } = require("../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
@@ -2148,6 +2149,193 @@ describe("/admin/products", () => {
           expect.objectContaining({
             amount: 900,
             currency_code: "eur",
+          }),
+        ])
+      )
+    })
+
+    it("successfully deletes a region price", async () => {
+      const api = useApi()
+
+      const createRegionPricePayload = {
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 1000,
+          },
+          {
+            region_id: "test-region",
+            amount: 8000,
+          },
+          {
+            currency_code: "eur",
+            amount: 900,
+          },
+        ],
+      }
+
+      const variantId = "test-variant_3"
+
+      const createRegionPriceResponse = await api.post(
+        "/admin/products/test-product1/variants/test-variant_3",
+        createRegionPricePayload,
+        adminHeaders
+      )
+
+      const initialPriceArray =
+        createRegionPriceResponse.data.product.variants.find(
+          (v) => v.id === variantId
+        ).prices
+
+      expect(createRegionPriceResponse.status).toEqual(200)
+      expect(initialPriceArray).toHaveLength(3)
+      expect(initialPriceArray).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 1000,
+            currency_code: "usd",
+          }),
+          expect.objectContaining({
+            amount: 8000,
+            currency_code: "usd",
+            region_id: "test-region",
+          }),
+          expect.objectContaining({
+            amount: 900,
+            currency_code: "eur",
+          }),
+        ])
+      )
+
+      const deleteRegionPricePayload = {
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 1000,
+          },
+          {
+            currency_code: "eur",
+            amount: 900,
+          },
+        ],
+      }
+
+      const deleteRegionPriceResponse = await api.post(
+        "/admin/products/test-product1/variants/test-variant_3",
+        deleteRegionPricePayload,
+        adminHeaders
+      )
+
+      const finalPriceArray =
+        deleteRegionPriceResponse.data.product.variants.find(
+          (v) => v.id === variantId
+        ).prices
+
+      expect(deleteRegionPriceResponse.status).toEqual(200)
+      expect(finalPriceArray).toHaveLength(2)
+      expect(finalPriceArray).toEqual([
+        expect.objectContaining({
+          amount: 1000,
+          currency_code: "usd",
+        }),
+        expect.objectContaining({
+          amount: 900,
+          currency_code: "eur",
+        }),
+      ])
+    })
+
+    it("successfully updates a variants prices by deleting both a currency and region price", async () => {
+      const api = useApi()
+
+      await Promise.all(
+        ["reg_1", "reg_2", "reg_3"].map(async (regionId) => {
+          return await simpleRegionFactory(dbConnection, {
+            id: regionId,
+            currency_code: regionId === "reg_1" ? "eur" : "usd",
+          })
+        })
+      )
+
+      const createPrices = {
+        prices: [
+          {
+            region_id: "reg_1",
+            amount: 1,
+          },
+          {
+            region_id: "reg_2",
+            amount: 2,
+          },
+          {
+            currency_code: "usd",
+            amount: 3,
+          },
+          {
+            region_id: "reg_3",
+            amount: 4,
+          },
+          {
+            currency_code: "eur",
+            amount: 5,
+          },
+        ],
+      }
+
+      const variantId = "test-variant_3"
+
+      await api
+        .post(
+          `/admin/products/test-product1/variants/${variantId}`,
+          createPrices,
+          adminHeaders
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const updatePrices = {
+        prices: [
+          {
+            region_id: "reg_1",
+            amount: 100,
+          },
+          {
+            region_id: "reg_2",
+            amount: 200,
+          },
+          {
+            currency_code: "usd",
+            amount: 300,
+          },
+        ],
+      }
+
+      const response = await api.post(
+        `/admin/products/test-product1/variants/${variantId}`,
+        updatePrices,
+        adminHeaders
+      )
+
+      const finalPriceArray = response.data.product.variants.find(
+        (v) => v.id === variantId
+      ).prices
+
+      expect(response.status).toEqual(200)
+      expect(finalPriceArray).toHaveLength(3)
+      expect(finalPriceArray).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 100,
+            region_id: "reg_1",
+          }),
+          expect.objectContaining({
+            amount: 200,
+            region_id: "reg_2",
+          }),
+          expect.objectContaining({
+            amount: 300,
+            currency_code: "usd",
           }),
         ])
       )

@@ -16,6 +16,7 @@ declare global {
       listConfig: FindConfig<unknown>
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
+      allowedProperties: string[]
       errors: string[]
     }
   }
@@ -101,7 +102,9 @@ export type ModuleExports = {
 }
 
 type SessionOptions = {
+  name?: string
   resave?: boolean
+  rolling?: boolean
   saveUninitialized?: boolean
   secret?: string
   ttl?: number

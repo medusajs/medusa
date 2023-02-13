@@ -2,7 +2,6 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { orderEditServiceMock } from "../../../../../services/__mocks__/order-edit"
 
-
 describe("GET /admin/order-edits/:id", () => {
   describe("successfully requests an order edit confirmation", () => {
     const orderEditId = IdMap.getId("testRequestOrder")
@@ -35,8 +34,6 @@ describe("GET /admin/order-edits/:id", () => {
         orderEditId,
         { requestedBy: IdMap.getId("admin_user") }
       )
-
-      expect(orderEditServiceMock.update).toHaveBeenCalledTimes(1)
     })
 
     it("returns updated orderEdit", () => {

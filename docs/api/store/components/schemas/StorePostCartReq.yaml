@@ -19,6 +19,7 @@ properties:
       from.
     type: array
     items:
+      type: object
       required:
         - variant_id
         - quantity

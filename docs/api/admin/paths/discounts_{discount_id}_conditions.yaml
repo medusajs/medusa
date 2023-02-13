@@ -32,16 +32,18 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostDiscountsDiscountConditions.yaml
+  x-codegen:
+    method: createCondition
+    queryParams: AdminPostDiscountsDiscountConditionsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/discounts_{discount_id}_conditions/postundefined
+        $ref: ../code_samples/JavaScript/discounts_{discount_id}_conditions/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/discounts_{discount_id}_conditions/postundefined
+        $ref: ../code_samples/Shell/discounts_{discount_id}_conditions/post.sh
   security:
     - api_token: []
     - cookie_auth: []

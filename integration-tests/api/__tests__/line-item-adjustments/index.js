@@ -207,4 +207,81 @@ describe("Line Item Adjustments", () => {
       })
     })
   })
+
+  describe("When refreshing adjustments make sure that only adjustments associated with a Medusa Discount are deleted", () => {
+    let cart
+    let discount
+    const lineItemId = "line-test"
+
+    beforeEach(async () => {
+      await cartSeeder(dbConnection)
+
+      discount = await simpleDiscountFactory(dbConnection, {
+        code: "MEDUSATEST",
+        id: "discount-test",
+        rule: {
+          value: 100,
+          type: "fixed",
+          allocation: "total",
+        },
+        regions: ["test-region"],
+      })
+
+      cart = await simpleCartFactory(
+        dbConnection,
+        {
+          customer: "test-customer",
+          id: "cart-test",
+          line_items: [
+            {
+              id: lineItemId,
+              variant_id: "test-variant",
+              cart_id: "cart-test",
+              unit_price: 1000,
+              quantity: 1,
+              adjustments: [
+                {
+                  amount: 10,
+                  discount_id: discount.id,
+                  description: "discount",
+                  item_id: lineItemId,
+                },
+                {
+                  // this one shouldn't be deleted because it's
+                  // not associated with a Medusa Discount, i.e.
+                  // it's created by a third party system, for example,
+                  // a custom promotions engine
+                  amount: 20,
+                  description: "custom adjustment without discount",
+                  item_id: lineItemId,
+                },
+              ],
+            },
+          ],
+          region: "test-region",
+        },
+        100
+      )
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("Delete only adjustments of the removed discount and keep 'custom' adjustments", async () => {
+      const api = useApi()
+
+      const response = await api.delete(
+        `/store/carts/${cart.id}/discounts/${discount.code}`
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart.items[0].adjustments.length).toEqual(1)
+      expect(response.data.cart.items[0].adjustments[0]).toMatchObject({
+        amount: 20,
+        description: "custom adjustment without discount",
+        item_id: lineItemId,
+      })
+    })
+  })
 })

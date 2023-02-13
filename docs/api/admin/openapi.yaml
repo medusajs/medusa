@@ -243,6 +243,14 @@ paths:
     $ref: paths/gift-cards.yaml
   /gift-cards/{id}:
     $ref: paths/gift-cards_{id}.yaml
+  /inventory-items/{id}/location-levels:
+    $ref: paths/inventory-items_{id}_location-levels.yaml
+  /inventory-items/{id}:
+    $ref: paths/inventory-items_{id}.yaml
+  /inventory-items/{id}/location-levels/{location_id}:
+    $ref: paths/inventory-items_{id}_location-levels_{location_id}.yaml
+  /inventory-items:
+    $ref: paths/inventory-items.yaml
   /invites/accept:
     $ref: paths/invites_accept.yaml
   /invites:
@@ -351,6 +359,8 @@ paths:
     $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
   /price-lists/{id}/products:
     $ref: paths/price-lists_{id}_products.yaml
+  /product-categories/{id}/products/batch:
+    $ref: paths/product-categories_{id}_products_batch.yaml
   /product-categories:
     $ref: paths/product-categories.yaml
   /product-categories/{id}:
@@ -477,6 +487,8 @@ paths:
     $ref: paths/users_password-token.yaml
   /users/reset-password:
     $ref: paths/users_reset-password.yaml
+  /variants/{id}/inventory:
+    $ref: paths/variants_{id}_inventory.yaml
   /variants:
     $ref: paths/variants.yaml
 components:
@@ -562,7 +574,7 @@ components:
         ```tsx
 
         <MedusaProvider
-          apiKey='{api_token}'
+          apiKey='api_token}'
           //...
         >
 

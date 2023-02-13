@@ -27,15 +27,18 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostTaxRatesReq.yaml
+  x-codegen:
+    method: create
+    queryParams: AdminPostTaxRatesParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/tax-rates/postundefined
+        $ref: ../code_samples/JavaScript/tax-rates/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/tax-rates/postundefined
+        $ref: ../code_samples/Shell/tax-rates/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -139,15 +142,18 @@ get:
         type: array
         items:
           type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetTaxRatesParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/tax-rates/getundefined
+        $ref: ../code_samples/JavaScript/tax-rates/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/tax-rates/getundefined
+        $ref: ../code_samples/Shell/tax-rates/get.sh
   security:
     - api_token: []
     - cookie_auth: []

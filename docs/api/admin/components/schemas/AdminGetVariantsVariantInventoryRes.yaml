@@ -1,0 +1,21 @@
+type: object
+properties:
+  id:
+    description: the id of the variant
+    type: string
+  inventory:
+    description: the stock location address ID
+    type: string
+  sales_channel_availability:
+    type: object
+    description: An optional key-value map with additional details
+    properties:
+      channel_name:
+        description: Sales channel name
+        type: string
+      channel_id:
+        description: Sales channel id
+        type: string
+      available_quantity:
+        description: Available quantity in sales channel
+        type: number
