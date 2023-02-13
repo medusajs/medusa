@@ -73,9 +73,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
         taxableAmount = item.unit_price * item.quantity
       }
 
-      taxableAmount -=
-        ((allocations.discount && allocations.discount.unit_amount) || 0) *
-        item.quantity
+      taxableAmount -= allocations.discount?.amount ?? 0
 
       for (const filteredTaxLine of filteredTaxLines) {
         taxTotal += Math.round(

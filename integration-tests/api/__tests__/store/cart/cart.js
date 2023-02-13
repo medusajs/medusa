@@ -1466,16 +1466,95 @@ describe("/store/carts", () => {
     it("Applies dynamic discount to cart correctly", async () => {
       const api = useApi()
 
-      const cart = await api.post(
-        "/store/carts/test-cart",
-        {
-          discounts: [{ code: "DYN_DISC" }],
-        },
-        { withCredentials: true }
-      )
+      const cart = await api.post("/store/carts/test-cart", {
+        discounts: [{ code: "DYN_DISC" }],
+      })
 
       expect(cart.data.cart.shipping_total).toBe(1000)
       expect(cart.status).toEqual(200)
+    })
+
+    it("successfully apply a fixed discount with total allocation and return the total with the right precision", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart"
+      const quantity = 2
+
+      const variant1Price = 4452600
+      const product1 = await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: "test-variant-1-fixed-discount-total",
+            prices: [
+              {
+                amount: variant1Price,
+                currency: "usd",
+                variant_id: "test-variant-1-fixed-discount-total",
+              },
+            ],
+          },
+        ],
+      })
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product1.variants[0].id,
+        quantity,
+      })
+
+      const variant2Price = 482200
+      const product2 = await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: "test-variant-2-fixed-discount-total",
+            prices: [
+              {
+                amount: variant2Price,
+                currency: "usd",
+                variant_id: "test-variant-2-fixed-discount-total",
+              },
+            ],
+          },
+        ],
+      })
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product2.variants[0].id,
+        quantity,
+      })
+
+      const discountAmount = 10000
+      const discount = await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "fixed",
+          value: discountAmount,
+          allocation: "total",
+        },
+      })
+
+      const response = await api.post(`/store/carts/${cartId}`, {
+        discounts: [{ code: discount.code }],
+      })
+
+      expect(response.status).toBe(200)
+
+      const cart = response.data.cart
+
+      const shippingAmount = 1000
+      const expectedTotal =
+        quantity * variant1Price +
+        quantity * variant2Price +
+        shippingAmount -
+        discountAmount
+
+      const expectedSubtotal = expectedTotal + discountAmount - shippingAmount
+
+      expect(cart.total).toBe(expectedTotal)
+      expect(cart.subtotal).toBe(expectedSubtotal)
+      expect(cart.discount_total).toBe(discountAmount)
+      expect(cart.shipping_total).toBe(1000)
     })
 
     it("updates cart customer id", async () => {
