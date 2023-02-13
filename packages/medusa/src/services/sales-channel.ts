@@ -49,6 +49,10 @@ class SalesChannelService extends TransactionBaseService {
     this.storeService_ = storeService
   }
 
+  private getManager(): EntityManager {
+    return this.transactionManager_ ?? this.manager_
+  }
+
   /**
    * A generic retrieve used to find a sales channel by different attributes.
    *
@@ -60,7 +64,7 @@ class SalesChannelService extends TransactionBaseService {
     selector: Selector<SalesChannel>,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel> {
-    const manager = this.manager_
+    const manager = this.getManager()
 
     const salesChannelRepo = manager.getCustomRepository(
       this.salesChannelRepository_
@@ -145,7 +149,7 @@ class SalesChannelService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[SalesChannel[], number]> {
-    const manager = this.manager_
+    const manager = this.getManager()
     const salesChannelRepo = manager.getCustomRepository(
       this.salesChannelRepository_
     )
@@ -287,6 +291,27 @@ class SalesChannelService extends TransactionBaseService {
 
       return defaultSalesChannel
     })
+  }
+
+  /**
+   * Retrieves the default sales channel.
+   * @return the sales channel
+   */
+  async retrieveDefault(): Promise<SalesChannel> {
+    const manager = this.getManager()
+
+    const store = await this.storeService_.withTransaction(manager).retrieve({
+      relations: ["default_sales_channel"],
+    })
+
+    if (!store.default_sales_channel) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Default Sales channel was not found`
+      )
+    }
+
+    return store.default_sales_channel
   }
 
   /**

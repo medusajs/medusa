@@ -20,6 +20,7 @@ const {
   simpleProductFactory,
   simpleDiscountFactory,
   simpleProductCategoryFactory,
+  simpleSalesChannelFactory,
 } = require("../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
@@ -58,6 +59,12 @@ describe("/admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
+
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "default-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
@@ -447,7 +454,10 @@ describe("/admin/products", () => {
     })
 
     describe("Product Category filtering", () => {
-      let categoryWithProduct, categoryWithoutProduct, nestedCategoryWithProduct, nested2CategoryWithProduct
+      let categoryWithProduct
+      let categoryWithoutProduct
+      let nestedCategoryWithProduct
+      let nested2CategoryWithProduct
       const nestedCategoryWithProductId = "nested-category-with-product-id"
       const nested2CategoryWithProductId = "nested2-category-with-product-id"
       const categoryWithProductId = "category-with-product-id"
@@ -455,14 +465,11 @@ describe("/admin/products", () => {
 
       beforeEach(async () => {
         const manager = dbConnection.manager
-        categoryWithProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: categoryWithProductId,
-            name: "category with Product",
-            products: [{ id: testProductId }],
-          }
-        )
+        categoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
+          id: categoryWithProductId,
+          name: "category with Product",
+          products: [{ id: testProductId }],
+        })
 
         nestedCategoryWithProduct = await simpleProductCategoryFactory(
           dbConnection,
@@ -496,52 +503,45 @@ describe("/admin/products", () => {
       it("returns a list of products in product category without category children", async () => {
         const api = useApi()
         const params = `category_id[]=${categoryWithProductId}`
-        const response = await api
-          .get(
-            `/admin/products?${params}`,
-            adminHeaders
-          )
+        const response = await api.get(
+          `/admin/products?${params}`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual(
-          [
-            expect.objectContaining({
-              id: testProductId,
-            }),
-          ]
-        )
+        expect(response.data.products).toEqual([
+          expect.objectContaining({
+            id: testProductId,
+          }),
+        ])
       })
 
       it("returns a list of products in product category without category children explicitly set to false", async () => {
         const api = useApi()
         const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
-        const response = await api
-          .get(
-            `/admin/products?${params}`,
-            adminHeaders
-          )
+        const response = await api.get(
+          `/admin/products?${params}`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual(
-          [
-            expect.objectContaining({
-              id: testProductId,
-            }),
-          ]
-        )
+        expect(response.data.products).toEqual([
+          expect.objectContaining({
+            id: testProductId,
+          }),
+        ])
       })
 
       it("returns a list of products in product category with category children", async () => {
         const api = useApi()
 
         const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
-        const response = await api
-          .get(
-            `/admin/products?${params}`,
-            adminHeaders
-          )
+        const response = await api.get(
+          `/admin/products?${params}`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(3)
@@ -555,7 +555,7 @@ describe("/admin/products", () => {
             }),
             expect.objectContaining({
               id: testProductFilteringId1,
-            })
+            }),
           ])
         )
       })
@@ -564,11 +564,10 @@ describe("/admin/products", () => {
         const api = useApi()
 
         const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
-        const response = await api
-          .get(
-            `/admin/products?${params}`,
-            adminHeaders
-          )
+        const response = await api.get(
+          `/admin/products?${params}`,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.products).toHaveLength(0)
@@ -1036,6 +1035,12 @@ describe("/admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
+
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "default-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
@@ -1594,7 +1599,8 @@ describe("/admin/products", () => {
     })
 
     describe("Categories", () => {
-      let categoryWithProduct, categoryWithoutProduct
+      let categoryWithProduct
+      let categoryWithoutProduct
       const categoryWithProductId = "category-with-product-id"
       const categoryWithoutProductId = "category-without-product-id"
 
@@ -1620,12 +1626,15 @@ describe("/admin/products", () => {
         const payload = {
           title: "Test",
           description: "test-product-description",
-          categories: [{ id: categoryWithProductId }, { id: categoryWithoutProductId }]
+          categories: [
+            { id: categoryWithProductId },
+            { id: categoryWithoutProductId },
+          ],
         }
 
         const response = await api
           .post("/admin/products", payload, adminHeaders)
-          .catch(e => e)
+          .catch((e) => e)
 
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
@@ -1649,16 +1658,18 @@ describe("/admin/products", () => {
         const payload = {
           title: "Test",
           description: "test-product-description",
-          categories: [{ id: categoryNotFoundId }]
+          categories: [{ id: categoryNotFoundId }],
         }
 
         const error = await api
           .post("/admin/products", payload, adminHeaders)
-          .catch(e => e)
+          .catch((e) => e)
 
         expect(error.response.status).toEqual(404)
         expect(error.response.data.type).toEqual("not_found")
-        expect(error.response.data.message).toEqual(`Product_category with product_category_id ${categoryNotFoundId} does not exist.`)
+        expect(error.response.data.message).toEqual(
+          `Product_category with product_category_id ${categoryNotFoundId} does not exist.`
+        )
       })
 
       it("updates a product's categories", async () => {
@@ -1668,8 +1679,11 @@ describe("/admin/products", () => {
           categories: [{ id: categoryWithoutProductId }],
         }
 
-        const response = await api
-          .post(`/admin/products/${testProductId}`, payload, adminHeaders)
+        const response = await api.post(
+          `/admin/products/${testProductId}`,
+          payload,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
@@ -1687,21 +1701,21 @@ describe("/admin/products", () => {
 
       it("remove all categories of a product", async () => {
         const api = useApi()
-        const category = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: "existing-category",
-            name: "existing category",
-            products: [{ id: "test-product" }]
-          }
-        )
+        const category = await simpleProductCategoryFactory(dbConnection, {
+          id: "existing-category",
+          name: "existing category",
+          products: [{ id: "test-product" }],
+        })
 
         const payload = {
           categories: [],
         }
 
-        const response = await api
-          .post("/admin/products/test-product", payload, adminHeaders)
+        const response = await api.post(
+          "/admin/products/test-product",
+          payload,
+          adminHeaders
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data.product).toEqual(
@@ -1720,11 +1734,13 @@ describe("/admin/products", () => {
 
         const error = await api
           .post("/admin/products/test-product", payload, adminHeaders)
-          .catch(e => e)
+          .catch((e) => e)
 
         expect(error.response.status).toEqual(400)
         expect(error.response.data.type).toEqual("invalid_data")
-        expect(error.response.data.message).toEqual("property incorrect should not exist, id must be a string")
+        expect(error.response.data.message).toEqual(
+          "property incorrect should not exist, id must be a string"
+        )
       })
     })
   })
@@ -1809,6 +1825,11 @@ describe("/admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "default-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
@@ -1855,6 +1876,11 @@ describe("/admin/products", () => {
       await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
       await priceListSeeder(dbConnection)
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "default-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
@@ -2133,6 +2159,11 @@ describe("/admin/products", () => {
       try {
         await productSeeder(dbConnection)
         await adminSeeder(dbConnection)
+        await simpleSalesChannelFactory(dbConnection, {
+          name: "Default channel",
+          id: "default-channel",
+          is_default: true,
+        })
       } catch (err) {
         console.log(err)
         throw err
@@ -2205,6 +2236,11 @@ describe("/admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "default-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {
@@ -2678,6 +2714,11 @@ describe("/admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "default-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {

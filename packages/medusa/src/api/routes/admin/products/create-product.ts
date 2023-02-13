@@ -14,6 +14,7 @@ import {
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
+  SalesChannelService,
   ShippingProfileService,
 } from "../../../../services"
 import {
@@ -121,6 +122,10 @@ export default async (req, res) => {
   const inventoryService: IInventoryService | undefined =
     req.scope.resolve("inventoryService")
 
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
+
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   const newProduct = await entityManager.transaction(async (manager) => {
@@ -146,6 +151,14 @@ export default async (req, res) => {
     const newProduct = await productService
       .withTransaction(manager)
       .create({ ...validated, profile_id: shippingProfile.id })
+
+    // If no sales channel available, set the default one
+    if (validated.sales_channels?.length) {
+      const defaultSalesChannel = await salesChannelService
+        .withTransaction(manager)
+        .retrieveDefault()
+      validated.sales_channels = [defaultSalesChannel]
+    }
 
     if (variants) {
       for (const [index, variant] of variants.entries()) {
