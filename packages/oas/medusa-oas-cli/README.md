@@ -26,30 +26,32 @@ the command was run.
 
 Invalid OAS with throw an error and will prevent the files from being outputted.
 
-#### `--type=<string>`
+#### `--type <string>`
 
 Specify which API OAS to create. Accepts `all`, `admin`, `store`.
 Defaults to `all`.
 
-`yarn medusa-oas --type=admin`
+`yarn medusa-oas --type admin`
 
-#### `--outDir=<path>`
+#### `--out-dir <path>`
 
 Specify in which directory should the files be outputted. Accepts relative and absolute path. It the directory doesn't,
 it will be created. Defaults to `./`.
 
-#### `--paths=<paths...>`
+`yarm medusa-oas --out-dir `
+
+#### `--paths <paths...>`
 
 Allows to pass additional directory paths to crawl for JSDoc OAS in order to include in the generated OAS.
-Accepts multiple entries.
+Accepts multiple entries. Has to be the last option or use ` -- ` before the next option
 
 `yarn medusa-oas --paths ~/medusa-server/src`
 
-#### `--dryRun`
+#### `--dry-run`
 
 Will package the OAS but will not output file. Useful for validating OAS.
 
-`yarn medusa-oas --dryRun`
+`yarn medusa-oas --dry-run`
 
 #### `--force`
 

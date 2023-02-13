@@ -27,10 +27,10 @@ export const commandOptions: Option[] = [
     .choices(["all", "admin", "store"])
     .default("all"),
   new Option(
-    "-o, --outDir <outDir>",
+    "-o, --out-dir <outDir>",
     "Destination directory to output generated OAS files."
   ).default(process.cwd()),
-  new Option("-D, --dryRun", "Do not output files."),
+  new Option("-D, --dry-run", "Do not output files."),
   new Option(
     "-p, --paths <paths...>",
     "Additional paths to crawl for OAS JSDoc."
@@ -142,6 +142,7 @@ const exportOASToJSON = async (
   targetDir: string
 ): Promise<void> => {
   const json = JSON.stringify(oas, null, 2)
-  await writeFile(path.resolve(targetDir, `${apiType}.oas.json`), json)
-  console.log(`🔵 Exported OAS - ${apiType}`)
+  const filePath = path.resolve(targetDir, `${apiType}.oas.json`)
+  await writeFile(filePath, json)
+  console.log(`🔵 Exported OAS - ${apiType} - ${filePath}`)
 }

@@ -26,9 +26,9 @@ const run = async () => {
 }
 
 const generateOASSources = async (outDir, isDryRun) => {
-  const params = ["oas", `--outDir=${outDir}`]
+  const params = ["oas", `--out-dir=${outDir}`]
   if (isDryRun) {
-    params.push("--dryRun")
+    params.push("--dry-run")
   }
   const { all: logs } = await execa("medusa-oas", params, {
     cwd: basePath,
