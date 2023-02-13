@@ -265,22 +265,33 @@ export default class ClaimService extends TransactionBaseService {
     }
   }
 
-  protected findClaimLinesOnOrder(
+  /**
+   * Finds claim line items on an order and calculates the refund amount.
+   * There are three places too look:
+   * - Order items
+   * - Swap items
+   * - Claim items (from previous claims)
+   * Note, it will attempt to return early from each of these places to avoid having to iterate over all items every time.
+   * @param order - the order to find claim lines on
+   * @param claimItems - the claim items to match against
+   * @return the refund amount
+   */
+  protected async getRefundTotalForClaimLinesOnOrder(
     order: Order,
     claimItems: CreateClaimItemInput[]
   ) {
-    return claimItems
+    const claimLines = claimItems
       .map((ci) => {
-        const claimLine = order.items.find((item) => item.id === ci.item_id)
+        const predicate = (it: LineItem) =>
+          it.shipped_quantity! > 0 &&
+          ci.quantity <= it.shipped_quantity! &&
+          it.id === ci.item_id
+
+        const claimLine = order.items.find(predicate)
 
         if (claimLine) {
           return { ...claimLine, quantity: ci.quantity }
         }
-
-        const predicate = (it: LineItem) =>
-          (it.shipped_quantity !== null ||
-            it.shipped_quantity === it.fulfilled_quantity) &&
-          it.id === ci.item_id
 
         if (order.swaps?.length) {
           for (const swap of order.swaps) {
@@ -304,7 +315,16 @@ export default class ClaimService extends TransactionBaseService {
 
         return null
       })
-      .filter(Boolean)
+      .filter(Boolean) as LineItem[]
+
+    const refunds: number[] = []
+
+    for (const item of claimLines) {
+      const refund = await this.totalsService_.getLineItemRefund(order, item)
+      refunds.push(refund)
+    }
+
+    return Math.round(refunds.reduce((acc, next) => acc + next, 0))
   }
 
   /**
@@ -349,15 +369,10 @@ export default class ClaimService extends TransactionBaseService {
 
         let toRefund = refund_amount
         if (type === ClaimType.REFUND && typeof refund_amount === "undefined") {
-          // In case no refund amount is passed, we calculate it based on the claim items
-          const claimLinesOnOrder = this.findClaimLinesOnOrder(
+          // In case no refund amount is passed, we calculate it based on the claim items on the order
+          toRefund = await this.getRefundTotalForClaimLinesOnOrder(
             order,
             claim_items
-          )
-
-          toRefund = await this.totalsService_.getRefundTotal(
-            order,
-            claimLinesOnOrder as LineItem[]
           )
         }
 
