@@ -229,9 +229,6 @@ class BrightpearlClient {
             },
           })
           .then(({ data }) => data.response)
-          .catch(
-            (err) => console.log(err) || console.log(err.response.data.errors)
-          )
       },
     }
   }
@@ -255,7 +252,6 @@ class BrightpearlClient {
             data: order,
           })
           .then(({ data }) => data.response)
-          .catch((err) => console.log(JSON.stringify(err.response.data)))
       },
       createCredit: (salesCredit) => {
         return this.client_

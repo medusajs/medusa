@@ -64,11 +64,11 @@ export default async (req: Request, res: Response) => {
 
   const { retrieveConfig } = req
 
-  let includeSalesChannels = false
+  const includeSalesChannels =
+    !!retrieveConfig.relations?.includes("sales_channels")
 
-  if (retrieveConfig.relations?.includes("sales_channels")) {
-    includeSalesChannels = true
-    retrieveConfig.relations = retrieveConfig.relations.filter(
+  if (includeSalesChannels) {
+    retrieveConfig.relations = retrieveConfig.relations?.filter(
       (r) => r !== "sales_channels"
     )
   }
