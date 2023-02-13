@@ -7,16 +7,15 @@ import {
 } from "typeorm"
 
 import { CONNECTION_NAME } from "../../config"
-import { addReservationType1675761451145 } from "./1675761451145-add_reservation_type"
 
 export const up = async ({ configModule }: { configModule: ConfigModule }) => {
   const connection = await createConnection({
-    name: CONNECTION_NAME,
+    name: `${CONNECTION_NAME}`,
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     extra: configModule.projectConfig.database_extra || {},
     schema: configModule.projectConfig.database_schema,
-    migrations: [inventorySetup1665748086258, addReservationType1675761451145],
+    migrations: [inventorySetup1665748086258],
     logging: true,
   } as ConnectionOptions)
 
@@ -30,12 +29,12 @@ export const down = async ({
   configModule: ConfigModule
 }) => {
   const connection = await createConnection({
-    name: CONNECTION_NAME,
+    name: `${CONNECTION_NAME}`,
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     extra: configModule.projectConfig.database_extra || {},
     schema: configModule.projectConfig.database_schema,
-    migrations: [inventorySetup1665748086258, addReservationType1675761451145],
+    migrations: [inventorySetup1665748086258],
     logging: true,
   } as ConnectionOptions)
 

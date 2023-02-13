@@ -128,6 +128,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locations = stockLocations.map((l) => l.id)
     }
 
+    if (locations.length === 0) {
+      return false
+    }
+
     const hasInventory = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
@@ -374,7 +378,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     const toReserve = {
-      type: "order",
       line_item_id: context.lineItemId,
     }
 
@@ -665,7 +668,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
           ...(await Promise.all(
             variantInventory.map(async (variantInventory) => {
               const availableItemQuantity =
-                // eslint-disable-next-jjjline max-len
+                // eslint-disable-next-line max-len
                 await this.salesChannelInventoryService_.retrieveAvailableItemQuantity(
                   salesChannelId,
                   variantInventory.inventory_item_id
@@ -694,8 +697,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
         if (!product.variants || product.variants.length === 0) {
           return product
         }
-
-        logger.info("product has variants")
 
         product.variants = await this.setVariantAvailability(
           product.variants,

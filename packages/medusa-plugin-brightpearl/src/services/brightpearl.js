@@ -1,4 +1,7 @@
-import { updateInventoryAndReservationsOnFulfillmentCreation } from "@medusajs/medusa"
+import {
+  ReservationType,
+  updateInventoryAndReservationsOnFulfillmentCreation,
+} from "@medusajs/medusa"
 import { MedusaError, humanizeAmount } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
@@ -117,7 +120,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -126,7 +129,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -229,7 +232,7 @@ class BrightpearlService extends BaseService {
     const client = await this.getClient()
     const availability = await client.products
       .retrieveAvailability(productId)
-      .catch(() => null)
+      .catch((err) => null)
 
     if (availability) {
       const brightpearlProduct = await client.products.retrieve(productId)
@@ -272,9 +275,12 @@ class BrightpearlService extends BaseService {
         await this.productVariantInventoryService_.listByVariant(variant.id)
 
       // get inventory levels for this product
-      const inventoryLevels = await this.inventoryService_.listInventoryLevels({
-        inventory_item_id: pvInventoryItems.map((pvi) => pvi.inventory_item_id),
-      })
+      const [inventoryLevels] =
+        await this.inventoryService_.listInventoryLevels({
+          inventory_item_id: pvInventoryItems.map(
+            (pvi) => pvi.inventory_item_id
+          ),
+        })
 
       const inventoryMap = inventoryLevels.reduce((acc, item) => {
         acc[item.location_id] = acc[item.location_id]
@@ -298,32 +304,44 @@ class BrightpearlService extends BaseService {
 
           // TODO: Assuming we have a 1 to 1 mapping of inventory items
           const inventoryLevel = inventoryMap[location.id][0]
-          const warehouseData = prodAvail.warehouses[`${location.bp_id}`]
+          const warehouseData =
+            prodAvail.warehouses[`${location.metadata.bp_id}`]
 
-          const externallyReservedQuantity =
+          const externallyReservedQuantityAdjustment =
             warehouseData.inStock -
             warehouseData.onHand -
             inventoryLevel.reserved_quantity
 
-          const reservations = await this.inventoryService_.listReservations({
-            inventory_item_id: inventoryLevel.inventory_item_id,
-            location_id: location.id,
-          })
+          if (externallyReservedQuantityAdjustment === 0) {
+            return
+          }
+
+          const [reservations, count] =
+            await this.inventoryService_.listReservationItems({
+              inventory_item_id: inventoryLevel.inventory_item_id,
+              location_id: location.id,
+              type: ReservationType.external,
+            })
 
           const externalReservation = reservations.find(
-            (r) => r.reservation_type === "external"
+            (r) => r.type === ReservationType.external
           )
 
           if (externalReservation) {
-            this.inventoryService_.updateReservation(externalReservation.id, {
-              quantity: externallyReservedQuantity,
-            })
+            this.inventoryService_.updateReservationItem(
+              externalReservation.id,
+              {
+                quantity:
+                  externalReservation.quantity +
+                  externallyReservedQuantityAdjustment,
+              }
+            )
           } else {
-            this.inventoryService_.createReservation({
+            this.inventoryService_.createReservationItem({
               location_id: location.id,
               inventory_item_id: inventoryLevel.inventory_item_id,
-              reservation_type: "external",
-              quantity: externallyReservedQuantity,
+              type: ReservationType.external,
+              quantity: externallyReservedQuantityAdjustment,
             })
           }
         })

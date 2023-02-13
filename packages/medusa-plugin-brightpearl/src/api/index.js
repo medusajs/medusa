@@ -36,8 +36,6 @@ export default (container) => {
     bodyParser.json(),
     async (req, res) => {
       const { id } = req.body
-      const logger = req.scope.resolve("logger")
-      logger.error(JSON.stringify(req.body))
       const brightpearlService = req.scope.resolve("brightpearlService")
       await brightpearlService.updateInventory(id)
       res.sendStatus(200)
