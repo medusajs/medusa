@@ -624,13 +624,15 @@ class BrightpearlService extends BaseService {
   }
 
   attemptRetryEvent(eventName, eventData, errorMessage) {
-    if ((eventData.retries || 0) > 3) {
+    const currentAttempts = eventData.retries || 0
+    
+    if (currentAttempts > 3) {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, errorMessage)
     }
 
     const event = {
       ...eventData,
-      retries: 1 + (eventData.retries || 0),
+      retries: 1 + currentAttempts,
     }
 
     this.eventBusService_.emit(
