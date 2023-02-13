@@ -22,6 +22,7 @@ import { IsType } from "../../../../utils/validators/is-type"
 import { FlagRouter } from "../../../../utils/flag-router"
 import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { Cart, Product } from "../../../../models"
 
 /**
  * @oas [get] /products
@@ -225,17 +226,17 @@ export default async (req, res) => {
     )
   }
 
-  const [
-    [rawProducts, count],
-    {
-      region_id,
-      region: { currency_code },
-    },
-  ] = await Promise.all(promises)
+  const [[rawProducts, count], cart] = (await Promise.all(promises)) as [
+    [Product[], number],
+    Cart
+  ]
 
-  regionId = region_id
-  currencyCode = currency_code
+  if (validated.cart_id) {
+    regionId = cart.region_id
+    currencyCode = cart.region.currency_code
+  }
 
+  // Create a new reference just for naming purpose
   const computedProducts = rawProducts
 
   // We can run them concurrently as the new properties are assigned to the references
