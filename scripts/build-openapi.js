@@ -10,23 +10,23 @@ const basePath = path.resolve(__dirname, `../`)
 const docsApiPath = path.resolve(basePath, "docs/api/")
 
 const run = async () => {
-  await generateOASSource()
-
+  await generateOASSources(docsApiPath, isDryRun)
   if (isDryRun) {
     return
   }
+
   for (const apiType of ["store", "admin"]) {
     const inputJsonFile = path.resolve(docsApiPath, `${apiType}.oas.json`)
     const outputYamlFile = path.resolve(docsApiPath, `${apiType}.oas.yaml`)
 
     await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
-    await sanitizeOAS(apiType)
-    await generateReference(apiType)
+    await sanitizeOAS(outputYamlFile)
+    await generateReference(outputYamlFile, apiType)
   }
 }
 
-const generateOASSource = async () => {
-  const params = ["oas", `--outDir=${docsApiPath}`, "--verbose"]
+const generateOASSources = async (outDir, isDryRun) => {
+  const params = ["oas", `--outDir=${outDir}`]
   if (isDryRun) {
     params.push("--dryRun")
   }
@@ -44,8 +44,7 @@ const jsonFileToYamlFile = async (inputJsonFile, outputYamlFile) => {
   await fs.writeFile(outputYamlFile, yamlString, "utf8")
 }
 
-const sanitizeOAS = async (apiType) => {
-  const srcFile = path.resolve(docsApiPath, `${apiType}.oas.yaml`)
+const sanitizeOAS = async (srcFile) => {
   const { all: logs } = await execa(
     "redocly",
     [
@@ -59,8 +58,7 @@ const sanitizeOAS = async (apiType) => {
   console.log(logs)
 }
 
-const generateReference = async (apiType) => {
-  const srcFile = path.resolve(docsApiPath, `${apiType}.oas.yaml`)
+const generateReference = async (srcFile, apiType) => {
   const outDir = path.resolve(docsApiPath, `${apiType}`)
   await fs.rm(outDir, { recursive: true, force: true })
   const { all: logs } = await execa(
