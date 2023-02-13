@@ -514,7 +514,9 @@ class TotalsService extends TransactionBaseService {
         TaxInclusivePricingFeatureFlag.key
       ) && lineItem.includes_tax
 
-    const discountAmount = allocationMap[lineItem.id]?.discount?.amount ?? 0
+    const discountAmount =
+      (allocationMap[lineItem.id]?.discount?.unit_amount || 0) *
+      lineItem.quantity
 
     let lineSubtotal = lineItem.unit_price * lineItem.quantity - discountAmount
 
