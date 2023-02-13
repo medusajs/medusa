@@ -47,7 +47,7 @@ describe("POST /admin/products", () => {
     })
 
     it("returns 200", () => {
-      expect(SalesChannelServiceMock.getDefault).toHaveBeenCalledTimes(1)
+      expect(SalesChannelServiceMock.retrieveDefault).toHaveBeenCalledTimes(1)
       expect(subject.status).toEqual(200)
     })
 
@@ -116,6 +116,13 @@ describe("POST /admin/products", () => {
         is_giftcard: false,
         options: [{ title: "Denominations" }],
         profile_id: IdMap.getId("default_shipping_profile"),
+        sales_channels: [
+          {
+            description: "sales channel 1 description",
+            is_disabled: false,
+            name: "sales channel 1 name",
+          },
+        ],
       })
     })
 
@@ -175,6 +182,13 @@ describe("POST /admin/products", () => {
         is_giftcard: true,
         status: "draft",
         profile_id: IdMap.getId("giftCardProfile"),
+        sales_channels: [
+          {
+            description: "sales channel 1 description",
+            is_disabled: false,
+            name: "sales channel 1 name",
+          },
+        ],
       })
     })
 

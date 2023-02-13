@@ -50,7 +50,7 @@ export const SalesChannelServiceMock = {
     })
   }),
 
-  getDefault: jest.fn().mockImplementation(() => {
+  retrieveDefault: jest.fn().mockImplementation(() => {
     return Promise.resolve({
       name: "sales channel 1 name",
       description: "sales channel 1 description",
