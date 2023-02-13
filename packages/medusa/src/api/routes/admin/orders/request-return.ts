@@ -296,6 +296,7 @@ type ReturnObj = {
  *     description: The Line Items that will be returned.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity

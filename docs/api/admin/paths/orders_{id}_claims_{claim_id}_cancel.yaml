@@ -16,17 +16,18 @@ post:
       description: The ID of the Claim.
       schema:
         type: string
+  x-codegen:
+    method: cancelClaim
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/orders_{id}_claims_{claim_id}_cancel/postundefined
+          ../code_samples/JavaScript/orders_{id}_claims_{claim_id}_cancel/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/orders_{id}_claims_{claim_id}_cancel/postundefined
+        $ref: ../code_samples/Shell/orders_{id}_claims_{claim_id}_cancel/post.sh
   security:
     - api_token: []
     - cookie_auth: []

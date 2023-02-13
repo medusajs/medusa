@@ -143,6 +143,7 @@ class OptionRequirement {
  *     description: "The requirements that must be satisfied for the Shipping Option to be available."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - type
  *         - amount

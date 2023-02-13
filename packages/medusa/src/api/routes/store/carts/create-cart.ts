@@ -209,6 +209,7 @@ export class Item {
  *     description: "An optional array of `variant_id`, `quantity` pairs to generate Line Items from."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity

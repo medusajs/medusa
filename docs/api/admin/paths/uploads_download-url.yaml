@@ -12,11 +12,11 @@ post:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/uploads_download-url/postundefined
+        $ref: ../code_samples/JavaScript/uploads_download-url/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/uploads_download-url/postundefined
+        $ref: ../code_samples/Shell/uploads_download-url/post.sh
   security:
     - api_token: []
     - cookie_auth: []

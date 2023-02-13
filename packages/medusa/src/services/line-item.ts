@@ -367,7 +367,7 @@ class LineItemService extends TransactionBaseService {
    */
   async create<
     T = LineItem | LineItem[],
-    TResult = T extends LineItem ? LineItem : LineItem[]
+    TResult = T extends LineItem[] ? LineItem[] : LineItem
   >(data: T): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {

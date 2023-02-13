@@ -15,11 +15,13 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostProductsToCollectionReq.yaml
+  x-codegen:
+    method: addProducts
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/collections_{id}_products_batch/postundefined
+        $ref: ../code_samples/Shell/collections_{id}_products_batch/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -61,11 +63,13 @@ delete:
       application/json:
         schema:
           $ref: ../components/schemas/AdminDeleteProductsFromCollectionReq.yaml
+  x-codegen:
+    method: removeProducts
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/collections_{id}_products_batch/deleteundefined
+        $ref: ../code_samples/Shell/collections_{id}_products_batch/delete.sh
   security:
     - api_token: []
     - cookie_auth: []

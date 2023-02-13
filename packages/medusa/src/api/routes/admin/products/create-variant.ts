@@ -226,6 +226,7 @@ class ProductVariantOptionReq {
  *   prices:
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - amount
  *       properties:
@@ -253,6 +254,7 @@ class ProductVariantOptionReq {
  *   options:
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - option_id
  *         - value

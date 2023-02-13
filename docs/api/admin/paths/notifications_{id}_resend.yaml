@@ -18,15 +18,17 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostNotificationsNotificationResendReq.yaml
+  x-codegen:
+    method: resend
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/notifications_{id}_resend/postundefined
+        $ref: ../code_samples/JavaScript/notifications_{id}_resend/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/notifications_{id}_resend/postundefined
+        $ref: ../code_samples/Shell/notifications_{id}_resend/post.sh
   security:
     - api_token: []
     - cookie_auth: []

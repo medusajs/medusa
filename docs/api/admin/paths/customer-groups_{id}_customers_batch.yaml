@@ -16,17 +16,18 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostCustomerGroupsGroupCustomersBatchReq.yaml
+  x-codegen:
+    method: addCustomers
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/customer-groups_{id}_customers_batch/postundefined
+          ../code_samples/JavaScript/customer-groups_{id}_customers_batch/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/customer-groups_{id}_customers_batch/postundefined
+        $ref: ../code_samples/Shell/customer-groups_{id}_customers_batch/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -69,17 +70,18 @@ delete:
         schema:
           $ref: >-
             ../components/schemas/AdminDeleteCustomerGroupsGroupCustomerBatchReq.yaml
+  x-codegen:
+    method: removeCustomers
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/customer-groups_{id}_customers_batch/deleteundefined
+          ../code_samples/JavaScript/customer-groups_{id}_customers_batch/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/customer-groups_{id}_customers_batch/deleteundefined
+        $ref: ../code_samples/Shell/customer-groups_{id}_customers_batch/delete.sh
   security:
     - api_token: []
     - cookie_auth: []

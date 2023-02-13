@@ -15,15 +15,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostPriceListPricesPricesReq.yaml
+  x-codegen:
+    method: addPrices
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/price-lists_{id}_prices_batch/postundefined
+        $ref: ../code_samples/JavaScript/price-lists_{id}_prices_batch/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/price-lists_{id}_prices_batch/postundefined
+        $ref: ../code_samples/Shell/price-lists_{id}_prices_batch/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -67,16 +69,17 @@ delete:
       application/json:
         schema:
           $ref: ../components/schemas/AdminDeletePriceListPricesPricesReq.yaml
+  x-codegen:
+    method: deletePrices
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/price-lists_{id}_prices_batch/deleteundefined
+        $ref: ../code_samples/JavaScript/price-lists_{id}_prices_batch/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/price-lists_{id}_prices_batch/deleteundefined
+        $ref: ../code_samples/Shell/price-lists_{id}_prices_batch/delete.sh
   security:
     - api_token: []
     - cookie_auth: []

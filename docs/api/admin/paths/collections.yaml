@@ -8,15 +8,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostCollectionsReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/collections/postundefined
+        $ref: ../code_samples/JavaScript/collections/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/collections/postundefined
+        $ref: ../code_samples/Shell/collections/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -145,15 +147,18 @@ get:
             type: string
             description: filter by dates greater than or equal to this date
             format: date
+  x-codegen:
+    method: list
+    queryParams: AdminGetCollectionsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/collections/getundefined
+        $ref: ../code_samples/JavaScript/collections/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/collections/getundefined
+        $ref: ../code_samples/Shell/collections/get.sh
   security:
     - api_token: []
     - cookie_auth: []
