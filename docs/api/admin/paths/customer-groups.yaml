@@ -3,16 +3,22 @@ post:
   summary: Create a Customer Group
   description: Creates a CustomerGroup.
   x-authenticated: true
-  parameters: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostCustomerGroupsReq.yaml
+  x-codegen:
+    method: create
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customer-groups/postundefined
+        $ref: ../code_samples/JavaScript/customer-groups/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customer-groups/postundefined
+        $ref: ../code_samples/Shell/customer-groups/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -37,20 +43,6 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - name
-          properties:
-            name:
-              type: string
-              description: Name of the customer group
-            metadata:
-              type: object
-              description: Metadata for the customer.
 get:
   operationId: GetCustomerGroups
   summary: List Customer Groups
@@ -173,15 +165,18 @@ get:
         groups of the result.
       schema:
         type: string
+  x-codegen:
+    method: list
+    queryParams: AdminGetCustomerGroupsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customer-groups/getundefined
+        $ref: ../code_samples/JavaScript/customer-groups/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customer-groups/getundefined
+        $ref: ../code_samples/Shell/customer-groups/get.sh
   security:
     - api_token: []
     - cookie_auth: []

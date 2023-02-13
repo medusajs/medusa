@@ -93,15 +93,18 @@ get:
                 description: >-
                   filter by inventory quantity greater than or equal to this
                   number
+  x-codegen:
+    method: list
+    queryParams: AdminGetVariantsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/variants/getundefined
+        $ref: ../code_samples/JavaScript/variants/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/variants/getundefined
+        $ref: ../code_samples/Shell/variants/get.sh
   security:
     - api_token: []
     - cookie_auth: []

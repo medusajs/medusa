@@ -10,15 +10,17 @@ post:
       description: The ID of the Payment.
       schema:
         type: string
+  x-codegen:
+    method: capturePayment
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/payments_{id}_capture/postundefined
+        $ref: ../code_samples/JavaScript/payments_{id}_capture/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/payments_{id}_capture/postundefined
+        $ref: ../code_samples/Shell/payments_{id}_capture/post.sh
   security:
     - api_token: []
     - cookie_auth: []

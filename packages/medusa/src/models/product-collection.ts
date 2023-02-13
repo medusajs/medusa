@@ -38,40 +38,48 @@ export class ProductCollection extends SoftDeletableEntity {
  * description: "Product Collections represents a group of Products that are related."
  * type: object
  * required:
+ *   - created_at
+ *   - deleted_at
+ *   - handle
+ *   - id
+ *   - metadata
  *   - title
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The product collection's ID
+ *     type: string
  *     example: pcol_01F0YESBFAZ0DV6V831JXWH0BG
  *   title:
- *     description: "The title that the Product Collection is identified by."
+ *     description: The title that the Product Collection is identified by.
  *     type: string
  *     example: Summer Collection
  *   handle:
- *     description: "A unique string that identifies the Product Collection - can for example be used in slug structures."
+ *     description: A unique string that identifies the Product Collection - can for example be used in slug structures.
+ *     nullable: true
  *     type: string
  *     example: summer-collection
  *   products:
  *     description: The Products contained in the Product Collection. Available if the relation `products` is expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A product collection object.
+ *       $ref: "#/components/schemas/Product"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

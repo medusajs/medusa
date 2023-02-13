@@ -10,15 +10,40 @@ get:
       description: The ID of the customer group.
       schema:
         type: string
+    - in: query
+      name: limit
+      description: The number of items to return.
+      schema:
+        type: integer
+        default: 50
+    - in: query
+      name: offset
+      description: The items to skip before result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: expand
+      description: (Comma separated) Which fields should be expanded in each customer.
+      schema:
+        type: string
+    - in: query
+      name: q
+      description: a search term to search email, first_name, and last_name.
+      schema:
+        type: string
+  x-codegen:
+    method: listCustomers
+    queryParams: AdminGetGroupsGroupCustomersParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customer-groups_{id}_customers/getundefined
+        $ref: ../code_samples/JavaScript/customer-groups_{id}_customers/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customer-groups_{id}_customers/getundefined
+        $ref: ../code_samples/Shell/customer-groups_{id}_customers/get.sh
   security:
     - api_token: []
     - cookie_auth: []

@@ -15,16 +15,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostRegionsRegionPaymentProvidersReq.yaml
+  x-codegen:
+    method: addPaymentProvider
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/regions_{id}_payment-providers/postundefined
+        $ref: ../code_samples/JavaScript/regions_{id}_payment-providers/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/regions_{id}_payment-providers/postundefined
+        $ref: ../code_samples/Shell/regions_{id}_payment-providers/post.sh
   security:
     - api_token: []
     - cookie_auth: []

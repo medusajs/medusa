@@ -1545,6 +1545,30 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("lists orders with specific fields and relations", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/orders?fields=id,created_at&expand=billing_address",
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(6)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          {
+            id: "test-order",
+            created_at: expect.any(String),
+            billing_address: expect.objectContaining({
+              id: "test-billing-address",
+              first_name: "lebron",
+            }),
+          },
+        ])
+      )
+    })
+
     it("lists all orders with a fulfillment status = fulfilled and payment status = captured", async () => {
       const api = useApi()
 

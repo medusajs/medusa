@@ -17,17 +17,19 @@ delete:
         deleted.
       schema:
         type: string
+  x-codegen:
+    method: deletePaymentSession
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/carts_{id}_payment-sessions_{provider_id}/deleteundefined
+          ../code_samples/JavaScript/carts_{id}_payment-sessions_{provider_id}/delete.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/carts_{id}_payment-sessions_{provider_id}/deleteundefined
+          ../code_samples/Shell/carts_{id}_payment-sessions_{provider_id}/delete.sh
   tags:
     - Cart
   responses:
@@ -64,17 +66,24 @@ post:
       description: The id of the payment provider.
       schema:
         type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCartsCartPaymentSessionUpdateReq.yaml
+  x-codegen:
+    method: updatePaymentSession
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/carts_{id}_payment-sessions_{provider_id}/postundefined
+          ../code_samples/JavaScript/carts_{id}_payment-sessions_{provider_id}/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/carts_{id}_payment-sessions_{provider_id}/postundefined
+          ../code_samples/Shell/carts_{id}_payment-sessions_{provider_id}/post.sh
   tags:
     - Cart
   responses:
@@ -94,14 +103,3 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - data
-          properties:
-            data:
-              type: object
-              description: The data to update the payment session with.

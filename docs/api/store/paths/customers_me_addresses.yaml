@@ -8,15 +8,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/StorePostCustomersCustomerAddressesReq.yaml
+  x-codegen:
+    method: addAddress
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/customers_me_addresses/postundefined
+        $ref: ../code_samples/JavaScript/customers_me_addresses/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/customers_me_addresses/postundefined
+        $ref: ../code_samples/Shell/customers_me_addresses/post.sh
   security:
     - cookie_auth: []
   tags:
