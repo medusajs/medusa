@@ -20,8 +20,6 @@ class BrightpearlService extends BaseService {
       discountService,
       stockLocationService,
       inventoryService,
-      salesChannelLocationService,
-      logger,
       lineItemService,
       eventBusService,
       productVariantInventoryService,
@@ -43,10 +41,8 @@ class BrightpearlService extends BaseService {
     this.claimService_ = claimService
     this.stockLocationService_ = stockLocationService
     this.inventoryService_ = inventoryService
-    this.salesChannelLocationService_ = salesChannelLocationService
     this.lineItemService_ = lineItemService
     this.eventBusService_ = eventBusService
-    this.logger_ = logger
   }
 
   async getClient() {
@@ -120,7 +116,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -129,7 +125,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -532,10 +528,12 @@ class BrightpearlService extends BaseService {
       .catch((err) => undefined)
 
     if (!reservation) {
-      reservation = await client.warehouses.createReservation(
-        { ...order, id: order.metadata.brightpearl_sales_order_id },
-        warehouse
-      )
+      reservation = await client.warehouses
+        .createReservation(
+          { ...order, id: order.metadata.brightpearl_sales_order_id },
+          warehouse
+        )
+        .catch((err) => undefined)
 
       if (!reservation) {
         reservation = await client.warehouses

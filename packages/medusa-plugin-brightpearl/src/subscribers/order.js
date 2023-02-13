@@ -1,5 +1,3 @@
-import { ProductVariantInventoryService } from "@medusajs/medusa"
-
 class OrderSubscriber {
   constructor({
     eventBusService,
