@@ -101,16 +101,6 @@ class BrightpearlService extends BaseService {
   async verifyWebhooks() {
     const brightpearl = await this.getClient()
 
-    const previouslyInstalledHooks = await brightpearl.webhooks
-      .list()
-      .catch(() => [])
-
-    await Promise.all(
-      previouslyInstalledHooks.map((hook) => {
-        return brightpearl.webhooks.delete(hook.id)
-      })
-    )
-
     const hooks = [
       {
         subscribeTo: "goods-out-note.created",
@@ -226,130 +216,141 @@ class BrightpearlService extends BaseService {
     }
   }
 
+  async adjustCoreInventory_(variantId, productAvailability) {
+    let onHand = 0
+
+    if (
+      productAvailability.warehouses &&
+      productAvailability.warehouses[`${this.options.warehouse}`]
+    ) {
+      onHand =
+        productAvailability.warehouses[`${this.options.warehouse}`].onHand
+    }
+
+    return await this.manager_.transaction((m) => {
+      return this.productVariantService_.withTransaction(m).update(variantId, {
+        inventory_quantity: onHand,
+      })
+    })
+  }
+
+  async adjustMedusaLocationLevel_(
+    location,
+    inventoryMap,
+    productAvailability
+  ) {
+    // TODO: Assuming we have a 1 to 1 mapping of inventory items
+    const inventoryLevel = inventoryMap[location.id][0]
+    const warehouseData =
+      productAvailability.warehouses[`${location.metadata.bp_id}`]
+
+    if (!warehouseData) {
+      return
+    }
+
+    const externallyReservedQuantityAdjustment =
+      warehouseData.inStock -
+      warehouseData.onHand -
+      inventoryLevel.reserved_quantity
+
+    if (externallyReservedQuantityAdjustment === 0) {
+      return
+    }
+
+    const [reservations] = await this.inventoryService_.listReservationItems({
+      inventory_item_id: inventoryLevel.inventory_item_id,
+      location_id: location.id,
+      type: ReservationType.external,
+    })
+
+    const externalReservation = reservations.find(
+      (r) => r.type === ReservationType.external
+    )
+
+    if (externalReservation) {
+      await this.inventoryService_.updateReservationItem(
+        externalReservation.id,
+        {
+          quantity:
+            externalReservation.quantity + externallyReservedQuantityAdjustment,
+        }
+      )
+    } else {
+      await this.inventoryService_.createReservationItem({
+        location_id: location.id,
+        inventory_item_id: inventoryLevel.inventory_item_id,
+        type: ReservationType.external,
+        quantity: externallyReservedQuantityAdjustment,
+      })
+    }
+  }
+
   async updateInventory(productId) {
     const client = await this.getClient()
     const availability = await client.products
       .retrieveAvailability(productId)
-      .catch((err) => null)
+      .catch(() => null)
 
-    if (availability) {
-      const brightpearlProduct = await client.products.retrieve(productId)
+    if (!availability) {
+      return
+    }
 
-      const sku = brightpearlProduct.identity.sku
-      if (!sku) {
-        return
-      }
+    const brightpearlProduct = await client.products.retrieve(productId)
 
-      const variant = await this.productVariantService_
-        .retrieveBySKU(sku)
-        .catch((_) => undefined)
+    const sku = brightpearlProduct.identity.sku
+    if (!sku) {
+      return
+    }
 
-      if (!variant?.manage_inventory) {
-        return
-      }
+    const variant = await this.productVariantService_
+      .retrieveBySKU(sku)
+      .catch((_) => undefined)
 
-      const productAvailability = availability[productId]
+    if (!variant?.manage_inventory) {
+      return
+    }
 
-      if (!this.inventoryService_) {
-        let onHand = 0
+    const productAvailability = availability[productId]
 
-        if (
-          productAvailability.warehouses &&
-          productAvailability.warehouses[`${this.options.warehouse}`]
-        ) {
-          onHand =
-            productAvailability.warehouses[`${this.options.warehouse}`].onHand
-        }
+    if (!this.inventoryService_) {
+      return this.adjustCoreInventory_(variant.id, productAvailability)
+    }
 
-        return await this.manager_.transaction((m) => {
-          return this.productVariantService_
-            .withTransaction(m)
-            .update(variant.id, {
-              inventory_quantity: onHand,
-            })
-        })
-      }
+    const pvInventoryItems =
+      await this.productVariantInventoryService_.listByVariant(variant.id)
 
-      const pvInventoryItems =
-        await this.productVariantInventoryService_.listByVariant(variant.id)
+    // get inventory levels for this product
+    const [inventoryLevels] = await this.inventoryService_.listInventoryLevels({
+      inventory_item_id: pvInventoryItems.map((pvi) => pvi.inventory_item_id),
+    })
 
-      // get inventory levels for this product
-      const [inventoryLevels] =
-        await this.inventoryService_.listInventoryLevels({
-          inventory_item_id: pvInventoryItems.map(
-            (pvi) => pvi.inventory_item_id
-          ),
-        })
+    const inventoryMap = inventoryLevels.reduce((acc, item) => {
+      acc[item.location_id] = acc[item.location_id]
+        ? [...acc[item.location_id], item]
+        : [item]
+      return acc
+    }, {})
 
-      const inventoryMap = inventoryLevels.reduce((acc, item) => {
-        acc[item.location_id] = acc[item.location_id]
-          ? [...acc[item.location_id], item]
-          : [item]
-        return acc
-      }, {})
-
-      const locations = await this.stockLocationService_.list({
+    const locations = (
+      await this.stockLocationService_.list({
         id: inventoryLevels.map((ri) => ri.location_id),
       })
+    ).filter(
+      (location) =>
+        location.metadata?.bp_id &&
+        productAvailability.warehouses[`${location.metadata.bp_id}`]
+    )
 
-      await Promise.all(
-        locations.map(async (location) => {
-          if (
-            !location.metadata?.bp_id ||
-            !productAvailability.warehouses[`${location.metadata.bp_id}`]
-          ) {
-            return
-          }
-
-          // TODO: Assuming we have a 1 to 1 mapping of inventory items
-          const inventoryLevel = inventoryMap[location.id][0]
-          const warehouseData =
-            productAvailability.warehouses[`${location.metadata.bp_id}`]
-
-          if (!warehouseData) {
-            return
-          }
-
-          const externallyReservedQuantityAdjustment =
-            warehouseData.inStock -
-            warehouseData.onHand -
-            inventoryLevel.reserved_quantity
-
-          if (externallyReservedQuantityAdjustment === 0) {
-            return
-          }
-
-          const [reservations] =
-            await this.inventoryService_.listReservationItems({
-              inventory_item_id: inventoryLevel.inventory_item_id,
-              location_id: location.id,
-              type: ReservationType.external,
-            })
-
-          const externalReservation = reservations.find(
-            (r) => r.type === ReservationType.external
+    await Promise.all(
+      locations.map(
+        async (location) =>
+          await this.adjustMedusaLocationLevel(
+            location,
+            inventoryMap,
+            productAvailability
           )
-
-          if (externalReservation) {
-            this.inventoryService_.updateReservationItem(
-              externalReservation.id,
-              {
-                quantity:
-                  externalReservation.quantity +
-                  externallyReservedQuantityAdjustment,
-              }
-            )
-          } else {
-            this.inventoryService_.createReservationItem({
-              location_id: location.id,
-              inventory_item_id: inventoryLevel.inventory_item_id,
-              type: ReservationType.external,
-              quantity: externallyReservedQuantityAdjustment,
-            })
-          }
-        })
       )
-    }
+    )
   }
 
   async createGoodsOutNote(fromOrder, shipment) {
