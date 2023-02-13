@@ -582,15 +582,23 @@ class SendGridService extends NotificationService {
       relations: ["region", "order"],
     })
     const taxRate = giftCard.region.tax_rate / 100
-    const locale = giftCard.order ? await this.extractLocale(order) : null;
-    const email = giftCard.order ? giftCard.order.email : giftCard.metadata.email;
+    const locale = giftCard.order
+      ? await this.extractLocale(giftCard.order)
+      : null
+    const email = giftCard.order
+      ? giftCard.order.email
+      : giftCard.metadata.email
 
     return {
       ...giftCard,
       locale,
       email,
-      display_value: `${this.humanPrice_((giftCard.value * 1+ taxRate), giftCard.region.currency_code)} ${giftCard.region.currency_code}`,
-      message: giftCard.metadata?.message || giftCard.metadata?.personal_message
+      display_value: `${this.humanPrice_(
+        giftCard.value * 1 + taxRate,
+        giftCard.region.currency_code
+      )} ${giftCard.region.currency_code}`,
+      message:
+        giftCard.metadata?.message || giftCard.metadata?.personal_message,
     }
   }
 
@@ -1161,13 +1169,7 @@ class SendGridService extends NotificationService {
 
   async orderRefundCreatedData({ id, refund_id }) {
     const order = await this.orderService_.retrieveWithTotals(id, {
-      select: [
-        "total",
-      ],
-      relations: [
-        "refunds",
-        "items",
-      ]
+      relations: ["refunds", "items"],
     })
 
     const refund = order.refunds.find((refund) => refund.id === refund_id)
@@ -1175,11 +1177,10 @@ class SendGridService extends NotificationService {
     return {
       order,
       refund,
-      refund_amount: `${this.humanPrice_(
-        refund.amount,
+      refund_amount: `${this.humanPrice_(refund.amount, order.currency_code)} ${
         order.currency_code
-      )} ${order.currency_code}`,
-      email: order.email
+      }`,
+      email: order.email,
     }
   }
 
