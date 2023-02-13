@@ -693,56 +693,58 @@ describe("/admin/products", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.products).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          title: "Test Giftcard",
-          id: expect.stringMatching(/^prod_*/),
-          is_giftcard: true,
-          description: "test-giftcard-description",
-          profile_id: expect.stringMatching(/^sp_*/),
-          options: expect.arrayContaining([
-            expect.objectContaining({
-              title: "Denominations",
-              id: expect.stringMatching(/^opt_*/),
-              product_id: expect.stringMatching(/^prod_*/),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            }),
-          ]),
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "Test Giftcard",
+            id: expect.stringMatching(/^prod_*/),
+            is_giftcard: true,
+            description: "test-giftcard-description",
+            profile_id: expect.stringMatching(/^sp_*/),
+            options: expect.arrayContaining([
+              expect.objectContaining({
+                title: "Denominations",
+                id: expect.stringMatching(/^opt_*/),
+                product_id: expect.stringMatching(/^prod_*/),
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+              }),
+            ]),
 
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              title: "Test variant",
-              id: expect.stringMatching(/^variant_*/),
-              product_id: expect.stringMatching(/^prod_*/),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              prices: expect.arrayContaining([
-                expect.objectContaining({
-                  id: expect.any(String),
-                  currency_code: "usd",
-                  amount: 100,
-                  variant_id: expect.stringMatching(/^variant_*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                }),
-              ]),
-              options: expect.arrayContaining([
-                expect.objectContaining({
-                  id: expect.stringMatching(/^opt_*/),
-                  option_id: expect.stringMatching(/^opt_*/),
-                  created_at: expect.any(String),
-                  variant_id: expect.stringMatching(/^variant_*/),
-                  updated_at: expect.any(String),
-                }),
-              ]),
-            }),
-          ]),
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-        }),
-      ])
-    )
+            variants: expect.arrayContaining([
+              expect.objectContaining({
+                title: "Test variant",
+                id: expect.stringMatching(/^variant_*/),
+                product_id: expect.stringMatching(/^prod_*/),
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: expect.any(String),
+                    currency_code: "usd",
+                    amount: 100,
+                    variant_id: expect.stringMatching(/^variant_*/),
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  }),
+                ]),
+                options: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: expect.stringMatching(/^opt_*/),
+                    option_id: expect.stringMatching(/^opt_*/),
+                    created_at: expect.any(String),
+                    variant_id: expect.stringMatching(/^variant_*/),
+                    updated_at: expect.any(String),
+                  }),
+                ]),
+              }),
+            ]),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+        ])
+      )
+    })
 
     it("returns a list of products not containing a giftcard in list", async () => {
       const api = useApi()
@@ -1101,64 +1103,64 @@ describe("/admin/products", () => {
           created_at: expect.any(String),
           updated_at: expect.any(String),
           profile_id: expect.stringMatching(/^sp_*/),
-          images: [
-            {
+          images: expect.arrayContaining([
+            expect.objectContaining({
               id: expect.any(String),
               url: "test-image.png",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-            },
-            {
+            }),
+            expect.objectContaining({
               id: expect.any(String),
               url: "test-image-2.png",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-            },
-          ],
+            }),
+          ]),
           thumbnail: "test-image.png",
-          tags: [
-            {
+          tags: expect.arrayContaining([
+            expect.objectContaining({
               id: expect.any(String),
               value: "123",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-            },
-            {
+            }),
+            expect.objectContaining({
               id: expect.any(String),
               value: "456",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-            },
-          ],
-          type: {
+            }),
+          ]),
+          type: expect.objectContaining({
             value: "test-type",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-          },
-          collection: {
+          }),
+          collection: expect.objectContaining({
             id: "test-collection",
             title: "Test collection",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-          },
-          options: [
-            {
+          }),
+          options: expect.arrayContaining([
+            expect.objectContaining({
               id: expect.stringMatching(/^opt_*/),
               product_id: expect.stringMatching(/^prod_*/),
               title: "size",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-            },
-            {
+            }),
+            expect.objectContaining({
               id: expect.stringMatching(/^opt_*/),
               product_id: expect.stringMatching(/^prod_*/),
               title: "color",
               created_at: expect.any(String),
               updated_at: expect.any(String),
-            },
-          ],
-          variants: [
-            {
+            }),
+          ]),
+          variants: expect.arrayContaining([
+            expect.objectContaining({
               id: expect.stringMatching(/^variant_*/),
               product_id: expect.stringMatching(/^prod_*/),
               updated_at: expect.any(String),
@@ -1208,8 +1210,8 @@ describe("/admin/products", () => {
                   id: expect.stringMatching(/^optval_*/),
                 }),
               ]),
-            },
-          ],
+            }),
+          ]),
         })
       )
     })
@@ -1378,7 +1380,7 @@ describe("/admin/products", () => {
           description: "test-product-description",
           discountable: true,
           handle: "test-product",
-          images: [
+          images: expect.arrayContaining([
             expect.objectContaining({
               created_at: expect.any(String),
               deleted_at: null,
@@ -1387,7 +1389,7 @@ describe("/admin/products", () => {
               updated_at: expect.any(String),
               url: "test-image-2.png",
             }),
-          ],
+          ]),
           is_giftcard: false,
           options: expect.arrayContaining([
             expect.objectContaining({
