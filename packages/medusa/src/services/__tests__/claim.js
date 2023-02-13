@@ -29,6 +29,7 @@ describe("ClaimService", () => {
           {
             id: "itm_1",
             unit_price: 8000,
+            shipped_quantity: 1,
           },
         ],
       },
@@ -135,7 +136,7 @@ describe("ClaimService", () => {
       expect(returnService.create).toHaveBeenCalledWith({
         order_id: "1234",
         claim_order_id: "claim_134",
-        refund_amount: 1000,
+        refund_amount: 8000,
         shipping_method: {
           option_id: "opt_13",
           price: 0,
@@ -183,7 +184,7 @@ describe("ClaimService", () => {
       expect(claimRepo.create).toHaveBeenCalledWith({
         payment_status: "not_refunded",
         no_notification: true,
-        refund_amount: 1000,
+        refund_amount: 8000,
         type: "refund",
         order_id: "1234",
         additional_items: [
