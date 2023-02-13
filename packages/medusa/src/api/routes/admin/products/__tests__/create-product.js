@@ -3,6 +3,7 @@ import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 import { ShippingProfileServiceMock } from "../../../../../services/__mocks__/shipping-profile"
+import { SalesChannelServiceMock } from "../../../../../services/__mocks__/sales-channel"
 
 describe("POST /admin/products", () => {
   describe("successful creation with variants", () => {
@@ -46,6 +47,7 @@ describe("POST /admin/products", () => {
     })
 
     it("returns 200", () => {
+      expect(SalesChannelServiceMock.getDefault).toHaveBeenCalledTimes(1)
       expect(subject.status).toEqual(200)
     })
 
