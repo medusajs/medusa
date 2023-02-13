@@ -186,7 +186,7 @@ export class Region extends SoftDeletableEntity {
  *     items:
  *       $ref: "#/components/schemas/PaymentProvider"
  *   fulfillment_providers:
- *     description: The Fulfillment Providers that can be used to fulfill orders in the Region. Available if the relation `payment_providers` is expanded.
+ *     description: The Fulfillment Providers that can be used to fulfill orders in the Region. Available if the relation `fulfillment_providers` is expanded.
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/FulfillmentProvider"

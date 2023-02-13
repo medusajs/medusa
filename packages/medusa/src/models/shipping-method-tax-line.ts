@@ -47,7 +47,7 @@ export class ShippingMethodTaxLine extends TaxLine {
  *   id:
  *     description: The line item tax line's ID
  *     type: string
- *     example: litl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
+ *     example: smtl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
  *   code:
  *     description: A code to identify the tax type by
  *     nullable: true

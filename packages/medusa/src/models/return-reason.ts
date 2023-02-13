@@ -93,12 +93,12 @@ export class ReturnReason extends SoftDeletableEntity {
  *     description: Available if the relation `return_reason_children` is expanded.
  *     $ref: "#/components/schemas/ReturnReason"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
  *     description: The date with timezone at which the resource was deleted.

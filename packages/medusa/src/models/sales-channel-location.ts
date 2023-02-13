@@ -32,6 +32,7 @@ export class SalesChannelLocation extends SoftDeletableEntity {
  * type: object
  * required:
  *   - created_at
+ *   - deleted_at
  *   - id
  *   - location_id
  *   - sales_channel_id
