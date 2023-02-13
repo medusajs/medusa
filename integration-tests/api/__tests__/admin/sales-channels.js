@@ -941,7 +941,6 @@ describe("sales channels", () => {
         })
       )
     })
-  })
 
     describe("POST /admin/products/:id", () => {
       let salesChannel
