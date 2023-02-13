@@ -1,4 +1,3 @@
-import { SalesChannel } from "../models"
 import { StringComparisonOperator } from "./common"
 
 /**
@@ -136,19 +135,6 @@ export type StockLocationDTO = {
   created_at: string | Date
   updated_at: string | Date
   deleted_at: string | Date | null
-}
-
-/**
- * @schema StockLocationExpandedDTO
- * allOf:
- *   - $ref: "#/components/schemas/StockLocationDTO"
- *   - type: object
- *     properties:
- *       sales_channels:
- *         $ref: "#/components/schemas/SalesChannel"
- */
-export type StockLocationExpandedDTO = StockLocationDTO & {
-  sales_channels?: SalesChannel[]
 }
 
 export type FilterableStockLocationProps = {

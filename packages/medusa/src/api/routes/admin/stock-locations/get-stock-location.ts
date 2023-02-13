@@ -1,11 +1,6 @@
 import { IStockLocationService } from "../../../../interfaces"
 import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
-import { joinSalesChannels } from "./utils/join-sales-channels"
-import {
-  SalesChannelLocationService,
-  SalesChannelService,
-} from "../../../../services"
 
 /**
  * @oas [get] /stock-locations/{id}
@@ -55,34 +50,7 @@ export default async (req: Request, res: Response) => {
   const locationService: IStockLocationService = req.scope.resolve(
     "stockLocationService"
   )
-  const channelLocationService: SalesChannelLocationService = req.scope.resolve(
-    "salesChannelLocationService"
-  )
-  const salesChannelService: SalesChannelService = req.scope.resolve(
-    "salesChannelService"
-  )
-
-  const { retrieveConfig } = req
-
-  const includeSalesChannels =
-    !!retrieveConfig.relations?.includes("sales_channels")
-
-  if (includeSalesChannels) {
-    retrieveConfig.relations = retrieveConfig.relations?.filter(
-      (r) => r !== "sales_channels"
-    )
-  }
-
-  let stockLocation = await locationService.retrieve(id, retrieveConfig)
-
-  if (includeSalesChannels) {
-    const [location] = await joinSalesChannels(
-      [stockLocation],
-      channelLocationService,
-      salesChannelService
-    )
-    stockLocation = location
-  }
+  const stockLocation = await locationService.retrieve(id, req.retrieveConfig)
 
   res.status(200).json({ stock_location: stockLocation })
 }

@@ -1,10 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import {
-  StockLocationDTO,
-  StockLocationExpandedDTO,
-} from "../../../../types/stock-location"
+import { StockLocationDTO } from "../../../../types/stock-location"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -116,10 +113,10 @@ export type AdminStockLocationsDeleteRes = DeleteResponse
  * type: object
  * properties:
  *   stock_location:
- *     $ref: "#/components/schemas/StockLocationExpandedDTO"
+ *     $ref: "#/components/schemas/StockLocationDTO"
  */
 export type AdminStockLocationsRes = {
-  stock_location: StockLocationExpandedDTO
+  stock_location: StockLocationDTO
 }
 
 /**
@@ -129,7 +126,7 @@ export type AdminStockLocationsRes = {
  *   stock_locations:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/StockLocationExpandedDTO"
+ *       $ref: "#/components/schemas/StockLocationDTO"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -141,7 +138,7 @@ export type AdminStockLocationsRes = {
  *     description: The number of items per page
  */
 export type AdminStockLocationsListRes = PaginatedResponse & {
-  stock_locations: StockLocationExpandedDTO[]
+  stock_locations: StockLocationDTO[]
 }
 
 export * from "./list-stock-locations"
