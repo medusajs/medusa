@@ -357,7 +357,8 @@ export default class NewTotalsService extends TransactionBaseService {
       ) && lineItem.includes_tax
 
     const discountAmount =
-      calculationContext.allocation_map[lineItem.id]?.discount?.amount ?? 0
+      (calculationContext.allocation_map[lineItem.id]?.discount?.unit_amount ||
+        0) * lineItem.quantity
 
     if (!isDefined(lineItem.tax_lines)) {
       throw new MedusaError(

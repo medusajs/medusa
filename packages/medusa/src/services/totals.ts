@@ -463,8 +463,7 @@ class TotalsService extends TransactionBaseService {
           allocationMap[ld.item.id].discount = {
             amount: adjustmentAmount,
             /**
-             * @deprecated the rounding can create some issues depending on the quantity and therefore does not act as expected.
-             * It is suggested that you use the amount above instead
+             * Used for the refund computation
              */
             unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
           }
@@ -473,8 +472,7 @@ class TotalsService extends TransactionBaseService {
             discount: {
               amount: adjustmentAmount,
               /**
-               * @deprecated the rounding can create some issues depending on the quantity and therefore does not act as expected.
-               * It is suggested that you use the amount above instead
+               * Used for the refund computation
                */
               unit_amount: Math.round(adjustmentAmount / ld.item.quantity),
             },
