@@ -76,6 +76,10 @@ html[data-theme="dark"] .navbar-github-link:before {
   background-color: var(--medusa-button-secondary-hover) !important;
 }
 
+[class*=toggleButton] {
+  --ifm-icon-color: var(--ifm-color-mode-icon-color)
+}
+
 .navbar-link-icon {
   display: flex;
   justify-content: center;

@@ -107,8 +107,9 @@
   --ifm-code-tabs-active-color: var(--medusa-code-tab-active-text);
   --ifm-code-action-hover-bg: var(--medusa-code-tab-hover);
   --ifm-pre-padding: 16px;
-  --docusaurus-highlighted-code-line-bg: #393939;
   --ifm-code-title-color: var(--medusa-code-tab-title);
+  --ifm-code-line-number-color: var(--medusa-text-placeholder);
+  --ifm-code-block-border-color: var(--medusa-code-block-border);
 
   /* Tooltip */
   --ifm-tooltip-background-color: var(--medusa-tooltip);
