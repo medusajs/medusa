@@ -10,7 +10,7 @@ import { CONNECTION_NAME } from "../../config"
 
 export const up = async ({ configModule }: { configModule: ConfigModule }) => {
   const connection = await createConnection({
-    name: `${CONNECTION_NAME}.${addReservationType1675761451145.name}`,
+    name: `${CONNECTION_NAME}`,
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     extra: configModule.projectConfig.database_extra || {},
@@ -29,7 +29,7 @@ export const down = async ({
   configModule: ConfigModule
 }) => {
   const connection = await createConnection({
-    name: `${CONNECTION_NAME}.${addReservationType1675761451145.name}`,
+    name: `${CONNECTION_NAME}`,
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     extra: configModule.projectConfig.database_extra || {},
@@ -43,21 +43,20 @@ export const down = async ({
 }
 
 export class addReservationType1675761451145 implements MigrationInterface {
-    name = "addReservationType1675761451145"
+  name = "addReservationType1675761451145"
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
-          CREATE TYPE "reservation_item_type_enum" AS ENUM('internal', 'external')
+  public async up(queryRunner: QueryRunner): Promise<void> {
+      await queryRunner.query(`
+        CREATE TYPE "reservation_item_type_enum" AS ENUM('internal', 'external');
 
-          ALTER TABLE "reservation_item" ADD COLUMN "type" "reservation_item_type_enum" NOT NULL DEFAULT 'internal';
-        `)
-      }
-    
-      public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
-          ALTER TABLE "reservation_item" DROP COLUMN "type";
-          DROP TYPE "reservation_item_type_enum";
-        `)
-      }
-
+        ALTER TABLE "reservation_item" ADD COLUMN "type" "reservation_item_type_enum" NOT NULL DEFAULT 'internal';
+      `)
+    }
+  
+    public async down(queryRunner: QueryRunner): Promise<void> {
+      await queryRunner.query(`
+        ALTER TABLE "reservation_item" DROP COLUMN "type";
+        DROP TYPE "reservation_item_type_enum";
+      `)
+    }
 }
