@@ -625,7 +625,7 @@ class BrightpearlService extends BaseService {
 
   attemptRetryEvent(eventName, eventData, errorMessage) {
     const currentAttempts = eventData.retries || 0
-    
+
     if (currentAttempts > 3) {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, errorMessage)
     }
@@ -756,88 +756,83 @@ class BrightpearlService extends BaseService {
   }
 
   async createSalesOrder(fromOrderId) {
-    try {
-      const fromOrder = await this.orderService_.retrieve(fromOrderId, {
-        select: [
-          "total",
-          "subtotal",
-          "shipping_total",
-          "gift_card_total",
-          "discount_total",
-        ],
-        relations: [
-          "region",
-          "shipping_address",
-          "billing_address",
-          "shipping_methods",
-          "payments",
-          "sales_channel",
-        ],
-      })
+    const fromOrder = await this.orderService_.retrieve(fromOrderId, {
+      select: [
+        "total",
+        "subtotal",
+        "shipping_total",
+        "gift_card_total",
+        "discount_total",
+      ],
+      relations: [
+        "region",
+        "shipping_address",
+        "billing_address",
+        "shipping_methods",
+        "payments",
+        "sales_channel",
+      ],
+    })
 
-      const client = await this.getClient()
+    const client = await this.getClient()
 
-      let customer = await this.retrieveCustomerByEmail(fromOrder.email)
+    let customer = await this.retrieveCustomerByEmail(fromOrder.email)
 
-      // All sales orders must have a customer
-      if (!customer) {
-        customer = await this.createCustomer(fromOrder)
-      }
-
-      const authData = await this.getAuthData()
-
-      const { shipping_address } = fromOrder
-
-      const order = {
-        currency: {
-          code: fromOrder.currency_code.toUpperCase(),
-        },
-        ref: fromOrder.display_id,
-        externalRef: fromOrder.id,
-        channelId:
-          fromOrder.sales_channel?.metadata?.bp_id ||
-          this.options.channel_id ||
-          `1`,
-        installedIntegrationInstanceId: authData.installation_instance_id,
-        statusId: this.options.default_status_id || `3`,
-        customer: {
-          id: customer.contactId,
-          address: {
-            addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
-            addressLine1: shipping_address.address_1,
-            addressLine2: shipping_address.address_2,
-            postalCode: shipping_address.postal_code,
-            countryIsoCode: shipping_address.country_code,
-            telephone: shipping_address.phone,
-            email: fromOrder.email,
-          },
-        },
-        delivery: {
-          shippingMethodId: 0,
-          address: {
-            addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
-            addressLine1: shipping_address.address_1,
-            addressLine2: shipping_address.address_2,
-            postalCode: shipping_address.postal_code,
-            countryIsoCode: shipping_address.country_code,
-            telephone: shipping_address.phone,
-            email: fromOrder.email,
-          },
-        },
-        rows: await this.getBrightpearlRows(fromOrder),
-      }
-
-      return client.orders.create(order).then(async (salesOrderId) => {
-        return await this.orderService_.update(fromOrder.id, {
-          metadata: {
-            brightpearl_sales_order_id: salesOrderId,
-          },
-        })
-      })
-    } catch (err) {
-      console.log(err)
-      throw err
+    // All sales orders must have a customer
+    if (!customer) {
+      customer = await this.createCustomer(fromOrder)
     }
+
+    const authData = await this.getAuthData()
+
+    const { shipping_address } = fromOrder
+
+    const order = {
+      currency: {
+        code: fromOrder.currency_code.toUpperCase(),
+      },
+      ref: fromOrder.display_id,
+      externalRef: fromOrder.id,
+      channelId:
+        fromOrder.sales_channel?.metadata?.bp_id ||
+        this.options.channel_id ||
+        `1`,
+      installedIntegrationInstanceId: authData.installation_instance_id,
+      statusId: this.options.default_status_id || `3`,
+      customer: {
+        id: customer.contactId,
+        address: {
+          addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
+          addressLine1: shipping_address.address_1,
+          addressLine2: shipping_address.address_2,
+          postalCode: shipping_address.postal_code,
+          countryIsoCode: shipping_address.country_code,
+          telephone: shipping_address.phone,
+          email: fromOrder.email,
+        },
+      },
+      delivery: {
+        shippingMethodId: 0,
+        address: {
+          addressFullName: `${shipping_address.first_name} ${shipping_address.last_name}`,
+          addressLine1: shipping_address.address_1,
+          addressLine2: shipping_address.address_2,
+          postalCode: shipping_address.postal_code,
+          countryIsoCode: shipping_address.country_code,
+          telephone: shipping_address.phone,
+          email: fromOrder.email,
+        },
+      },
+      rows: await this.getBrightpearlRows(fromOrder),
+    }
+
+    return client.orders.create(order).then(async (salesOrderId) => {
+      return await this.orderService_.update(fromOrder.id, {
+        metadata: {
+          brightpearl_sales_order_id: salesOrderId,
+        },
+      })
+    })
   }
 
   async createSwapPayment(fromSwapId) {
