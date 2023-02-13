@@ -11,7 +11,6 @@ import {
   CartService,
   ProductService,
   ProductVariantInventoryService,
-  RegionService,
 } from "../../../../services"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import PricingService from "../../../../services/pricing"
@@ -187,15 +186,16 @@ export default async (req, res) => {
     req.scope.resolve("productVariantInventoryService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
-  const regionService: RegionService = req.scope.resolve("regionService")
 
   const validated = req.validatedQuery as StoreGetProductsParams
+
   let {
     cart_id,
     region_id: regionId,
     currency_code: currencyCode,
     ...filterableFields
   } = req.filterableFields
+
   const listConfig = req.listConfig
 
   // get only published products for store endpoint
@@ -212,37 +212,50 @@ export default async (req, res) => {
     }
   }
 
-  const [rawProducts, count] = await productService.listAndCount(
-    filterableFields,
-    listConfig
-  )
+  const promises: Promise<any>[] = []
+
+  promises.push(productService.listAndCount(filterableFields, listConfig))
 
   if (validated.cart_id) {
-    const cart = await cartService.retrieve(validated.cart_id, {
-      select: ["id", "region_id"],
-    })
-    const region = await regionService.retrieve(cart.region_id, {
-      select: ["id", "currency_code"],
-    })
-    regionId = region.id
-    currencyCode = region.currency_code
+    promises.push(
+      cartService.retrieve(validated.cart_id, {
+        select: ["id", "region_id"] as any,
+        relations: ["region"],
+      })
+    )
   }
 
-  const pricedProducts = await pricingService.setProductPrices(rawProducts, {
-    cart_id: cart_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    customer_id: req.user?.customer_id,
-    include_discount_prices: true,
-  })
+  const [
+    [rawProducts, count],
+    {
+      region_id,
+      region: { currency_code },
+    },
+  ] = await Promise.all(promises)
 
-  const products = await productVariantInventoryService.setProductAvailability(
-    pricedProducts,
-    filterableFields.sales_channel_id
-  )
+  regionId = region_id
+  currencyCode = currency_code
+
+  const computedProducts = rawProducts
+
+  // We can run them concurrently as the new properties are assigned to the references
+  // of the appropriate entity
+  await Promise.all([
+    pricingService.setProductPrices(computedProducts, {
+      cart_id: cart_id,
+      region_id: regionId,
+      currency_code: currencyCode,
+      customer_id: req.user?.customer_id,
+      include_discount_prices: true,
+    }),
+    productVariantInventoryService.setProductAvailability(
+      computedProducts,
+      filterableFields.sales_channel_id
+    ),
+  ])
 
   res.json({
-    products: cleanResponseData(products, req.allowedProperties || []),
+    products: cleanResponseData(computedProducts, req.allowedProperties || []),
     count,
     offset: validated.offset,
     limit: validated.limit,

@@ -464,22 +464,13 @@ class PricingService extends TransactionBaseService {
           pricingContext
         )
 
-        const pricedVariants = product.variants.map(
-          (productVariant): PricedVariant => {
-            const pricing = variantPricing[productVariant.id]
-            return {
-              ...productVariant,
-              ...pricing,
-            }
-          }
-        )
+        product.variants.map((productVariant): PricedVariant => {
+          const pricing = variantPricing[productVariant.id]
+          Object.assign(productVariant, pricing)
+          return productVariant as unknown as PricedVariant
+        })
 
-        const pricedProduct = {
-          ...product,
-          variants: pricedVariants,
-        }
-
-        return pricedProduct
+        return product
       })
     )
   }
