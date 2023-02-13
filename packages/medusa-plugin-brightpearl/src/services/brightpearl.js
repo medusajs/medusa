@@ -4,6 +4,7 @@ import {
 } from "@medusajs/medusa"
 import { MedusaError, humanizeAmount } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { HighlightSpanKind } from "typescript"
 import Brightpearl from "../utils/brightpearl"
 
 class BrightpearlService extends BaseService {
@@ -116,7 +117,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -125,7 +126,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -201,15 +202,16 @@ class BrightpearlService extends BaseService {
             })
             .catch((_) => undefined)
 
-          const prodAvail = availabilities[productId]
+          const productAvailability = availabilities[productId]
 
           let onHand = 0
           if (
-            prodAvail &&
-            prodAvail.warehouses &&
-            prodAvail.warehouses[`${this.options.warehouse}`]
+            productAvailability &&
+            productAvailability.warehouses &&
+            productAvailability.warehouses[`${this.options.warehouse}`]
           ) {
-            onHand = prodAvail.warehouses[`${this.options.warehouse}`].onHand
+            onHand =
+              productAvailability.warehouses[`${this.options.warehouse}`].onHand
           }
 
           if (variant && variant.manage_inventory) {
@@ -246,16 +248,17 @@ class BrightpearlService extends BaseService {
         return
       }
 
-      const prodAvail = availability[productId]
+      const productAvailability = availability[productId]
 
       if (!this.inventoryService_) {
         let onHand = 0
 
         if (
-          prodAvail.warehouses &&
-          prodAvail.warehouses[`${this.options.warehouse}`]
+          productAvailability.warehouses &&
+          productAvailability.warehouses[`${this.options.warehouse}`]
         ) {
-          onHand = prodAvail.warehouses[`${this.options.warehouse}`].onHand
+          onHand =
+            productAvailability.warehouses[`${this.options.warehouse}`].onHand
         }
 
         return await this.manager_.transaction((m) => {
@@ -293,7 +296,7 @@ class BrightpearlService extends BaseService {
         locations.map(async (location) => {
           if (
             !location.metadata?.bp_id ||
-            !prodAvail.warehouses[`${location.metadata.bp_id}`]
+            !productAvailability.warehouses[`${location.metadata.bp_id}`]
           ) {
             return
           }
@@ -301,7 +304,11 @@ class BrightpearlService extends BaseService {
           // TODO: Assuming we have a 1 to 1 mapping of inventory items
           const inventoryLevel = inventoryMap[location.id][0]
           const warehouseData =
-            prodAvail.warehouses[`${location.metadata.bp_id}`]
+            productAvailability.warehouses[`${location.metadata.bp_id}`]
+
+          if (!warehouseData) {
+            return
+          }
 
           const externallyReservedQuantityAdjustment =
             warehouseData.inStock -
@@ -312,7 +319,7 @@ class BrightpearlService extends BaseService {
             return
           }
 
-          const [reservations, count] =
+          const [reservations] =
             await this.inventoryService_.listReservationItems({
               inventory_item_id: inventoryLevel.inventory_item_id,
               location_id: location.id,
@@ -489,32 +496,21 @@ class BrightpearlService extends BaseService {
     return warehouse
   }
 
-  async getOrderFromReservationId_(reservationId) {
-    const [reservationItems] =
-      await this.inventoryService_.listReservationItems({
-        id: reservationId,
-      })
-
-    const reservationItemsWithLineItemIds = reservationItems.filter(
-      (item) => !!item.line_item_id
-    )
-
-    if (!reservationItemsWithLineItemIds.length) {
+  async getOrderFromReservation_(reservationItem) {
+    if (!reservationItem.line_item_id) {
       return {}
     }
 
-    const lineItems = await this.lineItemService_.list({
-      id: reservationItemsWithLineItemIds.map((item) => item.line_item_id),
-    })
-
-    const orderId = lineItems.find((item) => item.order_id)?.order_id
+    const lineItem = await this.lineItemService_
+      .retrieve(reservationItem.line_item_id)
+      .catch(() => undefined)
 
     const order = await this.orderService_
-      .retrieve(orderId)
-      .catch((err) => undefined)
+      .retrieve(lineItem.orderId)
+      .catch(() => undefined)
 
     if (order) {
-      return { order, lineItem: lineItems[0] }
+      return { order, lineItem }
     }
 
     return {}
@@ -546,84 +542,85 @@ class BrightpearlService extends BaseService {
   }
 
   async createReservation(eventData) {
-    try {
-      // TODO cut this down to size
-      const { variant_id, quantity, reservationItem, locationId } = eventData
+    const { reservationItemId } = eventData
 
-      if (!reservationItem?.length) {
-        return []
-      }
+    if (!reservationItemId?.length) {
+      return []
+    }
 
-      const client = await this.getClient()
+    const [[reservationItem]] =
+      await this.inventoryService_.listReservationItems({
+        id: reservationItemId,
+      })
 
-      const warehouse = await this.getLocation(locationId)
+    const client = await this.getClient()
 
-      const variant = await this.productVariantService_.retrieve(variant_id)
+    const warehouse = await this.getLocation(reservationItem.locationId)
 
-      const { order, lineItem } = await this.getOrderFromReservationId_(
-        reservationItem
+    const { order, lineItem } = await this.getOrderFromReservation_(
+      reservationItem
+    )
+
+    if (!order.metadata.brightpearl_sales_order_id) {
+      return this.attemptRetryEvent(
+        "product_variant_inventory.reservation_created",
+        eventData,
+        "Cannot create a brightpearl resrvation without a brightpearl order"
       )
+    }
 
-      if (!order.metadata.brightpearl_sales_order_id) {
-        return this.attemptRetryEvent(
-          "product_variant_inventory.reservation_created",
-          eventData,
-          "Cannot create a brightpearl resrvation without a brightpearl order"
-        )
-      }
+    const variant = await this.productVariantService_.retrieve(
+      lineItem.variant_id
+    )
 
-      const bpProduct = await this.retrieveProductBySKU(variant.sku)
+    const bpProduct = await this.retrieveProductBySKU(variant.sku)
 
-      const bpOrder = await client.orders.retrieve(
-        order.metadata.brightpearl_sales_order_id
+    const bpOrder = await client.orders.retrieve(
+      order.metadata.brightpearl_sales_order_id
+    )
+
+    const bpOrderRow = bpOrder.rows.find(
+      (row) => row.externalRef === lineItem.id
+    )
+
+    order.rows = [
+      {
+        productId: bpProduct.productId,
+        id: bpOrderRow.id,
+        quantity: reservationItem.quantity,
+      },
+    ]
+
+    const reservation = await this.getReservationForOrder_(order, warehouse)
+
+    if (!reservation) {
+      return this.attemptRetryEvent(
+        "product_variant_inventory.reservation_created",
+        eventData,
+        "Could not create reservation for order with id: " +
+          order.metadata.brightpearl_sales_order_id
       )
+    }
 
-      const bpOrderRow = bpOrder.rows.find(
-        (row) => row.externalRef === lineItem.id
-      )
-
-      order.rows = [
+    const updatePayload = {
+      products: [
         {
           productId: bpProduct.productId,
-          id: bpOrderRow.id,
-          quantity,
+          salesOrderRowId: bpOrderRow.id,
+          quantity: reservationItem.quantity,
         },
-      ]
-
-      const reservation = await this.getReservationForOrder_(order, warehouse)
-
-      if (!reservation) {
-        return this.attemptRetryEvent(
-          "product_variant_inventory.reservation_created",
-          eventData,
-          "Could not create reservation for order with id: " +
-            order.metadata.brightpearl_sales_order_id
-        )
-      }
-
-      const updatePayload = {
-        products: [
-          {
-            productId: bpProduct.productId,
-            salesOrderRowId: bpOrderRow.id,
-            quantity,
-          },
-          ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
-            productId: value.productId,
-            quantity: value.quantity,
-            salesOrderRowId: key,
-          })),
-        ],
-      }
-
-      return await client.warehouses.updateReservation(
-        order.metadata.brightpearl_sales_order_id,
-        updatePayload
-      )
-    } catch (err) {
-      this.logger_.error(err)
-      throw err
+        ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
+          productId: value.productId,
+          quantity: value.quantity,
+          salesOrderRowId: key,
+        })),
+      ],
     }
+
+    return await client.warehouses.updateReservation(
+      order.metadata.brightpearl_sales_order_id,
+      updatePayload
+    )
   }
 
   attemptRetryEvent(eventName, eventData, errorMessage) {
@@ -1444,8 +1441,17 @@ class BrightpearlService extends BaseService {
       const order = await client.orders.retrieve(goodsOut.orderId)
 
       // Only relevant for medusa orders check channel id
-      // TODO: re-consider this check
-      if (order.channelId !== parseInt(this.options.channel_id)) {
+      const { fulfillments: existingFulfillments, sales_channel } =
+        await this.orderService_.withTransaction(m).retrieve(id, {
+          relations: ["fulfillments", "sales_channel"],
+        })
+
+      if (
+        (sales_channel.metadata?.bp_id &&
+          sales_channel.metadata.bp_id !== order.channelId) ||
+        (this.options.channel_id &&
+          order.channelId !== parseInt(this.options.channel_id))
+      ) {
         return
       }
 
@@ -1487,12 +1493,6 @@ class BrightpearlService extends BaseService {
             })
         }
       }
-
-      const { fulfillments: existingFulfillments } = await this.orderService_
-        .withTransaction(m)
-        .retrieve(id, {
-          relations: ["fulfillments"],
-        })
 
       const medusaOrder = this.orderService_
         .withTransaction(m)

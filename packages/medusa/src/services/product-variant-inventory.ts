@@ -426,14 +426,15 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
 
     // emit event
-    await this.eventBusService_
-      .withTransaction(manager)
-      .emit(ProductVariantInventoryService.Events.RESERVATION_CREATED, {
-        variant_id: variantId,
-        quantity,
-        locationId,
-        reservationItem: reservationItems.map((i) => i.id),
+    await Promise.all(
+      reservationItems.map(async (reservationItem) => {
+        await this.eventBusService_
+          .withTransaction(manager)
+          .emit(ProductVariantInventoryService.Events.RESERVATION_CREATED, {
+            reservationItemId: reservationItem.id,
+          })
       })
+    )
 
     return reservationItems
   }
