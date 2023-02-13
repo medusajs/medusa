@@ -110,69 +110,100 @@ export class ShippingMethod {
  * description: "Shipping Methods represent a way in which an Order or Return can be shipped. Shipping Methods are built from a Shipping Option, but may contain additional details, that can be necessary for the Fulfillment Provider to handle the shipment."
  * type: object
  * required:
- *   - shipping_option_id
+ *   - cart_id
+ *   - claim_order_id
+ *   - data
+ *   - id
+ *   - order_id
  *   - price
+ *   - return_id
+ *   - shipping_option_id
+ *   - swap_id
  * properties:
  *   id:
- *     type: string
  *     description: The shipping method's ID
+ *     type: string
  *     example: sm_01F0YET7DR2E7CYVSDHM593QG2
  *   shipping_option_id:
- *     description: "The id of the Shipping Option that the Shipping Method is built from."
+ *     description: The id of the Shipping Option that the Shipping Method is built from.
  *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
- *   shipping_option:
- *     description: Available if the relation `shipping_option` is expanded.
- *     $ref: "#/components/schemas/ShippingOption"
  *   order_id:
- *     description: "The id of the Order that the Shipping Method is used on."
+ *     description: The id of the Order that the Shipping Method is used on.
+ *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
  *     description: An order object. Available if the relation `order` is expanded.
- *     type: object
- *   return_id:
- *     description: "The id of the Return that the Shipping Method is used on."
- *     type: string
- *     example: null
- *   return_order:
- *     description: A return object. Available if the relation `return_order` is expanded.
- *     type: object
- *   swap_id:
- *     description: "The id of the Swap that the Shipping Method is used on."
- *     type: string
- *     example: null
- *   swap:
- *     description: A swap object. Available if the relation `swap` is expanded.
- *     type: object
- *   cart_id:
- *     description: "The id of the Cart that the Shipping Method is used on."
- *     type: string
- *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
- *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/Order"
  *   claim_order_id:
- *     description: "The id of the Claim that the Shipping Method is used on."
+ *     description: The id of the Claim that the Shipping Method is used on.
+ *     nullable: true
  *     type: string
  *     example: null
  *   claim_order:
  *     description: A claim order object. Available if the relation `claim_order` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/ClaimOrder"
+ *   cart_id:
+ *     description: The id of the Cart that the Shipping Method is used on.
+ *     nullable: true
+ *     type: string
+ *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
+ *   cart:
+ *     description: A cart object. Available if the relation `cart` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/Cart"
+ *   swap_id:
+ *     description: The id of the Swap that the Shipping Method is used on.
+ *     nullable: true
+ *     type: string
+ *     example: null
+ *   swap:
+ *     description: A swap object. Available if the relation `swap` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/Swap"
+ *   return_id:
+ *     description: The id of the Return that the Shipping Method is used on.
+ *     nullable: true
+ *     type: string
+ *     example: null
+ *   return_order:
+ *     description: A return object. Available if the relation `return_order` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/Return"
+ *   shipping_option:
+ *     description: Available if the relation `shipping_option` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/ShippingOption"
  *   tax_lines:
- *     type: array
  *     description: Available if the relation `tax_lines` is expanded.
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/ShippingMethodTaxLine"
  *   price:
- *     description: "The amount to charge for the Shipping Method. The currency of the price is defined by the Region that the Order that the Shipping Method belongs to is a part of."
+ *     description: The amount to charge for the Shipping Method. The currency of the price is defined by the Region that the Order that the Shipping Method belongs to is a part of.
  *     type: integer
  *     example: 200
  *   data:
- *     description: "Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id."
+ *     description: Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id.
  *     type: object
  *     example: {}
  *   includes_tax:
  *     description: "[EXPERIMENTAL] Indicates if the shipping method price include tax"
  *     type: boolean
+ *     default: false
+ *   subtotal:
+ *     description: The subtotal of the shipping
+ *     type: integer
+ *     example: 8000
+ *   total:
+ *     description: The total amount of the shipping
+ *     type: integer
+ *     example: 8200
+ *   tax_total:
+ *     description: The total of tax
+ *     type: integer
+ *     example: 0
  */
