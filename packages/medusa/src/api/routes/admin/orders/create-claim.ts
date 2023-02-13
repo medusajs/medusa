@@ -157,14 +157,7 @@ export default async (req, res) => {
                 await claimService.withTransaction(manager).create({
                   idempotency_key: idempotencyKey.idempotency_key,
                   order,
-                  type: value.type,
-                  shipping_address: value.shipping_address,
-                  claim_items: value.claim_items,
-                  return_shipping: value.return_shipping,
-                  additional_items: value.additional_items,
-                  shipping_methods: value.shipping_methods,
-                  no_notification: value.no_notification,
-                  metadata: value.metadata,
+                  ...value,
                 })
 
                 return {

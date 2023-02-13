@@ -18,7 +18,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/cache.ts:10](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/cache.ts#L10)
+[packages/medusa/src/services/cache.ts:10](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/cache.ts#L10)
 
 ## Properties
 
@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/cache.ts:8](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/cache.ts#L8)
+[packages/medusa/src/services/cache.ts:8](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/cache.ts#L8)
 
 ## Methods
 
@@ -60,7 +60,7 @@ ICacheService.get
 
 #### Defined in
 
-[packages/medusa/src/services/cache.ts:40](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/cache.ts#L40)
+[packages/medusa/src/services/cache.ts:40](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/cache.ts#L40)
 
 ___
 
@@ -86,7 +86,7 @@ ICacheService.invalidate
 
 #### Defined in
 
-[packages/medusa/src/services/cache.ts:56](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/cache.ts#L56)
+[packages/medusa/src/services/cache.ts:56](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/cache.ts#L56)
 
 ___
 
@@ -116,4 +116,4 @@ ICacheService.set
 
 #### Defined in
 
-[packages/medusa/src/services/cache.ts:22](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/cache.ts#L22)
+[packages/medusa/src/services/cache.ts:22](https://github.com/medusajs/medusa/blob/eee928381/packages/medusa/src/services/cache.ts#L22)
