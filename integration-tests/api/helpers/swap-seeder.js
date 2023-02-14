@@ -21,7 +21,7 @@ module.exports = async (dataSource, data = {}) => {
 
   regionId = "test-region"
 
-  region = await manager.findOne(Region, { id: regionId })
+  region = await manager.findOne(Region, { where: { id: regionId } })
 
   let orderWithSwap = manager.create(Order, {
     id: "order-with-swap",
