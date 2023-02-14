@@ -4,6 +4,7 @@ const fs = require("fs/promises")
 const path = require("path")
 const execa = require("execa")
 const yaml = require("js-yaml")
+const OpenAPIParser = require("@readme/openapi-parser")
 
 const isDryRun = process.argv.indexOf("--dry-run") !== -1
 const basePath = path.resolve(__dirname, `../`)
@@ -21,6 +22,7 @@ const run = async () => {
 
     await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
     await sanitizeOAS(outputYamlFile)
+    await circularReferenceCheck(outputYamlFile)
     await generateReference(outputYamlFile, apiType)
   }
 }
@@ -56,6 +58,21 @@ const sanitizeOAS = async (srcFile) => {
     { cwd: basePath, all: true }
   )
   console.log(logs)
+}
+
+const circularReferenceCheck = async (srcFile) => {
+  const parser = new OpenAPIParser()
+  await parser.validate(srcFile, {
+    dereference: {
+      circular: "ignore",
+    },
+  })
+  if (parser.$refs.circular) {
+    console.log(`🔴 Unhandled circular references - ${srcFile}`)
+    const circularRefs = [...parser.$refs.circularRefs]
+    circularRefs.sort()
+    console.log(circularRefs)
+  }
 }
 
 const generateReference = async (srcFile, apiType) => {

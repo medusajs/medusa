@@ -31212,6 +31212,7 @@ __metadata:
     "@linear/sdk": ^1.22.0
     "@medusajs/medusa-oas-cli": "*"
     "@octokit/core": ^4.0.5
+    "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.0.0-beta.123
     "@typescript-eslint/eslint-plugin": ^5.36.2
     "@typescript-eslint/parser": ^5.36.2

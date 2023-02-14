@@ -21,6 +21,7 @@
     "@babel/register": "^7.11.5",
     "@babel/runtime": "^7.11.2",
     "@medusajs/medusa-oas-cli": "*",
+    "@readme/openapi-parser": "^2.4.0",
     "@redocly/cli": "1.0.0-beta.123",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
