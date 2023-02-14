@@ -22,7 +22,6 @@ class CustomerGroupService extends TransactionBaseService {
   protected readonly customerService_: CustomerService
 
   constructor({
-    manager,
     customerGroupRepository,
     customerService,
   }: CustomerGroupConstructorProps) {

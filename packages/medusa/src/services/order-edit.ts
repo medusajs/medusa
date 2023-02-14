@@ -63,7 +63,6 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
 
   constructor({
-    manager,
     orderEditRepository,
     orderService,
     lineItemService,

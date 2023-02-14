@@ -54,7 +54,6 @@ class LineItemService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
 
   constructor({
-    manager,
     lineItemRepository,
     lineItemTaxLineRepository,
     productVariantService,

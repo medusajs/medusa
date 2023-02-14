@@ -32,7 +32,6 @@ class DiscountConditionService extends TransactionBaseService {
   protected readonly eventBus_: EventBusService
 
   constructor({
-    manager,
     discountConditionRepository,
     eventBusService,
   }: InjectedDependencies) {

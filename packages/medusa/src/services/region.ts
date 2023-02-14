@@ -63,7 +63,6 @@ class RegionService extends TransactionBaseService {
   protected readonly taxProviderRepository_: typeof TaxProviderRepository
 
   constructor({
-    manager,
     regionRepository,
     countryRepository,
     storeService,

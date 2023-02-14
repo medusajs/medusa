@@ -132,7 +132,6 @@ class CartService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     cartRepository,
     shippingMethodRepository,
     lineItemRepository,

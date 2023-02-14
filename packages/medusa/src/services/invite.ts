@@ -36,7 +36,6 @@ class InviteService extends TransactionBaseService {
 
   constructor(
     {
-      manager,
       userService,
       userRepository,
       inviteRepository,

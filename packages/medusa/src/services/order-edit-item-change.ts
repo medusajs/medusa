@@ -30,7 +30,6 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
 
   constructor({
-    manager,
     orderItemChangeRepository,
     eventBusService,
     lineItemService,

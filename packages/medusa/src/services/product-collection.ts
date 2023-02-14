@@ -29,7 +29,6 @@ class ProductCollectionService extends TransactionBaseService {
   protected readonly productRepository_: typeof ProductRepository
 
   constructor({
-    manager,
     productCollectionRepository,
     productRepository,
     eventBusService,

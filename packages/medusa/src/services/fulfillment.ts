@@ -45,7 +45,6 @@ class FulfillmentService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     totalsService,
     fulfillmentRepository,
     trackingLinkRepository,

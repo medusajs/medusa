@@ -28,7 +28,6 @@ class TaxRateService extends TransactionBaseService {
   protected readonly taxRateRepository_: typeof TaxRateRepository
 
   constructor({
-    manager,
     productService,
     productTypeService,
     shippingOptionService,

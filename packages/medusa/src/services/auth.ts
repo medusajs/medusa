@@ -19,7 +19,7 @@ class AuthService extends TransactionBaseService {
   protected readonly userService_: UserService
   protected readonly customerService_: CustomerService
 
-  constructor({ manager, userService, customerService }: InjectedDependencies) {
+  constructor({ userService, customerService }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 

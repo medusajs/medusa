@@ -124,7 +124,6 @@ class OrderService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     orderRepository,
     customerService,
     paymentProviderService,

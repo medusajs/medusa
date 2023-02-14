@@ -72,7 +72,6 @@ export default class EventBusService {
 
   constructor(
     {
-      manager,
       logger,
       stagedJobRepository,
       redisClient,

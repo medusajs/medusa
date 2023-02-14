@@ -24,11 +24,7 @@ class NoteService extends TransactionBaseService {
   protected readonly noteRepository_: typeof NoteRepository
   protected readonly eventBus_: EventBusService
 
-  constructor({
-    manager,
-    noteRepository,
-    eventBusService,
-  }: InjectedDependencies) {
+  constructor({ noteRepository, eventBusService }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 

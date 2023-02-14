@@ -34,7 +34,6 @@ class LineItemAdjustmentService extends TransactionBaseService {
   private readonly discountService: DiscountService
 
   constructor({
-    manager,
     lineItemAdjustmentRepository,
     discountService,
   }: LineItemAdjustmentServiceProps) {

@@ -88,7 +88,6 @@ class BatchJobService extends TransactionBaseService {
   ])
 
   constructor({
-    manager,
     batchJobRepository,
     eventBusService,
     strategyResolverService,

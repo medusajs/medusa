@@ -31,7 +31,6 @@ class ProductCategoryService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     productCategoryRepository,
     eventBusService,
   }: InjectedDependencies) {

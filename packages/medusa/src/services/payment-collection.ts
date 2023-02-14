@@ -47,7 +47,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
   protected readonly paymentCollectionRepository_: typeof PaymentCollectionRepository
 
   constructor({
-    manager,
     paymentCollectionRepository,
     paymentProviderService,
     customerService,

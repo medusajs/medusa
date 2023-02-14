@@ -15,10 +15,7 @@ class CustomShippingOptionService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected customShippingOptionRepository_: typeof CustomShippingOptionRepository
 
-  constructor({
-    manager,
-    customShippingOptionRepository,
-  }: InjectedDependencies) {
+  constructor({ customShippingOptionRepository }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 

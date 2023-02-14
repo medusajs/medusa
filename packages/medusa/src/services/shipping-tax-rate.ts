@@ -8,7 +8,7 @@ import { buildQuery } from "../utils"
 class ShippingTaxRateService extends TransactionBaseService {
   protected readonly shippingTaxRateRepository_: typeof ShippingTaxRateRepository
 
-  constructor({ manager, shippingTaxRateRepository }) {
+  constructor({ shippingTaxRateRepository }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 

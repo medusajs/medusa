@@ -42,7 +42,6 @@ class GiftCardService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     giftCardRepository,
     giftCardTransactionRepository,
     regionService,

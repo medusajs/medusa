@@ -52,7 +52,6 @@ class PriceListService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     customerGroupService,
     regionService,
     productService,

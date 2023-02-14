@@ -49,7 +49,6 @@ class DraftOrderService extends TransactionBaseService {
   protected readonly customShippingOptionService_: CustomShippingOptionService
 
   constructor({
-    manager,
     draftOrderRepository,
     paymentRepository,
     orderRepository,

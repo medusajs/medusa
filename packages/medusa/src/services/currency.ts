@@ -27,7 +27,6 @@ export default class CurrencyService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     currencyRepository,
     eventBusService,
     featureFlagRouter,

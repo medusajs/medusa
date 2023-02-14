@@ -63,7 +63,6 @@ export default class NewTotalsService extends TransactionBaseService {
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
 
   constructor({
-    manager,
     taxProviderService,
     featureFlagRouter,
     taxCalculationStrategy,

@@ -19,7 +19,7 @@ type InjectedDependencies = {
 class IdempotencyKeyService extends TransactionBaseService {
   protected readonly idempotencyKeyRepository_: typeof IdempotencyKeyRepository
 
-  constructor({ manager, idempotencyKeyRepository }: InjectedDependencies) {
+  constructor({ idempotencyKeyRepository }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 

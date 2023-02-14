@@ -34,7 +34,6 @@ class CustomerService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     customerRepository,
     eventBusService,
     addressRepository,

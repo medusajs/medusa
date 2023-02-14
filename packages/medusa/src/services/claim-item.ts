@@ -24,7 +24,6 @@ class ClaimItemService extends TransactionBaseService {
   protected readonly claimImageRepository_: typeof ClaimImageRepository
 
   constructor({
-    manager,
     claimItemRepository,
     claimTagRepository,
     claimImageRepository,

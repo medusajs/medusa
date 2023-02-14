@@ -36,7 +36,6 @@ export default class PaymentService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     paymentRepository,
     paymentProviderService,
     eventBusService,

@@ -49,7 +49,6 @@ class ProductVariantService extends TransactionBaseService {
   protected readonly cartRepository_: typeof CartRepository
 
   constructor({
-    manager,
     productVariantRepository,
     productRepository,
     eventBusService,

@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm"
 
 import { IInventoryService } from "../interfaces/services"
 
-import { SalesChannelLocationService, EventBusService } from "./"
+import { EventBusService, SalesChannelLocationService } from "./"
 
 type InjectedDependencies = {
   inventoryService: IInventoryService
@@ -22,7 +22,6 @@ class SalesChannelInventoryService {
     salesChannelLocationService,
     inventoryService,
     eventBusService,
-    manager,
   }: InjectedDependencies) {
     this.manager_ = manager
     this.salesChannelLocationService_ = salesChannelLocationService

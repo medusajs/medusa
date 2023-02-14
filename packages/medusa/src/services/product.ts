@@ -73,7 +73,6 @@ class ProductService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     productOptionRepository,
     productRepository,
     productVariantRepository,

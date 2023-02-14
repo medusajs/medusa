@@ -38,7 +38,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly cacheService_: CacheService
 
   constructor({
-    manager,
     stockLocationService,
     salesChannelLocationService,
     salesChannelInventoryService,

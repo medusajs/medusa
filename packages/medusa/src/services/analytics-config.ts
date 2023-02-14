@@ -18,7 +18,7 @@ class AnalyticsConfigService extends TransactionBaseService {
   protected readonly analyticsConfigRepository_: typeof AnalyticsRepository
   protected readonly userService_: UserService
 
-  constructor({ analyticsConfigRepository, manager }: InjectedDependencies) {
+  constructor({ analyticsConfigRepository }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 

@@ -79,7 +79,6 @@ export default class ClaimService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     addressRepository,
     claimRepository,
     shippingMethodRepository,

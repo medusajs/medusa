@@ -62,7 +62,6 @@ class ReturnService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     totalsService,
     lineItemService,
     returnRepository,

@@ -40,7 +40,6 @@ class PricingService extends TransactionBaseService {
   protected readonly featureFlagRouter: FlagRouter
 
   constructor({
-    manager,
     productVariantService,
     taxProviderService,
     regionService,
