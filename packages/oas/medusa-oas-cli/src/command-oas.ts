@@ -62,16 +62,13 @@ export async function execute(cliParams: OptionValues) {
     cliParams.type === "all" ? ["store", "admin"] : [cliParams.type]
 
   const outDir = path.resolve(cliParams.outDir)
-  if (!(await lstat(outDir)).isDirectory()) {
-    throw new Error(`--outDir must be a directory - ${outDir}`)
-  }
 
   const additionalPaths = (cliParams.paths ?? []).map((additionalPath) =>
     path.resolve(additionalPath)
   )
   for (const additionalPath of additionalPaths) {
-    if (!(await lstat(additionalPath)).isDirectory()) {
-      throw new Error(`--path must be a directory - ${additionalPath}`)
+    if (!(await isDirectory(additionalPath))) {
+      throw new Error(`--paths must be a directory - ${additionalPath}`)
     }
   }
 
@@ -95,10 +92,10 @@ export async function execute(cliParams: OptionValues) {
 /**
  * Methods
  */
-const getOASFromCodebase = async (
+async function getOASFromCodebase(
   apiType: ApiType,
   additionalPaths: string[] = []
-): Promise<OpenAPIObject> => {
+): Promise<OpenAPIObject> {
   const gen = await swaggerInline(
     [
       path.resolve(medusaPackagePath, "dist", "models"),
@@ -120,11 +117,11 @@ const getOASFromCodebase = async (
   return await OpenAPIParser.parse(JSON.parse(gen))
 }
 
-const validateOAS = async (
+async function validateOAS(
   oas: OpenAPIObject,
   apiType: ApiType,
   force = false
-): Promise<void> => {
+): Promise<void> {
   try {
     await OpenAPIParser.validate(JSON.parse(JSON.stringify(oas)))
     console.log(`🟢 Valid OAS - ${apiType}`)
@@ -136,13 +133,17 @@ const validateOAS = async (
   }
 }
 
-const exportOASToJSON = async (
+async function exportOASToJSON(
   oas: OpenAPIObject,
   apiType: ApiType,
   targetDir: string
-): Promise<void> => {
+): Promise<void> {
   const json = JSON.stringify(oas, null, 2)
   const filePath = path.resolve(targetDir, `${apiType}.oas.json`)
   await writeFile(filePath, json)
   console.log(`🔵 Exported OAS - ${apiType} - ${filePath}`)
+}
+
+async function isDirectory(dirPath: string): Promise<boolean> {
+  return (await lstat(path.resolve(dirPath))).isDirectory()
 }
