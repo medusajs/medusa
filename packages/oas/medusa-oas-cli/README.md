@@ -23,8 +23,8 @@ yarn medusa-oas <command>
 
 This command will scan the `@medusajs/medusa` package in order to extract JSDoc OAS into a json file.
 
-By default, the command will output the two files `admin.oas.json` and `store.oas.json` in the same directory that
-the command was run.
+By default, the command will output the two files `admin.oas.json` and `store.oas.json` in the same directory that the
+command was run.
 
 Invalid OAS with throw an error and will prevent the files from being outputted.
 
@@ -33,26 +33,26 @@ Invalid OAS with throw an error and will prevent the files from being outputted.
 Specify which API OAS to create. Accepts `all`, `admin`, `store`.
 Defaults to `all`.
 
-```
-yarn medusa-oas --type admin
+```bash
+yarn medusa-oas oas --type admin
 ```
 
 #### `--out-dir <path>`
 
-Specify in which directory should the files be outputted. It accepts a relative or absolute path. If the directory doesn't exist,
-it will be created. Defaults to `./`.
+Specify in which directory should the files be outputted. It accepts a relative or absolute path.
+If the directory doesn't exist, it will be created. Defaults to `./`.
 
 ```bash
-yarm medusa-oas --out-dir
+yarm medusa-oas oas --out-dir
 ```
 
 #### `--paths <paths...>`
 
 Allows passing additional directory paths to crawl for JSDoc OAS and include in the generated OAS.
-It accepts multiple entries. It has to be the last option. Alternatively, ` -- ` can be used before the next option.
+It accepts multiple entries.
 
 ```bash
-yarn medusa-oas --paths ~/medusa-server/src
+yarn medusa-oas oas --paths ~/medusa-server/src
 ```
 
 #### `--dry-run`
@@ -60,7 +60,7 @@ yarn medusa-oas --paths ~/medusa-server/src
 Will package the OAS but will not output file. Useful for validating OAS.
 
 ```bash
-yarn medusa-oas --dry-run
+yarn medusa-oas oas --dry-run
 ```
 
 #### `--force`
@@ -68,5 +68,5 @@ yarn medusa-oas --dry-run
 Ignore OAS errors and attempt to output generated OAS files.
 
 ```bash
-yarn medusa-oas --force
+yarn medusa-oas oas --force
 ```
