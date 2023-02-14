@@ -2,16 +2,9 @@ const path = require("path")
 
 const { bootstrapApp } = require("../../../helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../helpers/use-db")
-const { setPort, useApi } = require("../../../helpers/use-api")
-
-const adminSeeder = require("../../helpers/admin-seeder")
-const cartSeeder = require("../../helpers/cart-seeder")
-const { simpleProductFactory } = require("../../../api/factories")
-const { simpleSalesChannelFactory } = require("../../../api/factories")
+const { setPort } = require("../../../helpers/use-api")
 
 jest.setTimeout(30000)
-
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
 describe("Distributed Locking", () => {
   let express
@@ -24,7 +17,7 @@ describe("Distributed Locking", () => {
   }
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
     const { container, app, port } = await bootstrapApp({ cwd })
     appContainer = container
