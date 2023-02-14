@@ -286,11 +286,11 @@ class SalesChannelService extends TransactionBaseService {
    * @return the sales channel
    */
   async retrieveDefault(): Promise<SalesChannel> {
-    const manager = this.getManager()
-
-    const store = await this.storeService_.withTransaction(manager).retrieve({
-      relations: ["default_sales_channel"],
-    })
+    const store = await this.storeService_
+      .withTransaction(this.activeManager_)
+      .retrieve({
+        relations: ["default_sales_channel"],
+      })
 
     if (!store.default_sales_channel) {
       throw new MedusaError(
