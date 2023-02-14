@@ -31,35 +31,43 @@ export class PublishableApiKey extends BaseEntity {
  * title: "Publishable API key"
  * description: "Publishable API key defines scopes (i.e. resources) that are available within a request."
  * type: object
+ * required:
+ *   - created_at
+ *   - created_by
+ *   - id
+ *   - revoked_by
+ *   - revoked_at
+ *   - title
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The key's ID
+ *     type: string
  *     example: pk_01G1G5V27GYX4QXNARRQCW1N8T
  *   created_by:
+ *    description: The unique identifier of the user that created the key.
+ *    nullable: true
  *    type: string
- *    description: "The unique identifier of the user that created the key."
  *    example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
- *   created_by_user:
- *    description: A user object. Available if the relation `created_by_user` is expanded.
- *    type: object
- *   created_at:
- *     type: string
- *     description: "The date with timezone at which the resource was created."
- *     format: date-time
  *   revoked_by:
+ *     description: The unique identifier of the user that revoked the key.
+ *     nullable: true
  *     type: string
- *     description: "The unique identifier of the user that revoked the key."
  *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
- *   revoked_by_user:
- *     description: A user object. Available if the relation `revoked_by_user` is expanded.
- *     type: object
  *   revoked_at:
+ *     description: The date with timezone at which the key was revoked.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the key was revoked."
+ *     format: date-time
+ *   title:
+ *     description: The key's title.
+ *     type: string
+ *   created_at:
+ *     description: The date with timezone at which the resource was created.
+ *     type: string
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  */
