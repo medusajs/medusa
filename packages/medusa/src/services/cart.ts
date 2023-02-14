@@ -2195,7 +2195,7 @@ class CartService extends TransactionBaseService {
     // value if it exists)
     if (cart.items?.length) {
       const region = await this.regionService_
-        .withTransaction()
+        .withTransaction(this.activeManager_)
         .retrieve(regionId || cart.region_id, {
           relations: ["countries"],
         })
