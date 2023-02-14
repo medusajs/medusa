@@ -86,10 +86,7 @@ export default class DistributedLockingService
       return
     }
 
-    let refresh = false
-    if ((row.owner_id == ownerId && expire) || row.expire <= row.now) {
-      refresh = true
-    }
+    const refresh = (row.owner_id == ownerId && expire) || row.expire <= row.now
 
     if (refresh) {
       const expireSql = expire
