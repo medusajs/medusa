@@ -14,7 +14,9 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "watch": "tsc --watch"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {

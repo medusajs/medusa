@@ -6,7 +6,9 @@
   "bin": {
     "medusa-dev": "./dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@babel/runtime": "^7.12.5",
     "chokidar": "^3.5.3",
