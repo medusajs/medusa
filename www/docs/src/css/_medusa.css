@@ -100,9 +100,15 @@
   --medusa-label-regular-plus-size: 14px;
   --medusa-label-regular-plus-line-height: 20px;
   --medusa-label-regular-plus-font-weight: 500;
+  --medusa-label-small-size: 13px;
+  --medusa-label-small-line-height: 20px;
+  --medusa-label-small-font-weight: 400;
   --medusa-label-small-plus-size: 12px;
   --medusa-label-small-plus-line-height: 20px;
   --medusa-label-small-plus-font-weight: 500;
+  --medusa-label-x-small-plus-size: 12px;
+  --medusa-label-x-small-plus-line-height: 20px;
+  --medusa-label-x-small-plus-font-weight: 500;
 }
 
 /** Dark theme **/

@@ -143,24 +143,36 @@
   --docsearch-searchbox-focus-background: var(--medusa-bg-field-hover) !important;
   --docsearch-searchbox-border-color: var(--medusa-border-base);
   --docsearch-searchbox-shadow: var(--medusa-shadow-field-focused) !important;
-  --docsearch-modal-background: #fff !important;
-  --docsearch-modal-shadow: none !important;
-  --docsearch-modal-fade-bg: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
-  --docsearch-container-background: rgba(17, 24, 39, 0.4) !important;
+  --docsearch-modal-height: 472px !important;
+  --docsearch-modal-background: var(--medusa-bg-base) !important;
+  --docsearch-modal-border-color: var(--medusa-border-base);
+  --docsearch-modal-shadow: var(--medusa-shadow-overlay) !important;
+  --docsearch-modal-fade-bg: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%); /* TODO */
+  --docsearch-modal-searchbox-height: 56px;
+  --docsearch-modal-searchbox-focus-background: none;
+  --docsearch-container-background: var(--medusa-bg-overlay) !important;
   --docsearch-key-gradient: var(--medusa-bg-component) !important;
   --docsearch-muted-color: var(--medusa-text-secondary) !important;
   --docsearch-placeholder-color: var(--medusa-text-placeholder);
-  --docsearch-primary-color: var(--docsearch-searchbox-border-color);
-  --docsearch-spacing: 16px !important;
-  --docsearch-highlight-color: #6B7280 !important;
-  --docsearch-text-color: #111827 !important;
-  --docsearch-hit-background: #FFFFFF !important;
+  --docsearch-primary-color: var(--ifm-color-primary);
+  --docsearch-source-color: var(--medusa-text-placeholder);
+  --docsearch-spacing-y: 12px;
+  --docsearch-spacing-x: 24px;
+  --docsearch-spacing: var(--docsearch-spacing-y) var(--docsearch-spacing-x) !important;
+  --docsearch-source-spacing: 10px 24px;
+  --docsearch-highlight-color: var(--medusa-text-placeholder) !important;
+  --docsearch-text-color: var(--ifm-color-primary) !important;
+  --docsearch-hit-background: var(--docsearch-modal-background) !important;
   --docsearch-hit-height: auto !important;
   --docsearch-hit-active-color: var(--docsearch-text-color) !important;
-  --docsearch-hit-active-bg: #F9FAFB;
-  --docsearch-hit-icon-color: #9CA3AF;
-  --docsearch-hit-border-color: #E5E7EB;
-  --docsearch-hit-title-color: #000000;
+  --docsearch-hit-active-bg: var(--medusa-bg-base-hover);
+  --docsearch-hit-icon-color: var(--medusa-icon-placeholder);
+  --docsearch-icon-color: var(--medusa-icon-placeholder);
+  --docsearch-hit-border-color: var(--medusa-border-base);
+  --docsearch-hit-title-color: var(--docsearch-primary-color);
+  --docsearch-tree-color: var(--medusa-border-base);
+  --docsearch-tree-hover-color: var(--medusa-border-strong);
+  --docsearch-footer-height: 40px !important;
 
   /* Announcement Bar */
   --ifm-announcement-bar-bg: var(--ifm-background-surface-color);
@@ -211,19 +223,6 @@ html[data-theme="dark"] {
   --mode-button-active-bg: #161616;
   --mode-button-active-border-color: #393939;
   --mode-button-active-text-color: #F3F3F3;
-
-  /* Search */
-  --docsearch-modal-background: #222222 !important;
-  --docsearch-modal-fade-bg: linear-gradient(180deg, rgba(34, 34, 34, 0) 0%, #222222 100%);
-  --docsearch-container-background: rgba(22, 22, 22, 0.7) !important;
-  --docsearch-highlight-color: #8A8A8A !important;
-  --docsearch-text-color: #F3F3F3 !important;
-  --docsearch-hit-background: #222222 !important;
-  --docsearch-hit-active-color: var(--docsearch-text-color) !important;
-  --docsearch-hit-active-bg: #2D2D2D;
-  --docsearch-hit-icon-color: #737373;
-  --docsearch-hit-border-color: #393939;
-  --docsearch-hit-title-color: #F3F3F3;
 
   /* Tabs */
   --ifm-tabs-color-active: #F3F3F3;
