@@ -11,9 +11,17 @@ const {
 const {
   CustomShippingOption,
 } = require("@medusajs/medusa/dist/models/custom-shipping-option")
+const { Region } = require("@medusajs/medusa/dist/models/region")
+
+let regionId
+let region
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
+
+  regionId = "test-region"
+
+  region = await manager.findOne(Region, { id: regionId })
 
   let orderWithSwap = manager.create(Order, {
     id: "order-with-swap",
@@ -30,7 +38,7 @@ module.exports = async (connection, data = {}) => {
       first_name: "lebron",
       country_code: "us",
     },
-    region_id: "test-region",
+    region_id: regionId,
     currency_code: "usd",
     tax_rate: 0,
     discounts: [],
@@ -56,7 +64,7 @@ module.exports = async (connection, data = {}) => {
     email: "test-customer@email.com",
     shipping_address_id: "test-shipping-address",
     billing_address_id: "test-billing-address",
-    region_id: "test-region",
+    region_id: regionId,
     type: "swap",
     metadata: {
       swap_id: "test-swap",
@@ -103,7 +111,7 @@ module.exports = async (connection, data = {}) => {
     email: "test-customer@email.com",
     shipping_address_id: "test-shipping-address",
     billing_address_id: "test-billing-address",
-    region_id: "test-region",
+    region_id: regionId,
     type: "swap",
     metadata: {
       swap_id: "test-swap",
@@ -170,7 +178,7 @@ module.exports = async (connection, data = {}) => {
       email: "test-customer@email.com",
       shipping_address_id: "test-shipping-address",
       billing_address_id: "test-billing-address",
-      region_id: "test-region",
+      region_id: regionId,
       type: "swap",
       metadata: {},
       ...data,
@@ -349,7 +357,7 @@ const createSwap = async (options, manager) => {
     is_disabled: false,
     rule: dRule,
   })
-  let discountDb = await manager.save(discount)
+  const discountDb = await manager.save(discount)
 
   const cart = manager.create(Cart, {
     id: `${swapId}-cart`,
@@ -357,7 +365,7 @@ const createSwap = async (options, manager) => {
     email: "test-customer@email.com",
     shipping_address_id: "test-shipping-address",
     billing_address_id: "test-billing-address",
-    region_id: "test-region",
+    region_id: regionId,
     type: "swap",
     discounts: [discount],
     metadata: {
@@ -396,6 +404,13 @@ const createSwap = async (options, manager) => {
     thumbnail: "https://test.js/1234",
     unit_price: 8000,
     quantity: 1,
+    tax_lines: [
+      {
+        rate: region.tax_rate,
+        code: region.name,
+        name: region.name,
+      },
+    ],
     adjustments: [
       {
         amount: -800,
