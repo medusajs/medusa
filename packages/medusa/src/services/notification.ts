@@ -58,7 +58,9 @@ class NotificationService extends TransactionBaseService {
    */
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
     const { notificationProviderRepository } = this.container_
-    const model = manager.getCustomRepository(notificationProviderRepository)
+    const model = this.activeManager_.getCustomRepository(
+      notificationProviderRepository
+    )
     await model.update({}, { is_installed: false })
     for (const id of providerIds) {
       const n = model.create({ id, is_installed: true })

@@ -1,8 +1,7 @@
 import { EntityManager } from "typeorm"
 
-import { IInventoryService } from "../interfaces/services"
-
 import { EventBusService, SalesChannelLocationService } from "./"
+import { IInventoryService, TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   inventoryService: IInventoryService
@@ -11,7 +10,7 @@ type InjectedDependencies = {
   manager: EntityManager
 }
 
-class SalesChannelInventoryService {
+class SalesChannelInventoryService extends TransactionBaseService {
   protected manager_: EntityManager
 
   protected readonly salesChannelLocationService_: SalesChannelLocationService
@@ -23,7 +22,9 @@ class SalesChannelInventoryService {
     inventoryService,
     eventBusService,
   }: InjectedDependencies) {
-    this.manager_ = manager
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+
     this.salesChannelLocationService_ = salesChannelLocationService
     this.eventBusService_ = eventBusService
     this.inventoryService_ = inventoryService
@@ -39,14 +40,13 @@ class SalesChannelInventoryService {
     salesChannelId: string,
     inventoryItemId: string
   ): Promise<number> {
-    const locations = await this.salesChannelLocationService_.listLocations(
-      salesChannelId
-    )
+    const locations = await this.salesChannelLocationService_
+      .withTransaction(this.activeManager_)
+      .listLocations(salesChannelId)
 
-    return await this.inventoryService_.retrieveAvailableQuantity(
-      inventoryItemId,
-      locations
-    )
+    return await this.inventoryService_
+      .withTransaction(this.activeManager_)
+      .retrieveAvailableQuantity(inventoryItemId, locations)
   }
 }
 
