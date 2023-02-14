@@ -1,7 +1,11 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import SwapService from "../swap"
-import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
-import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import {
+  ProductVariantInventoryServiceMock
+} from "../__mocks__/product-variant-inventory"
+import {
+  LineItemAdjustmentServiceMock
+} from "../__mocks__/line-item-adjustment"
 import {
   CustomShippingOptionService,
   EventBusService,
@@ -65,6 +69,7 @@ const lineItemService = {
   create: jest.fn().mockImplementation((d) => Promise.resolve(d)),
   update: jest.fn().mockImplementation((d) => Promise.resolve(d)),
   retrieve: () => Promise.resolve({}),
+  list: () => Promise.resolve([]),
   createReturnLines: jest.fn(() => Promise.resolve()),
   withTransaction: function () {
     return this
@@ -240,6 +245,7 @@ describe("SwapService", () => {
         create: jest.fn().mockImplementation((d) => Promise.resolve(d)),
         update: jest.fn().mockImplementation((d) => Promise.resolve(d)),
         retrieve: () => Promise.resolve({}),
+        list: () => Promise.resolve([]),
         createReturnLines: jest.fn(() => Promise.resolve()),
         withTransaction: function () {
           return this
@@ -409,7 +415,7 @@ describe("SwapService", () => {
       const lineItemService = {
         generate: jest
           .fn()
-          .mockImplementation((variantId, regionId, quantity) => {
+          .mockImplementation(({ variantId, quantity }) => {
             return {
               unit_price: 100,
               variant_id: variantId,
@@ -417,6 +423,7 @@ describe("SwapService", () => {
             }
           }),
         retrieve: () => Promise.resolve({}),
+        list: () => Promise.resolve([]),
         withTransaction: function () {
           return this
         },
@@ -450,11 +457,13 @@ describe("SwapService", () => {
         )
 
         expect(lineItemService.generate).toHaveBeenCalledTimes(1)
-        expect(lineItemService.generate).toHaveBeenCalledWith(
-          IdMap.getId("new-variant"),
-          IdMap.getId("region"),
-          1
-        )
+        expect(lineItemService.generate).toHaveBeenCalledWith({
+          quantity: 1,
+          variantId: IdMap.getId("new-variant")
+        }, {
+          "cart": undefined,
+          region_id: IdMap.getId("region")
+        })
       })
 
       it("creates swap", async () => {
@@ -547,6 +556,7 @@ describe("SwapService", () => {
       const lineItemService = {
         update: jest.fn(),
         retrieve: () => Promise.resolve({}),
+        list: () => Promise.resolve([]),
         withTransaction: function () {
           return this
         },

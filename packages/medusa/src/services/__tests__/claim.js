@@ -1,4 +1,4 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ClaimService from "../claim"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 
@@ -14,6 +14,7 @@ const eventBusService = {
 const totalsService = {
   getCalculationContext: jest.fn(() => {}),
   getRefundTotal: jest.fn(() => 1000),
+  getLineItemRefund: jest.fn(() => 8000),
 }
 
 describe("ClaimService", () => {
@@ -28,6 +29,7 @@ describe("ClaimService", () => {
           {
             id: "itm_1",
             unit_price: 8000,
+            shipped_quantity: 1,
           },
         ],
       },
@@ -134,6 +136,7 @@ describe("ClaimService", () => {
       expect(returnService.create).toHaveBeenCalledWith({
         order_id: "1234",
         claim_order_id: "claim_134",
+        refund_amount: 8000,
         shipping_method: {
           option_id: "opt_13",
           price: 0,
@@ -181,7 +184,7 @@ describe("ClaimService", () => {
       expect(claimRepo.create).toHaveBeenCalledWith({
         payment_status: "not_refunded",
         no_notification: true,
-        refund_amount: 1000,
+        refund_amount: 8000,
         type: "refund",
         order_id: "1234",
         additional_items: [
@@ -289,6 +292,206 @@ describe("ClaimService", () => {
         })
       }
     )
+  })
+
+  describe("getRefundTotalForClaimLinesOnOrder", () => {
+    const testOrder = (items = [], swaps = [], claims = []) => ({
+      id: "1234",
+      region_id: "order_region",
+      no_notification: true,
+      items: [
+        {
+          id: "itm_1",
+          unit_price: 8000,
+          shipped_quantity: 1,
+        },
+        ...items,
+      ],
+      ...swaps,
+      ...claims,
+    })
+
+    const claimRepo = MockRepository({})
+
+    const claimService = new ClaimService({
+      manager: MockManager,
+      claimRepository: claimRepo,
+      totalsService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calculates refund total for claim with one shipped item", async () => {
+      const order = testOrder([
+        {
+          id: "itm_1",
+          unit_price: 8000,
+          shipped_quantity: 1,
+        },
+      ])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(1)
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledWith(order, {
+        id: "itm_1",
+        unit_price: 8000,
+        quantity: 1,
+        shipped_quantity: 1,
+      })
+
+      expect(refund).toEqual(8000)
+    })
+
+    it("calculates refund total for claim with one shipped + one pending item", async () => {
+      const order = testOrder([{ id: "itm_2", shipped_quantity: 0 }])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(1)
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledWith(order, {
+        id: "itm_1",
+        unit_price: 8000,
+        quantity: 1,
+        shipped_quantity: 1,
+      })
+
+      expect(refund).toEqual(8000)
+    })
+
+    it("calculates refund total for claim with two shipped + one pending item", async () => {
+      const order = testOrder([
+        { id: "itm_2", shipped_quantity: 0 },
+        { id: "itm_3", shipped_quantity: 1, unit_price: 5000 },
+      ])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+          { item_id: "itm_3", quantity: 1 },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(2)
+      expect(totalsService.getLineItemRefund.mock.calls).toEqual([
+        [
+          order,
+          {
+            id: "itm_1",
+            unit_price: 8000,
+            quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+        [
+          order,
+          {
+            id: "itm_3",
+            unit_price: 5000,
+            quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+      ])
+
+      expect(refund).toEqual(16000)
+    })
+
+    it("calculates refund total for claim on swap items", async () => {
+      const order = testOrder([], [[{ id: "itm_1", shipped_quantity: 1 }]])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(1)
+      expect(totalsService.getLineItemRefund.mock.calls).toEqual([
+        [
+          order,
+          {
+            id: "itm_1",
+            unit_price: 8000,
+            quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+      ])
+
+      expect(refund).toEqual(8000)
+    })
+
+    it("calculates refund total for claim on claim items", async () => {
+      const order = testOrder([], [], [{ id: "itm_1", shipped_quantity: 1 }])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [
+          {
+            item_id: "itm_1",
+            quantity: 1,
+          },
+        ]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(1)
+      expect(totalsService.getLineItemRefund.mock.calls).toEqual([
+        [
+          order,
+          {
+            id: "itm_1",
+            unit_price: 8000,
+            quantity: 1,
+            shipped_quantity: 1,
+          },
+        ],
+      ])
+
+      expect(refund).toEqual(8000)
+    })
+
+    it("return 0 when claim lines cannot be found", async () => {
+      const order = testOrder([
+        { id: "itm_2", shipped_quantity: 0 },
+        { id: "itm_3", shipped_quantity: 1, unit_price: 5000 },
+      ])
+
+      const refund = await claimService.getRefundTotalForClaimLinesOnOrder(
+        order,
+        [{ item_id: "itm_10", quantity: 1 }]
+      )
+
+      expect(totalsService.getLineItemRefund).toHaveBeenCalledTimes(0)
+
+      expect(refund).toEqual(0)
+    })
   })
 
   describe("retrieve", () => {

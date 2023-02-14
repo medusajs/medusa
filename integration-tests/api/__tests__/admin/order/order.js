@@ -1441,6 +1441,57 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("Receives return with custom refund amount passed on receive", async () => {
+      const api = useApi()
+
+      const orderId = "test-order"
+      const itemId = "test-item"
+
+      const returned = await api.post(
+        `/admin/orders/${orderId}/return`,
+        {
+          items: [
+            {
+              // item has a unit_price of 8000 with a 800 adjustment
+              item_id: itemId,
+              quantity: 1,
+            },
+          ],
+        },
+        adminReqConfig
+      )
+
+      const returnOrder = returned.data.order.returns[0]
+
+      expect(returned.status).toEqual(200)
+      expect(returnOrder.refund_amount).toEqual(7200)
+
+      const received = await api.post(
+        `/admin/returns/${returnOrder.id}/receive`,
+        {
+          items: [
+            {
+              item_id: itemId,
+              quantity: 1,
+            },
+          ],
+          refund: 0,
+        },
+        adminReqConfig
+      )
+
+      const receivedReturn = received.data.return
+
+      expect(received.status).toEqual(200)
+      expect(receivedReturn.refund_amount).toEqual(0)
+
+      const orderRes = await api.get(`/admin/orders/${orderId}`, adminReqConfig)
+
+      const order = orderRes.data.order
+
+      expect(order.refunds.length).toEqual(0)
+    })
+
     it("increases inventory_quantity when return is received", async () => {
       const api = useApi()
 

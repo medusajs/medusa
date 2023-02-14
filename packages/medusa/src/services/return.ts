@@ -649,7 +649,7 @@ class ReturnService extends TransactionBaseService {
         returnStatus = ReturnStatus.REQUIRES_ACTION
       }
 
-      const totalRefundableAmount = refundAmount || returnObj.refund_amount
+      const totalRefundableAmount = refundAmount ?? returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {
