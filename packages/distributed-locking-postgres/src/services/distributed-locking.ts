@@ -89,7 +89,7 @@ export default class DistributedLockingService
     }
 
     const refresh =
-      (row.owner_id == ownerId && expire) || row.expiration <= row.now
+      row.owner_id == ownerId && (expire || row.expiration <= row.now)
 
     if (refresh) {
       const expireSql = expire
@@ -101,9 +101,9 @@ export default class DistributedLockingService
         [key, ownerId ?? null]
       )
       return
+    } else if (row.owner_id !== ownerId) {
+      throw new Error(`"${key}" is already locked.`)
     }
-
-    throw new Error(`"${key}" is already locked.`)
   }
 
   async release(key: string, ownerId: string): Promise<boolean> {
