@@ -1,4 +1,4 @@
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockManager as manager } from "medusa-test-utils"
 import ProductCategoryService from "../product-category"
 import { EventBusService } from "../"
 import {
@@ -10,7 +10,7 @@ import {
 import { EventBusServiceMock as eventBusService } from "../__mocks__/event-bus"
 
 const productCategoryService = new ProductCategoryService({
-  
+  manager,
   productCategoryRepository,
   eventBusService: eventBusService as unknown as EventBusService
 })
