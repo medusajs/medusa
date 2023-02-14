@@ -4737,12 +4737,12 @@ __metadata:
     typeorm: ^0.2.31
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": 1.7.6
-    medusa-interfaces: 1.3.5
+    "@medusajs/medusa": 1.7.7
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@^1.3.7, @medusajs/medusa-cli@workspace:packages/medusa-cli":
+"@medusajs/medusa-cli@^1.3.8, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
   dependencies:
@@ -4768,7 +4768,7 @@ __metadata:
     is-valid-path: ^0.1.1
     jest: ^25.5.4
     meant: ^1.0.3
-    medusa-core-utils: ^1.1.38
+    medusa-core-utils: ^1.1.39
     medusa-telemetry: 0.0.16
     netrc-parser: ^3.1.6
     open: ^8.0.6
@@ -4791,7 +4791,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
-    "@medusajs/medusa": ^1.7.6
+    "@medusajs/medusa": ^1.7.7
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
     cross-env: ^7.0.3
@@ -4803,18 +4803,18 @@ __metadata:
     typescript: ^4.9.5
     uuid: ^9.0.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.6
+    "@medusajs/medusa": ^1.7.7
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
     "@babel/cli": ^7.14.3
     "@babel/core": ^7.14.3
     "@babel/preset-typescript": ^7.13.0
-    "@medusajs/medusa-cli": ^1.3.7
+    "@medusajs/medusa-cli": ^1.3.8
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jest": ^27.5.2
@@ -4843,8 +4843,8 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.4
     jsonwebtoken: ^8.5.1
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-telemetry: ^0.0.16
     medusa-test-utils: ^1.1.38
     morgan: ^1.9.1
@@ -4871,7 +4871,7 @@ __metadata:
     uuid: ^8.3.2
     winston: ^3.8.2
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
     typeorm: 0.2.x
   bin:
     medusa: ./cli.js
@@ -4882,14 +4882,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location@workspace:packages/stock-location"
   dependencies:
-    "@medusajs/medusa": ^1.7.6
+    "@medusajs/medusa": ^1.7.7
     cross-env: ^5.2.1
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": ^1.7.6
-    medusa-interfaces: 1.3.5
+    "@medusajs/medusa": ^1.7.7
+    medusa-interfaces: 1.3.6
     typeorm: ^0.2.31
   languageName: unknown
   linkType: soft
@@ -24576,7 +24576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.38, medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.39, medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
@@ -24638,11 +24638,11 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24666,11 +24666,11 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24694,12 +24694,12 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24719,10 +24719,10 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24737,7 +24737,7 @@ __metadata:
     "@babel/plugin-transform-runtime": ^7.7.6
     "@babel/preset-env": ^7.7.5
     "@babel/runtime": ^7.9.6
-    "@medusajs/medusa": ^1.7.6
+    "@medusajs/medusa": ^1.7.7
     axios: ^0.20.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -24745,14 +24745,14 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
-"medusa-interfaces@*, medusa-interfaces@^1.3.5, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@*, medusa-interfaces@^1.3.6, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -24767,12 +24767,12 @@ __metadata:
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
+    medusa-core-utils: ^1.1.39
     medusa-test-utils: ^1.1.37
     typeorm: ^0.2.29
     typescript: ^4.4.4
   peerDependencies:
-    medusa-core-utils: ^1.1.38
+    medusa-core-utils: ^1.1.39
     typeorm: 0.x
   languageName: unknown
   linkType: soft
@@ -24799,11 +24799,11 @@ __metadata:
     cross-env: ^7.0.3
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24828,11 +24828,11 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24853,10 +24853,10 @@ __metadata:
     "@babel/runtime": ^7.9.6
     cross-env: ^5.2.1
     jest: ^25.5.4
-    medusa-interfaces: ^1.3.5
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.38
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24881,11 +24881,11 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.38
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24909,12 +24909,12 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
     stripe: ^8.50.0
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24937,10 +24937,10 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     lodash: ^4.17.21
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
     typeorm: 0.x
   languageName: unknown
   linkType: soft
@@ -24967,12 +24967,12 @@ __metadata:
     cross-env: ^7.0.3
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
     randomatic: ^3.1.1
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -24996,12 +24996,12 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
     redis: ^3.0.2
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25024,11 +25024,11 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     randomatic: ^3.1.1
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25052,12 +25052,12 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25076,9 +25076,9 @@ __metadata:
     axios: ^0.20.0
     cross-env: ^5.2.1
     jest: ^25.5.4
-    medusa-interfaces: ^1.3.5
+    medusa-interfaces: ^1.3.6
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25103,11 +25103,11 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     mailchimp-api-v3: ^1.14.0
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25129,11 +25129,11 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     lodash: ^4.17.21
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     meilisearch: 0.27.0
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25151,14 +25151,14 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
     pg: ^8.5.1
     ulid: ^2.3.0
   peerDependencies:
-    "@medusajs/medusa": ^1.7.6
-    medusa-interfaces: 1.3.5
+    "@medusajs/medusa": ^1.7.7
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25183,11 +25183,11 @@ __metadata:
     eslint: ^6.8.0
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25211,11 +25211,11 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25239,12 +25239,12 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
     moment: ^2.27.0
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25265,12 +25265,12 @@ __metadata:
     body-parser: ^1.19.0
     cross-env: ^5.2.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
     twilio: ^3.49.1
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25293,11 +25293,11 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
   languageName: unknown
   linkType: soft
 
@@ -25365,11 +25365,11 @@ __metadata:
     ioredis: ^4.27.9
     jest: ^26.6.3
     lodash: ^4.17.21
-    medusa-core-utils: ^1.1.38
-    medusa-interfaces: ^1.3.5
+    medusa-core-utils: ^1.1.39
+    medusa-interfaces: ^1.3.6
     medusa-test-utils: ^1.1.37
   peerDependencies:
-    medusa-interfaces: 1.3.5
+    medusa-interfaces: 1.3.6
     typeorm: 0.x
   languageName: unknown
   linkType: soft
