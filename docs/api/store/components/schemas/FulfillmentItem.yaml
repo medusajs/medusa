@@ -18,9 +18,11 @@ properties:
     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
   fulfillment:
     description: A fulfillment object. Available if the relation `fulfillment` is expanded.
-    type: object
+    nullable: true
+    $ref: ./Fulfillment.yaml
   item:
     description: Available if the relation `item` is expanded.
+    nullable: true
     $ref: ./LineItem.yaml
   quantity:
     description: The quantity of the Line Item that is included in the Fulfillment.

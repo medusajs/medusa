@@ -4,12 +4,17 @@ description: >-
   fulfill a given set of Products.
 type: object
 required:
+  - created_at
+  - deleted_at
+  - id
+  - metadata
   - name
   - type
+  - updated_at
 properties:
   id:
-    type: string
     description: The shipping profile's ID
+    type: string
     example: sp_01G1G5V239ENSZ5MV4JAR737BM
   name:
     description: >-
@@ -33,8 +38,7 @@ properties:
       Available if the relation `products` is expanded.
     type: array
     items:
-      type: object
-      description: A product object.
+      $ref: ./Product.yaml
   shipping_options:
     description: >-
       The Shipping Options that can be used to fulfill the Products in the
@@ -44,19 +48,21 @@ properties:
     items:
       $ref: ./ShippingOption.yaml
   created_at:
-    type: string
     description: The date with timezone at which the resource was created.
+    type: string
     format: date-time
   updated_at:
-    type: string
     description: The date with timezone at which the resource was updated.
+    type: string
     format: date-time
   deleted_at:
-    type: string
     description: The date with timezone at which the resource was deleted.
+    nullable: true
+    type: string
     format: date-time
   metadata:
-    type: object
     description: An optional key-value map with additional details
+    nullable: true
+    type: object
     example:
       car: white

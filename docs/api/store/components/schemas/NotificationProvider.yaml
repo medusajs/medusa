@@ -3,6 +3,7 @@ description: Represents a notification provider plugin and holds its installatio
 type: object
 required:
   - id
+  - is_installed
 properties:
   id:
     description: The id of the notification provider as given by the plugin.
