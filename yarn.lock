@@ -4737,9 +4737,9 @@ __metadata:
     typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
-    typeorm: ^0.3.11
     "@medusajs/medusa": 1.7.7
-    medusa-interfaces: 1.3.6
+    medusa-interfaces: 1.3.5
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
@@ -4872,8 +4872,8 @@ __metadata:
     uuid: ^8.3.2
     winston: ^3.8.2
   peerDependencies:
-    typeorm: ^0.3.11
     medusa-interfaces: 1.3.6
+    typeorm: ^0.3.11
   bin:
     medusa: ./cli.js
   languageName: unknown
@@ -4890,9 +4890,9 @@ __metadata:
     typeorm: ^0.3.11
     typescript: ^4.4.4
   peerDependencies:
-    typeorm: ^0.3.11
     "@medusajs/medusa": ^1.7.7
     medusa-interfaces: 1.3.6
+    typeorm: ^0.3.11
   languageName: unknown
   linkType: soft
 
