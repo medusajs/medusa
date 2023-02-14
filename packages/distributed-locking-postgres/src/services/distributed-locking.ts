@@ -69,28 +69,29 @@ export default class DistributedLockingService
 
   async acquire(key: string, ownerId?: string, expire?: number): Promise<void> {
     const [row] = await this.getManager().query(
-      `SELECT owner_id, expire, now() AS now FROM distributed_locking WHERE id = $1`,
+      `SELECT owner_id, expiration, now() AS now FROM distributed_locking WHERE id = $1`,
       [key]
     )
 
     if (!row) {
       const expireSql = expire ? ", NOW() + INTERVAL '${+expire} SECONDS'" : ""
       await this.getManager().query(
-        `INSERT INTO distributed_locking (id, owner_id, expire) VALUES ($1, $2 ${expireSql})`,
+        `INSERT INTO distributed_locking (id, owner_id, expiration) VALUES ($1, $2 ${expireSql})`,
         [key, ownerId ?? null]
       )
       return
     }
 
-    if (!row.expire && row.owner_id == ownerId) {
+    if (!row.expiration && row.owner_id == ownerId) {
       return
     }
 
-    const refresh = (row.owner_id == ownerId && expire) || row.expire <= row.now
+    const refresh =
+      (row.owner_id == ownerId && expire) || row.expiration <= row.now
 
     if (refresh) {
       const expireSql = expire
-        ? ", expire = NOW() + INTERVAL '${+expire} SECONDS'"
+        ? ", expiration = NOW() + INTERVAL '${+expire} SECONDS'"
         : ""
 
       await this.getManager().query(
@@ -105,7 +106,7 @@ export default class DistributedLockingService
 
   async release(key: string, ownerId: string): Promise<boolean> {
     const [row] = await this.getManager().query(
-      `SELECT owner_id, expire, now() AS now FROM distributed_locking WHERE id = $1`,
+      `SELECT owner_id, expiration, now() AS now FROM distributed_locking WHERE id = $1`,
       [key]
     )
 
@@ -118,7 +119,7 @@ export default class DistributedLockingService
       [key]
     )
 
-    return !row.expire || row.expire > row.now
+    return !row.expiration || row.expiration > row.now
   }
 
   async releaseAll(ownerId?: string): Promise<void> {
