@@ -22,9 +22,6 @@ import { TransactionBaseService } from "../interfaces"
 import { FindConditions } from "typeorm/find-options/FindConditions"
 
 class TaxRateService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly productService_: ProductService
   protected readonly productTypeService_: ProductTypeService
   protected readonly shippingOptionService_: ShippingOptionService
@@ -37,9 +34,9 @@ class TaxRateService extends TransactionBaseService {
     shippingOptionService,
     taxRateRepository,
   }) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.taxRateRepository_ = taxRateRepository
     this.productService_ = productService
     this.productTypeService_ = productTypeService
@@ -50,7 +47,7 @@ class TaxRateService extends TransactionBaseService {
     selector: FilterableTaxRateProps,
     config: FindConfig<TaxRate> = {}
   ): Promise<TaxRate[]> {
-    const taxRateRepo = this.manager_.getCustomRepository(
+    const taxRateRepo = this.activeManager_.getCustomRepository(
       this.taxRateRepository_
     )
     const query = buildQuery(selector, config)
@@ -61,7 +58,7 @@ class TaxRateService extends TransactionBaseService {
     selector: FilterableTaxRateProps,
     config: FindConfig<TaxRate> = {}
   ): Promise<[TaxRate[], number]> {
-    const taxRateRepo = this.manager_.getCustomRepository(
+    const taxRateRepo = this.activeManager_.getCustomRepository(
       this.taxRateRepository_
     )
     const query = buildQuery(selector, config)
@@ -79,8 +76,9 @@ class TaxRateService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    const taxRateRepo = this.activeManager_.getCustomRepository(
+      this.taxRateRepository_
+    )
     const query = buildQuery({ id: taxRateId }, config)
 
     const taxRate = await taxRateRepo.findOneWithResolution(query)
@@ -316,14 +314,16 @@ class TaxRateService extends TransactionBaseService {
     config: TaxRateListByConfig
   ): Promise<TaxRate[]> {
     // Check both ProductTaxRate + ProductTypeTaxRate
-    const manager = this.manager_
-    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    const taxRateRepo = this.activeManager_.getCustomRepository(
+      this.taxRateRepository_
+    )
     return await taxRateRepo.listByProduct(productId, config)
   }
 
   async listByShippingOption(shippingOptionId: string): Promise<TaxRate[]> {
-    const manager = this.manager_
-    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    const taxRateRepo = this.activeManager_.getCustomRepository(
+      this.taxRateRepository_
+    )
     return await taxRateRepo.listByShippingOption(shippingOptionId)
   }
 }

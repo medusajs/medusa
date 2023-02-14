@@ -18,9 +18,6 @@ type CustomerGroupConstructorProps = {
 }
 
 class CustomerGroupService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly customerGroupRepository_: typeof CustomerGroupRepository
   protected readonly customerService_: CustomerService
 
@@ -32,7 +29,6 @@ class CustomerGroupService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.customerGroupRepository_ = customerGroupRepository
     this.customerService_ = customerService
   }
@@ -45,7 +41,7 @@ class CustomerGroupService extends TransactionBaseService {
       )
     }
 
-    const cgRepo = this.manager_.getCustomRepository(
+    const cgRepo = this.activeManager_.getCustomRepository(
       this.customerGroupRepository_
     )
 
@@ -203,9 +199,8 @@ class CustomerGroupService extends TransactionBaseService {
     } = {},
     config: FindConfig<CustomerGroup>
   ): Promise<[CustomerGroup[], number]> {
-    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
-      this.customerGroupRepository_
-    )
+    const cgRepo: CustomerGroupRepository =
+      this.activeManager_.getCustomRepository(this.customerGroupRepository_)
 
     let q
     if (isString(selector.q)) {
@@ -241,9 +236,8 @@ class CustomerGroupService extends TransactionBaseService {
     id: string,
     customerIds: string[] | string
   ): Promise<CustomerGroup> {
-    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
-      this.customerGroupRepository_
-    )
+    const cgRepo: CustomerGroupRepository =
+      this.activeManager_.getCustomRepository(this.customerGroupRepository_)
     let ids: string[]
     if (typeof customerIds === "string") {
       ids = [customerIds]

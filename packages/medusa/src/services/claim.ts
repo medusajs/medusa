@@ -60,9 +60,6 @@ export default class ClaimService extends TransactionBaseService {
     REFUND_PROCESSED: "claim.refund_processed",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly claimRepository_: typeof ClaimRepository
   protected readonly shippingMethodRepository_: typeof ShippingMethodRepository
@@ -102,8 +99,6 @@ export default class ClaimService extends TransactionBaseService {
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    this.manager_ = manager
 
     this.addressRepository_ = addressRepository
     this.claimRepository_ = claimRepository
@@ -821,8 +816,9 @@ export default class ClaimService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<ClaimOrder[]> {
-    const manager = this.manager_
-    const claimRepo = manager.getCustomRepository(this.claimRepository_)
+    const claimRepo = this.activeManager_.getCustomRepository(
+      this.claimRepository_
+    )
     const query = buildQuery(selector, config)
     return await claimRepo.find(query)
   }
@@ -844,8 +840,9 @@ export default class ClaimService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const claimRepo = manager.getCustomRepository(this.claimRepository_)
+    const claimRepo = this.activeManager_.getCustomRepository(
+      this.claimRepository_
+    )
 
     const query = buildQuery({ id: claimId }, config)
     const claim = await claimRepo.findOne(query)

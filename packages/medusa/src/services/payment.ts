@@ -23,8 +23,6 @@ export type PaymentDataInput = {
 }
 
 export default class PaymentService extends TransactionBaseService {
-  protected readonly manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly eventBusService_: EventBusService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly paymentRepository_: typeof PaymentRepository
@@ -46,7 +44,6 @@ export default class PaymentService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.paymentRepository_ = paymentRepository
     this.paymentProviderService_ = paymentProviderService
     this.eventBusService_ = eventBusService
@@ -69,8 +66,7 @@ export default class PaymentService extends TransactionBaseService {
       )
     }
 
-    const manager = this.transactionManager_ ?? this.manager_
-    const paymentRepository = manager.getCustomRepository(
+    const paymentRepository = this.activeManager_.getCustomRepository(
       this.paymentRepository_
     )
 

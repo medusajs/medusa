@@ -17,16 +17,12 @@ type InjectedDependencies = {
 }
 
 class IdempotencyKeyService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly idempotencyKeyRepository_: typeof IdempotencyKeyRepository
 
   constructor({ manager, idempotencyKeyRepository }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.idempotencyKeyRepository_ = idempotencyKeyRepository
   }
 
@@ -90,7 +86,7 @@ class IdempotencyKeyService extends TransactionBaseService {
       )
     }
 
-    const idempotencyKeyRepo = this.manager_.getCustomRepository(
+    const idempotencyKeyRepo = this.activeManager_.getCustomRepository(
       this.idempotencyKeyRepository_
     )
 

@@ -42,20 +42,16 @@ class ShippingProfileService extends TransactionBaseService {
   protected readonly shippingProfileRepository_: typeof ShippingProfileRepository
   protected readonly productRepository_: typeof ProductRepository
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     shippingProfileRepository,
     productService,
     productRepository,
     shippingOptionService,
     customShippingOptionService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.shippingProfileRepository_ = shippingProfileRepository
     this.productService_ = productService
     this.productRepository_ = productRepository
@@ -72,7 +68,7 @@ class ShippingProfileService extends TransactionBaseService {
     selector: Selector<ShippingProfile> = {},
     config: FindConfig<ShippingProfile> = { relations: [], skip: 0, take: 10 }
   ): Promise<ShippingProfile[]> {
-    const shippingProfileRepo = this.manager_.getCustomRepository(
+    const shippingProfileRepo = this.activeManager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
@@ -143,7 +139,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
     }
 
-    const profileRepository = this.manager_.getCustomRepository(
+    const profileRepository = this.activeManager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
@@ -162,7 +158,7 @@ class ShippingProfileService extends TransactionBaseService {
   }
 
   async retrieveDefault(): Promise<ShippingProfile | undefined> {
-    const profileRepository = this.manager_.getCustomRepository(
+    const profileRepository = this.activeManager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 
@@ -205,7 +201,7 @@ class ShippingProfileService extends TransactionBaseService {
    * @return the shipping profile for gift cards
    */
   async retrieveGiftCardDefault(): Promise<ShippingProfile | undefined> {
-    const profileRepository = this.manager_.getCustomRepository(
+    const profileRepository = this.activeManager_.getCustomRepository(
       this.shippingProfileRepository_
     )
 

@@ -23,9 +23,6 @@ type InjectedDependencies = {
  * Provides layer to manipulate product collections.
  */
 class ProductCollectionService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly eventBus_: EventBusService
   // eslint-disable-next-line max-len
   protected readonly productCollectionRepository_: typeof ProductCollectionRepository
@@ -37,8 +34,8 @@ class ProductCollectionService extends TransactionBaseService {
     productRepository,
     eventBusService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-    this.manager_ = manager
 
     this.productCollectionRepository_ = productCollectionRepository
     this.productRepository_ = productRepository
@@ -62,7 +59,7 @@ class ProductCollectionService extends TransactionBaseService {
       )
     }
 
-    const collectionRepo = this.manager_.getCustomRepository(
+    const collectionRepo = this.activeManager_.getCustomRepository(
       this.productCollectionRepository_
     )
 
@@ -89,7 +86,7 @@ class ProductCollectionService extends TransactionBaseService {
     collectionHandle: string,
     config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
-    const collectionRepo = this.manager_.getCustomRepository(
+    const collectionRepo = this.activeManager_.getCustomRepository(
       this.productCollectionRepository_
     )
 
@@ -240,7 +237,7 @@ class ProductCollectionService extends TransactionBaseService {
     } = {},
     config: FindConfig<ProductCollection> = { skip: 0, take: 20 }
   ): Promise<[ProductCollection[], number]> {
-    const productCollectionRepo = this.manager_.getCustomRepository(
+    const productCollectionRepo = this.activeManager_.getCustomRepository(
       this.productCollectionRepository_
     )
 

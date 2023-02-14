@@ -34,9 +34,6 @@ type InjectedDependencies = {
  * Handles Fulfillments
  */
 class FulfillmentService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly totalsService_: TotalsService
   protected readonly lineItemService_: LineItemService
   protected readonly shippingProfileService_: ShippingProfileService
@@ -60,8 +57,6 @@ class FulfillmentService extends TransactionBaseService {
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    this.manager_ = manager
 
     this.lineItemRepository_ = lineItemRepository
     this.totalsService_ = totalsService
@@ -141,8 +136,9 @@ class FulfillmentService extends TransactionBaseService {
     item: LineItem | undefined,
     quantity: number
   ): LineItem | null {
-    const manager = this.transactionManager_ ?? this.manager_
-    const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)
+    const lineItemRepo = this.activeManager_.getCustomRepository(
+      this.lineItemRepository_
+    )
 
     if (!item) {
       // This will in most cases be called by a webhook so to ensure that
@@ -180,8 +176,7 @@ class FulfillmentService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const fulfillmentRepository = manager.getCustomRepository(
+    const fulfillmentRepository = this.activeManager_.getCustomRepository(
       this.fulfillmentRepository_
     )
 

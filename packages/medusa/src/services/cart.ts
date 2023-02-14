@@ -104,9 +104,6 @@ class CartService extends TransactionBaseService {
     UPDATED: "cart.updated",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly shippingMethodRepository_: typeof ShippingMethodRepository
   protected readonly cartRepository_: typeof CartRepository
   protected readonly addressRepository_: typeof AddressRepository
@@ -165,7 +162,6 @@ class CartService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.shippingMethodRepository_ = shippingMethodRepository
     this.cartRepository_ = cartRepository
     this.lineItemRepository_ = lineItemRepository
@@ -202,8 +198,9 @@ class CartService extends TransactionBaseService {
     selector: FilterableCartProps,
     config: FindConfig<Cart> = {}
   ): Promise<Cart[]> {
-    const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.cartRepository_)
+    const cartRepo = this.activeManager_.getCustomRepository(
+      this.cartRepository_
+    )
 
     const query = buildQuery(selector, config)
     return await cartRepo.find(query)
@@ -234,8 +231,9 @@ class CartService extends TransactionBaseService {
       return await this.retrieveLegacy(cartId, options, totalsConfig)
     }
 
-    const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.cartRepository_)
+    const cartRepo = this.activeManager_.getCustomRepository(
+      this.cartRepository_
+    )
 
     const query = buildQuery({ id: cartId }, options)
 
@@ -270,8 +268,9 @@ class CartService extends TransactionBaseService {
     options: FindConfig<Cart> = {},
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
-    const manager = this.manager_
-    const cartRepo = manager.getCustomRepository(this.cartRepository_)
+    const cartRepo = this.activeManager_.getCustomRepository(
+      this.cartRepository_
+    )
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals_(options)
@@ -459,11 +458,11 @@ class CartService extends TransactionBaseService {
     let salesChannel: SalesChannel
     if (isDefined(salesChannelId)) {
       salesChannel = await this.salesChannelService_
-        .withTransaction(this.manager_)
+        .withTransaction(this.activeManager_)
         .retrieve(salesChannelId)
     } else {
       salesChannel = (
-        await this.storeService_.withTransaction(this.manager_).retrieve({
+        await this.storeService_.withTransaction(this.activeManager_).retrieve({
           relations: ["default_sales_channel"],
         })
       ).default_sales_channel
@@ -593,12 +592,12 @@ class CartService extends TransactionBaseService {
     const lineItemVariant = lineItem.variant?.product_id
       ? lineItem.variant
       : await this.productVariantService_
-          .withTransaction(this.manager_)
+          .withTransaction(this.activeManager_)
           .retrieve(lineItem.variant_id, { select: ["id", "product_id"] })
 
     return !!(
       await this.productService_
-        .withTransaction(this.manager_)
+        .withTransaction(this.activeManager_)
         .filterProductsBySalesChannel(
           [lineItemVariant.product_id],
           sales_channel_id
@@ -993,10 +992,8 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     shouldAdd: boolean
   ): Promise<void> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-
     if (cart.shipping_methods?.length) {
-      const shippingMethodRepository = transactionManager.getCustomRepository(
+      const shippingMethodRepository = this.activeManager_.getCustomRepository(
         this.shippingMethodRepository_
       )
 
@@ -1217,7 +1214,7 @@ class CartService extends TransactionBaseService {
 
     const productIds = cart.items.map((item) => item.variant.product_id)
     const productsToKeep = await this.productService_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .filterProductsBySalesChannel(productIds, newSalesChannelId, {
         select: ["id"],
         take: productIds.length,
@@ -1250,7 +1247,7 @@ class CartService extends TransactionBaseService {
     customerId: string
   ): Promise<void> {
     const customer = await this.customerService_
-      .withTransaction(this.transactionManager_)
+      .withTransaction(this.activeManager_)
       .retrieve(customerId)
 
     cart.customer = customer
@@ -1268,15 +1265,16 @@ class CartService extends TransactionBaseService {
   ): Promise<Customer> {
     const validatedEmail = validateEmail(email)
 
-    let customer = await this.customerService_
-      .withTransaction(this.transactionManager_)
+    const customerServiceTx = this.customerService_.withTransaction(
+      this.activeManager_
+    )
+
+    let customer = await customerServiceTx
       .retrieveUnregisteredByEmail(validatedEmail)
       .catch(() => undefined)
 
     if (!customer) {
-      customer = await this.customerService_
-        .withTransaction(this.transactionManager_)
-        .create({ email: validatedEmail })
+      customer = await customerServiceTx.create({ email: validatedEmail })
     }
 
     return customer
@@ -1378,7 +1376,7 @@ class CartService extends TransactionBaseService {
 
   protected async applyGiftCard_(cart: Cart, code: string): Promise<void> {
     const giftCard = await this.giftCardService_
-      .withTransaction(this.transactionManager_)
+      .withTransaction(this.activeManager_)
       .retrieveByCode(code)
 
     if (giftCard.is_disabled) {
@@ -2193,20 +2191,19 @@ class CartService extends TransactionBaseService {
     regionId?: string,
     customer_id?: string
   ): Promise<void> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-
     // If the cart contains items, we update the price of the items
     // to match the updated region or customer id (keeping the old
     // value if it exists)
     if (cart.items?.length) {
       const region = await this.regionService_
-        .withTransaction(this.transactionManager_)
+        .withTransaction()
         .retrieve(regionId || cart.region_id, {
           relations: ["countries"],
         })
 
-      const lineItemServiceTx =
-        this.lineItemService_.withTransaction(transactionManager)
+      const lineItemServiceTx = this.lineItemService_.withTransaction(
+        this.activeManager_
+      )
 
       cart.items = (
         await Promise.all(
@@ -2216,7 +2213,7 @@ class CartService extends TransactionBaseService {
             }
 
             const availablePrice = await this.priceSelectionStrategy_
-              .withTransaction(transactionManager)
+              .withTransaction(this.activeManager_)
               .calculateVariantPrice(item.variant_id, {
                 region_id: region.id,
                 currency_code: region.currency_code,
@@ -2257,8 +2254,6 @@ class CartService extends TransactionBaseService {
     regionId: string,
     countryCode: string | null
   ): Promise<void> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-
     if (cart.completed_at || cart.payment_authorized_at) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -2267,14 +2262,14 @@ class CartService extends TransactionBaseService {
     }
 
     const region = await this.regionService_
-      .withTransaction(transactionManager)
+      .withTransaction(this.activeManager_)
       .retrieve(regionId, {
         relations: ["countries"],
       })
     cart.region = region
     cart.region_id = region.id
 
-    const addrRepo = transactionManager.getCustomRepository(
+    const addrRepo = this.activeManager_.getCustomRepository(
       this.addressRepository_
     )
     /*
@@ -2350,7 +2345,7 @@ class CartService extends TransactionBaseService {
     // new shipping method
     if (cart.shipping_methods && cart.shipping_methods.length) {
       await this.shippingOptionService_
-        .withTransaction(transactionManager)
+        .withTransaction(this.activeManager_)
         .deleteShippingMethods(cart.shipping_methods)
     }
 
@@ -2368,7 +2363,7 @@ class CartService extends TransactionBaseService {
     cart.gift_cards = []
 
     if (cart.payment_sessions && cart.payment_sessions.length) {
-      const paymentSessionRepo = transactionManager.getCustomRepository(
+      const paymentSessionRepo = this.activeManager_.getCustomRepository(
         this.paymentSessionRepository_
       )
       await paymentSessionRepo.delete({
@@ -2525,8 +2520,9 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     totalsConfig: TotalsConfig = {}
   ): Promise<WithRequiredProperty<Cart, "total">> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const newTotalsServiceTx = this.newTotalsService_.withTransaction(manager)
+    const newTotalsServiceTx = this.newTotalsService_.withTransaction(
+      this.activeManager_
+    )
 
     const calculationContext = await this.totalsService_.getCalculationContext(
       cart
@@ -2537,7 +2533,7 @@ class CartService extends TransactionBaseService {
 
     if (includeTax) {
       const taxLinesMaps = await this.taxProviderService_
-        .withTransaction(manager)
+        .withTransaction(this.activeManager_)
         .getTaxLinesMap(cartItems, calculationContext)
 
       cartItems.forEach((item) => {
@@ -2616,24 +2612,21 @@ class CartService extends TransactionBaseService {
   }
 
   protected async refreshAdjustments_(cart: Cart): Promise<void> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-
     const nonReturnLineIDs = cart.items
       .filter((item) => !item.is_return)
       .map((i) => i.id)
 
+    const lineItemAdjustmentServiceTx =
+      this.lineItemAdjustmentService_.withTransaction(this.activeManager_)
+
     // delete all old non return line item adjustments
-    await this.lineItemAdjustmentService_
-      .withTransaction(transactionManager)
-      .delete({
-        item_id: nonReturnLineIDs,
-        discount_id: Not(IsNull()),
-      })
+    await lineItemAdjustmentServiceTx.delete({
+      item_id: nonReturnLineIDs,
+      discount_id: Not(IsNull()),
+    })
 
     // potentially create/update line item adjustments
-    await this.lineItemAdjustmentService_
-      .withTransaction(transactionManager)
-      .createAdjustments(cart)
+    await lineItemAdjustmentServiceTx.createAdjustments(cart)
   }
 
   protected transformQueryForTotals_(

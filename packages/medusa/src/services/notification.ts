@@ -20,9 +20,6 @@ type InjectedDependencies = {
 type NotificationProviderKey = `noti_${string}`
 
 class NotificationService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected subscribers_ = {}
   protected attachmentGenerator_: unknown = null
   protected readonly container_: InjectedDependencies & {
@@ -36,20 +33,12 @@ class NotificationService extends TransactionBaseService {
   constructor(container: InjectedDependencies) {
     super(container)
 
-    const {
-      manager,
-      notificationProviderRepository,
-      notificationRepository,
-      logger,
-    } = container
+    const { notificationProviderRepository, notificationRepository, logger } =
+      container
 
     this.container_ = container
 
-    /** @private @const {EntityManager} */
-    this.manager_ = manager
     this.logger_ = logger
-
-    /** @private @const {NotificationRepository} */
     this.notificationRepository_ = notificationRepository
     this.notificationProviderRepository_ = notificationProviderRepository
   }
@@ -91,7 +80,7 @@ class NotificationService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Notification[]> {
-    const notiRepo = this.manager_.getCustomRepository(
+    const notiRepo = this.activeManager_.getCustomRepository(
       this.notificationRepository_
     )
     const query = buildQuery(selector, config)
@@ -108,7 +97,7 @@ class NotificationService extends TransactionBaseService {
     id: string,
     config: FindConfig<Notification> = {}
   ): Promise<Notification | never> {
-    const notiRepository = this.manager_.getCustomRepository(
+    const notiRepository = this.activeManager_.getCustomRepository(
       this.notificationRepository_
     )
 

@@ -1,5 +1,4 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ClaimImage, ClaimItem, ClaimTag } from "../models"
 import { ClaimImageRepository } from "../repositories/claim-image"
@@ -24,9 +23,6 @@ class ClaimItemService extends TransactionBaseService {
   protected readonly claimTagRepository_: typeof ClaimTagRepository
   protected readonly claimImageRepository_: typeof ClaimImageRepository
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
     manager,
     claimItemRepository,
@@ -38,7 +34,6 @@ class ClaimItemService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.claimItemRepository_ = claimItemRepository
     this.claimTagRepository_ = claimTagRepository
     this.claimImageRepository_ = claimImageRepository
@@ -226,7 +221,9 @@ class ClaimItemService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<ClaimItem[]> {
-    const ciRepo = this.manager_.getCustomRepository(this.claimItemRepository_)
+    const ciRepo = this.activeManager_.getCustomRepository(
+      this.claimItemRepository_
+    )
     const query = buildQuery(selector, config)
     return ciRepo.find(query)
   }
@@ -248,7 +245,7 @@ class ClaimItemService extends TransactionBaseService {
       )
     }
 
-    const claimItemRepo = this.manager_.getCustomRepository(
+    const claimItemRepo = this.activeManager_.getCustomRepository(
       this.claimItemRepository_
     )
     const query = buildQuery({ id: claimItemId }, config)

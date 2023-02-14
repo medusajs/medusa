@@ -101,9 +101,6 @@ class OrderService extends TransactionBaseService {
     COMPLETED: "order.completed",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-
   protected readonly orderRepository_: typeof OrderRepository
   protected readonly customerService_: CustomerService
   protected readonly paymentProviderService_: PaymentProviderService
@@ -152,7 +149,6 @@ class OrderService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.orderRepository_ = orderRepository
     this.customerService_ = customerService
     this.paymentProviderService_ = paymentProviderService
@@ -205,7 +201,9 @@ class OrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[Order[], number]> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.activeManager_.getCustomRepository(
+      this.orderRepository_
+    )
 
     let q
     if (selector.q) {
@@ -357,8 +355,9 @@ class OrderService extends TransactionBaseService {
       return await this.retrieveLegacy(orderId, config)
     }
 
-    const manager = this.manager_
-    const orderRepo = manager.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.activeManager_.getCustomRepository(
+      this.orderRepository_
+    )
 
     const query = buildQuery({ id: orderId }, config)
 
@@ -385,7 +384,9 @@ class OrderService extends TransactionBaseService {
     orderIdOrSelector: string | Selector<Order>,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.activeManager_.getCustomRepository(
+      this.orderRepository_
+    )
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
@@ -440,7 +441,9 @@ class OrderService extends TransactionBaseService {
     cartId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.activeManager_.getCustomRepository(
+      this.orderRepository_
+    )
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
@@ -481,7 +484,9 @@ class OrderService extends TransactionBaseService {
     externalId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.activeManager_.getCustomRepository(
+      this.orderRepository_
+    )
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
@@ -878,11 +883,13 @@ class OrderService extends TransactionBaseService {
     order: Order,
     address: Address
   ): Promise<void> {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    const addrRepo = this.activeManager_.getCustomRepository(
+      this.addressRepository_
+    )
     address.country_code = address.country_code?.toLowerCase() ?? null
 
     const region = await this.regionService_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .retrieve(order.region_id, {
         relations: ["countries"],
       })
@@ -917,11 +924,13 @@ class OrderService extends TransactionBaseService {
     order: Order,
     address: Address
   ): Promise<void> {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    const addrRepo = this.activeManager_.getCustomRepository(
+      this.addressRepository_
+    )
     address.country_code = address.country_code?.toLowerCase() ?? null
 
     const region = await this.regionService_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .retrieve(order.region_id, {
         relations: ["countries"],
       })
@@ -1630,7 +1639,7 @@ class OrderService extends TransactionBaseService {
         }
         case "total": {
           order.total = await this.totalsService_
-            .withTransaction(this.manager_)
+            .withTransaction(this.activeManager_)
             .getTotal(order)
           break
         }
@@ -1715,8 +1724,9 @@ class OrderService extends TransactionBaseService {
       return await this.decorateTotalsLegacy(order, totalsFieldsOrConfig)
     }
 
-    const manager = this.transactionManager_ ?? this.manager_
-    const newTotalsServiceTx = this.newTotalsService_.withTransaction(manager)
+    const newTotalsServiceTx = this.newTotalsService_.withTransaction(
+      this.activeManager_
+    )
 
     const calculationContext = await this.totalsService_.getCalculationContext(
       order

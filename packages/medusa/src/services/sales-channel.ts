@@ -27,9 +27,6 @@ class SalesChannelService extends TransactionBaseService {
     DELETED: "sales_channel.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
   protected readonly storeService_: StoreService
@@ -37,20 +34,14 @@ class SalesChannelService extends TransactionBaseService {
   constructor({
     salesChannelRepository,
     eventBusService,
-    manager,
     storeService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.salesChannelRepository_ = salesChannelRepository
     this.eventBusService_ = eventBusService
     this.storeService_ = storeService
-  }
-
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -64,9 +55,7 @@ class SalesChannelService extends TransactionBaseService {
     selector: Selector<SalesChannel>,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel> {
-    const manager = this.getManager()
-
-    const salesChannelRepo = manager.getCustomRepository(
+    const salesChannelRepo = this.activeManager_.getCustomRepository(
       this.salesChannelRepository_
     )
 
@@ -149,8 +138,7 @@ class SalesChannelService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[SalesChannel[], number]> {
-    const manager = this.getManager()
-    const salesChannelRepo = manager.getCustomRepository(
+    const salesChannelRepo = this.activeManager_.getCustomRepository(
       this.salesChannelRepository_
     )
 

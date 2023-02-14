@@ -18,6 +18,7 @@ type InjectedDependencies = {
 
   eventBusService: EventBusService
   publishableApiKeyRepository: typeof PublishableApiKeyRepository
+  // eslint-disable-next-line max-len
   publishableApiKeySalesChannelRepository: typeof PublishableApiKeySalesChannelRepository
 }
 
@@ -30,22 +31,20 @@ class PublishableApiKeyService extends TransactionBaseService {
     REVOKED: "publishable_api_key.revoked",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly eventBusService_: EventBusService
+  // eslint-disable-next-line max-len
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
+  // eslint-disable-next-line max-len
   protected readonly publishableApiKeySalesChannelRepository_: typeof PublishableApiKeySalesChannelRepository
 
   constructor({
-    manager,
     eventBusService,
     publishableApiKeyRepository,
     publishableApiKeySalesChannelRepository,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.publishableApiKeyRepository_ = publishableApiKeyRepository
     this.publishableApiKeySalesChannelRepository_ =
@@ -114,7 +113,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     selector: Selector<PublishableApiKey>,
     config: FindConfig<PublishableApiKey> = {}
   ): Promise<PublishableApiKey | never> {
-    const repo = this.manager_.getCustomRepository(
+    const repo = this.activeManager_.getCustomRepository(
       this.publishableApiKeyRepository_
     )
 
@@ -150,8 +149,7 @@ class PublishableApiKeyService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[PublishableApiKey[], number]> {
-    const manager = this.manager_
-    const pubKeyRepo = manager.getCustomRepository(
+    const pubKeyRepo = this.activeManager_.getCustomRepository(
       this.publishableApiKeyRepository_
     )
 
@@ -315,8 +313,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     publishableApiKeyId: string,
     config?: { q?: string }
   ): Promise<SalesChannel[]> {
-    const manager = this.manager_
-    const pubKeySalesChannelRepo = manager.getCustomRepository(
+    const pubKeySalesChannelRepo = this.activeManager_.getCustomRepository(
       this.publishableApiKeySalesChannelRepository_
     )
 
@@ -334,8 +331,7 @@ class PublishableApiKeyService extends TransactionBaseService {
   async getResourceScopes(
     publishableApiKeyId: string
   ): Promise<{ sales_channel_id: string[] }> {
-    const manager = this.manager_
-    const pubKeySalesChannelRepo = manager.getCustomRepository(
+    const pubKeySalesChannelRepo = this.activeManager_.getCustomRepository(
       this.publishableApiKeySalesChannelRepository_
     )
 
