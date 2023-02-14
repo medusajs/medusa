@@ -96,7 +96,11 @@ html[data-theme="dark"] .navbar-github-link:before {
 }
 
 @media screen and (min-width: 992px) {
-  .navbar {
+  html:not(.search-page-wrapper) .navbar__brand {
+    display: none;
+  }
+
+  html:not(.search-page-wrapper) .navbar {
     width: calc(100% - var(--doc-sidebar-width));
     margin-right: 0;
     margin-left: auto;

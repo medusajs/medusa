@@ -1,6 +1,4 @@
 import React from 'react';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import ThemedImage from '@theme/ThemedImage';
 import IconTwitter from '../../Icon/Twitter';
 import IconGitHub from '../../Icon/GitHub';
 import IconDiscord from '../../Icon/Discord';

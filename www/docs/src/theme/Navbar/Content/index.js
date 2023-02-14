@@ -6,10 +6,8 @@ import {
 } from '@docusaurus/theme-common/internal';
 import NavbarItem from '@theme/NavbarItem';
 import NavbarColorModeToggle from '@theme/Navbar/ColorModeToggle';
-import SearchBar from '@theme/SearchBar';
 import NavbarMobileSidebarToggle from '@theme/Navbar/MobileSidebar/Toggle';
 import NavbarLogo from '@theme/Navbar/Logo';
-import NavbarSearch from '@theme/Navbar/Search';
 import styles from './styles.module.css';
 import {useWindowSize} from '@docusaurus/theme-common';
 import NavbarActions from '../Actions';
@@ -42,19 +40,13 @@ export default function NavbarContent() {
   const windowSize = useWindowSize();
   const { navbarActions } = useThemeConfig()
 
-  const searchBarItem = items.find((item) => item.type === 'search');
-  
-  console.log(leftItems)
-
   return (
     <NavbarContentLayout
       left={
         // TODO stop hardcoding items?
         <>
           {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
-          {windowSize === 'mobile' && (
-            <NavbarLogo />
-          )}
+          <NavbarLogo />
           <NavbarItems items={leftItems} />
         </>
       }

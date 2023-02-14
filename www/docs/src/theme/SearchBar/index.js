@@ -18,7 +18,7 @@ export default function SearchBarWrapper(props) {
         }
   
         const query = e.target.value;
-        if (query.length >= 3) {
+        if (query.length >= 3 && window.analytics) {
           //send event to segment
           window.analytics.track('search', {
             query
