@@ -19,9 +19,9 @@ import { buildQuery, setMetadata } from "../utils"
 
 import {
   FulfillmentProviderService,
-  ProductVariantInventoryService,
   LineItemService,
   OrderService,
+  ProductVariantInventoryService,
   ReturnReasonService,
   ShippingOptionService,
   TaxProviderService,
@@ -653,7 +653,10 @@ class ReturnService extends TransactionBaseService {
         returnStatus = ReturnStatus.REQUIRES_ACTION
       }
 
-      const totalRefundableAmount = refundAmount || returnObj.refund_amount
+      const totalRefundableAmount =
+        isDefined(refundAmount) && refundAmount >= 0
+          ? refundAmount
+          : returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {
