@@ -35,43 +35,51 @@ export class ShippingMethodTaxLine extends TaxLine {
  * description: "Shipping Method Tax Line"
  * type: object
  * required:
+ *   - code
+ *   - created_at
+ *   - id
  *   - shipping_method_id
- *   - rate
+ *   - metadata
  *   - name
+ *   - rate
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The line item tax line's ID
- *     example: smtl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
- *   shipping_method_id:
  *     type: string
- *     description: The ID of the line item
- *     example: sm_01F0YET7DR2E7CYVSDHM593QG2
- *   shipping_method:
- *     description: Available if the relation `shipping_method` is expanded.
- *     $ref: "#/components/schemas/ShippingMethod"
+ *     example: smtl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
  *   code:
- *     description: "A code to identify the tax type by"
+ *     description: A code to identify the tax type by
+ *     nullable: true
  *     type: string
  *     example: tax01
  *   name:
- *     description: "A human friendly name for the tax"
+ *     description: A human friendly name for the tax
  *     type: string
  *     example: Tax Example
  *   rate:
  *     description: "The numeric rate to charge tax by"
  *     type: number
  *     example: 10
- *   created_at:
+ *   shipping_method_id:
+ *     description: The ID of the line item
  *     type: string
- *     description: "The date with timezone at which the resource was created."
+ *     example: sm_01F0YET7DR2E7CYVSDHM593QG2
+ *   shipping_method:
+ *     description: Available if the relation `shipping_method` is expanded.
+ *     nullable: true
+ *     $ref: "#/components/schemas/ShippingMethod"
+ *   created_at:
+ *     description: The date with timezone at which the resource was created.
+ *     type: string
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

@@ -22,35 +22,42 @@ export class TaxLine extends BaseEntity {
  * description: "Line item that specifies an amount of tax to add to a line item."
  * type: object
  * required:
- *   - rate
+ *   - code
+ *   - created_at
+ *   - id
+ *   - metadata
  *   - name
+ *   - rate
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The tax line's ID
+ *     type: string
  *     example: tl_01G1G5V2DRX1SK6NQQ8VVX4HQ8
  *   code:
- *     description: "A code to identify the tax type by"
+ *     description: A code to identify the tax type by
+ *     nullable: true
  *     type: string
  *     example: tax01
  *   name:
- *     description: "A human friendly name for the tax"
+ *     description: A human friendly name for the tax
  *     type: string
  *     example: Tax Example
  *   rate:
- *     description: "The numeric rate to charge tax by"
+ *     description: The numeric rate to charge tax by
  *     type: number
  *     example: 10
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */
