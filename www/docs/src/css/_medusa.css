@@ -58,20 +58,22 @@
 
   /** Code Block **/
   --medusa-code-block: #1C1C1F;
+  --medusa-code-block-border: #2E2E32;
+  --medusa-code-block-action: #706F78;
 
   /** Code Tabs **/
   --medusa-code-tabs-bg: #161616;
   --medusa-code-tab: #1C1C1F;
   --medusa-code-tab-hover: rgba(141, 141, 141, 0.16);
   --medusa-code-tab-border: #3E3E44;
-  --medusa-code-tab-text: #A09FA6;
+  --medusa-code-tab-text: #7E7D86;
   --medusa-code-tab-active-text: #EDEDEF;
-  --medusa-code-tab-title: #A09FA6;
+  --medusa-code-tab-title: #7E7D86;
 
   /** Tooltip **/
   --medusa-tooltip: var(--medusa-bg-base);
   --medusa-tooltip-border: var(--medusa-border-base);
-  --medusa-tooltip-shadow: var(--medusa-tooltip-shadow);
+  --medusa-tooltip-shadow: var(--medusa-shadow-overlay);
   --medusa-tooltip-text: var(--medusa-text-secondary);
 
   /** Shadow **/
@@ -129,7 +131,7 @@ html[data-theme="dark"] {
 
   /** Text **/
   --medusa-text-primary: #EDEDEF;
-  --medusa-text-secondary: #A09FA6;
+  --medusa-text-secondary: #7E7D86;
   --medusa-text-placeholder: #706F78;
   --medusa-text-disabled: #504F57;
   --medusa-text-on-color: #FFFFFF;
@@ -147,7 +149,7 @@ html[data-theme="dark"] {
 
   /** Icons **/
   --medusa-icon-primary: #EDEDEF;
-  --medusa-icon-secondary: #A09FA6;
+  --medusa-icon-secondary: #7E7D86;
   --medusa-icon-placeholder: #706F78;
   --medusa-icon-disabled: #504F57;
   --medusa-icon-on-color: #FFFFFF;

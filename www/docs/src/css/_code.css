@@ -66,7 +66,7 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   color: var(--ifm-code-tabs-color);
   font-weight: 600;
   font-size: 13px;
-  padding: 0 12px;
+  padding: 4px 12px;
   border: 1px solid transparent;
   white-space: nowrap;
   border-radius: 99999px;
@@ -83,7 +83,7 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 }
 
 .code-tabs .tabs__item--active {
-  border-color: #393939;
+  border-color: var(--medusa-code-tab-border);
   background-color: var(--ifm-code-tabs-active-bg);
   color: var(--ifm-code-tabs-active-color);
   font-size: 13px;
@@ -103,6 +103,8 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 }
 
 .code-action {
+  --ifm-icon-color: var(--medusa-code-block-action);
+
   background-color: transparent;
   border: none;
   padding: 4px;
@@ -110,8 +112,9 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   border-radius: 8px;
 }
 
-.code-action:hover {
-  background-color: var(--ifm-code-action-hover-bg);
+.code-action:hover,
+.tabs__item:hover {
+  background-color: var(--ifm-code-action-hover-bg) !important;
 }
 
 .code-action:not(:first-child) {
@@ -142,19 +145,13 @@ a.code-action {
   cursor: pointer;
 }
 
-[data-theme="dark"] .code-header,
-[data-theme="dark"] .theme-code-block {
-  border: 1px solid var(--ifm-code-border-color);
+.code-header,
+.theme-code-block {
+  border: 1px solid var(--ifm-code-block-border-color);
 }
 
-[data-theme="dark"] .code-header {
+.code-header {
   border-bottom: none;
-}
-
-html:not([data-theme="dark"]) .theme-code-block:not(.no-header-block) {
-  --ifm-code-border-color: #393939;
-
-  border-top: 1px solid var(--ifm-code-border-color);
 }
 
 .theme-code-block.no-header-block code:not(.thin-code),
@@ -166,12 +163,17 @@ html:not([data-theme="dark"]) .theme-code-block:not(.no-header-block) {
   padding: calc(var(--ifm-pre-padding) / 2);
 }
 
+[class*=codeLineNumber] {
+  color: var(--ifm-code-line-number-color);
+}
+
 @media screen and (min-width: 568px) {
   .prism-code {
     max-width: 90%;
   }
 
   .prism-code:after {
+    border-radius: var(--ifm-global-radius);
     content: '';
     position: absolute;
     right: 0;

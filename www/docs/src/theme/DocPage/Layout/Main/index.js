@@ -2,7 +2,6 @@ import React from 'react';
 import clsx from 'clsx';
 import {useDocsSidebar} from '@docusaurus/theme-common/internal';
 import styles from './styles.module.css';
-// import Footer from '@theme/Footer';
 
 export default function DocPageLayoutMain({hiddenSidebarContainer, children}) {
   const sidebar = useDocsSidebar();
@@ -20,7 +19,6 @@ export default function DocPageLayoutMain({hiddenSidebarContainer, children}) {
         )}>
         {children}
       </div>
-      {/* <Footer /> */}
     </main>
   );
 }

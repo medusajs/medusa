@@ -105,10 +105,11 @@ MEDUSA_FF_ANALYTICS=false
 ```
 
 2\. Alternatively, on your Medusa admin, you can disable tracking by following these steps:
-    1. Go to Settings → Personal Information.
-    2. In the Usage insights section, click on the “Edit preferences” button.
-    3. Enable the “Opt out of sharing my usage data” toggle.
-    4. Click on the “Submit and close” button.
+
+  1. Go to Settings → Personal Information.
+  2. In the Usage insights section, click on the “Edit preferences” button.
+  3. Enable the “Opt out of sharing my usage data” toggle.
+  4. Click on the “Submit and close” button.
 
 <!-- vale docs.We = YES -->
 <!-- vale docs.FirstPerson = YES -->
