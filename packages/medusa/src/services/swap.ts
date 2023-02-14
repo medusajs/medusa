@@ -1,12 +1,28 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 
-import { buildQuery, setMetadata, validateId } from "../utils"
 import { TransactionBaseService } from "../interfaces"
+import { buildQuery, setMetadata, validateId } from "../utils"
 
-import LineItemAdjustmentService from "./line-item-adjustment"
-import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
+import {
+  Cart,
+  CartType,
+  FulfillmentItem,
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  PaymentSessionStatus,
+  PaymentStatus,
+  ReturnItem,
+  ReturnStatus,
+  Swap,
+  SwapFulfillmentStatus,
+  SwapPaymentStatus,
+} from "../models"
 import { SwapRepository } from "../repositories/swap"
+import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
+import { CreateShipmentConfig } from "../types/fulfillment"
+import { OrdersReturnItem } from "../types/orders"
 import CartService from "./cart"
 import {
   CustomShippingOptionService,
@@ -20,21 +36,7 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "./index"
-import {
-  Cart,
-  CartType,
-  FulfillmentItem,
-  LineItem,
-  Order,
-  PaymentSessionStatus,
-  ReturnItem,
-  ReturnStatus,
-  Swap,
-  SwapFulfillmentStatus,
-  SwapPaymentStatus,
-} from "../models"
-import { CreateShipmentConfig } from "../types/fulfillment"
-import { OrdersReturnItem } from "../types/orders"
+import LineItemAdjustmentService from "./line-item-adjustment"
 
 type InjectedProps = {
   manager: EntityManager
@@ -325,13 +327,17 @@ class SwapService extends TransactionBaseService {
   ): Promise<Swap | never> {
     const { no_notification, ...rest } = custom
     return await this.atomicPhase_(async (manager) => {
-      if (
-        order.fulfillment_status === "not_fulfilled" ||
-        order.payment_status !== "captured"
-      ) {
+      if (order.payment_status !== PaymentStatus.CAPTURED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Order cannot be swapped"
+          "Cannot swap an order that has not been captured"
+        )
+      }
+
+      if (order.fulfillment_status === FulfillmentStatus.NOT_FULFILLED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot swap an order that has not been fulfilled"
         )
       }
 
