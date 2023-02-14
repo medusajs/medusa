@@ -74,7 +74,9 @@ export default class DistributedLockingService
     )
 
     if (!row) {
-      const expireSql = expire ? ", NOW() + INTERVAL '${+expire} SECONDS'" : ""
+      const expireSql = expire
+        ? ", NOW() + INTERVAL '${+expire} SECONDS'"
+        : "NULL"
       await this.getManager().query(
         `INSERT INTO distributed_locking (id, owner_id, expiration) VALUES ($1, $2 ${expireSql})`,
         [key, ownerId ?? null]
