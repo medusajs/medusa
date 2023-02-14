@@ -1,0 +1,45 @@
+{
+  "name": "medusa-payment-stripe-processor",
+  "version": "0.0.1",
+  "description": "Stripe Payment provider for Meduas Commerce",
+  "main": "index.js",
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-payment"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-payment-stripe-processor"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "test": "jest --passWithNoTests src",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/stripe": "^8.0.417",
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "medusa-interfaces": "^1.3.5",
+    "medusa-test-utils": "^1.1.37"
+  },
+  "peerDependencies": {
+    "medusa-interfaces": "1.3.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "medusa-core-utils": "^1.1.38",
+    "stripe": "^11.10.0"
+  }
+}
