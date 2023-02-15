@@ -4807,6 +4807,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/medusa-oas-cli@*, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli"
+  dependencies:
+    "@medusajs/medusa": "*"
+    "@readme/openapi-parser": ^2.4.0
+    commander: ^10.0.0
+    openapi3-ts: ^3.1.2
+    swagger-inline: ^6.1.0
+    ts-node: ^10.9.1
+    typescript: 4.9.5
+  bin:
+    medusa-oas: ./dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/medusa@*, @medusajs/medusa@^1.7.6, @medusajs/medusa@^1.7.7, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
@@ -5829,33 +5845,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@readme/json-schema-ref-parser@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@readme/json-schema-ref-parser@npm:1.1.0"
+"@readme/json-schema-ref-parser@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@readme/json-schema-ref-parser@npm:1.2.0"
   dependencies:
     "@jsdevtools/ono": ^7.1.3
     "@types/json-schema": ^7.0.6
     call-me-maybe: ^1.0.1
     js-yaml: ^4.1.0
-  checksum: 6d90e49ea53354f9d75fd7369b553774f0a9f4e1e3ad7e4be9140be1b469d2478b2a5c81283272f9948978509375d82568db744b77aa473dd0abde250da18693
+  checksum: 3a1d3dd7b5a8bcde2ca2ff894fcfebd1752fe633c24a6b6a9ad673dfb61a28e565bdb4beaeb3ac4dd022abeddd28833ac9e52adebe4e44254eede3b685157313
   languageName: node
   linkType: hard
 
-"@readme/openapi-parser@npm:^2.1.1":
-  version: 2.2.0
-  resolution: "@readme/openapi-parser@npm:2.2.0"
+"@readme/openapi-parser@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@readme/openapi-parser@npm:2.4.0"
   dependencies:
     "@apidevtools/openapi-schemas": ^2.1.0
     "@apidevtools/swagger-methods": ^3.0.2
     "@jsdevtools/ono": ^7.1.3
     "@readme/better-ajv-errors": ^1.5.0
-    "@readme/json-schema-ref-parser": ^1.1.0
+    "@readme/json-schema-ref-parser": ^1.2.0
     ajv: ^8.11.0
     ajv-draft-04: ^1.0.0
     call-me-maybe: ^1.0.1
   peerDependencies:
     openapi-types: ">=7"
-  checksum: 16f1056df3640e548b5403d2a658e517b0bfe2990ddfed79233ad1b0240da02297cd9c5aa393fa7b0427b09cec2c08bf5b7ca9f7cb370036dc86a5698e62ef07
+  checksum: e17414bf2b4e74ea928052451c18d6582021b47fc76ca05122bffc47aa180038722c61335cdbb7d7db38db05771aeab9fbe4baa3325608679e305f388e217f13
   languageName: node
   linkType: hard
 
@@ -10117,6 +10133,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"array.prototype.map@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "array.prototype.map@npm:1.0.5"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+    es-array-method-boxes-properly: ^1.0.0
+    is-string: ^1.0.7
+  checksum: cf44c0c958e94059d98132a3d5b7aa20d29aea34d20c515fdb236b69a95b1d3f1408f634f26fca51a9dbe06c85e93f7b351c85ea94300774af5ad2f1e8df3ae8
+  languageName: node
+  linkType: hard
+
 "array.prototype.reduce@npm:^1.0.4":
   version: 1.0.4
   resolution: "array.prototype.reduce@npm:1.0.4"
@@ -11276,7 +11305,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:^3.4.0, bluebird@npm:^3.4.1, bluebird@npm:^3.5.5, bluebird@npm:^3.7.2":
+"bluebird@npm:^3.4.0, bluebird@npm:^3.5.5, bluebird@npm:^3.7.2":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 680de03adc54ff925eaa6c7bb9a47a0690e8b5de60f4792604aae8ed618c65e6b63a7893b57ca924beaf53eee69c5af4f8314148c08124c550fe1df1add897d2
@@ -12798,6 +12827,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "commander@npm:10.0.0"
+  checksum: f1824812019664598ba7409c489cb5c15d33f65b43b08952a84e87e0023144c08d101e2f43af968cf2d464c0d667b50a2a9780f4a6c52915324f54fe9b451a31
+  languageName: node
+  linkType: hard
+
 "commander@npm:^2.19.0, commander@npm:^2.20.0, commander@npm:^2.20.3":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
@@ -12833,12 +12869,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"comment-patterns@npm:^0.11.0":
-  version: 0.11.0
-  resolution: "comment-patterns@npm:0.11.0"
+"comment-patterns@npm:^0.12.0":
+  version: 0.12.2
+  resolution: "comment-patterns@npm:0.12.2"
   dependencies:
     lodash: ^4.17.11
-  checksum: a0f022727e3e10321d5863007d9132a67793e99aa89c539008326c480748110045d2c46abab718a7606df7d043e3ce1202c03053c55dafca968679c3c1843e5f
+  checksum: 912953259d7c259ca3a515259d12df75983c37e6ebc9879734c7e7f9a5290038e63bb163cf9e79371835e216e34b55a4ff884535b2f1656911aca7a78c6a3aea
   languageName: node
   linkType: hard
 
@@ -15115,6 +15151,21 @@ __metadata:
     string.prototype.trimstart: ^1.0.6
     unbox-primitive: ^1.0.2
   checksum: c99f8a3e9ac15890cde5bf78d1910d72758d3e79c710bd1ad2ab6b595d39ad07209626befaa7c18591bd935a02f6a3bdba3a7e9c8dd6a01146e655df09dc4353
+  languageName: node
+  linkType: hard
+
+"es-aggregate-error@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "es-aggregate-error@npm:1.0.9"
+  dependencies:
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+    function-bind: ^1.1.1
+    functions-have-names: ^1.2.3
+    get-intrinsic: ^1.1.3
+    globalthis: ^1.0.3
+    has-property-descriptors: ^1.0.0
+  checksum: b977bfd94546b0f853b93112e0804a0901fd6bca4829012265f8d8266c6ef20f68b2e6cbae23425926920e37fc91b18eff1142c7481a25670d054dea9790827c
   languageName: node
   linkType: hard
 
@@ -17543,7 +17594,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"functions-have-names@npm:^1.2.2":
+"functions-have-names@npm:^1.2.2, functions-have-names@npm:^1.2.3":
   version: 1.2.3
   resolution: "functions-have-names@npm:1.2.3"
   checksum: 33e77fd29bddc2d9bb78ab3eb854c165909201f88c75faa8272e35899e2d35a8a642a15e7420ef945e1f64a9670d6aa3ec744106b2aa42be68ca5114025954ca
@@ -18454,7 +18505,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globalthis@npm:^1.0.0":
+"globalthis@npm:^1.0.0, globalthis@npm:^1.0.3":
   version: 1.0.3
   resolution: "globalthis@npm:1.0.3"
   dependencies:
@@ -26252,15 +26303,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multilang-extract-comments@npm:^0.3.2":
-  version: 0.3.3
-  resolution: "multilang-extract-comments@npm:0.3.3"
+"multilang-extract-comments@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "multilang-extract-comments@npm:0.4.0"
   dependencies:
-    comment-patterns: ^0.11.0
+    comment-patterns: ^0.12.0
     line-counter: ^1.0.3
     lodash: ^4.17.11
     quotemeta: 0.0.0
-  checksum: 86b27810e0716015f93435727c9c3553de5d252fb519e2b971ce06d593b0c9e0cce6561796884a6dfa2047c74756e7fe69bc0c1966a3d96d632e34c173df54e7
+  checksum: 6fa800c38d928d34cbbf32fea4a0ec04e5acc2f4ef051ce44f8911eaebb4a338058de2ee2b76e0e6dc422a9a23456ed08ff02745f91cc75ecf8b95ae08e7deb7
   languageName: node
   linkType: hard
 
@@ -26971,18 +27022,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oas-normalize@npm:^5.0.1":
-  version: 5.2.1
-  resolution: "oas-normalize@npm:5.2.1"
-  dependencies:
-    "@readme/openapi-parser": ^2.1.1
-    js-yaml: ^4.1.0
-    node-fetch: ^2.6.1
-    swagger2openapi: ^7.0.8
-  checksum: 5a5aba25528511644a5abe50535b2ce8a9ac05facefc5dab284446d68fc918d18f2b84c4bc5e590f1e372b74d108cd5b421649b69f419f45408c7520b8931720
-  languageName: node
-  linkType: hard
-
 "oas-resolver@npm:^2.5.6":
   version: 2.5.6
   resolution: "oas-resolver@npm:2.5.6"
@@ -27318,6 +27357,15 @@ __metadata:
     "@types/json-schema": ^7.0.7
     json-pointer: 0.6.2
   checksum: f394298c62decd027f418671e65c1aaee98be206788f4ba575c3d4e383c41d05a10d81968aad8d51f52f4aaa6acbdb0f97d0d192da06c8d7424e772cd13d2814
+  languageName: node
+  linkType: hard
+
+"openapi3-ts@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "openapi3-ts@npm:3.1.2"
+  dependencies:
+    yaml: ^2.1.3
+  checksum: 5dc9c24e5ae8d3b39880eef076a56dc1e905b4f863b5102591b8e3a43230d7a2cac1d12017894a1b7764a6ce390960e787a9368bac7bc163fa59894e493fc064
   languageName: node
   linkType: hard
 
@@ -29245,6 +29293,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"promise.any@npm:^2.0.2":
+  version: 2.0.5
+  resolution: "promise.any@npm:2.0.5"
+  dependencies:
+    array.prototype.map: ^1.0.5
+    call-bind: ^1.0.2
+    define-properties: ^1.1.4
+    es-abstract: ^1.20.4
+    es-aggregate-error: ^1.0.9
+    get-intrinsic: ^1.1.3
+    iterate-value: ^1.0.2
+  checksum: fc573c2f3f13719284d577c0b1fbecdcd84552de1bbf2d59133e140931fd90a284ebba7d51d1e288ed15550b0f340f96805126547a9a0b30cb10da02a34b1c70
+  languageName: node
+  linkType: hard
+
 "promise.prototype.finally@npm:^3.1.0, promise.prototype.finally@npm:^3.1.2":
   version: 3.1.3
   resolution: "promise.prototype.finally@npm:3.1.3"
@@ -31146,7 +31209,9 @@ __metadata:
     "@changesets/changelog-github": ^0.4.8
     "@changesets/cli": ^2.26.0
     "@linear/sdk": ^1.22.0
+    "@medusajs/medusa-oas-cli": "*"
     "@octokit/core": ^4.0.5
+    "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.0.0-beta.123
     "@typescript-eslint/eslint-plugin": ^5.36.2
     "@typescript-eslint/parser": ^5.36.2
@@ -31161,19 +31226,19 @@ __metadata:
     eslint-plugin-markdown: ^3.0.0
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-react: ^7.31.11
+    execa: ^5.1.1
     express: ^4.17.1
     get-port: ^5.1.1
     global: ^4.4.0
     husky: ^7.0.4
     import-from: ^3.0.0
     jest: ^26.6.3
+    js-yaml: ^4.1.0
     lint-staged: ^11.2.6
     microbundle: ^0.13.3
-    oas-normalize: ^5.0.1
     pg-god: ^1.0.12
     prettier: ^2.7.1
     resolve-cwd: ^3.0.0
-    swagger-inline: ^3.2.3
     ts-jest: ^26.5.6
     ts-node: ^10.9.1
     turbo: ^1.6.3
@@ -33229,23 +33294,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-inline@npm:^3.2.3":
-  version: 3.2.3
-  resolution: "swagger-inline@npm:3.2.3"
+"swagger-inline@npm:^6.1.0":
+  version: 6.1.1
+  resolution: "swagger-inline@npm:6.1.1"
   dependencies:
-    bluebird: ^3.4.1
     commander: ^6.0.0
     globby: ^11.0.1
-    js-yaml: ^3.13.1
-    lodash: ^4.17.11
-    multilang-extract-comments: ^0.3.2
+    js-yaml: ^4.1.0
+    multilang-extract-comments: ^0.4.0
+    promise.any: ^2.0.2
   bin:
-    swagger-inline: build/index.js
-  checksum: a714b77b7c8445dec6eacd6d532c2720d2a8a49c4c3ff4d4be261be240c52e41b53f66f07cd40fe2872aa4eee90ae6902c4767b01d7c3d19ecb85cbb86b9cf8f
+    swagger-inline: bin/swagger-inline
+  checksum: 2423c4d244d2104290bd44a59a1635cf1920f6ed5913f8841266ca8a59bd1d40ec3b710113064d45e00cc75f89b988b74ee96651b20f473dc2fd4d374fb3f211
   languageName: node
   linkType: hard
 
-"swagger2openapi@npm:^7.0.6, swagger2openapi@npm:^7.0.8":
+"swagger2openapi@npm:^7.0.6":
   version: 7.0.8
   resolution: "swagger2openapi@npm:7.0.8"
   dependencies:
@@ -34682,6 +34746,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:4.9.5, typescript@npm:^4.9.5":
+  version: 4.9.5
+  resolution: "typescript@npm:4.9.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 5f6cad2e728a8a063521328e612d7876e12f0d8a8390d3b3aaa452a6a65e24e9ac8ea22beb72a924fd96ea0a49ea63bb4e251fb922b12eedfb7f7a26475e5c56
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^4.1.3, typescript@npm:^4.4.4, typescript@npm:^4.5.2":
   version: 4.7.4
   resolution: "typescript@npm:4.7.4"
@@ -34692,13 +34766,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.9.5":
+"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
-  resolution: "typescript@npm:4.9.5"
+  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=7ad353"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 5f6cad2e728a8a063521328e612d7876e12f0d8a8390d3b3aaa452a6a65e24e9ac8ea22beb72a924fd96ea0a49ea63bb4e251fb922b12eedfb7f7a26475e5c56
+  checksum: 897c8ac656e01b132fa82be6a8e34c4507b19be63dbf1ff1d8287d775519081a7c91dd0ca3ec62536c8137228141d65b238dfb2e8987a3f5182818f58f83e7d7
   languageName: node
   linkType: hard
 
@@ -34709,16 +34783,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 2eb6e31b04fabec84a4d07b5d567deb5ef0a2971d89d9adb16895f148f7d8508adfb12074abc2efc6966805d3664e68ab67925060e5b0ebd8da616db4b151906
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
-  version: 4.9.5
-  resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=7ad353"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 897c8ac656e01b132fa82be6a8e34c4507b19be63dbf1ff1d8287d775519081a7c91dd0ca3ec62536c8137228141d65b238dfb2e8987a3f5182818f58f83e7d7
   languageName: node
   linkType: hard
 
@@ -36569,6 +36633,13 @@ __metadata:
   version: 1.10.2
   resolution: "yaml@npm:1.10.2"
   checksum: 5c28b9eb7adc46544f28d9a8d20c5b3cb1215a886609a2fd41f51628d8aaa5878ccd628b755dbcd29f6bb4921bd04ffbc6dcc370689bb96e594e2f9813d2605f
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.1.3":
+  version: 2.2.1
+  resolution: "yaml@npm:2.2.1"
+  checksum: 12f3a73f2d28970d146184b1425d32a63f65e9f4840eeab09155a4d23a15be8401ac7a3a09b6626895ccf853c1b9069450957c0ad82cfe591369aaa58d1593d6
   languageName: node
   linkType: hard
 
