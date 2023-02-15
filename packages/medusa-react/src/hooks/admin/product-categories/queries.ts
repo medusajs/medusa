@@ -6,12 +6,15 @@ import {
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "@tanstack/react-query"
+
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { queryKeysFactory } from "../../utils"
 
 const ADMIN_PRODUCT_CATEGORIES_QUERY_KEY = `product_categories` as const
-export const adminProductCategoryKeys = queryKeysFactory(ADMIN_PRODUCT_CATEGORIES_QUERY_KEY)
+export const adminProductCategoryKeys = queryKeysFactory(
+  ADMIN_PRODUCT_CATEGORIES_QUERY_KEY
+)
 type ProductCategoryQueryKeys = typeof adminProductCategoryKeys
 
 export const useAdminProductCategories = (
