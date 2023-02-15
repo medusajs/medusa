@@ -1,7 +1,11 @@
 import { asValue, createContainer } from "awilix"
 import { MockRepository } from "medusa-test-utils"
 import PaymentProviderService from "../payment-provider"
-import { defaultContainer, defaultPaymentSessionInputData, PaymentProcessor, } from "../__fixtures__/payment-provider"
+import {
+  defaultContainer,
+  defaultPaymentSessionInputData,
+  PaymentProcessor,
+} from "../__fixtures__/payment-provider"
 import { testPayServiceMock } from "../__mocks__/test-pay"
 import { EOL } from "os"
 import { PaymentSessionStatus, RefundReason } from "../../models";
@@ -139,6 +143,9 @@ describe(`PaymentProviderService`, () => {
         provider_id: "default_provider",
         amount: 100,
         currency_code: "usd",
+        cart: {
+          id: "cart-test"
+        }
       }
     )
 
@@ -258,7 +265,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         email: defaultPaymentSessionInputData.cart.email,
         currency_code: defaultPaymentSessionInputData.currency_code,
         amount: defaultPaymentSessionInputData.amount,
-        resource_id: undefined,
+        resource_id: "cart-test",
         customer: undefined,
         context: {},
         paymentSessionData: {},
@@ -345,7 +352,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         email: defaultPaymentSessionInputData.cart.email,
         currency_code: defaultPaymentSessionInputData.currency_code,
         amount: defaultPaymentSessionInputData.amount,
-        resource_id: undefined,
+        resource_id: "cart-test",
         customer: undefined,
         context: {},
         paymentSessionData: {},
@@ -433,7 +440,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         email: defaultPaymentSessionInputData.cart.email,
         currency_code: defaultPaymentSessionInputData.currency_code,
         amount: defaultPaymentSessionInputData.amount,
-        resource_id: undefined,
+        resource_id: "cart-test",
         customer: undefined,
         context: {},
         paymentSessionData,
@@ -901,8 +908,8 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const provider = container.resolve(paymentProcessorResolutionKey)
 
       expect(provider.refundPayment).toBeCalledTimes(2)
-      expect(provider.refundPayment).toHaveBeenNthCalledWith(1, payments[0].data)
-      expect(provider.refundPayment).toHaveBeenNthCalledWith(2, payments[1].data)
+      expect(provider.refundPayment).toHaveBeenNthCalledWith(1, payments[0].data, 1000)
+      expect(provider.refundPayment).toHaveBeenNthCalledWith(2, payments[1].data, 500)
 
       expect(paymentRepo.save).toBeCalledTimes(2)
       expect(paymentRepo.save).toHaveBeenNthCalledWith(1, expect.objectContaining({ amount_refunded: 1000 }))
@@ -965,7 +972,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const provider = container.resolve(paymentProcessorResolutionKey)
 
       expect(provider.refundPayment).toBeCalledTimes(1)
-      expect(provider.refundPayment).toBeCalledWith(payment.data)
+      expect(provider.refundPayment).toBeCalledWith(payment.data, 500)
 
       expect(paymentRepo.save).toBeCalledTimes(1)
       expect(paymentRepo.save).toBeCalledWith(expect.objectContaining({ amount_refunded: 500 }))

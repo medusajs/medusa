@@ -41,14 +41,6 @@ export class PaymentProcessor extends AbstractPaymentProcessor {
     return Promise.resolve({ } as any);
   }
 
-  cancelPayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
-  }
-
-  deletePayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
-  }
-
   getPaymentStatus(paymentSessionData: Record<string, unknown>): Promise<PaymentSessionStatus> {
     return Promise.resolve(PaymentSessionStatus.PENDING);
   }
@@ -74,6 +66,14 @@ export class PaymentProcessor extends AbstractPaymentProcessor {
   }
 
   refundPayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
+    return Promise.resolve({});
+  }
+
+  cancelPayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
+    return Promise.resolve({});
+  }
+
+  deletePayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
     return Promise.resolve({});
   }
 }
