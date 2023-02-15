@@ -1,22 +1,24 @@
 import { generateEntityId } from "../utils/generate-entity-id"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { kebabCase } from "lodash"
+import { Product } from "."
 import {
   BeforeInsert,
-  Index,
-  Entity,
-  Tree,
   Column,
-  PrimaryGeneratedColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  Tree,
   TreeChildren,
   TreeParent,
-  TreeLevelColumn,
-  JoinColumn,
 } from "typeorm"
 
 @Entity()
 @Tree("materialized-path")
 export class ProductCategory extends SoftDeletableEntity {
+  static productCategoryProductJoinTable = "product_category_product"
   static treeRelations = ["parent_category", "category_children"]
 
   @Column()
@@ -49,6 +51,20 @@ export class ProductCategory extends SoftDeletableEntity {
   @TreeChildren({ cascade: true })
   category_children: ProductCategory[]
 
+  @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
+  @JoinTable({
+    name: ProductCategory.productCategoryProductJoinTable,
+    joinColumn: {
+      name: "product_category_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+  })
+  products: Product[]
+
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "pcat")
@@ -66,23 +82,34 @@ export class ProductCategory extends SoftDeletableEntity {
  * x-resourceId: ProductCategory
  * type: object
  * required:
+ *   - category_children
+ *   - created_at
+ *   - deleted_at
+ *   - handle
+ *   - id
+ *   - is_active
+ *   - is_internal
+ *   - mpath
  *   - name
+ *   - parent_category_id
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The product category's ID
+ *     type: string
  *     example: pcat_01G2SG30J8C85S4A5CHM2S1NS2
  *   name:
- *     type: string
  *     description: The product category's name
+ *     type: string
  *     example: Regular Fit
  *   handle:
- *     description: "A unique string that identifies the Category - example: slug structures."
+ *     description: A unique string that identifies the Product Category - can for example be used in slug structures.
  *     type: string
  *     example: regular-fit
  *   mpath:
- *     type: string
  *     description: A string for Materialized Paths - used for finding ancestors and descendents
+ *     nullable: true
+ *     type: string
  *     example: pcat_id1.pcat_id2.pcat_id3
  *   is_internal:
  *     type: boolean
@@ -96,25 +123,32 @@ export class ProductCategory extends SoftDeletableEntity {
  *     description: Available if the relation `category_children` are expanded.
  *     type: array
  *     items:
- *       type: object
- *       description: A product category object.
+ *       $ref: "#/components/schemas/ProductCategory"
  *   parent_category_id:
  *     description: The ID of the parent category.
+ *     nullable: true
  *     type: string
  *     default: null
  *   parent_category:
  *     description: A product category object. Available if the relation `parent_category` is expanded.
- *     type: object
+ *     nullable: true
+ *     $ref: "#/components/schemas/ProductCategory"
+ *   products:
+ *     description: Products associated with category. Available if the relation `products` is expanded.
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Product"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  */

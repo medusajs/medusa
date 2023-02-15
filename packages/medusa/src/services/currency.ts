@@ -48,7 +48,7 @@ export default class CurrencyService extends TransactionBaseService {
    * @return The currency
    */
   async retrieveByCode(code: string): Promise<Currency | never> {
-    const currencyRepo = this.manager_.getCustomRepository(
+    const currencyRepo = this.manager_.withRepository(
       this.currencyRepository_
     )
 
@@ -85,7 +85,7 @@ export default class CurrencyService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[Currency[], number]> {
-    const productRepo = this.manager_.getCustomRepository(
+    const productRepo = this.manager_.withRepository(
       this.currencyRepository_
     )
 
@@ -117,7 +117,7 @@ export default class CurrencyService extends TransactionBaseService {
         }
       }
 
-      const currencyRepo = transactionManager.getCustomRepository(
+      const currencyRepo = transactionManager.withRepository(
         this.currencyRepository_
       )
       await currencyRepo.save(currency)

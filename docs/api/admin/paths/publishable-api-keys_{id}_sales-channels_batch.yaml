@@ -16,17 +16,19 @@ post:
         schema:
           $ref: >-
             ../components/schemas/AdminPostPublishableApiKeySalesChannelsBatchReq.yaml
+  x-codegen:
+    method: addSalesChannelsBatch
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels_batch/postundefined
+          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels_batch/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels_batch/postundefined
+          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels_batch/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -69,17 +71,19 @@ delete:
         schema:
           $ref: >-
             ../components/schemas/AdminDeletePublishableApiKeySalesChannelsBatchReq.yaml
+  x-codegen:
+    method: deleteSalesChannelsBatch
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels_batch/deleteundefined
+          ../code_samples/JavaScript/publishable-api-keys_{id}_sales-channels_batch/delete.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels_batch/deleteundefined
+          ../code_samples/Shell/publishable-api-keys_{id}_sales-channels_batch/delete.sh
   security:
     - api_token: []
     - cookie_auth: []

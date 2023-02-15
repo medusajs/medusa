@@ -21,6 +21,7 @@ export default (app) => {
 export const defaultStoreSwapRelations = [
   "order",
   "additional_items",
+  "additional_items.variant",
   "return_order",
   "return_order.shipping_method",
   "fulfillments",

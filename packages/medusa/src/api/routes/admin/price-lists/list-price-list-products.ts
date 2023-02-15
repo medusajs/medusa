@@ -133,6 +133,9 @@ import { isDefined } from "medusa-core-utils"
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ * x-codegen:
+ *   method: listProducts
+ *   queryParams: AdminGetPriceListsPriceListProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

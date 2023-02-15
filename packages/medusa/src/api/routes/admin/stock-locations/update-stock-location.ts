@@ -20,6 +20,8 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostStockLocationsLocationReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -91,6 +93,10 @@ class StockLocationAddress {
   @IsOptional()
   @IsString()
   address_2?: string
+
+  @IsOptional()
+  @IsString()
+  company?: string
 
   @IsOptional()
   @IsString()

@@ -10,6 +10,8 @@ import { CartService } from "../../../../services"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) line_id=* {string} The id of the Line Item.
+ * x-codegen:
+ *   method: deleteLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -51,16 +53,18 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
 
   await manager.transaction(async (m) => {
+    const cartServiceTx = cartService.withTransaction(m)
+
     // Remove the line item
-    await cartService.withTransaction(m).removeLineItem(id, line_id)
+    await cartServiceTx.removeLineItem(id, line_id)
 
     // If the cart has payment sessions update these
-    const updated = await cartService.withTransaction(m).retrieve(id, {
+    const updated = await cartServiceTx.retrieve(id, {
       relations: ["payment_sessions"],
     })
 
     if (updated.payment_sessions?.length) {
-      await cartService.withTransaction(m).setPaymentSessions(id)
+      await cartServiceTx.setPaymentSessions(id)
     }
   })
 

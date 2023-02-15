@@ -12,6 +12,9 @@ import { FindParams } from "../../../../types/common"
  *   - (path) id=* {string} The ID of the Discount
  *   - (query) expand {string} Comma separated list of relations to include in the results.
  *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: AdminGetDiscountParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

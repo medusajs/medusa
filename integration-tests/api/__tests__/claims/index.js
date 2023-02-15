@@ -38,6 +38,48 @@ describe("Claims", () => {
     return await doAfterEach()
   })
 
+  test("creates a refund claim with custom refund amount", async () => {
+    await adminSeeder(dbConnection)
+
+    const order = await createReturnableOrder(dbConnection)
+    const api = useApi()
+
+    const response = await api.post(
+      `/admin/orders/${order.id}/claims`,
+      {
+        type: "refund",
+        refund_amount: 1000,
+        claim_items: [
+          {
+            item_id: "test-item",
+            reason: "missing_item",
+            quantity: 1,
+          },
+        ],
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.order.claims[0]).toEqual(
+      expect.objectContaining({
+        order_id: expect.any(String),
+        refund_amount: 1000,
+        claim_items: expect.arrayContaining([
+          expect.objectContaining({
+            item: expect.any(Object),
+            item_id: "test-item",
+            quantity: 1,
+          }),
+        ]),
+      })
+    )
+  })
+
   test("creates a refund claim", async () => {
     await adminSeeder(dbConnection)
 
@@ -66,7 +108,6 @@ describe("Claims", () => {
     expect(response.status).toEqual(200)
     expect(response.data.order.claims[0]).toEqual(
       expect.objectContaining({
-        id: expect.stringMatching(/^claim_*/),
         order_id: expect.any(String),
         refund_amount: 1200,
         claim_items: expect.arrayContaining([
@@ -78,6 +119,83 @@ describe("Claims", () => {
         ]),
       })
     )
+  })
+
+  test("creates a refund claim + return", async () => {
+    await adminSeeder(dbConnection)
+
+    const order = await createReturnableOrder(dbConnection)
+    const api = useApi()
+
+    const response = await api.post(
+      `/admin/orders/${order.id}/claims`,
+      {
+        type: "refund",
+        claim_items: [
+          {
+            item_id: "test-item",
+            reason: "missing_item",
+            quantity: 1,
+          },
+        ],
+        return_shipping: {
+          price: 0,
+        },
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    const claim = response.data.order.claims[0]
+    const refund = response.data.order.refunds[0]
+    const returnOrder = response.data.order.returns[0]
+
+    expect(response.status).toEqual(200)
+    expect(claim.refund_amount).toEqual(1200)
+    expect(refund.amount).toEqual(1200)
+    expect(returnOrder.refund_amount).toEqual(1200)
+  })
+
+  test("creates a refund claim + return with a custom amount", async () => {
+    await adminSeeder(dbConnection)
+
+    const order = await createReturnableOrder(dbConnection)
+    const api = useApi()
+
+    const response = await api.post(
+      `/admin/orders/${order.id}/claims`,
+      {
+        type: "refund",
+        refund_amount: 500,
+        claim_items: [
+          {
+            item_id: "test-item",
+            reason: "missing_item",
+            quantity: 1,
+          },
+        ],
+        return_shipping: {
+          price: 0,
+        },
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    const claim = response.data.order.claims[0]
+    const refund = response.data.order.refunds[0]
+    const returnOrder = response.data.order.returns[0]
+
+    expect(response.status).toEqual(200)
+    expect(claim.refund_amount).toEqual(500)
+    expect(refund.amount).toEqual(500)
+    expect(returnOrder.refund_amount).toEqual(500)
   })
 
   test("creates a replace claim", async () => {

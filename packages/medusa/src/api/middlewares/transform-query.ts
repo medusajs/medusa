@@ -39,6 +39,20 @@ export function transformQuery<
       ])
       req.filterableFields = removeUndefinedProperties(req.filterableFields)
 
+      if (
+        (queryConfig?.defaultFields || validated.fields) &&
+        (queryConfig?.defaultRelations || validated.expand)
+      ) {
+        req.allowedProperties = [
+          ...(validated.fields
+            ? validated.fields.split(",")
+            : queryConfig?.allowedFields || [])!,
+          ...(validated.expand
+            ? validated.expand.split(",")
+            : queryConfig?.allowedRelations || [])!,
+        ] as unknown as string[]
+      }
+
       if (queryConfig?.isList) {
         req.listConfig = prepareListQuery(
           validated,

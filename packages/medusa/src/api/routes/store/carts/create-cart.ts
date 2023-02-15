@@ -37,6 +37,8 @@ import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/pub
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/StorePostCartReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -207,6 +209,7 @@ export class Item {
  *     description: "An optional array of `variant_id`, `quantity` pairs to generate Line Items from."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity

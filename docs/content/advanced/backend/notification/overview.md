@@ -1,3 +1,7 @@
+---
+description: 'Learn about the Notificaiton architecture in Medusa and the automation flow. The Notification Architecture is made up of the Notification Provider and Notification.'
+---
+
 # Notification Architecture Overview
 
 This document gives an overview of the notification architecture and how it works.

@@ -22,17 +22,19 @@ post:
       description: The ID of the Fulfillment.
       schema:
         type: string
+  x-codegen:
+    method: cancelClaimFulfillment
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/postundefined
+          ../code_samples/JavaScript/orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: >-
-          ../code_samples/Shell/orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/postundefined
+          ../code_samples/Shell/orders_{id}_claims_{claim_id}_fulfillments_{fulfillment_id}_cancel/post.sh
   security:
     - api_token: []
     - cookie_auth: []

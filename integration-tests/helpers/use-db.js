@@ -1,7 +1,8 @@
 const path = require("path")
 
+const { getConfigFile } = require("medusa-core-utils")
 const { dropDatabase } = require("pg-god")
-const { createConnection } = require("typeorm")
+const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
 
 const DB_HOST = process.env.DB_HOST
@@ -26,13 +27,13 @@ const keepTables = [
   "currency",
 ]
 
-let connectionType = "postgresql"
+let dataSourceType = "postgresql"
 
 const DbTestUtil = {
   db_: null,
 
-  setDb: function (connection) {
-    this.db_ = connection
+  setDb: function (dataSource) {
+    this.db_ = dataSource
   },
 
   clear: async function () {
@@ -43,9 +44,10 @@ const DbTestUtil = {
     forceDelete = forceDelete || []
 
     const entities = this.db_.entityMetadatas
+
     const manager = this.db_.manager
 
-    if (connectionType === "sqlite") {
+    if (dataSourceType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = OFF`)
     } else {
       await manager.query(`SET session_replication_role = 'replica';`)
@@ -62,7 +64,7 @@ const DbTestUtil = {
       await manager.query(`DELETE
                            FROM "${entity.tableName}";`)
     }
-    if (connectionType === "sqlite") {
+    if (dataSourceType === "sqlite") {
       await manager.query(`PRAGMA foreign_keys = ON`)
     } else {
       await manager.query(`SET session_replication_role = 'origin';`)
@@ -70,7 +72,7 @@ const DbTestUtil = {
   },
 
   shutdown: async function () {
-    await this.db_.close()
+    await this.db_.destroy()
     return await dropDatabase({ DB_NAME }, pgGodCredentials)
   },
 }
@@ -79,21 +81,19 @@ const instance = DbTestUtil
 
 module.exports = {
   initDb: async function ({ cwd, database_extra }) {
-    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
-    const { projectConfig, featureFlags } = require(configPath)
+    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const { projectConfig, featureFlags } = configModule
 
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default
 
     const featureFlagsRouter = featureFlagsLoader({ featureFlags })
-
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
-
     const entities = modelsLoader({}, { register: false })
 
     if (projectConfig.database_type === "sqlite") {
-      connectionType = "sqlite"
-      const dbConnection = await createConnection({
+      dataSourceType = "sqlite"
+      const dataSource = new DataSource({
         type: "sqlite",
         database: projectConfig.database_database,
         synchronize: true,
@@ -101,8 +101,10 @@ module.exports = {
         extra: database_extra ?? {},
       })
 
-      instance.setDb(dbConnection)
-      return dbConnection
+      const dbDataSource = await dataSource.initialize()
+
+      instance.setDb(dbDataSource)
+      return dbDataSource
     } else {
       await dbFactory.createFromTemplate(DB_NAME)
 
@@ -122,30 +124,35 @@ module.exports = {
 
       const {
         getEnabledMigrations,
+        getModuleSharedResources,
       } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
-      const enabledMigrations = await getEnabledMigrations(
-        [migrationDir],
-        (flag) => featureFlagsRouter.isFeatureEnabled(flag)
+      const { migrations: moduleMigrations, models: moduleModels } =
+        getModuleSharedResources(configModule, featureFlagsRouter)
+
+      const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
+        featureFlagsRouter.isFeatureEnabled(flag)
       )
 
       const enabledEntities = entities.filter(
         (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
       )
 
-      const dbConnection = await createConnection({
+      const dbDataSource = new DataSource({
         type: "postgres",
         url: DB_URL,
-        entities: enabledEntities,
-        migrations: enabledMigrations,
+        entities: enabledEntities.concat(moduleModels),
+        migrations: enabledMigrations.concat(moduleMigrations),
         extra: database_extra ?? {},
         name: "integration-tests",
       })
 
-      await dbConnection.runMigrations()
+      await dbDataSource.initialize()
 
-      instance.setDb(dbConnection)
-      return dbConnection
+      await dbDataSource.runMigrations()
+
+      instance.setDb(dbDataSource)
+      return dbDataSource
     }
   },
   useDb: function () {

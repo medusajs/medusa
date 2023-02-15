@@ -17,15 +17,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostOrdersOrderSwapsReq.yaml
+  x-codegen:
+    method: createSwap
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/order_{id}_swaps/postundefined
+        $ref: ../code_samples/JavaScript/order_{id}_swaps/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/order_{id}_swaps/postundefined
+        $ref: ../code_samples/Shell/order_{id}_swaps/post.sh
   security:
     - api_token: []
     - cookie_auth: []

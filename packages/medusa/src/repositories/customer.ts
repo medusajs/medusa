@@ -1,49 +1,49 @@
-import { Brackets, EntityRepository, ILike, Repository } from "typeorm"
-import { Customer } from "../models/customer"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import { FindOperator, FindOptionsWhere, ILike, In } from "typeorm"
+import { Customer } from "../models"
+import { dataSource } from "../loaders/database"
+import { ExtendedFindConfig } from "../types/common"
 
-@EntityRepository(Customer)
-export class CustomerRepository extends Repository<Customer> {
+export const CustomerRepository = dataSource.getRepository(Customer).extend({
   async listAndCount(
-    query: ExtendedFindConfig<Customer, Selector<Customer>>,
+    query: ExtendedFindConfig<Customer> & {
+      where: FindOptionsWhere<Customer & { groups?: FindOperator<string[]> }>
+    },
     q: string | undefined = undefined
   ): Promise<[Customer[], number]> {
-    const groups = query.where.groups as { value: string[] }
-    delete query.where.groups
+    const query_ = { ...query }
 
-    const qb = this.createQueryBuilder("customer")
-      .skip(query.skip)
-      .take(query.take)
+    if (query_.where.groups) {
+      query_.relations = query_.relations ?? {}
+      query_.relations.groups = query_.relations.groups ?? true
+
+      query.where.groups = {
+        id: In((query_.where.groups as FindOperator<string[]>).value),
+      }
+    }
 
     if (q) {
-      delete query.where.email
-      delete query.where.first_name
-      delete query.where.last_name
+      query_.where = query_.where as FindOptionsWhere<Customer>
+      delete query_.where.email
+      delete query_.where.first_name
+      delete query_.where.last_name
 
-      qb.where(
-        new Brackets((qb) => {
-          qb.where({ email: ILike(`%${q}%`) })
-            .orWhere({ first_name: ILike(`%${q}%`) })
-            .orWhere({ last_name: ILike(`%${q}%`) })
-        })
-      )
+      query_.where = [
+        {
+          ...query_.where,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...query_.where,
+          first_name: ILike(`%${q}%`),
+        },
+        {
+          ...query_.where,
+          last_name: ILike(`%${q}%`),
+        },
+      ]
     }
 
-    qb.andWhere(query.where)
-
-    if (groups) {
-      qb.leftJoinAndSelect("customer.groups", "group").andWhere(
-        `group.id IN (:...ids)`,
-        { ids: groups.value }
-      )
-    }
-
-    if (query.relations?.length) {
-      query.relations.forEach((rel) => {
-        qb.leftJoinAndSelect(`customer.${rel}`, rel)
-      })
-    }
-
-    return await qb.getManyAndCount()
-  }
-}
+    return await this.findAndCount(query_)
+  },
+})
+export default CustomerRepository

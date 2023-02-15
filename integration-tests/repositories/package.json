@@ -10,7 +10,7 @@
   "dependencies": {
     "@medusajs/medusa": "*",
     "medusa-interfaces": "*",
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.3.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

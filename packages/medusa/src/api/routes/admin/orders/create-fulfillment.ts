@@ -33,6 +33,8 @@ import { Fulfillment, LineItem } from "../../../../models"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostOrdersOrderFulfillmentsReq"
+ * x-codegen:
+ *   method: createFulfillment
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -190,6 +192,7 @@ const updateInventoryAndReservations = async (
  *     description: The Line Items to include in the Fulfillment.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity

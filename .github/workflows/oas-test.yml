@@ -1,12 +1,17 @@
 name: OAS Comments Format Validation
-on: 
+on:
   pull_request:
     paths:
-      - packages/medusa/src/api/routes/**
+      - packages/medusa/src/api/**
+      - packages/medusa/src/models/**
+      - packages/medusa/src/types/**
 
 jobs:
   docs-test:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -28,6 +33,9 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: oas
+
+      - name: Build Packages
+        run: yarn build
 
       - name: Build OAS
         run: |

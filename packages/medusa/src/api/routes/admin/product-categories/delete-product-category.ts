@@ -11,7 +11,19 @@ import { ProductCategoryService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.productCategories.delete(product_category_id)
+ *       .then(({ id, object, deleted }) => {
+ *         console.log(id);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -23,24 +35,12 @@ import { ProductCategoryService } from "../../../../services"
  * tags:
  *   - Product Category
  * responses:
- *   200:
+ *   "200":
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted product category.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: product_category
- *             deleted:
- *               type: boolean
- *               description: Whether the product category was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminProductCategoriesCategoryDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -72,7 +72,7 @@ export default async (req: Request, res: Response) => {
 
   res.json({
     id: id,
-    object: "product_category",
+    object: "product-category",
     deleted: true,
   })
 }

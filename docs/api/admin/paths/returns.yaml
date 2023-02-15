@@ -15,15 +15,18 @@ get:
       schema:
         type: number
         default: '0'
+  x-codegen:
+    method: list
+    queryParams: AdminGetReturnsParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/returns/getundefined
+        $ref: ../code_samples/JavaScript/returns/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/returns/getundefined
+        $ref: ../code_samples/Shell/returns/get.sh
   security:
     - api_token: []
     - cookie_auth: []

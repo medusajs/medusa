@@ -1,4 +1,5 @@
 import { CartService } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [get] /carts/{id}
@@ -7,6 +8,8 @@ import { CartService } from "../../../../services"
  * description: "Retrieves a Cart."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -45,6 +48,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const cartService: CartService = req.scope.resolve("cartService")
+  const manager: EntityManager = req.scope.resolve("manager")
 
   const cart = await cartService.retrieve(id, {
     select: ["id", "customer_id"],
@@ -57,8 +61,10 @@ export default async (req, res) => {
       !cart.email ||
       cart.customer_id !== req.user.customer_id
     ) {
-      await cartService.update(id, {
-        customer_id: req.user.customer_id,
+      await manager.transaction(async (transctionManager) => {
+        await cartService.withTransaction(transctionManager).update(id, {
+          customer_id: req.user.customer_id,
+        })
       })
     }
   }

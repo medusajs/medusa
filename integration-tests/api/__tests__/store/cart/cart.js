@@ -14,7 +14,6 @@ const { useApi } = require("../../../../helpers/use-api")
 const { initDb, useDb } = require("../../../../helpers/use-db")
 
 const cartSeeder = require("../../../helpers/cart-seeder")
-const productSeeder = require("../../../helpers/product-seeder")
 const swapSeeder = require("../../../helpers/swap-seeder")
 const {
   simpleCartFactory,
@@ -980,16 +979,18 @@ describe("/store/carts", () => {
     it("fails on apply discount if limit has been reached", async () => {
       const api = useApi()
 
+      const code = "SPENT"
+
       const err = await api
         .post("/store/carts/test-cart", {
-          discounts: [{ code: "SPENT" }],
+          discounts: [{ code }],
         })
         .catch((err) => err)
 
       expect(err).toBeTruthy()
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
-        "Discount has been used maximum allowed times"
+        `Discount ${code} has been used maximum allowed times`
       )
     })
 
@@ -1330,14 +1331,15 @@ describe("/store/carts", () => {
         },
       })
 
+      const code = "TEST"
       try {
         await api.post("/store/carts/test-customer-discount", {
-          discounts: [{ code: "TEST" }],
+          discounts: [{ code }],
         })
       } catch (error) {
         expect(error.response.status).toEqual(400)
         expect(error.response.data.message).toEqual(
-          "Discount is not valid for customer"
+          `Discount ${code} is not valid for customer`
         )
       }
     })
@@ -1399,14 +1401,15 @@ describe("/store/carts", () => {
         },
       })
 
+      const code = "TEST"
       try {
         await api.post("/store/carts/test-customer-discount", {
-          discounts: [{ code: "TEST" }],
+          discounts: [{ code }],
         })
       } catch (error) {
         expect(error.response.status).toEqual(400)
         expect(error.response.data.message).toEqual(
-          "Discount is not valid for customer"
+          `Discount ${code} is not valid for customer`
         )
       }
     })
@@ -1415,56 +1418,143 @@ describe("/store/carts", () => {
       expect.assertions(2)
       const api = useApi()
 
-      try {
-        await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "EXP_DISC" }],
+      const code = "EXP_DISC"
+
+      const err = await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code }],
         })
-      } catch (error) {
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual("Discount is expired")
-      }
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(`Discount ${code} is expired`)
     })
 
     it("fails on discount before start day", async () => {
       expect.assertions(2)
       const api = useApi()
 
-      try {
-        await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "PREM_DISC" }],
+      const code = "PREM_DISC"
+
+      const err = await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code }],
         })
-      } catch (error) {
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual("Discount is not valid yet")
-      }
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        `Discount ${code} is not valid yet`
+      )
     })
 
     it("fails on apply invalid dynamic discount", async () => {
       const api = useApi()
 
-      try {
-        await api.post("/store/carts/test-cart", {
-          discounts: [{ code: "INV_DYN_DISC" }],
+      const code = "INV_DYN_DISC"
+
+      const err = await api
+        .post("/store/carts/test-cart", {
+          discounts: [{ code }],
         })
-      } catch (error) {
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.message).toEqual("Discount is expired")
-      }
+        .catch((e) => e)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(`Discount ${code} is expired`)
     })
 
     it("Applies dynamic discount to cart correctly", async () => {
       const api = useApi()
 
-      const cart = await api.post(
-        "/store/carts/test-cart",
-        {
-          discounts: [{ code: "DYN_DISC" }],
-        },
-        { withCredentials: true }
-      )
+      const cart = await api.post("/store/carts/test-cart", {
+        discounts: [{ code: "DYN_DISC" }],
+      })
 
       expect(cart.data.cart.shipping_total).toBe(1000)
       expect(cart.status).toEqual(200)
+    })
+
+    it("successfully apply a fixed discount with total allocation and return the total with the right precision", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart"
+      const quantity = 2
+
+      const variant1Price = 4452600
+      const product1 = await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: "test-variant-1-fixed-discount-total",
+            prices: [
+              {
+                amount: variant1Price,
+                currency: "usd",
+                variant_id: "test-variant-1-fixed-discount-total",
+              },
+            ],
+          },
+        ],
+      })
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product1.variants[0].id,
+        quantity,
+      })
+
+      const variant2Price = 482200
+      const product2 = await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            id: "test-variant-2-fixed-discount-total",
+            prices: [
+              {
+                amount: variant2Price,
+                currency: "usd",
+                variant_id: "test-variant-2-fixed-discount-total",
+              },
+            ],
+          },
+        ],
+      })
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product2.variants[0].id,
+        quantity,
+      })
+
+      const discountAmount = 10000
+      const discount = await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "fixed",
+          value: discountAmount,
+          allocation: "total",
+        },
+      })
+
+      const response = await api.post(`/store/carts/${cartId}`, {
+        discounts: [{ code: discount.code }],
+      })
+
+      expect(response.status).toBe(200)
+
+      const cart = response.data.cart
+
+      const shippingAmount = 1000
+      const expectedTotal =
+        quantity * variant1Price +
+        quantity * variant2Price +
+        shippingAmount -
+        discountAmount
+
+      const expectedSubtotal = expectedTotal + discountAmount - shippingAmount
+
+      expect(cart.total).toBe(expectedTotal)
+      expect(cart.subtotal).toBe(expectedSubtotal)
+      expect(cart.discount_total).toBe(discountAmount)
+      expect(cart.shipping_total).toBe(1000)
     })
 
     it("updates cart customer id", async () => {

@@ -1,11 +1,11 @@
-import { DeepPartial, EntityManager } from "typeorm"
+import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
   buildQuery,
-  IEventBusService,
-  FilterableInventoryItemProps,
   CreateInventoryItemInput,
+  FilterableInventoryItemProps,
+  FindConfig,
+  IEventBusService,
   InventoryItemDTO,
   TransactionBaseService,
 } from "@medusajs/medusa"
@@ -87,7 +87,7 @@ export default class InventoryItemService extends TransactionBaseService {
     const manager = this.getManager()
     const itemRepository = manager.getRepository(InventoryItem)
 
-    const query = buildQuery({ id: inventoryItemId }, config)
+    const query = buildQuery({ id: inventoryItemId }, config) as FindManyOptions
     const [inventoryItem] = await itemRepository.find(query)
 
     if (!inventoryItem) {

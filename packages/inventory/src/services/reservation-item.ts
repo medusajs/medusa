@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, FindManyOptions } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   FindConfig,
@@ -62,7 +62,7 @@ export default class ReservationItemService extends TransactionBaseService {
     const manager = this.getManager()
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
     return await itemRepository.find(query)
   }
 
@@ -79,7 +79,7 @@ export default class ReservationItemService extends TransactionBaseService {
     const manager = this.getManager()
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
     return await itemRepository.findAndCount(query)
   }
 
@@ -104,7 +104,7 @@ export default class ReservationItemService extends TransactionBaseService {
     const manager = this.getManager()
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery({ id: reservationItemId }, config)
+    const query = buildQuery({ id: reservationItemId }, config) as FindManyOptions
     const [reservationItem] = await reservationItemRepository.find(query)
 
     if (!reservationItem) {
@@ -173,8 +173,31 @@ export default class ReservationItemService extends TransactionBaseService {
       const shouldUpdateQuantity =
         isDefined(data.quantity) && data.quantity !== item.quantity
 
+      const shouldUpdateLocation =
+        isDefined(data.location_id) &&
+        isDefined(data.quantity) &&
+        data.location_id !== item.location_id
+
       const ops: Promise<unknown>[] = []
-      if (shouldUpdateQuantity) {
+
+      if (shouldUpdateLocation) {
+        ops.push(
+          this.inventoryLevelService_
+            .withTransaction(manager)
+            .adjustReservedQuantity(
+              item.inventory_item_id,
+              item.location_id,
+              item.quantity * -1
+            ),
+          this.inventoryLevelService_
+            .withTransaction(manager)
+            .adjustReservedQuantity(
+              item.inventory_item_id,
+              data.location_id!,
+              data.quantity!
+            )
+        )
+      } else if (shouldUpdateQuantity) {
         const quantityDiff = data.quantity! - item.quantity
         ops.push(
           this.inventoryLevelService_

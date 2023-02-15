@@ -24,6 +24,8 @@ import { FindParams } from "../../../../types/common"
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminDeleteDiscountsDiscountConditionsConditionBatchReq"
+ * x-codegen:
+ *   method: deleteConditionResourceBatch
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -120,6 +122,7 @@ export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends 
  *     description: The resources to be deleted from the discount condition
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

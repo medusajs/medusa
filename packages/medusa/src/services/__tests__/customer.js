@@ -192,7 +192,7 @@ describe("CustomerService", () => {
 
       expect(customerRepository.listAndCount).toHaveBeenCalledWith(
         {
-          relations: [],
+          relations: {},
           skip: 0,
           take: 2,
           where: {
