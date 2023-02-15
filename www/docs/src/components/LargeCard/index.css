@@ -2,7 +2,7 @@
   background-color: var(--large-card-bg);
   border: 1px solid var(--large-card-border-color);
   border-radius: var(--ifm-global-radius);
-  padding: calc(var(--ifm-base-margin-vertical) * 3) calc(var(--ifm-base-margin-vertical) / 2) calc(var(--ifm-base-margin-vertical) / 2);
+  padding: calc(var(--ifm-base-margin-vertical) * 3) var(--ifm-base-spacing) calc(var(--ifm-base-margin-vertical) / 2);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -93,7 +93,7 @@
 }
 
 .large-card-content ul {
-  padding-left: calc(var(--ifm-base-margin-vertical) / 2);
+  padding-left: var(--ifm-base-spacing);
 }
 
 .large-card-link {

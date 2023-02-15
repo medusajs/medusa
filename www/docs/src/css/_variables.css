@@ -6,15 +6,19 @@
   /* Base Styles */
   --ifm-global-radius: 8px;
   --ifm-hr-background-color: var(--medusa-border-base);
+  --ifm-base-spacing: 16px;
   --ifm-base-margin-vertical: 32px;
   --ifm-hr-margin-vertical: var(--ifm-base-margin-vertical);
   --ifm-leading: 24px;
+  --ifm-logo-width: 20px;
+  --ifm-logo-height: 20px;
   
   /* Colors */
   --ifm-color-primary: var(--medusa-text-primary);
   --ifm-background-color: var(--medusa-bg-base);
   --ifm-background-surface-color: var(--medusa-bg-subtle);
   --ifm-color-content: var(--medusa-text-secondary) !important;
+  --ifm-color-content-secondary: var(--ifm-color-content) !important;
   --ifm-primary-gradient: linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%,
   #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%);
   --ifm-base-border-color: var(--medusa-border-base);
@@ -103,6 +107,7 @@
 
   /* Code Blocks */
   --ifm-pre-background: var(--medusa-code-block);
+  --ifm-pre-background-transparent: var(--medusa-code-block-transparent);
   --ifm-code-tabs-color: var(--medusa-code-tab-text);
   --ifm-code-tabs-active-bg: var(--medusa-code-tab);
   --ifm-code-tabs-active-color: var(--medusa-code-tab-active-text);
@@ -137,6 +142,7 @@
 
   /* Footer */
   --ifm-footer-color: var(--medusa-text-placeholder);
+  --ifm-footer-background-color: transparent;
   --ifm-footer-padding-horizontal: 0;
   --ifm-footer-social-icons-color: var(--medusa-icon-placeholder);
   --ifm-footer-social-icons-color-hover: var(--medusa-icon-secondary);
@@ -183,6 +189,7 @@
   --docsearch-footer-height: 40px !important;
 
   /* Announcement Bar */
+  --docusaurus-announcement-bar-height: auto !important;
   --ifm-announcement-bar-bg: var(--ifm-background-surface-color);
   --ifm-announcement-bar-border-color: var(--ifm-base-border-color);
   --ifm-announcement-bar-hover-bg: var(--medusa-bg-subtle-hover);
@@ -244,5 +251,11 @@ html[data-theme="dark"] {
   :root {
     /** Table of Content **/
     --ifm-toc-width: calc(3 / 12 * 100%);
+  }
+}
+
+@media (min-width: 997px) {
+  :root {
+    --docusaurus-announcement-bar-height: 30px;
   }
 }

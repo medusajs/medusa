@@ -14,7 +14,7 @@
 }
 
 .menu__list:not(.theme-doc-sidebar-menu) {
-  margin-bottom: 8px;
+  margin-bottom: calc(var(--ifm-base-spacing) / 4);
   padding-left: 0 !important;
 }
 
@@ -68,14 +68,15 @@
   padding-left: 0;
   margin-left: 0;
   margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
-  font-size: var(--ifm-font-size-base);
-  line-height: var(--ifm-line-height-base);
+  font-size: var(--medusa-label-small-plus-size);
+  line-height: var(--medusa-label-small-plus-line-height);
+  font-weight: var(--medusa-label-small-plus-font-weight);
 }
 
 /** Homepage Sidebar Design **/
 .homepage-sidebar-item:is([class*="level-1"]):is([class*="theme-doc-sidebar-item"]) > .menu__link,
 .homepage-sidebar-item:is([class*="level-1"]):is([class*="theme-doc-sidebar-item"]) > .menu__list-item-collapsible > .menu__link {
-  padding-left: 8px !important;
+  padding-left: calc(var(--ifm-base-spacing) / 2) !important;
 }
 
 /** General Sidebar items styles **/
@@ -84,10 +85,11 @@
 }
 
 .menu__link {
-  font-size: 13px;
-  line-height: var(--medusa-body-regular-line-height);
   cursor: pointer;
   border-radius: var(--ifm-global-radius) !important;
+  font-size: var(--medusa-label-small-size);
+  line-height: var(--medusa-label-small-line-height);
+  font-weight: var(--medusa-label-small-font-weight);
 }
 
 .theme-doc-sidebar-item-link {
@@ -127,8 +129,9 @@
 /** Sidebar title **/
 .sidebar-title {
   margin: calc(var(--ifm-base-margin-vertical) / 2) 0 !important;
-  font-size: var(--medusa-body-regular-size);
-  line-height: var(--medusa-body-regular-line-height);
+  font-size: var(--medusa-label-regular-plus-size);
+  line-height: var(--medusa-label-regular-plus-line-height);
+  font-weight: var(--medusa-label-regular-plus-font-weight);
   color: var(--medusa-text-primary);
 }
 
@@ -148,7 +151,7 @@
 }
 
 .theme-doc-sidebar-item-category-level-1.sidebar-group-headline {
-  margin-bottom: 16px;
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 2);
 }
 
 .sidebar-group-headline:not(.theme-doc-sidebar-item-category-level-1) {
@@ -178,9 +181,11 @@
 .sidebar-group-divider {
   padding-top: 6px;
   padding-bottom: 6px;
-  font-size: 12px;
   text-transform: uppercase;
   color: var(--medusa-text-placeholder);
+  font-size: var(--medusa-label-small-plus-size);
+  line-height: var(--medusa-label-small-plus-line-height);
+  font-weight: var(--medusa-label-small-plus-font-weight);
 }
 
 /** Sidebar Item Icon **/

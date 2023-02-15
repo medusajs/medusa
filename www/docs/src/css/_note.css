@@ -1,14 +1,14 @@
 .alert {
-  padding: 16px;
+  padding: var(--ifm-base-spacing);
   border: 1px solid var(--ifm-note-border-color) !important;
   background-color: var(--ifm-note-background);
-  border-radius: 8px;
+  border-radius: var(--ifm-global-radius);
   box-shadow: none;
 }
 
 .alert p > code {
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: calc(var(--ifm-base-spacing) / 2);
+  padding-right: calc(var(--ifm-base-spacing) / 2);
   font-size: 14px !important;
 }
 
