@@ -1,5 +1,5 @@
-import StripeBase from "../helpers/stripe-base"
-import { PaymentIntentOptions } from "../types";
+import StripeBase from "../core/stripe-base"
+import { PaymentIntentOptions } from "../types"
 
 class Przelewy24ProviderService extends StripeBase {
   static identifier = "stripe-przelewy24"

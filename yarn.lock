@@ -25754,23 +25754,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-payment-stripe-processor@workspace:packages/medusa-payment-stripe-processor":
-  version: 0.0.0-use.local
-  resolution: "medusa-payment-stripe-processor@workspace:packages/medusa-payment-stripe-processor"
-  dependencies:
-    "@medusajs/medusa": ^1.7.7
-    "@types/stripe": ^8.0.417
-    body-parser: ^1.19.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
-    jest: ^25.5.4
-    medusa-core-utils: ^1.1.38
-    stripe: ^11.10.0
-  peerDependencies:
-    "@medusajs/medusa": ^1.7.7
-  languageName: unknown
-  linkType: soft
-
 "medusa-payment-stripe@workspace:packages/medusa-payment-stripe":
   version: 0.0.0-use.local
   resolution: "medusa-payment-stripe@workspace:packages/medusa-payment-stripe"

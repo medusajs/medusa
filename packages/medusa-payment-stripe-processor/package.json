@@ -1,5 +1,5 @@
 {
-  "name": "medusa-payment-stripe-processor",
+  "name": "@medusajs/medusa-payment-stripe-processor",
   "version": "0.0.1",
   "description": "Stripe Payment provider for Meduas Commerce",
   "main": "dist/index.js",

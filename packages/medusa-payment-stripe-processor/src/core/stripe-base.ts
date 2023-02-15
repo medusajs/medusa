@@ -56,8 +56,11 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     return options
   }
 
-  async getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus> {
-    const paymentIntent = await this.stripe_.paymentIntents.retrieve(paymentId)
+  async getPaymentStatus(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentSessionStatus> {
+    const id = paymentSessionData.id as string
+    const paymentIntent = await this.stripe_.paymentIntents.retrieve(id)
 
     switch (paymentIntent.status) {
       case "requires_payment_method":
@@ -148,20 +151,28 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   }
 
   async authorizePayment(
-    context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void> {
-    const id = context.paymentSessionData.id as string
-    await this.getPaymentStatus(id)
+    paymentSessionData: Record<string, unknown>,
+    context: Record<string, unknown>
+  ): Promise<
+    | PaymentProcessorError
+    | {
+        status: PaymentSessionStatus
+        data: PaymentProcessorSessionResponse["session_data"]
+      }
+  > {
+    const status = await this.getPaymentStatus(paymentSessionData)
+    return { data: paymentSessionData, status }
   }
 
   async cancelPayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
     try {
+      const id = paymentSessionData.id as string
       return (await this.stripe_.paymentIntents.cancel(
-        paymentId
+        id
       )) as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (error) {
       if (error.payment_intent.status === ErrorIntentStatus.CANCELED) {
@@ -180,9 +191,9 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
-    const { id } = context.paymentSessionData
+    const id = context.paymentSessionData.id as string
     try {
-      const intent = await this.stripe_.paymentIntents.capture(id as string)
+      const intent = await this.stripe_.paymentIntents.capture(id)
       return intent as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (error) {
       if (error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE) {
@@ -199,24 +210,24 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   }
 
   async deletePayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
-    return await this.cancelPayment(paymentId)
+    return await this.cancelPayment(paymentSessionData)
   }
 
   async refundPayment(
-    context: PaymentProcessorContext
+    paymentSessionData: Record<string, unknown>,
+    refundAmount: number
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
-    const { amount } = context
-    const { id } = context.paymentSessionData
+    const id = paymentSessionData.id as string
 
     try {
       await this.stripe_.refunds.create({
-        amount: Math.round(amount),
+        amount: Math.round(refundAmount),
         payment_intent: id as string,
       })
     } catch (e) {
@@ -226,16 +237,17 @@ abstract class StripeBase extends AbstractPaymentProcessor {
       )
     }
 
-    return context.paymentSessionData
+    return paymentSessionData
   }
 
   async retrievePayment(
-    paymentId: string
+    paymentSessionData: Record<string, unknown>
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   > {
     try {
-      const intent = await this.stripe_.paymentIntents.retrieve(paymentId)
+      const id = paymentSessionData.id as string
+      const intent = await this.stripe_.paymentIntents.retrieve(id)
       return intent as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (e) {
       return this.buildError("An error occurred in retrievePayment", e)
