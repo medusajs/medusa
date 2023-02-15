@@ -1883,7 +1883,7 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const refundAmount = customRefundAmount || receivedReturn.refund_amount
+      const refundAmount = customRefundAmount ?? receivedReturn.refund_amount
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
 
@@ -1907,10 +1907,10 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      if (receivedReturn.refund_amount > 0) {
+      if (refundAmount > 0) {
         const refund = await this.paymentProviderService_
           .withTransaction(manager)
-          .refundPayment(order.payments, receivedReturn.refund_amount, "return")
+          .refundPayment(order.payments, refundAmount, "return")
 
         order.refunds = [...(order.refunds || []), refund]
       }

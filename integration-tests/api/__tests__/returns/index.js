@@ -10,7 +10,13 @@ const {
   simpleOrderFactory,
   simpleProductFactory,
   simpleShippingOptionFactory,
+  simpleRegionFactory,
 } = require("../../factories")
+const {
+  simpleDiscountFactory,
+} = require("../../factories/simple-discount-factory")
+
+jest.setTimeout(30000)
 
 describe("/admin/orders", () => {
   let medusaProcess
@@ -223,6 +229,157 @@ describe("/admin/orders", () => {
      * therefore refund amount should be 1000 - 100 * 1.2 = 1080
      */
     expect(response.data.order.returns[0].refund_amount).toEqual(1080)
+
+    expect(response.data.order.returns[0].items).toHaveLength(1)
+    expect(response.data.order.returns[0].items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+          note: "TOO SMALL",
+        }),
+      ])
+    )
+  })
+
+  test("creates a return w. fixed discount on the total and return the total with the right precision", async () => {
+    await adminSeeder(dbConnection)
+
+    const variant1Price = 4452600
+    const product1 = await simpleProductFactory(dbConnection, {
+      variants: [
+        {
+          id: "test-variant",
+          prices: [
+            {
+              amount: variant1Price,
+              currency: "usd",
+              variant_id: "test-variant",
+            },
+          ],
+        },
+      ],
+    })
+
+    const variant2Price = 482200
+    const product2 = await simpleProductFactory(dbConnection, {
+      variants: [
+        {
+          id: "test-variant-2",
+          prices: [
+            {
+              amount: variant2Price,
+              currency: "usd",
+              variant_id: "test-variant-2",
+            },
+          ],
+        },
+      ],
+    })
+
+    const region = await simpleRegionFactory(dbConnection, {
+      id: "test-region",
+      tax_rate: 12.5,
+    })
+
+    const discountAmount = 10000
+    const discount = await simpleDiscountFactory(dbConnection, {
+      id: "test-discount",
+      code: "TEST-2",
+      regions: [region.id],
+      rule: {
+        type: "fixed",
+        value: discountAmount,
+        allocation: "total",
+      },
+    })
+
+    const item1Id = "test-item"
+    const item2Id = "test-item-2"
+
+    const order = await simpleOrderFactory(dbConnection, {
+      email: "test@testson.com",
+      region: region.id,
+      currency_code: "usd",
+      line_items: [
+        {
+          id: item1Id,
+          variant_id: product1.variants[0].id,
+          quantity: 2,
+          fulfilled_quantity: 2,
+          shipped_quantity: 2,
+          unit_price: variant1Price,
+          adjustments: [
+            {
+              amount: 9023,
+              discount_code: discount.code,
+              description: "discount",
+              item_id: "test-item",
+            },
+          ],
+          tax_lines: [
+            {
+              name: "default",
+              code: "default",
+              rate: 20,
+            },
+          ],
+        },
+        {
+          id: item2Id,
+          variant_id: product2.variants[0].id,
+          quantity: 2,
+          fulfilled_quantity: 2,
+          shipped_quantity: 2,
+          unit_price: variant2Price,
+          adjustments: [
+            {
+              amount: 977,
+              discount_code: discount.code,
+              description: "discount",
+              item_id: "test-item",
+            },
+          ],
+          tax_lines: [
+            {
+              name: "default",
+              code: "default",
+              rate: 20,
+            },
+          ],
+        },
+      ],
+    })
+
+    const api = useApi()
+
+    const response = await api.post(
+      `/admin/orders/${order.id}/return`,
+      {
+        items: [
+          {
+            item_id: item1Id,
+            quantity: 1,
+            note: "TOO SMALL",
+          },
+        ],
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+
+    /*
+     * Region has default tax rate 12.5 but line item has tax rate 20
+     * total item 1 amount (4452600 * 2 - 9023) * 1.2 = 10675412
+     * therefore refund amount should be (4452600 - 9023 / 2) * 1.2 = 5337706
+     * therefore if the second item gets refunded 5337706.2 * 2 = 10675412 which is the expected total amount
+     */
+    expect(response.data.order.returns[0].refund_amount).toEqual(5337706)
 
     expect(response.data.order.returns[0].items).toHaveLength(1)
     expect(response.data.order.returns[0].items).toEqual(
