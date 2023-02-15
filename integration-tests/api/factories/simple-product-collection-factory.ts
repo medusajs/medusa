@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
 import { ProductCollection } from "@medusajs/medusa"
 
@@ -11,7 +11,7 @@ export const simpleProductCollectionFactory = async <
   TData extends Data | Data[] = Data | Data[],
   TResult = TData extends Array<Data> ? ProductCollection[] : ProductCollection
 >(
-  connection: Connection,
+  dataSource: DataSource,
   data?: TData,
   seed?: number
 ): Promise<TResult> => {
@@ -19,7 +19,7 @@ export const simpleProductCollectionFactory = async <
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   data = data || [{
     title: faker.datatype.string(10),

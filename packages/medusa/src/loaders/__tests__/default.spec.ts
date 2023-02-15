@@ -1,29 +1,36 @@
-import { asValue, createContainer } from "awilix";
-import { MockRepository, MockManager } from "medusa-test-utils"
-import { StoreServiceMock } from "../../services/__mocks__/store";
-import { ShippingProfileServiceMock } from "../../services/__mocks__/shipping-profile";
-import Logger from "../logger";
-import featureFlagsLoader from "../feature-flags";
+import { asValue, createContainer } from "awilix"
+import { MockManager, MockRepository } from "medusa-test-utils"
+import { StoreServiceMock } from "../../services/__mocks__/store"
+import { ShippingProfileServiceMock } from "../../services/__mocks__/shipping-profile"
+import Logger from "../logger"
+import featureFlagsLoader from "../feature-flags"
 import { default as defaultLoader } from "../defaults"
-import { SalesChannelServiceMock } from "../../services/__mocks__/sales-channel";
-import { PaymentProviderServiceMock } from "../../services/__mocks__/payment-provider";
+import { SalesChannelServiceMock } from "../../services/__mocks__/sales-channel"
+import { PaymentProviderServiceMock } from "../../services/__mocks__/payment-provider"
 
-describe('default', () => {
-  describe('sales channel default', () => {
+describe("default", () => {
+  describe("sales channel default", () => {
     let featureFlagRouter
     const container = createContainer()
 
     beforeAll(async () => {
-      featureFlagRouter = await featureFlagsLoader({
-        featureFlags: {
-          sales_channels: true,
+      featureFlagRouter = await featureFlagsLoader(
+        {
+          featureFlags: {
+            sales_channels: true,
+          },
         },
-      }, Logger)
+        Logger
+      )
 
       container.register({
         storeService: asValue(StoreServiceMock),
         currencyRepository: asValue(MockRepository()),
-        countryRepository: asValue(MockRepository()),
+        countryRepository: asValue(
+          MockRepository({
+            count: jest.fn().mockImplementation(() => 1),
+          })
+        ),
         shippingProfileService: asValue(ShippingProfileServiceMock),
         salesChannelService: asValue(SalesChannelServiceMock),
         logger: asValue(Logger),

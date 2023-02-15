@@ -68,7 +68,7 @@ class UserService extends TransactionBaseService {
    */
   async list(selector: FilterableUserProps, config = {}): Promise<User[]> {
     const manager = this.manager_
-    const userRepo = manager.getCustomRepository(this.userRepository_)
+    const userRepo = manager.withRepository(this.userRepository_)
     return await userRepo.find(buildQuery(selector, config))
   }
 
@@ -88,7 +88,7 @@ class UserService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const userRepo = manager.getCustomRepository(this.userRepository_)
+    const userRepo = manager.withRepository(this.userRepository_)
     const query = buildQuery({ id: userId }, config)
 
     const user = await userRepo.findOne(query)
@@ -115,7 +115,7 @@ class UserService extends TransactionBaseService {
     relations: string[] = []
   ): Promise<User> {
     const manager = this.manager_
-    const userRepo = manager.getCustomRepository(this.userRepository_)
+    const userRepo = manager.withRepository(this.userRepository_)
 
     const user = await userRepo.findOne({
       where: { api_token: apiToken },
@@ -144,7 +144,7 @@ class UserService extends TransactionBaseService {
     config: FindConfig<User> = {}
   ): Promise<User> {
     const manager = this.manager_
-    const userRepo = manager.getCustomRepository(this.userRepository_)
+    const userRepo = manager.withRepository(this.userRepository_)
 
     const query = buildQuery({ email: email.toLowerCase() }, config)
     const user = await userRepo.findOne(query)
@@ -178,7 +178,7 @@ class UserService extends TransactionBaseService {
    */
   async create(user: CreateUserInput, password: string): Promise<User> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const userRepo = manager.withRepository(this.userRepository_)
 
       const createData = { ...user } as CreateUserInput & {
         password_hash: string
@@ -212,7 +212,7 @@ class UserService extends TransactionBaseService {
    */
   async update(userId: string, update: UpdateUserInput): Promise<User> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const userRepo = manager.withRepository(this.userRepository_)
 
       const user = await this.retrieve(userId)
 
@@ -237,7 +237,7 @@ class UserService extends TransactionBaseService {
       }
 
       for (const [key, value] of Object.entries(rest)) {
-        user[key as keyof User] = value
+        user[key] = value
       }
 
       const updatedUser = await userRepo.save(user)
@@ -258,7 +258,7 @@ class UserService extends TransactionBaseService {
    */
   async delete(userId: string): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const userRepo = manager.withRepository(this.userRepository_)
       const analyticsServiceTx =
         this.analyticsConfigService_.withTransaction(manager)
 
@@ -291,7 +291,7 @@ class UserService extends TransactionBaseService {
    */
   async setPassword_(userId: string, password: string): Promise<User> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const userRepo = manager.withRepository(this.userRepository_)
 
       const user = await this.retrieve(userId)
 

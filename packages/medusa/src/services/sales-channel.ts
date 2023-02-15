@@ -66,16 +66,16 @@ class SalesChannelService extends TransactionBaseService {
   ): Promise<SalesChannel> {
     const manager = this.getManager()
 
-    const salesChannelRepo = manager.getCustomRepository(
+    const salesChannelRepo = manager.withRepository(
       this.salesChannelRepository_
     )
 
-    const { relations, ...query } = buildQuery(selector, config)
+    const query = buildQuery(selector, config)
 
-    const salesChannel = await salesChannelRepo.findOneWithRelations(
-      relations as (keyof SalesChannel)[],
-      query
-    )
+    const salesChannel = await salesChannelRepo.findOne({
+      ...query,
+      relationLoadStrategy: "query",
+    })
 
     if (!salesChannel) {
       const selectorConstraints = Object.entries(selector)
@@ -150,7 +150,7 @@ class SalesChannelService extends TransactionBaseService {
     }
   ): Promise<[SalesChannel[], number]> {
     const manager = this.getManager()
-    const salesChannelRepo = manager.getCustomRepository(
+    const salesChannelRepo = manager.withRepository(
       this.salesChannelRepository_
     )
 
@@ -179,8 +179,8 @@ class SalesChannelService extends TransactionBaseService {
    */
   async create(data: CreateSalesChannelInput): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (manager) => {
-      const salesChannelRepo: SalesChannelRepository =
-        manager.getCustomRepository(this.salesChannelRepository_)
+      const salesChannelRepo: typeof SalesChannelRepository =
+        manager.withRepository(this.salesChannelRepository_)
 
       const salesChannel = salesChannelRepo.create(data)
 
@@ -199,8 +199,8 @@ class SalesChannelService extends TransactionBaseService {
     data: UpdateSalesChannelInput
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo: SalesChannelRepository =
-        transactionManager.getCustomRepository(this.salesChannelRepository_)
+      const salesChannelRepo: typeof SalesChannelRepository =
+        transactionManager.withRepository(this.salesChannelRepository_)
 
       const salesChannel = await this.retrieve(salesChannelId)
 
@@ -230,7 +230,7 @@ class SalesChannelService extends TransactionBaseService {
    */
   async delete(salesChannelId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 
@@ -325,7 +325,7 @@ class SalesChannelService extends TransactionBaseService {
     productIds: string[]
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 
@@ -346,7 +346,7 @@ class SalesChannelService extends TransactionBaseService {
     productIds: string[]
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 

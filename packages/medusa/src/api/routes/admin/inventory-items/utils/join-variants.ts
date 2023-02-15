@@ -18,9 +18,14 @@ export const getVariantsByInventoryItemId = async (
     inventoryItems.map((item) => item.id)
   )
 
-  const variants = await productVariantService.list({
-    id: variantInventory.map((varInventory) => varInventory.variant_id),
-  })
+  const variants = await productVariantService.list(
+    {
+      id: variantInventory.map((varInventory) => varInventory.variant_id),
+    },
+    {
+      relations: ["product"],
+    }
+  )
   const variantMap = new Map(variants.map((variant) => [variant.id, variant]))
 
   return variantInventory.reduce((acc, cur) => {

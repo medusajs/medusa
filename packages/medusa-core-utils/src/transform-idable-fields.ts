@@ -25,7 +25,7 @@ type ComputePropertyNames<
  * ```
  */
 export const transformIdableFields = <
-  T = Record<string, unknown>,
+  T extends object = Record<string, unknown>,
   TFields extends (keyof T | string)[] = (keyof T | string)[],
   TOutput = {
     [P in ComputePropertyNames<T, keyof T & string, TFields>]: P extends keyof T

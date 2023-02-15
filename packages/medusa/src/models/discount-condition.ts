@@ -7,6 +7,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   Unique,
 } from "typeorm"
 
@@ -19,6 +20,7 @@ import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Discount } from "./discount"
 
 export enum DiscountConditionType {
   PRODUCTS = "products",
