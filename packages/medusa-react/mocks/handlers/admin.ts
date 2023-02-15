@@ -148,6 +148,64 @@ export const adminHandlers = [
     )
   }),
 
+  rest.post("/admin/product-categories/", (req, res, ctx) => {
+    const body = req.body as Record<string, any>
+    return res(
+      ctx.status(200),
+      ctx.json({
+        product_category: {
+          ...fixtures.get("product_category"),
+          ...body,
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/product-categories/:id", (req, res, ctx) => {
+    const body = req.body as Record<string, any>
+    return res(
+      ctx.status(200),
+      ctx.json({
+        product_category: {
+          ...fixtures.get("product_category"),
+          ...body,
+        },
+      })
+    )
+  }),
+
+  rest.delete("/admin/product-categories/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "product-category",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.post("/admin/product-categories/:id/products/batch", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        product_category: fixtures.get("product_category"),
+      })
+    )
+  }),
+
+  rest.delete(
+    "/admin/product-categories/:id/products/batch",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          product_category: fixtures.get("product_category"),
+        })
+      )
+    }
+  ),
+
   rest.post("/admin/gift-cards/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(
