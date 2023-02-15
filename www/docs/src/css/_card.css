@@ -12,10 +12,6 @@
   background-color: var(--ifm-card-bg-hover);
 }
 
-.markdown p + .cards-grid {
-  margin-top: var(--ifm-base-margin-vertical);
-}
-
 .cards-grid {
   display: grid;
   column-gap: 16px;

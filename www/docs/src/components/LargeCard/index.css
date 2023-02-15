@@ -1,7 +1,7 @@
 .large-card {
   background-color: var(--large-card-bg);
   border: 1px solid var(--large-card-border-color);
-  border-radius: 8px;
+  border-radius: var(--ifm-global-radius);
   padding: calc(var(--ifm-base-margin-vertical) * 3) calc(var(--ifm-base-margin-vertical) / 2) calc(var(--ifm-base-margin-vertical) / 2);
   display: flex;
   flex-direction: column;
@@ -20,6 +20,7 @@
   position: absolute;
   left: 0;
   width: 100%;
+  border-radius: var(--ifm-global-radius);
 }
 
 .large-card:before {
@@ -102,4 +103,5 @@
   width: 100%;
   height: 100%;
   z-index: 4;
+  border-radius: var(--ifm-global-radius);
 }

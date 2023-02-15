@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
-import {useThemeConfig} from '@docusaurus/theme-common';
+import {useThemeConfig, HtmlClassNameProvider} from '@docusaurus/theme-common';
 import Logo from '@theme/Logo';
 import CollapseButton from '@theme/DocSidebar/Desktop/CollapseButton';
 import Content from '@theme/DocSidebar/Desktop/Content';
