@@ -93,7 +93,7 @@ const generateReference = async (srcFile, apiType) => {
 }
 
 const getTmpDirectory = async () => {
-  const tmpDir = os.tmpdir()
+  const tmpDir = await fs.realpath(os.tmpdir())
   return await fs.mkdtemp(tmpDir)
 }
 
