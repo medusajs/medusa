@@ -56,9 +56,11 @@ export interface PaymentProcessor {
   /**
    * Refund an existing session
    * @param paymentSessionData
+   * @param refundAmount
    */
   refundPayment(
-    paymentSessionData: Record<string, unknown>
+    paymentSessionData: Record<string, unknown>,
+    refundAmount: number
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >
@@ -185,7 +187,8 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   ): Promise<PaymentSessionStatus>
 
   abstract refundPayment(
-    paymentSessionData: Record<string, unknown>
+    paymentSessionData: Record<string, unknown>,
+    refundAmount: number
   ): Promise<
     PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
   >

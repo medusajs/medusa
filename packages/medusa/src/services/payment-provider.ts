@@ -711,8 +711,11 @@ export default class PaymentProviderService extends TransactionBaseService {
         const provider = this.retrieveProvider(paymentToRefund.provider_id)
 
         if (provider instanceof AbstractPaymentProcessor) {
-          const res = await provider.refundPayment(paymentToRefund.data)
-          if ("error" in res) {
+          const res = await provider.refundPayment(
+            paymentToRefund.data,
+            refundAmount
+          )
+          if (isPaymentProcessorError(res)) {
             this.throwFromPaymentProcessorError(res as PaymentProcessorError)
           } else {
             // Use else to avoid casting the object and infer the type instead
@@ -777,8 +780,8 @@ export default class PaymentProviderService extends TransactionBaseService {
       const provider = this.retrieveProvider(payment.provider_id)
 
       if (provider instanceof AbstractPaymentProcessor) {
-        const res = await provider.refundPayment(payment.data)
-        if ("error" in res) {
+        const res = await provider.refundPayment(payment.data, amount)
+        if (isPaymentProcessorError(res)) {
           this.throwFromPaymentProcessorError(res as PaymentProcessorError)
         } else {
           // Use else to avoid casting the object and infer the type instead
