@@ -660,13 +660,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
     variantInventoryItems: ProductVariantInventoryItem[],
     channelId: string
   ): Promise<number> {
-    if (
-      variantInventoryItems.length &&
-      variantInventoryItems.some(
-        (inventoryItem) =>
-          inventoryItem.variant_id !== variantInventoryItems[0].variant_id
-      )
-    ) {
+    const variantItemsAreMixed = variantInventoryItems.some(
+      (inventoryItem) =>
+        inventoryItem.variant_id !== variantInventoryItems[0].variant_id
+    )
+
+    if (variantInventoryItems.length && variantItemsAreMixed) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "All variant inventory items must belong to the same variant"
