@@ -12,20 +12,25 @@ const basePath = path.resolve(__dirname, `../`)
 const docsApiPath = path.resolve(basePath, "docs/api/")
 
 const run = async () => {
-  const outputPath = isDryRun ? await getTmpDirectory() : docsApiPath
+  try {
+    const outputPath = isDryRun ? await getTmpDirectory() : docsApiPath
 
-  await generateOASSources(outputPath)
+    await generateOASSources(outputPath)
 
-  for (const apiType of ["store", "admin"]) {
-    const inputJsonFile = path.resolve(outputPath, `${apiType}.oas.json`)
-    const outputYamlFile = path.resolve(outputPath, `${apiType}.oas.yaml`)
+    for (const apiType of ["store", "admin"]) {
+      const inputJsonFile = path.resolve(outputPath, `${apiType}.oas.json`)
+      const outputYamlFile = path.resolve(outputPath, `${apiType}.oas.yaml`)
 
-    await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
-    await sanitizeOAS(outputYamlFile)
-    await circularReferenceCheck(outputYamlFile)
-    if (!isDryRun) {
-      await generateReference(outputYamlFile, apiType)
+      await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
+      await sanitizeOAS(outputYamlFile)
+      await circularReferenceCheck(outputYamlFile)
+      if (!isDryRun) {
+        await generateReference(outputYamlFile, apiType)
+      }
     }
+  } catch (e) {
+    console.error(e)
+    process.exit(1)
   }
 }
 
