@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("fs/promises")
+const os = require("os")
 const path = require("path")
 const execa = require("execa")
 const yaml = require("js-yaml")
@@ -11,19 +12,20 @@ const basePath = path.resolve(__dirname, `../`)
 const docsApiPath = path.resolve(basePath, "docs/api/")
 
 const run = async () => {
-  await generateOASSources(docsApiPath, isDryRun)
-  if (isDryRun) {
-    return
-  }
+  const outputPath = isDryRun ? await getTmpDirectory() : docsApiPath
+
+  await generateOASSources(outputPath)
 
   for (const apiType of ["store", "admin"]) {
-    const inputJsonFile = path.resolve(docsApiPath, `${apiType}.oas.json`)
-    const outputYamlFile = path.resolve(docsApiPath, `${apiType}.oas.yaml`)
+    const inputJsonFile = path.resolve(outputPath, `${apiType}.oas.json`)
+    const outputYamlFile = path.resolve(outputPath, `${apiType}.oas.yaml`)
 
     await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
     await sanitizeOAS(outputYamlFile)
     await circularReferenceCheck(outputYamlFile)
-    await generateReference(outputYamlFile, apiType)
+    if (!isDryRun) {
+      await generateReference(outputYamlFile, apiType)
+    }
   }
 }
 
@@ -68,10 +70,14 @@ const circularReferenceCheck = async (srcFile) => {
     },
   })
   if (parser.$refs.circular) {
-    console.log(`🔴 Unhandled circular references - ${srcFile}`)
+    const fileName = path.basename(srcFile)
+    console.log(
+      `🔴 Unhandled circular references - ${fileName} - Please patch in docs-util/redocly/config.yaml`
+    )
     const circularRefs = [...parser.$refs.circularRefs]
     circularRefs.sort()
     console.log(circularRefs)
+    process.exit(1)
   }
 }
 
@@ -84,6 +90,11 @@ const generateReference = async (srcFile, apiType) => {
     { cwd: basePath, all: true }
   )
   console.log(logs)
+}
+
+const getTmpDirectory = async () => {
+  const tmpDir = os.tmpdir()
+  return await fs.mkdtemp(tmpDir)
 }
 
 void (async () => {
