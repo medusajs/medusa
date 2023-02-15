@@ -8,11 +8,11 @@ import {
 } from "@medusajs/medusa"
 import { PaymentIntentOptions, StripeOptions } from "../types"
 
-const ERROR_CODES = {
+const ErrorCodes = {
   PAYMENT_INTENT_UNEXPECTED_STATE: "payment_intent_unexpected_state",
 }
 
-const INTENT_STATUS = {
+const ErrorIntentStatus = {
   SUCCEEDED: "succeeded",
   CANCELED: "canceled",
 }
@@ -164,7 +164,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         paymentId
       )) as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (error) {
-      if (error.payment_intent.status === INTENT_STATUS.CANCELED) {
+      if (error.payment_intent.status === ErrorIntentStatus.CANCELED) {
         return error.payment_intent
       }
 
@@ -185,8 +185,8 @@ abstract class StripeBase extends AbstractPaymentProcessor {
       const intent = await this.stripe_.paymentIntents.capture(id as string)
       return intent as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (error) {
-      if (error.code === ERROR_CODES.PAYMENT_INTENT_UNEXPECTED_STATE) {
-        if (error.payment_intent.status === INTENT_STATUS.SUCCEEDED) {
+      if (error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE) {
+        if (error.payment_intent.status === ErrorIntentStatus.SUCCEEDED) {
           return error.payment_intent
         }
       }

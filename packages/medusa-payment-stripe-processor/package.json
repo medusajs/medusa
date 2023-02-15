@@ -27,14 +27,13 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
+    "@medusajs/medusa": "^1.7.7",
     "@types/stripe": "^8.0.417",
     "cross-env": "^5.2.1",
-    "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.5",
-    "medusa-test-utils": "^1.1.37"
+    "jest": "^25.5.4"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.3.5"
+    "@medusajs/medusa": "^1.7.7"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
