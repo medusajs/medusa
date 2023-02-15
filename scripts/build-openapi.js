@@ -12,25 +12,20 @@ const basePath = path.resolve(__dirname, `../`)
 const docsApiPath = path.resolve(basePath, "docs/api/")
 
 const run = async () => {
-  try {
-    const outputPath = isDryRun ? await getTmpDirectory() : docsApiPath
+  const outputPath = isDryRun ? await getTmpDirectory() : docsApiPath
 
-    await generateOASSources(outputPath)
+  await generateOASSources(outputPath)
 
-    for (const apiType of ["store", "admin"]) {
-      const inputJsonFile = path.resolve(outputPath, `${apiType}.oas.json`)
-      const outputYamlFile = path.resolve(outputPath, `${apiType}.oas.yaml`)
+  for (const apiType of ["store", "admin"]) {
+    const inputJsonFile = path.resolve(outputPath, `${apiType}.oas.json`)
+    const outputYamlFile = path.resolve(outputPath, `${apiType}.oas.yaml`)
 
-      await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
-      await sanitizeOAS(outputYamlFile)
-      await circularReferenceCheck(outputYamlFile)
-      if (!isDryRun) {
-        await generateReference(outputYamlFile, apiType)
-      }
+    await jsonFileToYamlFile(inputJsonFile, outputYamlFile)
+    await sanitizeOAS(outputYamlFile)
+    await circularReferenceCheck(outputYamlFile)
+    if (!isDryRun) {
+      await generateReference(outputYamlFile, apiType)
     }
-  } catch (err) {
-    console.log(err)
-    process.exit(1)
   }
 }
 
@@ -76,13 +71,12 @@ const circularReferenceCheck = async (srcFile) => {
   })
   if (parser.$refs.circular) {
     const fileName = path.basename(srcFile)
-    console.log(
-      `🔴 Unhandled circular references - ${fileName} - Please patch in docs-util/redocly/config.yaml`
-    )
     const circularRefs = [...parser.$refs.circularRefs]
     circularRefs.sort()
     console.log(circularRefs)
-    process.exit(1)
+    throw new Error(
+      `🔴 Unhandled circular references - ${fileName} - Please patch in docs-util/redocly/config.yaml`
+    )
   }
 }
 
@@ -106,5 +100,10 @@ const getTmpDirectory = async () => {
 }
 
 void (async () => {
-  await run()
+  try {
+    await run()
+  } catch (err) {
+    console.log(err)
+    process.exit(1)
+  }
 })()
