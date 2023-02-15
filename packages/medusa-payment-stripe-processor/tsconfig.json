@@ -22,12 +22,12 @@
     "skipLibCheck": true,
     "downlevelIteration": true // to use ES5 specific tooling
   },
-  "include": ["./src/**/*", "index.d.ts"],
+  "include": ["src"],
   "exclude": [
-    "./dist/**/*",
-    "./src/**/__tests__",
-    "./src/**/__mocks__",
-    "./src/**/__fixtures__",
+    "dist",
+    "src/**/__tests__",
+    "src/**/__mocks__",
+    "src/**/__fixtures__",
     "node_modules"
   ]
 }
