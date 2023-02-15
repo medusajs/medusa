@@ -8,7 +8,7 @@ html[data-theme="dark"] .navbar-github-link:before {
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) { 
-  .navbar:not(.navbar-sidebar--show) {
+  html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
     background: none;
     backdrop-filter: blur(12px);
   }

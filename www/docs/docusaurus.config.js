@@ -182,7 +182,7 @@ const config = {
         ],
         // Theme Options for modifying how redoc renders them
         theme: {
-          primaryColorDark: '#242526',
+          primaryColorDark: '#161618',
           options: {
             disableSearch: true,
             nativeScrollbars: true,
