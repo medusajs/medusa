@@ -1,4 +1,9 @@
-import { PaymentIntentDataByStatus } from "../__fixtures__/data";
+import { PaymentIntentDataByStatus } from "../__fixtures__/data"
+
+export const WRONG_CUSTOMER_EMAIL = "wrong@test.fr"
+export const EXISTING_CUSTOMER_EMAIL = "right@test.fr"
+export const NON_EXISTING_CUSTOMER_EMAIL = "right@test.fr"
+export const STRIPE_ID = "test"
 
 function buildPaymentIntent(data) {
   const paymentIntentData = {}
@@ -7,29 +12,31 @@ function buildPaymentIntent(data) {
 }
 
 export const StripeMock = {
-  retrieve: jest.fn().mockImplementation(async (paymentId) => {
-    if (paymentId === PaymentIntentDataByStatus.REQUIRE_PAYMENT_METHOD) {
-      return buildPaymentIntent({ status: PaymentIntentDataByStatus.REQUIRE_PAYMENT_METHOD })
-    }
-    if (paymentId === PaymentIntentDataByStatus.REQUIRES_CONFIRMATION) {
-      return buildPaymentIntent({ status: PaymentIntentDataByStatus.REQUIRES_CONFIRMATION })
-    }
-    if (paymentId === PaymentIntentDataByStatus.PROCESSING) {
-      return buildPaymentIntent({ status: PaymentIntentDataByStatus.PROCESSING })
-    }
-    if (paymentId === PaymentIntentDataByStatus.CANCELED) {
-      return buildPaymentIntent({ status: PaymentIntentDataByStatus.REQUIRES_ACTION })
-    }
-    if (paymentId === PaymentIntentDataByStatus.CANCELED) {
-      return buildPaymentIntent({ status: PaymentIntentDataByStatus.CANCELED })
-    }
-    if (paymentId === PaymentIntentDataByStatus.REQUIRES_CAPTURE) {
-      return buildPaymentIntent({ status: PaymentIntentDataByStatus.REQUIRES_CAPTURE })
-    }
-    if (paymentId === PaymentIntentDataByStatus.SUCCEEDED) {
-      return buildPaymentIntent({ status: PaymentIntentDataByStatus.SUCCEEDED })
-    }
-  })
+  paymentIntents: {
+    retrieve: jest.fn().mockImplementation(async (paymentId) => {
+      const data = Object.values(PaymentIntentDataByStatus).find(value => {
+        return value.id === paymentId
+      }) ?? {}
+
+      return buildPaymentIntent(data)
+    }),
+    create: jest.fn().mockImplementation(async (data) => {
+      if (data.description === "fail") {
+        throw new Error("Error")
+      }
+
+      return data
+    })
+  },
+  customers: {
+    create: jest.fn().mockImplementation(async data => {
+      if (data.email === EXISTING_CUSTOMER_EMAIL) {
+        return { id: STRIPE_ID, ...data }
+      }
+
+      throw new Error("Error")
+    })
+  },
 }
 
 const stripe = jest.fn(() => StripeMock)
