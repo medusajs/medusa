@@ -1,17 +1,8 @@
 import { Connection } from "typeorm"
 import faker from "faker"
-import {
-  ShippingProfileType,
-  ShippingProfile,
-  Product,
-  ProductType,
-  ProductOption,
-} from "@medusajs/medusa"
+import { Product, ProductOption, ProductType, ShippingProfile, ShippingProfileType, } from "@medusajs/medusa"
 
-import {
-  simpleProductVariantFactory,
-  ProductVariantFactoryData,
-} from "./simple-product-variant-factory"
+import { ProductVariantFactoryData, simpleProductVariantFactory, } from "./simple-product-variant-factory"
 
 export type ProductFactoryData = {
   id?: string
@@ -34,11 +25,11 @@ export const simpleProductFactory = async (
   const manager = connection.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.DEFAULT,
+    where: { type: ShippingProfileType.DEFAULT },
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.GIFT_CARD,
+    where: { type: ShippingProfileType.GIFT_CARD },
   })
 
   let typeId: string

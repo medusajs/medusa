@@ -39,9 +39,11 @@ class Oauth extends TransactionBaseService {
   }
 
   async retrieveByName(appName: string): Promise<OAuthModel> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.manager.withRepository(this.oauthRepository_)
     const oauth = await repo.findOne({
-      application_name: appName,
+      where: {
+        application_name: appName,
+      },
     })
 
     if (!oauth) {
@@ -62,9 +64,11 @@ class Oauth extends TransactionBaseService {
       )
     }
 
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.manager.withRepository(this.oauthRepository_)
     const oauth = await repo.findOne({
-      id: oauthId,
+      where: {
+        id: oauthId,
+      },
     })
 
     if (!oauth) {
@@ -78,7 +82,7 @@ class Oauth extends TransactionBaseService {
   }
 
   async list(selector: Selector<OAuthModel>): Promise<OAuthModel[]> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.manager.withRepository(this.oauthRepository_)
 
     const query = buildQuery(selector, {})
 
@@ -86,7 +90,7 @@ class Oauth extends TransactionBaseService {
   }
 
   async create(data: CreateOauthInput): Promise<OAuthModel> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.manager.withRepository(this.oauthRepository_)
 
     const application = repo.create({
       display_name: data.display_name,
@@ -99,7 +103,7 @@ class Oauth extends TransactionBaseService {
   }
 
   async update(id: string, update: UpdateOauthInput): Promise<OAuthModel> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.manager.withRepository(this.oauthRepository_)
     const oauth = await this.retrieve(id)
 
     if ("data" in update) {

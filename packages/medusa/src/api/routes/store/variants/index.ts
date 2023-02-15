@@ -27,7 +27,7 @@ export default (app) => {
   return app
 }
 
-export const defaultStoreVariantRelations = ["prices", "options"]
+export const defaultStoreVariantRelations = ["prices", "options", "product"]
 
 /**
  * @schema StoreVariantsRes

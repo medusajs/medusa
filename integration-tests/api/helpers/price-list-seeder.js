@@ -1,7 +1,7 @@
 const { Region, PriceList, MoneyAmount } = require("@medusajs/medusa")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   const priceListNoCustomerGroups = await manager.create(PriceList, {
     id: "pl_no_customer_groups",

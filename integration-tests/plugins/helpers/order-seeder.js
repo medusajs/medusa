@@ -13,13 +13,16 @@ const {
   ShippingOption,
   ShippingProfile,
   Swap,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: {
+      type: ShippingProfileType.DEFAULT,
+    },
   })
 
   await manager.insert(Product, {

@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import {
   ProductTaxRate,
   ProductTypeTaxRate,
@@ -19,7 +19,6 @@ import {
 } from "../types/tax-rate"
 import { buildQuery, PostgresError } from "../utils"
 import { TransactionBaseService } from "../interfaces"
-import { FindConditions } from "typeorm/find-options/FindConditions"
 
 class TaxRateService extends TransactionBaseService {
   protected manager_: EntityManager
@@ -50,9 +49,7 @@ class TaxRateService extends TransactionBaseService {
     selector: FilterableTaxRateProps,
     config: FindConfig<TaxRate> = {}
   ): Promise<TaxRate[]> {
-    const taxRateRepo = this.manager_.getCustomRepository(
-      this.taxRateRepository_
-    )
+    const taxRateRepo = this.manager_.withRepository(this.taxRateRepository_)
     const query = buildQuery(selector, config)
     return await taxRateRepo.findWithResolution(query)
   }
@@ -61,9 +58,7 @@ class TaxRateService extends TransactionBaseService {
     selector: FilterableTaxRateProps,
     config: FindConfig<TaxRate> = {}
   ): Promise<[TaxRate[], number]> {
-    const taxRateRepo = this.manager_.getCustomRepository(
-      this.taxRateRepository_
-    )
+    const taxRateRepo = this.manager_.withRepository(this.taxRateRepository_)
     const query = buildQuery(selector, config)
     return await taxRateRepo.findAndCountWithResolution(query)
   }
@@ -80,7 +75,7 @@ class TaxRateService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    const taxRateRepo = manager.withRepository(this.taxRateRepository_)
     const query = buildQuery({ id: taxRateId }, config)
 
     const taxRate = await taxRateRepo.findOneWithResolution(query)
@@ -96,7 +91,7 @@ class TaxRateService extends TransactionBaseService {
 
   async create(data: CreateTaxRateInput): Promise<TaxRate> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+      const taxRateRepo = manager.withRepository(this.taxRateRepository_)
 
       if (typeof data.region_id === "undefined") {
         throw new MedusaError(
@@ -112,7 +107,7 @@ class TaxRateService extends TransactionBaseService {
 
   async update(id: string, data: UpdateTaxRateInput): Promise<TaxRate> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+      const taxRateRepo = manager.withRepository(this.taxRateRepository_)
       const taxRate = await this.retrieve(id)
 
       for (const [k, v] of Object.entries(data)) {
@@ -127,9 +122,13 @@ class TaxRateService extends TransactionBaseService {
 
   async delete(id: string | string[]): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+      const taxRateRepo = manager.withRepository(this.taxRateRepository_)
       const query = buildQuery({ id })
-      await taxRateRepo.delete(query.where as FindConditions<TaxRate>)
+      if (Array.isArray(id)) {
+        await taxRateRepo.delete({ id: In(id) })
+      } else {
+        await taxRateRepo.delete({ id: id })
+      }
     })
   }
 
@@ -138,7 +137,7 @@ class TaxRateService extends TransactionBaseService {
     productIds: string | string[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+      const taxRateRepo = manager.withRepository(this.taxRateRepository_)
 
       let ids: string[]
       if (typeof productIds === "string") {
@@ -156,7 +155,7 @@ class TaxRateService extends TransactionBaseService {
     typeIds: string | string[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+      const taxRateRepo = manager.withRepository(this.taxRateRepository_)
 
       let ids: string[]
       if (typeof typeIds === "string") {
@@ -174,7 +173,7 @@ class TaxRateService extends TransactionBaseService {
     optionIds: string | string[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+      const taxRateRepo = manager.withRepository(this.taxRateRepository_)
 
       let ids: string[]
       if (typeof optionIds === "string") {
@@ -201,7 +200,7 @@ class TaxRateService extends TransactionBaseService {
 
     const result = await this.atomicPhase_(
       async (manager: EntityManager) => {
-        const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+        const taxRateRepo = manager.withRepository(this.taxRateRepository_)
         return await taxRateRepo.addToProduct(id, ids, replace)
       },
       // eslint-disable-next-line
@@ -237,7 +236,7 @@ class TaxRateService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (manager: EntityManager) => {
-        const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+        const taxRateRepo = manager.withRepository(this.taxRateRepository_)
         return await taxRateRepo.addToProductType(id, ids, replace)
       },
       // eslint-disable-next-line
@@ -277,7 +276,7 @@ class TaxRateService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (manager: EntityManager) => {
-        const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+        const taxRateRepo = manager.withRepository(this.taxRateRepository_)
         const taxRate = await this.retrieve(id, { select: ["id", "region_id"] })
         const options = await this.shippingOptionService_.list(
           { id: ids },
@@ -317,13 +316,13 @@ class TaxRateService extends TransactionBaseService {
   ): Promise<TaxRate[]> {
     // Check both ProductTaxRate + ProductTypeTaxRate
     const manager = this.manager_
-    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    const taxRateRepo = manager.withRepository(this.taxRateRepository_)
     return await taxRateRepo.listByProduct(productId, config)
   }
 
   async listByShippingOption(shippingOptionId: string): Promise<TaxRate[]> {
     const manager = this.manager_
-    const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    const taxRateRepo = manager.withRepository(this.taxRateRepository_)
     return await taxRateRepo.listByShippingOption(shippingOptionId)
   }
 }

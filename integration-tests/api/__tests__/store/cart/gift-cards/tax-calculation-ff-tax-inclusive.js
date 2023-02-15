@@ -52,7 +52,9 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
         includes_tax: true,
       })
 
-      customer = await simpleCustomerFactory(dbConnection, { password: 'medusatest' })
+      customer = await simpleCustomerFactory(dbConnection, {
+        password: "medusatest",
+      })
       customerData = {
         email: customer.email,
         password: "medusatest",
@@ -64,15 +66,19 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
         is_giftcard: true,
         discountable: false,
         options: [{ id: "denom", title: "Denomination" }],
-        variants: [{
-          title: "Gift Card",
-          prices: [{
-            amount: 30000,
-            currency: "usd",
-            region_id: region.id,
-          }],
-          options: [{ option_id: "denom", value: "Denomination" }],
-        }]
+        variants: [
+          {
+            title: "Gift Card",
+            prices: [
+              {
+                amount: 30000,
+                currency: "usd",
+                region_id: region.id,
+              },
+            ],
+            options: [{ option_id: "denom", value: "Denomination" }],
+          },
+        ],
       })
     })
 
@@ -84,10 +90,12 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
 
       const createCartRes = await api.post("/store/carts", {
         region_id: region.id,
-        items: [{
-          variant_id: product.variants[0].id,
-          quantity: 1,
-        }],
+        items: [
+          {
+            variant_id: product.variants[0].id,
+            quantity: 1,
+          },
+        ],
       })
 
       expect(createCartRes.status).toEqual(200)
@@ -112,8 +120,8 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
               id: product.variants[0].id,
               product: expect.objectContaining({
                 is_giftcard: true,
-              })
-            })
+              }),
+            }),
           }),
         ])
       )
@@ -142,10 +150,12 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
       const getCartResponse = await api.get(`/store/carts/${cartFactory.id}`)
       const cart = getCartResponse.data.cart
       await api.post(`/store/carts/${cart.id}/payment-sessions`)
-      const createdOrder = await api.post(`/store/carts/${cart.id}/complete-cart`)
+      const createdOrder = await api.post(
+        `/store/carts/${cart.id}/complete-cart`
+      )
 
       const createdGiftCards = await dbConnection.manager.find(GiftCard, {
-        where: { order_id: createdOrder.data.data.id }
+        where: { order_id: createdOrder.data.data.id },
       })
       const createdGiftCard = createdGiftCards[0]
 
@@ -166,14 +176,18 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
         tax_rate: region.tax_rate,
       })
       const expensiveProduct = await simpleProductFactory(dbConnection, {
-        variants: [{
-          title: "Product cost higher than gift card balance",
-          prices: [{
-            amount: 50000,
-            currency: "usd",
-            region_id: region.id,
-          }],
-        }]
+        variants: [
+          {
+            title: "Product cost higher than gift card balance",
+            prices: [
+              {
+                amount: 50000,
+                currency: "usd",
+                region_id: region.id,
+              },
+            ],
+          },
+        ],
       })
 
       const customerRes = await api.post("/store/customers", customerData, {
@@ -203,7 +217,9 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
       const getCartResponse = await api.get(`/store/carts/${cartFactory.id}`)
       const cart = getCartResponse.data.cart
       await api.post(`/store/carts/${cart.id}/payment-sessions`)
-      const createdOrder = await api.post(`/store/carts/${cart.id}/complete-cart`)
+      const createdOrder = await api.post(
+        `/store/carts/${cart.id}/complete-cart`
+      )
 
       expect(createdOrder.data.data).toEqual(
         expect.objectContaining({
@@ -232,12 +248,12 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] Gift Card - Tax calculations", () =>
               refundable: 50000,
               tax_lines: expect.arrayContaining([
                 expect.objectContaining({
-                  rate: 19
-                })
+                  rate: 19,
+                }),
               ]),
-            })
+            }),
           ]),
-        }),
+        })
       )
     })
   })
