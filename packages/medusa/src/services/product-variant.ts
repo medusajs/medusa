@@ -573,7 +573,7 @@ class ProductVariantService extends TransactionBaseService {
     )
 
     let q
-    if (selector.q) {
+    if (isDefined(selector.q)) {
       q = selector.q
       delete selector.q
     }
