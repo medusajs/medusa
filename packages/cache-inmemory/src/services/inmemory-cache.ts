@@ -1,11 +1,9 @@
 import {
   ConfigurableModuleDeclaration,
   MODULE_RESOURCE_TYPE,
-  TransactionBaseService,
   ICacheService,
 } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 
 import { CacheRecord, InMemoryCacheModuleOptions } from "../types"
 
@@ -16,13 +14,7 @@ type InjectedDependencies = {}
 /**
  * Class represents basic, in-memory, cache store.
  */
-class InMemoryCacheService
-  extends TransactionBaseService
-  implements ICacheService
-{
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
+class InMemoryCacheService implements ICacheService {
   protected TTL: number
 
   protected readonly timoutRefs = {}
@@ -33,9 +25,6 @@ class InMemoryCacheService
     options: InMemoryCacheModuleOptions = {},
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    // @ts-ignore
-    super(...arguments)
-
     this.TTL = options.defaultTTL || DEFAULT_TTL
 
     if (moduleDeclaration?.resources !== MODULE_RESOURCE_TYPE.SHARED) {

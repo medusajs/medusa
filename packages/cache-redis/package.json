@@ -9,7 +9,8 @@
     "directory": "packages/cache-redis"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "files": ["dist"]
   },
   "author": "Medusa",
   "license": "MIT",
@@ -30,8 +31,5 @@
   "peerDependencies": {
     "@medusajs/medusa": "1.7.5",
     "medusa-interfaces": "1.3.4"
-  },
-  "dependencies": {
-    "typeorm": "^0.2.31"
   }
 }

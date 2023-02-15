@@ -2,11 +2,9 @@ import { Redis } from "ioredis"
 import {
   ConfigurableModuleDeclaration,
   MODULE_RESOURCE_TYPE,
-  TransactionBaseService,
   ICacheService,
 } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { RedisCacheModuleOptions } from "../types"
 
 const DEFAULT_CACHE_TIME = 30 // 30 seconds
@@ -16,14 +14,8 @@ type InjectedDependencies = {
   redisClient: Redis
 }
 
-class RedisCacheService
-  extends TransactionBaseService
-  implements ICacheService
-{
+class RedisCacheService implements ICacheService {
   protected readonly redis_: Redis
-
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
 
   protected TTL: number
 
@@ -32,9 +24,6 @@ class RedisCacheService
     options: RedisCacheModuleOptions = {},
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
-    // @ts-ignore
-    super(...arguments)
-
     this.redis_ = redisClient
     this.TTL = options.defaultTTL || DEFAULT_CACHE_TIME
 
@@ -90,7 +79,7 @@ class RedisCacheService
   async invalidate(key: string): Promise<void> {
     const keys = await this.redis_.keys(key)
     const pipeline = this.redis_.pipeline()
-    console.log({ keys: this.redis_.keys("asd") })
+
     keys.forEach(function (key) {
       pipeline.del(key)
     })
