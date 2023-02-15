@@ -6,16 +6,12 @@ import {
   PaymentProcessorSessionResponse,
   PaymentSessionStatus,
 } from "@medusajs/medusa"
-import { PaymentIntentOptions, StripeOptions } from "../types"
-
-const ErrorCodes = {
-  PAYMENT_INTENT_UNEXPECTED_STATE: "payment_intent_unexpected_state",
-}
-
-const ErrorIntentStatus = {
-  SUCCEEDED: "succeeded",
-  CANCELED: "canceled",
-}
+import {
+  ErrorCodes,
+  ErrorIntentStatus,
+  PaymentIntentOptions,
+  StripeOptions,
+} from "../types"
 
 abstract class StripeBase extends AbstractPaymentProcessor {
   static identifier = ""
@@ -175,7 +171,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         id
       )) as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (error) {
-      if (error.payment_intent.status === ErrorIntentStatus.CANCELED) {
+      if (error.payment_intent?.status === ErrorIntentStatus.CANCELED) {
         return error.payment_intent
       }
 

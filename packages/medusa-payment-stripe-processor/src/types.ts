@@ -20,3 +20,12 @@ export interface PaymentIntentOptions {
   setup_future_usage?: "on_session" | "off_session"
   payment_method_types?: string[]
 }
+
+export const ErrorCodes = {
+  PAYMENT_INTENT_UNEXPECTED_STATE: "payment_intent_unexpected_state",
+}
+
+export const ErrorIntentStatus = {
+  SUCCEEDED: "succeeded",
+  CANCELED: "canceled",
+}

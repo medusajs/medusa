@@ -2,12 +2,21 @@ import { StripeTest } from "../__fixtures__/stripe-test"
 import { PaymentIntentDataByStatus } from "../../__fixtures__/data"
 import { PaymentSessionStatus } from "@medusajs/medusa"
 import {
+  authorizePaymentSuccessData,
+  cancelPaymentFailData,
+  cancelPaymentPartiallyFailData,
+  cancelPaymentSuccessData,
   initiatePaymentContextWithExistingCustomer,
   initiatePaymentContextWithExistingCustomerStripeId,
   initiatePaymentContextWithFailIntentCreation,
   initiatePaymentContextWithWrongEmail
 } from "../__fixtures__/data"
-import { STRIPE_ID, StripeMock } from "../../__mocks__/stripe"
+import {
+  PARTIALLY_FAIL_INTENT_ID,
+  STRIPE_ID,
+  StripeMock
+} from "../../__mocks__/stripe"
+import { ErrorIntentStatus } from "../../types";
 
 const container = {}
 
@@ -168,6 +177,62 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in InitiatePayment during the creation of the stripe payment intent",
+        code: undefined,
+        detail: undefined
+      })
+    })
+  })
+
+  describe('authorizePayment', function () {
+    let stripeTest
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
+      await stripeTest.init()
+    })
+
+    it("should succeed", async () => {
+      const result = await stripeTest.authorizePayment(authorizePaymentSuccessData)
+
+      expect(result).toEqual({
+        data: authorizePaymentSuccessData,
+        status: PaymentSessionStatus.AUTHORIZED
+      })
+    })
+  })
+
+  describe('cancelPayment', function () {
+    let stripeTest
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
+      await stripeTest.init()
+    })
+
+    it("should succeed", async () => {
+      const result = await stripeTest.cancelPayment(cancelPaymentSuccessData)
+
+      expect(result).toEqual({
+        id: PaymentIntentDataByStatus.SUCCEEDED.id
+      })
+    })
+
+    it("should fail on intent cancellation but still return the intent", async () => {
+      const result = await stripeTest.cancelPayment(cancelPaymentPartiallyFailData)
+
+      expect(result).toEqual({
+        id: PARTIALLY_FAIL_INTENT_ID,
+        status: ErrorIntentStatus.CANCELED
+      })
+    })
+
+    it("should fail on intent cancellation", async () => {
+      const result = await stripeTest.cancelPayment(cancelPaymentFailData)
+
+      expect(result).toEqual({
+        error: "An error occurred in cancelPayment during the cancellation of the payment",
         code: undefined,
         detail: undefined
       })
