@@ -16,6 +16,7 @@ const config = {
   tagline: "Explore and learn how to use Medusa",
   url: "https://docs.medusajs.com",
   baseUrl: "/",
+  trailingSlash: false,
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "throw",
   favicon: "img/favicon.ico",
