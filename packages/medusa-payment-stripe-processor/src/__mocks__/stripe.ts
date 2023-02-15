@@ -51,6 +51,24 @@ export const StripeMock = {
       }
 
       return { id: paymentId }
+    }),
+    capture: jest.fn().mockImplementation(async (paymentId) => {
+      if (paymentId === FAIL_INTENT_ID) {
+        throw new Error("Error")
+      }
+
+      if (paymentId === PARTIALLY_FAIL_INTENT_ID) {
+        throw new Stripe.errors.StripeError({
+          code: ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE,
+          payment_intent: {
+            id: paymentId,
+            status: ErrorIntentStatus.SUCCEEDED
+          } as unknown as Stripe.PaymentIntent,
+          type: "invalid_request_error"
+        })
+      }
+
+      return { id: paymentId }
     })
   },
   customers: {

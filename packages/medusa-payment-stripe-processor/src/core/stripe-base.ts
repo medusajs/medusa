@@ -193,7 +193,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
       return intent as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (error) {
       if (error.code === ErrorCodes.PAYMENT_INTENT_UNEXPECTED_STATE) {
-        if (error.payment_intent.status === ErrorIntentStatus.SUCCEEDED) {
+        if (error.payment_intent?.status === ErrorIntentStatus.SUCCEEDED) {
           return error.payment_intent
         }
       }

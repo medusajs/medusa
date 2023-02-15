@@ -73,3 +73,23 @@ export const cancelPaymentFailData = {
 export const cancelPaymentPartiallyFailData = {
   id: PARTIALLY_FAIL_INTENT_ID
 }
+
+// CAPTURE PAYMENT DATA
+
+export const capturePaymentContextSuccessData = {
+  paymentSessionData: {
+    id: PaymentIntentDataByStatus.SUCCEEDED.id
+  }
+}
+
+export const capturePaymentContextFailData = {
+  paymentSessionData: {
+    id: FAIL_INTENT_ID
+  }
+}
+
+export const capturePaymentContextPartiallyFailData = {
+  paymentSessionData: {
+    id: PARTIALLY_FAIL_INTENT_ID
+  }
+}
