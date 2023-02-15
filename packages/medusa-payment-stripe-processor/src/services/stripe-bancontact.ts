@@ -1,4 +1,5 @@
 import StripeBase from "../helpers/stripe-base"
+import { PaymentIntentOptions } from "../types";
 
 class BancontactProviderService extends StripeBase {
   static identifier = "stripe-bancontact"
@@ -7,7 +8,7 @@ class BancontactProviderService extends StripeBase {
     super(_, options)
   }
 
-  get paymentIntentOptions() {
+  get paymentIntentOptions(): PaymentIntentOptions {
     return {
       payment_method_types: ["bancontact"],
       capture_method: "automatic",

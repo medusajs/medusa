@@ -1,4 +1,5 @@
 import StripeBase from "../helpers/stripe-base"
+import { PaymentIntentOptions } from "../types";
 
 class BlikProviderService extends StripeBase {
   static identifier = "stripe-blik"
@@ -7,7 +8,7 @@ class BlikProviderService extends StripeBase {
     super(_, options)
   }
 
-  get paymentIntentOptions() {
+  get paymentIntentOptions(): PaymentIntentOptions {
     return {
       payment_method_types: ["blik"],
       capture_method: "automatic",

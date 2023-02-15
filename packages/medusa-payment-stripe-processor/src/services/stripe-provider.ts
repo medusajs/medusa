@@ -1,4 +1,5 @@
 import StripeBase from "../helpers/stripe-base";
+import { PaymentIntentOptions } from "../types";
 
 class StripeProviderService extends StripeBase {
   static identifier = "stripe"
@@ -7,7 +8,7 @@ class StripeProviderService extends StripeBase {
     super(_, options)
   }
 
-  get paymentIntentOptions() {
+  get paymentIntentOptions(): PaymentIntentOptions {
     return {}
   }
 }

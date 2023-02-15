@@ -1,4 +1,5 @@
 import StripeBase from "../helpers/stripe-base"
+import { PaymentIntentOptions } from "../types";
 
 class IdealProviderService extends StripeBase {
   static identifier = "stripe-ideal"
@@ -7,7 +8,7 @@ class IdealProviderService extends StripeBase {
     super(_, options)
   }
 
-  get paymentIntentOptions() {
+  get paymentIntentOptions(): PaymentIntentOptions {
     return {
       payment_method_types: ["ideal"],
       capture_method: "automatic",

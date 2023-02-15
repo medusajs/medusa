@@ -8,6 +8,15 @@ import {
 } from "@medusajs/medusa"
 import { PaymentIntentOptions, StripeOptions } from "../types"
 
+const ERROR_CODES = {
+  PAYMENT_INTENT_UNEXPECTED_STATE: "payment_intent_unexpected_state"
+}
+
+const INTENT_STATUS = {
+  SUCCEEDED: "succeeded",
+  CANCELED: "canceled",
+}
+
 abstract class StripeBase extends AbstractPaymentProcessor {
   static identifier = ""
 
@@ -45,6 +54,26 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     }
 
     return options
+  }
+
+  async getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus> {
+    const paymentIntent = await this.stripe_.paymentIntents.retrieve(paymentId)
+
+    switch (paymentIntent.status) {
+      case "requires_payment_method":
+      case "requires_confirmation":
+      case "processing":
+        return PaymentSessionStatus.PENDING
+      case "requires_action":
+        return PaymentSessionStatus.REQUIRES_MORE
+      case "canceled":
+        return PaymentSessionStatus.CANCELED
+      case "requires_capture":
+      case "succeeded":
+        return PaymentSessionStatus.AUTHORIZED
+      default:
+        return PaymentSessionStatus.PENDING
+    }
   }
 
   async initiatePayment(
@@ -122,60 +151,73 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     await this.getPaymentStatus(id)
   }
 
-  cancelPayment(paymentId: string): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
-  }
+  async cancelPayment(paymentId: string): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
+    try {
+      return await this.stripe_
+        .paymentIntents
+        .cancel(paymentId) as unknown as PaymentProcessorSessionResponse["session_data"]
+    } catch (error) {
+      if (error.payment_intent.status === INTENT_STATUS.CANCELED) {
+        return error.payment_intent
+      }
 
-  capturePayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
-  }
-
-  async deletePayment(paymentId: string): Promise<PaymentProcessorError | void> {
-    let error
-
-    await this.stripe_.paymentIntents.cancel(paymentId)
-      .catch((err) => {
-        if (err.statusCode === 400) {
-          return
-        }
-
-        error = this.buildError(
-          "An error occurred in deletePayment during the cancellation of the payment",
-          err
-        )
-      })
-
-    return error
-  }
-
-  async getPaymentStatus(paymentId: string): Promise<PaymentSessionStatus> {
-    const paymentIntent = await this.stripe_.paymentIntents.retrieve(paymentId)
-
-    switch (paymentIntent.status) {
-      case "requires_payment_method":
-      case "requires_confirmation":
-      case "processing":
-        return PaymentSessionStatus.PENDING
-      case "requires_action":
-        return PaymentSessionStatus.REQUIRES_MORE
-      case "canceled":
-        return PaymentSessionStatus.CANCELED
-      case "requires_capture":
-      case "succeeded":
-        return PaymentSessionStatus.AUTHORIZED
-      default:
-        return PaymentSessionStatus.PENDING
+      return this.buildError(
+        "An error occurred in cancelPayment during the cancellation of the payment",
+        error
+      )
     }
   }
 
-  refundPayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
+  async capturePayment(
+    context: PaymentProcessorContext
+  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
+    const { id } = context.paymentSessionData
+    try {
+      const intent = await this.stripe_.paymentIntents.capture(id as string)
+      return intent as unknown as PaymentProcessorSessionResponse["session_data"]
+    } catch (error) {
+      if (error.code === ERROR_CODES.PAYMENT_INTENT_UNEXPECTED_STATE) {
+        if (error.payment_intent.status === INTENT_STATUS.SUCCEEDED) {
+          return error.payment_intent
+        }
+      }
+
+      return this.buildError(
+        "An error occurred in deletePayment during the capture of the payment",
+        error
+      )
+    }
+  }
+
+  async deletePayment(
+    paymentId: string
+  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
+    return await this.cancelPayment(paymentId)
+  }
+
+  async refundPayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
+    const { amount } = context
+    const { id } = context.paymentSessionData
+
+    try {
+      await this.stripe_.refunds.create({
+        amount: Math.round(amount),
+        payment_intent: id as string,
+      })
+    } catch (e) {
+      return this.buildError(
+        "An error occurred in retrievePayment during the refundPayment",
+        e
+      )
+    }
+
+    return context.paymentSessionData
   }
 
   async retrievePayment(paymentId: string): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
     try {
       const intent = await this.stripe_.paymentIntents.retrieve(paymentId)
-      return intent as unknown as Record<string, unknown>
+      return intent as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (e) {
       return this.buildError("An error occurred in retrievePayment", e)
     }
@@ -217,6 +259,21 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     }
   }
 
+  /**
+   * Constructs Stripe Webhook event
+   * @param {object} data - the data of the webhook request: req.body
+   * @param {object} signature - the Stripe signature on the event, that
+   *    ensures integrity of the webhook event
+   * @return {object} Stripe Webhook event
+   */
+  constructWebhookEvent(data, signature) {
+    return this.stripe_.webhooks.constructEvent(
+      data,
+      signature,
+      this.options_.webhook_secret
+    )
+  }
+  
   protected buildError(message: string, e: Stripe.StripeRawError): PaymentProcessorError {
     return {
       error: message,

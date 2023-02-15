@@ -1,4 +1,5 @@
 import StripeBase from "../helpers/stripe-base"
+import { PaymentIntentOptions } from "../types";
 
 class GiropayProviderService extends StripeBase {
   static identifier = "stripe-giropay"
@@ -7,7 +8,7 @@ class GiropayProviderService extends StripeBase {
     super(_, options)
   }
 
-  get paymentIntentOptions() {
+  get paymentIntentOptions(): PaymentIntentOptions {
     return {
       payment_method_types: ["giropay"],
       capture_method: "automatic",
