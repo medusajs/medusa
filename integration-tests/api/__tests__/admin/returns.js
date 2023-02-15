@@ -1,5 +1,6 @@
 const path = require("path")
 import { ReturnReason, ShippingMethod } from "@medusajs/medusa"
+import { createReturnableOrder } from "../claims"
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -260,6 +261,73 @@ describe("/admin/returns", () => {
         .catch((e) => console.log(e.response))
 
       expect(receiveRes.status).toEqual(200)
+    })
+  })
+
+  describe("POST /admin/returns/:id/receive", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      return await db.teardown()
+    })
+
+    it.only("should receive a return partially", async () => {
+      const api = useApi()
+
+      const order = await createReturnableOrder(dbConnection)
+      const itemId = "test-item"
+
+      // create a return
+      const response = await api
+        .post(
+          `/admin/orders/${order.id}/return`,
+          {
+            items: [
+              {
+                item_id: itemId,
+                quantity: 2,
+              },
+            ],
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((e) => console.log(e))
+
+      const returnId = response.data.order.returns[0].id
+
+      // receive a return
+      const receiveRes = await api
+        .post(
+          `/admin/returns/${returnId}/receive`,
+          {
+            items: [
+              {
+                item_id: itemId,
+                quantity: 1,
+              },
+            ],
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((e) => console.log(e))
+
+      const receivedReturn = receiveRes.data.return
+
+      const receivedItem = receivedReturn.items[0]
+
+      expect(receivedItem.requested_quantity).toEqual(2)
+      expect(receivedItem.received_quantity).toEqual(1)
     })
   })
 })
