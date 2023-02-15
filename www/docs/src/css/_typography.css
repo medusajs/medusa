@@ -20,6 +20,31 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--ifm-color-headers);
 }
 
+.markdown > h1,
+.markdown > h1:first-child {
+  --ifm-h1-font-size: var(--medusa-h1-size);
+  --ifm-h1-line-height: var(--medusa-h1-line-height);
+  --ifm-h1-weight: var(--medusa-h1-weight);
+}
+
+.markdown > h1:first-child,
+.markdown > h2,
+.markdown > h3 {
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
+}
+
+.markdown > h2 {
+  --ifm-h2-font-size: var(--medusa-h2-size);
+  --ifm-h2-line-height: var(--medusa-h2-line-height);
+  --ifm-h2-weight: var(--medusa-h2-weight);
+}
+
+.markdown > h3 {
+  --ifm-h3-font-size: var(--medusa-h3-size);
+  --ifm-h3-line-height: var(--medusa-h3-line-height);
+  --ifm-h3-weight: var(--medusa-h3-weight);
+}
+
 p {
   font-weight: var(--ifm-font-weight-base);
 }
@@ -61,17 +86,23 @@ html:not([data-theme="dark"]) .DocSearch-Prefill:after {
   background-image: url('/img/link-icon-dark.svg');
 }
 
-.markdown p + h2,
-.markdown .alert + h2 {
-  margin-top: calc(var(--ifm-base-margin-vertical) * 2);
+.markdown p + img,
+.markdown .alert,
+.markdown .code-wrapper {
+  margin-bottom: var(--ifm-base-margin-vertical);
 }
 
-.markdown p + .alert {
-  margin-top: var(--ifm-base-margin-vertical);
+.markdown h2,
+.markdown h3,
+.markdown p + .code-wrapper,
+.markdown p + .tabs-wrapper,
+.markdown p + .alert,
+.markdown p + section {
+  margin-top: var(--ifm-base-margin-vertical)
 }
 
 .markdown {
-  margin-bottom: calc(var(--ifm-base-margin-vertical) * 2);
+  margin-bottom: 0;
 }
 
 .markdown p + p > img:not(.ui-icon) {

@@ -1,5 +1,5 @@
 .admonition {
-  margin-bottom: 32px;
+  margin-bottom: var(--ifm-base-margin-vertical);
 }
 
 .admonitionIcon {
