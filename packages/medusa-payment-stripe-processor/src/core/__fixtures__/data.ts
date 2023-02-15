@@ -93,3 +93,17 @@ export const capturePaymentContextPartiallyFailData = {
     id: PARTIALLY_FAIL_INTENT_ID
   }
 }
+
+// DELETE PAYMENT DATA
+
+export const deletePaymentSuccessData = {
+  id: PaymentIntentDataByStatus.SUCCEEDED.id
+}
+
+export const deletePaymentFailData = {
+  id: FAIL_INTENT_ID
+}
+
+export const deletePaymentPartiallyFailData = {
+  id: PARTIALLY_FAIL_INTENT_ID
+}

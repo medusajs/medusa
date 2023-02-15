@@ -9,6 +9,9 @@ import {
   capturePaymentContextFailData,
   capturePaymentContextPartiallyFailData,
   capturePaymentContextSuccessData,
+  deletePaymentFailData,
+  deletePaymentPartiallyFailData,
+  deletePaymentSuccessData,
   initiatePaymentContextWithExistingCustomer,
   initiatePaymentContextWithExistingCustomerStripeId,
   initiatePaymentContextWithFailIntentCreation,
@@ -273,6 +276,43 @@ describe("StripeTest", () => {
 
       expect(result).toEqual({
         error: "An error occurred in deletePayment during the capture of the payment",
+        code: undefined,
+        detail: undefined
+      })
+    })
+  })
+
+  describe('deletePayment', function () {
+    let stripeTest
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
+      await stripeTest.init()
+    })
+
+    it("should succeed", async () => {
+      const result = await stripeTest.cancelPayment(deletePaymentSuccessData)
+
+      expect(result).toEqual({
+        id: PaymentIntentDataByStatus.SUCCEEDED.id
+      })
+    })
+
+    it("should fail on intent cancellation but still return the intent", async () => {
+      const result = await stripeTest.cancelPayment(deletePaymentPartiallyFailData)
+
+      expect(result).toEqual({
+        id: PARTIALLY_FAIL_INTENT_ID,
+        status: ErrorIntentStatus.CANCELED
+      })
+    })
+
+    it("should fail on intent cancellation", async () => {
+      const result = await stripeTest.cancelPayment(deletePaymentFailData)
+
+      expect(result).toEqual({
+        error: "An error occurred in cancelPayment during the cancellation of the payment",
         code: undefined,
         detail: undefined
       })
