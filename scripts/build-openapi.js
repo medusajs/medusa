@@ -28,8 +28,8 @@ const run = async () => {
         await generateReference(outputYamlFile, apiType)
       }
     }
-  } catch (e) {
-    console.error(e)
+  } catch (err) {
+    console.log(err)
     process.exit(1)
   }
 }
@@ -98,7 +98,10 @@ const generateReference = async (srcFile, apiType) => {
 }
 
 const getTmpDirectory = async () => {
-  const tmpDir = await fs.realpath(os.tmpdir())
+  /**
+   * RUNNER_TEMP: GitHub action, the path to a temporary directory on the runner.
+   */
+  const tmpDir = process.env["RUNNER_TEMP"] ?? os.tmpdir()
   return await fs.mkdtemp(tmpDir)
 }
 
