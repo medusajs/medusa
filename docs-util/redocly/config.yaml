@@ -7,8 +7,6 @@ decorators:
   plugin/circular-patch:
     verbose: false
     schemas:
-      Address:
-        - Customer
       Cart:
         - Customer
         - Order
