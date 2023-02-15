@@ -4,7 +4,6 @@ import {
 } from "@medusajs/medusa"
 import { MedusaError, humanizeAmount } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { HighlightSpanKind } from "typescript"
 import Brightpearl from "../utils/brightpearl"
 
 class BrightpearlService extends BaseService {
@@ -107,7 +106,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -116,7 +115,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -343,7 +342,7 @@ class BrightpearlService extends BaseService {
     await Promise.all(
       locations.map(
         async (location) =>
-          await this.adjustMedusaLocationLevel(
+          await this.adjustMedusaLocationLevel_(
             location,
             inventoryMap,
             productAvailability
@@ -484,12 +483,8 @@ class BrightpearlService extends BaseService {
 
     if (locationId && this.stockLocationService_) {
       const location = await this.stockLocationService_.retrieve(locationId)
-      if (
-        location &&
-        location.metadata &&
-        location.metadata.brightpearl_warehouse_id
-      ) {
-        warehouse = location.metadata.brightpearl_warehouse_id
+      if (location?.metadata?.bp_id) {
+        warehouse = location.metadata.bp_id
       }
     }
 
@@ -506,7 +501,7 @@ class BrightpearlService extends BaseService {
       .catch(() => undefined)
 
     const order = await this.orderService_
-      .retrieve(lineItem.orderId)
+      .retrieve(lineItem.order_id)
       .catch(() => undefined)
 
     if (order) {
@@ -514,31 +509,6 @@ class BrightpearlService extends BaseService {
     }
 
     return {}
-  }
-
-  async getReservationForOrder_(order, warehouse) {
-    const client = await this.getClient()
-
-    let reservation = await client.warehouses
-      .retrieveReservation(order.metadata.brightpearl_sales_order_id)
-      .catch((err) => undefined)
-
-    if (!reservation) {
-      reservation = await client.warehouses
-        .createReservation(
-          { ...order, id: order.metadata.brightpearl_sales_order_id },
-          warehouse
-        )
-        .catch((err) => undefined)
-
-      if (!reservation) {
-        reservation = await client.warehouses
-          .retrieveReservation(order.metadata.brightpearl_sales_order_id)
-          .catch((err) => undefined)
-      }
-    }
-
-    return reservation
   }
 
   async createReservation(eventData) {
@@ -555,21 +525,21 @@ class BrightpearlService extends BaseService {
 
     const client = await this.getClient()
 
-    const warehouse = await this.getBrightPearlWarehouseFromMedusaLocation_(
-      reservationItem.locationId
-    )
-
     const { order, lineItem } = await this.getOrderFromReservation_(
       reservationItem
     )
 
-    if (!order.metadata.brightpearl_sales_order_id) {
+    if (!order.metadata?.brightpearl_sales_order_id) {
       return this.attemptRetryEvent(
         "product_variant_inventory.reservation_created",
         eventData,
         "Cannot create a brightpearl resrvation without a brightpearl order"
       )
     }
+
+    const warehouse = await this.getBrightPearlWarehouseFromMedusaLocation_(
+      reservationItem.location_id
+    )
 
     const variant = await this.productVariantService_.retrieve(
       lineItem.variant_id
@@ -593,7 +563,23 @@ class BrightpearlService extends BaseService {
       },
     ]
 
-    const reservation = await this.getReservationForOrder_(order, warehouse)
+    const reservation = await client.warehouses
+      .retrieveReservation(order.metadata.brightpearl_sales_order_id)
+      .catch(() => undefined)
+
+    if (!reservation) {
+      const reservationFailed = await client.warehouses
+        .createReservation(
+          { ...order, id: order.metadata.brightpearl_sales_order_id },
+          warehouse
+        )
+        .catch(() => true)
+
+      // if we succeed in creating the reservation return early
+      if (!reservationFailed) {
+        return
+      }
+    }
 
     if (!reservation) {
       return this.attemptRetryEvent(
