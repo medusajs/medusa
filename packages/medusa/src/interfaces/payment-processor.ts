@@ -6,20 +6,20 @@ export type PaymentProcessorContext = {
   email: string
   currency_code: string
   amount: number
-  resource_id?: string
+  resource_id: string
   customer?: Customer
   context: Record<string, unknown>
   paymentSessionData: Record<string, unknown>
 }
 
 export type PaymentProcessorSessionResponse = {
-  update_requests: { customer_metadata: Record<string, unknown> }
+  update_requests?: { customer_metadata?: Record<string, unknown> }
   session_data: Record<string, unknown>
 }
 
 export interface PaymentProcessorError {
   error: string
-  code: number
+  code?: string
   details?: any
 }
 
@@ -94,7 +94,9 @@ export interface PaymentProcessor {
    */
   deletePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<PaymentProcessorError | void>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   /**
    * Retrieve an existing session
@@ -110,7 +112,9 @@ export interface PaymentProcessor {
    */
   cancelPayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<PaymentProcessorError | void>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   /**
    * Return the status of the session
@@ -162,7 +166,9 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
 
   abstract cancelPayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<PaymentProcessorError | void>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   abstract initiatePayment(
     context: PaymentProcessorContext
@@ -170,7 +176,9 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
 
   abstract deletePayment(
     paymentSessionData: Record<string, unknown>
-  ): Promise<PaymentProcessorError | void>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  >
 
   abstract getPaymentStatus(
     paymentSessionData: Record<string, unknown>
@@ -190,7 +198,7 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
 
   abstract updatePayment(
     context: PaymentProcessorContext
-  ): Promise<PaymentProcessorError | void>
+  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse | void>
 }
 
 /**
@@ -199,4 +207,14 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
  */
 export function isPaymentProcessor(obj: unknown): boolean {
   return obj instanceof AbstractPaymentProcessor
+}
+
+/**
+ * Utility function to determine if an object is a processor error
+ * @param obj
+ */
+export function isPaymentProcessorError(
+  obj: any
+): obj is PaymentProcessorError {
+  return obj && typeof obj === "object" && (obj.error || obj.code || obj.detail)
 }

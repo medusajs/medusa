@@ -25,7 +25,7 @@ export type PaymentContext = {
   }
   currency_code: string
   amount: number
-  resource_id?: string
+  resource_id: string
   customer?: Customer
   paymentSessionData: Record<string, unknown>
 }

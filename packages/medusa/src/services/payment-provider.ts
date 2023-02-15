@@ -4,6 +4,7 @@ import { EntityManager } from "typeorm"
 import {
   AbstractPaymentProcessor,
   AbstractPaymentService,
+  isPaymentProcessorError,
   PaymentContext,
   PaymentProcessorError,
   PaymentSessionResponse,
@@ -317,7 +318,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       if (provider instanceof AbstractPaymentProcessor) {
         const error = await provider.deletePayment(session.data)
-        if (error) {
+        if (isPaymentProcessorError(error)) {
           this.throwFromPaymentProcessorError(error)
         }
       } else {
@@ -415,7 +416,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       if (provider instanceof AbstractPaymentProcessor) {
         const error = await provider.deletePayment(paymentSession.data)
-        if (error) {
+        if (isPaymentProcessorError(error)) {
           this.throwFromPaymentProcessorError(error)
         }
       } else {
@@ -601,7 +602,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       if (provider instanceof AbstractPaymentProcessor) {
         const error = await provider.cancelPayment(payment.data)
-        if (error) {
+        if (isPaymentProcessorError(error)) {
           this.throwFromPaymentProcessorError(error)
         }
       } else {
@@ -853,13 +854,14 @@ export default class PaymentProviderService extends TransactionBaseService {
       }
       context.amount = cart.total!
       context.currency_code = cart.region?.currency_code
+      context.resource_id = cart.id
       Object.assign(context, cart)
     } else {
       const data = cartOrData as PaymentSessionInput
       context.cart = data.cart
       context.amount = data.amount
       context.currency_code = data.currency_code
-      context.resource_id = data.resource_id
+      context.resource_id = data.resource_id ?? data.cart.id
       Object.assign(context, cart)
     }
 
@@ -947,7 +949,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       `${errObj.error}${errObj.details ? `:${EOL}${errObj.details}` : ""}`,
-      errObj.code.toString()
+      errObj.code
     )
   }
 }
