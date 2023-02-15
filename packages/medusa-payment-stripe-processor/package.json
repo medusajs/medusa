@@ -1,7 +1,7 @@
 {
-  "name": "@medusajs/medusa-payment-stripe-processor",
+  "name": "medusa-payment-stripe-processor",
   "version": "0.0.1",
-  "description": "Stripe Payment provider for Meduas Commerce",
+  "description": "Stripe Payment provider for Medusa Commerce",
   "main": "dist/index.js",
   "keywords": [
     "medusa-plugin",
@@ -40,5 +40,6 @@
     "express": "^4.17.1",
     "medusa-core-utils": "^1.1.38",
     "stripe": "^11.10.0"
-  }
+  },
+  "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
 }
