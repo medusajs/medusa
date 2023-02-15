@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Medusa Admin API - TEST
+  title: Medusa Admin API
   description: |
     API reference for Medusa's Admin endpoints. All endpoints are prefixed with `/admin`.
     
