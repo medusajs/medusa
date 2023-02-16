@@ -30,21 +30,16 @@ type GeneratedAdjustment = {
  * Provides layer to manipulate line item adjustments.
  */
 class LineItemAdjustmentService extends TransactionBaseService {
-  protected readonly manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   private readonly lineItemAdjustmentRepo_: typeof LineItemAdjustmentRepository
   private readonly discountService: DiscountService
 
   constructor({
-    manager,
     lineItemAdjustmentRepository,
     discountService,
   }: LineItemAdjustmentServiceProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.lineItemAdjustmentRepo_ = lineItemAdjustmentRepository
     this.discountService = discountService
   }
@@ -66,7 +61,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
       )
     }
 
-    const lineItemAdjustmentRepo = this.manager_.withRepository(
+    const lineItemAdjustmentRepo = this.activeManager_.withRepository(
       this.lineItemAdjustmentRepo_
     )
 
@@ -142,7 +137,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
     selector: FilterableLineItemAdjustmentProps = {},
     config: FindConfig<LineItemAdjustment> = { skip: 0, take: 20 }
   ): Promise<LineItemAdjustment[]> {
-    const lineItemAdjustmentRepo = this.manager_.withRepository(
+    const lineItemAdjustmentRepo = this.activeManager_.withRepository(
       this.lineItemAdjustmentRepo_
     )
 

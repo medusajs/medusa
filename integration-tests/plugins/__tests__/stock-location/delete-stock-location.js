@@ -70,11 +70,11 @@ describe("Sales channels", () => {
       )
 
       expect(
-        await salesChannelLocationService.listLocations(saleChannel.id)
+        await salesChannelLocationService.listLocationIds(saleChannel.id)
       ).toHaveLength(1)
 
       expect(
-        await salesChannelLocationService.listLocations(otherChannel.id)
+        await salesChannelLocationService.listLocationIds(otherChannel.id)
       ).toHaveLength(1)
 
       await api.delete(`/admin/stock-locations/${loc.id}`, {
@@ -82,11 +82,11 @@ describe("Sales channels", () => {
       })
 
       expect(
-        await salesChannelLocationService.listLocations(saleChannel.id)
+        await salesChannelLocationService.listLocationIds(saleChannel.id)
       ).toHaveLength(0)
 
       expect(
-        await salesChannelLocationService.listLocations(otherChannel.id)
+        await salesChannelLocationService.listLocationIds(otherChannel.id)
       ).toHaveLength(0)
     })
   })

@@ -35,9 +35,6 @@ class BatchJobService extends TransactionBaseService {
     FAILED: "batch.failed",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly batchJobRepository_: typeof BatchJobRepository
   protected readonly eventBus_: EventBusService
   protected readonly strategyResolver_: StrategyResolverService
@@ -91,7 +88,6 @@ class BatchJobService extends TransactionBaseService {
   ])
 
   constructor({
-    manager,
     batchJobRepository,
     eventBusService,
     strategyResolverService,
@@ -99,7 +95,6 @@ class BatchJobService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
     this.eventBus_ = eventBusService
     this.strategyResolver_ = strategyResolverService
@@ -116,8 +111,9 @@ class BatchJobService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const batchJobRepo = manager.withRepository(this.batchJobRepository_)
+    const batchJobRepo = this.activeManager_.withRepository(
+      this.batchJobRepository_
+    )
 
     const query = buildQuery({ id: batchJobId }, config)
     const batchJob = await batchJobRepo.findOne(query)
@@ -136,8 +132,9 @@ class BatchJobService extends TransactionBaseService {
     selector: FilterableBatchJobProps = {},
     config: FindConfig<BatchJob> = { skip: 0, take: 20 }
   ): Promise<[BatchJob[], number]> {
-    const manager = this.manager_
-    const batchJobRepo = manager.withRepository(this.batchJobRepository_)
+    const batchJobRepo = this.activeManager_.withRepository(
+      this.batchJobRepository_
+    )
 
     const query = buildQuery(selector, config)
     return await batchJobRepo.findAndCount(query)
@@ -203,7 +200,6 @@ class BatchJobService extends TransactionBaseService {
     batchJobOrId: BatchJob | string,
     status: BatchJobStatus
   ): Promise<BatchJob | never> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
     let batchJob: BatchJob = batchJobOrId as BatchJob
     if (typeof batchJobOrId === "string") {
       batchJob = await this.retrieve(batchJobOrId)
@@ -221,13 +217,13 @@ class BatchJobService extends TransactionBaseService {
 
     batchJob[entityColumnName] = new Date()
 
-    const batchJobRepo = transactionManager.withRepository(
+    const batchJobRepo = this.activeManager_.withRepository(
       this.batchJobRepository_
     )
     batchJob = await batchJobRepo.save(batchJob)
     batchJob.loadStatus()
 
-    await this.eventBus_.withTransaction(transactionManager).emit(eventType, {
+    await this.eventBus_.withTransaction(this.activeManager_).emit(eventType, {
       id: batchJob.id,
     })
 

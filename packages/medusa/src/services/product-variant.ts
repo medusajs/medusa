@@ -48,9 +48,6 @@ class ProductVariantService extends TransactionBaseService {
     DELETED: "product-variant.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly productVariantRepository_: typeof ProductVariantRepository
   protected readonly productRepository_: typeof ProductRepository
   protected readonly eventBus_: EventBusService
@@ -62,7 +59,6 @@ class ProductVariantService extends TransactionBaseService {
   protected readonly cartRepository_: typeof CartRepository
 
   constructor({
-    manager,
     productVariantRepository,
     productRepository,
     eventBusService,
@@ -75,7 +71,6 @@ class ProductVariantService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.productVariantRepository_ = productVariantRepository
     this.productRepository_ = productRepository
     this.eventBus_ = eventBusService
@@ -98,7 +93,7 @@ class ProductVariantService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<ProductVariant> {
-    const variantRepo = this.manager_.withRepository(
+    const variantRepo = this.activeManager_.withRepository(
       this.productVariantRepository_
     )
     const query = buildQuery({ id: variantId }, config) as FindOneOptions
@@ -126,7 +121,7 @@ class ProductVariantService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<ProductVariant> {
-    const variantRepo = this.manager_.withRepository(
+    const variantRepo = this.activeManager_.withRepository(
       this.productVariantRepository_
     )
 
@@ -568,7 +563,7 @@ class ProductVariantService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<[ProductVariant[], number]> {
-    const variantRepo = this.manager_.withRepository(
+    const variantRepo = this.activeManager_.withRepository(
       this.productVariantRepository_
     )
 
@@ -628,7 +623,7 @@ class ProductVariantService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<ProductVariant[]> {
-    const productVariantRepo = this.manager_.withRepository(
+    const productVariantRepo = this.activeManager_.withRepository(
       this.productVariantRepository_
     )
 

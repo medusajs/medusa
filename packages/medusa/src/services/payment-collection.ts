@@ -40,8 +40,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
     PAYMENT_AUTHORIZED: "payment-collection.payment_authorized",
   }
 
-  protected readonly manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly eventBusService_: EventBusService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly customerService_: CustomerService
@@ -49,7 +47,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
   protected readonly paymentCollectionRepository_: typeof PaymentCollectionRepository
 
   constructor({
-    manager,
     paymentCollectionRepository,
     paymentProviderService,
     customerService,
@@ -58,7 +55,6 @@ export default class PaymentCollectionService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.paymentCollectionRepository_ = paymentCollectionRepository
     this.paymentProviderService_ = paymentProviderService
     this.eventBusService_ = eventBusService
@@ -82,8 +78,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
       )
     }
 
-    const manager = this.transactionManager_ ?? this.manager_
-    const paymentCollectionRepository = manager.withRepository(
+    const paymentCollectionRepository = this.activeManager_.withRepository(
       this.paymentCollectionRepository_
     )
 
