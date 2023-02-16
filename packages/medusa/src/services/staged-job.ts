@@ -21,15 +21,12 @@ class StagedJobService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.stagedJobRepository_ = stagedJobRepository
   }
 
   async create(data: Partial<StagedJob>) {
     return this.atomicPhase_(async (manager) => {
-      const stagedJobRepo = manager.getCustomRepository(
-        this.stagedJobRepository_
-      )
+      const stagedJobRepo = manager.withRepository(this.stagedJobRepository_)
 
       const stagedJob = stagedJobRepo.create(data)
       return await stagedJobRepo.save(stagedJob)
@@ -37,7 +34,7 @@ class StagedJobService extends TransactionBaseService {
   }
 
   async list(config: FindConfig<StagedJob>) {
-    const stagedJobRepo = this.manager_.getCustomRepository(
+    const stagedJobRepo = this.manager_.withRepository(
       this.stagedJobRepository_
     )
 
@@ -45,7 +42,7 @@ class StagedJobService extends TransactionBaseService {
   }
 
   async remove(stagedJob: StagedJob) {
-    const stagedJobRepo = this.manager_.getCustomRepository(
+    const stagedJobRepo = this.manager_.withRepository(
       this.stagedJobRepository_
     )
 
