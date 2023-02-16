@@ -13,7 +13,6 @@
  * - To add a sidebar title, add in customProps sidebar_is_title: true
  * - To add a group headline, add in customProps sidebar_is_group_headline: true
  */
-const upgradeGuides = require('./src/sidebars/upgradeGuides');
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 module.exports = {
