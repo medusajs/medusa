@@ -18,7 +18,7 @@ describe("PublishableApiKeyService", () => {
   })
 
   const publishableApiKeyRepository = MockRepository({
-    findOneWithRelations: (data) => ({ ...pubKeyToRetrieve, ...data }),
+    findOne: (data) => ({ ...pubKeyToRetrieve, ...data }),
     create: (data) => {
       return {
         ...pubKeyToRetrieve,
@@ -42,13 +42,18 @@ describe("PublishableApiKeyService", () => {
       IdMap.getId("order-edit-with-changes")
     )
     expect(
-      publishableApiKeyRepository.findOneWithRelations
+      publishableApiKeyRepository.findOne
     ).toHaveBeenCalledTimes(1)
     expect(
-      publishableApiKeyRepository.findOneWithRelations
-    ).toHaveBeenCalledWith(undefined, {
-      where: { id: IdMap.getId("order-edit-with-changes") },
-    })
+      publishableApiKeyRepository.findOne
+    ).toHaveBeenCalledWith(
+      {
+        relationLoadStrategy: "query",
+        where: {
+          id: IdMap.getId("order-edit-with-changes")
+        }
+      }
+    )
   })
 
   it("should create a publishable api key and call the repository with the right arguments as well as the event bus service", async () => {

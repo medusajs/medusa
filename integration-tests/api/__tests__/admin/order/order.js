@@ -2123,7 +2123,9 @@ describe("/admin/orders", () => {
 
       const manager = dbConnection.manager
       const customOptions = await manager.find(CustomShippingOption, {
-        shipping_option_id: "test-option",
+        where: {
+          shipping_option_id: "test-option",
+        },
       })
 
       expect(response.status).toEqual(200)

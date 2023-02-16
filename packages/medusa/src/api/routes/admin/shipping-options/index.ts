@@ -33,7 +33,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   return app
 }
 
-export const defaultFields = [
+export const defaultFields: (keyof ShippingOption)[] = [
   "id",
   "name",
   "region_id",

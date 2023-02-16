@@ -1,6 +1,6 @@
 import { Cart } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import {
   AddressFactoryData,
   simpleAddressFactory,
@@ -32,7 +32,7 @@ export type CartFactoryData = {
 }
 
 export const simpleCartFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: CartFactoryData = {},
   seed?: number
 ): Promise<Cart> => {
@@ -40,37 +40,37 @@ export const simpleCartFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let regionId: string
   if (typeof data.region === "string") {
     regionId = data.region
   } else {
-    const region = await simpleRegionFactory(connection, data.region)
+    const region = await simpleRegionFactory(dataSource, data.region)
     regionId = region.id
   }
 
-  let customerId: string
+  let customerId!: string
   if (typeof data.customer === "string") {
     customerId = data.customer
   } else {
     if (data?.customer?.email) {
-      const customer = await simpleCustomerFactory(connection, data.customer)
+      const customer = await simpleCustomerFactory(dataSource, data.customer)
       customerId = customer.id
     } else if (data.email) {
-      const customer = await simpleCustomerFactory(connection, {
+      const customer = await simpleCustomerFactory(dataSource, {
         email: data.email,
       })
       customerId = customer.id
     }
   }
 
-  const address = await simpleAddressFactory(connection, data.shipping_address)
+  const address = await simpleAddressFactory(dataSource, data.shipping_address)
 
   let sales_channel
   if (typeof data.sales_channel !== "undefined") {
     sales_channel = await simpleSalesChannelFactory(
-      connection,
+      dataSource,
       data.sales_channel
     )
   }
@@ -90,12 +90,12 @@ export const simpleCartFactory = async (
 
   const shippingMethods = data.shipping_methods || []
   for (const sm of shippingMethods) {
-    await simpleShippingMethodFactory(connection, { ...sm, cart_id: id })
+    await simpleShippingMethodFactory(dataSource, { ...sm, cart_id: id })
   }
 
   const items = data.line_items || []
   for (const item of items) {
-    await simpleLineItemFactory(connection, { ...item, cart_id: id })
+    await simpleLineItemFactory(dataSource, { ...item, cart_id: id })
   }
 
   return cart

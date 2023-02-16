@@ -1,5 +1,44 @@
 # Change Log
 
+## 1.7.7
+
+### Patch Changes
+
+- [#3210](https://github.com/medusajs/medusa/pull/3210) [`507ad00be`](https://github.com/medusajs/medusa/commit/507ad00bec74bb63b17eae8a4a3313eb6e0d2503) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - feat(oas) - accurate model OAS representation - F to O
+
+- [#3222](https://github.com/medusajs/medusa/pull/3222) [`6e443dc70`](https://github.com/medusajs/medusa/commit/6e443dc708ffe20bf96d45ddc207ed274c28e344) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa): Improve addShippingMethod on store cart route to use new totals calculation algo
+
+- [#3220](https://github.com/medusajs/medusa/pull/3220) [`eee928381`](https://github.com/medusajs/medusa/commit/eee9283818b1717f37f084c319201ea7144fdf8a) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Allow empty fields/expand
+
+- [#3244](https://github.com/medusajs/medusa/pull/3244) [`4cb44a3a2`](https://github.com/medusajs/medusa/commit/4cb44a3a2ec5bcf3d90e3b6a0e1f6bb9ff45e2b6) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Discount allocation precision issues
+
+- [#3224](https://github.com/medusajs/medusa/pull/3224) [`472f96d7f`](https://github.com/medusajs/medusa/commit/472f96d7fb8668a15df6e6f9ea31291891b3e688) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Missing refund amount when creating claim
+
+- [#3219](https://github.com/medusajs/medusa/pull/3219) [`61b0b2f3a`](https://github.com/medusajs/medusa/commit/61b0b2f3aa1d54d539b216a99032549485136a82) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa): use transformer middleware config when querying store products and store orders endpoints
+
+- [#3249](https://github.com/medusajs/medusa/pull/3249) [`80452332d`](https://github.com/medusajs/medusa/commit/80452332d852ad7d33d74e1f08f12f45d7a35503) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - fix(medusa): default sales channel on product create
+
+- [#3246](https://github.com/medusajs/medusa/pull/3246) [`bbbb3d888`](https://github.com/medusajs/medusa/commit/bbbb3d888292391976355c88ecb0fcf8a7c115bc) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Get cart missing transaction on update
+
+- [#3254](https://github.com/medusajs/medusa/pull/3254) [`10ff72c30`](https://github.com/medusajs/medusa/commit/10ff72c30ae59d2174d876b0c4141aad135d9a1c) Thanks [@josetr](https://github.com/josetr)! - fix(medusa): Add missing scoped transaction on update currency endpoint
+
+- [#3237](https://github.com/medusajs/medusa/pull/3237) [`968eb8fc6`](https://github.com/medusajs/medusa/commit/968eb8fc6b7ccd7221f88f42d75717f3a0547861) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Refund amount on returns in claim flow
+
+- [#3223](https://github.com/medusajs/medusa/pull/3223) [`a59bd84e4`](https://github.com/medusajs/medusa/commit/a59bd84e41fb5d8fc2edc7bdc43d3cbf74d9d7dc) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - feat(oas) - accurate model OAS representation - PA to PU
+
+- [#3217](https://github.com/medusajs/medusa/pull/3217) [`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: Fix npm packages files included
+
+- [#3250](https://github.com/medusajs/medusa/pull/3250) [`cac13a88d`](https://github.com/medusajs/medusa/commit/cac13a88da42fa986bd7352fbc12a318b566d98f) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - feat(oas) - accurate model OAS representation - R to U
+
+- [#3247](https://github.com/medusajs/medusa/pull/3247) [`a2cc084db`](https://github.com/medusajs/medusa/commit/a2cc084db817f8f7699e9b0daceda274b5f0e0c0) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Generate adjustment missing transaction on calculateDiscountForLineItem
+
+- [#3238](https://github.com/medusajs/medusa/pull/3238) [`8194d19b0`](https://github.com/medusajs/medusa/commit/8194d19b0e933310fdc65af25300da5dd185e669) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-plugin-sendgrid): Undefined order
+
+- Updated dependencies [[`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0)]:
+  - @medusajs/medusa-cli@1.3.8
+  - medusa-core-utils@1.1.39
+  - medusa-interfaces@1.3.6
+
 ## 1.7.6
 
 ### Patch Changes

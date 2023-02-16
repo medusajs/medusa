@@ -83,7 +83,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     }
 
     const manager = this.transactionManager_ ?? this.manager_
-    const paymentCollectionRepository = manager.getCustomRepository(
+    const paymentCollectionRepository = manager.withRepository(
       this.paymentCollectionRepository_
     )
 
@@ -110,7 +110,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
    */
   async create(data: CreatePaymentCollectionInput): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -148,7 +148,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     data: DeepPartial<PaymentCollection>
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const paymentCollectionRepo = manager.getCustomRepository(
+      const paymentCollectionRepo = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -181,7 +181,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     paymentCollectionId: string
   ): Promise<PaymentCollection | undefined> {
     return await this.atomicPhase_(async (manager) => {
-      const paymentCollectionRepo = manager.getCustomRepository(
+      const paymentCollectionRepo = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -236,7 +236,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     customerId: string
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -417,7 +417,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     customerId: string
   ): Promise<PaymentSession> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -507,7 +507,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     paymentCollectionId: string
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const paymentCollectionRepo = manager.getCustomRepository(
+      const paymentCollectionRepo = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
@@ -538,7 +538,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
     context: Record<string, unknown> = {}
   ): Promise<PaymentCollection> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const paymentCollectionRepository = manager.getCustomRepository(
+      const paymentCollectionRepository = manager.withRepository(
         this.paymentCollectionRepository_
       )
 
