@@ -1,7 +1,7 @@
 import BaseResource from "../base"
 import AdminAuthResource from "./auth"
 import AdminBatchJobsResource from "./batch-jobs"
-import CollectionsResource from "./collections"
+import AdminCollectionsResource from "./collections"
 import AdminCurrenciesResource from "./currencies"
 import AdminCustomerGroupsResource from "./customer-groups"
 import AdminCustomersResource from "./customers"
@@ -11,9 +11,12 @@ import AdminGiftCardsResource from "./gift-cards"
 import AdminInvitesResource from "./invites"
 import AdminNotesResource from "./notes"
 import AdminNotificationsResource from "./notifications"
-import AdminOrdersResource from "./orders"
 import AdminOrderEditsResource from "./order-edits"
+import AdminOrdersResource from "./orders"
+import AdminPaymentCollectionsResource from "./payment-collections"
+import AdminPaymentsResource from "./payments"
 import AdminPriceListResource from "./price-lists"
+import AdminProductCategoriesResource from "./product-categories"
 import AdminProductTagsResource from "./product-tags"
 import AdminProductTypesResource from "./product-types"
 import AdminProductsResource from "./products"
@@ -31,9 +34,6 @@ import AdminTaxRatesResource from "./tax-rates"
 import AdminUploadsResource from "./uploads"
 import AdminUsersResource from "./users"
 import AdminVariantsResource from "./variants"
-import AdminPaymentCollectionsResource from "./payment-collections"
-import AdminPaymentsResource from "./payments"
-import AdminProductCategoriesResource from "./product-categories"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -42,7 +42,7 @@ class Admin extends BaseResource {
   public customerGroups = new AdminCustomerGroupsResource(this.client)
   public discounts = new AdminDiscountsResource(this.client)
   public currencies = new AdminCurrenciesResource(this.client)
-  public collections = new CollectionsResource(this.client)
+  public collections = new AdminCollectionsResource(this.client)
   public draftOrders = new AdminDraftOrdersResource(this.client)
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
@@ -73,4 +73,41 @@ class Admin extends BaseResource {
   public productCategories = new AdminProductCategoriesResource(this.client)
 }
 
-export default Admin
+export {
+  Admin,
+  AdminAuthResource,
+  AdminBatchJobsResource,
+  AdminCollectionsResource,
+  AdminCurrenciesResource,
+  AdminCustomerGroupsResource,
+  AdminCustomersResource,
+  AdminDiscountsResource,
+  AdminDraftOrdersResource,
+  AdminGiftCardsResource,
+  AdminInvitesResource,
+  AdminNotesResource,
+  AdminNotificationsResource,
+  AdminOrdersResource,
+  AdminOrderEditsResource,
+  AdminPriceListResource,
+  AdminProductTagsResource,
+  AdminProductTypesResource,
+  AdminProductsResource,
+  AdminPublishableApiKeyResource,
+  AdminRegionsResource,
+  AdminReturnReasonsResource,
+  AdminReturnsResource,
+  AdminSalesChannelsResource,
+  AdminShippingOptionsResource,
+  AdminShippingProfilesResource,
+  AdminStockLocationsResource,
+  AdminStoresResource,
+  AdminSwapsResource,
+  AdminTaxRatesResource,
+  AdminUploadsResource,
+  AdminUsersResource,
+  AdminVariantsResource,
+  AdminPaymentCollectionsResource,
+  AdminPaymentsResource,
+  AdminProductCategoriesResource,
+}
