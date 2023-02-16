@@ -44,8 +44,8 @@ export default (app, container) => {
   const createMiddlewares = [
     middlewareService.usePreCartCreation(),
     transformBody(StorePostCartReq),
-    extendRequestParams as unknown as RequestHandler,
-    validateSalesChannelParam as unknown as RequestHandler,
+    extendRequestParams,
+    validateSalesChannelParam,
   ]
 
   route.post(

@@ -13,13 +13,8 @@ import { StoreGetProductsProductParams } from "./get-product"
 const route = Router()
 
 export default (app) => {
-  app.use("/products", route)
+  app.use("/products", extendRequestParams, validateSalesChannelParam, route)
 
-  route.use(
-    "/",
-    extendRequestParams as unknown as RequestHandler,
-    validateSalesChannelParam as unknown as RequestHandler
-  )
   route.use("/:id", validateProductSalesChannelAssociation)
 
   route.get(

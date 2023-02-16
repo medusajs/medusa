@@ -1,5 +1,6 @@
+import { Router } from "express"
+
 import { ProductVariant } from "../../../../"
-import { RequestHandler, Router } from "express"
 import middlewares from "../../../middlewares"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
@@ -8,13 +9,8 @@ import { validateProductVariantSalesChannelAssociation } from "../../../middlewa
 const route = Router()
 
 export default (app) => {
-  app.use("/variants", route)
+  app.use("/variants", extendRequestParams, validateSalesChannelParam, route)
 
-  route.use(
-    "/",
-    extendRequestParams as unknown as RequestHandler,
-    validateSalesChannelParam as unknown as RequestHandler
-  )
   route.use("/:id", validateProductVariantSalesChannelAssociation)
 
   route.get("/", middlewares.wrap(require("./list-variants").default))
