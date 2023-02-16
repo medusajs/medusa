@@ -6,6 +6,7 @@ import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, {
   transformBody,
+  transformIncludesOptions,
   transformQuery,
 } from "../../../middlewares"
 import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
@@ -16,7 +17,6 @@ import {
   AdminPostOrdersOrderSwapsParams,
   AdminPostOrdersOrderSwapsReq,
 } from "./create-swap"
-import { transformIncludesOptions } from "../../../middlewares/transform-includes-options"
 
 const route = Router()
 

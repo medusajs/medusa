@@ -7,7 +7,7 @@ import { default as requireCustomerAuthentication } from "./require-customer-aut
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
 export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
 export { doesConditionBelongToDiscount } from "./discount/does-condition-belong-to-discount"
-export { applyIncludesOptions } from "./order/apply-order-includes-options"
+export { transformIncludesOptions } from "./transform-includes-options"
 export { transformBody } from "./transform-body"
 export { transformQuery } from "./transform-query"
 
