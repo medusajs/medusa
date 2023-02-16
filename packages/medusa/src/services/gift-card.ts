@@ -32,15 +32,11 @@ class GiftCardService extends TransactionBaseService {
   protected readonly regionService_: RegionService
   protected readonly eventBus_: EventBusService
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   static Events = {
     CREATED: "gift_card.created",
   }
 
   constructor({
-    manager,
     giftCardRepository,
     giftCardTransactionRepository,
     regionService,
@@ -48,8 +44,6 @@ class GiftCardService extends TransactionBaseService {
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    this.manager_ = manager
 
     this.giftCardRepository_ = giftCardRepository
     this.giftCardTransactionRepo_ = giftCardTransactionRepository
@@ -81,8 +75,9 @@ class GiftCardService extends TransactionBaseService {
     selector: QuerySelector<GiftCard> = {},
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<[GiftCard[], number]> {
-    const manager = this.manager_
-    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
+    const giftCardRepo = this.activeManager_.withRepository(
+      this.giftCardRepository_
+    )
 
     let q: string | undefined
     if (isDefined(selector.q)) {
@@ -111,8 +106,9 @@ class GiftCardService extends TransactionBaseService {
   async createTransaction(
     data: CreateGiftCardTransactionInput
   ): Promise<string> {
-    const manager = this.manager_
-    const gctRepo = manager.withRepository(this.giftCardTransactionRepo_)
+    const gctRepo = this.activeManager_.withRepository(
+      this.giftCardTransactionRepo_
+    )
     const created = gctRepo.create(data)
     const saved = await gctRepo.save(created)
     return saved.id
@@ -187,8 +183,9 @@ class GiftCardService extends TransactionBaseService {
     selector: Selector<GiftCard>,
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
-    const manager = this.manager_
-    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
+    const giftCardRepo = this.activeManager_.withRepository(
+      this.giftCardRepository_
+    )
 
     const query = buildQuery(selector, config)
     query.relationLoadStrategy = "query"
@@ -296,8 +293,9 @@ class GiftCardService extends TransactionBaseService {
    * @return the result of the delete operation
    */
   async delete(giftCardId: string): Promise<GiftCard | void> {
-    const manager = this.manager_
-    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
+    const giftCardRepo = this.activeManager_.withRepository(
+      this.giftCardRepository_
+    )
 
     const giftCard = await giftCardRepo.findOne({ where: { id: giftCardId } })
 

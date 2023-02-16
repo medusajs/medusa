@@ -31,9 +31,6 @@ class PublishableApiKeyService extends TransactionBaseService {
     REVOKED: "publishable_api_key.revoked",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly eventBusService_: EventBusService
   // eslint-disable-next-line max-len
   protected readonly publishableApiKeyRepository_: typeof PublishableApiKeyRepository
@@ -41,14 +38,13 @@ class PublishableApiKeyService extends TransactionBaseService {
   protected readonly publishableApiKeySalesChannelRepository_: typeof PublishableApiKeySalesChannelRepository
 
   constructor({
-    manager,
     eventBusService,
     publishableApiKeyRepository,
     publishableApiKeySalesChannelRepository,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.publishableApiKeyRepository_ = publishableApiKeyRepository
     this.publishableApiKeySalesChannelRepository_ =
@@ -117,7 +113,9 @@ class PublishableApiKeyService extends TransactionBaseService {
     selector: Selector<PublishableApiKey>,
     config: FindConfig<PublishableApiKey> = {}
   ): Promise<PublishableApiKey | never> {
-    const repo = this.manager_.withRepository(this.publishableApiKeyRepository_)
+    const repo = this.activeManager_.withRepository(
+      this.publishableApiKeyRepository_
+    )
 
     const query = buildQuery(selector, config)
     query.relationLoadStrategy = "query"
@@ -150,8 +148,9 @@ class PublishableApiKeyService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[PublishableApiKey[], number]> {
-    const manager = this.manager_
-    const pubKeyRepo = manager.withRepository(this.publishableApiKeyRepository_)
+    const pubKeyRepo = this.activeManager_.withRepository(
+      this.publishableApiKeyRepository_
+    )
 
     let q
     if (isString(selector.q)) {
@@ -310,8 +309,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     publishableApiKeyId: string,
     config?: { q?: string }
   ): Promise<SalesChannel[]> {
-    const manager = this.manager_
-    const pubKeySalesChannelRepo = manager.withRepository(
+    const pubKeySalesChannelRepo = this.activeManager_.withRepository(
       this.publishableApiKeySalesChannelRepository_
     )
 
@@ -329,8 +327,7 @@ class PublishableApiKeyService extends TransactionBaseService {
   async getResourceScopes(
     publishableApiKeyId: string
   ): Promise<{ sales_channel_id: string[] }> {
-    const manager = this.manager_
-    const pubKeySalesChannelRepo = manager.withRepository(
+    const pubKeySalesChannelRepo = this.activeManager_.withRepository(
       this.publishableApiKeySalesChannelRepository_
     )
 

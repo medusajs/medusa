@@ -42,9 +42,6 @@ type InjectedDependencies = {
 }
 
 class LineItemService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly lineItemRepository_: typeof LineItemRepository
   protected readonly itemTaxLineRepo_: typeof LineItemTaxLineRepository
   protected readonly cartRepository_: typeof CartRepository
@@ -57,7 +54,6 @@ class LineItemService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
 
   constructor({
-    manager,
     lineItemRepository,
     lineItemTaxLineRepository,
     productVariantService,
@@ -72,7 +68,6 @@ class LineItemService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.lineItemRepository_ = lineItemRepository
     this.itemTaxLineRepo_ = lineItemTaxLineRepository
     this.productVariantService_ = productVariantService
@@ -93,8 +88,9 @@ class LineItemService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<LineItem[]> {
-    const manager = this.manager_
-    const lineItemRepo = manager.withRepository(this.lineItemRepository_)
+    const lineItemRepo = this.activeManager_.withRepository(
+      this.lineItemRepository_
+    )
     const query = buildQuery(selector, config)
     return await lineItemRepo.find(query)
   }
@@ -106,8 +102,9 @@ class LineItemService extends TransactionBaseService {
    * @return the line item
    */
   async retrieve(id: string, config = {}): Promise<LineItem | never> {
-    const manager = this.manager_
-    const lineItemRepository = manager.withRepository(this.lineItemRepository_)
+    const lineItemRepository = this.activeManager_.withRepository(
+      this.lineItemRepository_
+    )
 
     const query = buildQuery({ id }, config)
 
@@ -311,8 +308,6 @@ class LineItemService extends TransactionBaseService {
       variantPricing: ProductVariantPricing
     }
   ): Promise<LineItem> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-
     let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
     let unitPriceIncludesTax = false
     let shouldMerge = false
@@ -348,7 +343,7 @@ class LineItemService extends TransactionBaseService {
 
     rawLineItem.order_edit_id = context.order_edit_id || null
 
-    const lineItemRepo = transactionManager.withRepository(
+    const lineItemRepo = this.activeManager_.withRepository(
       this.lineItemRepository_
     )
 
@@ -477,7 +472,9 @@ class LineItemService extends TransactionBaseService {
    * @return a new line item tax line
    */
   public createTaxLine(args: DeepPartial<LineItemTaxLine>): LineItemTaxLine {
-    const itemTaxLineRepo = this.manager_.withRepository(this.itemTaxLineRepo_)
+    const itemTaxLineRepo = this.activeManager_.withRepository(
+      this.itemTaxLineRepo_
+    )
 
     return itemTaxLineRepo.create(args)
   }

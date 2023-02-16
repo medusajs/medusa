@@ -33,22 +33,18 @@ type ListAndCountSelector = Selector<ProductCollection> & {
  * Provides layer to manipulate product collections.
  */
 class ProductCollectionService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly eventBus_: EventBusService
   // eslint-disable-next-line max-len
   protected readonly productCollectionRepository_: typeof ProductCollectionRepository
   protected readonly productRepository_: typeof ProductRepository
 
   constructor({
-    manager,
     productCollectionRepository,
     productRepository,
     eventBusService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-    this.manager_ = manager
 
     this.productCollectionRepository_ = productCollectionRepository
     this.productRepository_ = productRepository
@@ -72,7 +68,7 @@ class ProductCollectionService extends TransactionBaseService {
       )
     }
 
-    const collectionRepo = this.manager_.withRepository(
+    const collectionRepo = this.activeManager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -99,7 +95,7 @@ class ProductCollectionService extends TransactionBaseService {
     collectionHandle: string,
     config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
-    const collectionRepo = this.manager_.withRepository(
+    const collectionRepo = this.activeManager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -247,7 +243,7 @@ class ProductCollectionService extends TransactionBaseService {
     selector: ListAndCountSelector = {},
     config: FindConfig<ProductCollection> = { skip: 0, take: 20 }
   ): Promise<[ProductCollection[], number]> {
-    const productCollectionRepo = this.manager_.withRepository(
+    const productCollectionRepo = this.activeManager_.withRepository(
       this.productCollectionRepository_
     )
 

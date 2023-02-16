@@ -49,11 +49,7 @@ class ShippingOptionService extends TransactionBaseService {
   protected readonly methodRepository_: typeof ShippingMethodRepository
   protected readonly featureFlagRouter_: FlagRouter
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     shippingOptionRepository,
     shippingOptionRequirementRepository,
     shippingMethodRepository,
@@ -64,7 +60,6 @@ class ShippingOptionService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.optionRepository_ = shippingOptionRepository
     this.methodRepository_ = shippingMethodRepository
     this.requirementRepository_ = shippingOptionRequirementRepository
@@ -151,8 +146,7 @@ class ShippingOptionService extends TransactionBaseService {
     selector: Selector<ShippingMethod>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
-    const manager = this.manager_
-    const optRepo = manager.withRepository(this.optionRepository_)
+    const optRepo = this.activeManager_.withRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return optRepo.find(query)
@@ -167,8 +161,7 @@ class ShippingOptionService extends TransactionBaseService {
     selector: Selector<ShippingOption>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<[ShippingOption[], number]> {
-    const manager = this.manager_
-    const optRepo = manager.withRepository(this.optionRepository_)
+    const optRepo = this.activeManager_.withRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return await optRepo.findAndCount(query)
@@ -192,8 +185,7 @@ class ShippingOptionService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const soRepo = manager.withRepository(this.optionRepository_)
+    const soRepo = this.activeManager_.withRepository(this.optionRepository_)
 
     const query = buildQuery({ id: optionId }, options)
 

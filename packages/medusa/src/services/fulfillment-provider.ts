@@ -37,9 +37,6 @@ type CalculateOptionPriceInput = {
  * Helps retrive fulfillment providers
  */
 class FulfillmentProviderService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly container_: FulfillmentProviderContainer
   // eslint-disable-next-line max-len
   protected readonly fulfillmentProviderRepository_: typeof FulfillmentProviderRepository
@@ -47,10 +44,9 @@ class FulfillmentProviderService extends TransactionBaseService {
   constructor(container: FulfillmentProviderContainer) {
     super(container)
 
-    const { manager, fulfillmentProviderRepository } = container
+    const { fulfillmentProviderRepository } = container
 
     this.container_ = container
-    this.manager_ = manager
     this.fulfillmentProviderRepository_ = fulfillmentProviderRepository
   }
 
@@ -69,7 +65,7 @@ class FulfillmentProviderService extends TransactionBaseService {
   }
 
   async list(): Promise<FulfillmentProvider[]> {
-    const fpRepo = this.manager_.withRepository(
+    const fpRepo = this.activeManager_.withRepository(
       this.fulfillmentProviderRepository_
     )
 
