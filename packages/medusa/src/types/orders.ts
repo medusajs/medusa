@@ -19,7 +19,6 @@ export function isOrder(object: any): object is Order {
 
 export type TotalsContext = {
   force_taxes?: boolean
-  returnable_items?: boolean
   includes?: { returnable_items?: boolean }
 }
 
