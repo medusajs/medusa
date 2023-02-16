@@ -26,7 +26,7 @@ import {
   CreateFulfillmentOrder,
   FulFillmentItemType,
 } from "../types/fulfillment"
-import { UpdateOrderInput } from "../types/orders"
+import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
@@ -75,11 +75,6 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
   productVariantInventoryService: ProductVariantInventoryService
-}
-
-type TotalsConfig = {
-  force_taxes?: boolean
-  include_returnable_items?: boolean
 }
 
 class OrderService extends TransactionBaseService {
@@ -423,12 +418,12 @@ class OrderService extends TransactionBaseService {
   async retrieveWithTotals(
     orderId: string,
     options: FindConfig<Order> = {},
-    totalsConfig: TotalsConfig = {}
+    context: TotalsContext = {}
   ): Promise<Order> {
     const relations = this.getTotalsRelations(options)
     const order = await this.retrieve(orderId, { ...options, relations })
 
-    return await this.decorateTotals(order, totalsConfig)
+    return await this.decorateTotals(order, context)
   }
 
   /**
@@ -1703,17 +1698,21 @@ class OrderService extends TransactionBaseService {
     return order
   }
 
+  async decorateTotals(order: Order, totalsFields?: string[]): Promise<Order>
+
+  async decorateTotals(order: Order, context?: TotalsContext): Promise<Order>
+
   /**
    * Calculate and attach the different total fields on the object
    * @param order
-   * @param totalsFieldsOrConfig
+   * @param totalsFieldsOrContext
    */
   async decorateTotals(
     order: Order,
-    totalsFieldsOrConfig?: string[] | TotalsConfig
+    totalsFieldsOrContext?: string[] | TotalsContext
   ): Promise<Order> {
-    if (Array.isArray(totalsFieldsOrConfig)) {
-      return await this.decorateTotalsLegacy(order, totalsFieldsOrConfig)
+    if (Array.isArray(totalsFieldsOrContext)) {
+      return await this.decorateTotalsLegacy(order, totalsFieldsOrContext)
     }
 
     const manager = this.transactionManager_ ?? this.manager_
@@ -1723,19 +1722,19 @@ class OrderService extends TransactionBaseService {
       order
     )
 
-    const { include_returnable_items } = totalsFieldsOrConfig ?? {}
+    const { returnable_items } = totalsFieldsOrContext ?? {}
 
-    const returnable_items: LineItem[] | undefined = include_returnable_items
+    const returnableItems: LineItem[] | undefined = returnable_items
       ? []
       : undefined
 
     const isReturnableItem = (item) =>
-      include_returnable_items &&
+      returnable_items &&
       (item.returned_quantity ?? 0) < (item.fulfilled_quantity ?? 0)
 
     const allItems: LineItem[] = [...(order.items ?? [])]
 
-    if (include_returnable_items) {
+    if (returnable_items) {
       // All items must receive their totals and if some of them are returnable
       // They will be pushed to `returnable_items` at a later point
       allItems.push(
@@ -1787,7 +1786,7 @@ class OrderService extends TransactionBaseService {
       item_tax_total += item.tax_total ?? 0
 
       if (isReturnableItem(item)) {
-        returnable_items?.push(item)
+        returnableItems?.push(item)
       }
 
       return item
@@ -1832,7 +1831,7 @@ class OrderService extends TransactionBaseService {
         Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
 
         if (isReturnableItem(item)) {
-          returnable_items?.push(item)
+          returnableItems?.push(item)
         }
 
         return item
@@ -1850,7 +1849,7 @@ class OrderService extends TransactionBaseService {
         Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
 
         if (isReturnableItem(item)) {
-          returnable_items?.push(item)
+          returnableItems?.push(item)
         }
 
         return item
@@ -1863,7 +1862,7 @@ class OrderService extends TransactionBaseService {
       order.tax_total -
       (order.gift_card_total + order.discount_total)
 
-    order.returnable_items = returnable_items
+    order.returnable_items = returnableItems
 
     return order
   }

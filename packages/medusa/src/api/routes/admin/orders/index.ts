@@ -5,7 +5,6 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, {
-  applyOrderIncludesOptions,
   transformBody,
   transformQuery,
 } from "../../../middlewares"
@@ -17,6 +16,7 @@ import {
   AdminPostOrdersOrderSwapsParams,
   AdminPostOrdersOrderSwapsReq,
 } from "./create-swap"
+import { transformIncludesOptions } from "../../../middlewares/transform-includes-options"
 
 const route = Router()
 
@@ -166,7 +166,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       isList: false,
     }),
     transformBody(AdminPostOrdersOrderSwapsReq),
-    applyOrderIncludesOptions,
+    transformIncludesOptions(defaultAdminOrdersIncludesFields),
     middlewares.wrap(require("./create-swap").default)
   )
 
@@ -296,6 +296,8 @@ export type AdminOrdersRes = {
 export type AdminOrdersListRes = PaginatedResponse & {
   orders: Order[]
 }
+
+export const defaultAdminOrdersIncludesFields = ["returnable_items"]
 
 export const defaultAdminOrdersRelations = [
   "customer",

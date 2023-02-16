@@ -101,8 +101,6 @@ export default async (req, res) => {
 
   const validated = req.validatedBody
 
-  const include_returnable_items = req.includes?.returnable_items
-
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
@@ -212,7 +210,7 @@ export default async (req, res) => {
                 const order = await orderService
                   .withTransaction(transactionManager)
                   .retrieveWithTotals(id, req.retrieveConfig, {
-                    include_returnable_items,
+                    includes: req.includes,
                   })
 
                 return {
