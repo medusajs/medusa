@@ -466,7 +466,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
 
       const reservationQtyUpdate =
-        reservation.quantity -
+        reservation.quantity +
         quantity * productVariantInventory.required_quantity
 
       if (reservationQtyUpdate === 0) {

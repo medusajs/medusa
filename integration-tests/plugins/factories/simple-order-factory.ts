@@ -5,6 +5,8 @@ import {
   Order,
   PaymentStatus,
   FulfillmentStatus,
+  SalesChannel,
+  Discount,
 } from "@medusajs/medusa"
 
 import {
@@ -24,6 +26,10 @@ import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
+import {
+  SalesChannelFactoryData,
+  simpleSalesChannelFactory,
+} from "../../api/factories"
 
 export type OrderFactoryData = {
   id?: string
@@ -33,6 +39,7 @@ export type OrderFactoryData = {
   email?: string | null
   currency_code?: string
   tax_rate?: number | null
+  sales_channel?: string | SalesChannelFactoryData
   line_items?: LineItemFactoryData[]
   discounts?: DiscountFactoryData[]
   shipping_address?: AddressFactoryData
@@ -72,15 +79,14 @@ export const simpleOrderFactory = async (
   })
   const customer = await manager.save(customerToSave)
 
-  let discounts = []
+  let discounts: Discount[] = []
   if (typeof data.discounts !== "undefined") {
     discounts = await Promise.all(
       data.discounts.map((d) => simpleDiscountFactory(connection, d, seed))
     )
   }
-
   const id = data.id || `simple-order-${Math.random() * 1000}`
-  const toSave = manager.create(Order, {
+  const toCreate = {
     id,
     discounts,
     payment_status: data.payment_status ?? PaymentStatus.AWAITING,
@@ -92,7 +98,35 @@ export const simpleOrderFactory = async (
     currency_code: currencyCode,
     tax_rate: taxRate,
     shipping_address_id: address.id,
-  })
+  }
+
+  let sc_id
+  if (typeof data.sales_channel !== "undefined") {
+    let sc
+    
+    if (typeof data.sales_channel === "string") {
+      sc = await manager.findOne(SalesChannel, {
+        where: { id: data.sales_channel },
+      })
+    }
+
+    if (!sc) {
+      sc = await simpleSalesChannelFactory(
+        connection,
+        typeof data.sales_channel === "string"
+          ? { id: data.sales_channel }
+          : data.sales_channel
+      )
+    }
+
+    sc_id = sc.id
+  }
+
+  if (sc_id) {
+    toCreate["sales_channel_id"] = sc_id
+  }
+
+  const toSave = manager.create(Order, toCreate)
 
   const order = await manager.save(toSave)
 
@@ -101,7 +135,7 @@ export const simpleOrderFactory = async (
     await simpleShippingMethodFactory(connection, { ...sm, order_id: order.id })
   }
 
-  const items = data.line_items
+  const items = data.line_items || []
   for (const item of items) {
     await simpleLineItemFactory(connection, { ...item, order_id: id })
   }
