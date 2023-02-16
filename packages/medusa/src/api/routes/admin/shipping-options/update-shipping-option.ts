@@ -14,6 +14,8 @@ import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
+import { ShippingOptionService } from "../../../../services"
+import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
 
 /**
  * @oas [post] /shipping-options/{id}
@@ -92,9 +94,14 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { option_id } = req.params
 
-  const validated = await validator(AdminPostShippingOptionsOptionReq, req.body)
+  const validated = (await validator(
+    AdminPostShippingOptionsOptionReq,
+    req.body
+  )) as UpdateShippingOptionInput
 
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService: ShippingOptionService = req.scope.resolve(
+    "shippingOptionService"
+  )
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {

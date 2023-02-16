@@ -78,7 +78,7 @@ export default async (req, res) => {
     } else {
       const cart = await cartService
         .withTransaction(m)
-        .retrieve(id, { relations: ["items"] })
+        .retrieve(id, { relations: ["items", "items.variant"] })
 
       const existing = cart.items.find((i) => i.id === line_id)
       if (!existing) {

@@ -11,11 +11,11 @@ import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import "reflect-metadata"
 import requestIp from "request-ip"
-import { Connection, getManager } from "typeorm"
+import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
-import databaseLoader from "./database"
+import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
@@ -109,12 +109,6 @@ export default async ({
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
 
-  const repoActivity = Logger.activity(`Initializing repositories${EOL}`)
-  track("REPOSITORIES_INIT_STARTED")
-  repositoriesLoader({ container })
-  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
-  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
-
   const stratActivity = Logger.activity(`Initializing strategies${EOL}`)
   track("STRATEGIES_INIT_STARTED")
   strategiesLoader({ container, configModule, isTest })
@@ -136,7 +130,13 @@ export default async ({
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
 
-  container.register({ manager: asValue(dbConnection.manager) })
+  const repoActivity = Logger.activity(`Initializing repositories${EOL}`)
+  track("REPOSITORIES_INIT_STARTED")
+  repositoriesLoader({ container })
+  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
+  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
+
+  container.register({ manager: asValue(dataSource.manager) })
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
@@ -153,7 +153,7 @@ export default async ({
 
   // Add the registered services to the request scope
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    container.register({ manager: asValue(getManager()) })
+    container.register({ manager: asValue(dataSource.manager) })
     ;(req as any).scope = container.createScope()
     next()
   })

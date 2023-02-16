@@ -140,9 +140,11 @@ export default async (req, res) => {
                     select: ["refunded_total", "total"],
                     relations: [
                       "items",
+                      "items.variant",
                       "items.tax_lines",
                       "swaps",
                       "swaps.additional_items",
+                      "swaps.additional_items.variant",
                       "swaps.additional_items.tax_lines",
                     ],
                   })

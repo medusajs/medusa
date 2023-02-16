@@ -1,116 +1,209 @@
-import { flatten, groupBy, map, merge } from "lodash"
 import {
-  Brackets,
-  EntityRepository,
   FindOperator,
+  FindOptionsWhere,
+  ILike,
   In,
-  Repository,
+  SelectQueryBuilder,
 } from "typeorm"
-import { PriceList, Product, ProductCategory, SalesChannel } from "../models"
-import {
-  ExtendedFindConfig,
-  Selector,
-  WithRequiredProperty,
-} from "../types/common"
-import { applyOrdering } from "../utils/repository"
+import { Product, ProductCategory } from "../models"
+import { ExtendedFindConfig } from "../types/common"
+import { dataSource } from "../loaders/database"
+import { isObject } from "../utils"
+import { ProductFilterOptions } from "../types/product"
 
-export type ProductSelector = Omit<Selector<Product>, "tags"> & {
-  tags: FindOperator<string[]>
-}
+export const ProductRepository = dataSource.getRepository(Product).extend({
+  async bulkAddToCollection(
+    productIds: string[],
+    collectionId: string
+  ): Promise<Product[]> {
+    await this.createQueryBuilder()
+      .update(Product)
+      .set({ collection_id: collectionId })
+      .where({ id: In(productIds) })
+      .execute()
 
-export type DefaultWithoutRelations = Omit<
-  ExtendedFindConfig<Product, ProductSelector>,
-  "relations"
->
+    return this.findByIds(productIds)
+  },
 
-export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
-  where: DefaultWithoutRelations["where"] & {
-    price_list_id?: FindOperator<PriceList>
-    sales_channel_id?: FindOperator<SalesChannel>
-    category_id?: {
-      value: string[]
-    }
-    include_category_children?: boolean
-    discount_condition_id?: string
-  }
-}
+  async bulkRemoveFromCollection(
+    productIds: string[],
+    collectionId: string
+  ): Promise<Product[]> {
+    await this.createQueryBuilder()
+      .update(Product)
+      .set({ collection_id: null })
+      .where({ id: In(productIds), collection_id: collectionId })
+      .execute()
 
-@EntityRepository(Product)
-export class ProductRepository extends Repository<Product> {
-  private mergeEntitiesWithRelations(
-    entitiesAndRelations: Array<Partial<Product>>
-  ): Product[] {
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, (entityAndRelations) =>
-      merge({}, ...entityAndRelations)
+    return this.findByIds(productIds)
+  },
+
+  async isProductInSalesChannels(
+    id: string,
+    salesChannelIds: string[]
+  ): Promise<boolean> {
+    return (
+      (await this.createQueryBuilder("product")
+        .leftJoin(
+          "product.sales_channels",
+          "sales_channels",
+          "sales_channels.id IN (:...salesChannelIds)",
+          { salesChannelIds }
+        )
+        .getCount()) > 0
     )
-  }
+  },
 
-  private async queryProducts(
-    optionsWithoutRelations: FindWithoutRelationsOptions,
-    shouldCount = false
+  async findAndCount(
+    options: ExtendedFindConfig<Product & ProductFilterOptions>,
+    q?: string
   ): Promise<[Product[], number]> {
+    const queryBuilder = await this.prepareQueryBuilder_(options, q)
+    return await queryBuilder.getManyAndCount()
+  },
+
+  async findOne(
+    options: ExtendedFindConfig<Product & ProductFilterOptions>
+  ): Promise<Product | null> {
+    const queryBuilder = await this.prepareQueryBuilder_(options)
+    return await queryBuilder.getOne()
+  },
+
+  async prepareQueryBuilder_(
+    options: ExtendedFindConfig<Product & ProductFilterOptions>,
+    q?: string
+  ): Promise<SelectQueryBuilder<Product>> {
+    const options_ = { ...options }
+
     const productAlias = "product"
+    const queryBuilder = this.createQueryBuilder(productAlias)
 
-    const tags = optionsWithoutRelations?.where?.tags
-    delete optionsWithoutRelations?.where?.tags
+    // TODO: https://github.com/typeorm/typeorm/issues/9719 waiting an answer before being able to set it to `query`
+    // Therefore use query when there is only an ordering by the product entity otherwise fallback to join.
+    // In other word, if the order depth is more than 1 then use join otherwise use query
+    /* const orderFieldsCollectionPointSeparated = buildLegacyFieldsListFrom(
+      options.order ?? {}
+    )
+    const isDepth1 = !orderFieldsCollectionPointSeparated.some(
+      (field) => field.indexOf(".") !== -1
+    )
+    options_.relationLoadStrategy = isDepth1 ? "query" : "join"*/
+    options_.relationLoadStrategy = "join"
 
-    const price_lists = optionsWithoutRelations?.where?.price_list_id
-    delete optionsWithoutRelations?.where?.price_list_id
+    options_.relations = options_.relations ?? {}
+    options_.where = options_.where as FindOptionsWhere<Product>
 
-    const sales_channels = optionsWithoutRelations?.where?.sales_channel_id
-    delete optionsWithoutRelations?.where?.sales_channel_id
+    // Add explicit ordering for variant ranking on the variants join directly
+    // The constraint if there is any will be applied by the options_
+    if (options_.relations.variants && !isObject(options_.order?.variants)) {
+      options_.order = options_.order ?? {}
+      options_.order.variants = {
+        variant_rank: "ASC",
+      }
+      /* // The query strategy, as explain at the top of the function, does not select the column from the separated query
+      // It is not possible to order with that strategy at the moment and, we are waiting for an answer from the typeorm team
+      options_.relationLoadStrategy = "join"
+      queryBuilder.leftJoinAndSelect(`${productAlias}.variants`, "variants")
 
-    const categories = optionsWithoutRelations?.where?.category_id
-    delete optionsWithoutRelations?.where?.category_id
+      options_.order = options_.order ?? {}
 
-    const include_category_children =
-      optionsWithoutRelations?.where?.include_category_children
-    delete optionsWithoutRelations?.where?.include_category_children
-
-    const discount_condition_id =
-      optionsWithoutRelations?.where?.discount_condition_id
-    delete optionsWithoutRelations?.where?.discount_condition_id
-
-    const qb = this.createQueryBuilder(productAlias)
-      .select([`${productAlias}.id`])
-      .skip(optionsWithoutRelations.skip)
-      .take(optionsWithoutRelations.take)
-
-    if (optionsWithoutRelations.where) {
-      qb.where(optionsWithoutRelations.where)
-    }
-
-    if (tags) {
-      qb.leftJoin(`${productAlias}.tags`, "tags").andWhere(
-        `tags.id IN (:...tag_ids)`,
-        {
-          tag_ids: tags.value,
+      if (!isObject(options_.order.variants)) {
+        options_.order.variants = {
+          variant_rank: "ASC",
         }
-      )
+      }*/
     }
 
-    if (price_lists) {
-      qb.leftJoin(`${productAlias}.variants`, "variants")
-        .leftJoin("variants.prices", "prices")
-        .andWhere("prices.price_list_id IN (:...price_list_ids)", {
-          price_list_ids: price_lists.value,
+    if (options_.where.price_list_id) {
+      /* options_.relations.variants = {
+        ...(isObject(options_.relations.variants)
+          ? options_.relations.variants
+          : {}),
+        prices: true,
+      }
+
+      const priceListIds = (
+        options_.where.price_list_id as FindOperator<string[]>
+      ).value
+      delete options_.where.price_list_id
+
+      options_.where.variants = {
+        ...(isObject(options_.where.variants) ? options_.where.variants : {}),
+        prices: [
+          {
+            price_list_id: In(priceListIds),
+          },
+        ],
+      }*/
+      const priceListIds = (
+        options_.where.price_list_id as FindOperator<string[]>
+      ).value
+      delete options_.where.price_list_id
+
+      queryBuilder
+        .leftJoin(`${productAlias}.variants`, "variants")
+        .leftJoin("variants.prices", "ma")
+        .andWhere("ma.price_list_id IN (:...price_list_ids)", {
+          price_list_ids: priceListIds,
         })
     }
 
-    if (sales_channels) {
-      qb.innerJoin(
+    if (options_.where.tags) {
+      const joinMethod = options_.relations.tags
+        ? queryBuilder.leftJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.leftJoin.bind(queryBuilder)
+
+      const tagIds = (options_.where.tags as FindOperator<string[]>).value
+
+      // For an unknown reason, the implementation of the SelectQueryBuilder.setFindOptions -> buildWhere
+      // Only check if it is a find operator MoreThan or LessThan. Otherwise, it has to be a relation of
+      // isManyToOne or isOneToOne in order to be valid. Otherwise, it throws `This relation isn't supported by given find operator`
+      // We might need to wait for an update or open a PR around that subject
+
+      joinMethod(`${productAlias}.tags`, "tags").andWhere(
+        `tags.id IN (:...tag_ids)`,
+        {
+          tag_ids: tagIds,
+        }
+      )
+
+      delete options_.where.tags
+    }
+
+    if (options_.where.sales_channel_id) {
+      const joinMethod = options_.relations.sales_channel_id
+        ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.innerJoin.bind(queryBuilder)
+
+      const scIds = (options_.where.sales_channel_id as FindOperator<string[]>)
+        .value
+
+      // Same comment as in the tags if block above + inner join is only doable using the query builder and not the options
+
+      joinMethod(
         `${productAlias}.sales_channels`,
         "sales_channels",
         "sales_channels.id IN (:...sales_channels_ids)",
-        { sales_channels_ids: sales_channels.value }
+        {
+          sales_channels_ids: scIds,
+        }
       )
+
+      delete options_.where.sales_channel_id
     }
 
-    if (categories) {
-      let categoryIds = categories.value
+    if (options_.where.category_id) {
+      const includeCategoryChildren =
+        options_.where.include_category_children || false
+      const joinMethod = options_.relations.category_id
+        ? queryBuilder.innerJoinAndSelect.bind(queryBuilder)
+        : queryBuilder.innerJoin.bind(queryBuilder)
 
-      if (include_category_children) {
+      let categoryIds = (options_.where.category_id as FindOperator<string[]>)
+        .value
+
+      // Same comment as in the tags if block above + inner join is only doable using the query builder and not the options
+      if (includeCategoryChildren) {
         const categoryRepository =
           this.manager.getTreeRepository(ProductCategory)
         const categories = await categoryRepository.find({
@@ -139,406 +232,75 @@ export class ProductRepository extends Repository<Product> {
         }
       }
 
-      if (categoryIds.length) {
-        qb.innerJoin(
-          `${productAlias}.categories`,
-          "categories",
-          "categories.id IN (:...categoryIds)",
-          { categoryIds }
-        )
-      }
-    }
-
-    if (discount_condition_id) {
-      qb.innerJoin(
-        "discount_condition_product",
-        "dc_product",
-        `dc_product.product_id = ${productAlias}.id AND dc_product.condition_id = :dcId`,
-        { dcId: discount_condition_id }
-      )
-    }
-
-    const joinedWithPriceLists = !!price_lists
-    applyOrdering({
-      repository: this,
-      order: optionsWithoutRelations.order ?? {},
-      qb,
-      alias: productAlias,
-      shouldJoin: (relation) => relation !== "prices" || !joinedWithPriceLists,
-    })
-
-    if (optionsWithoutRelations.withDeleted) {
-      qb.withDeleted()
-    }
-
-    let entities: Product[]
-    let count = 0
-    if (shouldCount) {
-      const result = await qb.getManyAndCount()
-      entities = result[0]
-      count = result[1]
-    } else {
-      entities = await qb.getMany()
-    }
-
-    return [entities, count]
-  }
-
-  private getGroupedRelations(relations: string[]): {
-    [toplevel: string]: string[]
-  } {
-    const groupedRelations: { [toplevel: string]: string[] } = {}
-    for (const rel of relations) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
-      }
-    }
-
-    return groupedRelations
-  }
-
-  private async queryProductsWithIds(
-    entityIds: string[],
-    groupedRelations: { [toplevel: string]: string[] },
-    withDeleted = false,
-    select: (keyof Product)[] = [],
-    order: { [column: string]: "ASC" | "DESC" } = {}
-  ): Promise<Product[]> {
-    const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
-        let querybuilder = this.createQueryBuilder("products")
-
-        if (select && select.length) {
-          querybuilder.select(select.map((f) => `products.${f}`))
-        }
-
-        if (toplevel === "variants") {
-          querybuilder = querybuilder.leftJoinAndSelect(
-            `products.${toplevel}`,
-            toplevel,
-            "variants.deleted_at IS NULL"
-          )
-
-          if (!Object.keys(order).some((key) => key.startsWith("variants"))) {
-            // variant_rank being select false, apply the filter here directly
-            querybuilder.addOrderBy(`${toplevel}.variant_rank`, "ASC")
-          }
-        } else {
-          querybuilder = querybuilder.leftJoinAndSelect(
-            `products.${toplevel}`,
-            toplevel
-          )
-        }
-
-        for (const rel of rels) {
-          const [_, rest] = rel.split(".")
-          if (!rest) {
-            continue
-          }
-          // Regex matches all '.' except the rightmost
-          querybuilder = querybuilder.leftJoinAndSelect(
-            rel.replace(/\.(?=[^.]*\.)/g, "__"),
-            rel.replace(".", "__")
-          )
-        }
-
-        if (withDeleted) {
-          querybuilder = querybuilder
-            .where("products.id IN (:...entitiesIds)", {
-              entitiesIds: entityIds,
-            })
-            .withDeleted()
-        } else {
-          querybuilder = querybuilder.where(
-            "products.deleted_at IS NULL AND products.id IN (:...entitiesIds)",
-            {
-              entitiesIds: entityIds,
-            }
-          )
-        }
-
-        return querybuilder.getMany()
-      })
-    ).then(flatten)
-
-    return entitiesIdsWithRelations
-  }
-
-  public async findWithRelationsAndCount(
-    relations: string[] = [],
-    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
-  ): Promise<[Product[], number]> {
-    let count: number
-    let entities: Product[]
-
-    if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations, {
-        withDeleted: idsOrOptionsWithoutRelations.withDeleted ?? false,
-      })
-      count = entities.length
-    } else {
-      const result = await this.queryProducts(
-        idsOrOptionsWithoutRelations,
-        true
-      )
-      entities = result[0]
-      count = result[1]
-    }
-    const entitiesIds = entities.map(({ id }) => id)
-
-    if (entitiesIds.length === 0) {
-      // no need to continue
-      return [[], count]
-    }
-
-    if (relations.length === 0) {
-      const options = { ...idsOrOptionsWithoutRelations }
-
-      // Since we are finding by the ids that have been retrieved above and those ids are already
-      // applying skip/take. Remove those options to avoid getting no results
-      delete options.skip
-      delete options.take
-
-      const toReturn = await this.findByIds(entitiesIds, options)
-      return [toReturn, toReturn.length]
-    }
-
-    const groupedRelations = this.getGroupedRelations(relations)
-    const entitiesIdsWithRelations = await this.queryProductsWithIds(
-      entitiesIds,
-      groupedRelations,
-      idsOrOptionsWithoutRelations.withDeleted,
-      idsOrOptionsWithoutRelations.select,
-      idsOrOptionsWithoutRelations.order
-    )
-
-    const entitiesAndRelations = groupBy(entitiesIdsWithRelations, "id")
-    const entitiesToReturn = map(entitiesIds, (id) =>
-      merge({}, ...entitiesAndRelations[id])
-    )
-
-    return [entitiesToReturn, count]
-  }
-
-  public async findWithRelations(
-    relations: string[] = [],
-    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions | string[] = {
-      where: {},
-    },
-    withDeleted = false
-  ): Promise<Product[]> {
-    let entities: Product[]
-    if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations, {
-        withDeleted,
-      })
-    } else {
-      const result = await this.queryProducts(
-        idsOrOptionsWithoutRelations,
-        false
-      )
-      entities = result[0]
-    }
-    const entitiesIds = entities.map(({ id }) => id)
-
-    if (entitiesIds.length === 0) {
-      // no need to continue
-      return []
-    }
-
-    if (
-      relations.length === 0 &&
-      !Array.isArray(idsOrOptionsWithoutRelations)
-    ) {
-      return await this.findByIds(entitiesIds, idsOrOptionsWithoutRelations)
-    }
-
-    const groupedRelations = this.getGroupedRelations(relations)
-    const entitiesIdsWithRelations = await this.queryProductsWithIds(
-      entitiesIds,
-      groupedRelations,
-      withDeleted
-    )
-
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
-
-    return entitiesToReturn
-  }
-
-  public async findOneWithRelations(
-    relations: string[] = [],
-    optionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
-  ): Promise<Product> {
-    // Limit 1
-    optionsWithoutRelations.take = 1
-
-    const result = await this.findWithRelations(
-      relations,
-      optionsWithoutRelations
-    )
-    return result[0]
-  }
-
-  public async bulkAddToCollection(
-    productIds: string[],
-    collectionId: string
-  ): Promise<Product[]> {
-    await this.createQueryBuilder()
-      .update(Product)
-      .set({ collection_id: collectionId })
-      .where({ id: In(productIds) })
-      .execute()
-
-    return this.findByIds(productIds)
-  }
-
-  public async bulkRemoveFromCollection(
-    productIds: string[],
-    collectionId: string
-  ): Promise<Product[]> {
-    await this.createQueryBuilder()
-      .update(Product)
-      .set({ collection_id: null })
-      .where({ id: In(productIds), collection_id: collectionId })
-      .execute()
-
-    return this.findByIds(productIds)
-  }
-
-  public async getFreeTextSearchResultsAndCount(
-    q: string,
-    options: FindWithoutRelationsOptions = { where: {} },
-    relations: string[] = []
-  ): Promise<[Product[], number]> {
-    const productAlias = "product"
-    const pricesAlias = "prices"
-    const variantsAlias = "variants"
-    const collectionAlias = "collection"
-    const tagsAlias = "tags"
-
-    const tags = options.where.tags
-    delete options.where.tags
-
-    const price_lists = options.where.price_list_id
-    delete options.where.price_list_id
-
-    const sales_channels = options.where.sales_channel_id
-    delete options.where.sales_channel_id
-
-    const discount_condition_id = options.where.discount_condition_id
-    delete options.where.discount_condition_id
-
-    const cleanedOptions = this._cleanOptions(options)
-
-    let qb = this.createQueryBuilder(`${productAlias}`)
-      .leftJoinAndSelect(`${productAlias}.variants`, variantsAlias)
-      .leftJoinAndSelect(`${productAlias}.collection`, `${collectionAlias}`)
-      .select([`${productAlias}.id`])
-      .where(cleanedOptions.where)
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where(`${productAlias}.description ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`${productAlias}.title ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`${variantsAlias}.title ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`${variantsAlias}.sku ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`${collectionAlias}.title ILIKE :q`, { q: `%${q}%` })
-        })
-      )
-      .skip(cleanedOptions.skip)
-      .take(cleanedOptions.take)
-
-    if (discount_condition_id) {
-      qb.innerJoin(
-        "discount_condition_product",
-        "dc_product",
-        `dc_product.product_id = ${productAlias}.id AND dc_product.condition_id = :dcId`,
-        { dcId: discount_condition_id }
-      )
-    }
-
-    if (tags) {
-      qb.leftJoin(`${productAlias}.tags`, tagsAlias).andWhere(
-        `${tagsAlias}.id IN (:...tag_ids)`,
+      joinMethod(
+        `${productAlias}.categories`,
+        "categories",
+        "categories.id IN (:...categoryIds)",
         {
-          tag_ids: tags.value,
+          categoryIds,
         }
       )
+
+      delete options_.where.category_id
     }
 
-    if (price_lists) {
-      const variantPricesAlias = `${variantsAlias}_prices`
-      qb.leftJoin(`${productAlias}.variants`, variantPricesAlias)
-        .leftJoin(`${variantPricesAlias}.prices`, pricesAlias)
-        .andWhere(`${pricesAlias}.price_list_id IN (:...price_list_ids)`, {
-          price_list_ids: price_lists.value,
-        })
-    }
+    delete options_.where.include_category_children
 
-    if (sales_channels) {
-      qb.innerJoin(
-        `${productAlias}.sales_channels`,
-        "sales_channels",
-        "sales_channels.id IN (:...sales_channels_ids)",
-        { sales_channels_ids: sales_channels.value }
+    if (options_.where.discount_condition_id) {
+      // inner join is only doable using the query builder and not the options
+
+      queryBuilder.innerJoin(
+        "discount_condition_product",
+        "dc_product",
+        `dc_product.product_id = product.id AND dc_product.condition_id = :dcId`,
+        { dcId: options_.where.discount_condition_id }
       )
+
+      delete options_.where.discount_condition_id
+    }
+    // TODO: move back to the service layer
+    if (q) {
+      options_.relations = options_.relations ?? {}
+      options_.relations.variants = options_.relations.variants ?? true
+      options_.relations.collection = options_.relations.collection ?? true
+
+      options_.where = [
+        {
+          ...options_.where,
+          description: ILike(`%${q}%`),
+        },
+        {
+          ...options_.where,
+          title: ILike(`%${q}%`),
+        },
+        {
+          ...options_.where,
+          variants: {
+            title: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...options_.where,
+          variants: {
+            sku: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...options_.where,
+          collection: {
+            title: ILike(`%${q}%`),
+          },
+        },
+      ]
     }
 
-    const joinedWithTags = !!tags
-    const joinedWithPriceLists = !!price_lists
-    applyOrdering({
-      repository: this,
-      order: options.order ?? {},
-      qb,
-      alias: productAlias,
-      shouldJoin: (relation) =>
-        relation !== variantsAlias &&
-        (relation !== pricesAlias || !joinedWithPriceLists) &&
-        (relation !== tagsAlias || !joinedWithTags),
-    })
-
-    if (cleanedOptions.withDeleted) {
-      qb = qb.withDeleted()
+    if (options_.withDeleted) {
+      queryBuilder.withDeleted()
     }
 
-    const [results, count] = await qb.getManyAndCount()
-    const orderedResultsSet = new Set(results.map((p) => p.id))
-
-    const products = await this.findWithRelations(
-      relations,
-      [...orderedResultsSet],
-      cleanedOptions.withDeleted
-    )
-    const productsMap = new Map(products.map((p) => [p.id, p]))
-
-    // Looping through the orderedResultsSet in order to maintain the original order and assign the data returned by findWithRelations
-    const orderedProducts: Product[] = []
-    orderedResultsSet.forEach((id) => {
-      orderedProducts.push(productsMap.get(id)!)
-    })
-
-    return [orderedProducts, count]
-  }
-
-  public async isProductInSalesChannels(
-    id: string,
-    salesChannelIds: string[]
-  ): Promise<boolean> {
-    return (
-      (await this.createQueryBuilder("product")
-        .leftJoin(
-          "product.sales_channels",
-          "sales_channels",
-          "sales_channels.id IN (:...salesChannelIds)",
-          { salesChannelIds }
-        )
-        .getCount()) > 0
-    )
-  }
+    queryBuilder.setFindOptions(options_)
+    return queryBuilder
+  },
 
   /**
    * Upserts shipping profile for products
@@ -546,7 +308,7 @@ export class ProductRepository extends Repository<Product> {
    * @param shippingProfileId ID of shipping profile to assign to products
    * @returns updated products
    */
-  public async upsertShippingProfile(
+  async upsertShippingProfile(
     productIds: string[],
     shippingProfileId: string
   ): Promise<Product[]> {
@@ -557,30 +319,7 @@ export class ProductRepository extends Repository<Product> {
       .execute()
 
     return await this.findByIds(productIds)
-  }
+  },
+})
 
-  private _cleanOptions(
-    options: FindWithoutRelationsOptions
-  ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {
-    const where = options.where ?? {}
-    if ("description" in where) {
-      delete where.description
-    }
-    if ("title" in where) {
-      delete where.title
-    }
-
-    if ("price_list_id" in where) {
-      delete where?.price_list_id
-    }
-
-    if ("discount_condition_id" in where) {
-      delete where?.discount_condition_id
-    }
-
-    return {
-      ...options,
-      where,
-    }
-  }
-}
+export default ProductRepository

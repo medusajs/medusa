@@ -117,7 +117,7 @@ class BatchJobService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const batchJobRepo = manager.getCustomRepository(this.batchJobRepository_)
+    const batchJobRepo = manager.withRepository(this.batchJobRepository_)
 
     const query = buildQuery({ id: batchJobId }, config)
     const batchJob = await batchJobRepo.findOne(query)
@@ -137,7 +137,7 @@ class BatchJobService extends TransactionBaseService {
     config: FindConfig<BatchJob> = { skip: 0, take: 20 }
   ): Promise<[BatchJob[], number]> {
     const manager = this.manager_
-    const batchJobRepo = manager.getCustomRepository(this.batchJobRepository_)
+    const batchJobRepo = manager.withRepository(this.batchJobRepository_)
 
     const query = buildQuery(selector, config)
     return await batchJobRepo.findAndCount(query)
@@ -145,9 +145,7 @@ class BatchJobService extends TransactionBaseService {
 
   async create(data: BatchJobCreateProps): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
-        this.batchJobRepository_
-      )
+      const batchJobRepo = manager.withRepository(this.batchJobRepository_)
 
       const batchJob = batchJobRepo.create(data)
       const result = await batchJobRepo.save(batchJob)
@@ -167,9 +165,7 @@ class BatchJobService extends TransactionBaseService {
     data: BatchJobUpdateProps
   ): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
-        this.batchJobRepository_
-      )
+      const batchJobRepo = manager.withRepository(this.batchJobRepository_)
 
       let batchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
@@ -225,7 +221,7 @@ class BatchJobService extends TransactionBaseService {
 
     batchJob[entityColumnName] = new Date()
 
-    const batchJobRepo = transactionManager.getCustomRepository(
+    const batchJobRepo = transactionManager.withRepository(
       this.batchJobRepository_
     )
     batchJob = await batchJobRepo.save(batchJob)
