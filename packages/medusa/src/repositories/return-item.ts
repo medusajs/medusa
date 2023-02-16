@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { ReturnItem } from "../models/return-item"
+import { ReturnItem } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(ReturnItem)
-export class ReturnItemRepository extends Repository<ReturnItem> {}
+export const ReturnItemRepository = dataSource.getRepository(ReturnItem)
+export default ReturnItemRepository

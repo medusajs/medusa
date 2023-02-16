@@ -1,120 +1,127 @@
 import {
-  EntityRepository,
-  TreeRepository,
   Brackets,
+  FindOptionsWhere,
   ILike,
-  getConnection,
   DeleteResult,
   In,
 } from "typeorm"
 import { ProductCategory } from "../models/product-category"
-import { ExtendedFindConfig, Selector, QuerySelector } from "../types/common"
+import { ExtendedFindConfig, QuerySelector } from "../types/common"
+import { dataSource } from "../loaders/database"
+import { buildLegacyFieldsListFrom } from "../utils"
 
-@EntityRepository(ProductCategory)
-export class ProductCategoryRepository extends TreeRepository<ProductCategory> {
-  public async getFreeTextSearchResultsAndCount(
-    options: ExtendedFindConfig<ProductCategory, Selector<ProductCategory>> = {
-      where: {},
-    },
-    q: string | undefined,
-    treeScope: QuerySelector<ProductCategory> = {}
-  ): Promise<[ProductCategory[], number]> {
-    const entityName = "product_category"
-    const options_ = { ...options }
-    const relations = options_.relations || []
+export const ProductCategoryRepository = dataSource
+  .getTreeRepository(ProductCategory)
+  .extend({
+    async getFreeTextSearchResultsAndCount(
+      options: ExtendedFindConfig<ProductCategory> = {
+        where: {},
+      },
+      q: string | undefined,
+      treeScope: QuerySelector<ProductCategory> = {}
+    ): Promise<[ProductCategory[], number]> {
+      const entityName = "product_category"
+      const options_ = { ...options }
+      options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
-    const selectStatements = (relationName: string): string[] => {
-      const modelColumns = this.manager.connection
-        .getMetadata(ProductCategory)
-        .ownColumns.map((column) => column.propertyName)
+      const legacySelect = buildLegacyFieldsListFrom(options_.select)
+      const legacyRelations = buildLegacyFieldsListFrom(options_.relations)
 
-      return (options_.select || modelColumns).map((column) => {
-        return `${relationName}.${column}`
-      })
-    }
-
-    const queryBuilder = this.createQueryBuilder(entityName)
-      .select(selectStatements(entityName))
-      .skip(options_.skip)
-      .take(options_.take)
-
-    if (q) {
-      delete options_.where?.name
-      delete options_.where?.handle
-
-      queryBuilder.where(
-        new Brackets((bracket) => {
-          bracket
-            .where({ name: ILike(`%${q}%`) })
-            .orWhere({ handle: ILike(`%${q}%`) })
-        })
-      )
-    }
-
-    queryBuilder.andWhere(options_.where)
-
-    const includedTreeRelations: string[] = relations.filter((rel) =>
-      ProductCategory.treeRelations.includes(rel)
-    )
-
-    includedTreeRelations.forEach((treeRelation) => {
-      const treeWhere = Object.entries(treeScope)
-        .map((entry) => `${treeRelation}.${entry[0]} = :${entry[0]}`)
-        .join(" AND ")
-
-      queryBuilder
-        .leftJoin(
-          `${entityName}.${treeRelation}`,
-          treeRelation,
-          treeWhere,
-          treeScope
+      const selectStatements = (relationName: string): string[] => {
+        const modelColumns = this.metadata.ownColumns.map(
+          (column) => column.propertyName
         )
-        .addSelect(selectStatements(treeRelation))
-    })
+        const selectColumns = legacySelect.length ? legacySelect : modelColumns
 
-    const nonTreeRelations: string[] = relations.filter(
-      (rel) => !ProductCategory.treeRelations.includes(rel)
-    )
+        return selectColumns.map((column) => {
+          return `${relationName}.${column}`
+        })
+      }
 
-    nonTreeRelations.forEach((relation) => {
-      queryBuilder.leftJoinAndSelect(`${entityName}.${relation}`, relation)
-    })
+      const queryBuilder = this.createQueryBuilder(entityName)
+        .select(selectStatements(entityName))
+        .skip(options_.skip)
+        .take(options_.take)
 
-    if (options_.withDeleted) {
-      queryBuilder.withDeleted()
-    }
+      if (q) {
+        delete options_.where?.name
+        delete options_.where?.handle
 
-    return await queryBuilder.getManyAndCount()
-  }
+        queryBuilder.where(
+          new Brackets((bracket) => {
+            bracket
+              .where({ name: ILike(`%${q}%`) })
+              .orWhere({ handle: ILike(`%${q}%`) })
+          })
+        )
+      }
 
-  async addProducts(
-    productCategoryId: string,
-    productIds: string[]
-  ): Promise<void> {
-    await this.createQueryBuilder()
-      .insert()
-      .into(ProductCategory.productCategoryProductJoinTable)
-      .values(
-        productIds.map((id) => ({
-          product_category_id: productCategoryId,
-          product_id: id,
-        }))
+      queryBuilder.andWhere(options_.where)
+
+      const includedTreeRelations: string[] = legacyRelations.filter((rel) =>
+        ProductCategory.treeRelations.includes(rel)
       )
-      .orIgnore()
-      .execute()
-  }
 
-  async removeProducts(
-    productCategoryId: string,
-    productIds: string[]
-  ): Promise<DeleteResult> {
-    return await this.createQueryBuilder()
-      .delete()
-      .from(ProductCategory.productCategoryProductJoinTable)
-      .where({
-        product_category_id: productCategoryId,
-        product_id: In(productIds),
+      includedTreeRelations.forEach((treeRelation) => {
+        const treeWhere = Object.entries(treeScope)
+          .map((entry) => `${treeRelation}.${entry[0]} = :${entry[0]}`)
+          .join(" AND ")
+
+        queryBuilder
+          .leftJoin(
+            `${entityName}.${treeRelation}`,
+            treeRelation,
+            treeWhere,
+            treeScope
+          )
+          .addSelect(selectStatements(treeRelation))
       })
-      .execute()
-  }
-}
+
+      const nonTreeRelations: string[] = legacyRelations.filter(
+        (rel) => !ProductCategory.treeRelations.includes(rel)
+      )
+
+      nonTreeRelations.forEach((relation) => {
+        queryBuilder.leftJoinAndSelect(`${entityName}.${relation}`, relation)
+      })
+
+      if (options_.withDeleted) {
+        queryBuilder.withDeleted()
+      }
+
+      return await queryBuilder.getManyAndCount()
+    },
+
+    async addProducts(
+      productCategoryId: string,
+      productIds: string[]
+    ): Promise<void> {
+      await this.createQueryBuilder()
+        .insert()
+        .into(ProductCategory.productCategoryProductJoinTable)
+        .values(
+          productIds.map((id) => ({
+            product_category_id: productCategoryId,
+            product_id: id,
+          }))
+        )
+        .orIgnore()
+        .execute()
+    },
+
+    async removeProducts(
+      productCategoryId: string,
+      productIds: string[]
+    ): Promise<DeleteResult> {
+      return await this.createQueryBuilder()
+        .delete()
+        .from(ProductCategory.productCategoryProductJoinTable)
+        .where({
+          product_category_id: productCategoryId,
+          product_id: In(productIds),
+        })
+        .execute()
+    },
+  })
+
+export default ProductCategoryRepository

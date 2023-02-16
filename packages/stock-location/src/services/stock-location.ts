@@ -240,7 +240,7 @@ export default class StockLocationService extends TransactionBaseService {
       const locationAddressRepo = manager.getRepository(StockLocationAddress)
 
       const existingAddress = await locationAddressRepo.findOne({
-        id: addressId,
+        where: { id: addressId }
       })
       if (!existingAddress) {
         throw new MedusaError(

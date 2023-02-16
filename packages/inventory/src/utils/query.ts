@@ -1,6 +1,8 @@
-import { EntityManager, ILike } from "typeorm"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import {
+  buildLegacyFieldsListFrom,
   buildQuery,
+  ExtendedFindConfig,
   FilterableInventoryItemProps,
   FindConfig,
 } from "@medusajs/medusa"
@@ -12,14 +14,19 @@ export function getListQuery(
   config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
 ) {
   const inventoryItemRepository = manager.getRepository(InventoryItem)
-  const query = buildQuery(selector, config)
+
+  const { q, ...selectorRest } = selector
+  const query = buildQuery(selectorRest, config) as ExtendedFindConfig<InventoryItem> & {
+    where: FindOptionsWhere<InventoryItem & {
+      location_id?: string
+    }>
+  }
+
 
   const queryBuilder = inventoryItemRepository.createQueryBuilder("inv_item")
 
-  if (query.where.q) {
-    query.where.sku = ILike(`%${query.where.q as string}%`)
-
-    delete query.where.q
+  if (q) {
+    query.where.sku = ILike(`%${q}%`)
   }
 
   if ("location_id" in query.where) {
@@ -50,7 +57,8 @@ export function getListQuery(
   }
 
   if (query.select) {
-    queryBuilder.select(query.select.map((s) => "inv_item." + s))
+    const legacySelect = buildLegacyFieldsListFrom(query.select)
+    queryBuilder.select(legacySelect.map((s) => "inv_item." + s))
   }
 
   if (query.order) {

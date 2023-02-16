@@ -33,7 +33,6 @@
     "jest": "^25.5.4",
     "medusa-core-utils": "^1.1.39",
     "medusa-test-utils": "^1.1.37",
-    "typeorm": "^0.2.29",
     "typescript": "^4.4.4"
   },
   "peerDependencies": {
