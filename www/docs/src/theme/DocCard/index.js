@@ -9,7 +9,6 @@ import clsx from 'clsx';
 import isInternalUrl from '@docusaurus/isInternalUrl';
 import styles from './styles.module.css';
 import {translate} from '@docusaurus/Translate';
-import ThemedImage from '@theme/ThemedImage';
 import BorderedIcon from '../../components/BorderedIcon';
 
 function CardContainer({href, children, className}) {
@@ -79,16 +78,18 @@ function CardLink({item}) {
       <BorderedIcon icon={{
         light: item.customProps.themedImage.light,
         dark: item.customProps.themedImage.dark
-      }} wrapperClassName='card-icon-wrapper' />
+      }} wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />
     )
   } else if (item.customProps && item.customProps.image) {
     icon = (
       <BorderedIcon icon={{
         light: item.customProps.image
-      }} wrapperClassName='card-icon-wrapper' />
+      }} wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />
     );
   } else if (item.customProps && item.customProps.icon) {
-    icon = item.customProps.icon;
+    icon = <BorderedIcon 
+      IconComponent={item.customProps.icon} 
+      wrapperClassName='card-icon-wrapper' iconClassName={'card-icon'} />;
   } else {
     icon = (
       <div className={clsx('card-icon-wrapper', 'no-zoom-img')}>

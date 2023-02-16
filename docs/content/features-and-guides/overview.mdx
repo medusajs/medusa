@@ -3,8 +3,9 @@ description: 'Learn about the ecommerce features that Medusa provides including 
 hide_table_of_contents: true
 ---
 
-import DocCard from '@theme/DocCard';
-import DocCardList from '@theme/DocCardList';
+import DocCardList from '@theme/DocCardList'
+import LargeCardList from '@site/src/components/LargeCardList'
+import LargeCard from '@site/src/components/LargeCard'
 
 # Features and Guides
 
@@ -16,134 +17,188 @@ This part of the documentation covers Medusa’s ecommerce features and how they
 
 This section gives an overview of the features available in Medusa. You can learn more about other available features by following the guides in this documentation.
 
-### Orders
+### Optimized Shopping and Fulfillment Experience
 
-- View order details and handle its payment and fulfillment.
-- Edit an order to change its items.
-- Handle and automate order returns and exchanges.
-- Create draft orders without direct involvement from the customer.
+Medusa provides the necessary features to build a customizable shopping experience for your customers. Medusa also offers features optimized for business operations to manage their orders effeciently.
 
-<DocCard
-  item={{
-    type: 'link',
-    href: '#',
-    label: 'Orders',
-    customProps: {
-      image: '/img/quickstart-icon.svg',
-      description: 'Learn more about order management and check out available tutorials.'
-    }
-  }}
-/>
+<LargeCardList>
+  <LargeCard
+    icon={{
+      light: '/img/orders-icon.png'
+    }}
+    title='Orders'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
 
-### Products
+  - Process orders' payments and fulfillments with custom logic or third-party providers.
+  - Create one or multiple fulfillments for items in the order.
+  - Edit an order to add, update, or delete its items.
+  - Handle and automate order returns, exchanges, and refunds.
+  - Create draft orders without direct involvement from the customer.
 
-- View and manage products and their details including descriptions, images, and more.
-- Sort products into collections, types, tags, and categories.
-- Manage a product’s advanced configurations such as inventory, pricing, sales channels, and more.
-- Import and export products to and from Medusa.
 
-<DocCard
-  item={{
-    type: 'link',
-    href: '#',
-    label: 'Products',
-    customProps: {
-      image: '/img/quickstart-icon.svg',
-      description: 'Learn more about product management and check out available tutorials.'
-    }
-  }}
-/>
+  </LargeCard>
+  <LargeCard
+    icon={{
+      light: '/img/customers-icon.png'
+    }}
+    title='Cart and Checkout'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
 
-### Customers
+  - Accept payments with payment providers including Stripe and PayPal.
+  - Calculate taxes of a cart through custom logic or third-party tax providers.
+  - Allow customers to apply discount codes and gift cards during checkout.
+  - Fully customize the frontend experience of the checkout process.
 
-- View and manage customers registered in the store.
-- Assign customers different groups for segmentation.
-- Utilize customer groups for marketing purposes and different use cases such as setting special prices for a specific customer group.
 
-<DocCard
-  item={{
-    type: 'link',
-    href: '#',
-    label: 'Customers',
-    customProps: {
-      image: '/img/quickstart-icon.svg',
-      description: 'Learn more about customer management and check out available tutorials.'
-    }
-  }}
-/>
+  </LargeCard>
+  <LargeCard
+    icon={{
+      light: '/img/customers-icon.png'
+    }}
+    title='Customers'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
 
-### Multi-Region and Currency
+  - Allow orders from both registered and unregisterd customers.
+  - Allow customers to create return or exchange requests from the storefront for better customer experience.
+  - Assign customers different groups for segmentation and specify different pricing for customer groups.
 
-- Create an unlimited number of regions, each associated with a currency and at least one country.
-- Manage each region’s settings including different payment providers, fulfillment providers, tax providers and rates, and more.
-- Set prices specific to a currency or a region.
 
-<DocCard
-  item={{
-    type: 'link',
-    href: '#',
-    label: 'Multi-region and Currency',
-    customProps: {
-      image: '/img/quickstart-icon.svg',
-      description: 'Learn more about region and currency management and check out available tutorials.'
-    }
-  }}
-/>
+  </LargeCard>
+</LargeCardList>
 
-### Price Lists and Promotions
+### Advanced Product Configurations and Management
 
-- Create discounts and deals with advanced conditions and rules, including minimum cart amount or specific product collection.
-- Override product prices for specific conditions, such as specific customer groups.
-- Import prices into Medusa.
+Medusa's products configuration allows managing products of different types including products with options and gift cards. Medusa also includes advanced features related to pricing and discounts.
 
-<DocCard
-  item={{
-    type: 'link',
-    href: '#',
-    label: 'Price Lists and Promotions',
-    customProps: {
-      image: '/img/quickstart-icon.svg',
-      description: 'Learn more about price lists and promotions and check out available tutorials.'
-    }
-  }}
-/>
+<LargeCardList>
+  <LargeCard
+    icon={{
+      light: '/img/products-icon.png'
+    }}
+    title='Products'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
 
-### Taxes
+  - Create products with unlimited variants and options.
+  - Organize products into nested categories of different heirarchies.
+  - Associate products with collections, types, and tags.
+  - Manage a product’s inventory, pricing, sales channels, and more.
+  - Import and export products to and from Medusa using CSV files.
 
-- Use tax providers specific for each region.
-- Apply different tax rates for each region.
-- Override tax rates for specific products.
-- Enable tax-inclusive pricing for automatic tax-rate calculations.
 
-<DocCard
-  item={{
-    type: 'link',
-    href: '#',
-    label: 'Taxes',
-    customProps: {
-      image: '/img/quickstart-icon.svg',
-      description: 'Learn more about taxes and check out available tutorials.'
-    }
-  }}
-/>
+  </LargeCard>
+  <LargeCard
+    icon={{
+      light: '/img/customers-icon.png'
+    }}
+    title='Gift Cards'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
 
-### Sales Channels
+  - Offer your customers a gift card with unlimited denominations.
+  - Set denomination prices per currency to cater for different regions.
+  - Send custom gift cards to specific customers for marketing purposes.
+  - Manage a custom gift card's balance amount.
 
-- Create an unlimited amount of sales channels.
-- Specify the availability of products for each sales channel.
-- Associate API keys with sales channels for easier development.
 
-<DocCard
-  item={{
-    type: 'link',
-    href: '#',
-    label: 'Sales Channels',
-    customProps: {
-      image: '/img/quickstart-icon.svg',
-      description: 'Learn more about sales channels and check out available tutorials.'
-    }
-  }}
-/>
+  </LargeCard>
+  <LargeCard
+    icon={{
+      light: '/img/customers-icon.png'
+    }}
+    title='Price Lists and Promotions'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
+
+  - Create discounts and deals with advanced conditions and rules such as minimum cart quantity or specific products.
+  - Offer free shipping, fixed discount, or percentage discount.
+  - Override product prices using price lists and set special conditions such as specific customer groups.
+  - Import prices into a price list from a CSV file.
+
+
+  </LargeCard>
+</LargeCardList>
+
+### Ready Configurations for International Selling
+
+Medusa's multi-region setup and sales channels allow businesses to sell internationally and sell across platforms. Medusa allows configuring regions differently to cater for different markets across the globe.
+
+<LargeCardList>
+  <LargeCard
+    icon={{
+      light: '/img/customers-icon.png'
+    }}
+    title='Multi-Region'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
+
+  - Create an unlimited number of regions, each associated with a currency and at least one country.
+  - Manage each region’s settings including payment providers, shipping options, and more.
+  - Set prices for products and shipping options specific to a currency or a region.
+
+
+  </LargeCard>
+  <LargeCard
+    icon={{
+      light: '/img/customers-icon.png'
+    }}
+    title='Taxes'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
+
+  - Specify different tax providers for different regions.
+  - Create tax providers using custom logic or third-party integrations.
+  - Customize tax configurations using tax rates and tax overrides.
+  - Enable tax-inclusive pricing for automatic tax-rate calculations during checkout.
+
+
+  </LargeCard>
+  <LargeCard
+    icon={{
+      light: '/img/customers-icon.png'
+    }}
+    title='Sales Channels'
+    action={{
+      label: 'Learn more',
+      href: '#'
+    }}
+  >
+
+  - Create sales channels for your different platforms such as web, mobile, or marketplaces.
+  - Specify the availability of products for each sales channel.
+  - Associate orders with each sales channel for better handling and logistics.
+  - Associate API keys with sales channels for easier development.
+
+
+  </LargeCard>
+</LargeCardList>
 
 ## Get Additional Help
 

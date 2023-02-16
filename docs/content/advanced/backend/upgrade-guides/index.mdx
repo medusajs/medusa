@@ -3,9 +3,7 @@ hide_table_of_contents: true
 description: 'Upgrade guides on how to update the Medusa server along with other Medusa components to the latest version.'
 ---
 
-import DocCardList from '@theme/DocCardList';
-import {useCurrentSidebarCategory} from '@docusaurus/theme-common';
-import filterListItems, { flattenList } from '@site/src/utils/filterListItems';
+import DocCard from '@theme/DocCard';
 
 # Upgrade Guides
 
@@ -13,12 +11,39 @@ Find in this page the upgrade guides that require necessary steps when upgrading
 
 ## Server
 
-<DocCardList items={filterListItems(flattenList(useCurrentSidebarCategory().items), /\/medusa\-core\//)}/>
+<DocCard
+  item={{
+    type: 'link',
+    href: '/advanced/backend/upgrade-guides/medusa-core/1-7-6',
+    label: 'v1.7.6',
+    customProps: {
+      description: 'Actions Required for v.1.7.6'
+    }
+  }}
+/>
 
 ## Medusa React
 
-<DocCardList items={filterListItems(flattenList(useCurrentSidebarCategory().items), /\/medusa-react\//)}/>
+<DocCard
+  item={{
+    type: 'link',
+    href: '/advanced/backend/upgrade-guides/medusa-react/4-0-2',
+    label: 'v4.0.2',
+    customProps: {
+      description: 'Actions Required for v4.0.2'
+    }
+  }}
+/>
 
 ## Admin
 
-<DocCardList items={filterListItems(flattenList(useCurrentSidebarCategory().items), /\/admin\//)}/>
+<DocCard
+  item={{
+    type: 'link',
+    href: '/advanced/backend/upgrade-guides/admin/admin-vite',
+    label: 'Vite Update',
+    customProps: {
+      description: 'Actions Required for Vite Update'
+    }
+  }}
+/>
