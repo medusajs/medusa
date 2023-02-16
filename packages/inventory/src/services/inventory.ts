@@ -58,15 +58,15 @@ export default class InventoryService
     this.eventBusService_ = eventBusService
     this.inventoryItemService_ = new InventoryItemService({
       eventBusService,
-      manager,
+      this.activeManager_,
     })
     this.inventoryLevelService_ = new InventoryLevelService({
       eventBusService,
-      manager,
+      this.activeManager_,
     })
     this.reservationItemService_ = new ReservationItemService({
       eventBusService,
-      manager,
+      this.activeManager_,
       inventoryLevelService: this.inventoryLevelService_,
     })
   }
