@@ -11,11 +11,11 @@
 }
 
 .cardTitle {
-  font-size: var(--medusa-body-regular-size);
-  line-height: var(--medusa-body-regular-line-height);
-  font-weight: 500;
+  font-size: var(--medusa-label-regular-plus-size);
+  line-height: var(--medusa-label-regular-plus-line-height);
+  font-weight: var(--medusa-label-regular-plus-font-weight);
   color: var(--ifm-color-primary);
-  margin-bottom: 8px;
+  margin-bottom: calc(var(--ifm-base-margin-vertical) / 4);
   display: block;
 }
 
@@ -28,22 +28,4 @@
 
 .contentContainer {
   width: calc(100% - 20px);
-}
-
-.image {
-  background-color: var(--medusa-bg-component);
-  height: 24px;
-  width: 24px;
-  padding: 2px;
-  border-radius: var(--ifm-global-radius);
-}
-
-.imageContainer {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;
-  border: 1px solid var(--medusa-border-strong);
-  border-radius: var(--ifm-global-radius);
-  margin-right: 16px;
 }

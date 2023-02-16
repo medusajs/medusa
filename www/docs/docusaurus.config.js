@@ -67,7 +67,7 @@ const config = {
         },
         {
           type: "docSidebar",
-          sidebarId: "docsSidebar",
+          sidebarId: "homepage",
           label: "Docs",
           position: "right"
         },
@@ -182,7 +182,7 @@ const config = {
         ],
         // Theme Options for modifying how redoc renders them
         theme: {
-          primaryColorDark: '#242526',
+          primaryColorDark: '#161618',
           options: {
             disableSearch: true,
             nativeScrollbars: true,

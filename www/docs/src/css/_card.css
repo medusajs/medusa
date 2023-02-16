@@ -1,7 +1,7 @@
 .card {
   background-color: var(--ifm-card-bg);
   border: 1px solid var(--ifm-card-bg-hover) !important;
-  border-radius: 8px;
+  border-radius: var(--ifm-global-radius);
 }
 
 .card-icon-wrapper {
@@ -14,17 +14,12 @@
 
 .cards-grid {
   display: grid;
-  column-gap: 16px;
+  column-gap: var(--ifm-base-spacing);
   grid-auto-rows: 1fr;
 }
 
 .cards-grid.grid-6 {
   grid-template-columns: repeat(2, 1fr);
-}
-
-.box-link,
-.box-link:hover {
-  color: #0a3149;
 }
 
 .card-highlighted {
@@ -63,6 +58,11 @@ html[data-theme="dark"] .card-highlighted:hover::before {
   background-color: var(--ifm-card-bg-hover);
 }
 
+.card-highlighted .card-icon {
+  height: 36px !important;
+  width: 36px !important;
+}
+
 .card + p {
   margin-top: var(--ifm-base-margin-vertical);
 }
@@ -76,6 +76,12 @@ html[data-theme="dark"] .card-highlighted:hover::before {
 @media screen and (max-width: 991px) and (min-width: 768px) {
   .cards-grid.grid-4 {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .card-highlighted [class*=cardDescription] {
+    width: 50%;
   }
 }
 

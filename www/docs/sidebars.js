@@ -1,683 +1,321 @@
 /**
- * Creating a sidebar enables you to:
- - create an ordered group of docs
- - render a sidebar for each doc of that group
- - provide next/previous navigation
-
- The sidebars can be generated from the filesystem, or explicitly defined here.
-
- Create as many sidebars as you want.
+ * Custom sidebar definitions:
+ * - To declare a sidebar element as part of the homepage sidebar, add className: 'homepage-sidebar-item'
+ * - To add an icon:
+ *   - add the icon in www/docs/src/theme/Icon/<IconName>/index.js as a React SVG element if it doesn't exist, where `<IconName>` is the camel case name of the icon
+ *   - add the mapping to the icon in www/docs/src/theme/Icon/index.js
+ *   - add in customProps sidebar_icon: 'icon-name'
+ * - To add a divider line, add in customProps sidebar_is_divider_line: true and set value/label to any value
+ * - To add a group divider add in customProps sidebar_is_group_divider: true and set the label/value to the title that should appear in the divider.
+ * - To add a back item, add in customProps:
+ *   - sidebar_is_back_link: true
+ *   - sidebar_icon: `back-arrow`
+ * - To add a sidebar title, add in customProps sidebar_is_title: true
+ * - To add a group headline, add in customProps sidebar_is_group_headline: true
  */
 
+/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 module.exports = {
-  docsSidebar: [
+  homepage: [
     {
-      type: "category",
-      label: "Getting Started",
-      items: [
-        {
-          type: "doc",
-          id: "homepage",
-          label: "Overview",
-        },
-        {
-          type: "doc",
-          id: "introduction",
-          label: "Introduction",
-        },
-        {
-          type: "category",
-          label: "Install Medusa Server",
-          collapsed: false,
-          items: [
-            {
-              type: "doc",
-              id: "usage/create-medusa-app",
-              label: 'create-medusa-app'
-            },
-            {
-              type: "doc",
-              id: "quickstart/quick-start",
-              label: "Server Quickstart",
-            },
-            {
-              type:"doc",
-              id: "quickstart/quick-start-docker",
-              label: "Server Quickstart: Docker",
-            },
-          ]
-        },
-        {
-          type: "doc",
-          id: "usage",
-        },
-      ]
+      type: 'doc',
+      id: 'homepage',
+      label: 'Overview',
+      customProps: {
+        sidebar_icon: 'book-open'
+      },
+      className: 'homepage-sidebar-item'
     },
     {
-      type: "category",
-      label: "Setup & Deployment",
+      type: 'category',
+      className: 'homepage-sidebar-item',
+      label: 'Get Started',
+      customProps: {
+        sidebar_icon: 'rocket-launch'
+      },
+      collapsed: false,
+      collapsible: false,
       items: [
         {
-          type: "doc",
-          id: "tutorial/set-up-your-development-environment",
-          label: "Set Up Dev Environment"
+          type: 'doc',
+          id: 'usage/create-medusa-app',
+          label: 'create-medusa-app',
         },
         {
-          type: "doc",
-          id: "usage/configurations",
-          label: "Configure Server"
-        },
+          type: 'doc',
+          id: 'quickstart/quick-start',
+          label: 'Server Quickstart'
+        }
+      ],
+    },
+    {
+      type: 'html',
+      value: ' ',
+      customProps: {
+        sidebar_is_divider_line: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'ref',
+      id: 'features-and-guides/overview',
+      label: 'Features and Guides',
+      customProps: {
+        sidebar_icon: 'sparkles'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'ref',
+      id: 'core-concepts/overview',
+      label: 'Core Concepts',
+      customProps: {
+        sidebar_icon: 'server-stack'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'doc',
+      id: 'admin/quickstart',
+      label: 'Medusa Admin',
+      customProps: {
+        sidebar_icon: 'computer-desktop-solid'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'ref',
+      id: 'plugins/overview',
+      label: 'Plugins',
+      customProps: {
+        sidebar_icon: 'bolt'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'html',
+      value: ' ',
+      customProps: {
+        sidebar_is_divider_line: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'html',
+      value: 'Frontend Storefronts',
+      customProps: {
+        sidebar_is_group_divider: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'doc',
+      id: 'starters/nextjs-medusa-starter',
+      label: 'Next.js Storefront',
+      customProps: {
+        sidebar_icon: 'nextjs'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'doc',
+      id: 'starters/gatsby-medusa-starter',
+      label: 'Gatsby Storefront',
+      customProps: {
+        sidebar_icon: 'gatsby'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'html',
+      value: ' ',
+      customProps: {
+        sidebar_is_divider_line: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'html',
+      value: 'SDKs',
+      customProps: {
+        sidebar_is_group_divider: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'ref',
+      id: 'js-client/overview',
+      label: 'JavaScript Client',
+      customProps: {
+        sidebar_icon: 'javascript'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'doc',
+      id: 'medusa-react/overview',
+      label: 'Medusa React',
+      customProps: {
+        sidebar_icon: 'react'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'html',
+      value: ' ',
+      customProps: {
+        sidebar_is_divider_line: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'html',
+      value: 'CLI Tools',
+      customProps: {
+        sidebar_is_group_divider: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'doc',
+      id: 'cli/reference',
+      label: 'Medusa CLI',
+      customProps: {
+        sidebar_icon: 'command-line-solid'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'doc',
+      id: 'usage/local-development',
+      label: 'Medusa Dev CLI',
+      customProps: {
+        sidebar_icon: 'tools-solid'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'html',
+      value: ' ',
+      customProps: {
+        sidebar_is_divider_line: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'html',
+      value: 'Additional Resources',
+      customProps: {
+        sidebar_is_group_divider: true
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'category',
+      label: 'Deploy',
+      customProps: {
+        sidebar_icon: 'cloud-arrow-up'
+      },
+      items: [
         {
           type: "category",
-          label: "Storefronts",
-          items: [
-            {
-              type: "doc",
-              id: "starters/gatsby-medusa-starter",
-              label: "Gatsby Storefront Quickstart",
-            },
-            {
-              type: "doc",
-              id: "starters/nextjs-medusa-starter",
-              label: "Next.js Storefront Quickstart",
-            },
-          ],
-        },
-        {
-          type: "doc",
-          id: "admin/quickstart",
-        },
-        {
-          type: "category",
-          label: "Deployment",
-          items: [
-            {
-              type: "category",
-              label: "Server",
-              link: {
-                type: "doc",
-                id: "deployments/server/index"
-              },
-              items: [
-                {
-                  type: "doc",
-                  id: "deployments/server/deploying-on-heroku",
-                  label: "Deploy on Heroku",
-                  customProps: {
-                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739927/Medusa%20Docs/Other/xNvxSkf_l230wq.png'
-                  }
-                },
-                {
-                  type: "doc",
-                  id: "deployments/server/deploying-on-digital-ocean",
-                  label: "Deploy on DigitalOcean",
-                  customProps: {
-                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739945/Medusa%20Docs/Other/aahqJp4_lbtfdz.png'
-                  }
-                },
-                {
-                  type: "doc",
-                  id: "deployments/server/deploying-on-qovery",
-                  label: "Deploy on Qovery",
-                  customProps: {
-                    image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png'
-                  }
-                },
-                {
-                  type: "doc",
-                  id: "deployments/server/deploying-on-railway",
-                  label: "Deploy on Railway",
-                  customProps: {
-                    themedImage: {
-                      light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-light_fzuyeo.png',
-                      dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-dark_kkzuwh.png'
-                    }
-                  }
-                }
-              ]
-            },
-            {
-              type: "category",
-              label: "Admin",
-              link: {
-                type: "doc",
-                id: "deployments/admin/index"
-              },
-              items: [
-                {
-                  type: "doc",
-                  id: "deployments/admin/deploying-on-netlify",
-                  label: "Deploy on Netlify",
-                  customProps: {
-                    image: 'https://i.imgur.com/gCbsCvX.png'
-                  }
-                },
-              ]
-            },
-            {
-              type: "category",
-              label: "Storefront",
-              link: {
-                type: "doc",
-                id: "deployments/storefront/index"
-              },
-              items: [
-                {
-                  type: "doc",
-                  id: "deployments/storefront/deploying-gatsby-on-netlify",
-                  label: "Deploy Gatsby on Netlify",
-                  customProps: {
-                    image: 'https://i.imgur.com/gCbsCvX.png'
-                  }
-                },
-              ]
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: 'Upgrade Guides',
-          collapsed: true,
+          label: "Server",
           link: {
-            type: 'doc',
-            id: 'advanced/backend/upgrade-guides/index'
+            type: "doc",
+            id: "deployments/server/index"
           },
           items: [
             {
-              type: "category",
-              label: "Server",
-              items: [
-                {
-                  type: 'autogenerated',
-                  dirName: 'advanced/backend/upgrade-guides/medusa-core'
-                }
-              ]
+              type: "doc",
+              id: "deployments/server/deploying-on-heroku",
+              label: "Deploy on Heroku",
+              customProps: {
+                image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739927/Medusa%20Docs/Other/xNvxSkf_l230wq.png'
+              }
             },
             {
-              type: "category",
-              label: "Medusa React",
-              items: [
-                {
-                  type: 'autogenerated',
-                  dirName: 'advanced/backend/upgrade-guides/medusa-react'
-                }
-              ]
+              type: "doc",
+              id: "deployments/server/deploying-on-digital-ocean",
+              label: "Deploy on DigitalOcean",
+              customProps: {
+                image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739945/Medusa%20Docs/Other/aahqJp4_lbtfdz.png'
+              }
             },
             {
-              type: "category",
-              label: "Medusa Admin",
-              items: [
-                {
-                  type: 'autogenerated',
-                  dirName: 'advanced/backend/upgrade-guides/admin'
+              type: "doc",
+              id: "deployments/server/deploying-on-qovery",
+              label: "Deploy on Qovery",
+              customProps: {
+                image: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png'
+              }
+            },
+            {
+              type: "doc",
+              id: "deployments/server/deploying-on-railway",
+              label: "Deploy on Railway",
+              customProps: {
+                themedImage: {
+                  light: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-light_fzuyeo.png',
+                  dark: 'https://res.cloudinary.com/dza7lstvk/image/upload/v1669741520/Medusa%20Docs/Other/railway-dark_kkzuwh.png'
                 }
-              ]
+              }
             }
-          ]
-        },
-        {
-          type: "category",
-          label: 'Local Development',
-          items: [
-            {
-              type: "doc",
-              id: "usage/local-development",
-              label: "Server and Monorepo"
-            },
-            {
-              type: "doc",
-              id: "admin/development",
-              label: "Medusa Admin"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: "category",
-      label: "How-to Guides",
-      items: [
-        {
-          type: "category",
-          label: "Storefront",
-          items: [
-            {
-              type: "doc",
-              id: "advanced/storefront/use-regions",
-              label: "Use Regions"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/customer-profiles",
-              label: "Add Customer Profiles"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/use-gift-cards",
-              label: "Use Gift Cards"
-            },
-            {
-              type: "doc",
-              id: "guides/carts-in-medusa",
-              label: "Implement Cart"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/use-discounts-in-checkout",
-              label: "Use Discounts in Checkout"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/taxes/manual-calculation",
-              label: "Calculate Taxes Manually"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/how-to-implement-checkout-flow",
-              label: "Implement Checkout"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/implement-claim-order",
-              label: "Implement Claim Order"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/handle-order-edits",
-              label: "Handle Order Edits"
-            },
-            {
-              type: "doc",
-              id: "advanced/storefront/use-sales-channels",
-              label: "Use SalesChannels APIs"
-            },
           ]
         },
         {
           type: "category",
           label: "Admin",
+          link: {
+            type: "doc",
+            id: "deployments/admin/index"
+          },
           items: [
             {
               type: "doc",
-              id: "advanced/admin/order-edit",
-              label: "Edit an Order"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/manage-customers",
-              label: "Manage Customers"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/use-customergroups-api",
-              label: "Manage Customer Groups"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/import-products",
-              label: "Import Products"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/import-prices",
-              label: "Import Prices"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/price-lists/use-api",
-              label: "Manage PriceLists"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/manage-discounts",
-              label: "Manage Discounts"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/manage-gift-cards",
-              label: "Manage Gift Cards"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/manage-regions",
-              label: "Manage Regions"
-            },
-            {
-              type: "doc",
-              id: "advanced/backend/sales-channels/manage-admin",
-              label: "Manage Sales Channels"
-            },
-            {
-              type: "doc",
-              id: "advanced/admin/manage-publishable-api-keys",
-              label: "Manage PublishableApiKeys"
+              id: "deployments/admin/deploying-on-netlify",
+              label: "Deploy on Netlify",
+              customProps: {
+                image: 'https://i.imgur.com/gCbsCvX.png'
+              }
             },
           ]
         },
         {
-          type: "doc",
-          id: "advanced/backend/endpoints/add",
-          label: "Create an Endpoint"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/endpoints/add-middleware",
-          label: "Add a Middleware"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/services/create-service",
-          label: "Create a Service"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/subscribers/create-subscriber",
-          label: "Create a Subscriber"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/entities/index",
-          label: "Create an Entity"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/shipping/add-fulfillment-provider",
-          label: "Create a Fulfillment Provider"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/payment/how-to-create-payment-provider",
-          label: "Create a Payment Provider"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/notification/how-to-create-notification-provider",
-          label: "Create a Notification Provider"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/plugins/create",
-          label: "Create a Plugin"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/plugins/publish",
-          label: "Publish a Plugin"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/migrations/index",
-          label: "Create a Migration"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/feature-flags/toggle",
-          label: "Toggle Feature Flags"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/scheduled-jobs/create",
-          label: "Create a Scheduled Job"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/batch-jobs/create",
-          label: "Create Batch Job Strategy"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/batch-jobs/customize-import",
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/price-selection-strategy/override",
-          label: "Override Price Selection"
-        },
-        {
-          type: "doc",
-          id: "advanced/ecommerce/handle-order-claim-event",
-          label: "Handle Order Claim Event"
-        },
-        {
-          type: "doc",
-          id: "advanced/ecommerce/send-gift-card-to-customer",
-          label: "Send Gift Card Code"
-        },
-      ]
-    },
-    {
-      type: "category",
-      label: "Conceptual Guides",
-      items: [
-        {
-          type: "doc",
-          id: "advanced/backend/dependency-container/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/entities/overview",
-          label: "Entities"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/services/overview",
-          label: "Services"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/subscribers/overview",
-          label: "Subscribers"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/events/architecture",
-          label: "Events Architecture"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/shipping/overview",
-          label: "Shipping Architecture"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/payment/overview",
-          label: "Payment Architecture"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/notification/overview",
-          label: "Notification Architecture"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/discounts/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/plugins/overview",
-          label: "Plugins"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/migrations/overview",
-          label: "Migrations"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/batch-jobs/index",
-          label: "Batch Jobs"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/regions/overview",
-          label: "Regions"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/customers/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/customer-groups/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/taxes/inclusive-pricing",
-          label: "Tax Inclusive Pricing"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/price-lists/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/price-selection-strategy/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/sales-channels/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/gift-cards/index"
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/publishable-api-keys/index",
-          label: "Publishable API Keys"
-        },
-      ]
-    },
-    {
-      type: "category",
-      label: "Integrations",
-      items: [
-        {
           type: "category",
-          label: "Analytics",
+          label: "Storefront",
+          link: {
+            type: "doc",
+            id: "deployments/storefront/index"
+          },
           items: [
             {
               type: "doc",
-              id: "add-plugins/segment",
-              label: "Segment",
+              id: "deployments/storefront/deploying-gatsby-on-netlify",
+              label: "Deploy Gatsby on Netlify",
+              customProps: {
+                image: 'https://i.imgur.com/gCbsCvX.png'
+              }
             },
-          ],
-        },
-        {
-          type: "category",
-          label: "CMS",
-          items: [
-            {
-              type: "category",
-              label: "Contentful",
-              link: {
-                type: "doc",
-                id: "add-plugins/contentful/index",
-              },
-              items: [
-                {
-                  type: "doc",
-                  id: "add-plugins/contentful/customize-contentful",
-                  label: "Customize Integration",
-                },
-              ]
-            },
-            {
-              type: "doc",
-              id: "add-plugins/strapi",
-              label: "Strapi",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Notifications",
-          items: [
-            {
-              type: "doc",
-              id: "add-plugins/sendgrid",
-              label: "SendGrid",
-            },
-            {
-              type: "doc",
-              id: "add-plugins/mailchimp",
-              label: "Mailchimp",
-            },
-            {
-              type: "doc",
-              id: "add-plugins/twilio-sms",
-              label: "Twilio SMS",
-            },
-            {
-              type: "doc",
-              id: "add-plugins/slack",
-              label: "Slack",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Payment",
-          items: [
-            {
-              type: "doc",
-              id: "add-plugins/klarna",
-              label: "Klarna",
-            },
-            {
-              type: "doc",
-              id: "add-plugins/paypal",
-              label: "PayPal",
-            },
-            {
-              type: "doc",
-              id: "add-plugins/stripe",
-              label: "Stripe",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Search",
-          items: [
-            {
-              type: "doc",
-              id: "add-plugins/algolia",
-              label: "Algolia",
-            },
-            {
-              type: "doc",
-              id: "add-plugins/meilisearch",
-              label: "MeiliSearch",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Storage",
-          items: [
-            {
-              type: "doc",
-              id: "add-plugins/minio",
-              label: "MinIO",
-            },
-            {
-              type: "doc",
-              id: "add-plugins/s3",
-              label: "S3",
-            },
-            {
-              type: "doc",
-              id: "add-plugins/spaces",
-              label: "Spaces",
-            },
-          ],
+          ]
         },
       ],
+      className: 'homepage-sidebar-item'
     },
     {
-      type: "category",
-      label: "Troubleshooting",
+      type: 'ref',
+      id: 'advanced/backend/upgrade-guides/index',
+      label: 'Upgrade Guides',
+      customProps: {
+        sidebar_icon: 'cog-six-tooth'
+      },
+      className: 'homepage-sidebar-item'
+    },
+    {
+      type: 'category',
+      label: 'Troubleshooting',
+      customProps: {
+        sidebar_icon: 'bug-ant-solid'
+      },
       items: [
         {
           type: "doc",
@@ -735,56 +373,1375 @@ module.exports = {
           label: "Documentation Error",
         },
       ],
-    },
-    {
-      type: "category",
-      label: "References",
-      items: [
-        {
-          type: "doc",
-          id: "cli/reference",
-          label: "CLI Reference",
-        },
-        {
-          type: "ref",
-          id: "references/entities/classes/Address",
-          label: "Entities Reference",
-        },
-        {
-          type: "doc",
-          id: "advanced/backend/subscribers/events-list",
-          label: "Events Reference"
-        },
-        {
-          type: "ref",
-          id: "js-client/overview",
-          label: "JS Client Reference",
-        },
-        {
-          type: "doc",
-          id: "medusa-react/overview",
-          label: "Medusa React",
-        },
-        {
-          type: "ref",
-          id: "references/services/classes/AuthService",
-          label: "Services Reference",
-        },
-      ]
+      className: 'homepage-sidebar-item'
     },
     {
       type: "doc",
       id: "contribution-guidelines",
       label: "Contribution Guidelines",
+      customProps: {
+        sidebar_icon: 'document-text'
+      },
+      className: 'homepage-sidebar-item',
     },
+    {
+      type: "doc",
+      id: "usage",
+      label: "Usage",
+      customProps: {
+        sidebar_icon: 'light-solid-bulb'
+      },
+      className: 'homepage-sidebar-item',
+    },
+  ],
+  featuresAndGuides: [
+    {
+      type: 'ref',
+      id: 'homepage',
+      label: 'Back to home',
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: 'back-arrow'
+      }
+    },
+    {
+      type: 'doc',
+      id: 'features-and-guides/overview',
+      label: 'Features and Guides',
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: 'sparkles'
+      }
+    },
+    {
+      type: 'category',
+      label: 'Regions and Currencies',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/regions/overview',
+          label: 'Regions'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Currencies'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/manage-regions',
+          label: 'Admin: Manage Regions'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Currencies'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/storefront/use-regions',
+          label: 'Storefront: Use Regions'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Customers',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/customers/index',
+          label: 'Customers'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/customer-groups/index',
+          label: 'Currencies'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Server: Send SignUp Email'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/manage-customers',
+          label: 'Admin: Manage Customers'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/use-customergroups-api',
+          label: 'Admin: Manage Customer Groups'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/storefront/customer-profiles',
+          label: 'Storefront: Add Customer Profiles'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Products',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Products'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Collections'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Products'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Collections'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/import-products',
+          label: 'Admin: Import Products'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Storefront: Show Products'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Storefront: Show Collections'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Carts and Checkout',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Cart'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/shipping/overview',
+          label: 'Shipping'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/payment/overview',
+          label: 'Payment'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/shipping/add-fulfillment-provider',
+          label: 'Server: Create Fulfillment Provider'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/payment/how-to-create-payment-provider',
+          label: 'Server: Create Payment Provider'
+        },
+        {
+          type: 'doc',
+          id: 'guides/carts-in-medusa',
+          label: 'Storefront: Implement Cart'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/storefront/how-to-implement-checkout-flow',
+          label: 'Storefront: Implement Checkout'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Orders',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Orders'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Swaps'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Returns'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Claims'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Draft Orders'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Fulfillment'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Server: Send Confirmation Email'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/ecommerce/handle-order-claim-event',
+          label: 'Server: Send Order Claim Email'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Orders'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/order-edit',
+          label: 'Admin: Edit an Order'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Swaps'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Returns'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Claims'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Order Drafts'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Return Reasons'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Storefront: Manage Customer Orders'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Storefront: Create a Swap'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Storefront: Create a Return'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/storefront/handle-order-edits',
+          label: 'Storefront: Handle Order Edits'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/storefront/implement-claim-order',
+          label: 'Storefront: Implement Claim Order'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Taxes',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Taxes'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/taxes/inclusive-pricing',
+          label: 'Tax Inclusive Pricing'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Server: Create Tax Provider'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Taxes'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Tax Rates'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Tax Overrides'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/taxes/manual-calculation',
+          label: 'Storefront: Calculate Taxes Manually'
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Discounts',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/discounts/index',
+          label: 'Discounts',
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/manage-discounts',
+          label: 'Admin: Manage Discounts'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/storefront/use-discounts-in-checkout',
+          label: 'Storefront: Use Discounts in Checkout'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Gift Cards',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/gift-cards/index',
+          label: 'Gift Cards'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/ecommerce/send-gift-card-to-customer',
+          label: 'Server: Send Gift Card Code'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/manage-gift-cards',
+          label: 'Admin: Manage Gift Cards'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/storefront/use-gift-cards',
+          label: 'Storefront: Use Gift Cards'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Price Lists',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/price-lists/index',
+          label: 'Price Lists'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/price-selection-strategy/index',
+          label: 'Price Selection Strategy'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/price-selection-strategy/override',
+          label: 'Server: Override Price Selection'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/price-lists/use-api',
+          label: 'Admin: Manage Price Lists'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/import-prices',
+          label: 'Admin: Import Prices'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Sales Channels',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/sales-channels/index',
+          label: 'Sales Channels'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/sales-channels/manage-admin',
+          label: 'Manage Sales Channels'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/storefront/use-sales-channels',
+          label: 'Storefront: Use Sales Channels'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Users',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'Architecture',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Users'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Users'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Admin: Manage Invites'
+        },
+      ]
+    },
+  ],
+  coreConcepts: [
+    {
+      type: 'ref',
+      id: 'homepage',
+      label: 'Back to home',
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: 'back-arrow'
+      }
+    },
+    {
+      type: 'doc',
+      id: 'core-concepts/overview',
+      label: 'Core Concepts',
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: 'server-stack'
+      }
+    },
+    {
+      type: 'category',
+      label: 'Server Setup',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'tutorial/set-up-your-development-environment',
+          label: 'Development Environment'
+        },
+        {
+          type: 'doc',
+          id: 'usage/configurations',
+          label: 'Configurations',
+        },
+      ]
+    },
+    {
+      type: 'doc',
+      id: 'advanced/backend/dependency-container/index',
+      label: 'Dependency Injection'
+    },
+    {
+      type: 'category',
+      label: 'Entities',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'advanced/backend/entities/overview',
+          label: 'Overview'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/migrations/overview',
+          label: 'Migrations'
+        },
+        {
+          type: 'ref',
+          id: 'references/entities/classes/Address',
+          label: 'Entities Reference'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/entities/index',
+          label: 'Create an Entity'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/migrations/index',
+          label: 'Create a Migration'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Endpoints',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/endpoints/add',
+          label: 'Create an Endpoint'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/endpoints/add-middleware',
+          label: 'Add a Middleware'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Services',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'advanced/backend/services/overview',
+          label: 'Overview'
+        },
+        {
+          type: 'doc',
+          id: 'references/services/classes/AuthService',
+          label: 'Services Reference'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/services/create-service',
+          label: 'Create a Service'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Events',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'advanced/backend/events/architecture',
+          label: 'Overview'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/subscribers/overview',
+          label: 'Subscribers'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/subscribers/events-list',
+          label: 'Events Reference'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/subscribers/create-subscriber',
+          label: 'Create a Subscriber'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Scheduled Jobs',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/scheduled-jobs/create',
+          label: 'Create a Scheduled Job'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Notifications',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'advanced/backend/notification/overview',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/notification/how-to-create-notification-provider',
+          label: 'Create a Notification Provider'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'File Service',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Create a File Service'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Batch Jobs',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'advanced/backend/batch-jobs/index',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: "doc",
+          id: "advanced/backend/batch-jobs/create",
+          label: "Create Batch Job Strategy"
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/batch-jobs/customize-import',
+          label: 'Customize Import Strategy'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Strategies',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Create a Strategy'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Feature Flags',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'link',
+          href: '#',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/feature-flags/toggle',
+          label: 'Toggle Feature Flags'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Plugins',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'advanced/backend/plugins/overview',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/plugins/create',
+          label: 'Create a Plugin'
+        },
+        {
+          type: 'doc',
+          id: 'advanced/backend/plugins/publish',
+          label: 'Publish a Plugin'
+        },
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Publishable API Keys',
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true
+      },
+      items: [
+        {
+          type: 'doc',
+          id: 'advanced/backend/publishable-api-keys/index',
+          label: 'Overview'
+        },
+        {
+          type: 'html',
+          value: 'How-to',
+          customProps: {
+            sidebar_is_group_divider: true
+          }
+        },
+        {
+          type: 'doc',
+          id: 'advanced/admin/manage-publishable-api-keys',
+          label: 'Admin: Manage Publishable API Keys'
+        },
+        {
+          type: 'link',
+          href: '#',
+          label: 'Storefront: Use in Requests'
+        },
+        {
+          type: 'doc',
+          id: 'usage/local-development',
+          label: 'Local Development'
+        }
+      ]
+    },
+  ],
+  upgradeGuides: [
+    {
+      type: 'ref',
+      id: 'homepage',
+      label: 'Back to home',
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: 'back-arrow'
+      }
+    },
+    {
+      type: 'doc',
+      id: 'advanced/backend/upgrade-guides/index',
+      label: 'Upgrade Guides',
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: 'cog-six-tooth'
+      }
+    },
+    {
+      type: "category",
+      label: "Server",
+      collapsible: false,
+      items: [
+        {
+          type: 'autogenerated',
+          dirName: 'advanced/backend/upgrade-guides/medusa-core'
+        }
+      ]
+    },
+    {
+      type: "category",
+      label: "Medusa React",
+      collapsible: false,
+      items: [
+        {
+          type: 'autogenerated',
+          dirName: 'advanced/backend/upgrade-guides/medusa-react'
+        }
+      ]
+    },
+    {
+      type: "category",
+      label: "Medusa Admin",
+      collapsible: false,
+      items: [
+        {
+          type: 'autogenerated',
+          dirName: 'advanced/backend/upgrade-guides/admin'
+        }
+      ]
+    }
+  ],
+  plugins: [
+    {
+      type: 'ref',
+      id: 'homepage',
+      label: 'Back to home',
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: 'back-arrow'
+      }
+    },
+    {
+      type: 'doc',
+      id: 'plugins/overview',
+      label: 'Plugins',
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: 'bolt'
+      }
+    },
+    [
+      {
+        type: "category",
+        label: "Analytics",
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            id: "add-plugins/segment",
+            label: "Segment",
+          },
+        ],
+      },
+      {
+        type: "category",
+        label: "CMS",
+        collapsible: false,
+        items: [
+          {
+            type: "category",
+            label: "Contentful",
+            link: {
+              type: "doc",
+              id: "add-plugins/contentful/index",
+            },
+            items: [
+              {
+                type: "doc",
+                id: "add-plugins/contentful/customize-contentful",
+                label: "Customize Integration",
+              },
+            ]
+          },
+          {
+            type: "doc",
+            id: "add-plugins/strapi",
+            label: "Strapi",
+          },
+        ],
+      },
+      {
+        type: "category",
+        label: "Notifications",
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            id: "add-plugins/sendgrid",
+            label: "SendGrid",
+          },
+          {
+            type: "doc",
+            id: "add-plugins/mailchimp",
+            label: "Mailchimp",
+          },
+          {
+            type: "doc",
+            id: "add-plugins/twilio-sms",
+            label: "Twilio SMS",
+          },
+          {
+            type: "doc",
+            id: "add-plugins/slack",
+            label: "Slack",
+          },
+        ],
+      },
+      {
+        type: "category",
+        label: "Payment",
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            id: "add-plugins/klarna",
+            label: "Klarna",
+          },
+          {
+            type: "doc",
+            id: "add-plugins/paypal",
+            label: "PayPal",
+          },
+          {
+            type: "doc",
+            id: "add-plugins/stripe",
+            label: "Stripe",
+          },
+        ],
+      },
+      {
+        type: "category",
+        label: "Search",
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            id: "add-plugins/algolia",
+            label: "Algolia",
+          },
+          {
+            type: "doc",
+            id: "add-plugins/meilisearch",
+            label: "MeiliSearch",
+          },
+        ],
+      },
+      {
+        type: "category",
+        label: "File Service",
+        collapsible: false,
+        items: [
+          {
+            type: "doc",
+            id: "add-plugins/minio",
+            label: "MinIO",
+          },
+          {
+            type: "doc",
+            id: "add-plugins/s3",
+            label: "S3",
+          },
+          {
+            type: "doc",
+            id: "add-plugins/spaces",
+            label: "Spaces",
+          },
+        ],
+      },
+    ],
   ],
   userGuideSidebar: [
     {
+      type: 'doc',
+      id: 'user-guide',
+      label: 'User Guide',
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: 'user'
+      }
+    },
+    {
       type: 'autogenerated',
-      dirName: 'user-guide', // '.' means the current docs folder
+      dirName: 'user-guide'
     }
   ],
   servicesSidebar: [
+    {
+      type: 'ref',
+      id: 'core-concepts/overview',
+      label: 'Back to core concepts',
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: 'back-arrow'
+      }
+    },
+    {
+      type: 'html',
+      value: 'Services Reference',
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: 'folder-open'
+      }
+    },
     {
       type: 'autogenerated',
       dirName: 'references/services/classes', // generate sidebar from the docs folder (or versioned_docs/<version>)
@@ -792,14 +1749,30 @@ module.exports = {
   ],
   jsClientSidebar: [
     {
+      type: 'ref',
+      id: 'homepage',
+      label: 'Back to home',
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: 'back-arrow'
+      }
+    },
+    {
       type: "doc",
       id: "js-client/overview",
-      label: "Overview",
+      label: "Medusa JS Client",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: 'javascript',
+      }
     },
     {
       type: "category",
       collapsed: false,
       label: "Resources",
+      customProps: {
+        sidebar_is_group_headline: true
+      },
       items: [
         {
           type: "category",
@@ -1074,6 +2047,23 @@ module.exports = {
     }
   ],
   entitiesSidebar: [
+    {
+      type: 'ref',
+      id: 'core-concepts/overview',
+      label: 'Back to core concepts',
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: 'back-arrow'
+      }
+    },
+    {
+      type: 'html',
+      value: 'Entities Reference',
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: 'folder-open'
+      }
+    },
     {
       type: 'autogenerated',
       dirName: 'references/entities/classes', // generate sidebar from the docs folder (or versioned_docs/<version>)

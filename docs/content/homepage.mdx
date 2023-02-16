@@ -8,10 +8,24 @@ hide_footer: true
 ---
 
 import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
+import IconBolt from '@theme/Icon/Bolt';
+import RocketLaunch from '@theme/Icon/RocketLaunch';
 
 # Medusa Documentation
 
 Get an overview of Medusa's features, integrations, and how to use them.
+
+<DocCard item={{
+  type: 'link',
+  href: '/usage/create-medusa-app',
+  label: 'Quickstart Guide',
+  customProps: {
+    icon: RocketLaunch,
+    html: 'In this document, you’ll learn how to use create-medusa-app to create a Medusa project with the three main components of Medusa.',
+    className: 'card-highlighted'
+  }
+}} />
 
 ## Medusa basics
 
@@ -23,9 +37,8 @@ Learn about Medusa basic features and kickstart your ecommerce project.
     href: '/usage/create-medusa-app',
     label: 'Quickstart Guide',
     customProps: {
-      image: '/img/quickstart-icon.svg',
-      description: 'Create your first Medusa server.',
-      className: 'card-highlight'
+      icon: IconBolt,
+      description: 'Create your first Medusa server.'
     }
   },
   {

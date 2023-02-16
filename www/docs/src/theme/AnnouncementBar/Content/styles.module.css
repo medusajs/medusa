@@ -1,14 +1,8 @@
 .contentWrapper {
-  font-size: 12px;
-  line-height: 16px;
   color: var(--ifm-announcement-bar-text-color);
-}
-
-.contentTitle,
-.moreText {
-  font-size: var(--medusa-label-small-plus-size);
-  line-height: var(--medusa-label-small-plus-line-height);
-  font-weight: var(--medusa-label-small-plus-font-weight);
+  font-size: var(--medusa-label-x-small-plus-size);
+  line-height: var(--medusa-label-x-small-plus-line-height);
+  font-weight: var(--medusa-label-x-small-plus-font-weight);
 }
 
 .contentTitle {

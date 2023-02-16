@@ -7,17 +7,13 @@ article {
 }
 
 .padding-top--md {
-  padding-top: 2rem !important;
+  padding-top: 48px !important;
 }
 
 .pagination-nav {
   margin-left: auto;
   margin-right: auto;
   max-width: var(--ifm-docs-page-max-width);
-}
-
-.col {
-  margin-top: 10px !important;
 }
 
 details summary {
@@ -54,14 +50,13 @@ details summary {
 }
 
 /* User Guide Styling */
-html[data-theme="dark"] kbd {
-  --ifm-color-emphasis-0: var(--ifm-color-gray-200);
-}
-
 kbd {
-  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
-  
   font: 100% var(--ifm-font-family-monospace) !important;
+  background-color: var(--medusa-bg-component) !important;
+  color: var(--medusa-text-secondary) !important;
+  border-radius: 6px !important;
+  border-color: var(--medusa-border-strong) !important;
+  box-shadow: none !important;
 }
 
 .ui-icon {
@@ -125,7 +120,6 @@ kbd {
   font-style: normal;
   font-size: var(--medusa-label-small-plus-size);
   line-height: var(--medusa-label-small-plus-line-height);
-  font-weight: 400 !important;
 }
 
 .theme-last-updated,

@@ -28,7 +28,7 @@
   font-size: var(--medusa-body-regular-size) !important;
   line-height: var(--medusa-body-regular-line-height) !important;
   font-weight: var(--medusa-body-regular-font-weight) !important;
-  padding-left: calc(var(--ifm-base-margin-vertical) / 2) !important;
+  padding-left: var(--ifm-base-spacing) !important;
 }
 
 .DocSearch-Input::placeholder,
@@ -246,7 +246,7 @@ html:not([data-theme="dark"]) .DocSearch-NoResults .DocSearch-Screen-Icon::befor
   font-size: var(--medusa-label-small-size) !important;
   line-height: var(--medusa-label-small-line-height) !important;
   font-weight: var(--medusa-label-small-font-weight) !important;
-  padding-left: calc(var(--ifm-base-margin-vertical) / 2) !important;
+  padding-left: var(--ifm-base-spacing) !important;
 }
 
 .DocSearch-NoResults-Prefill-List {
@@ -254,7 +254,7 @@ html:not([data-theme="dark"]) .DocSearch-NoResults .DocSearch-Screen-Icon::befor
   font-size: var(--medusa-label-small-plus-size) !important;
   line-height: var(--medusa-label-small-plus-line-height) !important;
   font-weight: var(--medusa-label-small-plus-font-weight) !important;
-  padding-left: calc(var(--ifm-base-margin-vertical) / 2) !important;
+  padding-left: var(--ifm-base-spacing) !important;
 }
 
 .DocSearch-NoResults-Prefill-List li::marker {
@@ -304,7 +304,7 @@ span.DocSearch-Button-Key {
 
 .DocSearch-Button-Placeholder {
   color: var(--docsearch-placeholder-color);
-  padding-left: calc(var(--ifm-base-margin-vertical) / 4) !important;
+  padding-left: calc(var(--ifm-base-spacing) / 2) !important;
   font-size: var(--medusa-label-small-plus-size) !important;
   line-height: var(--medusa-label-small-plus-line-height) !important;
   font-weight: var(--medusa-label-small-plus-font-weight) !important;

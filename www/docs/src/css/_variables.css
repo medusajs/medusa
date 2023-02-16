@@ -6,16 +6,19 @@
   /* Base Styles */
   --ifm-global-radius: 8px;
   --ifm-hr-background-color: var(--medusa-border-base);
+  --ifm-base-spacing: 16px;
   --ifm-base-margin-vertical: 32px;
   --ifm-hr-margin-vertical: var(--ifm-base-margin-vertical);
   --ifm-leading: 24px;
+  --ifm-logo-width: 20px;
+  --ifm-logo-height: 20px;
   
   /* Colors */
   --ifm-color-primary: var(--medusa-text-primary);
   --ifm-background-color: var(--medusa-bg-base);
   --ifm-background-surface-color: var(--medusa-bg-subtle);
-  --ifm-medusa-gray: #f0f0f0;
   --ifm-color-content: var(--medusa-text-secondary) !important;
+  --ifm-color-content-secondary: var(--ifm-color-content) !important;
   --ifm-primary-gradient: linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%,
   #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%);
   --ifm-base-border-color: var(--medusa-border-base);
@@ -52,9 +55,9 @@
   /* Sidebar */
   --doc-sidebar-width: 320px !important;
   --doc-sidebar-padding: 24px;
-  --ifm-menu-active: #111827;
   --ifm-menu-link-padding-vertical: 6px;
   --ifm-menu-link-padding-horizontal: 16px;
+  --ifm-menu-color: var(--medusa-text-secondary);
   --ifm-menu-color-background-hover: var(--medusa-bg-subtle-hover);
   --ifm-menu-color-background-active: var(--medusa-bg-subtle-pressed);
 
@@ -104,6 +107,7 @@
 
   /* Code Blocks */
   --ifm-pre-background: var(--medusa-code-block);
+  --ifm-pre-background-transparent: var(--medusa-code-block-transparent);
   --ifm-code-tabs-color: var(--medusa-code-tab-text);
   --ifm-code-tabs-active-bg: var(--medusa-code-tab);
   --ifm-code-tabs-active-color: var(--medusa-code-tab-active-text);
@@ -112,6 +116,9 @@
   --ifm-code-title-color: var(--medusa-code-tab-title);
   --ifm-code-line-number-color: var(--medusa-text-placeholder);
   --ifm-code-block-border-color: var(--medusa-code-block-border);
+
+  /* Tabs */
+  --ifm-tabs-color-active: var(--ifm-color-primary);
 
   /* Tooltip */
   --ifm-tooltip-background-color: var(--medusa-tooltip);
@@ -124,8 +131,8 @@
   /* Buttons */
   --ifm-primary-btn-background-color: var(--medusa-button-primary);
   --ifm-primary-btn-hover-background-color: var(--medusa-button-primary-hover);
-  --ifm-primary-btn-color: var(--ifm-color-primary);
-  --ifm-primary-btn-border-color: var(--ifm-base-border-color);
+  --ifm-primary-btn-color: var(--medusa-text-on-color);
+  --ifm-primary-btn-border-color: var(--medusa-button-primary);
   --ifm-primary-btn-focused-shadow: var(--medusa-shadow-button-focused);
   --ifm-secondary-btn-background-color: var(--medusa-button-secondary);
   --ifm-secondary-btn-color: var(--ifm-color-primary);
@@ -135,6 +142,7 @@
 
   /* Footer */
   --ifm-footer-color: var(--medusa-text-placeholder);
+  --ifm-footer-background-color: transparent;
   --ifm-footer-padding-horizontal: 0;
   --ifm-footer-social-icons-color: var(--medusa-icon-placeholder);
   --ifm-footer-social-icons-color-hover: var(--medusa-icon-secondary);
@@ -181,6 +189,7 @@
   --docsearch-footer-height: 40px !important;
 
   /* Announcement Bar */
+  --docusaurus-announcement-bar-height: auto !important;
   --ifm-announcement-bar-bg: var(--ifm-background-surface-color);
   --ifm-announcement-bar-border-color: var(--ifm-base-border-color);
   --ifm-announcement-bar-hover-bg: var(--medusa-bg-subtle-hover);
@@ -217,21 +226,8 @@
 html[data-theme="dark"] {
 
   /* Colors */
-  --ifm-medusa-gray: #292929;
   --ifm-background-color: var(--medusa-bg-subtle);
   --ifm-background-surface-color: var(--medusa-bg-base);
-
-  /* Sidebar */
-  --ifm-menu-color: var(--medusa-text-secondary);
-  --ifm-menu-active: #fff;
-
-  /* Color Mode toggler */
-  --mode-button-active-bg: #161616;
-  --mode-button-active-border-color: #393939;
-  --mode-button-active-text-color: #F3F3F3;
-
-  /* Tabs */
-  --ifm-tabs-color-active: #F3F3F3;
 
   /* Cards */
   --ifm-card-bg-hover: var(--medusa-bg-base-hover);
@@ -255,5 +251,11 @@ html[data-theme="dark"] {
   :root {
     /** Table of Content **/
     --ifm-toc-width: calc(3 / 12 * 100%);
+  }
+}
+
+@media (min-width: 997px) {
+  :root {
+    --docusaurus-announcement-bar-height: 30px;
   }
 }

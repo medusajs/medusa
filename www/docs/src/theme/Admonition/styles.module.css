@@ -15,7 +15,7 @@
 .admonitionIcon {
   height: 24px;
   width: 24px;
-  margin-right: 16px;
+  margin-right: var(--ifm-base-spacing);
 }
 
 .admonitionIcon img {
@@ -23,8 +23,10 @@
 }
 
 .admonitionContent {
-  font-size: 14px;
   color: var(--ifm-note-text-color);
+  font-size: var(--medusa-body-regular-size) !important;
+  line-height: var(--medusa-body-regular-line-height) !important;
+  font-weight: var(--medusa-body-regular-font-weight) !important;
   flex: 1;
   width: calc(100% - 40px);
 }

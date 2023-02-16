@@ -78,12 +78,12 @@ p {
 
 html:not([data-theme="dark"]) .markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-link):after,
 html:not([data-theme="dark"]) .DocSearch-Prefill:after {
-  background-image: url('/img/link-icon.svg');
+  background-image: url('/img/link-icon-light.svg');
 }
 
 [data-theme="dark"] .markdown a:not(.hash-link):not(.card):not(.img-url):not(.large-card-link):after,
 [data-theme="dark"] .DocSearch-Prefill:after {
-  background-image: url('/img/link-icon-dark.svg');
+  background-image: url('/img/link-icon.svg');
 }
 
 .markdown p + img,

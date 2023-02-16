@@ -6,8 +6,6 @@
     height: 100%;
     position: sticky;
     top: 0;
-    /* padding-top: var(--ifm-navbar-height); */
-    /* width: var(--doc-sidebar-width); */
     transition: opacity 50ms ease;
   }
 
@@ -34,7 +32,7 @@
   }
 
   .sidebarLogo img {
-    height: 20px;
-    width: 20px;
+    height: var(--ifm-logo-height);
+    width: var(--ifm-logo-width);
   }
 }

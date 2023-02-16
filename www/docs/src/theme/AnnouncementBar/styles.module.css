@@ -1,7 +1,3 @@
-:root {
-  --docusaurus-announcement-bar-height: auto !important;
-}
-
 .announcementBar {
   --bordered-margin-right: 12px;
   
@@ -13,7 +9,7 @@
   padding: 12px;
   border: 1px solid var(--ifm-announcement-bar-border-color);
   border-radius: var(--ifm-global-radius);
-  margin: 0 16px 16px 16px;
+  margin: 0 var(--ifm-base-spacing) calc(var(--ifm-base-margin-vertical) / 2) var(--ifm-base-spacing);
   transition: all var(--ifm-transition-fast) ease;
 }
 
@@ -66,10 +62,6 @@ html[data-announcement-bar-initially-dismissed='true'] .announcementBar {
 }
 
 @media (min-width: 997px) {
-  :root {
-    --docusaurus-announcement-bar-height: 30px;
-  }
-
   .announcementBarPlaceholder,
   .announcementBarClose {
     flex-basis: 50px;

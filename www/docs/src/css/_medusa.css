@@ -39,6 +39,10 @@
   --medusa-button-secondary: #FFFFFF;
   --medusa-button-secondary-hover: #F8F9FA;
   --medusa-button-secondary-pressed: #F1F3F5;
+  --medusa-button-error: #E5484D;
+  --medusa-button-error-text: var(--medusa-text-on-color);
+  --medusa-button-success: #30A46C;
+  --medusa-button-success-text: var(--medusa-text-on-color);
 
   /** Icons **/
   --medusa-icon-primary: #11181C;
@@ -58,6 +62,7 @@
 
   /** Code Block **/
   --medusa-code-block: #1C1C1F;
+  --medusa-code-block-transparent: #1C1C1F00;
   --medusa-code-block-border: #2E2E32;
   --medusa-code-block-action: #706F78;
 
@@ -103,12 +108,12 @@
   --medusa-label-regular-size: 14px;
   --medusa-label-regular-line-height: 20px;
   --medusa-label-regular-font-weight: 400;
-  --medusa-label-small-size: 13px;
-  --medusa-label-small-line-height: 20px;
-  --medusa-label-small-font-weight: 400;
   --medusa-label-small-plus-size: 13px;
   --medusa-label-small-plus-line-height: 20px;
   --medusa-label-small-plus-font-weight: 500;
+  --medusa-label-small-size: 13px;
+  --medusa-label-small-line-height: 20px;
+  --medusa-label-small-font-weight: 400;
   --medusa-label-x-small-plus-size: 12px;
   --medusa-label-x-small-plus-line-height: 20px;
   --medusa-label-x-small-plus-font-weight: 500;

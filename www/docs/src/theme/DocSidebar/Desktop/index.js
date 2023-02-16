@@ -24,7 +24,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
         if (!sidebarRef.current.classList.contains('scrolling')) {
           sidebarRef.current.classList.add('scrolling');
           const intervalId = setInterval(() => {
-            if (!sidebarRef.current.matches(':hover')) {
+            if (!sidebarRef.current?.matches(':hover')) {
               sidebarRef.current.classList.remove('scrolling');
               clearInterval(intervalId);
             }

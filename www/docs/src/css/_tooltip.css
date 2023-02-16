@@ -1,11 +1,11 @@
 .react-tooltip {
   border: 1px solid var(--ifm-tooltip-border-color) !important;
   border-radius: var(--ifm-global-radius) !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  line-height: 20px !important;
+  font-size: var(--medusa-label-x-small-plus-size) !important;
+  line-height: var(--medusa-label-x-small-plus-line-height) !important;
+  font-weight: var(--medusa-label-x-small-plus-font-weight) !important;
   box-shadow: var(--ifm-tooltip-box-shadow-color) !important;
-  padding: 8px 16px !important;
+  padding: calc(var(--ifm-base-margin-vertical) / 4) var(--ifm-base-spacing) !important;
 }
 
 .react-tooltip-arrow {

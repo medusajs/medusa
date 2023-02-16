@@ -77,7 +77,7 @@ In the body of the PR, explain clearly what the PR does. If the PR solves an iss
 
 ## Sidebar
 
-When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js` under the `docsSidebar`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
+When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
 
 ### Terminology
 
