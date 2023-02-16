@@ -58,7 +58,7 @@ class NotificationService extends TransactionBaseService {
    */
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
     const { notificationProviderRepository } = this.container_
-    const model = this.activeManager_.getCustomRepository(
+    const model = this.activeManager_.withRepository(
       notificationProviderRepository
     )
     await model.update({}, { is_installed: false })
@@ -82,7 +82,7 @@ class NotificationService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Notification[]> {
-    const notiRepo = this.activeManager_.getCustomRepository(
+    const notiRepo = this.activeManager_.withRepository(
       this.notificationRepository_
     )
     const query = buildQuery(selector, config)
@@ -99,7 +99,7 @@ class NotificationService extends TransactionBaseService {
     id: string,
     config: FindConfig<Notification> = {}
   ): Promise<Notification | never> {
-    const notiRepository = this.activeManager_.getCustomRepository(
+    const notiRepository = this.activeManager_.withRepository(
       this.notificationRepository_
     )
 
@@ -212,7 +212,7 @@ class NotificationService extends TransactionBaseService {
       }
 
       const { to, data } = result
-      const notiRepo = transactionManager.getCustomRepository(
+      const notiRepo = transactionManager.withRepository(
         this.notificationRepository_
       )
 
@@ -256,7 +256,7 @@ class NotificationService extends TransactionBaseService {
         this.attachmentGenerator_
       )
 
-      const notiRepo = transactionManager.getCustomRepository(
+      const notiRepo = transactionManager.withRepository(
         this.notificationRepository_
       )
       const resendNoti: Record<string, unknown> = { ...notification, id: null }

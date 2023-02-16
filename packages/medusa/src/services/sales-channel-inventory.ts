@@ -11,8 +11,6 @@ type InjectedDependencies = {
 }
 
 class SalesChannelInventoryService extends TransactionBaseService {
-  protected manager_: EntityManager
-
   protected readonly salesChannelLocationService_: SalesChannelLocationService
   protected readonly eventBusService_: EventBusService
   protected readonly inventoryService_: IInventoryService
@@ -40,13 +38,13 @@ class SalesChannelInventoryService extends TransactionBaseService {
     salesChannelId: string,
     inventoryItemId: string
   ): Promise<number> {
-    const locations = await this.salesChannelLocationService_
+    const locationIds = await this.salesChannelLocationService_
       .withTransaction(this.activeManager_)
-      .listLocations(salesChannelId)
+      .listLocationIds(salesChannelId)
 
     return await this.inventoryService_
       .withTransaction(this.activeManager_)
-      .retrieveAvailableQuantity(inventoryItemId, locations)
+      .retrieveAvailableQuantity(inventoryItemId, locationIds)
   }
 }
 

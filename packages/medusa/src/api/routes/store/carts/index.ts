@@ -143,6 +143,7 @@ export const defaultStoreCartRelations = [
   "gift_cards",
   "region",
   "items",
+  "items.variant",
   "items.adjustments",
   "payment",
   "shipping_address",

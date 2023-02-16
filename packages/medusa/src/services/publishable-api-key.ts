@@ -1,4 +1,4 @@
-import { EntityManager, ILike } from "typeorm"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { PublishableApiKeyRepository } from "../repositories/publishable-api-key"
@@ -64,7 +64,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     }
   ): Promise<PublishableApiKey | never> {
     return await this.atomicPhase_(async (manager) => {
-      const publishableApiKeyRepo = manager.getCustomRepository(
+      const publishableApiKeyRepo = manager.withRepository(
         this.publishableApiKeyRepository_
       )
 
@@ -113,15 +113,14 @@ class PublishableApiKeyService extends TransactionBaseService {
     selector: Selector<PublishableApiKey>,
     config: FindConfig<PublishableApiKey> = {}
   ): Promise<PublishableApiKey | never> {
-    const repo = this.activeManager_.getCustomRepository(
+    const repo = this.activeManager_.withRepository(
       this.publishableApiKeyRepository_
     )
 
-    const { relations, ...query } = buildQuery(selector, config)
-    const publishableApiKey = await repo.findOneWithRelations(
-      relations as (keyof PublishableApiKey)[],
-      query
-    )
+    const query = buildQuery(selector, config)
+    query.relationLoadStrategy = "query"
+
+    const publishableApiKey = await repo.findOne(query)
 
     if (!publishableApiKey) {
       const selectorConstraints = Object.entries(selector)
@@ -149,7 +148,7 @@ class PublishableApiKeyService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[PublishableApiKey[], number]> {
-    const pubKeyRepo = this.activeManager_.getCustomRepository(
+    const pubKeyRepo = this.activeManager_.withRepository(
       this.publishableApiKeyRepository_
     )
 
@@ -160,6 +159,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     }
 
     const query = buildQuery(selector, config)
+    query.where = query.where as FindOptionsWhere<PublishableApiKey>
 
     if (q) {
       query.where.title = ILike(`%${q}%`)
@@ -174,7 +174,7 @@ class PublishableApiKeyService extends TransactionBaseService {
   ): Promise<PublishableApiKey> {
     {
       return await this.atomicPhase_(async (manager) => {
-        const publishableApiKeyRepository = manager.getCustomRepository(
+        const publishableApiKeyRepository = manager.withRepository(
           this.publishableApiKeyRepository_
         )
 
@@ -198,9 +198,7 @@ class PublishableApiKeyService extends TransactionBaseService {
    */
   async delete(publishableApiKeyId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const repo = manager.getCustomRepository(
-        this.publishableApiKeyRepository_
-      )
+      const repo = manager.withRepository(this.publishableApiKeyRepository_)
 
       const publishableApiKey = await this.retrieve(publishableApiKeyId).catch()
 
@@ -223,9 +221,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     }
   ): Promise<void | never> {
     return await this.atomicPhase_(async (manager) => {
-      const repo = manager.getCustomRepository(
-        this.publishableApiKeyRepository_
-      )
+      const repo = manager.withRepository(this.publishableApiKeyRepository_)
 
       const pubKey = await this.retrieve(publishableApiKeyId)
 
@@ -270,7 +266,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     salesChannelIds: string[]
   ): Promise<void | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const pubKeySalesChannelRepo = transactionManager.getCustomRepository(
+      const pubKeySalesChannelRepo = transactionManager.withRepository(
         this.publishableApiKeySalesChannelRepository_
       )
 
@@ -292,7 +288,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     salesChannelIds: string[]
   ): Promise<void | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const pubKeySalesChannelRepo = transactionManager.getCustomRepository(
+      const pubKeySalesChannelRepo = transactionManager.withRepository(
         this.publishableApiKeySalesChannelRepository_
       )
 
@@ -313,7 +309,7 @@ class PublishableApiKeyService extends TransactionBaseService {
     publishableApiKeyId: string,
     config?: { q?: string }
   ): Promise<SalesChannel[]> {
-    const pubKeySalesChannelRepo = this.activeManager_.getCustomRepository(
+    const pubKeySalesChannelRepo = this.activeManager_.withRepository(
       this.publishableApiKeySalesChannelRepository_
     )
 
@@ -331,7 +327,7 @@ class PublishableApiKeyService extends TransactionBaseService {
   async getResourceScopes(
     publishableApiKeyId: string
   ): Promise<{ sales_channel_id: string[] }> {
-    const pubKeySalesChannelRepo = this.activeManager_.getCustomRepository(
+    const pubKeySalesChannelRepo = this.activeManager_.withRepository(
       this.publishableApiKeySalesChannelRepository_
     )
 

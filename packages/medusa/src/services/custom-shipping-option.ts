@@ -32,7 +32,7 @@ class CustomShippingOptionService extends TransactionBaseService {
     id: string,
     config: FindConfig<CustomShippingOption> = {}
   ): Promise<CustomShippingOption> {
-    const customShippingOptionRepo = this.activeManager_.getCustomRepository(
+    const customShippingOptionRepo = this.activeManager_.withRepository(
       this.customShippingOptionRepository_
     )
 
@@ -63,7 +63,7 @@ class CustomShippingOptionService extends TransactionBaseService {
       relations: [],
     }
   ): Promise<CustomShippingOption[]> {
-    const customShippingOptionRepo = this.activeManager_.getCustomRepository(
+    const customShippingOptionRepo = this.activeManager_.withRepository(
       this.customShippingOptionRepository_
     )
 
@@ -83,7 +83,7 @@ class CustomShippingOptionService extends TransactionBaseService {
   ): Promise<CustomShippingOption> {
     const { cart_id, shipping_option_id, price, metadata } = data
 
-    const customShippingOptionRepo = this.activeManager_.getCustomRepository(
+    const customShippingOptionRepo = this.activeManager_.withRepository(
       this.customShippingOptionRepository_
     )
 

@@ -99,9 +99,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return true
     }
 
-    let locations: string[] = []
+    let locationIds: string[] = []
     if (context.salesChannelId) {
-      locations = await this.salesChannelLocationService_.listLocations(
+      locationIds = await this.salesChannelLocationService_.listLocationIds(
         context.salesChannelId
       )
     } else {
@@ -109,7 +109,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         {},
         { select: ["id"] }
       )
-      locations = stockLocations.map((l) => l.id)
+      locationIds = stockLocations.map((l) => l.id)
     }
 
     const hasInventory = await Promise.all(
@@ -119,7 +119,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
           .withTransaction(this.activeManager_)
           .confirmInventory(
             inventoryPart.inventory_item_id,
-            locations,
+            locationIds,
             itemQuantity
           )
       })
@@ -364,7 +364,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     if (!isDefined(locationId) && context.salesChannelId) {
       const locations = await this.salesChannelLocationService_
         .withTransaction(this.activeManager_)
-        .listLocations(context.salesChannelId)
+        .listLocationIds(context.salesChannelId)
 
       if (!locations.length) {
         throw new MedusaError(

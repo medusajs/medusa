@@ -13,7 +13,7 @@ import { defaultStoreScope } from "."
  * description: "Retrieve a list of product categories."
  * x-authenticated: false
  * parameters:
- *   - (query) q {string} Query used for searching product category names orhandles.
+ *   - (query) q {string} Query used for searching product category names or handles.
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.

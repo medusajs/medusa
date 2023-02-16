@@ -1,8 +1,8 @@
 import { MedusaError } from "medusa-core-utils"
-import { ILike } from "typeorm"
+import { FindOptionsWhere, ILike } from "typeorm"
 import { ProductType } from "../models"
 import { ProductTypeRepository } from "../repositories/product-type"
-import { FindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, isString } from "../utils"
 
@@ -28,9 +28,7 @@ class ProductTypeService extends TransactionBaseService {
     id: string,
     config: FindConfig<ProductType> = {}
   ): Promise<ProductType> {
-    const typeRepo = this.activeManager_.getCustomRepository(
-      this.typeRepository_
-    )
+    const typeRepo = this.activeManager_.withRepository(this.typeRepository_)
 
     const query = buildQuery({ id }, config)
     const type = await typeRepo.findOne(query)
@@ -75,9 +73,7 @@ class ProductTypeService extends TransactionBaseService {
     } = {},
     config: FindConfig<ProductType> = { skip: 0, take: 20 }
   ): Promise<[ProductType[], number]> {
-    const typeRepo = this.activeManager_.getCustomRepository(
-      this.typeRepository_
-    )
+    const typeRepo = this.activeManager_.withRepository(this.typeRepository_)
 
     let q
     if (isString(selector.q)) {
@@ -85,7 +81,12 @@ class ProductTypeService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(
+      selector,
+      config
+    ) as ExtendedFindConfig<ProductType> & {
+      where: FindOptionsWhere<ProductType> & { discount_condition_id?: string }
+    }
 
     if (q) {
       query.where.value = ILike(`%${q}%`)

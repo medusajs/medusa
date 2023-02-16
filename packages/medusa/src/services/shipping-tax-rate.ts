@@ -6,6 +6,7 @@ import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
 
 class ShippingTaxRateService extends TransactionBaseService {
+  // eslint-disable-next-line max-len
   protected readonly shippingTaxRateRepository_: typeof ShippingTaxRateRepository
 
   constructor({ shippingTaxRateRepository }) {
@@ -25,7 +26,7 @@ class ShippingTaxRateService extends TransactionBaseService {
     selector: FilterableShippingTaxRateProps,
     config: FindConfig<ShippingTaxRate> = { relations: [], skip: 0, take: 20 }
   ): Promise<ShippingTaxRate[]> {
-    const sTaxRateRepo = this.activeManager_.getCustomRepository(
+    const sTaxRateRepo = this.activeManager_.withRepository(
       this.shippingTaxRateRepository_
     )
 

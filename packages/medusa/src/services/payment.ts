@@ -65,7 +65,7 @@ export default class PaymentService extends TransactionBaseService {
       )
     }
 
-    const paymentRepository = this.activeManager_.getCustomRepository(
+    const paymentRepository = this.activeManager_.withRepository(
       this.paymentRepository_
     )
 
@@ -92,9 +92,7 @@ export default class PaymentService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const { data, currency_code, amount, provider_id } = paymentInput
 
-      const paymentRepository = manager.getCustomRepository(
-        this.paymentRepository_
-      )
+      const paymentRepository = manager.withRepository(this.paymentRepository_)
 
       const created = paymentRepository.create({
         provider_id,
@@ -126,9 +124,7 @@ export default class PaymentService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const payment = await this.retrieve(paymentId)
 
-      const paymentRepository = manager.getCustomRepository(
-        this.paymentRepository_
-      )
+      const paymentRepository = manager.withRepository(this.paymentRepository_)
 
       if (data?.order_id) {
         payment.order_id = data.order_id

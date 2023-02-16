@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { Address } from "../models/address"
+import { Address } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(Address)
-export class AddressRepository extends Repository<Address> {}
+export const AddressRepository = dataSource.getRepository(Address)
+export default AddressRepository

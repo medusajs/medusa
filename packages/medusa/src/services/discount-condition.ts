@@ -53,7 +53,7 @@ class DiscountConditionService extends TransactionBaseService {
       )
     }
 
-    const conditionRepo = this.activeManager_.getCustomRepository(
+    const conditionRepo = this.activeManager_.withRepository(
       this.discountConditionRepository_
     )
 
@@ -134,8 +134,9 @@ class DiscountConditionService extends TransactionBaseService {
           )
         }
 
-        const discountConditionRepo: DiscountConditionRepository =
-          manager.getCustomRepository(this.discountConditionRepository_)
+        const discountConditionRepo = manager.withRepository(
+          this.discountConditionRepository_
+        )
 
         if (data.id) {
           const resolvedCondition = await this.retrieve(data.id)
@@ -194,8 +195,9 @@ class DiscountConditionService extends TransactionBaseService {
         )
       }
 
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
+      const discountConditionRepo = manager.withRepository(
+        this.discountConditionRepository_
+      )
 
       const resolvedCondition = await this.retrieve(data.id)
 
@@ -214,7 +216,7 @@ class DiscountConditionService extends TransactionBaseService {
 
   async delete(discountConditionId: string): Promise<DiscountCondition | void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const conditionRepo = manager.getCustomRepository(
+      const conditionRepo = manager.withRepository(
         this.discountConditionRepository_
       )
 

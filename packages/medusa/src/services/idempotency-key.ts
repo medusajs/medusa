@@ -62,7 +62,7 @@ class IdempotencyKeyService extends TransactionBaseService {
    */
   async create(payload: CreateIdempotencyKeyInput): Promise<IdempotencyKey> {
     return await this.atomicPhase_(async (manager) => {
-      const idempotencyKeyRepo = manager.getCustomRepository(
+      const idempotencyKeyRepo = manager.withRepository(
         this.idempotencyKeyRepository_
       )
 
@@ -86,7 +86,7 @@ class IdempotencyKeyService extends TransactionBaseService {
       )
     }
 
-    const idempotencyKeyRepo = this.activeManager_.getCustomRepository(
+    const idempotencyKeyRepo = this.activeManager_.withRepository(
       this.idempotencyKeyRepository_
     )
 
@@ -111,7 +111,7 @@ class IdempotencyKeyService extends TransactionBaseService {
    */
   async lock(idempotencyKey: string): Promise<IdempotencyKey | never> {
     return await this.atomicPhase_(async (manager) => {
-      const idempotencyKeyRepo = manager.getCustomRepository(
+      const idempotencyKeyRepo = manager.withRepository(
         this.idempotencyKeyRepository_
       )
 
@@ -143,7 +143,7 @@ class IdempotencyKeyService extends TransactionBaseService {
     update: DeepPartial<IdempotencyKey>
   ): Promise<IdempotencyKey> {
     return await this.atomicPhase_(async (manager) => {
-      const idempotencyKeyRepo = manager.getCustomRepository(
+      const idempotencyKeyRepo = manager.withRepository(
         this.idempotencyKeyRepository_
       )
 

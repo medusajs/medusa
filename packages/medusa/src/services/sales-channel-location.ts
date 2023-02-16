@@ -97,16 +97,34 @@ class SalesChannelLocationService extends TransactionBaseService {
    * @param salesChannelId - The ID of the sales channel.
    * @returns A promise that resolves with an array of location IDs.
    */
-  async listLocations(salesChannelId: string): Promise<string[]> {
+  async listLocationIds(salesChannelId: string): Promise<string[]> {
     const salesChannel = await this.salesChannelService_
       .withTransaction(this.activeManager_)
       .retrieve(salesChannelId)
 
     const locations = await this.activeManager_.find(SalesChannelLocation, {
       where: { sales_channel_id: salesChannel.id },
+      select: ["location_id"],
     })
 
     return locations.map((l) => l.location_id)
+  }
+
+  /**
+   * Lists the sales channels associated with a stock location.
+   * @param {string} salesChannelId - The ID of the stock location.
+   * @returns {Promise<string[]>} A promise that resolves with an array of sales channel IDs.
+   */
+  async listSalesChannelIds(locationId: string): Promise<string[]> {
+    const manager = this.transactionManager_ || this.manager_
+    const location = await this.stockLocationService.retrieve(locationId)
+
+    const salesChannelLocations = await manager.find(SalesChannelLocation, {
+      where: { location_id: location.id },
+      select: ["sales_channel_id"],
+    })
+
+    return salesChannelLocations.map((l) => l.sales_channel_id)
   }
 }
 

@@ -24,7 +24,7 @@ class ProductTaxRateService extends TransactionBaseService {
     selector: FilterableProductTaxRateProps,
     config: FindConfig<ProductTaxRate> = { relations: [], skip: 0, take: 20 }
   ): Promise<ProductTaxRate[]> {
-    const pTaxRateRepo = this.activeManager_.getCustomRepository(
+    const pTaxRateRepo = this.activeManager_.withRepository(
       this.productTaxRateRepository_
     )
 

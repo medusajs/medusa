@@ -74,7 +74,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const model = transactionManager.getCustomRepository(
+      const model = transactionManager.withRepository(
         this.paymentProviderRepository_
       )
       await model.update({}, { is_installed: false })
@@ -92,7 +92,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   async list(): Promise<PaymentProvider[]> {
-    const ppRepo = this.activeManager_.getCustomRepository(
+    const ppRepo = this.activeManager_.withRepository(
       this.paymentProviderRepository_
     )
     return await ppRepo.find()
@@ -102,7 +102,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     id: string,
     relations: string[] = []
   ): Promise<Payment | never> {
-    const paymentRepo = this.activeManager_.getCustomRepository(
+    const paymentRepo = this.activeManager_.withRepository(
       this.paymentRepository_
     )
     const query = {
@@ -134,9 +134,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Payment[]> {
-    const payRepo = this.activeManager_.getCustomRepository(
-      this.paymentRepository_
-    )
+    const payRepo = this.activeManager_.withRepository(this.paymentRepository_)
     const query = buildQuery(selector, config)
     return await payRepo.find(query)
   }
@@ -145,7 +143,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     id: string,
     relations: string[] = []
   ): Promise<PaymentSession | never> {
-    const sessionRepo = this.activeManager_.getCustomRepository(
+    const sessionRepo = this.activeManager_.withRepository(
       this.paymentSessionRepository_
     )
 
@@ -249,7 +247,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       )
       await provider.withTransaction(transactionManager).deletePayment(session)
 
-      const sessionRepo = transactionManager.getCustomRepository(
+      const sessionRepo = transactionManager.withRepository(
         this.paymentSessionRepository_
       )
 
@@ -316,7 +314,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         .withTransaction(transactionManager)
         .deletePayment(paymentSession)
 
-      const sessionRepo = transactionManager.getCustomRepository(
+      const sessionRepo = transactionManager.withRepository(
         this.paymentSessionRepository_
       )
 
@@ -363,7 +361,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         .withTransaction(transactionManager)
         .getPaymentData(payment_session)
 
-      const paymentRepo = transactionManager.getCustomRepository(
+      const paymentRepo = transactionManager.withRepository(
         this.paymentRepository_
       )
 
@@ -416,7 +414,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         session.payment_authorized_at = new Date()
       }
 
-      const sessionRepo = transactionManager.getCustomRepository(
+      const sessionRepo = transactionManager.withRepository(
         this.paymentSessionRepository_
       )
       return await sessionRepo.save(session)
@@ -437,7 +435,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         .updatePaymentData(paymentSession.data, data)
       session.status = paymentSession.status
 
-      const sessionRepo = transactionManager.getCustomRepository(
+      const sessionRepo = transactionManager.withRepository(
         this.paymentSessionRepository_
       )
       return await sessionRepo.save(session)
@@ -457,7 +455,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const now = new Date()
       payment.canceled_at = now.toISOString()
 
-      const paymentRepo = transactionManager.getCustomRepository(
+      const paymentRepo = transactionManager.withRepository(
         this.paymentRepository_
       )
       return await paymentRepo.save(payment)
@@ -484,7 +482,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const now = new Date()
       payment.captured_at = now.toISOString()
 
-      const paymentRepo = transactionManager.getCustomRepository(
+      const paymentRepo = transactionManager.withRepository(
         this.paymentRepository_
       )
       return await paymentRepo.save(payment)
@@ -523,7 +521,7 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const used: string[] = []
 
-      const paymentRepo = transactionManager.getCustomRepository(
+      const paymentRepo = transactionManager.withRepository(
         this.paymentRepository_
       )
 
@@ -560,7 +558,7 @@ export default class PaymentProviderService extends TransactionBaseService {
         }
       }
 
-      const refundRepo = transactionManager.getCustomRepository(
+      const refundRepo = transactionManager.withRepository(
         this.refundRepository_
       )
 
@@ -599,10 +597,10 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       payment.amount_refunded += amount
 
-      const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
+      const paymentRepo = manager.withRepository(this.paymentRepository_)
       await paymentRepo.save(payment)
 
-      const refundRepo = manager.getCustomRepository(this.refundRepository_)
+      const refundRepo = manager.withRepository(this.refundRepository_)
 
       const toCreate = {
         payment_id: payment.id,
@@ -620,9 +618,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     id: string,
     config: FindConfig<Refund> = {}
   ): Promise<Refund | never> {
-    const refRepo = this.activeManager_.getCustomRepository(
-      this.refundRepository_
-    )
+    const refRepo = this.activeManager_.withRepository(this.refundRepository_)
     const query = buildQuery({ id }, config)
     const refund = await refRepo.findOne(query)
 
@@ -693,7 +689,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       status?: PaymentSessionStatus
     }
   ): Promise<PaymentSession> {
-    const sessionRepo = this.activeManager_.getCustomRepository(
+    const sessionRepo = this.activeManager_.withRepository(
       this.paymentSessionRepository_
     )
 

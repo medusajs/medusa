@@ -1,14 +1,24 @@
 import jwt from "jsonwebtoken"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
-import { DeepPartial, EntityManager } from "typeorm"
+import {
+  DeepPartial,
+  EntityManager,
+  FindOperator,
+  FindOptionsWhere,
+} from "typeorm"
 import { EventBusService } from "."
 import { StorePostCustomersCustomerAddressesAddressReq } from "../api"
 import { TransactionBaseService } from "../interfaces"
 import { Address, Customer, CustomerGroup } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CustomerRepository } from "../repositories/customer"
-import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
+import {
+  AddressCreatePayload,
+  ExtendedFindConfig,
+  FindConfig,
+  Selector,
+} from "../types/common"
 import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
 import { buildQuery, setMetadata } from "../utils"
 
@@ -99,10 +109,10 @@ class CustomerService extends TransactionBaseService {
    * @return {Promise} the result of the find operation
    */
   async list(
-    selector: Selector<Customer> & { q?: string } = {},
+    selector: Selector<Customer> & { q?: string; groups?: string[] } = {},
     config: FindConfig<Customer> = { relations: [], skip: 0, take: 50 }
   ): Promise<Customer[]> {
-    const customerRepo = this.activeManager_.getCustomRepository(
+    const customerRepo = this.activeManager_.withRepository(
       this.customerRepository_
     )
 
@@ -112,7 +122,14 @@ class CustomerService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery<Selector<Customer>, Customer>(selector, config)
+    const query = buildQuery<Selector<Customer>, Customer>(
+      selector,
+      config
+    ) as ExtendedFindConfig<Customer> & {
+      where: FindOptionsWhere<
+        Customer | (Customer & { groups?: FindOperator<string[]> })
+      >
+    }
 
     const [customers] = await customerRepo.listAndCount(query, q)
     return customers
@@ -124,7 +141,7 @@ class CustomerService extends TransactionBaseService {
    * @return {Promise} the result of the find operation
    */
   async listAndCount(
-    selector: Selector<Customer> & { q?: string },
+    selector: Selector<Customer> & { q?: string; groups?: string[] },
     config: FindConfig<Customer> = {
       relations: [],
       skip: 0,
@@ -132,7 +149,7 @@ class CustomerService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[Customer[], number]> {
-    const customerRepo = this.activeManager_.getCustomRepository(
+    const customerRepo = this.activeManager_.withRepository(
       this.customerRepository_
     )
 
@@ -142,7 +159,14 @@ class CustomerService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery<Selector<Customer>, Customer>(selector, config)
+    const query = buildQuery(
+      selector,
+      config
+    ) as ExtendedFindConfig<Customer> & {
+      where: FindOptionsWhere<
+        Customer | (Customer & { groups?: FindOperator<string[]> })
+      >
+    }
 
     return await customerRepo.listAndCount(query, q)
   }
@@ -152,7 +176,7 @@ class CustomerService extends TransactionBaseService {
    * @return {Promise} the result of the count operation
    */
   async count(): Promise<number> {
-    const customerRepo = this.activeManager_.getCustomRepository(
+    const customerRepo = this.activeManager_.withRepository(
       this.customerRepository_
     )
     return await customerRepo.count({})
@@ -162,7 +186,7 @@ class CustomerService extends TransactionBaseService {
     selector: Selector<Customer>,
     config: FindConfig<Customer> = {}
   ): Promise<Customer | never> {
-    const customerRepo = this.activeManager_.getCustomRepository(
+    const customerRepo = this.activeManager_.withRepository(
       this.customerRepository_
     )
 
@@ -281,7 +305,7 @@ class CustomerService extends TransactionBaseService {
    */
   async create(customer: CreateCustomerInput): Promise<Customer> {
     return await this.atomicPhase_(async (manager) => {
-      const customerRepository = manager.getCustomRepository(
+      const customerRepository = manager.withRepository(
         this.customerRepository_
       )
 
@@ -340,7 +364,7 @@ class CustomerService extends TransactionBaseService {
     update: UpdateCustomerInput
   ): Promise<Customer> {
     return await this.atomicPhase_(async (manager) => {
-      const customerRepository = manager.getCustomRepository(
+      const customerRepository = manager.withRepository(
         this.customerRepository_
       )
 
@@ -400,7 +424,7 @@ class CustomerService extends TransactionBaseService {
     addressOrId: string | DeepPartial<Address> | undefined
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const addrRepo: AddressRepository = manager.getCustomRepository(
+      const addrRepo: typeof AddressRepository = manager.withRepository(
         this.addressRepository_
       )
 
@@ -453,7 +477,7 @@ class CustomerService extends TransactionBaseService {
     address: StorePostCustomersCustomerAddressesAddressReq
   ): Promise<Address> {
     return await this.atomicPhase_(async (manager) => {
-      const addressRepo = manager.getCustomRepository(this.addressRepository_)
+      const addressRepo = manager.withRepository(this.addressRepository_)
 
       address.country_code = address.country_code?.toLowerCase()
 
@@ -477,7 +501,7 @@ class CustomerService extends TransactionBaseService {
 
   async removeAddress(customerId: string, addressId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const addressRepo = manager.getCustomRepository(this.addressRepository_)
+      const addressRepo = manager.withRepository(this.addressRepository_)
 
       // Should not fail, if user does not exist, since delete is idempotent
       const address = await addressRepo.findOne({
@@ -497,9 +521,7 @@ class CustomerService extends TransactionBaseService {
     address: AddressCreatePayload
   ): Promise<Customer | Address> {
     return await this.atomicPhase_(async (manager) => {
-      const addressRepository = manager.getCustomRepository(
-        this.addressRepository_
-      )
+      const addressRepository = manager.withRepository(this.addressRepository_)
 
       address.country_code = address.country_code.toLowerCase()
 
@@ -542,7 +564,7 @@ class CustomerService extends TransactionBaseService {
    */
   async delete(customerId: string): Promise<Customer | void> {
     return await this.atomicPhase_(async (manager) => {
-      const customerRepo = manager.getCustomRepository(this.customerRepository_)
+      const customerRepo = manager.withRepository(this.customerRepository_)
 
       // Should not fail, if user does not exist, since delete is idempotent
       const customer = await customerRepo.findOne({ where: { id: customerId } })

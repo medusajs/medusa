@@ -52,7 +52,7 @@ class FulfillmentProviderService extends TransactionBaseService {
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const fulfillmentProviderRepo = manager.getCustomRepository(
+      const fulfillmentProviderRepo = manager.withRepository(
         this.fulfillmentProviderRepository_
       )
       await fulfillmentProviderRepo.update({}, { is_installed: false })
@@ -65,7 +65,7 @@ class FulfillmentProviderService extends TransactionBaseService {
   }
 
   async list(): Promise<FulfillmentProvider[]> {
-    const fpRepo = this.activeManager_.getCustomRepository(
+    const fpRepo = this.activeManager_.withRepository(
       this.fulfillmentProviderRepository_
     )
 

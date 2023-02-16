@@ -68,11 +68,14 @@ class ShippingProfileService extends TransactionBaseService {
     selector: Selector<ShippingProfile> = {},
     config: FindConfig<ShippingProfile> = { relations: [], skip: 0, take: 10 }
   ): Promise<ShippingProfile[]> {
-    const shippingProfileRepo = this.activeManager_.getCustomRepository(
+    const shippingProfileRepo = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery<Selector<ShippingProfile>, ShippingProfile>(
+      selector,
+      config
+    )
     return shippingProfileRepo.find(query)
   }
 
@@ -139,7 +142,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
     }
 
-    const profileRepository = this.activeManager_.getCustomRepository(
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
@@ -157,13 +160,13 @@ class ShippingProfileService extends TransactionBaseService {
     return profile
   }
 
-  async retrieveDefault(): Promise<ShippingProfile | undefined> {
-    const profileRepository = this.activeManager_.getCustomRepository(
+  async retrieveDefault(): Promise<ShippingProfile | null> {
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
     const profile = await profileRepository.findOne({
-      where: { type: "default" },
+      where: { type: ShippingProfileType.DEFAULT },
     })
 
     return profile
@@ -178,7 +181,7 @@ class ShippingProfileService extends TransactionBaseService {
       let profile = await this.retrieveDefault()
 
       if (!profile) {
-        const profileRepository = manager.getCustomRepository(
+        const profileRepository = manager.withRepository(
           this.shippingProfileRepository_
         )
 
@@ -200,13 +203,13 @@ class ShippingProfileService extends TransactionBaseService {
    * Retrieves the default gift card profile
    * @return the shipping profile for gift cards
    */
-  async retrieveGiftCardDefault(): Promise<ShippingProfile | undefined> {
-    const profileRepository = this.activeManager_.getCustomRepository(
+  async retrieveGiftCardDefault(): Promise<ShippingProfile | null> {
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
     const giftCardProfile = await profileRepository.findOne({
-      where: { type: "gift_card" },
+      where: { type: ShippingProfileType.GIFT_CARD },
     })
 
     return giftCardProfile
@@ -222,7 +225,7 @@ class ShippingProfileService extends TransactionBaseService {
       let profile = await this.retrieveGiftCardDefault()
 
       if (!profile) {
-        const profileRepository = manager.getCustomRepository(
+        const profileRepository = manager.withRepository(
           this.shippingProfileRepository_
         )
 
@@ -245,7 +248,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async create(profile: CreateShippingProfile): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepository = manager.getCustomRepository(
+      const profileRepository = manager.withRepository(
         this.shippingProfileRepository_
       )
 
@@ -283,7 +286,7 @@ class ShippingProfileService extends TransactionBaseService {
     update: UpdateShippingProfile
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepository = manager.getCustomRepository(
+      const profileRepository = manager.withRepository(
         this.shippingProfileRepository_
       )
 
@@ -326,7 +329,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async delete(profileId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepo = manager.getCustomRepository(
+      const profileRepo = manager.withRepository(
         this.shippingProfileRepository_
       )
 

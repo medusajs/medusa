@@ -48,7 +48,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     id: string,
     config: FindConfig<OrderItemChange> = {}
   ): Promise<OrderItemChange | never> {
-    const orderItemChangeRepo = this.activeManager_.getCustomRepository(
+    const orderItemChangeRepo = this.activeManager_.withRepository(
       this.orderItemChangeRepository_
     )
 
@@ -69,7 +69,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
     selector: Selector<OrderItemChange>,
     config: FindConfig<OrderItemChange> = {}
   ): Promise<OrderItemChange[]> {
-    const orderItemChangeRepo = this.activeManager_.getCustomRepository(
+    const orderItemChangeRepo = this.activeManager_.withRepository(
       this.orderItemChangeRepository_
     )
 
@@ -79,7 +79,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
 
   async create(data: CreateOrderEditItemChangeInput): Promise<OrderItemChange> {
     return await this.atomicPhase_(async (manager) => {
-      const orderItemChangeRepo = manager.getCustomRepository(
+      const orderItemChangeRepo = manager.withRepository(
         this.orderItemChangeRepository_
       )
       const changeEntity = orderItemChangeRepo.create(data)
@@ -99,7 +99,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
       : [itemChangeIds]
 
     return await this.atomicPhase_(async (manager) => {
-      const orderItemChangeRepo = manager.getCustomRepository(
+      const orderItemChangeRepo = manager.withRepository(
         this.orderItemChangeRepository_
       )
 

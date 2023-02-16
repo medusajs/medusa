@@ -26,7 +26,7 @@ class AnalyticsConfigService extends TransactionBaseService {
   }
 
   async retrieve(userId: string): Promise<AnalyticsConfig> {
-    const analyticsRepo = this.activeManager_.getCustomRepository(
+    const analyticsRepo = this.activeManager_.withRepository(
       this.analyticsConfigRepository_
     )
 
@@ -51,7 +51,7 @@ class AnalyticsConfigService extends TransactionBaseService {
     userId: string,
     data: CreateAnalyticsConfig
   ): Promise<AnalyticsConfig> {
-    const analyticsRepo = this.activeManager_.getCustomRepository(
+    const analyticsRepo = this.activeManager_.withRepository(
       this.analyticsConfigRepository_
     )
 
@@ -66,7 +66,7 @@ class AnalyticsConfigService extends TransactionBaseService {
     userId: string,
     update: UpdateAnalyticsConfig
   ): Promise<AnalyticsConfig> {
-    const analyticsRepo = this.activeManager_.getCustomRepository(
+    const analyticsRepo = this.activeManager_.withRepository(
       this.analyticsConfigRepository_
     )
 
@@ -92,7 +92,7 @@ class AnalyticsConfigService extends TransactionBaseService {
    * Deletes an analytics config.
    */
   async delete(userId: string): Promise<void> {
-    const analyticsRepo = this.activeManager_.getCustomRepository(
+    const analyticsRepo = this.activeManager_.withRepository(
       this.analyticsConfigRepository_
     )
 

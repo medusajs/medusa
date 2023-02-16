@@ -9,9 +9,10 @@ const {
   Region,
   Cart,
   PriceList,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
-module.exports = async (connection, data = {}) => {
+module.exports = async (dataSource, data = {}) => {
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
     new Date()
   )
@@ -24,10 +25,10 @@ module.exports = async (connection, data = {}) => {
   const tenDaysFromToday = ((today) =>
     new Date(today.setDate(today.getDate() + 10)))(new Date())
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: ShippingProfileType.DEFAULT },
   })
 
   await manager.insert(Region, {
