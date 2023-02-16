@@ -24,6 +24,7 @@ import {
 import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
 import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
+import { asyncLoadConfig } from "../utils/async-load-config"
 
 type SeedOptions = {
   directory: string
@@ -47,12 +48,13 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
     }
   }
 
-  const { configModule, error }: { configModule: ConfigModule; error?: any } =
-    getConfigFile(directory, `medusa-config`)
+  /*const { configModule, error }: { configModule: ConfigModule; error?: any } =
+    getConfigFile(directory, `medusa-config`)*/
 
-  if (error) {
+    const configModule = await asyncLoadConfig(directory, `medusa-config`)
+  /*if (error) {
     handleConfigError(error)
-  }
+  }*/
 
   const featureFlagRouter = featureFlagLoader(configModule)
 
