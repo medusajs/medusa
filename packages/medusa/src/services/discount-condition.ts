@@ -31,17 +31,13 @@ class DiscountConditionService extends TransactionBaseService {
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly eventBus_: EventBusService
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     discountConditionRepository,
     eventBusService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.discountConditionRepository_ = discountConditionRepository
     this.eventBus_ = eventBusService
   }
@@ -57,8 +53,7 @@ class DiscountConditionService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const conditionRepo = manager.withRepository(
+    const conditionRepo = this.activeManager_.withRepository(
       this.discountConditionRepository_
     )
 

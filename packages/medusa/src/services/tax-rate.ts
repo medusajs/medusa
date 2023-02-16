@@ -21,24 +21,20 @@ import { buildQuery, PostgresError } from "../utils"
 import { TransactionBaseService } from "../interfaces"
 
 class TaxRateService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly productService_: ProductService
   protected readonly productTypeService_: ProductTypeService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly taxRateRepository_: typeof TaxRateRepository
 
   constructor({
-    manager,
     productService,
     productTypeService,
     shippingOptionService,
     taxRateRepository,
   }) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.taxRateRepository_ = taxRateRepository
     this.productService_ = productService
     this.productTypeService_ = productTypeService
@@ -49,7 +45,9 @@ class TaxRateService extends TransactionBaseService {
     selector: FilterableTaxRateProps,
     config: FindConfig<TaxRate> = {}
   ): Promise<TaxRate[]> {
-    const taxRateRepo = this.manager_.withRepository(this.taxRateRepository_)
+    const taxRateRepo = this.activeManager_.withRepository(
+      this.taxRateRepository_
+    )
     const query = buildQuery(selector, config)
     return await taxRateRepo.findWithResolution(query)
   }
@@ -58,7 +56,9 @@ class TaxRateService extends TransactionBaseService {
     selector: FilterableTaxRateProps,
     config: FindConfig<TaxRate> = {}
   ): Promise<[TaxRate[], number]> {
-    const taxRateRepo = this.manager_.withRepository(this.taxRateRepository_)
+    const taxRateRepo = this.activeManager_.withRepository(
+      this.taxRateRepository_
+    )
     const query = buildQuery(selector, config)
     return await taxRateRepo.findAndCountWithResolution(query)
   }
@@ -74,8 +74,9 @@ class TaxRateService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const taxRateRepo = manager.withRepository(this.taxRateRepository_)
+    const taxRateRepo = this.activeManager_.withRepository(
+      this.taxRateRepository_
+    )
     const query = buildQuery({ id: taxRateId }, config)
 
     const taxRate = await taxRateRepo.findOneWithResolution(query)
@@ -315,14 +316,16 @@ class TaxRateService extends TransactionBaseService {
     config: TaxRateListByConfig
   ): Promise<TaxRate[]> {
     // Check both ProductTaxRate + ProductTypeTaxRate
-    const manager = this.manager_
-    const taxRateRepo = manager.withRepository(this.taxRateRepository_)
+    const taxRateRepo = this.activeManager_.withRepository(
+      this.taxRateRepository_
+    )
     return await taxRateRepo.listByProduct(productId, config)
   }
 
   async listByShippingOption(shippingOptionId: string): Promise<TaxRate[]> {
-    const manager = this.manager_
-    const taxRateRepo = manager.withRepository(this.taxRateRepository_)
+    const taxRateRepo = this.activeManager_.withRepository(
+      this.taxRateRepository_
+    )
     return await taxRateRepo.listByShippingOption(shippingOptionId)
   }
 }

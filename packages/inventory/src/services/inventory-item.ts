@@ -26,18 +26,11 @@ export default class InventoryItemService extends TransactionBaseService {
   }
 
   protected readonly eventBusService_: IEventBusService
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
 
-  constructor({ eventBusService, manager }: InjectedDependencies) {
+  constructor({ eventBusService }: InjectedDependencies) {
     super(arguments[0])
 
     this.eventBusService_ = eventBusService
-    this.manager_ = manager
-  }
-
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -49,7 +42,7 @@ export default class InventoryItemService extends TransactionBaseService {
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
   ): Promise<InventoryItemDTO[]> {
-    const queryBuilder = getListQuery(this.getManager(), selector, config)
+    const queryBuilder = getListQuery(this.activeManager_, selector, config)
     return await queryBuilder.getMany()
   }
 
@@ -62,7 +55,7 @@ export default class InventoryItemService extends TransactionBaseService {
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 }
   ): Promise<[InventoryItemDTO[], number]> {
-    const queryBuilder = getListQuery(this.getManager(), selector, config)
+    const queryBuilder = getListQuery(this.activeManager_, selector, config)
     return await queryBuilder.getManyAndCount()
   }
 
@@ -84,7 +77,7 @@ export default class InventoryItemService extends TransactionBaseService {
       )
     }
 
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const itemRepository = manager.getRepository(InventoryItem)
 
     const query = buildQuery({ id: inventoryItemId }, config) as FindManyOptions

@@ -73,9 +73,6 @@ class SwapService extends TransactionBaseService {
     FULFILLMENT_CREATED: "swap.fulfillment_created",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly swapRepository_: typeof SwapRepository
 
   protected readonly cartService_: CartService
@@ -93,7 +90,6 @@ class SwapService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     swapRepository,
     eventBusService,
     cartService,
@@ -110,8 +106,6 @@ class SwapService extends TransactionBaseService {
   }: InjectedProps) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    this.manager_ = manager
 
     this.swapRepository_ = swapRepository
     this.totalsService_ = totalsService
@@ -218,7 +212,7 @@ class SwapService extends TransactionBaseService {
       )
     }
 
-    const swapRepo = this.manager_.withRepository(this.swapRepository_)
+    const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
 
     const { cartSelects, cartRelations, ...newConfig } =
       this.transformQueryForCart(config)
@@ -233,7 +227,7 @@ class SwapService extends TransactionBaseService {
 
     if (cartRelations || cartSelects) {
       swap.cart = await this.cartService_
-        .withTransaction(this.manager_)
+        .withTransaction(this.activeManager_)
         .retrieve(swap.cart_id, {
           select: cartSelects,
           relations: cartRelations,
@@ -254,7 +248,7 @@ class SwapService extends TransactionBaseService {
     cartId: string,
     relations: FindConfig<Swap>["relations"] = []
   ): Promise<Swap | never> {
-    const swapRepo = this.manager_.withRepository(this.swapRepository_)
+    const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
 
     const swap = await swapRepo.findOne({
       where: {
@@ -285,7 +279,7 @@ class SwapService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Swap[]> {
-    const swapRepo = this.manager_.withRepository(this.swapRepository_)
+    const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
     query.relationLoadStrategy = "query"
 

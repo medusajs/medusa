@@ -48,9 +48,6 @@ type InjectedDependencies = {
 }
 
 class ProductService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly productOptionRepository_: typeof ProductOptionRepository
   protected readonly productRepository_: typeof ProductRepository
   protected readonly productVariantRepository_: typeof ProductVariantRepository
@@ -72,7 +69,6 @@ class ProductService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     productOptionRepository,
     productRepository,
     productVariantRepository,
@@ -88,7 +84,6 @@ class ProductService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.productOptionRepository_ = productOptionRepository
     this.productRepository_ = productRepository
     this.productVariantRepository_ = productVariantRepository
@@ -143,8 +138,9 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false,
     }
   ): Promise<[Product[], number]> {
-    const manager = this.manager_
-    const productRepo = manager.withRepository(this.productRepository_)
+    const productRepo = this.activeManager_.withRepository(
+      this.productRepository_
+    )
 
     const { q, ...productSelector } = selector
     const query = buildQuery(productSelector, config) as ExtendedFindConfig<
@@ -160,8 +156,9 @@ class ProductService extends TransactionBaseService {
    * @return {Promise} the result of the count operation
    */
   async count(selector: Selector<Product> = {}): Promise<number> {
-    const manager = this.manager_
-    const productRepo = manager.withRepository(this.productRepository_)
+    const productRepo = this.activeManager_.withRepository(
+      this.productRepository_
+    )
     const query = buildQuery(selector)
     return await productRepo.count(query)
   }
@@ -246,8 +243,9 @@ class ProductService extends TransactionBaseService {
       include_discount_prices: false, // TODO: this seams to be unused from the repository
     }
   ): Promise<Product> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const productRepo = manager.withRepository(this.productRepository_)
+    const productRepo = this.activeManager_.withRepository(
+      this.productRepository_
+    )
     const query = buildQuery(selector, config as FindConfig<Product>)
     const product = await productRepo.findOne(query)
 
@@ -321,8 +319,7 @@ class ProductService extends TransactionBaseService {
   }
 
   async listTypes(): Promise<ProductType[]> {
-    const manager = this.manager_
-    const productTypeRepository = manager.withRepository(
+    const productTypeRepository = this.activeManager_.withRepository(
       this.productTypeRepository_
     )
 
@@ -330,8 +327,9 @@ class ProductService extends TransactionBaseService {
   }
 
   async listTagsByUsage(count = 10): Promise<ProductTag[]> {
-    const manager = this.manager_
-    const productTagRepo = manager.withRepository(this.productTagRepository_)
+    const productTagRepo = this.activeManager_.withRepository(
+      this.productTagRepository_
+    )
 
     return await productTagRepo.listTagsByUsage(count)
   }
@@ -776,7 +774,7 @@ class ProductService extends TransactionBaseService {
     title: string,
     productId: string
   ): Promise<ProductOption | null> {
-    const productOptionRepo = this.manager_.withRepository(
+    const productOptionRepo = this.activeManager_.withRepository(
       this.productOptionRepository_
     )
 

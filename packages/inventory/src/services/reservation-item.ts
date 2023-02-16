@@ -1,6 +1,7 @@
 import {
   buildQuery,
-  CreateReservationItemInput, FilterableReservationItemProps,
+  CreateReservationItemInput,
+  FilterableReservationItemProps,
   FindConfig,
   IEventBusService,
   TransactionBaseService,
@@ -26,25 +27,17 @@ export default class ReservationItemService extends TransactionBaseService {
     DELETED_BY_LINE_ITEM: "reservation-item.deleted-by-line-item",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly eventBusService_: IEventBusService
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor({
     eventBusService,
-    manager,
     inventoryLevelService,
   }: InjectedDependencies) {
     super(arguments[0])
 
-    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.inventoryLevelService_ = inventoryLevelService
-  }
-
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -57,7 +50,7 @@ export default class ReservationItemService extends TransactionBaseService {
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 }
   ): Promise<ReservationItem[]> {
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
@@ -74,7 +67,7 @@ export default class ReservationItemService extends TransactionBaseService {
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 }
   ): Promise<[ReservationItem[], number]> {
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
@@ -99,7 +92,7 @@ export default class ReservationItemService extends TransactionBaseService {
       )
     }
 
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery({ id: reservationItemId }, config) as FindManyOptions

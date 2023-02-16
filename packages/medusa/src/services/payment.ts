@@ -24,8 +24,6 @@ export type PaymentDataInput = {
 }
 
 export default class PaymentService extends TransactionBaseService {
-  protected readonly manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly eventBusService_: EventBusService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly paymentRepository_: typeof PaymentRepository
@@ -39,7 +37,6 @@ export default class PaymentService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     paymentRepository,
     paymentProviderService,
     eventBusService,
@@ -47,7 +44,6 @@ export default class PaymentService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.paymentRepository_ = paymentRepository
     this.paymentProviderService_ = paymentProviderService
     this.eventBusService_ = eventBusService
@@ -70,8 +66,7 @@ export default class PaymentService extends TransactionBaseService {
       )
     }
 
-    const manager = this.transactionManager_ ?? this.manager_
-    const paymentRepository = manager.withRepository(
+    const paymentRepository = this.activeManager_.withRepository(
       this.paymentRepository_
     )
 
@@ -98,9 +93,7 @@ export default class PaymentService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const { data, currency_code, amount, provider_id } = paymentInput
 
-      const paymentRepository = manager.withRepository(
-        this.paymentRepository_
-      )
+      const paymentRepository = manager.withRepository(this.paymentRepository_)
 
       const created = paymentRepository.create({
         provider_id,
@@ -132,9 +125,7 @@ export default class PaymentService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const payment = await this.retrieve(paymentId)
 
-      const paymentRepository = manager.withRepository(
-        this.paymentRepository_
-      )
+      const paymentRepository = manager.withRepository(this.paymentRepository_)
 
       if (data?.order_id) {
         payment.order_id = data.order_id

@@ -1,14 +1,17 @@
 import { EntityManager } from "typeorm"
-import { IStockLocationService, TransactionBaseService } from "../interfaces"
+import {
+  IEventBusService,
+  IStockLocationService,
+  TransactionBaseService,
+} from "../interfaces"
 import { SalesChannelService } from "./"
 
 import { SalesChannelLocation } from "../models"
-import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   stockLocationService: IStockLocationService
   salesChannelService: SalesChannelService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   manager: EntityManager
 }
 
@@ -17,23 +20,18 @@ type InjectedDependencies = {
  */
 
 class SalesChannelLocationService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly salesChannelService_: SalesChannelService
-  protected readonly eventBusService: EventBusService
+  protected readonly eventBusService: IEventBusService
   protected readonly stockLocationService: IStockLocationService
 
   constructor({
     salesChannelService,
     stockLocationService,
     eventBusService,
-    manager,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.salesChannelService_ = salesChannelService
     this.eventBusService = eventBusService
     this.stockLocationService = stockLocationService
@@ -49,9 +47,8 @@ class SalesChannelLocationService extends TransactionBaseService {
     locationId: string,
     salesChannelId?: string
   ): Promise<void> {
-    const manager = this.transactionManager_ || this.manager_
-
-    const salesChannelLocationRepo = manager.getRepository(SalesChannelLocation)
+    const salesChannelLocationRepo =
+      this.activeManager_.getRepository(SalesChannelLocation)
 
     const where: any = {
       location_id: locationId,
@@ -79,9 +76,8 @@ class SalesChannelLocationService extends TransactionBaseService {
     salesChannelId: string,
     locationId: string
   ): Promise<void> {
-    const manager = this.transactionManager_ || this.manager_
     const salesChannel = await this.salesChannelService_
-      .withTransaction(manager)
+      .withTransaction(this.activeManager_)
       .retrieve(salesChannelId)
 
     if (this.stockLocationService) {
@@ -89,12 +85,15 @@ class SalesChannelLocationService extends TransactionBaseService {
       await this.stockLocationService.retrieve(locationId)
     }
 
-    const salesChannelLocation = manager.create(SalesChannelLocation, {
-      sales_channel_id: salesChannel.id,
-      location_id: locationId,
-    })
+    const salesChannelLocation = this.activeManager_.create(
+      SalesChannelLocation,
+      {
+        sales_channel_id: salesChannel.id,
+        location_id: locationId,
+      }
+    )
 
-    await manager.save(salesChannelLocation)
+    await this.activeManager_.save(salesChannelLocation)
   }
 
   /**
@@ -103,12 +102,11 @@ class SalesChannelLocationService extends TransactionBaseService {
    * @returns A promise that resolves with an array of location IDs.
    */
   async listLocationIds(salesChannelId: string): Promise<string[]> {
-    const manager = this.transactionManager_ || this.manager_
     const salesChannel = await this.salesChannelService_
-      .withTransaction(manager)
+      .withTransaction(this.activeManager_)
       .retrieve(salesChannelId)
 
-    const locations = await manager.find(SalesChannelLocation, {
+    const locations = await this.activeManager_.find(SalesChannelLocation, {
       where: { sales_channel_id: salesChannel.id },
       select: ["location_id"],
     })

@@ -13,8 +13,6 @@ type StagedJobServiceProps = {
  * Provides layer to manipulate users.
  */
 class StagedJobService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
   protected stagedJobRepository_: typeof StagedJobRepository
 
   constructor({ stagedJobRepository }: StagedJobServiceProps) {
@@ -34,7 +32,7 @@ class StagedJobService extends TransactionBaseService {
   }
 
   async list(config: FindConfig<StagedJob>) {
-    const stagedJobRepo = this.manager_.withRepository(
+    const stagedJobRepo = this.activeManager_.withRepository(
       this.stagedJobRepository_
     )
 
@@ -42,7 +40,7 @@ class StagedJobService extends TransactionBaseService {
   }
 
   async remove(stagedJob: StagedJob) {
-    const stagedJobRepo = this.manager_.withRepository(
+    const stagedJobRepo = this.activeManager_.withRepository(
       this.stagedJobRepository_
     )
 

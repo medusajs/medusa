@@ -1,4 +1,3 @@
-import { EntityManager } from "typeorm"
 import { ProductTaxRate } from "../models"
 import { ProductTaxRateRepository } from "../repositories/product-tax-rate"
 import { FindConfig } from "../types/common"
@@ -7,15 +6,12 @@ import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
 
 class ProductTaxRateService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly productTaxRateRepository_: typeof ProductTaxRateRepository
 
-  constructor({ manager, productTaxRateRepository }) {
+  constructor({ productTaxRateRepository }) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.productTaxRateRepository_ = productTaxRateRepository
   }
 
@@ -28,7 +24,7 @@ class ProductTaxRateService extends TransactionBaseService {
     selector: FilterableProductTaxRateProps,
     config: FindConfig<ProductTaxRate> = { relations: [], skip: 0, take: 20 }
   ): Promise<ProductTaxRate[]> {
-    const pTaxRateRepo = this.manager_.withRepository(
+    const pTaxRateRepo = this.activeManager_.withRepository(
       this.productTaxRateRepository_
     )
 

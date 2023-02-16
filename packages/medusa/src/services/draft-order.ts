@@ -46,9 +46,6 @@ class DraftOrderService extends TransactionBaseService {
     UPDATED: "draft_order.updated",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly draftOrderRepository_: typeof DraftOrderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly orderRepository_: typeof OrderRepository
@@ -60,7 +57,6 @@ class DraftOrderService extends TransactionBaseService {
   protected readonly customShippingOptionService_: CustomShippingOptionService
 
   constructor({
-    manager,
     draftOrderRepository,
     paymentRepository,
     orderRepository,
@@ -74,7 +70,6 @@ class DraftOrderService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.draftOrderRepository_ = draftOrderRepository
     this.paymentRepository_ = paymentRepository
     this.orderRepository_ = orderRepository
@@ -103,8 +98,9 @@ class DraftOrderService extends TransactionBaseService {
       )
     }
 
-    const manager = this.manager_
-    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
+    const draftOrderRepo = this.activeManager_.withRepository(
+      this.draftOrderRepository_
+    )
 
     const query = buildQuery({ id: draftOrderId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
@@ -128,8 +124,9 @@ class DraftOrderService extends TransactionBaseService {
     cartId: string,
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
-    const manager = this.manager_
-    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
+    const draftOrderRepo = this.activeManager_.withRepository(
+      this.draftOrderRepository_
+    )
 
     const query = buildQuery({ cart_id: cartId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
@@ -180,8 +177,7 @@ class DraftOrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[DraftOrder[], number]> {
-    const manager = this.manager_
-    const draftOrderRepository = manager.withRepository(
+    const draftOrderRepository = this.activeManager_.withRepository(
       this.draftOrderRepository_
     )
 
@@ -239,8 +235,9 @@ class DraftOrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<DraftOrder[]> {
-    const manager = this.manager_
-    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
+    const draftOrderRepo = this.activeManager_.withRepository(
+      this.draftOrderRepository_
+    )
 
     const query = buildQuery(selector, config)
 
