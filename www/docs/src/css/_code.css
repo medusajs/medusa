@@ -64,9 +64,25 @@ code {
   color: var(--ifm-code-title-color);
 }
 
-.code-tabs .tabs__item--active {
-  border-color: var(--medusa-code-tab-border);
+.code-tabs-ul-wrapper {
+  position: relative;
+}
+
+.code-tabs-ul-wrapper .tabs__item {
+  z-index: 2;
+}
+
+.code-tabs-ul-wrapper .code-tab-selector {
+  position: absolute;
+  border: 1px solid var(--medusa-code-tab-border);
   background-color: var(--ifm-code-tabs-active-bg);
+  transition: all var(--ifm-transition-fast) ease;
+  top: 0;
+  z-index: 1;
+  border-radius: 99999px;
+}
+
+.code-tabs .tabs__item--active {
   color: var(--ifm-code-tabs-active-color);
 }
 
