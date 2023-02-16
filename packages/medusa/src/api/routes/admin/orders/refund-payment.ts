@@ -91,7 +91,7 @@ export default async (req, res) => {
       })
   })
 
-  const order = await orderService.retrieve(id, {
+  const order = await orderService.retrieveWithTotals(id, {
     select: defaultAdminOrdersFields,
     relations: defaultAdminOrdersRelations,
   })
