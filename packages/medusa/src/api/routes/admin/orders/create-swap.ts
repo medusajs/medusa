@@ -20,8 +20,7 @@ import {
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
-import { FindConfig, FindParams } from "../../../../types/common"
-import { Order } from "../../../../models"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /order/{id}/swaps
@@ -101,12 +100,8 @@ export default async (req, res) => {
   const { id } = req.params
 
   const validated = req.validatedBody
-  const retrieveConfig = req.retrieveConfig as FindConfig<Order>
 
-  const returnableItemsIndex =
-    retrieveConfig.select?.indexOf("returnable_items") ?? -1
-  const include_returnable_items = returnableItemsIndex !== -1
-  retrieveConfig.select?.splice(returnableItemsIndex, 1)
+  const include_returnable_items = req.includes?.returnable_items
 
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"

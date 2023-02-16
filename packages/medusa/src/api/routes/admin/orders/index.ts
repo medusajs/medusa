@@ -5,6 +5,7 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, {
+  applyOrderIncludesOptions,
   transformBody,
   transformQuery,
 } from "../../../middlewares"
@@ -165,6 +166,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       isList: false,
     }),
     transformBody(AdminPostOrdersOrderSwapsReq),
+    applyOrderIncludesOptions,
     middlewares.wrap(require("./create-swap").default)
   )
 
