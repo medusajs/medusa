@@ -4,6 +4,7 @@ import {
   IEventBusService,
   Subscriber,
   SubscriberContext,
+  TransactionBaseService,
 } from "../interfaces"
 import { StagedJob } from "../models"
 import { ConfigModule } from "../types/global"
@@ -11,12 +12,14 @@ import { sleep } from "../utils/sleep"
 import StagedJobService from "./staged-job"
 
 type InjectedDependencies = {
-  manager: EntityManager
   stagedJobService: StagedJobService
   eventBusModuleService: AbstractEventBusModuleService
 }
 
-export default class EventBusService implements IEventBusService {
+export default class EventBusService
+  extends TransactionBaseService
+  implements IEventBusService
+{
   protected readonly config_: ConfigModule
   protected readonly stagedJobService_: StagedJobService
   protected readonly eventBusModuleService_: AbstractEventBusModuleService
@@ -24,16 +27,15 @@ export default class EventBusService implements IEventBusService {
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor(
-    { manager, stagedJobService, eventBusModuleService }: InjectedDependencies,
+    { stagedJobService, eventBusModuleService }: InjectedDependencies,
     config,
     isSingleton = true
   ) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+
     this.config_ = config
-    this.manager_ = manager
     this.eventBusModuleService_ = eventBusModuleService
     this.stagedJobService_ = stagedJobService
 
@@ -112,7 +114,6 @@ export default class EventBusService implements IEventBusService {
     data: T,
     options?: Record<string, unknown>
   ): Promise<StagedJob | void> {
-    const manager = this.transactionManager_ ?? this.manager_
     /**
      * We always store events in the database.
      *
@@ -127,19 +128,15 @@ export default class EventBusService implements IEventBusService {
      * as part of the rollback.
      */
 
-    if (this.transactionManager_) {
-      const jobToCreate = {
-        event_name: eventName,
-        data: data as unknown as Record<string, unknown>,
-        options,
-      } as Partial<StagedJob>
+    const jobToCreate = {
+      event_name: eventName,
+      data: data as unknown as Record<string, unknown>,
+      options,
+    } as Partial<StagedJob>
 
-      return await this.stagedJobService_
-        .withTransaction(manager)
-        .create(jobToCreate)
-    }
-
-    await this.eventBusModuleService_.emit(eventName, data, options)
+    return await this.stagedJobService_
+      .withTransaction(this.activeManager_)
+      .create(jobToCreate)
   }
 
   startEnqueuer(): void {
