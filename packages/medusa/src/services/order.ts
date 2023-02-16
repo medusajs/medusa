@@ -1774,32 +1774,23 @@ class OrderService extends TransactionBaseService {
     let shipping_tax_total = 0
 
     order.items = (order.items || []).map((item) => {
-      const refundable = newTotalsServiceTx.getLineItemRefund(
-        {
-          ...item,
-          quantity: item.quantity - (item.returned_quantity || 0),
-        },
-        {
-          calculationContext,
-          taxRate: order.tax_rate,
-        }
-      )
+      item.quantity = item.quantity - (item.returned_quantity || 0)
+      const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+        calculationContext,
+        taxRate: order.tax_rate,
+      })
 
-      const itemWithTotals = {
-        ...item,
-        ...(itemsTotals[item.id] ?? {}),
-        refundable,
-      } as LineItem
+      Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
 
-      order.subtotal += itemWithTotals.subtotal ?? 0
-      order.discount_total += itemWithTotals.discount_total ?? 0
-      item_tax_total += itemWithTotals.tax_total ?? 0
+      order.subtotal += item.subtotal ?? 0
+      order.discount_total += item.discount_total ?? 0
+      item_tax_total += item.tax_total ?? 0
 
       if (isReturnableItem(item)) {
-        returnable_items?.push(itemWithTotals)
+        returnable_items?.push(item)
       }
 
-      return itemWithTotals
+      return item
     })
 
     order.shipping_methods = (order.shipping_methods || []).map(
@@ -1832,55 +1823,37 @@ class OrderService extends TransactionBaseService {
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {
-        const refundable = newTotalsServiceTx.getLineItemRefund(
-          {
-            ...item,
-            quantity: item.quantity - (item.returned_quantity || 0),
-          },
-          {
-            calculationContext,
-            taxRate: order.tax_rate,
-          }
-        )
+        item.quantity = item.quantity - (item.returned_quantity || 0)
+        const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+          calculationContext,
+          taxRate: order.tax_rate,
+        })
 
-        const itemWithTotals = {
-          ...item,
-          ...(itemsTotals[item.id] ?? {}),
-          refundable,
-        } as LineItem
+        Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
 
         if (isReturnableItem(item)) {
-          returnable_items?.push(itemWithTotals)
+          returnable_items?.push(item)
         }
 
-        return itemWithTotals
+        return item
       })
     }
 
     for (const claim of order.claims ?? []) {
       claim.additional_items = claim.additional_items.map((item) => {
-        const refundable = newTotalsServiceTx.getLineItemRefund(
-          {
-            ...item,
-            quantity: item.quantity - (item.returned_quantity || 0),
-          },
-          {
-            calculationContext,
-            taxRate: order.tax_rate,
-          }
-        )
+        item.quantity = item.quantity - (item.returned_quantity || 0)
+        const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+          calculationContext,
+          taxRate: order.tax_rate,
+        })
 
-        const itemWithTotals = {
-          ...item,
-          ...(itemsTotals[item.id] ?? {}),
-          refundable,
-        } as LineItem
+        Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
 
         if (isReturnableItem(item)) {
-          returnable_items?.push(itemWithTotals)
+          returnable_items?.push(item)
         }
 
-        return itemWithTotals
+        return item
       })
     }
 
