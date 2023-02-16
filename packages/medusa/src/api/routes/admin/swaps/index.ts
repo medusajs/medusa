@@ -32,6 +32,7 @@ export const defaultAdminSwapRelations = [
   "shipping_methods",
   "cart",
   "cart.items",
+  "cart.items.variant",
   "cart.items.adjustments",
 ]
 

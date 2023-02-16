@@ -6,12 +6,7 @@ import { TransactionBaseService } from "../interfaces"
 import { GiftCard, Region } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { GiftCardTransactionRepository } from "../repositories/gift-card-transaction"
-import {
-  ExtendedFindConfig,
-  FindConfig,
-  QuerySelector,
-  Selector,
-} from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateGiftCardInput,
   CreateGiftCardTransactionInput,
@@ -87,7 +82,7 @@ class GiftCardService extends TransactionBaseService {
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<[GiftCard[], number]> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     let q: string | undefined
     if (isDefined(selector.q)) {
@@ -95,15 +90,9 @@ class GiftCardService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query: ExtendedFindConfig<
-      GiftCard,
-      QuerySelector<GiftCard>
-    > = buildQuery<QuerySelector<GiftCard>, GiftCard>(selector, config)
+    const query = buildQuery(selector, config)
 
-    const rels = query.relations
-    delete query.relations
-
-    return await giftCardRepo.listGiftCardsAndCount(query, rels, q)
+    return await giftCardRepo.listGiftCardsAndCount(query, q)
   }
 
   /**
@@ -115,31 +104,15 @@ class GiftCardService extends TransactionBaseService {
     selector: QuerySelector<GiftCard> = {},
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<GiftCard[]> {
-    const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
-
-    let q: string | undefined
-    if (isDefined(selector.q)) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query: ExtendedFindConfig<
-      GiftCard,
-      QuerySelector<GiftCard>
-    > = buildQuery<QuerySelector<GiftCard>, GiftCard>(selector, config)
-
-    const rels = query.relations
-    delete query.relations
-
-    return await giftCardRepo.listGiftCards(query, rels, q)
+    const [cards] = await this.listAndCount(selector, config)
+    return cards
   }
 
   async createTransaction(
     data: CreateGiftCardTransactionInput
   ): Promise<string> {
     const manager = this.manager_
-    const gctRepo = manager.getCustomRepository(this.giftCardTransactionRepo_)
+    const gctRepo = manager.withRepository(this.giftCardTransactionRepo_)
     const created = gctRepo.create(data)
     const saved = await gctRepo.save(created)
     return saved.id
@@ -152,7 +125,7 @@ class GiftCardService extends TransactionBaseService {
    */
   async create(giftCard: CreateGiftCardInput): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+      const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
       // Will throw if region does not exist
       const region = await this.regionService_
@@ -160,7 +133,10 @@ class GiftCardService extends TransactionBaseService {
         .retrieve(giftCard.region_id)
 
       const code = GiftCardService.generateCode()
-      const taxRate = GiftCardService.resolveTaxRate(giftCard.tax_rate || null, region)
+      const taxRate = GiftCardService.resolveTaxRate(
+        giftCard.tax_rate || null,
+        region
+      )
       const toCreate = {
         code,
         ...giftCard,
@@ -181,7 +157,7 @@ class GiftCardService extends TransactionBaseService {
     })
   }
 
-   /**
+  /**
    * The tax_rate of the giftcard can depend on whether regions tax gift cards, an input
    * provided by the user or the tax rate. Based on these conditions, tax_rate changes.
    * @return the tax rate for the gift card
@@ -192,7 +168,9 @@ class GiftCardService extends TransactionBaseService {
   ): number | null {
     // A gift card is always associated with a region. If the region doesn't tax gift cards,
     // return null
-    if (!region.gift_cards_taxable) return null
+    if (!region.gift_cards_taxable) {
+      return null
+    }
 
     // If a tax rate has been provided as an input from an external input, use that
     // This would handle cases where gift cards are created as a part of an order where taxes better defined
@@ -210,18 +188,16 @@ class GiftCardService extends TransactionBaseService {
     config: FindConfig<GiftCard> = {}
   ): Promise<GiftCard> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
-    const { relations, ...query } = buildQuery(selector, config)
+    const query = buildQuery(selector, config)
+    query.relationLoadStrategy = "query"
 
-    const giftCard = await giftCardRepo.findOneWithRelations(
-      relations as (keyof GiftCard)[],
-      query
-    )
+    const giftCard = await giftCardRepo.findOne(query)
 
     if (!giftCard) {
       const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
+        .map(([key, value]) => `${key}: ${value}`)
         .join(", ")
 
       throw new MedusaError(
@@ -278,7 +254,7 @@ class GiftCardService extends TransactionBaseService {
     update: UpdateGiftCardInput
   ): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
-      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+      const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
       const giftCard = await this.retrieve(giftCardId)
 
@@ -321,7 +297,7 @@ class GiftCardService extends TransactionBaseService {
    */
   async delete(giftCardId: string): Promise<GiftCard | void> {
     const manager = this.manager_
-    const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+    const giftCardRepo = manager.withRepository(this.giftCardRepository_)
 
     const giftCard = await giftCardRepo.findOne({ where: { id: giftCardId } })
 

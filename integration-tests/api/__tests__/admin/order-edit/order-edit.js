@@ -470,7 +470,7 @@ describe("/admin/order-edits", () => {
         withDeleted: true,
       })
 
-      expect(orderEdit).toBeUndefined()
+      expect(orderEdit).toBeNull()
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id,
@@ -534,7 +534,7 @@ describe("/admin/order-edits", () => {
         withDeleted: true,
       })
 
-      expect(orderEdit).toBeUndefined()
+      expect(orderEdit).toBeNull()
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
         id: orderEditId,
@@ -2569,15 +2569,13 @@ describe("/admin/order-edits", () => {
               ]),
             }),
           ]),
-          // rounding issue since we are allocating 1/3 of the discount to one item and 2/3 to the other item where both cost 10
-          // resulting in adjustment amounts like: 1333...
-          discount_total: 2001,
-          total: 1099,
+          discount_total: 2000,
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
           subtotal: 3000,
           tax_total: 100,
+          total: 1100,
         })
       )
 

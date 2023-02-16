@@ -181,6 +181,8 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "discounts.rule",
         "gift_cards",
         "items",
+        "items.variant",
+        "items.variant.product",
         "items.adjustments",
         "region",
         "region.tax_rates",
@@ -262,7 +264,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     const cartServiceTx = this.cartService_.withTransaction(manager)
 
     const cart = await cartServiceTx.retrieveWithTotals(id, {
-      relations: ["region", "payment", "payment_sessions"],
+      relations: ["region", "payment", "payment_sessions", "items.variant.product",],
     })
 
     let allowBackorder = false

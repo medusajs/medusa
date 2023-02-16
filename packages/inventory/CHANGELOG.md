@@ -1,5 +1,15 @@
 # @medusajs/inventory
 
+## 1.0.4
+
+### Patch Changes
+
+- [#3217](https://github.com/medusajs/medusa/pull/3217) [`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: Fix npm packages files included
+
+- Updated dependencies [[`507ad00be`](https://github.com/medusajs/medusa/commit/507ad00bec74bb63b17eae8a4a3313eb6e0d2503), [`6e443dc70`](https://github.com/medusajs/medusa/commit/6e443dc708ffe20bf96d45ddc207ed274c28e344), [`eee928381`](https://github.com/medusajs/medusa/commit/eee9283818b1717f37f084c319201ea7144fdf8a), [`4cb44a3a2`](https://github.com/medusajs/medusa/commit/4cb44a3a2ec5bcf3d90e3b6a0e1f6bb9ff45e2b6), [`472f96d7f`](https://github.com/medusajs/medusa/commit/472f96d7fb8668a15df6e6f9ea31291891b3e688), [`61b0b2f3a`](https://github.com/medusajs/medusa/commit/61b0b2f3aa1d54d539b216a99032549485136a82), [`80452332d`](https://github.com/medusajs/medusa/commit/80452332d852ad7d33d74e1f08f12f45d7a35503), [`bbbb3d888`](https://github.com/medusajs/medusa/commit/bbbb3d888292391976355c88ecb0fcf8a7c115bc), [`10ff72c30`](https://github.com/medusajs/medusa/commit/10ff72c30ae59d2174d876b0c4141aad135d9a1c), [`968eb8fc6`](https://github.com/medusajs/medusa/commit/968eb8fc6b7ccd7221f88f42d75717f3a0547861), [`a59bd84e4`](https://github.com/medusajs/medusa/commit/a59bd84e41fb5d8fc2edc7bdc43d3cbf74d9d7dc), [`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0), [`cac13a88d`](https://github.com/medusajs/medusa/commit/cac13a88da42fa986bd7352fbc12a318b566d98f), [`a2cc084db`](https://github.com/medusajs/medusa/commit/a2cc084db817f8f7699e9b0daceda274b5f0e0c0), [`8194d19b0`](https://github.com/medusajs/medusa/commit/8194d19b0e933310fdc65af25300da5dd185e669)]:
+  - @medusajs/medusa@1.7.7
+  - medusa-interfaces@1.3.6
+
 ## 1.0.3
 
 ### Patch Changes
