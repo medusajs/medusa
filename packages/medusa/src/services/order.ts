@@ -79,6 +79,7 @@ type InjectedDependencies = {
 
 type TotalsConfig = {
   force_taxes?: boolean
+  include_returnable_items?: boolean
 }
 
 class OrderService extends TransactionBaseService {
@@ -1721,10 +1722,31 @@ class OrderService extends TransactionBaseService {
     const calculationContext = await this.totalsService_.getCalculationContext(
       order
     )
-    const orderItems = [...(order.items ?? [])]
+
+    const { include_returnable_items } = totalsFieldsOrConfig ?? {}
+
+    const returnable_items: LineItem[] | undefined = include_returnable_items
+      ? []
+      : undefined
+
+    const isReturnableItem = (item) =>
+      include_returnable_items &&
+      (item.returned_quantity ?? 0) < (item.fulfilled_quantity ?? 0)
+
+    const allItems: LineItem[] = [...(order.items ?? [])]
+
+    if (include_returnable_items) {
+      // All items must receive their totals and if some of them are returnable
+      // They will be pushed to `returnable_items` at a later point
+      allItems.push(
+        ...(order.swaps?.map((s) => s.additional_items ?? []).flat() ?? []),
+        ...(order.claims?.map((c) => c.additional_items ?? []).flat() ?? [])
+      )
+    }
+
     const orderShippingMethods = [...(order.shipping_methods ?? [])]
 
-    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(orderItems, {
+    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(allItems, {
       taxRate: order.tax_rate,
       includeTax: true,
       calculationContext,
@@ -1767,13 +1789,17 @@ class OrderService extends TransactionBaseService {
         ...item,
         ...(itemsTotals[item.id] ?? {}),
         refundable,
-      }
+      } as LineItem
 
       order.subtotal += itemWithTotals.subtotal ?? 0
       order.discount_total += itemWithTotals.discount_total ?? 0
       item_tax_total += itemWithTotals.tax_total ?? 0
 
-      return itemWithTotals as LineItem
+      if (isReturnableItem(item)) {
+        returnable_items?.push(itemWithTotals)
+      }
+
+      return itemWithTotals
     })
 
     order.shipping_methods = (order.shipping_methods || []).map(
@@ -1806,7 +1832,7 @@ class OrderService extends TransactionBaseService {
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {
-        item.refundable = newTotalsServiceTx.getLineItemRefund(
+        const refundable = newTotalsServiceTx.getLineItemRefund(
           {
             ...item,
             quantity: item.quantity - (item.returned_quantity || 0),
@@ -1816,13 +1842,24 @@ class OrderService extends TransactionBaseService {
             taxRate: order.tax_rate,
           }
         )
-        return item
+
+        const itemWithTotals = {
+          ...item,
+          ...(itemsTotals[item.id] ?? {}),
+          refundable,
+        } as LineItem
+
+        if (isReturnableItem(item)) {
+          returnable_items?.push(itemWithTotals)
+        }
+
+        return itemWithTotals
       })
     }
 
     for (const claim of order.claims ?? []) {
       claim.additional_items = claim.additional_items.map((item) => {
-        item.refundable = newTotalsServiceTx.getLineItemRefund(
+        const refundable = newTotalsServiceTx.getLineItemRefund(
           {
             ...item,
             quantity: item.quantity - (item.returned_quantity || 0),
@@ -1832,7 +1869,18 @@ class OrderService extends TransactionBaseService {
             taxRate: order.tax_rate,
           }
         )
-        return item
+
+        const itemWithTotals = {
+          ...item,
+          ...(itemsTotals[item.id] ?? {}),
+          refundable,
+        } as LineItem
+
+        if (isReturnableItem(item)) {
+          returnable_items?.push(itemWithTotals)
+        }
+
+        return itemWithTotals
       })
     }
 
@@ -1841,6 +1889,8 @@ class OrderService extends TransactionBaseService {
       order.shipping_total +
       order.tax_total -
       (order.gift_card_total + order.discount_total)
+
+    order.returnable_items = returnable_items
 
     return order
   }

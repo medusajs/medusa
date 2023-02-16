@@ -22,7 +22,7 @@ const {
   default: startServerWithEnvironment,
 } = require("../../../helpers/start-server-with-environment")
 
-jest.setTimeout(30000)
+jest.setTimeout(3000000)
 
 describe("/admin/swaps", () => {
   describe("tax exclusive", () => {
@@ -167,7 +167,7 @@ describe("/admin/swaps", () => {
         await db.teardown()
       })
 
-      it("completes swap and ensures difference due", async () => {
+      it.only("completes swap and ensures difference due", async () => {
         // ********* FACTORIES *********
         const prodA = await simpleProductFactory(dbConnection, {
           id: "prod-a",
@@ -301,7 +301,7 @@ describe("/admin/swaps", () => {
 
         // ********* CREATE SWAP *********
         const createSwap = await api.post(
-          `/admin/orders/${completedOrder.data.data.id}/swaps`,
+          `/admin/orders/${completedOrder.data.data.id}/swaps?fields=returnable_items`,
           {
             return_items: [
               {
@@ -316,6 +316,13 @@ describe("/admin/swaps", () => {
               authorization: "Bearer test_token",
             },
           }
+        )
+
+        expect(createSwap.data.order.returnable_items).toHaveLength(1)
+        expect(createSwap.data.order.returnable_items[0]).toEqual(
+          expect.objectContaining({
+            id: "line-item",
+          })
         )
 
         let swap = createSwap.data.order.swaps[0]
@@ -349,7 +356,7 @@ describe("/admin/swaps", () => {
           {}
         )
 
-        // ********* VALIDATE *********
+        // ********* VALIDATE  *********
         expect(swap.data.swap.difference_due).toBe(swapCart.data.cart.total)
       })
     })

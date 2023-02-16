@@ -16,12 +16,12 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { FindConfig, FindParams } from "../../../../types/common"
+import { Order } from "../../../../models"
 
 /**
  * @oas [post] /order/{id}/swaps
@@ -31,6 +31,8 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded the order of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included the order of the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -98,7 +100,13 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostOrdersOrderSwapsReq, req.body)
+  const validated = req.validatedBody
+  const retrieveConfig = req.retrieveConfig as FindConfig<Order>
+
+  const returnableItemsIndex =
+    retrieveConfig.select?.indexOf("returnable_items") ?? -1
+  const include_returnable_items = returnableItemsIndex !== -1
+  retrieveConfig.select?.splice(returnableItemsIndex, 1)
 
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
@@ -208,9 +216,8 @@ export default async (req, res) => {
 
                 const order = await orderService
                   .withTransaction(transactionManager)
-                  .retrieve(id, {
-                    select: defaultAdminOrdersFields,
-                    relations: defaultAdminOrdersRelations,
+                  .retrieveWithTotals(id, req.retrieveConfig, {
+                    include_returnable_items,
                   })
 
                 return {
@@ -411,3 +418,5 @@ class AdditionalItem {
   @IsNotEmpty()
   quantity: number
 }
+
+export class AdminPostOrdersOrderSwapsParams extends FindParams {}

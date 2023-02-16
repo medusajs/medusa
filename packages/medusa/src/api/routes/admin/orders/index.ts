@@ -12,6 +12,10 @@ import { checkRegisteredModules } from "../../../middlewares/check-registered-mo
 import { AdminOrdersOrderLineItemReservationReq } from "./create-reservation-for-line-item"
 import { AdminGetOrdersOrderReservationsParams } from "./get-reservations"
 import { AdminGetOrdersParams } from "./list-orders"
+import {
+  AdminPostOrdersOrderSwapsParams,
+  AdminPostOrdersOrderSwapsReq,
+} from "./create-swap"
 
 const route = Router()
 
@@ -46,19 +50,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/:id",
     transformQuery(FindParams, {
       defaultRelations: relations,
-      defaultFields: defaultFields.filter((field) => {
-        return ![
-          "shipping_total",
-          "discount_total",
-          "tax_total",
-          "refunded_total",
-          "total",
-          "subtotal",
-          "refundable_amount",
-          "gift_card_total",
-          "gift_card_tax_total",
-        ].includes(field)
-      }),
+      defaultFields: defaultFields,
       isList: false,
     }),
     middlewares.wrap(require("./get-order").default)
@@ -165,7 +157,16 @@ export default (app, featureFlagRouter: FlagRouter) => {
   /**
    * Creates a swap, requests a return and prepares a cart for payment.
    */
-  route.post("/:id/swaps", middlewares.wrap(require("./create-swap").default))
+  route.post(
+    "/:id/swaps",
+    transformQuery(AdminPostOrdersOrderSwapsParams, {
+      defaultRelations: relations,
+      defaultFields: defaultFields,
+      isList: false,
+    }),
+    transformBody(AdminPostOrdersOrderSwapsReq),
+    middlewares.wrap(require("./create-swap").default)
+  )
 
   /**
    * Cancels a swap.
@@ -358,15 +359,6 @@ export const defaultAdminOrdersFields = [
   "items.refundable",
   "swaps.additional_items.refundable",
   "claims.additional_items.refundable",
-  "shipping_total",
-  "discount_total",
-  "tax_total",
-  "refunded_total",
-  "gift_card_total",
-  "subtotal",
-  "total",
-  "paid_total",
-  "refundable_amount",
   "no_notification",
 ] as (keyof Order)[]
 
