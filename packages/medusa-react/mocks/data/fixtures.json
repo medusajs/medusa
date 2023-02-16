@@ -356,6 +356,14 @@
       "updated_at": "2021-03-16T21:24:13.657Z",
       "metadata": null
     },
+    "product_category": {
+      "id": "pcat_01F0YESBFAZ0DV6V831JXWH0BG",
+      "name": "Skinny Jeans",
+      "handle": "skinny-jeans",
+      "created_at": "2021-03-16T21:24:07.273Z",
+      "updated_at": "2021-03-16T21:24:07.273Z",
+      "deleted_at": null
+    },
     "product_variant": {
       "id": "variant_01F0YESHR7P2YAYBDBY5B6X3PK",
       "title": "Test variant",
