@@ -13,7 +13,7 @@ import {
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
   CreateShippingOptionInput,
@@ -21,7 +21,7 @@ import {
   UpdateShippingOptionInput,
   ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
@@ -101,16 +101,18 @@ class ShippingOptionService extends TransactionBaseService {
         )
       }
 
-      const reqRepo = manager.getCustomRepository(this.requirementRepository_)
+      const reqRepo = manager.withRepository(this.requirementRepository_)
 
-      const existingReq = await reqRepo.findOne({
-        where: { id: requirement.id },
-      })
+      const existingReq = requirement.id
+        ? await reqRepo.findOne({
+            where: { id: requirement.id },
+          })
+        : undefined
 
       if (!existingReq && requirement.id) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "ID does not exist"
+          `Shipping option requirement with id ${requirement.id} does not exist`
         )
       }
 
@@ -150,23 +152,23 @@ class ShippingOptionService extends TransactionBaseService {
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
     const manager = this.manager_
-    const optRepo = manager.getCustomRepository(this.optionRepository_)
+    const optRepo = manager.withRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return optRepo.find(query)
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {object} config - config object
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - config object
+   * @return the result of the find operation
    */
   async listAndCount(
-    selector: Selector<ShippingMethod>,
+    selector: Selector<ShippingOption>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<[ShippingOption[], number]> {
     const manager = this.manager_
-    const optRepo = manager.getCustomRepository(this.optionRepository_)
+    const optRepo = manager.withRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return await optRepo.findAndCount(query)
@@ -181,7 +183,7 @@ class ShippingOptionService extends TransactionBaseService {
    */
   async retrieve(
     optionId,
-    options: { select?: (keyof ShippingOption)[]; relations?: string[] } = {}
+    options: FindConfig<ShippingOption> = {}
   ): Promise<ShippingOption> {
     if (!isDefined(optionId)) {
       throw new MedusaError(
@@ -191,21 +193,9 @@ class ShippingOptionService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const soRepo: ShippingOptionRepository = manager.getCustomRepository(
-      this.optionRepository_
-    )
+    const soRepo = manager.withRepository(this.optionRepository_)
 
-    const query: ExtendedFindConfig<ShippingOption> = {
-      where: { id: optionId },
-    }
-
-    if (options.select) {
-      query.select = options.select
-    }
-
-    if (options.relations) {
-      query.relations = options.relations
-    }
+    const query = buildQuery({ id: optionId }, options)
 
     const option = await soRepo.findOne(query)
 
@@ -231,9 +221,7 @@ class ShippingOptionService extends TransactionBaseService {
     update: ShippingMethodUpdate
   ): Promise<ShippingMethod | undefined> {
     return await this.atomicPhase_(async (manager) => {
-      const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
-        this.methodRepository_
-      )
+      const methodRepo = manager.withRepository(this.methodRepository_)
       const method = await methodRepo.findOne({ where: { id } })
 
       if (!method) {
@@ -263,7 +251,7 @@ class ShippingOptionService extends TransactionBaseService {
       : [shippingMethods]
 
     return await this.atomicPhase_(async (manager) => {
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo = manager.withRepository(this.methodRepository_)
       return await methodRepo.remove(removeEntities)
     })
   }
@@ -285,7 +273,7 @@ class ShippingOptionService extends TransactionBaseService {
         relations: ["requirements"],
       })
 
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo = manager.withRepository(this.methodRepository_)
 
       if (isDefined(config.cart)) {
         await this.validateCartOption(option, config.cart)
@@ -454,7 +442,7 @@ class ShippingOptionService extends TransactionBaseService {
         price_type: data.price_type,
       })
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       const option = optionRepo.create(optionWithValidatedPrice)
 
       const region = await this.regionService_
@@ -663,6 +651,10 @@ class ShippingOptionService extends TransactionBaseService {
         optionWithValidatedPrice.admin_only = update.admin_only
       }
 
+      if (isDefined(update.profile_id)) {
+        optionWithValidatedPrice.profile_id = update.profile_id
+      }
+
       if (
         this.featureFlagRouter_.isFeatureEnabled(
           TaxInclusivePricingFeatureFlag.key
@@ -673,7 +665,7 @@ class ShippingOptionService extends TransactionBaseService {
         }
       }
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       return await optionRepo.save(optionWithValidatedPrice)
     })
   }
@@ -689,7 +681,7 @@ class ShippingOptionService extends TransactionBaseService {
       try {
         const option = await this.retrieve(optionId)
 
-        const optionRepo = manager.getCustomRepository(this.optionRepository_)
+        const optionRepo = manager.withRepository(this.optionRepository_)
 
         return optionRepo.softRemove(option)
       } catch (error) {
@@ -725,7 +717,7 @@ class ShippingOptionService extends TransactionBaseService {
 
       option.requirements.push(validatedReq)
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo = manager.withRepository(this.optionRepository_)
       return optionRepo.save(option)
     })
   }
@@ -739,18 +731,37 @@ class ShippingOptionService extends TransactionBaseService {
     requirementId
   ): Promise<ShippingOptionRequirement | void> {
     return await this.atomicPhase_(async (manager) => {
-      const reqRepo: ShippingOptionRequirementRepository =
-        manager.getCustomRepository(this.requirementRepository_)
+      const reqRepo = manager.withRepository(this.requirementRepository_)
 
       const requirement = await reqRepo.findOne({
         where: { id: requirementId },
       })
+
       // Delete is idempotent, but we return a promise to allow then-chaining
-      if (typeof requirement === "undefined") {
+      if (!requirement) {
         return Promise.resolve()
       }
 
       return await reqRepo.softRemove(requirement)
+    })
+  }
+
+  /**
+   *
+   * @param optionIds ID or IDs of the shipping options to update
+   * @param profileId Shipping profile ID to update the shipping options with
+   * @returns updated shipping options
+   */
+  async updateShippingProfile(
+    optionIds: string | string[],
+    profileId: string
+  ): Promise<ShippingOption[]> {
+    return await this.atomicPhase_(async (manager) => {
+      const optionRepo = manager.withRepository(this.optionRepository_)
+
+      const ids = isString(optionIds) ? [optionIds] : optionIds
+
+      return await optionRepo.upsertShippingProfile(ids, profileId)
     })
   }
 

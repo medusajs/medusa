@@ -57,6 +57,8 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
   "created_at",
   "updated_at",
   "metadata",
+  "deleted_at",
+  "manage_inventory",
 ]
 
 /**

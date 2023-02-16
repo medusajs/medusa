@@ -151,6 +151,7 @@ class Discount {
  *     description: "An array of Gift Card codes to add to the Cart."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - code
  *       properties:
@@ -161,6 +162,7 @@ class Discount {
  *     description: "An array of Discount codes to add to the Cart."
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - code
  *       properties:

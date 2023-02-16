@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { Invite } from "../models/invite"
+import { Invite } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(Invite)
-export class InviteRepository extends Repository<Invite> {}
+export const InviteRepository = dataSource.getRepository(Invite)
+export default InviteRepository

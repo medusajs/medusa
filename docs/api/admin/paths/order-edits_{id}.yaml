@@ -10,15 +10,17 @@ delete:
       description: The ID of the Order Edit to delete.
       schema:
         type: string
+  x-codegen:
+    method: delete
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/order-edits_{id}/deleteundefined
+        $ref: ../code_samples/JavaScript/order-edits_{id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/order-edits_{id}/deleteundefined
+        $ref: ../code_samples/Shell/order-edits_{id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -55,15 +57,18 @@ get:
       description: Comma separated list of fields to include in the results.
       schema:
         type: string
+  x-codegen:
+    method: retrieve
+    queryParams: GetOrderEditsOrderEditParams
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/order-edits_{id}/getundefined
+        $ref: ../code_samples/JavaScript/order-edits_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/order-edits_{id}/getundefined
+        $ref: ../code_samples/Shell/order-edits_{id}/get.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -105,15 +110,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostOrderEditsOrderEditReq.yaml
+  x-codegen:
+    method: update
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/order-edits_{id}/postundefined
+        $ref: ../code_samples/JavaScript/order-edits_{id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/order-edits_{id}/postundefined
+        $ref: ../code_samples/Shell/order-edits_{id}/post.sh
   security:
     - api_token: []
     - cookie_auth: []

@@ -10,10 +10,11 @@ const {
   Image,
   Cart,
   PriceList,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
     new Date()
@@ -48,7 +49,7 @@ module.exports = async (connection, data = {}) => {
   await manager.save(priceList1)
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: ShippingProfileType.DEFAULT },
   })
 
   const coll = manager.create(ProductCollection, {

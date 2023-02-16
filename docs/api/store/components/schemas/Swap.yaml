@@ -68,13 +68,13 @@ properties:
       relation `fulfillments` is expanded.
     type: array
     items:
-      $ref: ./Fulfillment.yaml
+      type: object
   payment:
     description: >-
       The Payment authorized when the Swap requires an additional amount to be
       charged from the Customer. Available if the relation `payment` is
       expanded.
-    $ref: ./Payment.yaml
+    type: object
   difference_due:
     description: >-
       The difference that is paid or refunded as a result of the Swap. May be

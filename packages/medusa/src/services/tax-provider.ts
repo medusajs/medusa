@@ -63,7 +63,7 @@ class TaxProviderService extends TransactionBaseService {
   }
 
   async list(): Promise<TaxProvider[]> {
-    const tpRepo = this.manager_.getCustomRepository(this.taxProviderRepo_)
+    const tpRepo = this.manager_.withRepository(this.taxProviderRepo_)
     return tpRepo.find({})
   }
 
@@ -96,7 +96,7 @@ class TaxProviderService extends TransactionBaseService {
 
   async clearLineItemsTaxLines(itemIds: string[]): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const taxLineRepo = transactionManager.getCustomRepository(
+      const taxLineRepo = transactionManager.withRepository(
         this.taxLineRepo_
       )
 
@@ -106,10 +106,10 @@ class TaxProviderService extends TransactionBaseService {
 
   async clearTaxLines(cartId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const taxLineRepo = transactionManager.getCustomRepository(
+      const taxLineRepo = transactionManager.withRepository(
         this.taxLineRepo_
       )
-      const shippingTaxRepo = transactionManager.getCustomRepository(
+      const shippingTaxRepo = transactionManager.withRepository(
         this.smTaxLineRepo_
       )
 
@@ -141,10 +141,10 @@ class TaxProviderService extends TransactionBaseService {
         taxLines = await this.getTaxLines(cartOrLineItems, calculationContext)
       }
 
-      const itemTaxLineRepo = transactionManager.getCustomRepository(
+      const itemTaxLineRepo = transactionManager.withRepository(
         this.taxLineRepo_
       )
-      const shippingTaxLineRepo = transactionManager.getCustomRepository(
+      const shippingTaxLineRepo = transactionManager.withRepository(
         this.smTaxLineRepo_
       )
 
@@ -222,7 +222,7 @@ class TaxProviderService extends TransactionBaseService {
       calculationContext
     )
 
-    const smTaxLineRepo = this.manager_.getCustomRepository(this.smTaxLineRepo_)
+    const smTaxLineRepo = this.manager_.withRepository(this.smTaxLineRepo_)
 
     // .create only creates entities nothing is persisted in DB
     return providerLines.map((pl) => {
@@ -311,8 +311,8 @@ class TaxProviderService extends TransactionBaseService {
       calculationContext
     )
 
-    const liTaxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
-    const smTaxLineRepo = this.manager_.getCustomRepository(this.smTaxLineRepo_)
+    const liTaxLineRepo = this.manager_.withRepository(this.taxLineRepo_)
+    const smTaxLineRepo = this.manager_.withRepository(this.smTaxLineRepo_)
 
     // .create only creates entities nothing is persisted in DB
     return providerLines.map((pl) => {
@@ -486,7 +486,7 @@ class TaxProviderService extends TransactionBaseService {
   }
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
-    const model = this.manager_.getCustomRepository(this.taxProviderRepo_)
+    const model = this.manager_.withRepository(this.taxProviderRepo_)
     await model.update({}, { is_installed: false })
 
     for (const p of providers) {

@@ -4,14 +4,14 @@ import {
   AwilixContainer,
   ClassOrFunctionReturning,
   createContainer,
-  Resolver,
+  Resolver
 } from "awilix"
 import {
   ConfigModule,
   MedusaContainer,
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
+  MODULE_SCOPE
 } from "../../types/global"
 import Logger from "../logger"
 import registerModules from "../module"

@@ -105,9 +105,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return true
     }
 
-    let locations: string[] = []
+    let locationIds: string[] = []
     if (context.salesChannelId) {
-      locations = await this.salesChannelLocationService_.listLocations(
+      locationIds = await this.salesChannelLocationService_.listLocationIds(
         context.salesChannelId
       )
     } else {
@@ -115,7 +115,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         {},
         { select: ["id"] }
       )
-      locations = stockLocations.map((l) => l.id)
+      locationIds = stockLocations.map((l) => l.id)
     }
 
     const hasInventory = await Promise.all(
@@ -125,7 +125,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
           .withTransaction(manager)
           .confirmInventory(
             inventoryPart.inventory_item_id,
-            locations,
+            locationIds,
             itemQuantity
           )
       })
@@ -249,13 +249,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * Attach a variant to an inventory item
    * @param variantId variant id
    * @param inventoryItemId inventory item id
-   * @param quantity quantity of variant to attach
+   * @param requiredQuantity quantity of variant to attach
    * @returns the variant inventory item
    */
   async attachInventoryItem(
     variantId: string,
     inventoryItemId: string,
-    quantity?: number
+    requiredQuantity?: number
   ): Promise<ProductVariantInventoryItem> {
     const manager = this.transactionManager_ || this.manager_
 
@@ -289,14 +289,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let quantityToStore = 1
-    if (typeof quantity !== "undefined") {
-      if (quantity < 1) {
+    if (typeof requiredQuantity !== "undefined") {
+      if (requiredQuantity < 1) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Quantity must be greater than 0"
         )
       } else {
-        quantityToStore = quantity
+        quantityToStore = requiredQuantity
       }
     }
 
@@ -311,12 +311,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   /**
    * Remove a variant from an inventory item
-   * @param variantId variant id
+   * @param variantId variant id or undefined if all the variants will be affected
    * @param inventoryItemId inventory item id
    */
   async detachInventoryItem(
-    variantId: string,
-    inventoryItemId: string
+    inventoryItemId: string,
+    variantId?: string
   ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
 
@@ -324,15 +324,19 @@ class ProductVariantInventoryService extends TransactionBaseService {
       ProductVariantInventoryItem
     )
 
-    const existing = await variantInventoryRepo.findOne({
-      where: {
-        variant_id: variantId,
-        inventory_item_id: inventoryItemId,
-      },
+    const where: any = {
+      inventory_item_id: inventoryItemId,
+    }
+    if (variantId) {
+      where.variant_id = variantId
+    }
+
+    const varInvItems = await variantInventoryRepo.find({
+      where,
     })
 
-    if (existing) {
-      await variantInventoryRepo.remove(existing)
+    if (varInvItems.length) {
+      await variantInventoryRepo.remove(varInvItems)
     }
   }
 
@@ -378,7 +382,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     if (!isDefined(locationId) && context.salesChannelId) {
       const locations = await this.salesChannelLocationService_
         .withTransaction(manager)
-        .listLocations(context.salesChannelId)
+        .listLocationIds(context.salesChannelId)
 
       if (!locations.length) {
         throw new MedusaError(

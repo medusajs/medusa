@@ -9,15 +9,17 @@ get:
       description: The ID of Cart.
       schema:
         type: string
+  x-codegen:
+    method: retrieveByCartId
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/orders_cart_{cart_id}/getundefined
+        $ref: ../code_samples/JavaScript/orders_cart_{cart_id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/orders_cart_{cart_id}/getundefined
+        $ref: ../code_samples/Shell/orders_cart_{cart_id}/get.sh
   tags:
     - Order
   responses:

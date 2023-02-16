@@ -9,15 +9,17 @@ get:
       description: The ID of the OrderEdit.
       schema:
         type: string
+  x-codegen:
+    method: retrieve
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/order-edits_{id}/getundefined
+        $ref: ../code_samples/JavaScript/order-edits_{id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/order-edits_{id}/getundefined
+        $ref: ../code_samples/Shell/order-edits_{id}/get.sh
   tags:
     - OrderEdit
   responses:

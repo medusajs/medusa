@@ -1,10 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FindManyOptions, In } from "typeorm"
+import { In } from "typeorm"
 import EventBusService from "../event-bus"
 import {
   LineItemService,
   OrderEditItemChangeService,
-  TaxProviderService,
+  TaxProviderService
 } from "../index"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { LineItemServiceMock } from "../__mocks__/line-item"
@@ -25,7 +25,7 @@ describe("OrderEditItemChangeService", () => {
     delete: jest.fn().mockImplementation(() => {
       return Promise.resolve()
     }),
-    find: jest.fn().mockImplementation((conditions: FindManyOptions) => {
+    find: jest.fn().mockImplementation((conditions) => {
       return Promise.resolve(
         conditions.where?.id?.value?.map((id) => ({
           id,

@@ -14,6 +14,9 @@
     "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
     "watch": "babel -w src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
@@ -24,7 +27,7 @@
     "@babel/preset-env": "^7.7.5",
     "@babel/runtime": "^7.9.6",
     "cross-env": "^5.2.1",
-    "jest": "^25.5.2"
+    "jest": "^25.5.4"
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",

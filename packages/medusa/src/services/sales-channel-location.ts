@@ -41,26 +41,39 @@ class SalesChannelLocationService extends TransactionBaseService {
 
   /**
    * Removes an association between a sales channel and a stock location.
-   * @param {string} salesChannelId - The ID of the sales channel.
-   * @param {string} locationId - The ID of the stock location.
-   * @returns {Promise<void>} A promise that resolves when the association has been removed.
+   * @param salesChannelId - The ID of the sales channel or undefined if all the sales channel will be affected.
+   * @param locationId - The ID of the stock location.
+   * @returns A promise that resolves when the association has been removed.
    */
   async removeLocation(
-    salesChannelId: string,
-    locationId: string
+    locationId: string,
+    salesChannelId?: string
   ): Promise<void> {
     const manager = this.transactionManager_ || this.manager_
-    await manager.delete(SalesChannelLocation, {
-      sales_channel_id: salesChannelId,
+
+    const salesChannelLocationRepo = manager.getRepository(SalesChannelLocation)
+
+    const where: any = {
       location_id: locationId,
+    }
+    if (salesChannelId) {
+      where.sales_channel_id = salesChannelId
+    }
+
+    const scLoc = await salesChannelLocationRepo.find({
+      where,
     })
+
+    if (scLoc.length) {
+      await salesChannelLocationRepo.remove(scLoc)
+    }
   }
 
   /**
    * Associates a sales channel with a stock location.
-   * @param {string} salesChannelId - The ID of the sales channel.
-   * @param {string} locationId - The ID of the stock location.
-   * @returns {Promise<void>} A promise that resolves when the association has been created.
+   * @param salesChannelId - The ID of the sales channel.
+   * @param locationId - The ID of the stock location.
+   * @returns A promise that resolves when the association has been created.
    */
   async associateLocation(
     salesChannelId: string,
@@ -70,11 +83,15 @@ class SalesChannelLocationService extends TransactionBaseService {
     const salesChannel = await this.salesChannelService_
       .withTransaction(manager)
       .retrieve(salesChannelId)
-    const stockLocation = await this.stockLocationService.retrieve(locationId)
+
+    if (this.stockLocationService) {
+      // trhows error if not found
+      await this.stockLocationService.retrieve(locationId)
+    }
 
     const salesChannelLocation = manager.create(SalesChannelLocation, {
       sales_channel_id: salesChannel.id,
-      location_id: stockLocation.id,
+      location_id: locationId,
     })
 
     await manager.save(salesChannelLocation)
@@ -82,10 +99,10 @@ class SalesChannelLocationService extends TransactionBaseService {
 
   /**
    * Lists the stock locations associated with a sales channel.
-   * @param {string} salesChannelId - The ID of the sales channel.
-   * @returns {Promise<string[]>} A promise that resolves with an array of location IDs.
+   * @param salesChannelId - The ID of the sales channel.
+   * @returns A promise that resolves with an array of location IDs.
    */
-  async listLocations(salesChannelId: string): Promise<string[]> {
+  async listLocationIds(salesChannelId: string): Promise<string[]> {
     const manager = this.transactionManager_ || this.manager_
     const salesChannel = await this.salesChannelService_
       .withTransaction(manager)
@@ -93,9 +110,27 @@ class SalesChannelLocationService extends TransactionBaseService {
 
     const locations = await manager.find(SalesChannelLocation, {
       where: { sales_channel_id: salesChannel.id },
+      select: ["location_id"],
     })
 
     return locations.map((l) => l.location_id)
+  }
+
+  /**
+   * Lists the sales channels associated with a stock location.
+   * @param {string} salesChannelId - The ID of the stock location.
+   * @returns {Promise<string[]>} A promise that resolves with an array of sales channel IDs.
+   */
+  async listSalesChannelIds(locationId: string): Promise<string[]> {
+    const manager = this.transactionManager_ || this.manager_
+    const location = await this.stockLocationService.retrieve(locationId)
+
+    const salesChannelLocations = await manager.find(SalesChannelLocation, {
+      where: { location_id: location.id },
+      select: ["sales_channel_id"],
+    })
+
+    return salesChannelLocations.map((l) => l.sales_channel_id)
   }
 }
 

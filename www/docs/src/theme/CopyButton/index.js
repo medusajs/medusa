@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import uuid from 'react-uuid';
 
 import Tooltip from '../Tooltip';
 import copy from 'copy-text-to-clipboard';

@@ -337,7 +337,7 @@ describe("/admin/product-categories", () => {
       expect(response.status).toEqual(200)
       expect(response.data.id).toEqual("invalid-id")
       expect(response.data.deleted).toBeTruthy()
-      expect(response.data.object).toEqual("product_category")
+      expect(response.data.object).toEqual("product-category")
     })
 
     it("throws a not allowed error for a category with children", async () => {
@@ -366,7 +366,7 @@ describe("/admin/product-categories", () => {
       expect(deleteResponse.status).toEqual(200)
       expect(deleteResponse.data.id).toEqual(productCategory.id)
       expect(deleteResponse.data.deleted).toBeTruthy()
-      expect(deleteResponse.data.object).toEqual("product_category")
+      expect(deleteResponse.data.object).toEqual("product-category")
 
       const errorFetchingDeleted = await api.get(
         `/admin/product-categories/${productCategory.id}`,

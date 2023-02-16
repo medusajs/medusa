@@ -15,16 +15,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/StorePaymentCollectionSessionsReq.yaml
+  x-codegen:
+    method: managePaymentSession
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: >-
-          ../code_samples/JavaScript/payment-collections_{id}_sessions/postundefined
+        $ref: ../code_samples/JavaScript/payment-collections_{id}_sessions/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/payment-collections_{id}_sessions/postundefined
+        $ref: ../code_samples/Shell/payment-collections_{id}_sessions/post.sh
   security:
     - api_token: []
     - cookie_auth: []

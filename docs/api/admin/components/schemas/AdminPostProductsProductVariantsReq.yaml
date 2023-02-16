@@ -62,6 +62,7 @@ properties:
   prices:
     type: array
     items:
+      type: object
       required:
         - amount
       properties:
@@ -93,6 +94,7 @@ properties:
   options:
     type: array
     items:
+      type: object
       required:
         - option_id
         - value

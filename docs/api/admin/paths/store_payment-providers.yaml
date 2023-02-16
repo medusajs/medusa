@@ -3,15 +3,17 @@ get:
   summary: List Payment Providers
   description: Retrieves the configured Payment Providers
   x-authenticated: true
+  x-codegen:
+    method: listPaymentProviders
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/store_payment-providers/getundefined
+        $ref: ../code_samples/JavaScript/store_payment-providers/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/store_payment-providers/getundefined
+        $ref: ../code_samples/Shell/store_payment-providers/get.sh
   security:
     - api_token: []
     - cookie_auth: []

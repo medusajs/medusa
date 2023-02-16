@@ -1,8 +1,5 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FindConditions, FindManyOptions, FindOneOptions } from "typeorm"
-import { SalesChannel } from "../../models"
-import EventBusService from "../event-bus"
-import { StoreService } from "../index"
+import { EventBusService, StoreService } from "../index"
 import SalesChannelService from "../sales-channel"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { store, StoreServiceMock } from "../__mocks__/store"
@@ -16,38 +13,12 @@ describe("SalesChannelService", () => {
 
   const salesChannelRepositoryMock = {
     ...MockRepository({
-      findOneWithRelations: jest
-        .fn()
-        .mockImplementation(
-          (
-            relations: Array<keyof SalesChannel> = [],
-            optionsWithoutRelations: Omit<
-              FindManyOptions<SalesChannel>,
-              "relations"
-            >
-          ): any => {
-            return Promise.resolve({
-              id:
-                (optionsWithoutRelations?.where as FindConditions<SalesChannel>)
-                  ?.id ?? IdMap.getId("sc_adjhlukiaeswhfae"),
-              ...salesChannelData,
-            })
-          }
-        ),
-      findOne: jest
-        .fn()
-        .mockImplementation(
-          (queryOrId: string | FindOneOptions<SalesChannel>): any => {
-            return Promise.resolve({
-              id:
-                typeof queryOrId === "string"
-                  ? queryOrId
-                  : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
-                    IdMap.getId("sc_adjhlukiaeswhfae"),
-              ...salesChannelData,
-            })
-          }
-        ),
+      findOne: jest.fn().mockImplementation((query) => {
+        return Promise.resolve({
+          id: query.where.id,
+          ...salesChannelData,
+        })
+      }),
       findAndCount: jest.fn().mockImplementation(() =>
         Promise.resolve([
           {
@@ -169,9 +140,10 @@ describe("SalesChannelService", () => {
       })
 
       expect(
-        salesChannelRepositoryMock.findOneWithRelations
-      ).toHaveBeenLastCalledWith(undefined, {
+        salesChannelRepositoryMock.findOne
+      ).toHaveBeenLastCalledWith({
         where: { id: IdMap.getId("sales_channel_1") },
+        relationLoadStrategy: "query"
       })
     })
   })

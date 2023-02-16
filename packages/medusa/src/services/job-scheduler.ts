@@ -11,6 +11,10 @@ type ScheduledJobHandler<T = unknown> = (
   eventName: string
 ) => Promise<void>
 
+export type CreateJobOptions = {
+  keepExisting?: boolean
+}
+
 export default class JobSchedulerService {
   protected readonly config_: ConfigModule
   protected readonly logger_: Logger
@@ -101,18 +105,30 @@ export default class JobSchedulerService {
     eventName: string,
     data: T,
     schedule: string,
-    handler: ScheduledJobHandler
+    handler: ScheduledJobHandler,
+    options: CreateJobOptions
   ): Promise<Job> {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler(eventName, handler)
 
-    return await this.queue_.add(
+    const jobToCreate = {
       eventName,
-      {
-        eventName,
-        data,
-      },
-      { repeat: { pattern: schedule } }
-    )
+      data,
+    }
+    const repeatOpts = { repeat: { pattern: schedule } }
+
+    if (options?.keepExisting) {
+      return await this.queue_.add(eventName, jobToCreate, repeatOpts)
+    }
+
+    const existingJobs = (await this.queue_.getRepeatableJobs()) ?? []
+
+    const existingJob = existingJobs.find((job) => job.name === eventName)
+
+    if (existingJob) {
+      await this.queue_.removeRepeatableByKey(existingJob.key)
+    }
+
+    return await this.queue_.add(eventName, jobToCreate, repeatOpts)
   }
 }

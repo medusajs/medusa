@@ -33,6 +33,9 @@ import AdminUsersResource from "./users"
 import AdminVariantsResource from "./variants"
 import AdminPaymentCollectionsResource from "./payment-collections"
 import AdminPaymentsResource from "./payments"
+import AdminInventoryItemsResource from "./inventory-item"
+import AdminReservationsResource from "./reservations"
+import AdminProductCategoriesResource from "./product-categories"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -45,6 +48,7 @@ class Admin extends BaseResource {
   public draftOrders = new AdminDraftOrdersResource(this.client)
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
+  public inventoryItems = new AdminInventoryItemsResource(this.client)
   public notes = new AdminNotesResource(this.client)
   public priceLists = new AdminPriceListResource(this.client)
   public products = new AdminProductsResource(this.client)
@@ -64,11 +68,13 @@ class Admin extends BaseResource {
   public store = new AdminStoresResource(this.client)
   public shippingOptions = new AdminShippingOptionsResource(this.client)
   public regions = new AdminRegionsResource(this.client)
+  public reservations = new AdminReservationsResource(this.client)
   public notifications = new AdminNotificationsResource(this.client)
   public taxRates = new AdminTaxRatesResource(this.client)
   public uploads = new AdminUploadsResource(this.client)
   public paymentCollections = new AdminPaymentCollectionsResource(this.client)
   public payments = new AdminPaymentsResource(this.client)
+  public productCategories = new AdminProductCategoriesResource(this.client)
 }
 
 export default Admin
