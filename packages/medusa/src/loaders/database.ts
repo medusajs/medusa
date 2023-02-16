@@ -5,7 +5,7 @@ import {
   TreeRepository,
 } from "typeorm"
 import { AwilixContainer } from "awilix"
-import { ConfigModule } from "../types/global"
+import { ConfigModule, DatabaseHostConfig } from "../types/global"
 import "../utils/naming-strategy"
 
 type Options = {
@@ -41,10 +41,31 @@ export default async ({
 
   const isSqlite = configModule.projectConfig.database_type === "sqlite"
 
-  dataSource = new DataSource({
-    type: configModule.projectConfig.database_type,
-    url: configModule.projectConfig.database_url,
+ let hostConfig: DatabaseHostConfig = {
     database: configModule.projectConfig.database_database,
+    url: configModule.projectConfig.database_url,
+    schema: configModule.projectConfig.database_schema,
+    logging: configModule.projectConfig.database_logging
+
+  }
+
+  if (configModule.projectConfig.database_host) {
+    hostConfig = {
+      host: configModule.projectConfig.database_host,
+      port: configModule.projectConfig.database_port,
+      database: configModule.projectConfig.database_database,
+      schema: configModule.projectConfig.database_schema,
+      logging: configModule.projectConfig.database_logging,
+      ssl: configModule.projectConfig.database_ssl,
+      username: configModule.projectConfig.database_username,
+      password: configModule.projectConfig.database_password,
+    }
+  }
+  
+
+dataSource = new DataSource({
+    type: configModule.projectConfig.database_type,
+    ...hostConfig,
     extra: configModule.projectConfig.database_extra || {},
     schema: configModule.projectConfig.database_schema,
     entities,

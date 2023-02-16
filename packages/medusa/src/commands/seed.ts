@@ -52,7 +52,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
   if (error) {
     handleConfigError(error)
-  }
+  } 
 
   const featureFlagRouter = featureFlagLoader(configModule)
 
@@ -65,11 +65,32 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       featureFlagRouter
     )
 
-    const connectionOptions = {
-      type: configModule.projectConfig.database_type,
+    let hostConfig;
+
+  if (configModule.projectConfig.database_host) {
+    hostConfig = {
+      host: configModule.projectConfig.database_host,
+      port: configModule.projectConfig.database_port,
       database: configModule.projectConfig.database_database,
       schema: configModule.projectConfig.database_schema,
+      logging: configModule.projectConfig.database_logging,
+      ssl: configModule.projectConfig.database_ssl,
+      username: configModule.projectConfig.database_username,
+      password: configModule.projectConfig.database_password,
+      extra: configModule.projectConfig.database_extra || {},
+    }
+  }
+  else {
+    hostConfig= {
+      database: configModule.projectConfig.database_database,
       url: configModule.projectConfig.database_url,
+      schema: configModule.projectConfig.database_schema,
+      logging: configModule.projectConfig.database_logging,
+    }
+  }
+    const connectionOptions = {
+      type: configModule.projectConfig.database_type,
+      ...hostConfig,
       extra: configModule.projectConfig.database_extra || {},
       migrations: coreMigrations.concat(moduleMigrations),
       logging: true,
