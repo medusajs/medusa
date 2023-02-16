@@ -4,6 +4,13 @@ import { Order } from "../../../models"
 
 const INCLUDES_FIELDS = ["returnable_items"] as const
 
+/**
+ * Retrieve the includes options from the select prop of retrieveConfig.
+ * If the include option is present then assigned it to includes on req
+ * @param req
+ * @param res
+ * @param next
+ */
 export function applyOrderIncludesOptions(
   req: Request,
   res: Response,
