@@ -13,14 +13,12 @@ import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import {
-  FulfillmentService,
   OrderService,
   ProductVariantInventoryService,
 } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
-import logger from "../../../../loaders/logger"
 
 /**
  * @oas [post] /orders/{id}/fulfillment
@@ -124,9 +122,6 @@ export default async (req, res) => {
         no_notification: validated.no_notification,
       })
 
-    const pvInventoryServiceTx =
-      pvInventoryService.withTransaction(transactionManager)
-
     if (validated.location_id) {
       const { fulfillments } = await orderService
         .withTransaction(transactionManager)
@@ -137,6 +132,9 @@ export default async (req, res) => {
             "fulfillments.items.item",
           ],
         })
+
+      const pvInventoryServiceTx =
+        pvInventoryService.withTransaction(transactionManager)
 
       await updateInventoryAndReservations(
         fulfillments.filter((f) => !existingFulfillmentMap[f.id]),
