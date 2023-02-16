@@ -23,20 +23,12 @@ export default class InventoryLevelService extends TransactionBaseService {
     DELETED: "inventory-level.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly eventBusService_: IEventBusService
 
-  constructor({ eventBusService, manager }: InjectedDependencies) {
+  constructor({ eventBusService }: InjectedDependencies) {
     super(arguments[0])
 
     this.eventBusService_ = eventBusService
-    this.manager_ = manager
-  }
-
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -49,7 +41,7 @@ export default class InventoryLevelService extends TransactionBaseService {
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 }
   ): Promise<InventoryLevel[]> {
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const query = buildQuery(selector, config) as FindManyOptions
@@ -66,7 +58,7 @@ export default class InventoryLevelService extends TransactionBaseService {
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 }
   ): Promise<[InventoryLevel[], number]> {
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const query = buildQuery(selector, config) as FindManyOptions
@@ -91,7 +83,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       )
     }
 
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const query = buildQuery({ id: inventoryLevelId }, config) as FindManyOptions
@@ -229,7 +221,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const result = await levelRepository
@@ -256,7 +248,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const result = await levelRepository
@@ -283,7 +275,7 @@ export default class InventoryLevelService extends TransactionBaseService {
       locationIds = [locationIds]
     }
 
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const result = await levelRepository

@@ -61,8 +61,9 @@ class LineItemAdjustmentService extends TransactionBaseService {
       )
     }
 
-    const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
-      this.activeManager_.withRepository(this.lineItemAdjustmentRepo_)
+    const lineItemAdjustmentRepo = this.activeManager_.withRepository(
+      this.lineItemAdjustmentRepo_
+    )
 
     const query = buildQuery({ id: lineItemAdjustmentId }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
