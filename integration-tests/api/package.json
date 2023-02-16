@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit -- __tests__/admin/swaps.js",
+    "test": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {

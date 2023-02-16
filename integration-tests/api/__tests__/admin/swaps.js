@@ -22,7 +22,7 @@ const {
   default: startServerWithEnvironment,
 } = require("../../../helpers/start-server-with-environment")
 
-jest.setTimeout(3000000)
+jest.setTimeout(30000)
 
 describe("/admin/swaps", () => {
   describe("tax exclusive", () => {
@@ -167,7 +167,7 @@ describe("/admin/swaps", () => {
         await db.teardown()
       })
 
-      it.only("completes swap and ensures difference due", async () => {
+      it("completes swap and ensures difference due", async () => {
         // ********* FACTORIES *********
         const prodA = await simpleProductFactory(dbConnection, {
           id: "prod-a",
