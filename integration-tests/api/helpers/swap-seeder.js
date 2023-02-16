@@ -16,12 +16,12 @@ const { Region } = require("@medusajs/medusa/dist/models/region")
 let regionId
 let region
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   regionId = "test-region"
 
-  region = await manager.findOne(Region, { id: regionId })
+  region = await manager.findOne(Region, { where: { id: regionId } })
 
   let orderWithSwap = manager.create(Order, {
     id: "order-with-swap",

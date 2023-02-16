@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
 import { TaxRate } from "@medusajs/medusa"
 
@@ -10,7 +10,7 @@ export type TaxRateFactoryData = {
 }
 
 export const simpleTaxRateFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: TaxRateFactoryData,
   seed?: number
 ): Promise<TaxRate> => {
@@ -18,7 +18,7 @@ export const simpleTaxRateFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const toSave = manager.create(TaxRate, {
     region_id: data.region_id,

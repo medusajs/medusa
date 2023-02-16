@@ -12,6 +12,7 @@ class MockRepo {
     save,
     findAndCount,
     del,
+    count,
   }) {
     this.create_ = create;
     this.update_ = update;
@@ -28,45 +29,45 @@ class MockRepo {
   }
 
   setFindOne(fn) {
-    this.findOne_ = fn;
+    this.findOne_ = fn
   }
 
   create = jest.fn().mockImplementation((...args) => {
     if (this.create_) {
-      return this.create_(...args);
+      return this.create_(...args)
     }
-    return {};
-  });
+    return {}
+  })
   softRemove = jest.fn().mockImplementation((...args) => {
     if (this.softRemove_) {
-      return this.softRemove_(...args);
+      return this.softRemove_(...args)
     }
-    return {};
-  });
+    return {}
+  })
   remove = jest.fn().mockImplementation((...args) => {
     if (this.remove_) {
-      return this.remove_(...args);
+      return this.remove_(...args)
     }
-    return {};
-  });
+    return {}
+  })
   update = jest.fn().mockImplementation((...args) => {
     if (this.update_) {
-      return this.update_(...args);
+      return this.update_(...args)
     }
-  });
+  })
   findOneOrFail = jest.fn().mockImplementation((...args) => {
     if (this.findOneOrFail_) {
-      return this.findOneOrFail_(...args);
+      return this.findOneOrFail_(...args)
     }
-  });
+  })
   findOneWithRelations = jest.fn().mockImplementation((...args) => {
     if (this.findOneWithRelations_) {
-      return this.findOneWithRelations_(...args);
+      return this.findOneWithRelations_(...args)
     }
-  });
+  })
   findOne = jest.fn().mockImplementation((...args) => {
     if (this.findOne_) {
-      return this.findOne_(...args);
+      return this.findOne_(...args)
     }
   });
   findDescendantsTree = jest.fn().mockImplementation((...args) => {
@@ -76,40 +77,46 @@ class MockRepo {
   });
   findOneOrFail = jest.fn().mockImplementation((...args) => {
     if (this.findOneOrFail_) {
-      return this.findOneOrFail_(...args);
+      return this.findOneOrFail_(...args)
     }
-  });
+  })
   find = jest.fn().mockImplementation((...args) => {
     if (this.find_) {
-      return this.find_(...args);
+      return this.find_(...args)
     }
-  });
+  })
   softRemove = jest.fn().mockImplementation((...args) => {
     if (this.softRemove_) {
-      return this.softRemove_(...args);
+      return this.softRemove_(...args)
     }
-  });
+  })
   save = jest.fn().mockImplementation((...args) => {
     if (this.save_) {
-      return this.save_(...args);
+      return this.save_(...args)
     }
-    return Promise.resolve(...args);
-  });
+    return Promise.resolve(...args)
+  })
 
   findAndCount = jest.fn().mockImplementation((...args) => {
     if (this.findAndCount_) {
-      return this.findAndCount_(...args);
+      return this.findAndCount_(...args)
     }
-    return {};
-  });
+    return {}
+  })
+  count = jest.fn().mockImplementation((...args) => {
+    if (this.count_) {
+      return this.count(...args)
+    }
+    return {}
+  })
   delete = jest.fn().mockImplementation((...args) => {
     if (this.delete_) {
-      return this.delete_(...args);
+      return this.delete_(...args)
     }
-    return {};
-  });
+    return {}
+  })
 }
 
 export default (methods = {}) => {
-  return new MockRepo(methods);
-};
+  return new MockRepo(methods)
+}

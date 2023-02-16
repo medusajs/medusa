@@ -2142,7 +2142,6 @@ describe("/admin/products", () => {
       const variant = response.data.product.variants.find(
         (v) => v.id === variantId
       )
-
       expect(variant.prices.length).toEqual(data.prices.length)
 
       expect(variant.prices).toEqual(
@@ -2467,10 +2466,10 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const variantPre = await dbConnection.manager.findOne(ProductVariant, {
-        id: "test-variant",
+        where: { id: "test-variant" },
       })
 
-      expect(variantPre).not.toEqual(undefined)
+      expect(variantPre).toBeTruthy()
 
       const response = await api
         .delete("/admin/products/test-product", adminHeaders)
@@ -2488,10 +2487,10 @@ describe("/admin/products", () => {
       )
 
       const variant = await dbConnection.manager.findOne(ProductVariant, {
-        id: "test-variant",
+        where: { id: "test-variant" },
       })
 
-      expect(variant).toEqual(undefined)
+      expect(variant).not.toBeTruthy()
     })
 
     it("successfully deletes a product variant and its associated option values", async () => {
@@ -2499,10 +2498,10 @@ describe("/admin/products", () => {
 
       // Validate that the option value exists
       const optValPre = await dbConnection.manager.findOne(ProductOptionValue, {
-        variant_id: "test-variant_2",
+        where: { variant_id: "test-variant_2" },
       })
 
-      expect(optValPre).not.toEqual(undefined)
+      expect(optValPre).toBeTruthy()
 
       // Soft delete the variant
       const response = await api.delete(
@@ -2515,20 +2514,18 @@ describe("/admin/products", () => {
       // Validate that the option value was deleted
       const optValPost = await dbConnection.manager.findOne(
         ProductOptionValue,
-        {
-          variant_id: "test-variant_2",
-        }
+        { where: { variant_id: "test-variant_2" } }
       )
 
-      expect(optValPost).toEqual(undefined)
+      expect(optValPost).not.toBeTruthy()
 
       // Validate that the option still exists in the DB with deleted_at
       const optValDeleted = await dbConnection.manager.findOne(
         ProductOptionValue,
         {
-          variant_id: "test-variant_2",
-        },
-        {
+          where: {
+            variant_id: "test-variant_2",
+          },
           withDeleted: true,
         }
       )
@@ -2546,10 +2543,10 @@ describe("/admin/products", () => {
 
       // Validate that the option value exists
       const optValPre = await dbConnection.manager.findOne(ProductOptionValue, {
-        variant_id: "test-variant_2",
+        where: { variant_id: "test-variant_2" },
       })
 
-      expect(optValPre).not.toEqual(undefined)
+      expect(optValPre).toBeTruthy()
 
       // Soft delete the product
       const response = await api.delete(
@@ -2563,19 +2560,19 @@ describe("/admin/products", () => {
       const optValPost = await dbConnection.manager.findOne(
         ProductOptionValue,
         {
-          variant_id: "test-variant_2",
+          where: { variant_id: "test-variant_2" },
         }
       )
 
-      expect(optValPost).toEqual(undefined)
+      expect(optValPost).not.toBeTruthy()
 
       // Validate that the option still exists in the DB with deleted_at
       const optValDeleted = await dbConnection.manager.findOne(
         ProductOptionValue,
         {
-          variant_id: "test-variant_2",
-        },
-        {
+          where: {
+            variant_id: "test-variant_2",
+          },
           withDeleted: true,
         }
       )
@@ -2593,10 +2590,10 @@ describe("/admin/products", () => {
 
       // Validate that the price exists
       const pricePre = await dbConnection.manager.findOne(MoneyAmount, {
-        id: "test-price",
+        where: { id: "test-price" },
       })
 
-      expect(pricePre).not.toEqual(undefined)
+      expect(pricePre).toBeTruthy()
 
       // Soft delete the variant
       const response = await api.delete(
@@ -2608,21 +2605,18 @@ describe("/admin/products", () => {
 
       // Validate that the price was deleted
       const pricePost = await dbConnection.manager.findOne(MoneyAmount, {
-        id: "test-price",
+        where: { id: "test-price" },
       })
 
-      expect(pricePost).toEqual(undefined)
+      expect(pricePost).not.toBeTruthy()
 
       // Validate that the price still exists in the DB with deleted_at
-      const optValDeleted = await dbConnection.manager.findOne(
-        MoneyAmount,
-        {
+      const optValDeleted = await dbConnection.manager.findOne(MoneyAmount, {
+        where: {
           id: "test-price",
         },
-        {
-          withDeleted: true,
-        }
-      )
+        withDeleted: true,
+      })
 
       expect(optValDeleted).toEqual(
         expect.objectContaining({
@@ -2637,10 +2631,10 @@ describe("/admin/products", () => {
 
       // Validate that the price exists
       const pricePre = await dbConnection.manager.findOne(MoneyAmount, {
-        id: "test-price",
+        where: { id: "test-price" },
       })
 
-      expect(pricePre).not.toEqual(undefined)
+      expect(pricePre).toBeTruthy()
 
       // Soft delete the product
       const response = await api.delete(
@@ -2652,21 +2646,18 @@ describe("/admin/products", () => {
 
       // Validate that the price has been deleted
       const pricePost = await dbConnection.manager.findOne(MoneyAmount, {
-        id: "test-price",
+        where: { id: "test-price" },
       })
 
-      expect(pricePost).toEqual(undefined)
+      expect(pricePost).not.toBeTruthy()
 
       // Validate that the price still exists in the DB with deleted_at
-      const optValDeleted = await dbConnection.manager.findOne(
-        MoneyAmount,
-        {
+      const optValDeleted = await dbConnection.manager.findOne(MoneyAmount, {
+        where: {
           id: "test-price",
         },
-        {
-          withDeleted: true,
-        }
-      )
+        withDeleted: true,
+      })
 
       expect(optValDeleted).toEqual(
         expect.objectContaining({

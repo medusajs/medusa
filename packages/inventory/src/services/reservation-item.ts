@@ -1,4 +1,4 @@
-import { EntityManager } from "typeorm"
+import { EntityManager, FindManyOptions } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   FindConfig,
@@ -63,7 +63,7 @@ export default class ReservationItemService extends TransactionBaseService {
     const manager = this.getManager()
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
     return await itemRepository.find(query)
   }
 
@@ -80,7 +80,7 @@ export default class ReservationItemService extends TransactionBaseService {
     const manager = this.getManager()
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
     return await itemRepository.findAndCount(query)
   }
 
@@ -105,7 +105,7 @@ export default class ReservationItemService extends TransactionBaseService {
     const manager = this.getManager()
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery({ id: reservationItemId }, config)
+    const query = buildQuery({ id: reservationItemId }, config) as FindManyOptions
     const [reservationItem] = await reservationItemRepository.find(query)
 
     if (!reservationItem) {

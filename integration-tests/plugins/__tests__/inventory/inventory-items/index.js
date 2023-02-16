@@ -302,7 +302,8 @@ describe("Inventory Items endpoints", () => {
 
       const response = await api.get(`/admin/inventory-items`, adminHeaders)
 
-      expect(response.data.inventory_items).toEqual([
+      expect(response.data.inventory_items).toHaveLength(1)
+      expect(response.data.inventory_items[0]).toEqual(
         expect.objectContaining({
           id: inventoryItemId,
           sku: "MY_SKU",
@@ -359,8 +360,8 @@ describe("Inventory Items endpoints", () => {
               available_quantity: 5,
             }),
           ]),
-        }),
-      ])
+        })
+      )
     })
 
     it("When deleting an inventory item it removes the product variants associated to it", async () => {

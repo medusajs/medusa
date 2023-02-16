@@ -1,10 +1,15 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager, ILike } from "typeorm"
+import {
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+} from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
 import { ProductRepository } from "../repositories/product"
 import { ProductCollectionRepository } from "../repositories/product-collection"
-import { FindConfig, Selector } from "../types/common"
+import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateProductCollection,
   UpdateProductCollection,
@@ -17,6 +22,11 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   productRepository: typeof ProductRepository
   productCollectionRepository: typeof ProductCollectionRepository
+}
+
+type ListAndCountSelector = Selector<ProductCollection> & {
+  q?: string
+  discount_condition_id?: string
 }
 
 /**
@@ -62,7 +72,7 @@ class ProductCollectionService extends TransactionBaseService {
       )
     }
 
-    const collectionRepo = this.manager_.getCustomRepository(
+    const collectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -89,7 +99,7 @@ class ProductCollectionService extends TransactionBaseService {
     collectionHandle: string,
     config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
-    const collectionRepo = this.manager_.getCustomRepository(
+    const collectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -115,7 +125,7 @@ class ProductCollectionService extends TransactionBaseService {
     collection: CreateProductCollection
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const collectionRepo = manager.getCustomRepository(
+      const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -135,7 +145,7 @@ class ProductCollectionService extends TransactionBaseService {
     update: UpdateProductCollection
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const collectionRepo = manager.getCustomRepository(
+      const collectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -162,7 +172,7 @@ class ProductCollectionService extends TransactionBaseService {
    */
   async delete(collectionId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productCollectionRepo = manager.getCustomRepository(
+      const productCollectionRepo = manager.withRepository(
         this.productCollectionRepository_
       )
 
@@ -183,7 +193,7 @@ class ProductCollectionService extends TransactionBaseService {
     productIds: string[]
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productRepo = manager.withRepository(this.productRepository_)
 
       const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
@@ -200,7 +210,7 @@ class ProductCollectionService extends TransactionBaseService {
     productIds: string[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productRepo = manager.withRepository(this.productRepository_)
 
       const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
@@ -234,13 +244,10 @@ class ProductCollectionService extends TransactionBaseService {
    * @return the result of the find operation
    */
   async listAndCount(
-    selector: Selector<ProductCollection> & {
-      q?: string
-      discount_condition_id?: string
-    } = {},
+    selector: ListAndCountSelector = {},
     config: FindConfig<ProductCollection> = { skip: 0, take: 20 }
   ): Promise<[ProductCollection[], number]> {
-    const productCollectionRepo = this.manager_.getCustomRepository(
+    const productCollectionRepo = this.manager_.withRepository(
       this.productCollectionRepository_
     )
 
@@ -250,31 +257,35 @@ class ProductCollectionService extends TransactionBaseService {
       delete selector.q
     }
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(
+      selector,
+      config
+    ) as FindManyOptions<ProductCollection> & {
+      where: { discount_condition_id?: string }
+    } & ExtendedFindConfig<ProductCollection>
 
     if (q) {
-      const where = query.where
+      const where = query.where as FindOptionsWhere<ProductCollection>
 
       delete where.title
       delete where.handle
       delete where.created_at
       delete where.updated_at
 
-      query.where = (qb): void => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where({ title: ILike(`%${q}%`) }).orWhere({
-              handle: ILike(`%${q}%`),
-            })
-          })
-        )
-      }
+      query.where = [
+        {
+          ...where,
+          title: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          handle: ILike(`%${q}%`),
+        },
+      ]
     }
 
     if (query.where.discount_condition_id) {
-      const discountConditionId = query.where.discount_condition_id as string
+      const discountConditionId = query.where.discount_condition_id
       delete query.where.discount_condition_id
       return await productCollectionRepo.findAndCountByDiscountConditionId(
         discountConditionId,

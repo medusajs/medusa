@@ -8,7 +8,7 @@ import {
   Store,
 } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import {
   ProductVariantFactoryData,
   simpleProductVariantFactory,
@@ -32,22 +32,26 @@ export type ProductFactoryData = {
 }
 
 export const simpleProductFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: ProductFactoryData = {},
   seed?: number
-): Promise<Product | undefined> => {
+): Promise<Product | undefined | null> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.DEFAULT,
+    where: {
+      type: ShippingProfileType.DEFAULT,
+    }
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: ShippingProfileType.GIFT_CARD,
+    where: {
+      type: ShippingProfileType.GIFT_CARD,
+    }
   })
 
   let sales_channels
@@ -55,18 +59,20 @@ export const simpleProductFactory = async (
     sales_channels = await Promise.all(
       data.sales_channels.map(
         async (salesChannel) =>
-          await simpleSalesChannelFactory(connection, salesChannel)
+          await simpleSalesChannelFactory(dataSource, salesChannel)
       )
     )
   } else {
-    const store = await manager.findOne(Store, {
-      relations: ["default_sales_channel"],
+    const stores = await manager.find(Store, {
+      relations: { default_sales_channel: true },
     })
+
+    const store = stores[0]
 
     if (store?.default_sales_channel) {
       sales_channels = [store.default_sales_channel]
     } else {
-      const salesChannel = await simpleSalesChannelFactory(connection, {
+      const salesChannel = await simpleSalesChannelFactory(dataSource, {
         id: `default-${Math.random() * 1000}`,
         is_default: true,
       })
@@ -144,12 +150,16 @@ export const simpleProductFactory = async (
         { option_id: optionId, value: faker.commerce.productAdjective() },
       ]
     }
-    await simpleProductVariantFactory(connection, factoryData)
+    await simpleProductVariantFactory(dataSource, factoryData)
   }
 
   return await manager.findOne(
     Product,
-    { id: prodId },
-    { relations: ["tags", "variants", "variants.prices"] }
+    {
+      where: {
+        id: prodId
+      },
+      relations: { tags: true, variants: { prices: true }}
+    }
   )
 }

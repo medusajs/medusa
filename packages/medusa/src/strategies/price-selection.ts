@@ -79,7 +79,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    const moneyRepo = this.manager_.getCustomRepository(
+    const moneyRepo = this.manager_.withRepository(
       this.moneyAmountRepository_
     )
 
@@ -168,7 +168,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    const moneyRepo = this.manager_.getCustomRepository(
+    const moneyRepo = this.manager_.withRepository(
       this.moneyAmountRepository_
     )
 
