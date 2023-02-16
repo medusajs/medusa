@@ -81,7 +81,7 @@ export default async (req, res) => {
 
   let sales_channel_id = validated.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
-    sales_channel_id = req.publishableApiKeyScopes.sales_channel_id[0]
+    sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
   }
 
   let regionId = validated.region_id
