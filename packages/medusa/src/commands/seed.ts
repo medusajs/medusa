@@ -52,7 +52,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
   if (error) {
     handleConfigError(error)
-  }
+  } 
 
   const featureFlagRouter = featureFlagLoader(configModule)
 
