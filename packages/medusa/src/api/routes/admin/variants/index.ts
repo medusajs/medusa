@@ -64,6 +64,11 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
 /**
  * @schema AdminVariantsListRes
  * type: object
+ * required:
+ *   - variants
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   variants:
  *     type: array

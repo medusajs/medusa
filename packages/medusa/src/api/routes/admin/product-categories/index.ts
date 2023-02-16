@@ -1,8 +1,8 @@
 import { Router } from "express"
 
 import middlewares, {
-  transformQuery,
   transformBody,
+  transformQuery,
 } from "../../../middlewares"
 
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
@@ -19,23 +19,23 @@ import listProductCategories, {
 } from "./list-product-categories"
 
 import createProductCategory, {
-  AdminPostProductCategoriesReq,
   AdminPostProductCategoriesParams,
+  AdminPostProductCategoriesReq,
 } from "./create-product-category"
 
 import updateProductCategory, {
-  AdminPostProductCategoriesCategoryReq,
   AdminPostProductCategoriesCategoryParams,
+  AdminPostProductCategoriesCategoryReq,
 } from "./update-product-category"
 
 import addProductsBatch, {
-  AdminPostProductCategoriesCategoryProductsBatchReq,
   AdminPostProductCategoriesCategoryProductsBatchParams,
+  AdminPostProductCategoriesCategoryProductsBatchReq,
 } from "./add-products-batch"
 
 import deleteProductsBatch, {
-  AdminDeleteProductCategoriesCategoryProductsBatchReq,
   AdminDeleteProductCategoriesCategoryProductsBatchParams,
+  AdminDeleteProductCategoriesCategoryProductsBatchReq,
 } from "./delete-products-batch"
 
 import { ProductCategory } from "../../../../models"
@@ -152,6 +152,8 @@ export const defaultProductCategoryFields = [
 /**
  * @schema AdminProductCategoriesCategoryRes
  * type: object
+ * required:
+ *   - product_category
  * properties:
  *   product_category:
  *     $ref: "#/components/schemas/ProductCategory"
@@ -163,6 +165,10 @@ export type AdminProductCategoriesCategoryRes = {
 /**
  * @schema AdminProductCategoriesCategoryDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -181,6 +187,11 @@ export type AdminProductCategoriesCategoryDeleteRes = DeleteResponse
 /**
  * @schema AdminProductCategoriesListRes
  * type: object
+ * required:
+ *   - product_categories
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   product_categories:
  *     type: array

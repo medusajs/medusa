@@ -55,6 +55,9 @@ export const defaultRelations = ["region", "profile", "requirements"]
 /**
  * @schema AdminShippingOptionsListRes
  * type: object
+ * required:
+ *   - shipping_options
+ *   - count
  * properties:
  *   shipping_options:
  *     type: array
@@ -71,6 +74,8 @@ export type AdminShippingOptionsListRes = PaginatedResponse & {
 /**
  * @schema AdminShippingOptionsRes
  * type: object
+ * required:
+ *   - shipping_option
  * properties:
  *   shipping_option:
  *     $ref: "#/components/schemas/ShippingOption"
@@ -82,6 +87,10 @@ export type AdminShippingOptionsRes = {
 /**
  * @schema AdminShippingOptionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
