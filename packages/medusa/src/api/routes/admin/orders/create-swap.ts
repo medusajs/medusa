@@ -39,6 +39,7 @@ import { FindParams } from "../../../../types/common"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderSwapsReq"
  * x-codegen:
  *   method: createSwap
+ *   queryParams: AdminPostOrdersOrderSwapsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
