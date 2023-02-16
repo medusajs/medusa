@@ -48,7 +48,7 @@ describe("Product Categories", () => {
         is_active: false
       })
 
-      productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
+      productCategoryRepository = dbConnection.manager.withRepository(ProductCategoryRepository)
     })
 
     it("can fetch all root categories", async () => {
@@ -133,7 +133,7 @@ describe("Product Categories", () => {
         }
       )
 
-      productCategoryRepository = dbConnection.manager.getCustomRepository(ProductCategoryRepository)
+      productCategoryRepository = dbConnection.manager.withRepository(ProductCategoryRepository)
     })
 
     it("fetches all active categories", async () => {
@@ -200,7 +200,7 @@ describe("Product Categories", () => {
       const [ categories, count ] = await productCategoryRepository.getFreeTextSearchResultsAndCount(
         {
           where: { id: a11.id },
-          relations: ['parent_category', 'category_children'],
+          relations: { parent_category: true, category_children: true },
         },
       )
 

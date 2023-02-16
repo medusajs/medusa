@@ -49,6 +49,10 @@ class SalesChannelService extends TransactionBaseService {
     this.storeService_ = storeService
   }
 
+  private getManager(): EntityManager {
+    return this.transactionManager_ ?? this.manager_
+  }
+
   /**
    * A generic retrieve used to find a sales channel by different attributes.
    *
@@ -60,18 +64,18 @@ class SalesChannelService extends TransactionBaseService {
     selector: Selector<SalesChannel>,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel> {
-    const manager = this.manager_
+    const manager = this.getManager()
 
-    const salesChannelRepo = manager.getCustomRepository(
+    const salesChannelRepo = manager.withRepository(
       this.salesChannelRepository_
     )
 
-    const { relations, ...query } = buildQuery(selector, config)
+    const query = buildQuery(selector, config)
 
-    const salesChannel = await salesChannelRepo.findOneWithRelations(
-      relations as (keyof SalesChannel)[],
-      query
-    )
+    const salesChannel = await salesChannelRepo.findOne({
+      ...query,
+      relationLoadStrategy: "query",
+    })
 
     if (!salesChannel) {
       const selectorConstraints = Object.entries(selector)
@@ -145,8 +149,8 @@ class SalesChannelService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[SalesChannel[], number]> {
-    const manager = this.manager_
-    const salesChannelRepo = manager.getCustomRepository(
+    const manager = this.getManager()
+    const salesChannelRepo = manager.withRepository(
       this.salesChannelRepository_
     )
 
@@ -175,8 +179,8 @@ class SalesChannelService extends TransactionBaseService {
    */
   async create(data: CreateSalesChannelInput): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (manager) => {
-      const salesChannelRepo: SalesChannelRepository =
-        manager.getCustomRepository(this.salesChannelRepository_)
+      const salesChannelRepo: typeof SalesChannelRepository =
+        manager.withRepository(this.salesChannelRepository_)
 
       const salesChannel = salesChannelRepo.create(data)
 
@@ -195,8 +199,8 @@ class SalesChannelService extends TransactionBaseService {
     data: UpdateSalesChannelInput
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo: SalesChannelRepository =
-        transactionManager.getCustomRepository(this.salesChannelRepository_)
+      const salesChannelRepo: typeof SalesChannelRepository =
+        transactionManager.withRepository(this.salesChannelRepository_)
 
       const salesChannel = await this.retrieve(salesChannelId)
 
@@ -226,13 +230,13 @@ class SalesChannelService extends TransactionBaseService {
    */
   async delete(salesChannelId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 
-      const salesChannel = await this.retrieve(salesChannelId).catch(
-        () => void 0
-      )
+      const salesChannel = await this.retrieve(salesChannelId, {
+        relations: ["locations"],
+      }).catch(() => void 0)
 
       if (!salesChannel) {
         return
@@ -290,6 +294,27 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
+   * Retrieves the default sales channel.
+   * @return the sales channel
+   */
+  async retrieveDefault(): Promise<SalesChannel> {
+    const manager = this.getManager()
+
+    const store = await this.storeService_.withTransaction(manager).retrieve({
+      relations: ["default_sales_channel"],
+    })
+
+    if (!store.default_sales_channel) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Default Sales channel was not found`
+      )
+    }
+
+    return store.default_sales_channel
+  }
+
+  /**
    * Remove a batch of product from a sales channel
    * @param salesChannelId - The id of the sales channel on which to remove the products
    * @param productIds - The products ids to remove from the sales channel
@@ -300,7 +325,7 @@ class SalesChannelService extends TransactionBaseService {
     productIds: string[]
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 
@@ -321,7 +346,7 @@ class SalesChannelService extends TransactionBaseService {
     productIds: string[]
   ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
+      const salesChannelRepo = transactionManager.withRepository(
         this.salesChannelRepository_
       )
 

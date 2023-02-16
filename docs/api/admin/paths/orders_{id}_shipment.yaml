@@ -15,15 +15,17 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostOrdersOrderShipmentReq.yaml
+  x-codegen:
+    method: createShipment
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/orders_{id}_shipment/postundefined
+        $ref: ../code_samples/JavaScript/orders_{id}_shipment/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/orders_{id}_shipment/postundefined
+        $ref: ../code_samples/Shell/orders_{id}_shipment/post.sh
   security:
     - api_token: []
     - cookie_auth: []

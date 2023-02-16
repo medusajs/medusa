@@ -1,11 +1,19 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
+import {
+  EntityManager,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+  Not,
+  Raw,
+  UpdateResult,
+} from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { Cart, CartType, DraftOrder, DraftOrderStatus } from "../models"
+import { CartType, DraftOrder, DraftOrderStatus } from "../models"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { OrderRepository } from "../repositories/order"
 import { PaymentRepository } from "../repositories/payment"
-import { ExtendedFindConfig, FindConfig } from "../types/common"
+import { FindConfig } from "../types/common"
 import { DraftOrderCreateProps } from "../types/draft-orders"
 import { buildQuery } from "../utils"
 import CartService from "./cart"
@@ -96,9 +104,7 @@ class DraftOrderService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery({ id: draftOrderId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
@@ -123,9 +129,7 @@ class DraftOrderService extends TransactionBaseService {
     config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery({ cart_id: cartId }, config)
     const draftOrder = await draftOrderRepo.findOne(query)
@@ -147,7 +151,7 @@ class DraftOrderService extends TransactionBaseService {
   async delete(draftOrderId: string): Promise<DraftOrder | undefined> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         const draftOrder = await draftOrderRepo.findOne({
@@ -177,40 +181,45 @@ class DraftOrderService extends TransactionBaseService {
     }
   ): Promise<[DraftOrder[], number]> {
     const manager = this.manager_
-    const draftOrderRepository = manager.getCustomRepository(
+    const draftOrderRepository = manager.withRepository(
       this.draftOrderRepository_
     )
 
     const { q, ...restSelector } = selector
-    const query = buildQuery(
-      restSelector,
-      config
-    ) as FindManyOptions<DraftOrder> & ExtendedFindConfig<DraftOrder>
+    const query = buildQuery(restSelector, config)
 
     if (q) {
-      const where = query.where
-      delete where?.display_id
+      query.where = query.where as FindOptionsWhere<DraftOrder>
+      delete query.where?.display_id
 
-      query.join = {
-        alias: "draft_order",
-        innerJoin: {
-          cart: "draft_order.cart",
+      query.relations = query.relations ?? {}
+      query.relations.cart = query.relations.cart ?? true
+
+      const innerJoinLikeConstraint = {
+        cart: {
+          id: Not(IsNull()),
         },
       }
 
-      query.where = (qb): void => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where(`cart.email ILIKE :q`, {
-              q: `%${q}%`,
-            }).orWhere(`draft_order.display_id::TEXT ILIKE :displayId`, {
-              displayId: `${q}`,
-            })
-          })
-        )
-      }
+      query.where = query.where as FindOptionsWhere<DraftOrder>[]
+      query.where = [
+        {
+          ...query.where,
+          ...innerJoinLikeConstraint,
+          cart: {
+            ...innerJoinLikeConstraint.cart,
+            id: Not(IsNull()),
+            email: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...query.where,
+          ...innerJoinLikeConstraint,
+          display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
+            q: `%${q}%`,
+          }),
+        },
+      ]
     }
 
     return await draftOrderRepository.findAndCount(query)
@@ -231,9 +240,7 @@ class DraftOrderService extends TransactionBaseService {
     }
   ): Promise<DraftOrder[]> {
     const manager = this.manager_
-    const draftOrderRepo = manager.getCustomRepository(
-      this.draftOrderRepository_
-    )
+    const draftOrderRepo = manager.withRepository(this.draftOrderRepository_)
 
     const query = buildQuery(selector, config)
 
@@ -248,7 +255,7 @@ class DraftOrderService extends TransactionBaseService {
   async create(data: DraftOrderCreateProps): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
 
@@ -264,27 +271,16 @@ class DraftOrderService extends TransactionBaseService {
           no_notification_order,
           items,
           idempotency_key,
+          discounts,
           ...rawCart
         } = data
 
         const cartServiceTx =
           this.cartService_.withTransaction(transactionManager)
 
-        if (rawCart.discounts) {
-          const { discounts } = rawCart
-          rawCart.discounts = []
-
-          for (const { code } of discounts) {
-            await cartServiceTx.applyDiscount(rawCart as Cart, code)
-          }
-        }
-
-        let createdCart = await cartServiceTx.create({
+        const createdCart = await cartServiceTx.create({
           type: CartType.DRAFT_ORDER,
           ...rawCart,
-        })
-        createdCart = await cartServiceTx.retrieve(createdCart.id, {
-          relations: ["discounts", "discounts.rule", "items", "region"],
         })
 
         const draftOrder = draftOrderRepo.create({
@@ -292,6 +288,7 @@ class DraftOrderService extends TransactionBaseService {
           no_notification_order,
           idempotency_key,
         })
+
         const result = await draftOrderRepo.save(draftOrder)
 
         await this.eventBus_
@@ -303,7 +300,7 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        for (const item of (items || [])) {
+        for (const item of items || []) {
           if (item.variant_id) {
             const line = await lineItemServiceTx.generate(
               item.variant_id,
@@ -312,7 +309,6 @@ class DraftOrderService extends TransactionBaseService {
               {
                 metadata: item?.metadata || {},
                 unit_price: item.unit_price,
-                cart: createdCart,
               }
             )
 
@@ -338,6 +334,10 @@ class DraftOrderService extends TransactionBaseService {
               quantity: item.quantity,
             })
           }
+        }
+
+        if (discounts?.length) {
+          await cartServiceTx.update(createdCart.id, { discounts })
         }
 
         for (const method of shipping_methods) {
@@ -375,7 +375,7 @@ class DraftOrderService extends TransactionBaseService {
   ): Promise<UpdateResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         return await draftOrderRepo.update(
@@ -404,7 +404,7 @@ class DraftOrderService extends TransactionBaseService {
   ): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const draftOrderRepo = transactionManager.getCustomRepository(
+        const draftOrderRepo = transactionManager.withRepository(
           this.draftOrderRepository_
         )
         const draftOrder = await this.retrieve(id)

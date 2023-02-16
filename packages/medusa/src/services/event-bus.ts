@@ -249,7 +249,7 @@ export default class EventBusService {
      * as part of the rollback.
      */
     if (this.transactionManager_) {
-      const stagedJobRepository = this.transactionManager_.getCustomRepository(
+      const stagedJobRepository = this.transactionManager_.withRepository(
         this.stagedJobRepository_
       )
 
@@ -285,7 +285,7 @@ export default class EventBusService {
         take: 1000,
       }
 
-      const stagedJobRepo = this.manager_.getCustomRepository(
+      const stagedJobRepo = this.manager_.withRepository(
         this.stagedJobRepository_
       )
       const jobs = await stagedJobRepo.find(listConfig)

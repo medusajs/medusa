@@ -11,11 +11,13 @@ post:
       description: The Cart ID.
       schema:
         type: string
+  x-codegen:
+    method: calculateTaxes
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/carts_{id}_taxes/postundefined
+        $ref: ../code_samples/Shell/carts_{id}_taxes/post.sh
   tags:
     - Cart
   responses:

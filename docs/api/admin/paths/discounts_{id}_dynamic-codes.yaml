@@ -12,15 +12,22 @@ post:
       description: The ID of the Discount to create the dynamic code from."
       schema:
         type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostDiscountsDiscountDynamicCodesReq.yaml
+  x-codegen:
+    method: createDynamicCode
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/discounts_{id}_dynamic-codes/postundefined
+        $ref: ../code_samples/JavaScript/discounts_{id}_dynamic-codes/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/discounts_{id}_dynamic-codes/postundefined
+        $ref: ../code_samples/Shell/discounts_{id}_dynamic-codes/post.sh
   security:
     - api_token: []
     - cookie_auth: []
@@ -45,23 +52,3 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  requestBody:
-    content:
-      application/json:
-        schema:
-          type: object
-          required:
-            - code
-          properties:
-            code:
-              type: string
-              description: The unique code that will be used to redeem the Discount.
-            usage_limit:
-              type: number
-              default: '1'
-              description: amount of times the discount can be applied.
-            metadata:
-              type: object
-              description: >-
-                An optional set of key-value paris to hold additional
-                information.

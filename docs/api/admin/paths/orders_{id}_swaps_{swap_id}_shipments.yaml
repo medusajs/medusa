@@ -21,17 +21,18 @@ post:
       application/json:
         schema:
           $ref: ../components/schemas/AdminPostOrdersOrderSwapsSwapShipmentsReq.yaml
+  x-codegen:
+    method: createSwapShipment
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/orders_{id}_swaps_{swap_id}_shipments/postundefined
+          ../code_samples/JavaScript/orders_{id}_swaps_{swap_id}_shipments/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/orders_{id}_swaps_{swap_id}_shipments/postundefined
+        $ref: ../code_samples/Shell/orders_{id}_swaps_{swap_id}_shipments/post.sh
   security:
     - api_token: []
     - cookie_auth: []

@@ -8,13 +8,18 @@ import {
   ClaimType,
   FulfillmentItem,
   LineItem,
+  Order,
   ReturnItem,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { ClaimRepository } from "../repositories/claim"
 import { LineItemRepository } from "../repositories/line-item"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
-import { CreateClaimInput, UpdateClaimInput } from "../types/claim"
+import {
+  CreateClaimInput,
+  CreateClaimItemInput,
+  UpdateClaimInput,
+} from "../types/claim"
 import { FindConfig } from "../types/common"
 import { buildQuery, setMetadata } from "../utils"
 import ClaimItemService from "./claim-item"
@@ -126,7 +131,7 @@ export default class ClaimService extends TransactionBaseService {
   async update(id: string, data: UpdateClaimInput): Promise<ClaimOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claim = await this.retrieve(id, {
@@ -166,7 +171,7 @@ export default class ClaimService extends TransactionBaseService {
             } else {
               await shippingOptionServiceTx.createShippingMethod(
                 method.option_id as string,
-                (method as any).data,
+                method.data ?? {},
                 {
                   claim_order_id: claim.id,
                   price: method.price,
@@ -204,6 +209,124 @@ export default class ClaimService extends TransactionBaseService {
     )
   }
 
+  protected async validateCreateClaimInput(
+    data: CreateClaimInput
+  ): Promise<void> {
+    const lineItemServiceTx = this.lineItemService_.withTransaction(
+      this.manager_
+    )
+
+    const { type, claim_items, additional_items, refund_amount } = data
+
+    if (type !== ClaimType.REFUND && type !== ClaimType.REPLACE) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Claim type must be one of "refund" or "replace".`
+      )
+    }
+
+    if (type === ClaimType.REPLACE && !additional_items?.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Claims with type "replace" must have at least one additional item.`
+      )
+    }
+
+    if (!claim_items?.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Claims must have at least one claim item.`
+      )
+    }
+
+    if (refund_amount && type !== ClaimType.REFUND) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Claim has type "${type}" but must be type "refund" to have a refund_amount.`
+      )
+    }
+
+    const claimLineItems = await lineItemServiceTx.list(
+      { id: claim_items.map((c) => c.item_id) },
+      { relations: ["order", "swap", "claim_order", "tax_lines"] }
+    )
+
+    for (const line of claimLineItems) {
+      if (
+        line.order?.canceled_at ||
+        line.swap?.canceled_at ||
+        line.claim_order?.canceled_at
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot create a claim on a canceled item.`
+        )
+      }
+    }
+  }
+
+  /**
+   * Finds claim line items on an order and calculates the refund amount.
+   * There are three places too look:
+   * - Order items
+   * - Swap items
+   * - Claim items (from previous claims)
+   * Note, it will attempt to return early from each of these places to avoid having to iterate over all items every time.
+   * @param order - the order to find claim lines on
+   * @param claimItems - the claim items to match against
+   * @return the refund amount
+   */
+  protected async getRefundTotalForClaimLinesOnOrder(
+    order: Order,
+    claimItems: CreateClaimItemInput[]
+  ) {
+    const claimLines = claimItems
+      .map((ci) => {
+        const predicate = (it: LineItem) =>
+          it.shipped_quantity! > 0 &&
+          ci.quantity <= it.shipped_quantity! &&
+          it.id === ci.item_id
+
+        const claimLine = order.items.find(predicate)
+
+        if (claimLine) {
+          return { ...claimLine, quantity: ci.quantity }
+        }
+
+        if (order.swaps?.length) {
+          for (const swap of order.swaps) {
+            const claimLine = swap.additional_items.find(predicate)
+
+            if (claimLine) {
+              return { ...claimLine, quantity: ci.quantity }
+            }
+          }
+        }
+
+        if (order.claims?.length) {
+          for (const claim of order.claims) {
+            const claimLine = claim.additional_items.find(predicate)
+
+            if (claimLine) {
+              return { ...claimLine, quantity: ci.quantity }
+            }
+          }
+        }
+
+        return null
+      })
+      .filter(Boolean) as LineItem[]
+
+    const refunds: number[] = []
+
+    for (const item of claimLines) {
+      const refund = await this.totalsService_.getLineItemRefund(order, item)
+      refunds.push(refund)
+    }
+
+    return Math.round(refunds.reduce((acc, next) => acc + next, 0))
+  }
+
   /**
    * Creates a Claim on an Order. Claims consists of items that are claimed and
    * optionally items to be sent as replacement for the claimed items. The
@@ -214,7 +337,7 @@ export default class ClaimService extends TransactionBaseService {
   async create(data: CreateClaimInput): Promise<ClaimOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
 
@@ -232,29 +355,11 @@ export default class ClaimService extends TransactionBaseService {
           ...rest
         } = data
 
-        const lineItemServiceTx =
-          this.lineItemService_.withTransaction(transactionManager)
-
-        for (const item of claim_items) {
-          const line = await lineItemServiceTx.retrieve(item.item_id, {
-            relations: ["order", "swap", "claim_order", "tax_lines"],
-          })
-
-          if (
-            line.order?.canceled_at ||
-            line.swap?.canceled_at ||
-            line.claim_order?.canceled_at
-          ) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Cannot create a claim on a canceled item.`
-            )
-          }
-        }
+        await this.validateCreateClaimInput(data)
 
         let addressId = shipping_address_id || order.shipping_address_id
         if (shipping_address) {
-          const addressRepo = transactionManager.getCustomRepository(
+          const addressRepo = transactionManager.withRepository(
             this.addressRepository_
           )
           const created = addressRepo.create(shipping_address)
@@ -262,76 +367,18 @@ export default class ClaimService extends TransactionBaseService {
           addressId = saved.id
         }
 
-        if (type !== ClaimType.REFUND && type !== ClaimType.REPLACE) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Claim type must be one of "refund" or "replace".`
-          )
-        }
-
-        if (type === ClaimType.REPLACE && !additional_items?.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Claims with type "replace" must have at least one additional item.`
-          )
-        }
-
-        if (!claim_items?.length) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Claims must have at least one claim item.`
-          )
-        }
-
-        if (refund_amount && type !== ClaimType.REFUND) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Claim has type "${type}" but must be type "refund" to have a refund_amount.`
-          )
-        }
-
         let toRefund = refund_amount
         if (type === ClaimType.REFUND && typeof refund_amount === "undefined") {
-          const lines = claim_items.map((ci) => {
-            const allOrderItems = order.items
-
-            if (order.swaps?.length) {
-              for (const swap of order.swaps) {
-                swap.additional_items.forEach((it) => {
-                  if (
-                    it.shipped_quantity ||
-                    it.shipped_quantity === it.fulfilled_quantity
-                  ) {
-                    allOrderItems.push(it)
-                  }
-                })
-              }
-            }
-
-            if (order.claims?.length) {
-              for (const claim of order.claims) {
-                claim.additional_items.forEach((it) => {
-                  if (
-                    it.shipped_quantity ||
-                    it.shipped_quantity === it.fulfilled_quantity
-                  ) {
-                    allOrderItems.push(it)
-                  }
-                })
-              }
-            }
-
-            const orderItem = allOrderItems.find((oi) => oi.id === ci.item_id)
-            return {
-              ...orderItem,
-              quantity: ci.quantity,
-            }
-          })
-          toRefund = await this.totalsService_.getRefundTotal(
+          // In case no refund amount is passed, we calculate it based on the claim items on the order
+          toRefund = await this.getRefundTotalForClaimLinesOnOrder(
             order,
-            lines as LineItem[]
+            claim_items
           )
         }
+
+        const lineItemServiceTx =
+          this.lineItemService_.withTransaction(transactionManager)
+
         let newItems: LineItem[] = []
 
         if (isDefined(additional_items)) {
@@ -383,9 +430,15 @@ export default class ClaimService extends TransactionBaseService {
           const calcContext = await this.totalsService_.getCalculationContext(
             order
           )
-          const lineItems = await lineItemServiceTx.list({
-            id: result.additional_items.map((i) => i.id),
-          })
+          const lineItems = await lineItemServiceTx.list(
+            {
+              id: result.additional_items.map((i) => i.id),
+            },
+            {
+              relations: ["variant", "variant.product"],
+            }
+          )
+
           await this.taxProviderService_
             .withTransaction(transactionManager)
             .createTaxLines(lineItems, calcContext)
@@ -403,7 +456,7 @@ export default class ClaimService extends TransactionBaseService {
             } else {
               await shippingOptionServiceTx.createShippingMethod(
                 method.option_id as string,
-                (method as any).data,
+                method.data ?? {},
                 {
                   claim_order_id: result.id,
                   price: method.price,
@@ -425,6 +478,7 @@ export default class ClaimService extends TransactionBaseService {
 
         if (return_shipping) {
           await this.returnService_.withTransaction(transactionManager).create({
+            refund_amount: toRefund,
             order_id: order.id,
             claim_order_id: result.id,
             items: claim_items.map(
@@ -585,7 +639,7 @@ export default class ClaimService extends TransactionBaseService {
           }
         }
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -623,7 +677,7 @@ export default class ClaimService extends TransactionBaseService {
 
         claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         return claimRepo.save(claim)
@@ -660,7 +714,7 @@ export default class ClaimService extends TransactionBaseService {
 
         claim.payment_status = ClaimPaymentStatus.REFUNDED
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -739,7 +793,7 @@ export default class ClaimService extends TransactionBaseService {
           }
         }
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -791,7 +845,7 @@ export default class ClaimService extends TransactionBaseService {
         claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
         claim.canceled_at = new Date()
 
-        const claimRepo = transactionManager.getCustomRepository(
+        const claimRepo = transactionManager.withRepository(
           this.claimRepository_
         )
         const claimOrder = await claimRepo.save(claim)
@@ -822,7 +876,7 @@ export default class ClaimService extends TransactionBaseService {
     }
   ): Promise<ClaimOrder[]> {
     const manager = this.manager_
-    const claimRepo = manager.getCustomRepository(this.claimRepository_)
+    const claimRepo = manager.withRepository(this.claimRepository_)
     const query = buildQuery(selector, config)
     return await claimRepo.find(query)
   }
@@ -845,7 +899,7 @@ export default class ClaimService extends TransactionBaseService {
     }
 
     const manager = this.manager_
-    const claimRepo = manager.getCustomRepository(this.claimRepository_)
+    const claimRepo = manager.withRepository(this.claimRepository_)
 
     const query = buildQuery({ id: claimId }, config)
     const claim = await claimRepo.findOne(query)

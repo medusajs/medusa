@@ -72,9 +72,7 @@ export default async (req, res) => {
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
-  const channelLocationService: SalesChannelLocationService = req.scope.resolve(
-    "salesChannelLocationService"
-  )
+
   const channelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
@@ -93,15 +91,11 @@ export default async (req, res) => {
     sales_channel_availability: [],
   }
 
-  const [rawChannels] = await channelService.listAndCount({})
-  const channels: SalesChannelDTO[] = await Promise.all(
-    rawChannels.map(async (channel) => {
-      const locations = await channelLocationService.listLocations(channel.id)
-      return {
-        ...channel,
-        locations,
-      }
-    })
+  const [channels] = await channelService.listAndCount(
+    {},
+    {
+      relations: ["locations"],
+    }
   )
 
   const inventory =
@@ -122,7 +116,7 @@ export default async (req, res) => {
 
         const quantity = await inventoryService.retrieveAvailableQuantity(
           inventory[0].id,
-          channel.locations
+          channel.locations.map((loc) => loc.id)
         )
 
         return {
@@ -137,10 +131,6 @@ export default async (req, res) => {
   res.json({
     variant: responseVariant,
   })
-}
-
-type SalesChannelDTO = Omit<SalesChannel, "beforeInsert"> & {
-  locations: string[]
 }
 
 type ResponseInventoryItem = Partial<InventoryItemDTO> & {

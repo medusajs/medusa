@@ -88,8 +88,12 @@ class PayPalProviderService extends PaymentService {
    * @returns {object} the data to be stored with the payment session.
    */
   async createPayment(cart) {
-    const { region_id, id, resource_id, total } = cart
-    const { currency_code } = await this.regionService_.retrieve(region_id)
+    let { id, region_id, resource_id, currency_code, total } = cart
+
+    if (!currency_code) {
+      const region = await this.regionService_.retrieve(region_id)
+      currency_code = region.currency_code
+    }
 
     const amount = total
 
@@ -102,34 +106,6 @@ class PayPalProviderService extends PaymentService {
       purchase_units: [
         {
           custom_id: resource_id ?? id,
-          amount: {
-            currency_code: currency_code.toUpperCase(),
-            value: roundToTwo(
-              humanizeAmount(amount, currency_code),
-              currency_code
-            ),
-          },
-        },
-      ],
-    })
-
-    const res = await this.paypal_.execute(request)
-
-    return { id: res.result.id }
-  }
-
-  async createPaymentNew(paymentInput) {
-    const { resource_id, currency_code, amount } = paymentInput
-
-    const request = new PayPal.orders.OrdersCreateRequest()
-    request.requestBody({
-      intent: "AUTHORIZE",
-      application_context: {
-        shipping_preference: "NO_SHIPPING",
-      },
-      purchase_units: [
-        {
-          custom_id: resource_id,
           amount: {
             currency_code: currency_code.toUpperCase(),
             value: roundToTwo(
@@ -216,8 +192,12 @@ class PayPalProviderService extends PaymentService {
    */
   async updatePayment(sessionData, cart) {
     try {
-      const { region_id, total } = cart
-      const { currency_code } = await this.regionService_.retrieve(region_id)
+      let { currency_code, total, region_id } = cart
+
+      if (!currency_code) {
+        const region = await this.regionService_.retrieve(region_id)
+        currency_code = region.currency_code
+      }
 
       const request = new PayPal.orders.OrdersPatchRequest(sessionData.id)
       request.requestBody([
@@ -241,35 +221,6 @@ class PayPalProviderService extends PaymentService {
       return sessionData
     } catch (error) {
       return this.createPayment(cart)
-    }
-  }
-
-  async updatePaymentNew(sessionData, paymentInput) {
-    try {
-      const { currency_code, amount } = paymentInput
-
-      const request = new PayPal.orders.OrdersPatchRequest(sessionData.id)
-      request.requestBody([
-        {
-          op: "replace",
-          path: "/purchase_units/@reference_id=='default'",
-          value: {
-            amount: {
-              currency_code: currency_code.toUpperCase(),
-              value: roundToTwo(
-                humanizeAmount(amount, currency_code),
-                currency_code
-              ),
-            },
-          },
-        },
-      ])
-
-      await this.paypal_.execute(request)
-
-      return sessionData
-    } catch (error) {
-      return this.createPaymentNew(paymentInput)
     }
   }
 
@@ -436,7 +387,6 @@ class PayPalProviderService extends PaymentService {
     }
     const webhookRes = await this.paypal_.execute(webhookReq)
 
-    console.log(webhookRes.result.webhooks)
     let found
     if (webhookRes.result && webhookRes.result.webhooks) {
       found = webhookRes.result.webhooks.find((w) => {

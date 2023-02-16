@@ -1346,6 +1346,7 @@ describe("/admin/orders", () => {
 
     it("creates a claim on a swap", async () => {
       const api = useApi()
+      const shippingOption = await simpleShippingOptionFactory(dbConnection)
 
       const claimOnClaim = await api
         .post(
@@ -1365,6 +1366,15 @@ describe("/admin/orders", () => {
               {
                 variant_id: "test-variant",
                 quantity: 1,
+              },
+            ],
+            shipping_methods: [
+              {
+                option_id: shippingOption.id,
+                price: 1000,
+                data: {
+                  test: "test",
+                },
               },
             ],
           },
@@ -1429,6 +1439,57 @@ describe("/admin/orders", () => {
           }),
         ])
       )
+    })
+
+    it("Receives return with custom refund amount passed on receive", async () => {
+      const api = useApi()
+
+      const orderId = "test-order"
+      const itemId = "test-item"
+
+      const returned = await api.post(
+        `/admin/orders/${orderId}/return`,
+        {
+          items: [
+            {
+              // item has a unit_price of 8000 with a 800 adjustment
+              item_id: itemId,
+              quantity: 1,
+            },
+          ],
+        },
+        adminReqConfig
+      )
+
+      const returnOrder = returned.data.order.returns[0]
+
+      expect(returned.status).toEqual(200)
+      expect(returnOrder.refund_amount).toEqual(7200)
+
+      const received = await api.post(
+        `/admin/returns/${returnOrder.id}/receive`,
+        {
+          items: [
+            {
+              item_id: itemId,
+              quantity: 1,
+            },
+          ],
+          refund: 0,
+        },
+        adminReqConfig
+      )
+
+      const receivedReturn = received.data.return
+
+      expect(received.status).toEqual(200)
+      expect(receivedReturn.refund_amount).toEqual(0)
+
+      const orderRes = await api.get(`/admin/orders/${orderId}`, adminReqConfig)
+
+      const order = orderRes.data.order
+
+      expect(order.refunds.length).toEqual(0)
     })
 
     it("increases inventory_quantity when return is received", async () => {
@@ -1531,6 +1592,30 @@ describe("/admin/orders", () => {
           expect.objectContaining({
             id: "discount-order",
           }),
+        ])
+      )
+    })
+
+    it("lists orders with specific fields and relations", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/orders?fields=id,created_at&expand=billing_address",
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(6)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          {
+            id: "test-order",
+            created_at: expect.any(String),
+            billing_address: expect.objectContaining({
+              id: "test-billing-address",
+              first_name: "lebron",
+            }),
+          },
         ])
       )
     })
@@ -2038,7 +2123,9 @@ describe("/admin/orders", () => {
 
       const manager = dbConnection.manager
       const customOptions = await manager.find(CustomShippingOption, {
-        shipping_option_id: "test-option",
+        where: {
+          shipping_option_id: "test-option",
+        },
       })
 
       expect(response.status).toEqual(200)

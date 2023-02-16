@@ -16,17 +16,18 @@ delete:
       description: The ID of the Order Edit Item Change to delete.
       schema:
         type: string
+  x-codegen:
+    method: deleteItemChange
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
         $ref: >-
-          ../code_samples/JavaScript/order-edits_{id}_changes_{change_id}/deleteundefined
+          ../code_samples/JavaScript/order-edits_{id}_changes_{change_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/order-edits_{id}_changes_{change_id}/deleteundefined
+        $ref: ../code_samples/Shell/order-edits_{id}_changes_{change_id}/delete.sh
   security:
     - api_token: []
     - cookie_auth: []
