@@ -40,13 +40,13 @@ class SalesChannelInventoryService {
     salesChannelId: string,
     inventoryItemId: string
   ): Promise<number> {
-    const locations = await this.salesChannelLocationService_.listLocations(
+    const locationIds = await this.salesChannelLocationService_.listLocationIds(
       salesChannelId
     )
 
     return await this.inventoryService_.retrieveAvailableQuantity(
       inventoryItemId,
-      locations
+      locationIds
     )
   }
 }

@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { PaymentSession } from "../models/payment-session"
+import { PaymentSession } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(PaymentSession)
-export class PaymentSessionRepository extends Repository<PaymentSession> {}
+export const PaymentSessionRepository = dataSource.getRepository(PaymentSession)
+export default PaymentSessionRepository

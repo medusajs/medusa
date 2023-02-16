@@ -144,6 +144,7 @@ export const defaultProductCategoryFields = [
   "handle",
   "is_active",
   "is_internal",
+  "parent_category_id",
   "created_at",
   "updated_at",
 ]
