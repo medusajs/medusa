@@ -1140,6 +1140,46 @@
       "updated_at": "2021-03-17 12:09:59.156058+01",
       "metadata": null
     },
+    "inventory_item": {
+      "id": "iitem_320ZXDBAB4WJVW6115VEM7",
+      "sku": "sku123",
+      "origin_country": "dk",
+      "hs_code": null,
+      "mid_code": null,
+      "material": null,
+      "weight": 10,
+      "lenght": 4,
+      "height": 5,
+      "width": 2,
+      "requires_shipping": true,
+      "created_at": "2021-03-17 11:58:56.975971+01",
+      "updated_at": "2021-03-17 12:09:59.156058+01",
+      "metadata": null,
+      "location_levels": [
+        {
+          "id": "ilev_320ZXDBAB4WJVW6115VEM7",
+          "inventory_item_id": "iitem_320ZXDBAB4WJVW6115VEM7",
+          "location_id": "loc_01F0ZXDBAB9KVZWJVW6115VEM7",
+          "stocked_quantity": 1,
+          "reserved_quantity": 0, 
+          "incoming_quantity": 10
+        }
+      ]
+    },
+    "stock_location": {
+      "id": "loc_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "name": "Stock location 1", 
+      "address_id": "addr_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "created_at": "2021-03-17 11:58:56.975971+01",
+      "updated_at": "2021-03-17 12:09:59.156058+01"
+    },
+    "reservation": {
+      "id": "res_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "line_item_id": "li_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "inventory_item_id": "iitem_320ZXDBAB4WJVW6115VEM7",
+      "location_id": "loc_01F0ZXDBAB9KVZWJVW6115VEM7",
+      "quantity": 1
+    },
     "invite": {
       "id": "invite_320ZXDBAB4WJVW6115VEM7",
       "user_email": "lebron@james.com",
