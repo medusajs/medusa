@@ -126,16 +126,16 @@ export default async (req, res) => {
 
   if (
     !toCreate.sales_channel_id &&
-    req.publishableApiKeyScopes?.sales_channel_id.length
+    req.publishableApiKeyScopes?.sales_channel_ids.length
   ) {
-    if (req.publishableApiKeyScopes.sales_channel_id.length > 1) {
+    if (req.publishableApiKeyScopes.sales_channel_ids.length > 1) {
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
         "The PublishableApiKey provided in the request header has multiple associated sales channels."
       )
     }
 
-    toCreate.sales_channel_id = req.publishableApiKeyScopes.sales_channel_id[0]
+    toCreate.sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
   }
 
   let cart: Cart

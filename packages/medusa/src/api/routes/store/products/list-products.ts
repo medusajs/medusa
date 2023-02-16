@@ -199,10 +199,10 @@ export default async (req, res) => {
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
 
-  if (req.publishableApiKeyScopes?.sales_channel_id.length) {
+  if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
     filterableFields.sales_channel_id =
       filterableFields.sales_channel_id ||
-      req.publishableApiKeyScopes.sales_channel_id
+      req.publishableApiKeyScopes.sales_channel_ids
 
     listConfig.relations.push("sales_channels")
   }
