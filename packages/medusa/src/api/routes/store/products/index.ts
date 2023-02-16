@@ -96,6 +96,7 @@ export const allowedStoreProductsRelations = [
   ...defaultStoreProductsRelations,
   "variants.title",
   "variants.prices.amount",
+  "sales_channels",
 ]
 
 export * from "./list-products"

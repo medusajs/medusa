@@ -204,7 +204,9 @@ export default async (req, res) => {
       filterableFields.sales_channel_id ||
       req.publishableApiKeyScopes.sales_channel_ids
 
-    listConfig.relations.push("sales_channels")
+    if (!listConfig.relations.includes("listConfig.relations")) {
+      listConfig.relations.push("sales_channels")
+    }
   }
 
   const [rawProducts, count] = await productService.listAndCount(
