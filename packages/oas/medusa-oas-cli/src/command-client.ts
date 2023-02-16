@@ -17,7 +17,7 @@ export const commandName = "client"
 export const commandDescription = "Generate API clients from OAS."
 export const commandOptions: Option[] = [
   new Option(
-    "-n, --name <name>",
+    "-t, --type <type>",
     "Namespace for the generated client. Usually `admin` or `store`."
   ).makeOptionMandatory(),
 
@@ -31,7 +31,10 @@ export const commandOptions: Option[] = [
     "Output directory for generated client files."
   ).default(path.resolve(process.cwd(), "client")),
 
-  new Option("-c, --component <component>", "Client component types to generate.")
+  new Option(
+    "-c, --component <component>",
+    "Client component types to generate."
+  )
     .choices(["all", "types", "client", "hooks"])
     .default("all"),
 
@@ -68,31 +71,34 @@ export async function execute(cliParams: OptionValues) {
   /**
    * Process CLI options
    */
-  if (["client", "hooks"].includes(cliParams.type) && !cliParams.typesPackage) {
+  if (
+    ["client", "hooks"].includes(cliParams.component) &&
+    !cliParams.typesPackage
+  ) {
     throw new Error(
-      `--types-package must be declared when using --component=${cliParams.type}`
+      `--types-package must be declared when using --component=${cliParams.component}`
     )
   }
-  if (cliParams.type === "hooks" && !cliParams.clientPackage) {
+  if (cliParams.component === "hooks" && !cliParams.clientPackage) {
     throw new Error(
-      `--client-package must be declared when using --component=${cliParams.type}`
+      `--client-package must be declared when using --component=${cliParams.component}`
     )
   }
 
   const shouldClean = !!cliParams.clean
   const srcFile = path.resolve(cliParams.srcFile)
   const outDir = path.resolve(cliParams.outDir)
-  const apiName = cliParams.name
+  const apiName = cliParams.type
   const packageNames: PackageNames = {
     models: cliParams.typesPackage,
     client: cliParams.clientPackage,
   }
-  const exportType = cliParams.type
+  const exportComponent = cliParams.component
 
   /**
    * Command execution
    */
-  console.log(`🟣 Generating client - ${apiName} - ${exportType}`)
+  console.log(`🟣 Generating client - ${apiName} - ${exportComponent}`)
 
   if (shouldClean) {
     console.log(`🟠 Cleaning output directory`)
@@ -101,9 +107,11 @@ export async function execute(cliParams: OptionValues) {
   await mkdir(outDir, { recursive: true })
 
   const oas = await getOASFromFile(srcFile)
-  await generateClientSDK(oas, outDir, apiName, exportType, packageNames)
+  await generateClientSDK(oas, outDir, apiName, exportComponent, packageNames)
 
-  console.log(`🟢 Client generated - ${apiName} - ${exportType} - ${outDir}`)
+  console.log(
+    `🟢 Client generated - ${apiName} - ${exportComponent} - ${outDir}`
+  )
 }
 
 /**
@@ -118,7 +126,7 @@ const generateClientSDK = async (
   oas: OpenAPIObject,
   targetDir: string,
   apiName: string,
-  exportType: "all" | "types" | "client" | "hooks",
+  exportComponent: "all" | "types" | "client" | "hooks",
   packageNames: PackageNames = {}
 ) => {
   const exports = {
@@ -128,7 +136,7 @@ const generateClientSDK = async (
     exportHooks: false,
   }
 
-  switch (exportType) {
+  switch (exportComponent) {
     case "types":
       exports.exportModels = true
       break
