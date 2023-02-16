@@ -41,7 +41,7 @@ export default class InventoryService
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor(
-    { eventBusService }: InjectedDependencies,
+    { eventBusService, manager }: InjectedDependencies,
     options?: unknown,
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
@@ -58,15 +58,15 @@ export default class InventoryService
     this.eventBusService_ = eventBusService
     this.inventoryItemService_ = new InventoryItemService({
       eventBusService,
-      this.activeManager_,
+      manager,
     })
     this.inventoryLevelService_ = new InventoryLevelService({
       eventBusService,
-      this.activeManager_,
+      manager,
     })
     this.reservationItemService_ = new ReservationItemService({
       eventBusService,
-      this.activeManager_,
+      manager,
       inventoryLevelService: this.inventoryLevelService_,
     })
   }
