@@ -1,0 +1,39 @@
+{
+  "name": "@medusajs/medusa-client-admin",
+  "version": "0.1.0",
+  "description": "Client for Medusa Commerce Rest API",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn prebuild && tsc --build",
+    "prebuild": "ts-node ./scripts/build.ts",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "test": "jest --passWithNoTests"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/generate/medusa-client-admin"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa/issues"
+  },
+  "dependencies": {
+    "@medusajs/client-types": "*",
+    "axios": "^1.2.0",
+    "form-data": "^4.0.0",
+    "node-fetch": "2.6.7"
+  },
+  "devDependencies": {
+    "@medusajs/medusa-oas-cli": "*",
+    "cross-env": "^7.0.3",
+    "execa": "^5.1.1",
+    "jest": "^27.4.7",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}
