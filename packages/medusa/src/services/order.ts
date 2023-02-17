@@ -1730,7 +1730,7 @@ class OrderService extends TransactionBaseService {
 
     const isReturnableItem = (item) =>
       returnable_items &&
-      (item.shipped_quantity ?? 0) < (item.fulfilled_quantity ?? 0)
+      (item.returned_quantity ?? 0) < (item.shipped_quantity ?? 0)
 
     const allItems: LineItem[] = [...(order.items ?? [])]
 
