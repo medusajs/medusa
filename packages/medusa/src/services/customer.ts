@@ -37,9 +37,6 @@ class CustomerService extends TransactionBaseService {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly eventBusService_: EventBusService
 
-  protected readonly manager_: EntityManager
-  protected readonly transactionManager_: EntityManager | undefined
-
   static Events = {
     PASSWORD_RESET: "customer.password_reset",
     CREATED: "customer.created",
@@ -47,15 +44,12 @@ class CustomerService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     customerRepository,
     eventBusService,
     addressRepository,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    this.manager_ = manager
 
     this.customerRepository_ = customerRepository
     this.eventBusService_ = eventBusService
@@ -118,8 +112,9 @@ class CustomerService extends TransactionBaseService {
     selector: Selector<Customer> & { q?: string; groups?: string[] } = {},
     config: FindConfig<Customer> = { relations: [], skip: 0, take: 50 }
   ): Promise<Customer[]> {
-    const manager = this.manager_
-    const customerRepo = manager.withRepository(this.customerRepository_)
+    const customerRepo = this.activeManager_.withRepository(
+      this.customerRepository_
+    )
 
     let q
     if ("q" in selector) {
@@ -154,8 +149,9 @@ class CustomerService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[Customer[], number]> {
-    const manager = this.manager_
-    const customerRepo = manager.withRepository(this.customerRepository_)
+    const customerRepo = this.activeManager_.withRepository(
+      this.customerRepository_
+    )
 
     let q
     if ("q" in selector) {
@@ -180,8 +176,9 @@ class CustomerService extends TransactionBaseService {
    * @return {Promise} the result of the count operation
    */
   async count(): Promise<number> {
-    const manager = this.manager_
-    const customerRepo = manager.withRepository(this.customerRepository_)
+    const customerRepo = this.activeManager_.withRepository(
+      this.customerRepository_
+    )
     return await customerRepo.count({})
   }
 
@@ -189,9 +186,9 @@ class CustomerService extends TransactionBaseService {
     selector: Selector<Customer>,
     config: FindConfig<Customer> = {}
   ): Promise<Customer | never> {
-    const manager = this.transactionManager_ ?? this.manager_
-
-    const customerRepo = manager.withRepository(this.customerRepository_)
+    const customerRepo = this.activeManager_.withRepository(
+      this.customerRepository_
+    )
 
     const query = buildQuery(selector, config)
     const customer = await customerRepo.findOne(query)

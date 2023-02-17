@@ -1,16 +1,17 @@
 import {
-  createContainer,
-  asValue,
-  Resolver,
-  ClassOrFunctionReturning,
   asFunction,
+  asValue,
   AwilixContainer,
+  ClassOrFunctionReturning,
+  createContainer,
+  Resolver,
 } from "awilix"
 import { mkdirSync, rmSync, writeFileSync } from "fs"
 import { resolve } from "path"
 import Logger from "../logger"
 import { registerServices, registerStrategies } from "../plugins"
 import { MedusaContainer } from "../../types/global"
+import { Connection, EntityManager } from "typeorm";
 
 // ***** TEMPLATES *****
 const buildServiceTemplate = (name: string): string => {
@@ -135,6 +136,8 @@ describe("plugins loader", () => {
   }.bind(container)
 
   container.register("logger", asValue(Logger))
+  container.register("manager", asValue(new EntityManager({} as Connection)))
+
   const pluginsDetails = {
     resolve: resolve(__dirname, "__pluginsLoaderTest__"),
     name: `project-plugin`,

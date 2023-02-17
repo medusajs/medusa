@@ -88,6 +88,8 @@ export const defaultAdminRegionRelations = [
 /**
  * @schema AdminRegionsRes
  * type: object
+ * required:
+ *   - region
  * properties:
  *   region:
  *     $ref: "#/components/schemas/Region"
@@ -99,6 +101,11 @@ export class AdminRegionsRes {
 /**
  * @schema AdminRegionsListRes
  * type: object
+ * required:
+ *   - regions
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   regions:
  *     type: array
@@ -121,6 +128,10 @@ export type AdminRegionsListRes = PaginatedResponse & {
 /**
  * @schema AdminRegionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -144,22 +155,29 @@ export class FulfillmentOption {
 /**
  * @schema AdminGetRegionsRegionFulfillmentOptionsRes
  * type: object
+ * required:
+ *   - fulfillment_options
  * properties:
  *   fulfillment_options:
  *     type: array
  *     items:
  *       type: object
+ *       required:
+ *         - provider_id
+ *         - options
  *       properties:
  *         provider_id:
- *           type: string
  *           description: ID of the fulfillment provider
+ *           type: string
  *         options:
- *           type: array
  *           description: fulfillment provider options
- *           example:
- *             - id: "manual-fulfillment"
- *             - id: "manual-fulfillment-return"
- *               is_return: true
+ *           type: array
+ *           items:
+ *             type: object
+ *             example:
+ *               - id: "manual-fulfillment"
+ *               - id: "manual-fulfillment-return"
+ *                 is_return: true
  */
 export class AdminGetRegionsRegionFulfillmentOptionsRes {
   fulfillment_options: FulfillmentOption[]

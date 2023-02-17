@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { Note, ReservationItemDTO } from "../../../.."
+import { ReservationItemDTO } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
@@ -71,6 +71,11 @@ export type AdminReservationsRes = {
 /**
  * @schema AdminGetReservationReservationsReq
  * type: object
+ * required:
+ *   - reservations
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   reservations:
  *     type: array
@@ -109,3 +114,4 @@ export * from "./create-reservation"
 export * from "./delete-reservation"
 export * from "./get-reservation"
 export * from "./update-reservation"
+export * from "./list-reservations"
