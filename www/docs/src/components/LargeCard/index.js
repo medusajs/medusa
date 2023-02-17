@@ -4,7 +4,8 @@ import Bordered from '../Bordered'
 import './index.css'
 
 export default function LargeCard ({
-  icon,
+  Icon,
+  image,
   title,
   action: {
     label,
@@ -15,12 +16,13 @@ export default function LargeCard ({
   return (
     <article className="large-card">
       <div>
-        {icon && (
+        {(Icon || image) && (
           <Bordered wrapperClassName={'large-card-icon-wrapper'}>
-            <ThemedImage alt={title} sources={{
-                light: icon.light,
-                dark: icon.dark || icon.light
-              }} className="large-card-icon" />
+            {image && <ThemedImage alt={title} sources={{
+                light: image.light,
+                dark: image.dark || image.light
+              }} className="large-card-icon" />}
+            {Icon && <Icon  className="large-card-icon" />}
           </Bordered>
         )}
         <div className="large-card-heading">
