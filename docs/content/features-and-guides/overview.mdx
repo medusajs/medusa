@@ -4,6 +4,15 @@ hide_table_of_contents: true
 ---
 
 import DocCardList from '@theme/DocCardList'
+import IconFlyingBox from '@theme/Icon/FlyingBox'
+import IconShoppingCart from '@theme/Icon/ShoppingCart'
+import IconUsersSolid from '@theme/Icon/UsersSolid'
+import IconTagSolid from '@theme/Icon/TagSolid'
+import IconGiftSolid from '@theme/Icon/GiftSolid'
+import IconCurrencyDollar from '@theme/Icon/CurrencyDollar'
+import IconGlobeEurope from '@theme/Icon/GlobeEurope'
+import IconBuildingTax from '@theme/Icon/BuildingTax'
+import IconChannels from '@theme/Icon/Channels'
 import LargeCardList from '@site/src/components/LargeCardList'
 import LargeCard from '@site/src/components/LargeCard'
 
@@ -23,9 +32,7 @@ Medusa provides the necessary features to build a customizable shopping experien
 
 <LargeCardList>
   <LargeCard
-    icon={{
-      light: '/img/orders-icon.png'
-    }}
+    Icon={IconFlyingBox}
     title='Orders'
     action={{
       label: 'Learn more',
@@ -42,9 +49,7 @@ Medusa provides the necessary features to build a customizable shopping experien
 
   </LargeCard>
   <LargeCard
-    icon={{
-      light: '/img/customers-icon.png'
-    }}
+    Icon={IconShoppingCart}
     title='Cart and Checkout'
     action={{
       label: 'Learn more',
@@ -60,9 +65,7 @@ Medusa provides the necessary features to build a customizable shopping experien
 
   </LargeCard>
   <LargeCard
-    icon={{
-      light: '/img/customers-icon.png'
-    }}
+    Icon={IconUsersSolid}
     title='Customers'
     action={{
       label: 'Learn more',
@@ -84,9 +87,7 @@ Medusa's products configuration allows managing products of different types incl
 
 <LargeCardList>
   <LargeCard
-    icon={{
-      light: '/img/products-icon.png'
-    }}
+    Icon={IconTagSolid}
     title='Products'
     action={{
       label: 'Learn more',
@@ -103,9 +104,7 @@ Medusa's products configuration allows managing products of different types incl
 
   </LargeCard>
   <LargeCard
-    icon={{
-      light: '/img/customers-icon.png'
-    }}
+    Icon={IconGiftSolid}
     title='Gift Cards'
     action={{
       label: 'Learn more',
@@ -121,9 +120,7 @@ Medusa's products configuration allows managing products of different types incl
 
   </LargeCard>
   <LargeCard
-    icon={{
-      light: '/img/customers-icon.png'
-    }}
+    Icon={IconCurrencyDollar}
     title='Price Lists and Promotions'
     action={{
       label: 'Learn more',
@@ -146,9 +143,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
 
 <LargeCardList>
   <LargeCard
-    icon={{
-      light: '/img/customers-icon.png'
-    }}
+    Icon={IconGlobeEurope}
     title='Multi-Region'
     action={{
       label: 'Learn more',
@@ -163,9 +158,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
 
   </LargeCard>
   <LargeCard
-    icon={{
-      light: '/img/customers-icon.png'
-    }}
+    Icon={IconBuildingTax}
     title='Taxes'
     action={{
       label: 'Learn more',
@@ -181,9 +174,7 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
 
   </LargeCard>
   <LargeCard
-    icon={{
-      light: '/img/customers-icon.png'
-    }}
+    Icon={IconChannels}
     title='Sales Channels'
     action={{
       label: 'Learn more',
@@ -212,7 +203,7 @@ If you have any questions about Medusa, its features, and development with it, f
     href: '#',
     label: 'Implement Accounts',
     customProps: {
-      image: '/img/quickstart-icon.svg',
+      icon: IconUsersSolid,
       description: 'Add customer profiles to the storefront.'
     }
   },
