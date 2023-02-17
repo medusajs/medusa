@@ -57,9 +57,6 @@ export default class OrderEditService extends TransactionBaseService {
     CONFIRMED: "order-edit.confirmed",
   }
 
-  protected readonly manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly orderEditRepository_: typeof OrderEditRepository
 
   protected readonly orderService_: OrderService
@@ -72,7 +69,6 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
 
   constructor({
-    manager,
     orderEditRepository,
     orderService,
     lineItemService,
@@ -86,7 +82,6 @@ export default class OrderEditService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.orderEditRepository_ = orderEditRepository
     this.orderService_ = orderService
     this.lineItemService_ = lineItemService
@@ -109,8 +104,7 @@ export default class OrderEditService extends TransactionBaseService {
       )
     }
 
-    const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.withRepository(
+    const orderEditRepository = this.activeManager_.withRepository(
       this.orderEditRepository_
     )
 
@@ -131,8 +125,7 @@ export default class OrderEditService extends TransactionBaseService {
     selector: Selector<OrderEdit> & { q?: string },
     config?: FindConfig<OrderEdit>
   ): Promise<[OrderEdit[], number]> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.withRepository(
+    const orderEditRepository = this.activeManager_.withRepository(
       this.orderEditRepository_
     )
 
@@ -441,10 +434,8 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditId: string,
     config = { preserveCustomAdjustments: false }
   ) {
-    const manager = this.transactionManager_ ?? this.manager_
-
     const lineItemAdjustmentServiceTx =
-      this.lineItemAdjustmentService_.withTransaction(manager)
+      this.lineItemAdjustmentService_.withTransaction(this.activeManager_)
 
     const orderEdit = await this.retrieve(orderEditId, {
       relations: [
@@ -491,18 +482,19 @@ export default class OrderEditService extends TransactionBaseService {
   }
 
   async decorateTotals(orderEdit: OrderEdit): Promise<OrderEdit> {
-    const manager = this.transactionManager_ ?? this.manager_
     const { order_id, items } = await this.retrieve(orderEdit.id, {
       select: ["id", "order_id", "items"],
       relations: [
         "items",
         "items.tax_lines",
         "items.adjustments",
-        "items.variant"
+        "items.variant",
       ],
     })
 
-    const orderServiceTx = this.orderService_.withTransaction(manager)
+    const orderServiceTx = this.orderService_.withTransaction(
+      this.activeManager_
+    )
 
     const order = await orderServiceTx.retrieve(order_id, {
       relations: [
@@ -576,7 +568,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       let lineItem = await lineItemServiceTx.create(lineItemData)
       lineItem = await lineItemServiceTx.retrieve(lineItem.id, {
-        relations: ['variant', 'variant.product']
+        relations: ["variant", "variant.product"],
       })
 
       await this.refreshAdjustments(orderEditId)
@@ -780,8 +772,7 @@ export default class OrderEditService extends TransactionBaseService {
     orderId: string,
     config: FindConfig<OrderEdit> = {}
   ): Promise<OrderEdit | undefined | null> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const orderEditRepository = manager.withRepository(
+    const orderEditRepository = this.activeManager_.withRepository(
       this.orderEditRepository_
     )
 
@@ -798,12 +789,14 @@ export default class OrderEditService extends TransactionBaseService {
   }
 
   protected async deleteClonedItems(orderEditId: string): Promise<void> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+    const lineItemServiceTx = this.lineItemService_.withTransaction(
+      this.activeManager_
+    )
     const lineItemAdjustmentServiceTx =
-      this.lineItemAdjustmentService_.withTransaction(manager)
-    const taxProviderServiceTs =
-      this.taxProviderService_.withTransaction(manager)
+      this.lineItemAdjustmentService_.withTransaction(this.activeManager_)
+    const taxProviderServiceTs = this.taxProviderService_.withTransaction(
+      this.activeManager_
+    )
 
     const clonedLineItems = await lineItemServiceTx.list(
       {
@@ -821,7 +814,7 @@ export default class OrderEditService extends TransactionBaseService {
       relations: [
         "changes",
         "changes.original_line_item",
-        "changes.original_line_item.variant"
+        "changes.original_line_item.variant",
       ],
     })
 

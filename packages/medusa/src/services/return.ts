@@ -49,9 +49,6 @@ type Transformer = (
 ) => Promise<DeepPartial<LineItem>> | DeepPartial<LineItem>
 
 class ReturnService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly totalsService_: TotalsService
   protected readonly returnRepository_: typeof ReturnRepository
   protected readonly returnItemRepository_: typeof ReturnItemRepository
@@ -65,7 +62,6 @@ class ReturnService extends TransactionBaseService {
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     totalsService,
     lineItemService,
     returnRepository,
@@ -80,7 +76,6 @@ class ReturnService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.totalsService_ = totalsService
     this.returnRepository_ = returnRepository
     this.returnItemRepository_ = returnItemRepository
@@ -151,7 +146,9 @@ class ReturnService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Return[]> {
-    const returnRepo = this.manager_.withRepository(this.returnRepository_)
+    const returnRepo = this.activeManager_.withRepository(
+      this.returnRepository_
+    )
     const query = buildQuery(selector, config)
     return returnRepo.find(query)
   }
@@ -270,7 +267,7 @@ class ReturnService extends TransactionBaseService {
       )
     }
 
-    const returnRepository = this.manager_.withRepository(
+    const returnRepository = this.activeManager_.withRepository(
       this.returnRepository_
     )
 
@@ -291,7 +288,7 @@ class ReturnService extends TransactionBaseService {
     swapId: string,
     relations: string[] = []
   ): Promise<Return | never> {
-    const returnRepository = this.manager_.withRepository(
+    const returnRepository = this.activeManager_.withRepository(
       this.returnRepository_
     )
 
