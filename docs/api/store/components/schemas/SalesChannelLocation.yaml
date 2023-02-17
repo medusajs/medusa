@@ -25,7 +25,7 @@ properties:
       The sales channel the location is associated with. Available if the
       relation `sales_channel` is expanded.
     nullable: true
-    $ref: ./SalesChannel.yaml
+    type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string

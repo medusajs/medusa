@@ -48,7 +48,7 @@ properties:
     description: Available if the relation `category_children` are expanded.
     type: array
     items:
-      $ref: ./ProductCategory.yaml
+      type: object
   parent_category_id:
     description: The ID of the parent category.
     nullable: true
@@ -59,14 +59,14 @@ properties:
       A product category object. Available if the relation `parent_category` is
       expanded.
     nullable: true
-    $ref: ./ProductCategory.yaml
+    type: object
   products:
     description: >-
       Products associated with category. Available if the relation `products` is
       expanded.
     type: array
     items:
-      $ref: ./Product.yaml
+      type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string

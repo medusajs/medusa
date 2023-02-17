@@ -35,7 +35,7 @@ properties:
   fulfillment:
     description: Available if the relation `fulfillment` is expanded.
     nullable: true
-    $ref: ./Fulfillment.yaml
+    type: object
   idempotency_key:
     description: >-
       Randomly generated key used to continue the completion of a process in

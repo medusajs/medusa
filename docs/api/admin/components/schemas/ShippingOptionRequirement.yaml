@@ -23,7 +23,7 @@ properties:
   shipping_option:
     description: Available if the relation `shipping_option` is expanded.
     nullable: true
-    $ref: ./ShippingOption.yaml
+    type: object
   type:
     description: >-
       The type of the requirement, this defines how the value will be compared

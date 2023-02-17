@@ -62,7 +62,7 @@ properties:
   price_list:
     description: Available if the relation `price_list` is expanded.
     nullable: true
-    $ref: ./PriceList.yaml
+    type: object
   variant_id:
     description: The id of the Product Variant contained in the Line Item.
     nullable: true
@@ -73,7 +73,7 @@ properties:
       The Product Variant contained in the Line Item. Available if the relation
       `variant` is expanded.
     nullable: true
-    $ref: ./ProductVariant.yaml
+    type: object
   region_id:
     description: The region's ID
     nullable: true
@@ -82,7 +82,7 @@ properties:
   region:
     description: A region object. Available if the relation `region` is expanded.
     nullable: true
-    $ref: ./Region.yaml
+    type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string

@@ -64,14 +64,14 @@ properties:
   parent_notification:
     description: Available if the relation `parent_notification` is expanded.
     nullable: true
-    $ref: ./Notification.yaml
+    type: object
   resends:
     description: >-
       The resends that have been completed after the original Notification.
       Available if the relation `resends` is expanded.
     type: array
     items:
-      $ref: ./Notification.yaml
+      type: object
   provider_id:
     description: The id of the Notification Provider that handles the Notification.
     nullable: true

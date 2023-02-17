@@ -29,7 +29,7 @@ properties:
   order_edit:
     description: Available if the relation `order_edit` is expanded.
     nullable: true
-    $ref: ./OrderEdit.yaml
+    type: object
   original_line_item_id:
     description: The ID of the original line item in the order
     nullable: true

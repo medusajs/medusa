@@ -20,7 +20,7 @@ properties:
   item:
     description: Available if the relation `item` is expanded.
     nullable: true
-    $ref: ./LineItem.yaml
+    type: object
   description:
     description: The line item's adjustment description
     type: string
