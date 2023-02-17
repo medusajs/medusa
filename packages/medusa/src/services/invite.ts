@@ -27,9 +27,6 @@ class InviteService extends TransactionBaseService {
     CREATED: "invite.created",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly userService_: UserService
   protected readonly userRepo_: typeof UserRepository
   protected readonly inviteRepository_: typeof InviteRepository
@@ -39,7 +36,6 @@ class InviteService extends TransactionBaseService {
 
   constructor(
     {
-      manager,
       userService,
       userRepository,
       inviteRepository,
@@ -48,23 +44,13 @@ class InviteService extends TransactionBaseService {
     configModule: ConfigModule
   ) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
 
     this.configModule_ = configModule
-
-    /** @private @constant {EntityManager} */
-    this.manager_ = manager
-
-    /** @private @constant {UserService} */
     this.userService_ = userService
-
-    /** @private @constant {UserRepository} */
     this.userRepo_ = userRepository
-
-    /** @private @constant {InviteRepository} */
     this.inviteRepository_ = inviteRepository
-
-    /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
   }
 
@@ -80,7 +66,7 @@ class InviteService extends TransactionBaseService {
   }
 
   async list(selector, config = {}): Promise<ListInvite[]> {
-    const inviteRepo = this.manager_.withRepository(InviteRepository)
+    const inviteRepo = this.activeManager_.withRepository(InviteRepository)
 
     const query = buildQuery(selector, config)
 
@@ -101,9 +87,9 @@ class InviteService extends TransactionBaseService {
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const inviteRepository =
-        this.manager_.withRepository(InviteRepository)
+        this.activeManager_.withRepository(InviteRepository)
 
-      const userRepo = this.manager_.withRepository(UserRepository)
+      const userRepo = this.activeManager_.withRepository(UserRepository)
 
       const userEntity = await userRepo.findOne({
         where: { email: user },
@@ -251,7 +237,7 @@ class InviteService extends TransactionBaseService {
   }
 
   async resend(id): Promise<void> {
-    const inviteRepo = this.manager_.withRepository(InviteRepository)
+    const inviteRepo = this.activeManager_.withRepository(InviteRepository)
 
     const invite = await inviteRepo.findOne({ where: { id } })
 
@@ -274,7 +260,7 @@ class InviteService extends TransactionBaseService {
     await inviteRepo.save(invite)
 
     await this.eventBus_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .emit(InviteService.Events.CREATED, {
         id: invite.id,
         token: invite.token,

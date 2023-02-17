@@ -15,6 +15,7 @@ import { AdminGetSalesChannelsParams } from "./list-sales-channels"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 import { AdminPostSalesChannelsChannelStockLocationsReq } from "./associate-stock-location"
 import { AdminDeleteSalesChannelsChannelStockLocationsReq } from "./remove-stock-location"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -47,11 +48,19 @@ export default (app) => {
   )
   salesChannelRouter.post(
     "/stock-locations",
+    checkRegisteredModules({
+      stockLocationService:
+        "Stock Locations are not enabled. Please add a Stock Location module to enable this functionality.",
+    }),
     transformBody(AdminPostSalesChannelsChannelStockLocationsReq),
     middlewares.wrap(require("./associate-stock-location").default)
   )
   salesChannelRouter.delete(
     "/stock-locations",
+    checkRegisteredModules({
+      stockLocationService:
+        "Stock Locations are not enabled. Please add a Stock Location module to enable this functionality.",
+    }),
     transformBody(AdminDeleteSalesChannelsChannelStockLocationsReq),
     middlewares.wrap(require("./remove-stock-location").default)
   )

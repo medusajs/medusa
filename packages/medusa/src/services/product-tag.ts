@@ -12,14 +12,12 @@ type ProductTagConstructorProps = {
 }
 
 class ProductTagService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly tagRepo_: typeof ProductTagRepository
 
-  constructor({ manager, productTagRepository }: ProductTagConstructorProps) {
+  constructor({ productTagRepository }: ProductTagConstructorProps) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-    this.manager_ = manager
+
     this.tagRepo_ = productTagRepository
   }
 
@@ -33,7 +31,7 @@ class ProductTagService extends TransactionBaseService {
     tagId: string,
     config: FindConfig<ProductTag> = {}
   ): Promise<ProductTag> {
-    const tagRepo = this.manager_.withRepository(this.tagRepo_)
+    const tagRepo = this.activeManager_.withRepository(this.tagRepo_)
 
     const query = buildQuery({ id: tagId }, config)
     const tag = await tagRepo.findOne(query)
@@ -92,7 +90,7 @@ class ProductTagService extends TransactionBaseService {
     } = {},
     config: FindConfig<ProductTag> = { skip: 0, take: 20 }
   ): Promise<[ProductTag[], number]> {
-    const tagRepo = this.manager_.withRepository(this.tagRepo_)
+    const tagRepo = this.activeManager_.withRepository(this.tagRepo_)
 
     let q: string | undefined
     if (isString(selector.q)) {

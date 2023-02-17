@@ -1,14 +1,10 @@
-import {
-  IdMap,
-  MockRepository,
-  MockManager as manager
-} from "medusa-test-utils"
+import { IdMap, MockManager as manager } from "medusa-test-utils"
 import ProductCategoryService from "../product-category"
 import { EventBusService } from "../"
 import {
+  invalidProdCategoryId,
   productCategoryRepositoryMock as productCategoryRepository,
   validProdCategoryId,
-  invalidProdCategoryId,
   validProdCategoryIdWithChildren,
 } from "../../repositories/__mocks__/product-category"
 import { EventBusServiceMock as eventBusService } from "../__mocks__/event-bus"
