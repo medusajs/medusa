@@ -31,7 +31,7 @@ properties:
   option:
     description: Available if the relation `option` is expanded.
     nullable: true
-    $ref: ./ProductOption.yaml
+    type: object
   variant_id:
     description: >-
       The ID of the Product Variant that the Product Option Value is defined
@@ -41,7 +41,7 @@ properties:
   variant:
     description: Available if the relation `variant` is expanded.
     nullable: true
-    $ref: ./ProductVariant.yaml
+    type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string

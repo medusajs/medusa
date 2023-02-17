@@ -39,10 +39,10 @@ properties:
   parent_return_reason:
     description: Available if the relation `parent_return_reason` is expanded.
     nullable: true
-    $ref: ./ReturnReason.yaml
+    type: object
   return_reason_children:
     description: Available if the relation `return_reason_children` is expanded.
-    $ref: ./ReturnReason.yaml
+    type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string

@@ -25,7 +25,7 @@ properties:
   return_order:
     description: Available if the relation `return_order` is expanded.
     nullable: true
-    $ref: ./Return.yaml
+    type: object
   item:
     description: Available if the relation `item` is expanded.
     nullable: true

@@ -19,7 +19,7 @@ properties:
   fulfillment:
     description: A fulfillment object. Available if the relation `fulfillment` is expanded.
     nullable: true
-    $ref: ./Fulfillment.yaml
+    type: object
   item:
     description: Available if the relation `item` is expanded.
     nullable: true

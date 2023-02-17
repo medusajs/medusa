@@ -25,7 +25,7 @@ properties:
   variant:
     description: A ProductVariant object. Available if the relation `variant` is expanded.
     nullable: true
-    $ref: ./ProductVariant.yaml
+    type: object
   required_quantity:
     description: >-
       The quantity of an inventory item required for one quantity of the

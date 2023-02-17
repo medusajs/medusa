@@ -262,6 +262,151 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /collections/{id}:
+    get:
+      operationId: GetCollectionsCollection
+      summary: Get a Collection
+      description: Retrieves a Product Collection.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      x-codegen:
+        method: retrieve
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: |
+            import Medusa from "@medusajs/medusa-js"
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+            medusa.collections.retrieve(collection_id)
+            .then(({ collection }) => {
+              console.log(collection.id);
+            });
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/store/collections/{id}'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCollectionsRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: The number of collections to skip before starting to collect the collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: created_at
+          description: Date comparison for when resulting collections were created.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+        - in: query
+          name: updated_at
+          description: Date comparison for when resulting collections were updated.
+          schema:
+            type: object
+            properties:
+              lt:
+                type: string
+                description: filter by dates less than this date
+                format: date
+              gt:
+                type: string
+                description: filter by dates greater than this date
+                format: date
+              lte:
+                type: string
+                description: filter by dates less than or equal to this date
+                format: date
+              gte:
+                type: string
+                description: filter by dates greater than or equal to this date
+                format: date
+      x-codegen:
+        method: list
+        queryParams: StoreGetCollectionsParams
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: |
+            import Medusa from "@medusajs/medusa-js"
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+            medusa.collections.list()
+            .then(({ collections, limit, offset, count }) => {
+              console.log(collections.length);
+            });
+        - lang: Shell
+          label: cURL
+          source: |
+            curl --location --request GET 'https://medusa-url.com/store/collections'
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreCollectionsListRes'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /carts/{id}/shipping-methods:
     post:
       operationId: PostCartsCartShippingMethod
@@ -998,16 +1143,16 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-  /collections/{id}:
+  /gift-cards/{code}:
     get:
-      operationId: GetCollectionsCollection
-      summary: Get a Collection
-      description: Retrieves a Product Collection.
+      operationId: GetGiftCardsCode
+      summary: Get Gift Card by Code
+      description: Retrieves a Gift Card by its associated unique code.
       parameters:
         - in: path
-          name: id
+          name: code
           required: true
-          description: The id of the Product Collection
+          description: The unique Gift Card code.
           schema:
             type: string
       x-codegen:
@@ -1018,121 +1163,23 @@ paths:
           source: |
             import Medusa from "@medusajs/medusa-js"
             const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-            medusa.collections.retrieve(collection_id)
-            .then(({ collection }) => {
-              console.log(collection.id);
+            medusa.giftCards.retrieve(code)
+            .then(({ gift_card }) => {
+              console.log(gift_card.id);
             });
         - lang: Shell
           label: cURL
           source: |
-            curl --location --request GET 'https://medusa-url.com/store/collections/{id}'
+            curl --location --request GET 'https://medusa-url.com/store/gift-cards/{code}'
       tags:
-        - Collection
+        - Gift Card
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StoreCollectionsRes'
-        '400':
-          $ref: '#/components/responses/400_error'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: The number of collections to skip before starting to collect the collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-        - in: query
-          name: created_at
-          description: Date comparison for when resulting collections were created.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-        - in: query
-          name: updated_at
-          description: Date comparison for when resulting collections were updated.
-          schema:
-            type: object
-            properties:
-              lt:
-                type: string
-                description: filter by dates less than this date
-                format: date
-              gt:
-                type: string
-                description: filter by dates greater than this date
-                format: date
-              lte:
-                type: string
-                description: filter by dates less than or equal to this date
-                format: date
-              gte:
-                type: string
-                description: filter by dates greater than or equal to this date
-                format: date
-      x-codegen:
-        method: list
-        queryParams: StoreGetCollectionsParams
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: |
-            import Medusa from "@medusajs/medusa-js"
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-            medusa.collections.list()
-            .then(({ collections, limit, offset, count }) => {
-              console.log(collections.length);
-            });
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/store/collections'
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StoreCollectionsListRes'
+                $ref: '#/components/schemas/StoreGiftCardsRes'
         '400':
           $ref: '#/components/responses/400_error'
         '404':
@@ -1874,53 +1921,6 @@ paths:
           $ref: '#/components/responses/400_error'
         '401':
           $ref: '#/components/responses/unauthorized'
-        '404':
-          $ref: '#/components/responses/not_found_error'
-        '409':
-          $ref: '#/components/responses/invalid_state_error'
-        '422':
-          $ref: '#/components/responses/invalid_request_error'
-        '500':
-          $ref: '#/components/responses/500_error'
-  /gift-cards/{code}:
-    get:
-      operationId: GetGiftCardsCode
-      summary: Get Gift Card by Code
-      description: Retrieves a Gift Card by its associated unique code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      x-codegen:
-        method: retrieve
-      x-codeSamples:
-        - lang: JavaScript
-          label: JS Client
-          source: |
-            import Medusa from "@medusajs/medusa-js"
-            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-            medusa.giftCards.retrieve(code)
-            .then(({ gift_card }) => {
-              console.log(gift_card.id);
-            });
-        - lang: Shell
-          label: cURL
-          source: |
-            curl --location --request GET 'https://medusa-url.com/store/gift-cards/{code}'
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StoreGiftCardsRes'
-        '400':
-          $ref: '#/components/responses/400_error'
         '404':
           $ref: '#/components/responses/not_found_error'
         '409':
@@ -4867,12 +4867,12 @@ components:
         payment_session:
           description: The selected payment session in the cart.
           nullable: true
-          $ref: '#/components/schemas/PaymentSession'
+          type: object
         payment_sessions:
           description: The payment sessions created on the cart.
           type: array
           items:
-            $ref: '#/components/schemas/PaymentSession'
+            type: object
         payment_id:
           description: The payment's ID if available
           nullable: true
@@ -5016,7 +5016,7 @@ components:
         claim_item:
           description: A claim item object. Available if the relation `claim_item` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ClaimItem'
+          type: object
         url:
           description: The URL of the image
           type: string
@@ -5357,7 +5357,7 @@ components:
         region:
           description: A region object. Available if the relation `region` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Region'
+          type: object
     Currency:
       title: Currency
       description: Currency
@@ -5473,12 +5473,12 @@ components:
           description: The customers that belong to the customer group. Available if the relation `customers` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/Customer'
+            type: object
         price_lists:
           description: The price lists that are associated with the customer group. Available if the relation `price_lists` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/PriceList'
+            type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -5923,7 +5923,7 @@ components:
           description: A set of conditions that can be used to limit when  the discount can be used. Available if the relation `conditions` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/DiscountCondition'
+            type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -5997,7 +5997,7 @@ components:
         parent_discount:
           description: Available if the relation `parent_discount` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Discount'
+          type: object
         starts_at:
           description: The time at which the discount can be used.
           type: string
@@ -6153,7 +6153,7 @@ components:
         fulfillment:
           description: A fulfillment object. Available if the relation `fulfillment` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Fulfillment'
+          type: object
         item:
           description: Available if the relation `item` is expanded.
           nullable: true
@@ -6626,7 +6626,7 @@ components:
         item:
           description: Available if the relation `item` is expanded.
           nullable: true
-          $ref: '#/components/schemas/LineItem'
+          type: object
         description:
           description: The line item's adjustment description
           type: string
@@ -6688,7 +6688,7 @@ components:
         item:
           description: Available if the relation `item` is expanded.
           nullable: true
-          $ref: '#/components/schemas/LineItem'
+          type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -6967,7 +6967,7 @@ components:
         price_list:
           description: Available if the relation `price_list` is expanded.
           nullable: true
-          $ref: '#/components/schemas/PriceList'
+          type: object
         variant_id:
           description: The id of the Product Variant contained in the Line Item.
           nullable: true
@@ -6976,7 +6976,7 @@ components:
         variant:
           description: The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ProductVariant'
+          type: object
         region_id:
           description: The region's ID
           nullable: true
@@ -6985,7 +6985,7 @@ components:
         region:
           description: A region object. Available if the relation `region` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Region'
+          type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -7133,12 +7133,12 @@ components:
         parent_notification:
           description: Available if the relation `parent_notification` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Notification'
+          type: object
         resends:
           description: The resends that have been completed after the original Notification. Available if the relation `resends` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/Notification'
+            type: object
         provider_id:
           description: The id of the Notification Provider that handles the Notification.
           nullable: true
@@ -7378,7 +7378,7 @@ components:
         order_edit:
           description: Available if the relation `order_edit` is expanded.
           nullable: true
-          $ref: '#/components/schemas/OrderEdit'
+          type: object
         original_line_item_id:
           description: The ID of the original line item in the order
           nullable: true
@@ -8134,7 +8134,7 @@ components:
           description: Available if the relation `category_children` are expanded.
           type: array
           items:
-            $ref: '#/components/schemas/ProductCategory'
+            type: object
         parent_category_id:
           description: The ID of the parent category.
           nullable: true
@@ -8143,12 +8143,12 @@ components:
         parent_category:
           description: A product category object. Available if the relation `parent_category` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ProductCategory'
+          type: object
         products:
           description: Products associated with category. Available if the relation `products` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/Product'
+            type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -8192,7 +8192,7 @@ components:
           description: The Products contained in the Product Collection. Available if the relation `products` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/Product'
+            type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -8241,7 +8241,7 @@ components:
         option:
           description: Available if the relation `option` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ProductOption'
+          type: object
         variant_id:
           description: The ID of the Product Variant that the Product Option Value is defined for.
           type: string
@@ -8249,7 +8249,7 @@ components:
         variant:
           description: Available if the relation `variant` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ProductVariant'
+          type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -8302,7 +8302,7 @@ components:
         product:
           description: A product object. Available if the relation `product` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Product'
+          type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -8508,7 +8508,7 @@ components:
         variant:
           description: A ProductVariant object. Available if the relation `variant` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ProductVariant'
+          type: object
         required_quantity:
           description: The quantity of an inventory item required for one quantity of the variant.
           type: integer
@@ -8569,7 +8569,7 @@ components:
         product:
           description: A product object. Available if the relation `product` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Product'
+          type: object
         prices:
           description: The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation `prices` is expanded.
           type: array
@@ -9145,7 +9145,7 @@ components:
         return_order:
           description: Available if the relation `return_order` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Return'
+          type: object
         item:
           description: Available if the relation `item` is expanded.
           nullable: true
@@ -9228,10 +9228,10 @@ components:
         parent_return_reason:
           description: Available if the relation `parent_return_reason` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ReturnReason'
+          type: object
         return_reason_children:
           description: Available if the relation `return_reason_children` is expanded.
-          $ref: '#/components/schemas/ReturnReason'
+          type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -9391,7 +9391,7 @@ components:
         sales_channel:
           description: The sales channel the location is associated with. Available if the relation `sales_channel` is expanded.
           nullable: true
-          $ref: '#/components/schemas/SalesChannel'
+          type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -9491,7 +9491,7 @@ components:
         shipping_method:
           description: Available if the relation `shipping_method` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ShippingMethod'
+          type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -9629,7 +9629,7 @@ components:
         shipping_option:
           description: Available if the relation `shipping_option` is expanded.
           nullable: true
-          $ref: '#/components/schemas/ShippingOption'
+          type: object
         type:
           description: The type of the requirement, this defines how the value will be compared to the Cart's total. `min_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available.
           type: string
@@ -9681,7 +9681,7 @@ components:
         region:
           description: A region object. Available if the relation `region` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Region'
+          type: object
         profile_id:
           description: The ID of the Shipping Profile that the shipping option belongs to. Shipping Profiles have a set of defined Shipping Options that can be used to Fulfill a given set of Products.
           type: string
@@ -9783,12 +9783,12 @@ components:
           description: The Products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/Product'
+            type: object
         shipping_options:
           description: The Shipping Options that can be used to fulfill the Products in the Shipping Profile. Available if the relation `shipping_options` is expanded.
           type: array
           items:
-            $ref: '#/components/schemas/ShippingOption'
+            type: object
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -10207,7 +10207,7 @@ components:
         region:
           description: A region object. Available if the relation `region` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Region'
+          type: object
         products:
           description: The products that belong to this tax rate. Available if the relation `products` is expanded.
           type: array
@@ -10284,7 +10284,7 @@ components:
         fulfillment:
           description: Available if the relation `fulfillment` is expanded.
           nullable: true
-          $ref: '#/components/schemas/Fulfillment'
+          type: object
         idempotency_key:
           description: Randomly generated key used to continue the completion of a process in case of failure.
           nullable: true
@@ -10798,6 +10798,27 @@ components:
         exists:
           type: boolean
           description: Whether email exists or not.
+    StoreCollectionsListRes:
+      type: object
+      properties:
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductCollection'
+        count:
+          type: integer
+          description: The total number of items available
+        offset:
+          type: integer
+          description: The number of items skipped before these items
+        limit:
+          type: integer
+          description: The number of items per page
+    StoreCollectionsRes:
+      type: object
+      properties:
+        collection:
+          $ref: '#/components/schemas/ProductCollection'
     StorePostCartsCartShippingMethodReq:
       type: object
       required:
@@ -10964,27 +10985,11 @@ components:
         data:
           type: object
           description: The data to update the payment session with.
-    StoreCollectionsListRes:
+    StoreGiftCardsRes:
       type: object
       properties:
-        collections:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductCollection'
-        count:
-          type: integer
-          description: The total number of items available
-        offset:
-          type: integer
-          description: The number of items skipped before these items
-        limit:
-          type: integer
-          description: The number of items per page
-    StoreCollectionsRes:
-      type: object
-      properties:
-        collection:
-          $ref: '#/components/schemas/ProductCollection'
+        gift_card:
+          $ref: '#/components/schemas/GiftCard'
     StorePostCustomersCustomerAddressesReq:
       type: object
       required:
@@ -11120,11 +11125,6 @@ components:
         metadata:
           description: Metadata about the customer.
           type: object
-    StoreGiftCardsRes:
-      type: object
-      properties:
-        gift_card:
-          $ref: '#/components/schemas/GiftCard'
     StorePostOrderEditsOrderEditDecline:
       type: object
       properties:

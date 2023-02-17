@@ -197,6 +197,10 @@ paths:
     $ref: paths/currencies.yaml
   /currencies/{code}:
     $ref: paths/currencies_{code}.yaml
+  /customers:
+    $ref: paths/customers.yaml
+  /customers/{id}:
+    $ref: paths/customers_{id}.yaml
   /customer-groups/{id}/customers/batch:
     $ref: paths/customer-groups_{id}_customers_batch.yaml
   /customer-groups:
@@ -205,10 +209,6 @@ paths:
     $ref: paths/customer-groups_{id}.yaml
   /customer-groups/{id}/customers:
     $ref: paths/customer-groups_{id}_customers.yaml
-  /customers:
-    $ref: paths/customers.yaml
-  /customers/{id}:
-    $ref: paths/customers_{id}.yaml
   /discounts/{id}/regions/{region_id}:
     $ref: paths/discounts_{id}_regions_{region_id}.yaml
   /discounts/{discount_id}/conditions/{condition_id}/batch:
@@ -243,14 +243,6 @@ paths:
     $ref: paths/gift-cards.yaml
   /gift-cards/{id}:
     $ref: paths/gift-cards_{id}.yaml
-  /inventory-items/{id}/location-levels:
-    $ref: paths/inventory-items_{id}_location-levels.yaml
-  /inventory-items/{id}:
-    $ref: paths/inventory-items_{id}.yaml
-  /inventory-items/{id}/location-levels/{location_id}:
-    $ref: paths/inventory-items_{id}_location-levels_{location_id}.yaml
-  /inventory-items:
-    $ref: paths/inventory-items.yaml
   /invites/accept:
     $ref: paths/invites_accept.yaml
   /invites:
@@ -259,14 +251,22 @@ paths:
     $ref: paths/invites_{invite_id}.yaml
   /invites/{invite_id}/resend:
     $ref: paths/invites_{invite_id}_resend.yaml
-  /notes:
-    $ref: paths/notes.yaml
-  /notes/{id}:
-    $ref: paths/notes_{id}.yaml
+  /inventory-items/{id}/location-levels:
+    $ref: paths/inventory-items_{id}_location-levels.yaml
+  /inventory-items/{id}:
+    $ref: paths/inventory-items_{id}.yaml
+  /inventory-items/{id}/location-levels/{location_id}:
+    $ref: paths/inventory-items_{id}_location-levels_{location_id}.yaml
+  /inventory-items:
+    $ref: paths/inventory-items.yaml
   /notifications:
     $ref: paths/notifications.yaml
   /notifications/{id}/resend:
     $ref: paths/notifications_{id}_resend.yaml
+  /notes:
+    $ref: paths/notes.yaml
+  /notes/{id}:
+    $ref: paths/notes_{id}.yaml
   /order-edits/{id}/items:
     $ref: paths/order-edits_{id}_items.yaml
   /order-edits/{id}/cancel:
@@ -283,6 +283,10 @@ paths:
     $ref: paths/order-edits_{id}.yaml
   /order-edits/{id}/request:
     $ref: paths/order-edits_{id}_request.yaml
+  /payment-collections/{id}:
+    $ref: paths/payment-collections_{id}.yaml
+  /payment-collections/{id}/authorize:
+    $ref: paths/payment-collections_{id}_authorize.yaml
   /orders/{id}/shipping-methods:
     $ref: paths/orders_{id}_shipping-methods.yaml
   /orders/{id}/archive:
@@ -337,10 +341,6 @@ paths:
     $ref: paths/orders_{id}_return.yaml
   /order/{id}/claims/{claim_id}:
     $ref: paths/order_{id}_claims_{claim_id}.yaml
-  /payment-collections/{id}:
-    $ref: paths/payment-collections_{id}.yaml
-  /payment-collections/{id}/authorize:
-    $ref: paths/payment-collections_{id}_authorize.yaml
   /payments/{id}/capture:
     $ref: paths/payments_{id}_capture.yaml
   /payments/{id}:
@@ -359,12 +359,6 @@ paths:
     $ref: paths/price-lists_{id}_variants_{variant_id}_prices.yaml
   /price-lists/{id}/products:
     $ref: paths/price-lists_{id}_products.yaml
-  /product-categories/{id}/products/batch:
-    $ref: paths/product-categories_{id}_products_batch.yaml
-  /product-categories:
-    $ref: paths/product-categories.yaml
-  /product-categories/{id}:
-    $ref: paths/product-categories_{id}.yaml
   /product-tags:
     $ref: paths/product-tags.yaml
   /product-types:
@@ -387,6 +381,12 @@ paths:
     $ref: paths/products_types.yaml
   /products/{id}/metadata:
     $ref: paths/products_{id}_metadata.yaml
+  /product-categories/{id}/products/batch:
+    $ref: paths/product-categories_{id}_products_batch.yaml
+  /product-categories:
+    $ref: paths/product-categories.yaml
+  /product-categories/{id}:
+    $ref: paths/product-categories_{id}.yaml
   /publishable-api-keys/{id}/sales-channels/batch:
     $ref: paths/publishable-api-keys_{id}_sales-channels_batch.yaml
   /publishable-api-keys:
@@ -425,12 +425,6 @@ paths:
     $ref: paths/return-reasons.yaml
   /return-reasons/{id}:
     $ref: paths/return-reasons_{id}.yaml
-  /returns/{id}/cancel:
-    $ref: paths/returns_{id}_cancel.yaml
-  /returns:
-    $ref: paths/returns.yaml
-  /returns/{id}/receive:
-    $ref: paths/returns_{id}_receive.yaml
   /sales-channels/{id}/products/batch:
     $ref: paths/sales-channels_{id}_products_batch.yaml
   /sales-channels/{id}/stock-locations:
@@ -439,6 +433,12 @@ paths:
     $ref: paths/sales-channels.yaml
   /sales-channels/{id}:
     $ref: paths/sales-channels_{id}.yaml
+  /returns/{id}/cancel:
+    $ref: paths/returns_{id}_cancel.yaml
+  /returns:
+    $ref: paths/returns.yaml
+  /returns/{id}/receive:
+    $ref: paths/returns_{id}_receive.yaml
   /shipping-options:
     $ref: paths/shipping-options.yaml
   /shipping-options/{id}:
@@ -451,14 +451,6 @@ paths:
     $ref: paths/stock-locations.yaml
   /stock-locations/{id}:
     $ref: paths/stock-locations_{id}.yaml
-  /store/currencies/{code}:
-    $ref: paths/store_currencies_{code}.yaml
-  /store:
-    $ref: paths/store.yaml
-  /store/payment-providers:
-    $ref: paths/store_payment-providers.yaml
-  /store/tax-providers:
-    $ref: paths/store_tax-providers.yaml
   /swaps/{id}:
     $ref: paths/swaps_{id}.yaml
   /swaps:
@@ -473,6 +465,14 @@ paths:
     $ref: paths/tax-rates.yaml
   /tax-rates/{id}:
     $ref: paths/tax-rates_{id}.yaml
+  /store/currencies/{code}:
+    $ref: paths/store_currencies_{code}.yaml
+  /store:
+    $ref: paths/store.yaml
+  /store/payment-providers:
+    $ref: paths/store_payment-providers.yaml
+  /store/tax-providers:
+    $ref: paths/store_tax-providers.yaml
   /uploads/protected:
     $ref: paths/uploads_protected.yaml
   /uploads:
