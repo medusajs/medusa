@@ -65,6 +65,8 @@ export const defaulPaymentCollectionRelations = [
 /**
  * @schema AdminPaymentCollectionsRes
  * type: object
+ * required:
+ *   - payment_collection
  * properties:
  *   payment_collection:
  *     $ref: "#/components/schemas/PaymentCollection"
@@ -76,6 +78,10 @@ export type AdminPaymentCollectionsRes = {
 /**
  * @schema AdminPaymentCollectionDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
