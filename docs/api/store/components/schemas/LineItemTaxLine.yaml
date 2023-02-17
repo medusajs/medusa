@@ -35,7 +35,7 @@ properties:
   item:
     description: Available if the relation `item` is expanded.
     nullable: true
-    $ref: ./LineItem.yaml
+    type: object
   created_at:
     description: The date with timezone at which the resource was created.
     type: string

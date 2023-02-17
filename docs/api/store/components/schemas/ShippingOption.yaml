@@ -40,7 +40,7 @@ properties:
   region:
     description: A region object. Available if the relation `region` is expanded.
     nullable: true
-    $ref: ./Region.yaml
+    type: object
   profile_id:
     description: >-
       The ID of the Shipping Profile that the shipping option belongs to.

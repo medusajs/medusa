@@ -45,7 +45,7 @@ properties:
   product:
     description: A product object. Available if the relation `product` is expanded.
     nullable: true
-    $ref: ./Product.yaml
+    type: object
   prices:
     description: >-
       The Money Amounts defined for the Product Variant. Each Money Amount
