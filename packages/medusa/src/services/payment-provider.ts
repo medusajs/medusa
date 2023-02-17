@@ -262,7 +262,7 @@ export default class PaymentProviderService extends TransactionBaseService {
           this.throwFromPaymentProcessorError(paymentResponse)
         }
       } else {
-        // Allow to maintain backward compatibility
+        // Added to stay backward compatible
         paymentResponse = await provider
           .withTransaction(transactionManager)
           .createPayment(context)
@@ -574,7 +574,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       if (provider instanceof AbstractPaymentProcessor) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `Updating payment session data is not supported by the provider ${paymentSession.provider_id}.`
+          `The payment provider ${paymentSession.provider_id} is of type PaymentProcessor. PaymentProcessors cannot update payment session data.`
         )
       } else {
         session.data = await provider

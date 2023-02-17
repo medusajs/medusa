@@ -132,6 +132,7 @@ export default async ({
 
     await Promise.all([
       registerPaymentProvider(context),
+      registerPaymentProcessor(context),
       registerNotificationProvider(context),
       registerFulfillmentProvider(context),
       registerTaxProvider(context),
@@ -162,7 +163,7 @@ async function registerPaymentProvider({
   manager: EntityManager
   logger: Logger
 }): Promise<void> {
-  const payProviders =
+  const payProviders = (
     silentResolution<
       (
         | typeof BasePaymentService
@@ -170,17 +171,44 @@ async function registerPaymentProvider({
         | AbstractPaymentProcessor
       )[]
     >(container, "paymentProviders", logger) || []
+  ).filter((provider) => !(provider instanceof AbstractPaymentProcessor))
+
+  const payIds = payProviders.map((paymentProvider) => {
+    return paymentProvider.getIdentifier()
+  })
+
+  const pProviderService = container.resolve<PaymentProviderService>(
+    "paymentProviderService"
+  )
+  await pProviderService
+    .withTransaction(manager)
+    .registerInstalledProviders(payIds)
+}
+
+async function registerPaymentProcessor({
+  manager,
+  container,
+  logger,
+}: {
+  container: AwilixContainer
+  manager: EntityManager
+  logger: Logger
+}): Promise<void> {
+  const payProviders = (
+    silentResolution<
+      (
+        | typeof BasePaymentService
+        | AbstractPaymentService
+        | AbstractPaymentProcessor
+      )[]
+    >(container, "paymentProviders", logger) || []
+  ).filter((provider) => provider instanceof AbstractPaymentProcessor)
 
   const payIds: string[] = []
   await Promise.all(
     payProviders.map((paymentProvider) => {
       payIds.push(paymentProvider.getIdentifier())
-
-      if (paymentProvider instanceof AbstractPaymentProcessor) {
-        return paymentProvider.init()
-      }
-
-      return
+      return paymentProvider.init()
     })
   )
 

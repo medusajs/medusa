@@ -15,11 +15,13 @@ type Context = {
 
 export function registerPaymentServiceFromClass(
   klass: ClassConstructor<AbstractPaymentService>,
-  { container, pluginDetails, registrationName }: Context
+  context: Context
 ): void {
   if (!isPaymentService(klass.prototype)) {
     return
   }
+
+  const { container, pluginDetails, registrationName } = context
 
   container.registerAdd(
     "paymentProviders",
@@ -37,11 +39,13 @@ export function registerPaymentServiceFromClass(
 
 export function registerPaymentProcessorFromClass(
   klass: ClassConstructor<AbstractPaymentProcessor>,
-  { container, pluginDetails, registrationName }: Context
+  context: Context
 ): void {
   if (!isPaymentProcessor(klass.prototype)) {
     return
   }
+
+  const { container, pluginDetails, registrationName } = context
 
   container.registerAdd(
     "paymentProviders",
