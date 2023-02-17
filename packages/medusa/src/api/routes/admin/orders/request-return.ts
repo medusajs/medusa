@@ -154,8 +154,7 @@ export default async (req, res) => {
                     }
                   }
 
-                  let evaluatedNoNotification =
-                    isDefined(value.no_notification) && value.no_notification
+                  let evaluatedNoNotification = value.no_notification
 
                   if (!isDefined(evaluatedNoNotification)) {
                     const order = await orderService
