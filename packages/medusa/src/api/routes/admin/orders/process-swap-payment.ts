@@ -2,6 +2,7 @@ import { OrderService, SwapService } from "../../../../services"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/process-payment
@@ -12,8 +13,11 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) swap_id=* {string} The ID of the Swap.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * x-codegen:
  *   method: processSwapPayment
+ *   params: AdminPostOrdersOrderSwapsSwapProcessPaymentParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -64,12 +68,15 @@ export default async (req, res) => {
 
   await entityManager.transaction(async (manager) => {
     await swapService.withTransaction(manager).processDifference(swap_id)
-
-    const order = await orderService.withTransaction(manager).retrieve(id, {
-      select: defaultAdminOrdersFields,
-      relations: defaultAdminOrdersRelations,
-    })
-
-    res.json({ order })
   })
+
+  const order = await orderService.retrieve(id, {
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
+  })
+
+  res.json({ order })
 }
+
+// eslint-disable-next-line max-len
+export class AdminPostOrdersOrderSwapsSwapProcessPaymentParams extends FindParams {}

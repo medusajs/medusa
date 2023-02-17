@@ -9,15 +9,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { ClaimReason, ClaimType } from "../../../../models"
 
 import { Type } from "class-transformer"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ClaimTypeValue } from "../../../../types/claim"
-import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
+import { AddressPayload, FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -27,6 +25,8 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
@@ -34,6 +34,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsReq"
  * x-codegen:
  *   method: createClaim
+ *   params: AdminPostOrdersOrderClaimsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -97,7 +98,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const value = await validator(AdminPostOrdersOrderClaimsReq, req.body)
+  const value = req.validatedBody
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
   const manager: EntityManager = req.scope.resolve("manager")
@@ -247,9 +248,8 @@ export default async (req, res) => {
 
                 order = await orderService
                   .withTransaction(manager)
-                  .retrieve(id, {
-                    select: defaultAdminOrdersFields,
-                    relations: defaultAdminOrdersRelations,
+                  .retrieveWithTotals(id, req.retrieveConfig, {
+                    includes: req.includes,
                   })
 
                 return {
@@ -508,3 +508,5 @@ class AdditionalItem {
   @IsNotEmpty()
   quantity: number
 }
+
+export class AdminPostOrdersOrderClaimsParams extends FindParams {}
