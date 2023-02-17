@@ -125,17 +125,19 @@ export type StoreProductsRes = {
 
 /**
  * @schema StorePostSearchRes
- * type: object
- * required:
- *   - hits
- * properties:
- *   hits:
- *     description: Array of results. The format of the items depends on the search engine installed on the server.
- *     type: array
+ * allOf:
+ *   - type: object
+ *     required:
+ *       - hits
+ *     properties:
+ *       hits:
+ *         description: Array of results. The format of the items depends on the search engine installed on the server.
+ *         type: array
+ *   - type: object
  */
 export type StorePostSearchRes = {
   hits: unknown[]
-}
+} & Record<string, unknown>
 
 /**
  * @schema StoreProductsListRes
