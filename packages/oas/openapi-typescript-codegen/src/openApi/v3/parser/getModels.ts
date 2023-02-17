@@ -3,13 +3,11 @@ import type { OpenApi } from "../interfaces/OpenApi"
 import { getModel } from "./getModel"
 import { reservedWords } from "./getOperationParameterName"
 import { getType } from "./getType"
-import { getOperationParameters } from "./getOperationParameters"
-import { unique } from "../../../utils/unique"
-import { getOperation } from "./getOperation"
 import { OperationParameter } from "../../../client/interfaces/OperationParameter"
 import { OpenApiSchema } from "../interfaces/OpenApiSchema"
 import { Dictionary } from "../../../utils/types"
 import { OpenApiParameter } from "../interfaces/OpenApiParameter"
+import { listOperations } from "./listOperations"
 
 export const getModels = (openApi: OpenApi): Model[] => {
   const models: Model[] = []
@@ -30,73 +28,72 @@ export const getModels = (openApi: OpenApi): Model[] => {
   }
 
   /**
-   * Generate query param type from x-codegen.
-   * Same discovery mechanism as getServices.ts
+   * Bundle all query parameters in a single typed object
+   * when x-codegen.queryParams is declared on the operation.
    */
-  for (const url in openApi.paths) {
-    if (openApi.paths.hasOwnProperty(url)) {
-      // Grab path and parse any global path parameters
-      const path = openApi.paths[url]
-      const pathParams = getOperationParameters(openApi, path.parameters || [])
-
-      // Parse all the methods for this path
-      for (const method in path) {
-        if (path.hasOwnProperty(method)) {
-          switch (method) {
-            case "get":
-            case "put":
-            case "post":
-            case "delete":
-            case "options":
-            case "head":
-            case "patch":
-              // Each method contains an OpenAPI operation, we parse the operation
-              const op = path[method]!
-              const tags = op.tags?.length
-                ? op.tags.filter(unique)
-                : ["Default"]
-              tags.forEach((tag) => {
-                const operation = getOperation(
-                  openApi,
-                  url,
-                  method,
-                  tag,
-                  op,
-                  pathParams
-                )
-                if (operation.codegen.queryParams) {
-                  const definition = getDefinitionFromParametersQuery(
-                    operation.parametersQuery
-                  )
-                  const model = getModel(
-                    openApi,
-                    definition,
-                    true,
-                    operation.codegen.queryParams
-                  )
-                  models.push(model)
-                }
-              })
-              break
-          }
-        }
-      }
+  const operations = listOperations(openApi)
+  for (const operation of operations) {
+    if (operation.codegen.queryParams) {
+      const definition = getDefinitionFromParametersQuery(
+        operation.parametersQuery
+      )
+      const model = getModel(
+        openApi,
+        definition,
+        true,
+        operation.codegen.queryParams
+      )
+      models.push(model)
     }
   }
 
   return models
 }
 
+/**
+ * Combines and converts query parameters into schema properties.
+ * Given a typical parameter OAS:
+ * ```
+ * parameters:
+ *   - in: query
+ *     name: limit
+ *     schema:
+ *       type: integer
+ *       default: 10
+ *     required: true
+ *     description: Limit the number of results returned.
+ * ```
+ * Convert into a schema property:
+ * ```
+ * UnnamedSchema:
+ *   type: object
+ *   required:
+ *     - limit
+ *   properties:
+ *     limit:
+ *       description: Limit the number of results returned.
+ *       type: integer
+ *       default: 10
+ * ```
+ */
 const getDefinitionFromParametersQuery = (
   parametersQuery: OperationParameter[]
 ): OpenApiSchema => {
+  /**
+   * Identify query parameters that are required (non-optional).
+   */
   const required = parametersQuery
-    .filter((parameter) => parameter.spec.required)
-    .map((parameter) => parameter.prop)
+    .filter((parameter) => (parameter.spec as OpenApiParameter).required)
+    .map((parameter) => (parameter.spec as OpenApiParameter).name)
+
   const properties: Dictionary<OpenApiSchema> = {}
   for (const parameter of parametersQuery) {
     const spec = parameter.spec as OpenApiParameter
-    properties[parameter.prop] = Object.assign(
+    /**
+     * Augment a copy of schema with description and deprecated
+     * and assign it as a named property on the schema.
+     */
+    properties[spec.name] = Object.assign(
       { ...spec.schema },
       {
         description: spec.description,
@@ -104,6 +101,9 @@ const getDefinitionFromParametersQuery = (
       }
     )
   }
+  /**
+   * Return an unnamed schema definition.
+   */
   return {
     type: "object",
     required,
