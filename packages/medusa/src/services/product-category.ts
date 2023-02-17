@@ -1,9 +1,9 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, DeepPartial } from "typeorm"
+import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCategory } from "../models"
 import { ProductCategoryRepository } from "../repositories/product-category"
-import { FindConfig, Selector, QuerySelector } from "../types/common"
+import { FindConfig, QuerySelector, Selector } from "../types/common"
 import { buildQuery } from "../utils"
 import { EventBusService } from "."
 import {
@@ -23,8 +23,6 @@ type InjectedDependencies = {
 class ProductCategoryService extends TransactionBaseService {
   protected readonly productCategoryRepo_: typeof ProductCategoryRepository
   protected readonly eventBusService_: EventBusService
-  protected transactionManager_: EntityManager | undefined
-  protected manager_: EntityManager
 
   static Events = {
     CREATED: "product-category.created",
@@ -33,14 +31,12 @@ class ProductCategoryService extends TransactionBaseService {
   }
 
   constructor({
-    manager,
     productCategoryRepository,
     eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.productCategoryRepo_ = productCategoryRepository
   }
@@ -61,8 +57,7 @@ class ProductCategoryService extends TransactionBaseService {
     },
     treeSelector: QuerySelector<ProductCategory> = {}
   ): Promise<[ProductCategory[], number]> {
-    const manager = this.transactionManager_ ?? this.manager_
-    const productCategoryRepo = manager.withRepository(
+    const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
 
@@ -103,7 +98,7 @@ class ProductCategoryService extends TransactionBaseService {
 
     const selectors = Object.assign({ id: productCategoryId }, selector)
     const query = buildQuery(selectors, config)
-    const productCategoryRepo = this.manager_.withRepository(
+    const productCategoryRepo = this.activeManager_.withRepository(
       this.productCategoryRepo_
     )
 
@@ -229,8 +224,9 @@ class ProductCategoryService extends TransactionBaseService {
     productIds: string[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productCategoryRepository =
-        manager.withRepository(this.productCategoryRepo_)
+      const productCategoryRepository = manager.withRepository(
+        this.productCategoryRepo_
+      )
 
       await productCategoryRepository.addProducts(productCategoryId, productIds)
     })
@@ -247,8 +243,9 @@ class ProductCategoryService extends TransactionBaseService {
     productIds: string[]
   ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productCategoryRepository =
-        manager.withRepository(this.productCategoryRepo_)
+      const productCategoryRepository = manager.withRepository(
+        this.productCategoryRepo_
+      )
 
       await productCategoryRepository.removeProducts(
         productCategoryId,

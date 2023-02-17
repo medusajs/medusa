@@ -52,8 +52,6 @@ type InjectedDependencies = {
  * Helps retrieve payment providers
  */
 export default class PaymentProviderService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly container_: InjectedDependencies
   protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
   // eslint-disable-next-line max-len
@@ -73,7 +71,6 @@ export default class PaymentProviderService extends TransactionBaseService {
     super(container)
 
     this.container_ = container
-    this.manager_ = container.manager
     this.paymentSessionRepository_ = container.paymentSessionRepository
     this.paymentProviderRepository_ = container.paymentProviderRepository
     this.paymentRepository_ = container.paymentRepository
@@ -103,7 +100,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   }
 
   async list(): Promise<PaymentProvider[]> {
-    const ppRepo = this.manager_.withRepository(
+    const ppRepo = this.activeManager_.withRepository(
       this.paymentProviderRepository_
     )
     return await ppRepo.find()
@@ -125,7 +122,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       )
     }
 
-    const paymentRepo = this.manager_.withRepository(
+    const paymentRepo = this.activeManager_.withRepository(
       this.paymentRepository_
     )
     const query = {
@@ -162,7 +159,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Payment[]> {
-    const payRepo = this.manager_.withRepository(this.paymentRepository_)
+    const payRepo = this.activeManager_.withRepository(this.paymentRepository_)
     const query = buildQuery(selector, config)
     return await payRepo.find(query)
   }
@@ -183,7 +180,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       )
     }
 
-    const sessionRepo = this.manager_.withRepository(
+    const sessionRepo = this.activeManager_.withRepository(
       this.paymentSessionRepository_
     )
 
@@ -623,12 +620,13 @@ export default class PaymentProviderService extends TransactionBaseService {
 
   async getStatus(payment: Payment): Promise<PaymentSessionStatus> {
     const provider = this.retrieveProvider(payment.provider_id)
-
     if (provider instanceof AbstractPaymentProcessor) {
       return await provider.getPaymentStatus(payment.data)
     }
 
-    return await provider.withTransaction(this.manager_).getStatus(payment.data)
+    return await provider
+      .withTransaction(this.activeManager_)
+      .getStatus(payment.data)
   }
 
   async capturePayment(
@@ -816,7 +814,7 @@ export default class PaymentProviderService extends TransactionBaseService {
     id: string,
     config: FindConfig<Refund> = {}
   ): Promise<Refund | never> {
-    const refRepo = this.manager_.withRepository(this.refundRepository_)
+    const refRepo = this.activeManager_.withRepository(this.refundRepository_)
     const query = buildQuery({ id }, config)
     const refund = await refRepo.findOne(query)
 
@@ -889,9 +887,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       status?: PaymentSessionStatus
     }
   ): Promise<PaymentSession> {
-    const manager = this.transactionManager_ ?? this.manager_
-
-    const sessionRepo = manager.withRepository(
+    const sessionRepo = this.activeManager_.withRepository(
       this.paymentSessionRepository_
     )
 
@@ -937,11 +933,9 @@ export default class PaymentProviderService extends TransactionBaseService {
       return
     }
 
-    const manager = this.transactionManager_ ?? this.manager_
-
     if (update_requests.customer_metadata && data.customer?.id) {
       await this.customerService_
-        .withTransaction(manager)
+        .withTransaction(this.activeManager_)
         .update(data.customer.id, {
           metadata: update_requests.customer_metadata,
         })

@@ -21,22 +21,18 @@ type InjectedDependencies = {
  * Provides layer to manipulate store settings.
  */
 class StoreService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-
   protected readonly storeRepository_: typeof StoreRepository
   protected readonly currencyRepository_: typeof CurrencyRepository
   protected readonly eventBus_: EventBusService
 
   constructor({
-    manager,
     storeRepository,
     currencyRepository,
     eventBusService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.storeRepository_ = storeRepository
     this.currencyRepository_ = currencyRepository
     this.eventBus_ = eventBusService
@@ -85,8 +81,7 @@ class StoreService extends TransactionBaseService {
    * @return the store
    */
   async retrieve(config: FindConfig<Store> = {}): Promise<Store> {
-    const manager = this.manager_
-    const storeRepo = manager.withRepository(this.storeRepository_)
+    const storeRepo = this.activeManager_.withRepository(this.storeRepository_)
     const query = buildQuery(
       {
         id: Not(IsNull()),

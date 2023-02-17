@@ -47,8 +47,6 @@ class RegionService extends TransactionBaseService {
     DELETED: "region.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected featureFlagRouter_: FlagRouter
 
   protected readonly eventBus_: EventBusService
@@ -65,7 +63,6 @@ class RegionService extends TransactionBaseService {
   protected readonly taxProviderRepository_: typeof TaxProviderRepository
 
   constructor({
-    manager,
     regionRepository,
     countryRepository,
     storeService,
@@ -78,22 +75,9 @@ class RegionService extends TransactionBaseService {
     fulfillmentProviderService,
     featureFlagRouter,
   }: InjectedDependencies) {
-    super({
-      manager,
-      regionRepository,
-      countryRepository,
-      storeService,
-      eventBusService,
-      currencyRepository,
-      paymentProviderRepository,
-      fulfillmentProviderRepository,
-      taxProviderRepository,
-      paymentProviderService,
-      fulfillmentProviderService,
-      featureFlagRouter,
-    })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    this.manager_ = manager
     this.regionRepository_ = regionRepository
     this.countryRepository_ = countryRepository
     this.storeService_ = storeService
@@ -260,13 +244,13 @@ class RegionService extends TransactionBaseService {
     regionData: Omit<T, "metadata" | "currency_code">,
     id?: T extends UpdateRegionInput ? string : undefined
   ): Promise<DeepPartial<Region>> {
-    const ppRepository = this.manager_.withRepository(
+    const ppRepository = this.activeManager_.withRepository(
       this.paymentProviderRepository_
     )
-    const fpRepository = this.manager_.withRepository(
+    const fpRepository = this.activeManager_.withRepository(
       this.fulfillmentProviderRepository_
     )
-    const tpRepository = this.manager_.withRepository(
+    const tpRepository = this.activeManager_.withRepository(
       this.taxProviderRepository_
     )
 
@@ -385,7 +369,7 @@ class RegionService extends TransactionBaseService {
     code: Country["iso_2"],
     regionId: string
   ): Promise<Country | never> {
-    const countryRepository = this.manager_.withRepository(
+    const countryRepository = this.activeManager_.withRepository(
       this.countryRepository_
     )
 
@@ -434,7 +418,7 @@ class RegionService extends TransactionBaseService {
     code: Country["iso_2"],
     config: FindConfig<Region> = {}
   ): Promise<Region | never> {
-    const countryRepository = this.manager_.withRepository(
+    const countryRepository = this.activeManager_.withRepository(
       this.countryRepository_
     )
 
@@ -495,7 +479,7 @@ class RegionService extends TransactionBaseService {
       )
     }
 
-    const regionRepository = this.manager_.withRepository(
+    const regionRepository = this.activeManager_.withRepository(
       this.regionRepository_
     )
 
@@ -527,7 +511,9 @@ class RegionService extends TransactionBaseService {
       take: 10,
     }
   ): Promise<Region[]> {
-    const regionRepo = this.manager_.withRepository(this.regionRepository_)
+    const regionRepo = this.activeManager_.withRepository(
+      this.regionRepository_
+    )
 
     const query = buildQuery(selector, config)
     return regionRepo.find(query)

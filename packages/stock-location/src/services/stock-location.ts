@@ -32,13 +32,10 @@ export default class StockLocationService extends TransactionBaseService {
     DELETED: "stock-location.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly eventBusService_: IEventBusService
 
   constructor(
-    { eventBusService, manager }: InjectedDependencies,
+    { eventBusService }: InjectedDependencies,
     options?: unknown,
     moduleDeclaration?: ConfigurableModuleDeclaration
   ) {
@@ -53,11 +50,6 @@ export default class StockLocationService extends TransactionBaseService {
     }
 
     this.eventBusService_ = eventBusService
-    this.manager_ = manager
-  }
-
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
   }
 
   /**
@@ -70,7 +62,7 @@ export default class StockLocationService extends TransactionBaseService {
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 }
   ): Promise<StockLocation[]> {
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery(selector, config)
@@ -87,7 +79,7 @@ export default class StockLocationService extends TransactionBaseService {
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 }
   ): Promise<[StockLocation[], number]> {
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery(selector, config)
@@ -112,7 +104,7 @@ export default class StockLocationService extends TransactionBaseService {
       )
     }
 
-    const manager = this.getManager()
+    const manager = this.activeManager_
     const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery({ id: stockLocationId }, config)
