@@ -96,7 +96,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultAdminOrdersFields,
       isList: true,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./list-orders").default)
   )
 
@@ -110,7 +110,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./get-order").default)
   )
 
@@ -125,7 +125,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./update-order").default)
   )
 
@@ -139,7 +139,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./complete-order").default)
   )
 
@@ -154,7 +154,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./refund-payment").default)
   )
 
@@ -168,7 +168,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./capture-payment").default)
   )
 
@@ -183,7 +183,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./create-fulfillment").default)
   )
 
@@ -197,7 +197,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-fulfillment").default)
   )
 
@@ -211,7 +211,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-fulfillment-swap").default)
   )
 
@@ -225,7 +225,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-fulfillment-claim").default)
   )
 
@@ -240,7 +240,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./create-shipment").default)
   )
 
@@ -255,7 +255,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./request-return").default)
   )
 
@@ -269,7 +269,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-order").default)
   )
 
@@ -284,7 +284,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./add-shipping-method").default)
   )
 
@@ -298,7 +298,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./archive-order").default)
   )
 
@@ -327,7 +327,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-swap").default)
   )
 
@@ -341,7 +341,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./fulfill-swap").default)
   )
 
@@ -356,7 +356,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./create-swap-shipment").default)
   )
 
@@ -370,7 +370,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./process-swap-payment").default)
   )
 
@@ -385,7 +385,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./create-claim").default)
   )
 
@@ -399,7 +399,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./cancel-claim").default)
   )
 
@@ -414,7 +414,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./update-claim").default)
   )
 
@@ -429,7 +429,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./fulfill-claim").default)
   )
 
@@ -444,7 +444,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions([]),
+    transformIncludesOptions(),
     middlewares.wrap(require("./create-claim-shipment").default)
   )
 

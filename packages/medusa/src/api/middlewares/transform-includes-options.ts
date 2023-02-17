@@ -7,8 +7,12 @@ import { Order } from "../../models"
  * If the include option is present then assigned it to includes on req
  * @param allowedIncludesFields The list of fields that can be passed and assign to req.includes
  */
-export function transformIncludesOptions(allowedIncludesFields: string[]) {
+export function transformIncludesOptions(allowedIncludesFields: string[] = []) {
   return (req: Request, res: Response, next: NextFunction): void => {
+    if (!allowedIncludesFields.length) {
+      return next()
+    }
+
     for (const includesField of allowedIncludesFields) {
       const fieldIndex =
         (req.retrieveConfig as FindConfig<Order>).select?.indexOf(
