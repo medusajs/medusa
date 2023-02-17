@@ -159,7 +159,7 @@ export default async (req, res) => {
                   if (!isDefined(evaluatedNoNotification)) {
                     const order = await orderService
                       .withTransaction(manager)
-                      .retrieve(id, { select: ["no_notification"] })
+                      .retrieve(id)
 
                     evaluatedNoNotification = order.no_notification
                   }
