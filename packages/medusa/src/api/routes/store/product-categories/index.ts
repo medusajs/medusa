@@ -72,6 +72,8 @@ export const allowedStoreProductCategoryFields = [
 /**
  * @schema StoreGetProductCategoriesCategoryRes
  * type: object
+ * required:
+ *   - product_category
  * properties:
  *   product_category:
  *     $ref: "#/components/schemas/ProductCategory"
@@ -83,6 +85,11 @@ export type StoreGetProductCategoriesCategoryRes = {
 /**
  * @schema StoreProductCategoriesListRes
  * type: object
+ * required:
+ *   - product_categories
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   product_categories:
  *      type: array
