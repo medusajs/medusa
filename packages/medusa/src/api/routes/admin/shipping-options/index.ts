@@ -58,6 +58,8 @@ export const defaultRelations = ["region", "profile", "requirements"]
  * required:
  *   - shipping_options
  *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   shipping_options:
  *     type: array
@@ -66,6 +68,12 @@ export const defaultRelations = ["region", "profile", "requirements"]
  *   count:
  *     type: integer
  *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
  */
 export type AdminShippingOptionsListRes = PaginatedResponse & {
   shipping_options: ShippingOption[]

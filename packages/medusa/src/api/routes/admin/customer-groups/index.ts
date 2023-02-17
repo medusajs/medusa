@@ -94,6 +94,11 @@ export type AdminCustomerGroupsDeleteRes = DeleteResponse
 /**
  * @schema AdminCustomerGroupsListRes
  * type: object
+ * required:
+ *   - customer_groups
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   customer_groups:
  *     type: array
