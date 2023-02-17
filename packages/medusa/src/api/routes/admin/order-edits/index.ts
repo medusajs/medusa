@@ -101,6 +101,8 @@ export default (app) => {
 /**
  * @schema AdminOrderEditsRes
  * type: object
+ * required:
+ *   - order_edit
  * properties:
  *   order_edit:
  *     $ref: "#/components/schemas/OrderEdit"
@@ -112,6 +114,11 @@ export type AdminOrderEditsRes = {
 /**
  * @schema AdminOrderEditsListRes
  * type: object
+ * required:
+ *   - order_edits
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   order_edits:
  *     type: array
@@ -134,6 +141,10 @@ export type AdminOrderEditsListRes = PaginatedResponse & {
 /**
  * @schema AdminOrderEditDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -152,6 +163,10 @@ export type AdminOrderEditDeleteRes = DeleteResponse
 /**
  * @schema AdminOrderEditItemChangeDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string

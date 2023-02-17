@@ -136,6 +136,11 @@ export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 /**
  * @schema AdminProductsDeleteOptionRes
  * type: object
+ * required:
+ *   - option_id
+ *   - object
+ *   - deleted
+ *   - product
  * properties:
  *   option_id:
  *     type: string
@@ -161,6 +166,11 @@ export type AdminProductsDeleteOptionRes = {
 /**
  * @schema AdminProductsDeleteVariantRes
  * type: object
+ * required:
+ *   - variant_id
+ *   - object
+ *   - deleted
+ *   - product
  * properties:
  *   variant_id:
  *     type: string
@@ -186,6 +196,10 @@ export type AdminProductsDeleteVariantRes = {
 /**
  * @schema AdminProductsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -208,6 +222,11 @@ export type AdminProductsDeleteRes = {
 /**
  * @schema AdminProductsListRes
  * type: object
+ * required:
+ *   - products
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   products:
  *     type: array
@@ -232,6 +251,11 @@ export type AdminProductsListRes = PaginatedResponse & {
 /**
  * @schema AdminProductsListVariantsRes
  * type: object
+ * required:
+ *   - variants
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   variants:
  *     type: array
@@ -254,6 +278,8 @@ export type AdminProductsListVariantsRes = PaginatedResponse & {
 /**
  * @schema AdminProductsListTypesRes
  * type: object
+ * required:
+ *   - types
  * properties:
  *   types:
  *     type: array
@@ -267,11 +293,17 @@ export type AdminProductsListTypesRes = {
 /**
  * @schema AdminProductsListTagsRes
  * type: object
+ * required:
+ *   - tags
  * properties:
  *   tags:
  *     type: array
  *     items:
  *       type: object
+ *       required:
+ *         - id
+ *         - usage_count
+ *         - value
  *       properties:
  *         id:
  *           description: The ID of the tag.
@@ -294,6 +326,8 @@ export type AdminProductsListTagsRes = {
 /**
  * @schema AdminProductsRes
  * type: object
+ * required:
+ *   - product
  * properties:
  *   product:
  *     $ref: "#/components/schemas/Product"
