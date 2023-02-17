@@ -108,4 +108,5 @@ export class AdminPostOrdersOrderClaimsClaimFulfillmentsReq {
   no_notification?: boolean
 }
 
+// eslint-disable-next-line max-len
 export class AdminPostOrdersOrderClaimsClaimFulfillmentsParams extends FindParams {}

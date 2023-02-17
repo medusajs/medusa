@@ -62,7 +62,7 @@
     "hooks:install": "husky install",
     "hooks:uninstall": "husky uninstall",
     "build": "turbo run build --no-daemon",
-    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx packages/medusa/src/api/routes/admin/orders",
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
     "lint:docs": "eslint -c docs/.eslintrc.js --ignore-path docs/.eslintignore docs/content",
     "prettier": "prettier",
     "jest": "jest",
