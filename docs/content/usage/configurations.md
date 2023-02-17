@@ -259,7 +259,8 @@ ADMIN_CORS=/http:\/\/*/
 Although this is not recommended, but when setting these values directly in `medusa-config.json`, make sure to add an extra escaping `backslash` for every backslash in the pattern. For example:
 
 ```js
-const ADMIN_CORS = process.env.ADMIN_CORS || "/http:\\/\\/localhost:700\\d+$/";
+const ADMIN_CORS = process.env.ADMIN_CORS || 
+  "/http:\\/\\/localhost:700\\d+$/"
 ```
 
 :::tip
