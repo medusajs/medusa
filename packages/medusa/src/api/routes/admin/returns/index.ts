@@ -30,6 +30,8 @@ export default (app) => {
 /**
  * @schema AdminReturnsCancelRes
  * type: object
+ * required:
+ *   - order
  * properties:
  *   order:
  *     $ref: "#/components/schemas/Order"
@@ -41,6 +43,11 @@ export type AdminReturnsCancelRes = {
 /**
  * @schema AdminReturnsListRes
  * type: object
+ * required:
+ *   - returns
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   returns:
  *     type: array
@@ -63,6 +70,8 @@ export type AdminReturnsListRes = PaginatedResponse & {
 /**
  * @schema AdminReturnsRes
  * type: object
+ * required:
+ *   - return
  * properties:
  *   return:
  *     $ref: "#/components/schemas/Return"

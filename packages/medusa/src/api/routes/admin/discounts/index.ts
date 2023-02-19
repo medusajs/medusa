@@ -223,6 +223,8 @@ export const defaultAdminDiscountConditionRelations = ["discount_rule"]
 /**
  * @schema AdminDiscountsRes
  * type: object
+ * required:
+ *   - discount
  * properties:
  *   discount:
  *     $ref: "#/components/schemas/Discount"
@@ -234,6 +236,8 @@ export type AdminDiscountsRes = {
 /**
  * @schema AdminDiscountConditionsRes
  * type: object
+ * required:
+ *   - discount_condition
  * properties:
  *   discount_condition:
  *     $ref: "#/components/schemas/DiscountCondition"
@@ -245,6 +249,10 @@ export type AdminDiscountConditionsRes = {
 /**
  * @schema AdminDiscountsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -263,6 +271,11 @@ export type AdminDiscountsDeleteRes = DeleteResponse
 /**
  * @schema AdminDiscountConditionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ *   - discount
  * properties:
  *   id:
  *     type: string
@@ -286,6 +299,11 @@ export type AdminDiscountConditionsDeleteRes = DeleteResponse & {
 /**
  * @schema AdminDiscountsListRes
  * type: object
+ * required:
+ *   - discounts
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   discounts:
  *     type: array

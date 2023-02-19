@@ -2,7 +2,7 @@ import "reflect-metadata"
 import { RequestHandler, Router } from "express"
 
 import { Cart, Order, Swap } from "../../../../"
-import { DeleteResponse, FindParams } from "../../../../types/common"
+import { FindParams } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -154,6 +154,8 @@ export const defaultStoreCartRelations = [
 /**
  * @schema StoreCartsRes
  * type: object
+ * required:
+ *   - cart
  * properties:
  *   cart:
  *     $ref: "#/components/schemas/Cart"
@@ -165,6 +167,9 @@ export type StoreCartsRes = {
 /**
  * @schema StoreCompleteCartRes
  * type: object
+ * required:
+ *   - type
+ *   - data
  * properties:
  *   type:
  *     type: string
@@ -200,8 +205,6 @@ export type StoreCompleteCartRes =
       type: "swap"
       data: Swap
     }
-
-export type StoreCartsDeleteRes = DeleteResponse
 
 export * from "./add-shipping-method"
 export * from "./create-cart"

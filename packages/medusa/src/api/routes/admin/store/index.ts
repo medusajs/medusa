@@ -33,6 +33,8 @@ export default (app) => {
 /**
  * @schema AdminStoresRes
  * type: object
+ * required:
+ *   - store
  * properties:
  *   store:
  *     $ref: "#/components/schemas/ExtendedStoreDTO"
@@ -44,6 +46,8 @@ export type AdminStoresRes = {
 /**
  * @schema AdminTaxProvidersList
  * type: object
+ * required:
+ *   - tax_providers
  * properties:
  *   tax_providers:
  *     type: array
@@ -57,6 +61,8 @@ export type AdminTaxProvidersList = {
 /**
  * @schema AdminPaymentProvidersList
  * type: object
+ * required:
+ *   - payment_providers
  * properties:
  *   payment_providers:
  *     type: array

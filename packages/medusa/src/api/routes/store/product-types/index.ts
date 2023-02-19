@@ -42,6 +42,11 @@ export const defaultStoreProductTypeRelations = []
 /**
  * @schema StoreProductTypesListRes
  * type: object
+ * required:
+ *   - product_types
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   product_types:
  *     type: array

@@ -77,6 +77,8 @@ export default (app) => {
 /**
  * @schema AdminPublishableApiKeysRes
  * type: object
+ * required:
+ *   - publishable_api_key
  * properties:
  *   publishable_api_key:
  *     $ref: "#/components/schemas/PublishableApiKey"
@@ -88,6 +90,11 @@ export type AdminPublishableApiKeysRes = {
 /**
  * @schema AdminPublishableApiKeysListRes
  * type: object
+ * required:
+ *   - publishable_api_keys
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   publishable_api_keys:
  *     type: array
@@ -110,6 +117,10 @@ export type AdminPublishableApiKeysListRes = PaginatedResponse & {
 /**
  * @schema AdminPublishableApiKeyDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -128,6 +139,8 @@ export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 /**
  * @schema AdminPublishableApiKeysListSalesChannelsRes
  * type: object
+ * required:
+ *   - sales_channels
  * properties:
  *   sales_channels:
  *     type: array
