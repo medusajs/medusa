@@ -44,6 +44,8 @@ export default (app) => {
 /**
  * @schema StoreOrderEditsRes
  * type: object
+ * required:
+ *   - order_edit
  * properties:
  *   order_edit:
  *     $ref: "#/components/schemas/OrderEdit"

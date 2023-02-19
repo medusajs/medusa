@@ -16,6 +16,8 @@ export default (app) => {
 /**
  * @schema StoreRegionsListRes
  * type: object
+ * required:
+ *   - regions
  * properties:
  *   regions:
  *     type: array
@@ -29,6 +31,8 @@ export type StoreRegionsListRes = {
 /**
  * @schema StoreRegionsRes
  * type: object
+ * required:
+ *   - region
  * properties:
  *   region:
  *     $ref: "#/components/schemas/Region"
