@@ -2,7 +2,7 @@ import { IsString } from "class-validator"
 
 /**
  * @oas [delete] /uploads
- * operationId: "AdminDeleteUploads"
+ * operationId: "DeleteUploads"
  * summary: "Delete an Uploaded File"
  * description: "Removes an uploaded file using the installed fileservice"
  * x-authenticated: true
