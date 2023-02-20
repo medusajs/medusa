@@ -55,6 +55,11 @@ export const defaultRelations = ["region", "profile", "requirements"]
 /**
  * @schema AdminShippingOptionsListRes
  * type: object
+ * required:
+ *   - shipping_options
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   shipping_options:
  *     type: array
@@ -63,6 +68,12 @@ export const defaultRelations = ["region", "profile", "requirements"]
  *   count:
  *     type: integer
  *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
  */
 export type AdminShippingOptionsListRes = PaginatedResponse & {
   shipping_options: ShippingOption[]
@@ -71,6 +82,8 @@ export type AdminShippingOptionsListRes = PaginatedResponse & {
 /**
  * @schema AdminShippingOptionsRes
  * type: object
+ * required:
+ *   - shipping_option
  * properties:
  *   shipping_option:
  *     $ref: "#/components/schemas/ShippingOption"
@@ -82,6 +95,10 @@ export type AdminShippingOptionsRes = {
 /**
  * @schema AdminShippingOptionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string

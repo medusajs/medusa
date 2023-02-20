@@ -13,7 +13,7 @@ import { FindParams } from "../../../../types/common"
  *   - (query) fields {string} Comma separated list of fields to include in the results.
  * x-codegen:
  *   method: retrieve
- *   queryParams: GetPaymentCollectionsParams
+ *   queryParams: StoreGetPaymentCollectionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -70,4 +70,4 @@ export default async (req, res) => {
   res.status(200).json({ payment_collection: paymentCollection })
 }
 
-export class GetPaymentCollectionsParams extends FindParams {}
+export class StoreGetPaymentCollectionsParams extends FindParams {}

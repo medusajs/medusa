@@ -113,6 +113,8 @@ export * from "./search"
 /**
  * @schema StoreProductsRes
  * type: object
+ * required:
+ *   - product
  * properties:
  *   product:
  *     $ref: "#/components/schemas/PricedProduct"
@@ -123,20 +125,28 @@ export type StoreProductsRes = {
 
 /**
  * @schema StorePostSearchRes
- * type: object
- * properties:
- *   hits:
- *     type: array
- *     description: Array of results. The format of the items depends on the search engine installed on the server.
+ * allOf:
+ *   - type: object
+ *     required:
+ *       - hits
+ *     properties:
+ *       hits:
+ *         description: Array of results. The format of the items depends on the search engine installed on the server.
+ *         type: array
+ *   - type: object
  */
 export type StorePostSearchRes = {
   hits: unknown[]
-  [k: string]: unknown
-}
+} & Record<string, unknown>
 
 /**
  * @schema StoreProductsListRes
  * type: object
+ * required:
+ *   - products
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   products:
  *     type: array

@@ -72,6 +72,11 @@ export const defaultAdminCollectionsRelations = ["products"]
 /**
  * @schema AdminCollectionsListRes
  * type: object
+ * required:
+ *   - collections
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   collections:
  *      type: array
@@ -94,6 +99,10 @@ export type AdminCollectionsListRes = PaginatedResponse & {
 /**
  * @schema AdminCollectionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -112,6 +121,10 @@ export type AdminCollectionsDeleteRes = DeleteResponse
 /**
  * @schema AdminDeleteProductsFromCollectionRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - removed_products
  * properties:
  *   id:
  *     type: string
@@ -136,6 +149,8 @@ export type AdminDeleteProductsFromCollectionRes = {
 /**
  * @schema AdminCollectionsRes
  * type: object
+ * required:
+ *   - collection
  * properties:
  *   collection:
  *     $ref: "#/components/schemas/ProductCollection"
