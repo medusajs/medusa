@@ -60,7 +60,9 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig)
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
+  })
 
   res.json({ order })
 }
