@@ -475,10 +475,10 @@ describe("/store/products", () => {
     })
 
     describe("Product Category filtering", () => {
-      let categoryWithProduct,
-        categoryWithoutProduct,
-        nestedCategoryWithProduct,
-        nested2CategoryWithProduct
+      let categoryWithProduct
+      let categoryWithoutProduct
+      let nestedCategoryWithProduct
+      let nested2CategoryWithProduct
       const nestedCategoryWithProductId = "nested-category-with-product-id"
       const nested2CategoryWithProductId = "nested2-category-with-product-id"
       const categoryWithProductId = "category-with-product-id"
