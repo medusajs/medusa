@@ -2273,17 +2273,6 @@ Object of the following format:
 
 This section holds all events related to publishable API keys.
 
-:::note
-
-As of Medusa v1.6.3, Publishable API Keys are available but guarded by a feature flag. To use Publishable API Keys either:
-
-1. Enable the `MEDUSA_FF_PUBLISHABLE_API_KEYS` environment variable;
-2. Or enable the `publishable_api_keys` key in the Medusa server's settings.
-
-You can learn more about enabling it in the [feature flags](../feature-flags/toggle.md) documentation.
-
-:::
-
 <table class="reference-table">
 <thead>
 <tr>
