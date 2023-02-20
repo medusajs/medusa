@@ -264,16 +264,19 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     const cartServiceTx = this.cartService_.withTransaction(manager)
 
     const cart = await cartServiceTx.retrieveWithTotals(id, {
-      relations: ["region", "payment", "payment_sessions", "items.variant.product",],
+      relations: [
+        "region",
+        "payment",
+        "payment_sessions",
+        "items.variant.product",
+      ],
     })
 
     let allowBackorder = false
-    let swapId: string
 
     if (cart.type === "swap") {
       const swap = await swapServiceTx.retrieveByCartId(id)
       allowBackorder = swap.allow_backorder
-      swapId = swap.id
     }
 
     if (!allowBackorder) {
