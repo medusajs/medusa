@@ -276,7 +276,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -296,7 +296,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -363,7 +363,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -390,7 +390,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -451,7 +451,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -478,7 +478,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -525,7 +525,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -549,7 +549,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -591,7 +591,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -611,7 +611,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -658,7 +658,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -678,7 +678,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -724,7 +724,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -744,7 +744,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -828,7 +828,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -848,7 +848,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -920,7 +920,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -940,7 +940,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
@@ -982,7 +982,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
       const errResponse = {
         error: "Error",
         code: 400,
-        details: "Error details",
+        detail: "Error details",
       }
 
       const mockPaymentProcessor = new PaymentProcessor(container)
@@ -1002,7 +1002,7 @@ describe("PaymentProviderService using AbstractPaymentProcessor", () => {
         .catch((e) => e)
 
       expect(err.message).toBe(
-        `${errResponse.error}:${EOL}${errResponse.details}`
+        `${errResponse.error}:${EOL}${errResponse.detail}`
       )
     })
   })
