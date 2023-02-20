@@ -20,7 +20,7 @@ export type PaymentProcessorSessionResponse = {
 export interface PaymentProcessorError {
   error: string
   code?: string
-  details?: any
+  detail?: any
 }
 
 /**

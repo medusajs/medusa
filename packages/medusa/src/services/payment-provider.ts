@@ -379,6 +379,11 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const sessionData = paymentResponse.session_data ?? paymentResponse
 
+      // If no update occurs, return the original session
+      if (!sessionData) {
+        return await this.retrieveSession(paymentSession.id)
+      }
+
       await this.processUpdateRequestsData(
         {
           customer: { id: context.customer?.id },
@@ -945,7 +950,7 @@ export default class PaymentProviderService extends TransactionBaseService {
   private throwFromPaymentProcessorError(errObj: PaymentProcessorError) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `${errObj.error}${errObj.details ? `:${EOL}${errObj.details}` : ""}`,
+      `${errObj.error}${errObj.detail ? `:${EOL}${errObj.detail}` : ""}`,
       errObj.code
     )
   }
