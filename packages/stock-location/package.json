@@ -18,6 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "@medusajs/medusa": "^1.7.7",
+    "@medusajs/modules-sdk": "*",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "ts-jest": "^25.5.1",
@@ -33,6 +34,7 @@
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.7.7",
+    "@medusajs/modules-sdk": "*",
     "typeorm": "^0.3.11"
   }
 }

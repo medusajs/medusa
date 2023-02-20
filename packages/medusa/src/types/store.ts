@@ -1,6 +1,6 @@
 import { Store, PaymentProvider, FulfillmentProvider } from "../models"
 import { FeatureFlagsResponse } from "./feature-flags"
-import { ModulesResponse } from "./modules"
+import { ModulesResponse } from "@medusajs/modules-sdk"
 
 export type UpdateStoreInput = {
   name?: string

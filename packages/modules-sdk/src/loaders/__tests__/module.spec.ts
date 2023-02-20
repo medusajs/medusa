@@ -4,16 +4,16 @@ import {
   AwilixContainer,
   ClassOrFunctionReturning,
   createContainer,
-  Resolver
+  Resolver,
 } from "awilix"
 import {
   ConfigModule,
   MedusaContainer,
   ModuleResolution,
   MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE
-} from "../../types/global"
-import Logger from "../logger"
+  MODULE_SCOPE,
+} from "../../types"
+
 import registerModules from "../module"
 import { trackInstallation } from "../__mocks__/medusa-telemetry"
 
@@ -26,18 +26,16 @@ function asArray(
   }
 }
 
+const logger = {
+  warn: jest.fn(),
+} as any
+
 const buildConfigModule = (
   configParts: Partial<ConfigModule>
 ): ConfigModule => {
   return {
-    projectConfig: {
-      database_type: "sqlite",
-      database_logging: "all",
-    },
-    featureFlags: {},
     modules: {},
     moduleResolutions: {},
-    plugins: [],
     ...configParts,
   }
 }
@@ -105,7 +103,7 @@ describe("modules loader", () => {
     const configModule = buildConfigModule({
       moduleResolutions,
     })
-    await registerModules({ container, configModule, logger: Logger })
+    await registerModules({ container, configModule, logger })
 
     const testService = container.resolve(
       moduleResolutions.testService.definition.key
@@ -138,7 +136,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
 
-    await registerModules({ container, configModule, logger: Logger })
+    await registerModules({ container, configModule, logger })
 
     const testService = container.resolve(
       moduleResolutions.testService.definition.key,
@@ -177,10 +175,6 @@ describe("modules loader", () => {
       },
     }
 
-    const logger: typeof Logger = {
-      warn: jest.fn(),
-    }
-
     const configModule = buildConfigModule({
       moduleResolutions,
     })
@@ -211,10 +205,6 @@ describe("modules loader", () => {
           resources: MODULE_RESOURCE_TYPE.SHARED,
         },
       },
-    }
-
-    const logger: typeof Logger = {
-      warn: jest.fn(),
     }
 
     const configModule = buildConfigModule({
@@ -255,7 +245,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
     try {
-      await registerModules({ container, configModule, logger: Logger })
+      await registerModules({ container, configModule, logger })
     } catch (err) {
       expect(err.message).toEqual(
         "No service found in module. Make sure that your module exports a service."
@@ -290,7 +280,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
     try {
-      await registerModules({ container, configModule, logger: Logger })
+      await registerModules({ container, configModule, logger })
     } catch (err) {
       expect(err.message).toEqual(
         "The module TestService has to define its scope (internal | external)"
@@ -325,7 +315,7 @@ describe("modules loader", () => {
       moduleResolutions,
     })
     try {
-      await registerModules({ container, configModule, logger: Logger })
+      await registerModules({ container, configModule, logger })
     } catch (err) {
       expect(err.message).toEqual(
         "The module TestService is missing its resources config"

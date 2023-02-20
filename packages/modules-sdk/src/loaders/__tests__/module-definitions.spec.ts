@@ -3,7 +3,7 @@ import {
   ModuleDefinition,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "../../types/global"
+} from "../../types"
 import ModuleDefinitionLoader from "../module-definitions"
 import MODULE_DEFINITIONS from "../module-definitions/definitions"
 
