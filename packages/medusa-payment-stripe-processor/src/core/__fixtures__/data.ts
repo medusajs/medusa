@@ -49,7 +49,7 @@ export const initiatePaymentContextWithFailIntentCreation = {
   resource_id: "test",
   customer: {},
   context: {
-    description: "fail"
+    payment_description: "fail"
   },
   paymentSessionData: {}
 }
@@ -106,4 +106,109 @@ export const deletePaymentFailData = {
 
 export const deletePaymentPartiallyFailData = {
   id: PARTIALLY_FAIL_INTENT_ID
+}
+
+// REFUND PAYMENT DATA
+
+export const refundPaymentSuccessData = {
+  id: PaymentIntentDataByStatus.SUCCEEDED.id
+}
+
+export const refundPaymentFailData = {
+  id: FAIL_INTENT_ID
+}
+
+// RETRIEVE PAYMENT DATA
+
+export const retrievePaymentSuccessData = {
+  id: PaymentIntentDataByStatus.SUCCEEDED.id
+}
+
+export const retrievePaymentFailData = {
+  id: FAIL_INTENT_ID
+}
+
+// UPDATE PAYMENT DATA
+
+export const updatePaymentContextWithExistingCustomer = {
+  email: EXISTING_CUSTOMER_EMAIL,
+  currency_code: "usd",
+  amount: 1000,
+  resource_id: "test",
+  customer: {},
+  context: {},
+  paymentSessionData: {
+    customer: "test",
+    amount: 1000,
+  }
+}
+
+export const updatePaymentContextWithExistingCustomerStripeId = {
+  email: EXISTING_CUSTOMER_EMAIL,
+  currency_code: "usd",
+  amount: 1000,
+  resource_id: "test",
+  customer: {
+    metadata: {
+      stripe_id: "test"
+    }
+  },
+  context: {},
+  paymentSessionData: {
+    customer: "test",
+    amount: 1000,
+  }
+}
+
+export const updatePaymentContextWithWrongEmail = {
+  email: WRONG_CUSTOMER_EMAIL,
+  currency_code: "usd",
+  amount: 1000,
+  resource_id: "test",
+  customer: {},
+  context: {},
+  paymentSessionData: {
+    customer: "test",
+    amount: 1000,
+  }
+}
+
+export const updatePaymentContextWithDifferentAmount = {
+  email: WRONG_CUSTOMER_EMAIL,
+  currency_code: "usd",
+  amount: 2000,
+  resource_id: "test",
+  customer: {
+    metadata: {
+      stripe_id: "test"
+    }
+  },
+  context: {},
+  paymentSessionData: {
+    id: PaymentIntentDataByStatus.SUCCEEDED.id,
+    customer: "test",
+    amount: 1000,
+  }
+}
+
+export const updatePaymentContextFailWithDifferentAmount = {
+  email: WRONG_CUSTOMER_EMAIL,
+  currency_code: "usd",
+  amount: 2000,
+  resource_id: "test",
+  customer: {
+    metadata: {
+      stripe_id: "test"
+    }
+  },
+  context: {
+    metadata: {
+      stripe_id: "test"
+    }
+  },
+  paymentSessionData: {
+    id: FAIL_INTENT_ID,
+    customer: "test",
+    amount: 1000,
+  }
 }

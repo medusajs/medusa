@@ -1,6 +1,8 @@
 import Stripe from "stripe"
+import { EOL } from "os"
 import {
   AbstractPaymentProcessor,
+  isPaymentProcessorError,
   PaymentProcessorContext,
   PaymentProcessorError,
   PaymentProcessorSessionResponse,
@@ -228,7 +230,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
       })
     } catch (e) {
       return this.buildError(
-        "An error occurred in retrievePayment during the refundPayment",
+        "An error occurred in refundPayment during the refundPayment",
         e
       )
     }
@@ -257,12 +259,15 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     const stripeId = customer?.metadata?.stripe_id
 
     if (stripeId !== paymentSessionData.customer) {
-      return await this.initiatePayment(context).catch((e) => {
+      const result = await this.initiatePayment(context)
+      if (isPaymentProcessorError(result)) {
         return this.buildError(
           "An error occurred in updatePayment during the initiate of the new payment for the new customer",
-          e
+          result
         )
-      })
+      }
+
+      return result
     } else {
       if (amount && paymentSessionData.amount === Math.round(amount)) {
         return
@@ -270,11 +275,13 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
       try {
         const id = paymentSessionData.id as string
-        await this.stripe_.paymentIntents.update(id, {
+        const sessionData = (await this.stripe_.paymentIntents.update(id, {
           amount: Math.round(amount),
-        })
+        })) as unknown as PaymentProcessorSessionResponse["session_data"]
+
+        return { session_data: sessionData }
       } catch (e) {
-        this.buildError(
+        return this.buildError(
           "An error occurred in updatePayment during the update of the payment",
           e
         )
@@ -299,12 +306,14 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
   protected buildError(
     message: string,
-    e: Stripe.StripeRawError
+    e: Stripe.StripeRawError | PaymentProcessorError
   ): PaymentProcessorError {
     return {
       error: message,
       code: e.code,
-      details: e.detail,
+      detail: isPaymentProcessorError(e)
+        ? `${e.error}${EOL}${e.detail ?? ""}`
+        : e.detail,
     }
   }
 }

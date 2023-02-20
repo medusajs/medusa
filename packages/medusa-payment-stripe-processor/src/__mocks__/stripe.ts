@@ -8,15 +8,18 @@ export const STRIPE_ID = "test"
 export const PARTIALLY_FAIL_INTENT_ID = "partially_unknown"
 export const FAIL_INTENT_ID = "unknown"
 
-function buildPaymentIntent(data) {
-  const paymentIntentData = {}
-
-  return Object.assign(paymentIntentData, data)
-}
-
 export const StripeMock = {
   paymentIntents: {
     retrieve: jest.fn().mockImplementation(async (paymentId) => {
+      if (paymentId === FAIL_INTENT_ID) {
+        throw new Error("Error")
+      }
+
+      return Object.values(PaymentIntentDataByStatus).find(value => {
+        return value.id === paymentId
+      }) ?? {}
+    }),
+    update: jest.fn().mockImplementation(async (paymentId, updateData) => {
       if (paymentId === FAIL_INTENT_ID) {
         throw new Error("Error")
       }
@@ -25,7 +28,7 @@ export const StripeMock = {
         return value.id === paymentId
       }) ?? {}
 
-      return buildPaymentIntent(data)
+      return { ...data, ...updateData }
     }),
     create: jest.fn().mockImplementation(async (data) => {
       if (data.description === "fail") {
@@ -66,6 +69,15 @@ export const StripeMock = {
           } as unknown as Stripe.PaymentIntent,
           type: "invalid_request_error"
         })
+      }
+
+      return { id: paymentId }
+    })
+  },
+  refunds: {
+    create: jest.fn().mockImplementation(async ({  payment_intent: paymentId }) => {
+      if (paymentId === FAIL_INTENT_ID) {
+        throw new Error("Error")
       }
 
       return { id: paymentId }

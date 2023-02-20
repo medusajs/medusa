@@ -5275,44 +5275,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@npm:^1.3.8":
-  version: 1.3.8
-  resolution: "@medusajs/medusa-cli@npm:1.3.8"
-  dependencies:
-    "@babel/polyfill": ^7.8.7
-    "@babel/runtime": ^7.9.6
-    axios: ^0.21.4
-    chalk: ^4.0.0
-    configstore: 5.0.1
-    core-js: ^3.6.5
-    dotenv: ^8.2.0
-    execa: ^5.1.1
-    fs-exists-cached: ^1.0.0
-    fs-extra: ^10.0.0
-    hosted-git-info: ^4.0.2
-    inquirer: ^8.0.0
-    is-valid-path: ^0.1.1
-    meant: ^1.0.3
-    medusa-core-utils: ^1.1.39
-    medusa-telemetry: 0.0.16
-    netrc-parser: ^3.1.6
-    open: ^8.0.6
-    ora: ^5.4.1
-    pg-god: ^1.0.12
-    prompts: ^2.4.2
-    regenerator-runtime: ^0.13.11
-    resolve-cwd: ^3.0.0
-    stack-trace: ^0.0.10
-    ulid: ^2.3.0
-    url: ^0.11.0
-    winston: ^3.8.2
-    yargs: ^15.3.1
-  bin:
-    medusa: cli.js
-  checksum: 8d18ac9b20bbfbb8fdcfc23293169744ef77339f6a4c063e0838466b871a105109baccc60def36a75f03544bd653727e9feed113c7799105512cacdbf443e990
-  languageName: node
-  linkType: hard
-
 "@medusajs/medusa-js@^1.3.8, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
@@ -25432,7 +25394,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.39, medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@^1.1.31, medusa-core-utils@^1.1.38, medusa-core-utils@^1.1.39, medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
@@ -25446,16 +25408,6 @@ __metadata:
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
-
-"medusa-core-utils@npm:^1.1.39":
-  version: 1.1.39
-  resolution: "medusa-core-utils@npm:1.1.39"
-  dependencies:
-    joi: ^17.3.0
-    joi-objectid: ^3.0.1
-  checksum: 203885dbe3cbe0f1cc0218ae65a3e9267a3bbc5f1441e38bed980c19b4e5ec047692751b3cb00f988377715a5e764967dbd38da7fd80ea8de12cb05f70fdf0f8
-  languageName: node
-  linkType: hard
 
 "medusa-dev-cli@workspace:packages/medusa-dev-cli":
   version: 0.0.0-use.local
@@ -25751,6 +25703,23 @@ __metadata:
     medusa-test-utils: ^1.1.38
   peerDependencies:
     medusa-interfaces: 1.3.6
+  languageName: unknown
+  linkType: soft
+
+"medusa-payment-stripe-processor@workspace:packages/medusa-payment-stripe-processor":
+  version: 0.0.0-use.local
+  resolution: "medusa-payment-stripe-processor@workspace:packages/medusa-payment-stripe-processor"
+  dependencies:
+    "@medusajs/medusa": ^1.7.7
+    "@types/stripe": ^8.0.417
+    body-parser: ^1.19.0
+    cross-env: ^5.2.1
+    express: ^4.17.1
+    jest: ^25.5.4
+    medusa-core-utils: ^1.1.38
+    stripe: ^11.10.0
+  peerDependencies:
+    "@medusajs/medusa": ^1.7.7
   languageName: unknown
   linkType: soft
 

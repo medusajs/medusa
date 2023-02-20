@@ -1,3 +1,4 @@
+import { EOL } from "os"
 import { StripeTest } from "../__fixtures__/stripe-test"
 import { PaymentIntentDataByStatus } from "../../__fixtures__/data"
 import { PaymentSessionStatus } from "@medusajs/medusa"
@@ -15,7 +16,16 @@ import {
   initiatePaymentContextWithExistingCustomer,
   initiatePaymentContextWithExistingCustomerStripeId,
   initiatePaymentContextWithFailIntentCreation,
-  initiatePaymentContextWithWrongEmail
+  initiatePaymentContextWithWrongEmail,
+  refundPaymentFailData,
+  refundPaymentSuccessData,
+  retrievePaymentFailData,
+  retrievePaymentSuccessData,
+  updatePaymentContextFailWithDifferentAmount,
+  updatePaymentContextWithDifferentAmount,
+  updatePaymentContextWithExistingCustomer,
+  updatePaymentContextWithExistingCustomerStripeId,
+  updatePaymentContextWithWrongEmail,
 } from "../__fixtures__/data"
 import {
   PARTIALLY_FAIL_INTENT_ID,
@@ -34,6 +44,10 @@ describe("StripeTest", () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
       await stripeTest.init()
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
     })
 
     it("should return the correct status", async () => {
@@ -75,7 +89,7 @@ describe("StripeTest", () => {
       expect(status).toBe(PaymentSessionStatus.AUTHORIZED)
 
       status = await stripeTest.getPaymentStatus({
-        id: "unknown"
+        id: "unknown-id"
       })
       expect(status).toBe(PaymentSessionStatus.PENDING)
     })
@@ -88,6 +102,10 @@ describe("StripeTest", () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
       await stripeTest.init()
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
     })
 
     it("should succeed with an existing customer but no stripe id", async () => {
@@ -173,10 +191,10 @@ describe("StripeTest", () => {
       expect(StripeMock.paymentIntents.create).toHaveBeenCalled()
       expect(StripeMock.paymentIntents.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          description: initiatePaymentContextWithFailIntentCreation.context.description,
-          amount: initiatePaymentContextWithExistingCustomer.amount,
-          currency: initiatePaymentContextWithExistingCustomer.currency_code,
-          metadata: { resource_id: initiatePaymentContextWithExistingCustomer.resource_id },
+          description: initiatePaymentContextWithFailIntentCreation.context.payment_description,
+          amount: initiatePaymentContextWithFailIntentCreation.amount,
+          currency: initiatePaymentContextWithFailIntentCreation.currency_code,
+          metadata: { resource_id: initiatePaymentContextWithFailIntentCreation.resource_id },
           capture_method: "manual"
         })
       )
@@ -198,6 +216,10 @@ describe("StripeTest", () => {
       await stripeTest.init()
     })
 
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
     it("should succeed", async () => {
       const result = await stripeTest.authorizePayment(authorizePaymentSuccessData)
 
@@ -215,6 +237,10 @@ describe("StripeTest", () => {
       const scopedContainer = { ...container }
       stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
       await stripeTest.init()
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
     })
 
     it("should succeed", async () => {
@@ -254,6 +280,10 @@ describe("StripeTest", () => {
       await stripeTest.init()
     })
 
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
     it("should succeed", async () => {
       const result = await stripeTest.capturePayment(capturePaymentContextSuccessData)
 
@@ -291,6 +321,10 @@ describe("StripeTest", () => {
       await stripeTest.init()
     })
 
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
     it("should succeed", async () => {
       const result = await stripeTest.cancelPayment(deletePaymentSuccessData)
 
@@ -315,6 +349,178 @@ describe("StripeTest", () => {
         error: "An error occurred in cancelPayment during the cancellation of the payment",
         code: undefined,
         detail: undefined
+      })
+    })
+  })
+
+  describe('refundPayment', function () {
+    let stripeTest
+    const refundAmount = 500
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
+      await stripeTest.init()
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should succeed", async () => {
+      const result = await stripeTest.refundPayment(refundPaymentSuccessData, refundAmount)
+
+      expect(result).toEqual({
+        id: PaymentIntentDataByStatus.SUCCEEDED.id
+      })
+    })
+
+    it("should fail on refund creation", async () => {
+      const result = await stripeTest.refundPayment(refundPaymentFailData, refundAmount)
+
+      expect(result).toEqual({
+        error: "An error occurred in refundPayment during the refundPayment",
+        code: undefined,
+        detail: undefined
+      })
+    })
+  })
+
+  describe('retrievePayment', function () {
+    let stripeTest
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
+      await stripeTest.init()
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should succeed", async () => {
+      const result = await stripeTest.retrievePayment(retrievePaymentSuccessData)
+
+      expect(result).toEqual({
+        id: PaymentIntentDataByStatus.SUCCEEDED.id,
+        status: PaymentIntentDataByStatus.SUCCEEDED.status
+      })
+    })
+
+    it("should fail on refund creation", async () => {
+      const result = await stripeTest.retrievePayment(retrievePaymentFailData)
+
+      expect(result).toEqual({
+        error: "An error occurred in retrievePayment",
+        code: undefined,
+        detail: undefined
+      })
+    })
+  })
+
+  describe('updatePayment', function () {
+    let stripeTest
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
+      await stripeTest.init()
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should succeed to initiate a payment with an existing customer but no stripe id", async () => {
+      const result = await stripeTest.updatePayment(updatePaymentContextWithExistingCustomer)
+
+      expect(StripeMock.customers.create).toHaveBeenCalled()
+      expect(StripeMock.customers.create).toHaveBeenCalledWith({
+        email: updatePaymentContextWithExistingCustomer.email
+      })
+
+      expect(StripeMock.paymentIntents.create).toHaveBeenCalled()
+      expect(StripeMock.paymentIntents.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          description: undefined,
+          amount: updatePaymentContextWithExistingCustomer.amount,
+          currency: updatePaymentContextWithExistingCustomer.currency_code,
+          metadata: { resource_id: updatePaymentContextWithExistingCustomer.resource_id },
+          capture_method: "manual"
+        })
+      )
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          session_data: expect.any(Object),
+          update_requests: {
+            customer_metadata: {
+              stripe_id: STRIPE_ID
+            }
+          }
+        })
+      )
+    })
+
+    it("should fail to initiate a payment with an existing customer but no stripe id", async () => {
+      const result = await stripeTest.updatePayment(updatePaymentContextWithWrongEmail)
+
+      expect(StripeMock.customers.create).toHaveBeenCalled()
+      expect(StripeMock.customers.create).toHaveBeenCalledWith({
+        email: updatePaymentContextWithWrongEmail.email
+      })
+
+      expect(StripeMock.paymentIntents.create).not.toHaveBeenCalled()
+
+      expect(result).toEqual({
+        error: "An error occurred in updatePayment during the initiate of the new payment for the new customer",
+        code: undefined,
+        detail: "An error occurred in InitiatePayment during the creation of the stripe customer" + EOL
+      })
+    })
+
+    it("should succeed but no update occurs when the amount did not changed", async () => {
+      const result = await stripeTest.updatePayment(updatePaymentContextWithExistingCustomerStripeId)
+
+      expect(StripeMock.paymentIntents.update).not.toHaveBeenCalled()
+
+      expect(result).not.toBeDefined()
+    })
+
+    it("should succeed to update the intent with the new amount", async () => {
+      const result = await stripeTest.updatePayment(updatePaymentContextWithDifferentAmount)
+
+      expect(StripeMock.paymentIntents.update).toHaveBeenCalled()
+      expect(StripeMock.paymentIntents.update).toHaveBeenCalledWith(
+        updatePaymentContextWithDifferentAmount.paymentSessionData.id ,
+        {
+          amount: updatePaymentContextWithDifferentAmount.amount
+        }
+      )
+
+      expect(result).toEqual({
+        session_data: expect.objectContaining({
+          amount: updatePaymentContextWithDifferentAmount.amount,
+        })
+      })
+    })
+
+    it("should fail to update the intent with the new amount", async () => {
+      const result = await stripeTest.updatePayment(updatePaymentContextFailWithDifferentAmount)
+
+      expect(StripeMock.paymentIntents.update).toHaveBeenCalled()
+      expect(StripeMock.paymentIntents.update).toHaveBeenCalledWith(
+        updatePaymentContextFailWithDifferentAmount.paymentSessionData.id ,
+        {
+          amount: updatePaymentContextFailWithDifferentAmount.amount
+        }
+      )
+
+      expect(result).toEqual({
+        error: "An error occurred in updatePayment during the update of the payment",
+        code: undefined,
+        detail: undefined,
       })
     })
   })
