@@ -10,7 +10,6 @@ import middlewares, {
 import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 
@@ -45,14 +44,9 @@ export default (app, container) => {
   const createMiddlewares = [
     middlewareService.usePreCartCreation(),
     transformBody(StorePostCartReq),
+    extendRequestParams,
+    validateSalesChannelParam,
   ]
-
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    createMiddlewares.push(
-      extendRequestParams as unknown as RequestHandler,
-      validateSalesChannelParam as unknown as RequestHandler
-    )
-  }
 
   route.post(
     "/",
