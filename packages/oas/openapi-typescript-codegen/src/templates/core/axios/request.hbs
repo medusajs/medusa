@@ -1,0 +1,101 @@
+{{>header}}
+
+import axios from 'axios';
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import FormData from 'form-data';
+
+import { ApiError } from './ApiError';
+import type { ApiRequestOptions } from './ApiRequestOptions';
+import type { ApiResult } from './ApiResult';
+import { CancelablePromise } from './CancelablePromise';
+import type { OnCancel } from './CancelablePromise';
+import type { OpenAPIConfig } from './OpenAPI';
+
+{{>functions/isDefined}}
+
+
+{{>functions/isString}}
+
+
+{{>functions/isStringWithValue}}
+
+
+{{>functions/isBlob}}
+
+
+{{>functions/isFormData}}
+
+
+{{>functions/isSuccess}}
+
+
+{{>functions/base64}}
+
+
+{{>functions/getQueryString}}
+
+
+{{>functions/getUrl}}
+
+
+{{>functions/getFormData}}
+
+
+{{>functions/resolve}}
+
+
+{{>axios/getHeaders}}
+
+
+{{>axios/getRequestBody}}
+
+
+{{>axios/sendRequest}}
+
+
+{{>axios/getResponseHeader}}
+
+
+{{>axios/getResponseBody}}
+
+
+{{>functions/catchErrorCodes}}
+
+
+/**
+ * Request method
+ * @param config The OpenAPI configuration object
+ * @param options The request options from the service
+ * @returns CancelablePromise<T>
+ * @throws ApiError
+ */
+export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): CancelablePromise<T> => {
+	return new CancelablePromise(async (resolve, reject, onCancel) => {
+		try {
+			const url = getUrl(config, options);
+			const formData = getFormData(options);
+			const body = getRequestBody(options);
+			const headers = await getHeaders(config, options, formData);
+
+			if (!onCancel.isCancelled) {
+				const response = await sendRequest<T>(config, options, url, body, formData, headers, onCancel);
+				const responseBody = getResponseBody(response);
+				const responseHeader = getResponseHeader(response, options.responseHeader);
+
+				const result: ApiResult = {
+					url,
+					ok: isSuccess(response.status),
+					status: response.status,
+					statusText: response.statusText,
+					body: responseHeader ?? responseBody,
+				};
+
+				catchErrorCodes(options, result);
+
+				resolve(result.body);
+			}
+		} catch (error) {
+			reject(error);
+		}
+	});
+};

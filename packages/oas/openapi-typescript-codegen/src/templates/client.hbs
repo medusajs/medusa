@@ -1,0 +1,40 @@
+{{>header}}
+
+import type { BaseHttpRequest } from './core/BaseHttpRequest';
+import type { OpenAPIConfig } from './core/OpenAPI';
+import { {{{httpRequest}}} } from './core/{{{httpRequest}}}';
+
+{{#if services}}
+{{#each services}}
+import { {{{name}}}{{{@root.postfix}}} } from './services/{{{name}}}{{{@root.postfix}}}';
+{{/each}}
+{{/if}}
+
+type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
+
+export class {{{clientName}}} {
+
+	{{#each services}}
+	public readonly {{{camelCase name}}}: {{{name}}}{{{@root.postfix}}};
+	{{/each}}
+
+	public readonly request: BaseHttpRequest;
+
+	constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = {{{httpRequest}}}) {
+		this.request = new HttpRequest({
+			BASE: config?.BASE ?? '{{{server}}}',
+			VERSION: config?.VERSION ?? '{{{version}}}',
+			WITH_CREDENTIALS: config?.WITH_CREDENTIALS ?? false,
+			CREDENTIALS: config?.CREDENTIALS ?? 'include',
+			TOKEN: config?.TOKEN,
+			USERNAME: config?.USERNAME,
+			PASSWORD: config?.PASSWORD,
+			HEADERS: config?.HEADERS,
+			ENCODE_PATH: config?.ENCODE_PATH,
+		});
+
+		{{#each services}}
+		this.{{{camelCase name}}} = new {{{name}}}{{{@root.postfix}}}(this.request);
+		{{/each}}
+	}
+}
