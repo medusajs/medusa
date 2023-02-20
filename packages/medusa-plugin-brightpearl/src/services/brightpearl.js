@@ -23,6 +23,7 @@ class BrightpearlService extends BaseService {
       lineItemService,
       eventBusService,
       productVariantInventoryService,
+      salesChannelLocationService,
     },
     options
   ) {
@@ -43,6 +44,7 @@ class BrightpearlService extends BaseService {
     this.inventoryService_ = inventoryService
     this.lineItemService_ = lineItemService
     this.eventBusService_ = eventBusService
+    this.salesChannelLocationService_ = salesChannelLocationService
   }
 
   async getClient() {
@@ -106,7 +108,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -115,7 +117,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -1418,7 +1420,7 @@ class BrightpearlService extends BaseService {
   }
 
   async createFulfillmentFromGoodsOut(id) {
-    await this.manager_.transaction(async (m) => {
+    await this.manager_.transaction(async (transactionManager) => {
       const client = await this.getClient()
 
       // Get goods out and associated order
@@ -1427,9 +1429,11 @@ class BrightpearlService extends BaseService {
 
       // Only relevant for medusa orders check channel id
       const { fulfillments: existingFulfillments, sales_channel } =
-        await this.orderService_.withTransaction(m).retrieve(id, {
-          relations: ["fulfillments", "sales_channel"],
-        })
+        await this.orderService_
+          .withTransaction(transactionManager)
+          .retrieve(order.externalRef, {
+            relations: ["fulfillments", "sales_channel"],
+          })
 
       if (
         (sales_channel.metadata?.bp_id &&
@@ -1465,22 +1469,22 @@ class BrightpearlService extends BaseService {
 
       if (partId) {
         if (partId.startsWith("claim")) {
-          return this.claimService_
-            .withTransaction(m)
+          return await this.claimService_
+            .withTransaction(transactionManager)
             .createFulfillment(partId, {
               metadata: { goods_out_note: id },
             })
         } else {
-          return this.swapService_
-            .withTransaction(m)
+          return await this.swapService_
+            .withTransaction(transactionManager)
             .createFulfillment(partId, {
               metadata: { goods_out_note: id },
             })
         }
       }
 
-      const medusaOrder = this.orderService_
-        .withTransaction(m)
+      const medusaOrder = await this.orderService_
+        .withTransaction(transactionManager)
         .createFulfillment(order.externalRef, lines, {
           metadata: { goods_out_note: id },
         })
@@ -1499,17 +1503,26 @@ class BrightpearlService extends BaseService {
           await this.getMedusaLocationFromBrightPearlWarehouse(
             bpLocation,
             medusaOrder.sales_channel_id,
-            { transactionManager: m }
+            { transactionManager: transactionManager }
           )
 
+        const { fulfillments } = await this.orderService_
+          .withTransaction(transactionManager)
+          .retrieve(order.externalRef, {
+            relations: [
+              "fulfillments",
+              "fulfillments.items",
+              "fulfillments.items.item",
+            ],
+          })
+
         await updateInventoryAndReservationsOnFulfillmentCreation(
-          [
-            medusaOrder.fulfillments.filter(
-              (f) => !existingFulfillmentMap[f.id]
-            ),
-          ],
+          fulfillments.filter((f) => !existingFulfillmentMap.get(f.id)),
           {
-            inventoryService: this.inventoryService_,
+            inventoryService:
+              this.productVariantInventoryService_.withTransaction(
+                transactionManager
+              ),
             locationId: fulfillmentLocation.id,
           }
         )
@@ -1532,8 +1545,9 @@ class BrightpearlService extends BaseService {
       .withTransaction(context.transactionManager)
       .list({ id: locationIds })
 
+    const bpLocIdString = `${bpLocationId}`
     const fulfillmentLocation = locations.find(
-      (location) => location.metadata?.bp_id === bpLocationId
+      (location) => location.metadata?.bp_id === bpLocIdString
     )
 
     return fulfillmentLocation
