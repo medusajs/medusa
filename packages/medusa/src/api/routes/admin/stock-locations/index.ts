@@ -96,6 +96,10 @@ export const defaultAdminStockLocationRelations = []
 /**
  * @schema AdminStockLocationsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -114,6 +118,8 @@ export type AdminStockLocationsDeleteRes = DeleteResponse
 /**
  * @schema AdminStockLocationsRes
  * type: object
+ * required:
+ *   - stock_location
  * properties:
  *   stock_location:
  *     $ref: "#/components/schemas/StockLocationExpandedDTO"
@@ -125,6 +131,11 @@ export type AdminStockLocationsRes = {
 /**
  * @schema AdminStockLocationsListRes
  * type: object
+ * required:
+ *   - stock_locations
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   stock_locations:
  *     type: array

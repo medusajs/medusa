@@ -34,6 +34,11 @@ export const defaultAdminProductTypeRelations = []
 /**
  * @schema AdminProductTypesListRes
  * type: object
+ * required:
+ *   - product_types
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   product_types:
  *     type: array

@@ -32,6 +32,8 @@ export const defaultStoreVariantRelations = ["prices", "options", "product"]
 /**
  * @schema StoreVariantsRes
  * type: object
+ * required:
+ *   - variant
  * properties:
  *   variant:
  *     $ref: "#/components/schemas/PricedVariant"
@@ -43,6 +45,8 @@ export type StoreVariantsRes = {
 /**
  * @schema StoreVariantsListRes
  * type: object
+ * required:
+ *   - variants
  * properties:
  *   variants:
  *     type: array

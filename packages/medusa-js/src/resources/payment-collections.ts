@@ -1,10 +1,10 @@
 import {
-  GetPaymentCollectionsParams,
-  StorePostPaymentCollectionsBatchSessionsReq,
-  StorePostPaymentCollectionsBatchSessionsAuthorizeReq,
+  StoreGetPaymentCollectionsParams,
   StorePaymentCollectionSessionsReq,
-  StorePaymentCollectionsSessionRes,
   StorePaymentCollectionsRes,
+  StorePaymentCollectionsSessionRes,
+  StorePostPaymentCollectionsBatchSessionsAuthorizeReq,
+  StorePostPaymentCollectionsBatchSessionsReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
@@ -13,7 +13,7 @@ import qs from "qs"
 class PaymentCollectionsResource extends BaseResource {
   retrieve(
     id: string,
-    query?: GetPaymentCollectionsParams,
+    query?: StoreGetPaymentCollectionsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePaymentCollectionsRes> {
     let path = `/store/payment-collections/${id}`

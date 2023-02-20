@@ -114,6 +114,8 @@ export const allowedStoreCustomersFields = [
 /**
  * @schema StoreCustomersRes
  * type: object
+ * required:
+ *   - customer
  * properties:
  *   customer:
  *     $ref: "#/components/schemas/Customer"
@@ -125,20 +127,25 @@ export type StoreCustomersRes = {
 /**
  * @schema StoreCustomersListOrdersRes
  * type: object
+ * required:
+ *   - orders
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   orders:
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/Order"
  *   count:
- *     type: integer
  *     description: The total number of items available
+ *     type: integer
  *   offset:
- *     type: integer
  *     description: The number of items skipped before these items
- *   limit:
  *     type: integer
+ *   limit:
  *     description: The number of items per page
+ *     type: integer
  */
 export type StoreCustomersListOrdersRes = PaginatedResponse & {
   orders: Order[]
@@ -147,18 +154,23 @@ export type StoreCustomersListOrdersRes = PaginatedResponse & {
 /**
  * @schema StoreCustomersListPaymentMethodsRes
  * type: object
+ * required:
+ *   - payment_methods
  * properties:
  *   payment_methods:
  *     type: array
  *     items:
  *       type: object
+ *       required:
+ *         - provider_id
+ *         - data
  *       properties:
  *         provider_id:
- *           type: string
  *           description: The id of the Payment Provider where the payment method is saved.
+ *           type: string
  *         data:
- *           type: object
  *           description: The data needed for the Payment Provider to use the saved payment method.
+ *           type: object
  */
 export type StoreCustomersListPaymentMethodsRes = {
   payment_methods: {

@@ -39,6 +39,8 @@ export const defaultStoreReturnReasonRelations: (keyof ReturnReason)[] = [
 /**
  * @schema StoreReturnReasonsListRes
  * type: object
+ * required:
+ *   - return_reasons
  * properties:
  *   return_reasons:
  *     type: array
@@ -52,6 +54,8 @@ export type StoreReturnReasonsListRes = {
 /**
  * @schema StoreReturnReasonsRes
  * type: object
+ * required:
+ *   - return_reason
  * properties:
  *   return_reason:
  *     $ref: "#/components/schemas/ReturnReason"

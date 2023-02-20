@@ -19,6 +19,8 @@ export default (app) => {
 /**
  * @schema StoreShippingOptionsListRes
  * type: object
+ * required:
+ *   - shipping_options
  * properties:
  *   shipping_options:
  *     type: array
