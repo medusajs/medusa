@@ -103,7 +103,6 @@ describe("RedisEventBusService", () => {
           { eventName: "eventName", data: { hi: "1234" } },
           {
             attempts: 1,
-            removeOnComplete: true,
           }
         )
       })
@@ -124,7 +123,6 @@ describe("RedisEventBusService", () => {
             attempts: 3,
             backoff: 5000,
             delay: 1000,
-            removeOnComplete: true,
           }
         )
       })

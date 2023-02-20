@@ -83,13 +83,18 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   async emit<T>(
     eventName: string,
     data: T,
-    options: Record<string, unknown> & EmitOptions = { attempts: 1 }
+    options: EmitOptions = { attempts: 1 }
   ): Promise<void> {
-    await this.queue_.add(eventName, { eventName, data }, options)
-  }
 
-  async defaultRemoveJobStrategy<T = unknown>(job: BullJob<T>): Promise<void> {
-    setTimeout(async () => await job.remove(), 10000)
+    const opts = {
+      removeOnComplete: {
+        // We will keep the job for 10 seconds to ensure BullMQ has enough time to match against potential duplicates
+        age: 10000
+      },
+      ...options
+    } as EmitOptions
+
+    await this.queue_.add(eventName, { eventName, data }, opts)
   }
 
   /**
@@ -141,9 +146,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
           .then(async (data) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)
-
-            await (this.moduleOptions_.removeJobStrategy?.(job) ?? this.defaultRemoveJobStrategy(job)).catch(() => void 0)
-
             return data
           })
           .catch((err) => {
