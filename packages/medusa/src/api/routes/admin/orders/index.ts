@@ -313,7 +313,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(defaultAdminOrdersIncludesFields),
+    transformIncludesOptions(["returnable_items"]),
     middlewares.wrap(require("./create-swap").default)
   )
 
@@ -505,8 +505,6 @@ export type AdminOrdersRes = {
 export type AdminOrdersListRes = PaginatedResponse & {
   orders: Order[]
 }
-
-export const defaultAdminOrdersIncludesFields = ["returnable_items"]
 
 export const defaultAdminOrdersRelations = [
   "customer",
