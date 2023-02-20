@@ -264,6 +264,8 @@ export default (app, featureFlagRouter: FlagRouter) => {
 /**
  * @schema AdminOrdersRes
  * type: object
+ * required:
+ *   - order
  * properties:
  *   order:
  *     $ref: "#/components/schemas/Order"
@@ -275,6 +277,11 @@ export type AdminOrdersRes = {
 /**
  * @schema AdminOrdersListRes
  * type: object
+ * required:
+ *   - orders
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   orders:
  *     type: array

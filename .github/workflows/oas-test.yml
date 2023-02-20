@@ -2,6 +2,7 @@ name: OAS Comments Format Validation
 on:
   pull_request:
     paths:
+      - packages/medusa/oas/**
       - packages/medusa/src/api/**
       - packages/medusa/src/models/**
       - packages/medusa/src/types/**

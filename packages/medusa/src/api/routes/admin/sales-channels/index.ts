@@ -88,6 +88,8 @@ export default (app) => {
 /**
  * @schema AdminSalesChannelsRes
  * type: object
+ * required:
+ *   - sales_channel
  * properties:
  *   sales_channel:
  *     $ref: "#/components/schemas/SalesChannel"
@@ -99,6 +101,10 @@ export type AdminSalesChannelsRes = {
 /**
  * @schema AdminSalesChannelsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -117,6 +123,10 @@ export type AdminSalesChannelsDeleteRes = DeleteResponse
 /**
  * @schema AdminSalesChannelsDeleteLocationRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -135,6 +145,11 @@ export type AdminSalesChannelsDeleteLocationRes = DeleteResponse
 /**
  * @schema AdminSalesChannelsListRes
  * type: object
+ * required:
+ *   - sales_channels
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   sales_channels:
  *     type: array
