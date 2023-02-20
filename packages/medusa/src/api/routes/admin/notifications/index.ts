@@ -39,6 +39,8 @@ export const defaultAdminNotificationsFields = [
 /**
  * @schema AdminNotificationsListRes
  * type: object
+ * required:
+ *   - notifications
  * properties:
  *   notifications:
  *     type: array
@@ -52,6 +54,8 @@ export type AdminNotificationsListRes = {
 /**
  * @schema AdminNotificationsRes
  * type: object
+ * required:
+ *   - notification
  * properties:
  *   notification:
  *     $ref: "#/components/schemas/Notification"

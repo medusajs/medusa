@@ -55,6 +55,8 @@ export const defaultAdminReturnReasonsRelations: (keyof ReturnReason)[] = [
 /**
  * @schema AdminReturnReasonsRes
  * type: object
+ * required:
+ *   - return_reason
  * properties:
  *   return_reason:
  *     $ref: "#/components/schemas/ReturnReason"
@@ -66,6 +68,8 @@ export type AdminReturnReasonsRes = {
 /**
  * @schema AdminReturnReasonsListRes
  * type: object
+ * required:
+ *   - return_reasons
  * properties:
  *   return_reasons:
  *     type: array
@@ -79,6 +83,10 @@ export type AdminReturnReasonsListRes = {
 /**
  * @schema AdminReturnReasonsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string

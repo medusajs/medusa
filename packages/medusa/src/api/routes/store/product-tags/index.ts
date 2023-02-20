@@ -34,6 +34,29 @@ export const allowedStoreProductTagFields = [...defaultStoreProductTagFields]
 
 export const defaultStoreProductTagRelations = []
 
+/**
+ * @schema StoreProductTagsListRes
+ * type: object
+ * required:
+ *   - product_tags
+ *   - count
+ *   - offset
+ *   - limit
+ * properties:
+ *   product_tags:
+ *      type: array
+ *      items:
+ *        $ref: "#/components/schemas/ProductTag"
+ *   count:
+ *      type: integer
+ *      description: The total number of items available
+ *   offset:
+ *      type: integer
+ *      description: The number of items skipped before these items
+ *   limit:
+ *      type: integer
+ *      description: The number of items per page
+ */
 export type StoreProductTagsListRes = PaginatedResponse & {
   product_tags: ProductTag[]
 }

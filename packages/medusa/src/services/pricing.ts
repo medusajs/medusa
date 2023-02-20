@@ -98,10 +98,10 @@ class PricingService extends TransactionBaseService {
    * @param productRates - the tax rates that the product has applied
    * @return The tax related variant prices.
    */
-  async calculateTaxes(
+  calculateTaxes(
     variantPricing: ProductVariantPricing,
     productRates: TaxServiceRate[]
-  ): Promise<TaxedPricing> {
+  ): TaxedPricing {
     const rate = productRates.reduce(
       (accRate: number, nextTaxRate: TaxServiceRate) => {
         return accRate + (nextTaxRate.rate || 0) / 100
@@ -167,6 +167,10 @@ class PricingService extends TransactionBaseService {
   ): Promise<ProductVariantPricing> {
     context.price_selection.tax_rates = taxRates
 
+    // TODO: Should think about updating the price strategy to take
+    // a collection of variantId so that the strategy can do a bulk computation
+    // and therefore improve the overall perf. Then the method can return a map
+    // of variant pricing Map<id, variant pricing>
     const pricing = await this.priceSelectionStrategy
       .withTransaction(this.activeManager_)
       .calculateVariantPrice(variantId, context.price_selection)
@@ -186,7 +190,7 @@ class PricingService extends TransactionBaseService {
     }
 
     if (context.automatic_taxes && context.price_selection.region_id) {
-      const taxResults = await this.calculateTaxes(pricingResult, taxRates)
+      const taxResults = this.calculateTaxes(pricingResult, taxRates)
 
       pricingResult.original_price_incl_tax = taxResults.original_price_incl_tax
       pricingResult.calculated_price_incl_tax =
@@ -360,6 +364,8 @@ class PricingService extends TransactionBaseService {
     const pricings = {}
     await Promise.all(
       variants.map(async ({ id }) => {
+        // TODO: Depending on the todo inside the getProductVariantPricing_ we would just have
+        // to return the map
         const variantPricing = await this.getProductVariantPricing_(
           id,
           taxRates,
@@ -451,28 +457,21 @@ class PricingService extends TransactionBaseService {
           return product
         }
 
+        // TODO: Depending on the todo in getProductPricing_ update this method to
+        // consume the map to assign the data to the variants
         const variantPricing = await this.getProductPricing_(
           product.id,
           product.variants,
           pricingContext
         )
 
-        const pricedVariants = product.variants.map(
-          (productVariant): PricedVariant => {
-            const pricing = variantPricing[productVariant.id]
-            return {
-              ...productVariant,
-              ...pricing,
-            }
-          }
-        )
+        product.variants.map((productVariant): PricedVariant => {
+          const pricing = variantPricing[productVariant.id]
+          Object.assign(productVariant, pricing)
+          return productVariant as unknown as PricedVariant
+        })
 
-        const pricedProduct = {
-          ...product,
-          variants: pricedVariants,
-        }
-
-        return pricedProduct
+        return product
       })
     )
   }
