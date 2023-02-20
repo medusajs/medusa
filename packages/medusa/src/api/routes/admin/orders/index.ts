@@ -110,7 +110,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(),
+    transformIncludesOptions([AllowedOrderIncludesFields.RETURNABLE_ITEMS]),
     middlewares.wrap(require("./get-order").default)
   )
 
@@ -313,7 +313,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       defaultFields: defaultFields,
       isList: false,
     }),
-    transformIncludesOptions(["returnable_items"]),
+    transformIncludesOptions([AllowedOrderIncludesFields.RETURNABLE_ITEMS]),
     middlewares.wrap(require("./create-swap").default)
   )
 
@@ -589,6 +589,10 @@ export const filterableAdminOrdersFields = [
   "created_at",
   "updated_at",
 ]
+
+export const AllowedOrderIncludesFields = {
+  RETURNABLE_ITEMS: "returnable_items",
+}
 
 export * from "./add-shipping-method"
 export * from "./archive-order"
