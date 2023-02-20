@@ -6,7 +6,7 @@ import middlewares, {
 } from "../../../middlewares"
 
 import { PaymentCollection } from "../../../../models"
-import { GetPaymentCollectionsParams } from "./get-payment-collection"
+import { AdminGetPaymentCollectionsParams } from "./get-payment-collection"
 import { AdminUpdatePaymentCollectionsReq } from "./update-payment-collection"
 
 const route = Router()
@@ -16,7 +16,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(GetPaymentCollectionsParams, {
+    transformQuery(AdminGetPaymentCollectionsParams, {
       defaultFields: defaultPaymentCollectionFields,
       defaultRelations: defaulPaymentCollectionRelations,
       isList: false,

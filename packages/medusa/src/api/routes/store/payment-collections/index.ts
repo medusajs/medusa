@@ -7,7 +7,7 @@ import middlewares, {
 
 import { PaymentCollection, PaymentSession } from "../../../../models"
 import { StorePostPaymentCollectionsBatchSessionsAuthorizeReq } from "./authorize-batch-payment-sessions"
-import { GetPaymentCollectionsParams } from "./get-payment-collection"
+import { StoreGetPaymentCollectionsParams } from "./get-payment-collection"
 import { StorePostPaymentCollectionsBatchSessionsReq } from "./manage-batch-payment-sessions"
 import { StorePaymentCollectionSessionsReq } from "./manage-payment-session"
 
@@ -18,7 +18,7 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(GetPaymentCollectionsParams, {
+    transformQuery(StoreGetPaymentCollectionsParams, {
       defaultFields: defaultPaymentCollectionFields,
       defaultRelations: defaultPaymentCollectionRelations,
       isList: false,
